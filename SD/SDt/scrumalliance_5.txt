@@ -1,0 +1,29 @@
+@startuml
+Actor Trainer
+Control ProfileService
+Entity ProfileDatabase
+
+Trainer -> ProfileService: OpenProfileEdit()
+activate ProfileService
+
+ProfileService --> Trainer: ShowProfileEditForm()
+deactivate ProfileService
+activate Trainer
+
+Trainer -> Trainer: FillFormDetails()
+Trainer -> ProfileService: SubmitProfileEdit(newDetails)
+deactivate Trainer
+activate ProfileService
+
+ProfileService -> ProfileDatabase: UpdateProfile(newDetails)
+activate ProfileDatabase
+
+ProfileDatabase --> ProfileService: AcknowledgeProfileUpdated()
+deactivate ProfileDatabase
+activate ProfileService
+
+ProfileService --> Trainer: ShowUpdatedProfile()
+deactivate ProfileService
+activate Trainer
+
+@enduml

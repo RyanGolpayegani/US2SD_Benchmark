@@ -1,0 +1,42 @@
+Sure, here is a sequence diagram that describes the interactions between a Trainer (Actor), Profile Service (Control), and Profile Database (Entity).
+
+```plantuml
+@startuml
+Actor Trainer
+Control ProfileService
+Entity ProfileDatabase
+
+Trainer -> ProfileService: OpenProfileEdit()
+activate ProfileService
+
+ProfileService --> Trainer: ShowProfileEditForm()
+deactivate ProfileService
+activate Trainer
+
+Trainer -> Trainer: FillFormDetails()
+Trainer -> ProfileService: SubmitProfileEdit(newDetails)
+deactivate Trainer
+activate ProfileService
+
+ProfileService -> ProfileDatabase: UpdateProfile(newDetails)
+activate ProfileDatabase
+
+ProfileDatabase --> ProfileService: AcknowledgeProfileUpdated()
+deactivate ProfileDatabase
+activate ProfileService
+
+ProfileService --> Trainer: ShowUpdatedProfile()
+deactivate ProfileService
+activate Trainer
+
+@enduml
+```
+
+This diagram describes the following steps:
+1. The Trainer requests to edit his/her profile from the Profile Service.
+2. The Profile Service shows a form to the Trainer for editing the profile.
+3. The Trainer fills in the form details including additional details about him/her.
+4. The Trainer then submits the form to the Profile Service with the new details.
+5. The Profile Service updates the profile of the Trainer in the Profile Database with the new details.
+6. The Profile Database acknowledges the successful update of the profile.
+7. The Profile Service shows the updated profile of the Trainer.

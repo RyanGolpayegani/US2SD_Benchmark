@@ -1,0 +1,38 @@
+@startuml
+title Practitioner Write Article Sequence Diagram
+
+actor Practitioner
+participant "Article System" as A
+participant "VerifyCertification Service" as V
+participant "Article Database" as D
+database "Certification Database" as C
+
+Practitioner -> A: Request article submission page.
+activate A
+
+A -> V:Request certification status.
+activate V
+
+V -> C:Check for certification.
+activate C
+
+C --> V:Return certification
+deactivate C
+
+V --> A:Return certification status
+deactivate V
+
+A --> Practitioner: Show submission page with certification status
+deactivate A
+
+Practitioner -> A: Submit article.
+activate A
+
+A -> D: Store article
+activate D
+D --> A: Article Stored
+deactivate D
+
+A --> Practitioner: Confirm article submission
+deactivate A
+@enduml

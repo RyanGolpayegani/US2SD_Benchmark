@@ -1,0 +1,25 @@
+@startuml
+actor Practitioner
+
+box "User Interface"
+participant ProfilePage
+end box
+
+box "Back-End"
+participant UserDetailService
+database DetailDatabase
+end box
+
+Practitioner -> ProfilePage : Clicks "Edit Profile" button
+ProfilePage -> UserDetailService : Send request to get data
+UserDetailService -> DetailDatabase : Fetch User Data
+DetailDatabase --> UserDetailService : Return User Data
+UserDetailService --> ProfilePage : Return User Data
+
+Practitioner -> ProfilePage: Input new details
+ProfilePage -> UserDetailService: Update Request
+UserDetailService -> DetailDatabase: Update User Data
+DetailDatabase --> UserDetailService: Confirm Update
+UserDetailService --> ProfilePage: Confirmation Message
+ProfilePage --> Practitioner: Show "Profile Updated" message
+@enduml
