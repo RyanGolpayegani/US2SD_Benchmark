@@ -60,3 +60,6 @@ python src/Call_PUML_API.py
 ## Acknowledgment
 
 This research is supported by multiple sources, including the Natural Sciences and Engineering Research Council of Canada (NSERC) Discovery Grants program and the industry-stream NSERC CREATE in Software Analytics Research (SOAR). Additionally, support comes from two Canada First Research Excellence Funds (CFREFs) grants managed by the Global Institute for Food Security (GIFS) and the Global Institute for Water Security (GIWS). Acknowledgements are extended to Prof. Chanchal K. Roy, the Director of SOAR, for his invaluable guidance and assistance throughout the industry-stream SOAR program. Prof. Roy's efforts in organizing various lectures, professional development workshops, talks, Industry and Mitacs workshops, graduate professional skills development programs, entrepreneurship training, and industrial internships have greatly contributed to the author's preparedness to meet the evolving demands of the job market.
+
+<img src="images/USASK.png" alt="Alt text" style="margin-right: 20px;" width="200" height="150">
+<img src="images/SR_Lab.png" alt="Alt text" width="150" height="150">
