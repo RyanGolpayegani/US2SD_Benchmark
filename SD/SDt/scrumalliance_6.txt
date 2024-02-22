@@ -1,38 +1,25 @@
 @startuml
-title Practitioner Write Article Sequence Diagram
-
 actor Practitioner
-participant "Article System" as A
-participant "VerifyCertification Service" as V
-participant "Article Database" as D
-database "Certification Database" as C
-
-Practitioner -> A: Request article submission page.
-activate A
-
-A -> V:Request certification status.
-activate V
-
-V -> C:Check for certification.
-activate C
-
-C --> V:Return certification
-deactivate C
-
-V --> A:Return certification status
-deactivate V
-
-A --> Practitioner: Show submission page with certification status
-deactivate A
-
-Practitioner -> A: Submit article.
-activate A
-
-A -> D: Store article
-activate D
-D --> A: Article Stored
-deactivate D
-
-A --> Practitioner: Confirm article submission
-deactivate A
+participant System
+participant Site
+note right of Practitioner
+    Practitioner is a Certified Scrum Professional (CSP) 
+    or Certified Scrum Trainer (CST)
+end note
+  
+Practitioner -> System: Log in
+System -> Practitioner: Provide article writing tools
+Practitioner -> System: Write article
+System -> Practitioner: Get visual for CST/CSP
+Practitioner -> System: Upload image
+System -> Practitioner: Confirm image upload
+Practitioner -> System: Submit article for approval
+System -> Site: Submit article
+Site -> System: Approve article
+System -> Practitioner: Notify article approval
+Practitioner -> System: Publishes article
+System -> Site: Update site with new article
+Site -> System: Confirm article publication
+System -> Practitioner: Inform article is live
+note right of Practitioner : Practitioner receives confirmation that his article is live on the Site.
 @enduml

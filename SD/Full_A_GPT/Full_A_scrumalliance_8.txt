@@ -1,16 +1,47 @@
-You need to have a text editor to write down the PlantUML code or use an online PlantUML editor. Here is how you can make a sequence diagram:
+Sure, here is a representation of your user story translated into a sequence diagram in Plant UML format:
 
-```plantuml
+```
 @startuml
-title View Member Profile
+actor User
+participant Site 
+participant Database
 
-"Site Member" -> "Website Interface" : Navigate to member's profile
-"Website Interface" -> "Database" : Request member profile data
-Database --> "Website Interface" : Return profile data
-"Website Interface" --> "Site Member" : Display member's profile
+User -> Site: Login/Authentication
+activate Site
+
+Site --> User: Success/failure response
+deactivate Site
+activate User
+
+User -> Site: Request to view profiles
+activate Site
+
+Site -> Database: Fetch member profiles
+activate Database
+
+Database --> Site: Return profiles
+deactivate Database
+
+Site --> User: Show profiles
+deactivate Site
+
+User -> Site: Send connection request to a member
+activate Site
+
+Site -> Database: Store connection request
+deactivate Site
+activate Database
+
+Database --> Site: Confirmation of stored request
+deactivate Database
+activate Site
+
+Site --> User: Connection request sent
+deactivate Site
+
 @enduml
 ```
 
-This is a basic sequence diagram. Based on the user story, the Site Member navigates to view another member's profile through the Website Interface. The Website Interface then requests the profile data from the Database. When the Database returns the data, the Website Interface then displays the member's profile to the Site Member.
+The sequence diagram shows the series of interactions that would occur between the "User", "Site" (or software application), and "Database" in realizing the user story. The process starts from login, to viewing profiles, and finally sending a connection request to a member. 
 
-Depending on your exact process flow, you might adjust this diagram according to your needs.
+Please do remember that this is a general implementation and might not cover all edge cases or details. Modifications might be needed to fit the actual application design or hidden functionalities.

@@ -1,31 +1,32 @@
-Sure, here is a simplified sequence diagram represented in PlantUML code for your user story:
+Sure, please find the sequence diagram below.
 
 ```plantuml
-@startuml
 
 participant "Trainer" as T
-database "Database" as DB
-participant "Website" as W
-participant "Prospective Attendee" as PA
+participant "Profile Platform" as P
+participant "Detail Page" as D
 
-T -> DB: Submit upcoming classes details
-DB --> DB: Store class details
-DB --> T: Confirm class details stored
-T -> W: Add class details to profile
-W --> W: Update class display w/ link to details
-PA -> W: View trainer profile
-W -> PA: Display upcoming classes w/ links
+T -> P : Request to access profile
+P --> T : Display profile
 
-@enduml
+activate T
+T -> P : Adds information about upcoming classes
+activate P
+P --> T : Acknowledges information added
+deactivate P
+
+T -> P : Requests to link detailed information about each class
+P --> T : Acquires respective detailed page links of classes
+
+loop for each class
+    T -> P : Attaches respective link to each class
+    P --> T : Confirms attached link
+end
+
+P -> D : Stores class details within detail page
+D --> P : Acknowledges detail page creation
+P --> T : Confirms successful creation of detail page
+deactivate T
 ```
 
-In the example above:
-
-- The Trainer submits their upcoming classes details to the Database.
-- The Database stores the class details and confirms it to the Trainer.
-- The Trainer then adds this information to their profile on the Website.
-- The Website updates the display accordingly, by adding links to the detailed information of each class.
-- The Prospective Attendee then views the Trainer's profile on the website.
-- The Website shows the upcoming classes along with their links to the Prospective Attendee.
-
-This is a simplified sequence diagram and the interactions may involve a bit more complexity in a real case scenario. For example, validation operations, systems exceptions, among others, could also be considered depending on the exact requirements.
+This sequence showcases the trainer accessing their profile via a platform, adding links to their upcoming classes, and the platform storing this information and creating detailed pages.

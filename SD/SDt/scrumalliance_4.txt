@@ -1,24 +1,17 @@
 @startuml
+actor User
+participant "Membership Site" as MS
+participant "Application Form" as AF
+participant "Scrum Trainer Certifier" as STC
 
-participant "Site Member" as SM
-participant "Website" as W
-participant "Certification Database" as CD
+User -> MS : Login to account
 
-SM -> W : Accesses Trainer Application
-activate W
-W -> CD : Requests Application Form
-activate CD
-CD --> W : Returns Application Form
-deactivate CD
-W --> SM : Displays Application Form
-deactivate W
-SM -> W : Fills and submits Application Form
-activate W
-W -> CD : Sends Completed Application
-activate CD
-CD --> W : Acknowledges Receipt
-deactivate CD
-W --> SM : Confirms Application Submission
-deactivate W
-
+alt Not Yet Applied
+    MS -> User : Provide trainer certification application
+    User -> AF : Fillout form
+    AF -> STC : Submit application
+    STC -> User : Notify submission confirmation
+else Already Applied
+    MS -> User : Show application status
+end
 @enduml

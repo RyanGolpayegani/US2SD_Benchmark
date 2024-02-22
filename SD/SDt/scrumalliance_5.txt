@@ -1,29 +1,10 @@
 @startuml
-Actor Trainer
-Control ProfileService
-Entity ProfileDatabase
+actor Trainer as t
+participant "Profile System" as ps
 
-Trainer -> ProfileService: OpenProfileEdit()
-activate ProfileService
-
-ProfileService --> Trainer: ShowProfileEditForm()
-deactivate ProfileService
-activate Trainer
-
-Trainer -> Trainer: FillFormDetails()
-Trainer -> ProfileService: SubmitProfileEdit(newDetails)
-deactivate Trainer
-activate ProfileService
-
-ProfileService -> ProfileDatabase: UpdateProfile(newDetails)
-activate ProfileDatabase
-
-ProfileDatabase --> ProfileService: AcknowledgeProfileUpdated()
-deactivate ProfileDatabase
-activate ProfileService
-
-ProfileService --> Trainer: ShowUpdatedProfile()
-deactivate ProfileService
-activate Trainer
-
+t -> ps : Request Profile Edit
+ps -> t : Display Editable Profile
+t -> ps : Update Profile Details
+ps -> ps : Validate Changes
+ps -> t : Confirm Changes
 @enduml

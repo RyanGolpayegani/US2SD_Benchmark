@@ -1,14 +1,24 @@
 @startuml
-autonumber
-actor User
-participant "ProfilePage" as A
-participant "ProfileController" as B
-participant "UserService" as C
-User -> A: Clicks "Private Mode"
-A -> B: managePrivacySetting(private)
-B -> C: setPrivacyMode(user, private)
-note right: UserService updates the\nuser profile's settings\nto private.
-C --> B: Settings updated
-B --> A: Update confirmation
-A --> User: Display confirmation message
+title Make Profile Private
+
+actor "Site_Member" as user
+
+box "Website"
+participant "User_Profile_Service" as service
+endbox
+
+user -> service: requestProfilePrivacyChange(status: private)
+activate service
+
+group Validate User
+    service -> service: validateUser()
+
+    alt Unauthorized User
+        service --x user: Unauthorized Access
+    else Valid User
+        service -> service:user.setProfileStatus(private)
+        service -->> user: Profile Updated Successfully
+    end
+@end
+
 @enduml

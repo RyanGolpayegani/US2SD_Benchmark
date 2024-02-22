@@ -1,33 +1,20 @@
-Sure, here is a simple sequence diagram for your user story in PlantUML format:
+Here is a simple PlantUML sequence diagram for your user story:
 
-```
+```plantuml
 @startuml
 actor Practitioner
+boundary "Profile Page" as Profile
+database "Data Storage" as DB
+  
+Practitioner -> Profile: Access profile page
+Profile --> Practitioner: Show profile data
+Practitioner -> Profile : Request to add additional details
+Profile --> Practitioner: Provide form for additional details
+Practitioner -> Profile: Submit form with new details
+Profile -> DB: Push new details to database
+DB --> Profile: Confirm receipt of data
+Profile --> Practitioner: Success message
 
-box "User Interface"
-participant ProfilePage
-end box
-
-box "Back-End"
-participant UserDetailService
-database DetailDatabase
-end box
-
-Practitioner -> ProfilePage : Clicks "Edit Profile" button
-ProfilePage -> UserDetailService : Send request to get data
-UserDetailService -> DetailDatabase : Fetch User Data
-DetailDatabase --> UserDetailService : Return User Data
-UserDetailService --> ProfilePage : Return User Data
-
-Practitioner -> ProfilePage: Input new details
-ProfilePage -> UserDetailService: Update Request
-UserDetailService -> DetailDatabase: Update User Data
-DetailDatabase --> UserDetailService: Confirm Update
-UserDetailService --> ProfilePage: Confirmation Message
-ProfilePage --> Practitioner: Show "Profile Updated" message
 @enduml
 ```
-
-In this sequence, after the Practitioner selects to edit their profile, the front-end (`ProfilePage`) requests the current user details from the back-end service (`UserDetailService`). This service retrieves the data from the database (`DetailDatabase`) and returns it back to the UI.
-
-Then, the practitioner can intimate their new details. The request to update is sent from the profile page to the UserDetailService. The service updates the user data in the DetailDatabase and sends back a confirmation. This confirmation is shown to the Practitioner.
+This sequence diagram visualizes interactions among different system components as follows: the Practitioner accesses the Profile Page, requests to add additional details, provides and submits these details; the Profile Page pushes these new details to the Data Storage (database) and, once confirmation is received, sends a success message back to the Practitioner.

@@ -1,29 +1,33 @@
-Here is a PlantUML sequence diagram that represents the process of a site member describing himself on his own page:
+Here is the sequence diagram in PlantUML format:
 
-```
-@startuml
+`@startuml
 actor User
+boundary "Personal Page" as PP
+database "Database" as DB
 
-User -> MemberPage : Access Profile Page
-activate MemberPage
+User->PP : Click 'Edit Profile'
+PP->DB : Retrieve Profile Info
+DB-->PP : Return Profile Info
+PP-->User : Display Edit Profile Page(Profile Info)
+User->PP : Enter Personal Details
+Note over User,PP
+Semi-structured way refers to 
+the capability to enter 
+information in predefined fields 
+as well as open text entries
+end note
+PP->DB : Update Profile Info
+DB-->PP : Confirm Update
+PP-->User : Display Updated Profile
+@enduml`
 
-MemberPage -> DescribeForm : Open Form
-activate DescribeForm
+This breakdown assumes that you are starting from a state where the user is already logged in.
 
-User -> DescribeForm : Fill Out Form
-DescribeForm -> MemberPage : Update Profile
-
-deactivate DescribeForm
-deactivate MemberPage
-
-@enduml
-```
-
-In the diagram:
-- The User accesses his Member Profile Page.
-- The site prompts a form with fields to fill (DescribeForm) in a semi-structured way.
-- The User fills out the form and saves.
-- The user's profile on Member Page gets updated accordingly.
-- The form deactivates and the user goes back to an updated member profile page.
-
-You can use any online PlantUML renderer to visualize the sequence diagram.
+- User initiates changes to his/her profile by clicking "Edit Profile" in their personal page.
+- Personal Page communicates with the Database to fetch current profile information.
+- Database returns current profile data to Personal Page.
+- Personal Page displays Edit Profile Page with pre-filled profile data to the User.
+- User fills up the form with their details. It may include both structured data like Name, DOB as well as semi-structured data like Hobbies, Bio etc.
+- Personal Page then processes the entered data and sends it to the Database for updation.
+- Database confirms the successful updation to Personal Page.
+- Personal Page then displays the newly updated profile to the User.

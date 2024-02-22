@@ -1,42 +1,26 @@
-Sure, here is a sequence diagram that describes the interactions between a Trainer (Actor), Profile Service (Control), and Profile Database (Entity).
+Sure, here's a simple sequence diagram in PlantUML language for your user story:
 
-```plantuml
+```
 @startuml
-Actor Trainer
-Control ProfileService
-Entity ProfileDatabase
+actor Trainer as t
+participant "Profile System" as ps
 
-Trainer -> ProfileService: OpenProfileEdit()
-activate ProfileService
-
-ProfileService --> Trainer: ShowProfileEditForm()
-deactivate ProfileService
-activate Trainer
-
-Trainer -> Trainer: FillFormDetails()
-Trainer -> ProfileService: SubmitProfileEdit(newDetails)
-deactivate Trainer
-activate ProfileService
-
-ProfileService -> ProfileDatabase: UpdateProfile(newDetails)
-activate ProfileDatabase
-
-ProfileDatabase --> ProfileService: AcknowledgeProfileUpdated()
-deactivate ProfileDatabase
-activate ProfileService
-
-ProfileService --> Trainer: ShowUpdatedProfile()
-deactivate ProfileService
-activate Trainer
-
+t -> ps : Request Profile Edit
+ps -> t : Display Editable Profile
+t -> ps : Update Profile Details
+ps -> ps : Validate Changes
+ps -> t : Confirm Changes
 @enduml
 ```
 
-This diagram describes the following steps:
-1. The Trainer requests to edit his/her profile from the Profile Service.
-2. The Profile Service shows a form to the Trainer for editing the profile.
-3. The Trainer fills in the form details including additional details about him/her.
-4. The Trainer then submits the form to the Profile Service with the new details.
-5. The Profile Service updates the profile of the Trainer in the Profile Database with the new details.
-6. The Profile Database acknowledges the successful update of the profile.
-7. The Profile Service shows the updated profile of the Trainer.
+More detailed diagrams might include the database as a participant for saving and fetching profile details, or a validation layer if there's complicated logic involved in checking the acceptability of the new profile information. In this case, this simple diagram should give a basic view of the sequence of interactions in this user story. 
+
+Explanation:
+
+1. The Trainer (actor) makes a request to the Profile System (participant) to edit the profile.
+2. The Profile System presents the editable profile to the Trainer.
+3. The Trainer sends the updated profile data back to the Profile System.
+4. The Profile System validates the changes (possibly ensuring there are no inappropriate contents, or that the new info adheres to in-place guidelines).
+5. After validation, the Profile System confirms these changes back to the Trainer. 
+
+Note: This code is to be placed in a PlantUML environment to properly view the sequence diagram.

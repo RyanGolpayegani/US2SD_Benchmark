@@ -1,16 +1,20 @@
 @startuml
 actor User
+boundary "Personal Page" as PP
+database "Database" as DB
 
-User -> MemberPage : Access Profile Page
-activate MemberPage
-
-MemberPage -> DescribeForm : Open Form
-activate DescribeForm
-
-User -> DescribeForm : Fill Out Form
-DescribeForm -> MemberPage : Update Profile
-
-deactivate DescribeForm
-deactivate MemberPage
-
+User->PP : Click 'Edit Profile'
+PP->DB : Retrieve Profile Info
+DB-->PP : Return Profile Info
+PP-->User : Display Edit Profile Page(Profile Info)
+User->PP : Enter Personal Details
+Note over User,PP
+Semi-structured way refers to 
+the capability to enter 
+information in predefined fields 
+as well as open text entries
+end note
+PP->DB : Update Profile Info
+DB-->PP : Confirm Update
+PP-->User : Display Updated Profile
 @enduml

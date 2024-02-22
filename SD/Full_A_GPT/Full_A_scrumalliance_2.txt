@@ -1,32 +1,36 @@
-Sure, here is a basic sequence diagram of your user story in PlantUML format:
+Sure, here's the sequence diagram you requested, represented in Plant UML format:
 
 ```plantuml
 @startuml
-participant "Member" as M
-participant "Website" as W
-participant "Server" as S
+actor Member
+boundary Site
+control ApplicationService
+entity Application
 
-M -> W : Click "Apply for CSP"
-activate W
-W -> S : Request Application Form
-activate S
-S --> W : Send Application Form
-deactivate S
-W --> M : Show Application Form
-deactivate W
-M -> W : Fill Out and Submit Form
-activate W
-W -> S : Send Submitted Form
-activate S
-S --> W : Acknowledge Form Submission
-deactivate S
-W --> M : Show Acknowledgement Message
-deactivate W
+Member --> Site : Access Site
+Site --> Member : Display Options
+Member --> Site : Select CSP Application
+Site --> ApplicationService : Request Application Form
+ApplicationService --> Application : Fetch Application Form
+Application --> ApplicationService : Return Form
+ApplicationService --> Site : Deliver Form
+Site --> Member : Display Application Form
+Member --> Site : Fill and Submit Form
+Site --> ApplicationService : Submit Completed Form
+ApplicationService --> Application : Store Form Data
 @enduml
 ```
 
-This sequence diagram starts with the member clicking an "Apply for CSP" button on the website. The website then requests the application form from the server, which replies with the form. This is then displayed to the user. 
+Here's what each part of the diagram means:
 
-The user then fills out and submits the form via the website, and the website sends this to the server. The server acknowledges the form submission and relays this back to the user.
-
-Remember to adjust the diagram accordingly to represent the specific set of interactions in your actual system, as there might be other participants involved in the process (a database for storing the application, an email service for sending a confirmation email, etc.).
+1. The site member ("Member") wants to apply for the Certified Scrum Practitioner (CSP) certification, so they access the website ("Site").
+2. The site displays various options to the member.
+3. The member selects the CSP Application option.
+4. The site, via the ApplicationService, requests the application form.
+5. The ApplicationService asks the Application entity to fetch the application form.
+6. The Application entity fetches the form and returns it to the ApplicationService.
+7. The ApplicationService delivers the form to the Site.
+8. The Site displays the application form to the Member.
+9. The Member fills out and submits the form.
+10. The Site submits the completed application form to the ApplicationService.
+11. The ApplicationService stores the form data in the Application entity.

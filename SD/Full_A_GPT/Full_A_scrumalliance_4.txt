@@ -1,32 +1,23 @@
-Below is a sequence diagram in PlantUML format for your user story:
+You can create a Sequence Diagram using PlantUML language. Here is an example corresponding to your user story:
 
 ```plantuml
 @startuml
+actor User
+participant "Membership Site" as MS
+participant "Application Form" as AF
+participant "Scrum Trainer Certifier" as STC
 
-participant "Site Member" as SM
-participant "Website" as W
-participant "Certification Database" as CD
+User -> MS : Login to account
 
-SM -> W : Accesses Trainer Application
-activate W
-W -> CD : Requests Application Form
-activate CD
-CD --> W : Returns Application Form
-deactivate CD
-W --> SM : Displays Application Form
-deactivate W
-SM -> W : Fills and submits Application Form
-activate W
-W -> CD : Sends Completed Application
-activate CD
-CD --> W : Acknowledges Receipt
-deactivate CD
-W --> SM : Confirms Application Submission
-deactivate W
-
+alt Not Yet Applied
+    MS -> User : Provide trainer certification application
+    User -> AF : Fillout form
+    AF -> STC : Submit application
+    STC -> User : Notify submission confirmation
+else Already Applied
+    MS -> User : Show application status
+end
 @enduml
 ```
 
-In this diagram, a site member interfaces with a website to fill and submit an application to become a Certified Scrum Trainer. The website requests the application form from a theoretical "Certification Database," and once filled, submits the completed application to the database. Upon successful submission, a confirmation is given back to the site member.
-
-Please remember to replace generic terms such as "Website" and "Certification Database" with actual system or service names in your context.
+This diagram illustrates that a "User", after logging into the "Membership Site" (MS), either goes through the process of filling out and submitting an "Application Form" (AF) to the "Scrum Trainer Certifier" (STC) if they have not yet applied, or is shown their application status if they have already applied.

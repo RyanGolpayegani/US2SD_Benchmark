@@ -1,8 +1,39 @@
 @startuml
-title View Member Profile
+actor User
+participant Site 
+participant Database
 
-"Site Member" -> "Website Interface" : Navigate to member's profile
-"Website Interface" -> "Database" : Request member profile data
-Database --> "Website Interface" : Return profile data
-"Website Interface" --> "Site Member" : Display member's profile
+User -> Site: Login/Authentication
+activate Site
+
+Site --> User: Success/failure response
+deactivate Site
+activate User
+
+User -> Site: Request to view profiles
+activate Site
+
+Site -> Database: Fetch member profiles
+activate Database
+
+Database --> Site: Return profiles
+deactivate Database
+
+Site --> User: Show profiles
+deactivate Site
+
+User -> Site: Send connection request to a member
+activate Site
+
+Site -> Database: Store connection request
+deactivate Site
+activate Database
+
+Database --> Site: Confirmation of stored request
+deactivate Database
+activate Site
+
+Site --> User: Connection request sent
+deactivate Site
+
 @enduml
