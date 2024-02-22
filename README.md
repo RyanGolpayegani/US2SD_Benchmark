@@ -1,4 +1,4 @@
-# Artifact-Factory
+# Artifact_Factory
 
 This tool is an automated benchmark creator for creating requirement related Software Artifact benchmarks. This tool prompts LLMs (ChatGPT, Gemini) to generate artifacts such as Sequence Diagrams.
 
@@ -14,13 +14,13 @@ This tool is an automated benchmark creator for creating requirement related Sof
 1. For using this tool first clone the this repo with following command:
 
 ```
-git clone https://github.com/RezaGolpayegani/Artifact-Factory.git
+git clone https://github.com/RezaGolpayegani/Artifact_Factory.git
 ```
 
 2. Go to the folder:
 
 ```
-cd Artifact-Factory
+cd Artifact_Factory
 ```
 
 3. Install the requirements:
