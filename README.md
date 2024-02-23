@@ -6,8 +6,7 @@ This tool is an automated benchmark creator for creating requirement related Sof
 
 1. ### Find a better prompt!!!
 2. Add Draw.io API
-3. add a picture for GPT API output
-4. Add `Gemini` script --> Gemini API key needed
+3. Add `Gemini` script --> Gemini API key needed
 
 ## How to use:
 
