@@ -5,6 +5,19 @@ This tool is an automated benchmark creator for creating requirement related Sof
 ## To Do:
 
 1. ### Find a better prompt!!!
+
+   1. Experiment:
+      1. 100 Random USs
+      2. Prj desc + USs
+      3. Prj desc + USs + 3 USs from multiple prompts same prj
+      4. for 3 Directional Stimulus Prompting (DSP)
+
+   ### Goal: prove the best way to get SDs
+
+   ### Outcome: finding out the best prompt
+
+   Based on the results create the benchmark
+
 2. Add Draw.io API
 3. Add `Gemini` script --> Gemini API key needed
 
