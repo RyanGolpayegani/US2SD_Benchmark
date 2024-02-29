@@ -1,0 +1,25 @@
+Sure, here is the sequence diagram in Plant UML format which based on the user story above. It describes the interaction between "API User", "API Server" and "Database" for normalising measures by GDP.
+
+```plantuml
+@startuml
+participant "API User" as A
+participant "API Server" as B
+database "Database" as DB
+
+A->B: Request Normalize Measures
+activate B
+B->DB: Get GDP Data
+activate DB
+DB-->>B: Return GDP Data
+deactivate DB
+B->DB: Get Measures Data
+activate DB
+DB-->>B: Return Measures Data
+deactivate DB
+B->B: Normalize Measures with GDP Data
+B-->>A: Return Normalized Measures
+deactivate B
+@enduml
+```
+
+This diagram assumes the API Server interacts with the Database to firstly gather the GDP Data, then retrieve the Measures Data. After both sets of data have been obtained, the API Server normalises the Measures with the GDP Data before finally returning the Normalised Measures to the API User.

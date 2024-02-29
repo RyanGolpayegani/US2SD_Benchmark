@@ -1,0 +1,16 @@
+@startuml
+Title: Repository Object Lifecycle Events Tracking
+
+actor RepositoryManager
+participant ObjectLifecycleService
+database ObjectLifecycleEventDatabase
+
+RepositoryManager -> ObjectLifecycleService: requestObjectEvents(ObjectId)
+activate ObjectLifecycleService
+ObjectLifecycleService -> ObjectLifecycleEventDatabase: getObjectEvents(ObjectId)
+activate ObjectLifecycleEventDatabase
+ObjectLifecycleEventDatabase -->> ObjectLifecycleService: return eventList
+deactivate ObjectLifecycleEventDatabase
+ObjectLifecycleService -->> RepositoryManager: return eventList
+deactivate ObjectLifecycleService
+@enduml

@@ -1,0 +1,22 @@
+Sure, Here is an example of a sequence diagram in Plant UML format for your user story:
+
+```
+@startuml
+Title: Repository Object Lifecycle Events Tracking
+
+actor RepositoryManager
+participant ObjectLifecycleService
+database ObjectLifecycleEventDatabase
+
+RepositoryManager -> ObjectLifecycleService: requestObjectEvents(ObjectId)
+activate ObjectLifecycleService
+ObjectLifecycleService -> ObjectLifecycleEventDatabase: getObjectEvents(ObjectId)
+activate ObjectLifecycleEventDatabase
+ObjectLifecycleEventDatabase -->> ObjectLifecycleService: return eventList
+deactivate ObjectLifecycleEventDatabase
+ObjectLifecycleService -->> RepositoryManager: return eventList
+deactivate ObjectLifecycleService
+@enduml
+```
+
+This diagram shows the repository manager (an actor) making a request to the `ObjectLifecycleService` to get the cycle events of a particular object (identified by an `ObjectId`). The `ObjectLifecycleService` then makes a request to `ObjectLifecycleEventDatabase` to retrieve the corresponding events. The events are then returned to the service, and subsequently to the repository manager.
