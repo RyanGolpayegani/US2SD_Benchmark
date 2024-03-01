@@ -1,0 +1,24 @@
+@startuml
+actor Admin
+entity "Admin Dashboard" as Dashboard
+database "Help Wanted Ads Database" as Database
+
+Admin->Dashboard: Login
+activate Dashboard
+Dashboard-->Admin: Access granted
+
+loop Send request to edit or delete help wanted ad
+    Admin->Dashboard: Select Help Wanted Ad
+    activate Dashboard
+    Dashboard-->Admin: Present Ad Details
+
+    Admin->Dashboard: Request Edit/Delete
+    activate Dashboard
+    Dashboard->Database: Send Edit/Delete Request
+    activate Database
+    Database-->Dashboard: Confirm Edit/Delete
+    deactivate Database
+    Dashboard-->Admin: Confirm Edit/Delete
+    deactivate Dashboard
+end
+@enduml

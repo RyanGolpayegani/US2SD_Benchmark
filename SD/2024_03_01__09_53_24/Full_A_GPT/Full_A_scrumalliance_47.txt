@@ -1,0 +1,38 @@
+Below is a sequence diagram in Plant UML format following from your user story.
+
+```plantuml
+@startuml
+actor Admin
+entity "Admin Dashboard" as Dashboard
+database "Help Wanted Ads Database" as Database
+
+Admin->Dashboard: Login
+activate Dashboard
+Dashboard-->Admin: Access granted
+
+loop Send request to edit or delete help wanted ad
+    Admin->Dashboard: Select Help Wanted Ad
+    activate Dashboard
+    Dashboard-->Admin: Present Ad Details
+
+    Admin->Dashboard: Request Edit/Delete
+    activate Dashboard
+    Dashboard->Database: Send Edit/Delete Request
+    activate Database
+    Database-->Dashboard: Confirm Edit/Delete
+    deactivate Database
+    Dashboard-->Admin: Confirm Edit/Delete
+    deactivate Dashboard
+end
+@enduml
+```
+This sequence diagram assumes that:
+
+- The admin logs into the dashboard.
+- The admin selects the ad they want to edit/delete.
+- The dashboard presents the details of the ad to the admin.
+- The admin sends a request to edit/delete the ad.
+- The dashboard forwards the request to the database.
+- The database applies the edit/delete and confirms it back to the dashboard.
+- The dashboard confirms to the admin that the edit/delete has been applied.
+- This loop continues until the admin is done modifying or deleting ads.
