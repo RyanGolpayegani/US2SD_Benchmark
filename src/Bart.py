@@ -16,7 +16,7 @@ df = pd.read_csv("data/All_US.csv")
 # Combine all values in 'col1' into a string with comma (,) separator
 project_names = df['Project Name'].unique()
 
-print(f"Generating description for all projects ...")
+print(f"Generating description for all projects with BART...")
 
 # for loop here
 for project in tqdm(project_names):
@@ -45,8 +45,8 @@ for project in tqdm(project_names):
         )
 
     # Create the destination folder if it doesn't exist
-    Folder_Project_Descriptions_dir = "data/Project_Descriptions" 
-    File_Project_Descriptions_dir = f"data/Project_Descriptions/{project}.txt" 
+    Folder_Project_Descriptions_dir = "data/Project_Descriptions/BART" 
+    File_Project_Descriptions_dir = f"data/Project_Descriptions/BART/{project}.txt" 
     if not os.path.exists(Folder_Project_Descriptions_dir):
         os.makedirs(Folder_Project_Descriptions_dir)
 
