@@ -18,8 +18,11 @@ This tool is an automated benchmark creator for creating requirement related Sof
 
    Based on the results create the benchmark
 
-2. Add Draw.io API
-3. Add `Gemini` script --> Gemini API key needed
+2. Change parameters for BART and Pegasus to get better summaries.
+   <img src="images/BART.png" alt="Alt text">
+   <img src="images/Pegasus.png" alt="Alt text">
+3. Add Draw.io API
+4. Add `Gemini` script --> Gemini API key needed
 
 ## How to use:
 
@@ -29,21 +32,21 @@ This tool is an automated benchmark creator for creating requirement related Sof
 git clone https://github.com/RezaGolpayegani/Artifact_Factory.git
 ```
 
-2. Go to the folder:
+1. Go to the folder:
 
 ```
 cd Artifact_Factory
 ```
 
-3. Install the requirements:
+1. Install the requirements:
 
 ```
 pip install -r requirements
 ```
 
-4. Now you should put your user stories in text files and put those text files in `data/All_US` folder, you must put the user stories which relate to same project in the same text file.
+1. Now you should put your user stories in text files and put those text files in `data/All_US` folder, you must put the user stories which relate to same project in the same text file.
 
-5. Run `src/US_to_CSV.py` finds all of the text files in `data/All_US` and creates `data/All_US.csv`. The first column of this csv file is the file number which referes number of the files that the script finds, second column is text file name, third column is line number in the corresponding text file, fourth column is project name which is extracted from text file names, and the content of the fifth column is user stories. You can run this script with the following command:
+2. Run `src/US_to_CSV.py` finds all of the text files in `data/All_US` and creates `data/All_US.csv`. The first column of this csv file is the file number which referes number of the files that the script finds, second column is text file name, third column is line number in the corresponding text file, fourth column is project name which is extracted from text file names, and the content of the fifth column is user stories. You can run this script with the following command:
 
 ```
 python src/US_to_CSV.py
