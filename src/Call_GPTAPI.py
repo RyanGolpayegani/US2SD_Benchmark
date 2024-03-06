@@ -92,6 +92,7 @@ for index, row in N_Random_US.iterrows():
     # Save GPT Full Answer
     if not os.path.exists(dir_text_file_name_full_answer):
         os.makedirs(dir_text_file_name_full_answer)
+        
     with open(text_file_name_full_answer, "w") as text_file_full_answer:
         text_file_full_answer.write(gpt_full_answer)
 
