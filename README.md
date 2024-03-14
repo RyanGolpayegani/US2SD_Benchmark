@@ -61,7 +61,7 @@ python src/Call_GPTAPI.py
 
 ```
 
-<img src="images/GPT.png" alt="Alt text">
+<!-- <img src="images/GPT.png" alt="Alt text"> -->
 
 7. Run `src/Call_PUML_API.py` this script sends the textual sequence diagrams to PlantUML Web Server [PlantUML Web Server](https://plantuml.com/sequence-diagram) using its API. The output of this script is visualized sequence diagrams in ".png" format which are stored in `SD/SDi` folder. You can run this script with the following command:
 
