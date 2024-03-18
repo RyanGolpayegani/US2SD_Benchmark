@@ -8,6 +8,7 @@ This tool is an automated benchmark creator for creating requirement related Sof
 
    1. Experiment:
       1. 100 Random USs
+      ### DONE -> 2024_03_18__17_36_24
       2. Prj desc + USs
       3. Prj desc + USs + 3 USs from multiple prompts same prj
       4. for 3 Directional Stimulus Prompting (DSP)
