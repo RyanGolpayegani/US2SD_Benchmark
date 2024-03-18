@@ -1,0 +1,23 @@
+@startuml
+actor Moderator
+participant GamePlatform
+participant URL
+participant Estimator
+
+Moderator -> GamePlatform: Create game
+activate GamePlatform
+GamePlatform -> Moderator: Generate unique game URL
+activate URL
+Moderator --> URL : Retrieve URL
+deactivate GamePlatform
+Moderator -> Estimator: Send invitation with URL
+Estimator -> URL: Access URL
+URL -> GamePlatform : Verify access
+activate GamePlatform
+GamePlatform -> Estimator : Grant access to game
+deactivate URL
+activate Estimator
+Estimator --> GamePlatform: Join game
+deactivate Estimator
+deactivate GamePlatform
+@enduml

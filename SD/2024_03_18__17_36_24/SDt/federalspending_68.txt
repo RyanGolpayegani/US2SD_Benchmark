@@ -1,0 +1,29 @@
+@startuml
+
+participant "FABS User" as A
+participant "FABS System" as B
+participant "Submission Error Handler" as C
+
+A -> B: Submission Attempt
+activate B
+B -> C: Validates Submission
+activate C
+C --> B: Return Validation Result
+deactivate C
+B --> A: Return Submission Status
+deactivate B
+
+alt If Submission Error
+  A -> B: Request Error Details
+  activate B
+  B -> C: Fetch Error Details
+  activate C
+  C --> B: Return Error Details
+  deactivate C
+  B --> A: Show Error Details
+  
+else If No Submission Error
+  B --> A: Submission Successful
+end
+
+@enduml

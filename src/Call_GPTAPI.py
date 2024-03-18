@@ -5,7 +5,8 @@ from datetime import datetime
 import os
 
 # Select first n US from csv
-Number_of_SDs = 10
+Number_of_SDs = 100
+
 # Number_of_SDs += 1
 Engine_model = "gpt-4"
 
@@ -28,6 +29,7 @@ current_time = datetime.now()
 formatted_time = current_time.strftime("%Y_%m_%d__%H_%M_%S")
 print("Formatted time:", formatted_time)
 
+
 # Generate a response
 for index, row in N_Random_US.iterrows():
     # Process each row here
@@ -40,7 +42,7 @@ for index, row in N_Random_US.iterrows():
 
     # Create the prompt 
     user_story = row["User Story"]
-    prompt = "This is my user story: " + user_story + " generate Sequence Diagram in Plant UML format"
+    prompt = "This is my user story: " + user_story + " generate detailed Sequence Diagram in Plant UML format"
     
     # Call GPT API
     completion = openai.chat.completions.create(
@@ -81,6 +83,10 @@ for index, row in N_Random_US.iterrows():
     text_file_name_full_answer = f"SD/{formatted_time}/Full_A_GPT/Full_A_{row['Project Name']}_{row['No. of line']}.txt"
     dir_text_file_name_full_answer = f"SD/{formatted_time}/Full_A_GPT"
 
+    text_file_name_Selected_USs = f"SD/{formatted_time}/Selected_USs/US_{row['Project Name']}_{row['No. of line']}.txt"
+    dir_text_file_name_Selected_USs = f"SD/{formatted_time}/Selected_USs"
+
+
     # Save PlantUML code
     # Create the directory if it doesn't exist
     if not os.path.exists(dir_text_file_name_code_only):
@@ -90,7 +96,12 @@ for index, row in N_Random_US.iterrows():
 
     # Save GPT Full Answer
     if not os.path.exists(dir_text_file_name_full_answer):
-        os.makedirs(dir_text_file_name_full_answer)
-        
+        os.makedirs(dir_text_file_name_full_answer)  
     with open(text_file_name_full_answer, "w") as text_file_full_answer:
         text_file_full_answer.write(gpt_full_answer)
+        
+    # Save Selected USs
+    if not os.path.exists(dir_text_file_name_Selected_USs):
+        os.makedirs(dir_text_file_name_Selected_USs)  
+    with open(text_file_name_Selected_USs, "w") as text_file_Selected_USs:
+        text_file_Selected_USs.write(user_story)

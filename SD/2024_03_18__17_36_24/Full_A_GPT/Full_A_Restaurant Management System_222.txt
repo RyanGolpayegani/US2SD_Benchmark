@@ -1,0 +1,59 @@
+Sure, below is a simple sequence diagram for the described user story which includes: Manager, OrderManagementSystem, ReportGenerationSystem, and Database in Plant UML format.
+
+```
+@startuml
+    actor Manager
+    participant OrderManagementSystem
+    participant ReportGenerationSystem
+    participant Database
+
+    Manager -> OrderManagementSystem : request recurring orders
+    activate OrderManagementSystem
+    OrderManagementSystem->Database : fetch data
+    activate Database
+    Database-->OrderManagementSystem: return data
+    deactivate Database
+
+    OrderManagementSystem--> Manager: provide raw data
+    deactivate OrderManagementSystem
+
+    Manager -> ReportGenerationSystem : request report
+    activate ReportGenerationSystem
+    ReportGenerationSystem -> ReportGenerationSystem : generate report
+    ReportGenerationSystem --> Manager : provide report
+    deactivate ReportGenerationSystem
+@enduml
+```
+
+For more complicated diagrams, here is another example, where we don't directly fetch data from database but there exists an OrderProcessing subsystem which communicates with the database:
+
+```
+@startuml
+    actor Manager
+    participant OrderManagementSystem
+    participant OrderProcessing
+    participant ReportGenerationSystem
+    participant Database
+
+    Manager -> OrderManagementSystem : request recurring orders
+    activate OrderManagementSystem
+    OrderManagementSystem -> OrderProcessing : Fetch Recurring orders
+    activate OrderProcessing
+    OrderProcessing -> Database : fetch data
+    activate Database
+    Database--> OrderProcessing: return data
+    deactivate Database
+    OrderProcessing --> OrderManagementSystem: return data
+    deactivate OrderProcessing
+
+    OrderManagementSystem --> Manager: provide raw data
+
+    Manager -> ReportGenerationSystem : request report
+    activate ReportGenerationSystem
+    ReportGenerationSystem -> ReportGenerationSystem : generate report
+    ReportGenerationSystem --> Manager : provide report
+    deactivate ReportGenerationSystem
+@enduml
+```
+
+Note: You can use online PlantUML editor to visualize the sequence diagram or use PlantUML plugins available for IDEs such as IntelliJ or Visual Studio Code, etc.

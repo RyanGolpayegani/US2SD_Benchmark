@@ -1,0 +1,38 @@
+Sure, here's how you could illustrate this using a PlantUML sequence diagram.
+
+```puml
+@startuml
+
+actor "Site Admin" as admin
+boundary "Admin Interface" as UI
+control "Ads Controller" as controller
+entity "Ads Database" as db
+
+admin -> UI : Select ad to edit/delete
+UI -> controller : Send ad details
+controller -> db : Request ad info
+db --> controller : Respond with ad info
+controller --> UI : Show ad info on the screen
+
+alt edit
+    admin -> UI : Make Changes and Save
+    UI -> controller : Send updated ad info
+    controller -> db : Update ad info
+    db --> controller : Confirm update successful
+    controller --> UI : Show confirmation to admin
+else delete
+    admin -> UI : Confirm Deletion
+    UI -> controller : Send delete ad request
+    controller -> db : Delete ad info
+    db --> controller : Confirm ad deletion
+    controller --> UI : Show confirmation to admin
+end
+
+@enduml
+```
+
+The sequence diagram includes the site admin, an admin interface boundary, an ads controller that handles the admin's requests, and an ads database that stores ad details.
+
+In the edit scenario, the admin selects an ad to edit, which prompts the interface to inform the controller. The controller retrieves the ad info, which is then displayed on the interface screen. The admin makes changes and saves. The updated ad info is sent to the ads controller, which carries out an update on the database. The database confirms success, and the controller sends the confirmation to the admin via the interface.
+
+In the delete scenario, the process is similar: after the admin confirms deletion, the interface informs the controller, which deletes the ad from the database. The database confirms success, and this confirmation appears on the admin interface.

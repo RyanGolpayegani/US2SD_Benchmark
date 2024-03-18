@@ -1,0 +1,32 @@
+@startuml
+actor Member
+
+box "System" #LightYellow
+participant "Web App" as A
+participant "Server" as B
+participant "Database" as C
+end box
+
+Member -> A: Request to view due date
+activate A
+
+A -> B: Pass request to Server
+activate B
+
+B -> C: Retrieve due date from Database
+activate C
+
+alt No Due Date Found
+  C --> B: Return error
+  B --> A: Pass error
+  A --> Member: Show error message
+else Due Date Found
+  C --> B: Return due date
+  deactivate C
+  B --> A: Pass due date
+  deactivate B
+  A --> Member: Display due date
+  deactivate A
+end
+
+@enduml

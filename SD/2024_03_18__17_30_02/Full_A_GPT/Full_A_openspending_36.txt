@@ -1,0 +1,30 @@
+Sure, let's define the actors as: API User (you), API Service and GDP Service for fetching GDP data.
+
+```plantuml
+@startuml
+title API User Sequence Diagram 
+
+actor "API User" as user
+participant "API Service" as service
+participant "GDP Service" as gdp
+
+user -> service : Send Request to normalise measures 
+activate service
+service -> gdp : Fetch GDP data
+activate gdp
+gdp -->> service : Return GDP data 
+deactivate gdp
+service -> service : Calculate normalisation
+service -->> user : Return normalised measures 
+deactivate service
+
+@enduml
+```
+
+To briefly explain the diagram:
+
+1. First, the API User sends a request to the API Service to normalise measures.
+2. API Service becomes active and sends a request to GDP Service to fetch GDP data.
+3. GDP Service returns the requested GDP data to the API Service and becomes inactive.
+4. API Service calculates the normalisation using the acquired GDP data.
+5. Finally, the API Service returns the normalised measures to the API User and becomes inactive.

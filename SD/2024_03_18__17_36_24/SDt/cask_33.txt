@@ -1,0 +1,56 @@
+@startuml
+title Update Plugin Version
+
+actor Developer
+
+group Upgrade Plugin Version
+    Developer -> PluginRepo: Get existing plugin version
+    activate PluginRepo
+    PluginRepo --> Developer: Return existing plugin version
+    deactivate PluginRepo
+
+    Developer -> IDE: Modify plugin code
+    activate IDE
+    IDE --> Developer: Confirm code modification
+    deactivate IDE
+
+    Developer -> PluginRepo: Check in modified plugin
+    activate PluginRepo
+    PluginRepo --> Developer: Confirm plugin modification
+    deactivate PluginRepo
+end 
+
+group Update Pipeline
+    Developer -> PipelineRepo: Get existing pipeline
+    activate PipelineRepo
+    PipelineRepo --> Developer: Return existing pipeline
+    deactivate PipelineRepo
+
+    Developer -> IDE: Modify pipeline to use new plugin version
+    activate IDE
+    IDE --> Developer: Confirm pipeline modification
+    deactivate IDE
+
+    Developer -> PipelineRepo: Check in modified pipeline
+    activate PipelineRepo
+    PipelineRepo --> Developer: Confirm pipeline modification
+    deactivate PipelineRepo
+end 
+
+group Update Dataset Instance
+    Developer -> DatasetInstanceRepoGet: existing dataset instance
+    activate DatasetInstanceRepo
+    DatasetInstanceRepo --> Developer: Return existing dataset instance
+    deactivate DatasetInstanceRepo
+
+    Developer -> IDE: Modify dataset instance to use new plugin version
+    activate IDE 
+    IDE --> Developer: Confirm dataset instance modification
+    deactivate IDE
+
+    Developer -> DatasetInstanceRepo: Check in modified dataset instance
+    activate DatasetInstanceRepo
+    DatasetInstanceRepo --> Developer: Confirm dataset instance modification
+    deactivate DatasetInstanceRepo
+end
+@enduml

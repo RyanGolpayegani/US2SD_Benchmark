@@ -1,0 +1,21 @@
+@startuml
+title Collection Replication
+participant CollectionCurator as CC
+participant Repository as R
+participant RemoteStorageSite as RS
+participant StaffInterface as SI
+
+CC -> R : Ingest Collection
+activate R
+R -> R : Queue Collection for Replication
+R -> RS : Replicate Collection
+activate RS
+RS --> R : Acknowledge Replication
+deactivate RS
+R --> CC : Inform Replication Status
+CC -> SI : Update Collection's Replication Status
+activate SI
+SI --> CC : Display Updated Replication Status
+deactivate SI
+deactivate R
+@enduml

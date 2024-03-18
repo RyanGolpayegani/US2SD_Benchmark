@@ -1,0 +1,26 @@
+@startuml
+title Faculty Data and Publication Upload 
+Actor Faculty 
+boundary "University Repository System" as Repository 
+database "Publication Database" as Database 
+
+Faculty -> Repository : Request Access
+activate Repository
+Repository --> Faculty : Provide Access
+deactivate Repository
+activate Faculty
+Faculty -> Repository : Start Upload Process
+activate Repository
+Repository --> Faculty : Request Data and Publication Details
+Faculty --> Repository : Sends Data and Publication Details
+Repository -> Database : Verify Publication 
+activate Database
+Database --> Repository : Verification Results
+deactivate Database
+alt Publication Verified
+    Repository --> Faculty : Upload Successful, Provides Attribution Link
+else Publication Not Verified
+    Repository --> Faculty : Upload Failed - Retry
+end
+deactivate Repository
+@enduml

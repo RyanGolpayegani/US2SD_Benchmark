@@ -1,0 +1,34 @@
+Sure, below is an example of a sequence diagram using PlantUML code.
+
+```plantuml
+@startuml
+title Faculty Data and Publication Upload 
+Actor Faculty 
+boundary "University Repository System" as Repository 
+database "Publication Database" as Database 
+
+Faculty -> Repository : Request Access
+activate Repository
+Repository --> Faculty : Provide Access
+deactivate Repository
+activate Faculty
+Faculty -> Repository : Start Upload Process
+activate Repository
+Repository --> Faculty : Request Data and Publication Details
+Faculty --> Repository : Sends Data and Publication Details
+Repository -> Database : Verify Publication 
+activate Database
+Database --> Repository : Verification Results
+deactivate Database
+alt Publication Verified
+    Repository --> Faculty : Upload Successful, Provides Attribution Link
+else Publication Not Verified
+    Repository --> Faculty : Upload Failed - Retry
+end
+deactivate Repository
+@enduml
+```
+
+In this diagram, the faculty member initiates the upload process by requesting access from the university repository system. The repository provides access and the faculty begins the upload process. The repository requests for the data and publication details which are sent by the faculty. The repository then verifies the supplied publication details with the publication database. Depending on the verification result, a success or failure notice is sent to faculty member. 
+
+Note that you will need a PlantUML viewer or compiler to visualize the sequence diagram.

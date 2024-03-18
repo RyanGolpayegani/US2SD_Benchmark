@@ -1,0 +1,38 @@
+Certainly, here's how the sequence diagram might look for a Library Manager adding books to the library:
+
+```puml
+@startuml
+participant "LibraryManager" as A
+participant "System:BookDatabase" as B
+
+A -> B: createBookRecord("book details")
+activate B
+
+B -> B: validateBookDetails("book details")
+note right: Validate whether the book\ndetails are correct or not.
+B --> A: return validation result
+note left: The system returns the\nvalidation result to the user.
+
+opt ValidationResult is True
+    A -> B: confirm()
+    note right: User confirms addition\nof the book to the database.
+    B -> B: addBookRecordToDatabase("book details")
+    note right: Add the book record\nto database.
+    B --> A: return operation status
+    note left: The status of the operation\nis returned to the user.
+end
+opt ValidationResult is False
+    B --> A: return error
+    note left: The error message is\nreturned to the user.
+end    
+
+deactivate B
+@enduml
+```
+Fill "book details" with relevant attributes for your context. Also, make sure to replace "ValidationResult is True" and "ValidationResult is False" with relevant conditions for your scenario. Note that in the UML diagram, messages or operations carried out by the system are prefixed with a ":". 
+
+In this sequence, the Library Manager sends a request to create a new book record to the System (the database). The system then validates the book detail. If validation is successful, the manager confirms the addition of the book to the database. The system then adds the book record to the database and returns the operation status. If the validation is not successful, the system returns an error. 
+
+In this 'opt' option is used to include optional behavior that given a certain condition. Here condition is the result of validation.
+
+Remember to use online renderers to visualize your sequence diagram as this forum does not support native PlantUML rendering. You can easily find them by doing a quick web search for "Online PlantUML renderer".

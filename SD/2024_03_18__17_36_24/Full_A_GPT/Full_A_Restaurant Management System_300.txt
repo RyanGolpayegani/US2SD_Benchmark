@@ -1,0 +1,27 @@
+@startuml
+title Order Item Availability
+
+actor Waiter
+boundary RestaurantSystem
+database InventoryDatabase
+participant OrderManager
+
+Waiter -> RestaurantSystem : Enter item
+activate RestaurantSystem
+
+RestaurantSystem -> OrderManager : Check availability(item)
+activate OrderManager
+
+OrderManager -> InventoryDatabase : Request quantity(item)
+activate InventoryDatabase
+
+InventoryDatabase --> OrderManager : quantity
+deactivate InventoryDatabase
+
+OrderManager --> RestaurantSystem : Available/Not Available
+deactivate OrderManager
+
+RestaurantSystem --> Waiter : Display item status
+deactivate RestaurantSystem
+
+@enduml

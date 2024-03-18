@@ -1,0 +1,28 @@
+@startuml
+
+actor "Site Admin" as admin
+boundary "Admin Interface" as UI
+control "Ads Controller" as controller
+entity "Ads Database" as db
+
+admin -> UI : Select ad to edit/delete
+UI -> controller : Send ad details
+controller -> db : Request ad info
+db --> controller : Respond with ad info
+controller --> UI : Show ad info on the screen
+
+alt edit
+    admin -> UI : Make Changes and Save
+    UI -> controller : Send updated ad info
+    controller -> db : Update ad info
+    db --> controller : Confirm update successful
+    controller --> UI : Show confirmation to admin
+else delete
+    admin -> UI : Confirm Deletion
+    UI -> controller : Send delete ad request
+    controller -> db : Delete ad info
+    db --> controller : Confirm ad deletion
+    controller --> UI : Show confirmation to admin
+end
+
+@enduml

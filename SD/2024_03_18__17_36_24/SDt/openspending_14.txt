@@ -1,0 +1,28 @@
+@startuml
+
+actor "Data Publishing User" as DPU
+participant "Platform" as P
+actor "Platform Administrator" as PA
+collections "GeoJSON sources" as GJ
+
+DPU --> P : Login to Platform
+activate P
+P --> DPU : Show dashboard
+DPU --> P : Navigate to GeoJSON sources
+P --> GJ : Fetch GeoJSON sources
+GJ --> P : Return GeoJSON sources list
+P --> DPU : Display GeoJSON sources
+
+alt Successful Access
+    DPU --> P : Choose and Provide additional GeoJSON source
+    P --> PA : Show notification of additional GeoJSON source
+    PA --> DPU : Send confirmation of receipt
+    deactivate P
+else Unsuccessful Access
+    DPU --> P : Request help
+    P --> PA : Forward help request
+    PA --> DPU : Provide assistance
+    deactivate P
+end
+
+@enduml

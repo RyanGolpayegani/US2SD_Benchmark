@@ -1,0 +1,31 @@
+@startuml
+
+actor "App Developer" as AD
+
+box "App A"
+participant "App A" as AA
+endbox
+box "App B"
+participant "App B" as AB
+endbox
+
+database "Dataset Instance" as DI
+
+AD -> AA : Deploy new version with new dataset type
+AA -> DI : Version check
+
+alt Version Conflict
+    DI --x AA : Fail (Version Conflict Error)
+else No Conflict
+    DI --> AA : Pass (No Conflict)
+    AA -> AB : Check for Dataset Instance Version
+    AB -> DI : Version check
+    alt Version Conflict
+        DI --x AB : Fail (Version Conflict Error)
+    else No Conflict
+        DI --> AB : Pass (No Conflict)
+        AB --> AA : Acknowledge
+    end
+end
+
+@enduml

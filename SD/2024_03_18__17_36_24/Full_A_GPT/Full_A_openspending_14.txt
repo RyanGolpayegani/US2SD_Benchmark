@@ -1,0 +1,34 @@
+PlantUML doesn't support text-based drawings. However, I'll write out the steps in a format similar to PlantUML syntax for the given user story. You can later transform this information into a visual sequence diagram using a tool that supports PlantUML.
+
+```
+@startuml
+
+actor "Data Publishing User" as DPU
+participant "Platform" as P
+actor "Platform Administrator" as PA
+collections "GeoJSON sources" as GJ
+
+DPU --> P : Login to Platform
+activate P
+P --> DPU : Show dashboard
+DPU --> P : Navigate to GeoJSON sources
+P --> GJ : Fetch GeoJSON sources
+GJ --> P : Return GeoJSON sources list
+P --> DPU : Display GeoJSON sources
+
+alt Successful Access
+    DPU --> P : Choose and Provide additional GeoJSON source
+    P --> PA : Show notification of additional GeoJSON source
+    PA --> DPU : Send confirmation of receipt
+    deactivate P
+else Unsuccessful Access
+    DPU --> P : Request help
+    P --> PA : Forward help request
+    PA --> DPU : Provide assistance
+    deactivate P
+end
+
+@enduml
+```
+
+In this sequence diagram, it's defined that the 'Data Publishing User' (DPU) logs into the platform and is then shown a dashboard. The DPU then navigates to view GeoJSON sources and provides an additional GeoJSON source. This action generates a notification for the 'Platform Administrator' (PA). The PA then sends a confirmation of receipt to the DPU. If, on the other hand, the DPU struggles to access or add GeoJSON sources, they may request help, which gets forwarded to the PA who can provide assistance.

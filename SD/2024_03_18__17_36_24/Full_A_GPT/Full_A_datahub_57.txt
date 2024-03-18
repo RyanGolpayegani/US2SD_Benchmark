@@ -1,0 +1,28 @@
+This is your requested sequence diagram in Plant UML format:
+
+```plantuml
+@startuml
+title Add New Member To Publisher
+
+autonumber
+actor Owner
+participant "Invite System" as invite
+participant "Email System" as email
+participant Invitee
+
+Owner -> invite: InputInvite(inviteeEmail)
+activate invite
+invite -> email: SendInvite(inviteeEmail)
+activate email
+email -> Invitee: DeliverInviteEmail()
+
+Invitee -> email: ClicksSignUpLinkInEmail()
+note over Invitee, email: Invitee signs up through\nthe link provided in email
+email -> invite: NotifySignUp()
+deactivate email
+invite -> invite: SetMember(inviteeEmail)
+deactivate invite
+invite --> Owner: ConfirmInviteSuccess()
+@enduml
+```
+This sequence diagram begins when the Owner enters an invitee's email into the invite system. The invite system sends an invitation through the Email System, which delivers the email to the Invitee. The Invitee clicks on a sign-up link provided in the email, upon which the Email System notifies the Invite System that the Invitee has signed up. The Invite System sets the Invitee as a member and sends confirmation of successful invitation to the Owner.

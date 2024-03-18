@@ -1,0 +1,32 @@
+@startuml 
+title Data Librarian User Story Sequence Diagram 
+
+participant "Data Librarian" as DL
+participant "DMP" as D
+participant "Other System" as OS
+participant "Metadata Pointer" as MP
+participant "Data Catalog" as DC
+
+DL -> D: Request for metadata pointers
+activate D
+D -> OS: Extract metadata pointers
+activate OS
+OS --> D: Return metadata pointers
+deactivate OS
+D --> DL: Send metadata pointers
+deactivate D
+
+DL -> MP: Initiate metadata import
+activate MP
+MP -> OS: Request exact metadata
+activate OS
+OS --> MP: Return metadata
+deactivate OS
+MP --> DL: Provide extracted metadata
+DL -> DC: Import metadata into Catalog
+activate DC
+DC --> DL: Confirm successful import
+deactivate DC
+deactivate MP 
+
+@enduml

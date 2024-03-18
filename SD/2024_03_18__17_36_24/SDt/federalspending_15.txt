@@ -1,0 +1,21 @@
+@startuml
+title Process USAspending Data
+
+actor "System Owner" as owner
+participant "USAspending" as usa
+participant "Owner's System" as sys
+participant "Grant Record Checker" as checker
+
+owner -> sys : Choose USAspending as data source
+sys -> usa : Request grant records
+usa -> sys : Send all records
+sys -> checker : Verify records
+note over checker : Check if the record is related\n to grant funding
+alt Grant Record
+checker -> sys : Confirm grant records
+sys -> owner : Send grant records
+else Not Grant Record
+checker -> sys : Reject non-grant records
+sys -> owner : Information: Non-grant records rejected
+end
+@enduml

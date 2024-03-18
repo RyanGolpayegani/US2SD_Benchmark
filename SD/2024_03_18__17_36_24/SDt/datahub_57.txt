@@ -1,0 +1,23 @@
+@startuml
+title Add New Member To Publisher
+
+autonumber
+actor Owner
+participant "Invite System" as invite
+participant "Email System" as email
+participant Invitee
+
+Owner -> invite: InputInvite(inviteeEmail)
+activate invite
+invite -> email: SendInvite(inviteeEmail)
+activate email
+email -> Invitee: DeliverInviteEmail()
+
+Invitee -> email: ClicksSignUpLinkInEmail()
+note over Invitee, email: Invitee signs up through\nthe link provided in email
+email -> invite: NotifySignUp()
+deactivate email
+invite -> invite: SetMember(inviteeEmail)
+deactivate invite
+invite --> Owner: ConfirmInviteSuccess()
+@enduml

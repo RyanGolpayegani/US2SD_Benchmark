@@ -1,0 +1,58 @@
+@startuml
+actor DigitalRecordsArchivist
+
+box "Record Management System" 
+participant ":UserManagementSystem" as UM
+participant ":CollectionManagementSystem" as CM
+participant ":DepositManagementSystem" as DM
+participant ":PermissionManagementSystem" as PM
+end box
+
+== Add and Remove People from Deposit Group ==
+DigitalRecordsArchivist -> UM : selectPeople()
+activate UM 
+UM --> DigitalRecordsArchivist : list_Of_People
+deactivate UM 
+
+DigitalRecordsArchivist -> UM : addPeopleToGroup(list_Of_People)
+activate UM
+UM -> UM : updateGroup()
+deactivate UM
+
+DigitalRecordsArchivist -> UM : removePeopleFromGroup(list_Of_People)
+activate UM
+UM -> UM : updateGroup()
+deactivate UM
+
+UM --> DigitalRecordsArchivist : GroupUpdated
+note over DigitalRecordsArchivist: The archivist can add or remove people from deposit group.
+
+== Set a closing date for deposit window ==
+DigitalRecordsArchivist -> CM : selectCollection()
+activate CM
+CM --> DigitalRecordsArchivist : list_Of_Collections
+deactivate CM
+
+DigitalRecordsArchivist -> DM : setClosingDate(collectionID, dateTime)
+activate DM
+DM -> DM : updateCollectionClosingDate()
+deactivate DM
+
+DM --> DigitalRecordsArchivist : ClosingDateUpdated
+note over DigitalRecordsArchivist: The archivist can select collection and set closing date using this method.
+
+== Confer permissions to depositors ==
+DigitalRecordsArchivist -> UM : selectDepositors()
+activate UM
+UM --> DigitalRecordsArchivist : list_Of_Depositors
+deactivate UM
+
+DigitalRecordsArchivist -> PM : conferPermissions(list_Of_Depositors)
+activate PM
+PM -> PM : updatePermissions()
+deactivate PM
+
+PM --> DigitalRecordsArchivist : PermissionsUpdated
+note over DigitalRecordsArchivist: The archivist can select depositors and confer permissions using this method.
+
+@enduml

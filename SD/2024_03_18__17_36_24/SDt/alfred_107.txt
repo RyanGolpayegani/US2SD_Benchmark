@@ -1,0 +1,72 @@
+@startuml
+title OlderPerson Game Sequence
+
+participant OlderPerson
+participant GameUI
+participant HealthReport
+participant MemoryGame
+participant PhysicalGame
+
+note left of OlderPerson
+OlderPerson wants to play games
+to monitor memory and physical health.
+end note
+
+OlderPerson --> GameUI : OpenGameApp()
+activate GameUI
+
+GameUI --> GameUI : DisplayGameOptions()
+note right of GameUI
+Display options for memory and 
+physical health games.
+end note
+
+GameUI --> OlderPerson : DisplayGameOptions()
+deactivate GameUI
+activate OlderPerson
+
+OlderPerson --> GameUI : selectGame(game)
+note left of OlderPerson
+OlderPerson can select either memory 
+or physical health game.
+end note
+
+activate GameUI
+
+alt game == 'MemoryGame'
+    GameUI --> MemoryGame : startMemoryGame()
+    activate MemoryGame
+    MemoryGame --> OlderPerson: PlayGame()
+    deactivate MemoryGame
+else game == 'PhysicalGame'
+    GameUI --> PhysicalGame : startPhysicalGame()
+    activate PhysicalGame
+    PhysicalGame --> OlderPerson: PlayGame()
+    deactivate PhysicalGame
+end
+
+GameUI --> GameUI : WaitForGameToEnd()
+note right of GameUI
+After the game starts, GameUI waits 
+for the game to end to generate a report.
+end note
+
+GameUI --> HealthReport : GenerateReport(game)
+activate HealthReport
+
+HealthReport --> GameUI : SendReport(report)
+note right of HealthReport
+After the game ends, 
+a report is generated.
+end note
+
+GameUI --> OlderPerson : ShowReport(report)
+deactivate GameUI
+activate OlderPerson
+
+note left of OlderPerson
+OlderPerson can now see 
+the gaming results in the report.
+end note
+
+@enduml

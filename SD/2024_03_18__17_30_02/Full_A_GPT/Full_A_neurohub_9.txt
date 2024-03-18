@@ -1,0 +1,32 @@
+Sure, here is your Sequence Diagram in PlantUML format:
+
+```plantuml
+@startuml "Create Log Book Page And Attach File"
+participant "Researcher" as R
+participant "System" as S
+participant "Database" as D
+
+R -> S: CreatesNewLogBookPage(experimentDetails)
+activate S
+S -> D: CreateLogBookPage(experimentDetails)
+activate D
+D --> S: PageId
+deactivate D
+S --> R: ReturnsPageId
+deactivate S
+
+R -> S: AttachFileToPage(PageId, File)
+activate S
+S -> D: AttachFile(PageId, File)
+activate D
+D --> S: ReturnsAttachmentId
+deactivate D
+S --> R: ReturnsAttachmentId
+deactivate S
+
+@enduml
+```
+
+This sequence diagram defines interactions between a researcher (as the system's user), the system itself, and the database. It starts with the researcher creating a new log book page. The system takes the command and interacts with the database to create the log book page. After the page is created, the database returns an ID for this page which the system passes back to the researcher.
+
+The researcher then attaches a file to the log book page, passing both the PageId of the newly-created log book page and the file itself to the system. The system passes this information onto the database which attaches the file and returns an AttachmentId. The system then passes this AttachmentId back to the researcher, signaling that the attach operation was successful.

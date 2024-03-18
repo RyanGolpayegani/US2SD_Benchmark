@@ -1,0 +1,26 @@
+@startuml
+    actor Manager
+    participant OrderManagementSystem
+    participant OrderProcessing
+    participant ReportGenerationSystem
+    participant Database
+
+    Manager -> OrderManagementSystem : request recurring orders
+    activate OrderManagementSystem
+    OrderManagementSystem -> OrderProcessing : Fetch Recurring orders
+    activate OrderProcessing
+    OrderProcessing -> Database : fetch data
+    activate Database
+    Database--> OrderProcessing: return data
+    deactivate Database
+    OrderProcessing --> OrderManagementSystem: return data
+    deactivate OrderProcessing
+
+    OrderManagementSystem --> Manager: provide raw data
+
+    Manager -> ReportGenerationSystem : request report
+    activate ReportGenerationSystem
+    ReportGenerationSystem -> ReportGenerationSystem : generate report
+    ReportGenerationSystem --> Manager : provide report
+    deactivate ReportGenerationSystem
+@enduml

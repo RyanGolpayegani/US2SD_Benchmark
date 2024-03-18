@@ -1,0 +1,44 @@
+@startuml
+title Reserve Multiple Books Sequence Diagram
+
+actor "Library Member" as LM
+participant "Library System" as LS
+participant "Database" as DB
+
+LM -> LS : Access Reservation Page
+activate LS
+
+LS -> LM : Show Available Books
+activate LM
+
+LM -> LS : Select Multiple Books
+deactivate LM
+activate LS
+
+LS -> DB : Check if Books Available
+activate DB
+
+DB --> LS : Respond with Availability
+deactivate DB
+
+alt Books Available
+    LS --> LM : Confirm Multiple Book Reservation
+    deactivate LS
+    
+    LM -> LS : Confirm Reservation
+    activate LS
+
+    LS -> DB : Reserve Selected Books
+    activate DB
+
+    DB --> LS : Confirm Reservation
+    deactivate DB
+
+    LS --> LM : Show Reservation Confirmation
+    deactivate LS
+else Some/All Books Not Available
+    LS --> LM : Show Error Message
+    deactivate LS
+end
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+
+participant "Library Member" as A
+participant "Library System" as B
+participant "Database" as C
+
+A->B: requestBookOrder("Title")
+
+activate B
+B->C: retrieveBooks()
+
+activate C
+note right
+  Database retrieves the list
+  of all books
+end note
+C-->B: bookList
+
+B->B: sortBooksByTitle(bookList)
+note right
+  The Library System sorts the
+  books based on the title
+end note
+
+B-->A: sortedBookList
+note right
+  Return the sorted book list to 
+  the library member
+end note
+
+deactivate B
+deactivate C
+@enduml

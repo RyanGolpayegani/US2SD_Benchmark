@@ -1,0 +1,37 @@
+Here below is the detailed sequence diagram in PlantUML format for your user story:
+
+```
+@startuml
+actor Member
+
+box "System" #LightYellow
+participant "Web App" as A
+participant "Server" as B
+participant "Database" as C
+end box
+
+Member -> A: Request to view due date
+activate A
+
+A -> B: Pass request to Server
+activate B
+
+B -> C: Retrieve due date from Database
+activate C
+
+alt No Due Date Found
+  C --> B: Return error
+  B --> A: Pass error
+  A --> Member: Show error message
+else Due Date Found
+  C --> B: Return due date
+  deactivate C
+  B --> A: Pass due date
+  deactivate B
+  A --> Member: Display due date
+  deactivate A
+end
+
+@enduml
+```
+This Sequence Diagram assumes that a member is logged in and wants to view the due date of a task or item. The member makes a request through the web application. This request goes to the server which in turn makes a request to the database to retrieve the due date. If there is no due date found, an error is returned and displayed to the member. If a due date is found, it is returned to the server, passed to the web application and displayed to the member.

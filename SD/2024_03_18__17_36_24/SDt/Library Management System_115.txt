@@ -1,0 +1,27 @@
+@startuml
+participant "LibraryManager" as A
+participant "System:BookDatabase" as B
+
+A -> B: createBookRecord("book details")
+activate B
+
+B -> B: validateBookDetails("book details")
+note right: Validate whether the book\ndetails are correct or not.
+B --> A: return validation result
+note left: The system returns the\nvalidation result to the user.
+
+opt ValidationResult is True
+    A -> B: confirm()
+    note right: User confirms addition\nof the book to the database.
+    B -> B: addBookRecordToDatabase("book details")
+    note right: Add the book record\nto database.
+    B --> A: return operation status
+    note left: The status of the operation\nis returned to the user.
+end
+opt ValidationResult is False
+    B --> A: return error
+    note left: The error message is\nreturned to the user.
+end    
+
+deactivate B
+@enduml

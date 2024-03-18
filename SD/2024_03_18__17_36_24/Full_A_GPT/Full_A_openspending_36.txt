@@ -1,0 +1,35 @@
+Here is a detailed sequence diagram in Plant UML format for your user story:
+
+```plantuml
+@startuml
+title Normalize Measurements by GDP Sequence Flow
+
+actor API_User
+entity API_Service 
+database DatasetDB
+entity GDP_Service
+
+API_User -> API_Service : Request Data
+activate API_Service
+API_Service -> DatasetDB : Fetch Data
+activate DatasetDB
+DatasetDB -->> API_Service : Return Data
+deactivate DatasetDB
+API_Service -> GDP_Service : Request GDP Data
+activate GDP_Service
+GDP_Service -->> API_Service : Return GDP Data
+deactivate GDP_Service
+API_Service -> API_Service : Normalize Data by GDP
+API_Service -->> API_User : Return Normalised Data
+deactivate API_Service
+
+@enduml
+```
+
+This sequence diagram depicts the following steps:
+
+1. The API User requests data from the API Service.
+2. The API Service then makes a call to the Dataset Database to fetch the required data.
+3. The Dataset Database returns the requested data to the API Service which then makes a call to the GDP_Service to request GDP data.
+4. The GDP_Service returns the requested GDP data to the API Service which then normalizes the data it received from the Dataset Database by the GDP data.
+5. Finally, the API Service returns the normalized data to the API User.

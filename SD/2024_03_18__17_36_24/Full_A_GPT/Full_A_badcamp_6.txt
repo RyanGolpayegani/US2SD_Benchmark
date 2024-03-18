@@ -1,0 +1,37 @@
+Since it is not possible to create a detailed sequence diagram in text format answer, here is an example of sequence diagram in PlantUML format:
+```
+@startuml
+participant "Trainee" as A
+participant "Registration System" as B
+participant "Authentication System" as C
+participant "Database" as D
+
+A -> B : Request register
+activate B
+B -> C : Check authentication
+activate C
+C -->> B : Return authentication status
+deactivate C
+B -> D : Check last registration date
+activate D
+D -->> B : Return last registration date
+deactivate D
+alt last registration date != today
+    B --> A : Open registration form
+    deactivate B 
+    A -> B : Submit form
+    activate B
+    B -> D : Save new registration
+    activate D
+    D -->> B : Confirm registration save
+    B --> A: Confirm registration
+    deactivate B 
+else no other action
+    B --> A : Error - Already registered today
+    deactivate B
+end
+@enduml
+```
+This example assumes you have a system responsible for registration and another system responsible for authentication. When a trainee (A) requests to register, the registration system (B) checks their authentication status with the authentication system (C). Afterwards, the system checks the database (D) for the last registration date. If the last registration date is not today, the trainee can register. Otherwise, an error message is sent.
+
+Please note that, this diagram represents a very basic flow, does not include possible errors, exceptions or additional checks that could be necessary depending on your specific use case. Thus, you might need to adjust or extend it according to your needs.

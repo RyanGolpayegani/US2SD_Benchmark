@@ -1,0 +1,36 @@
+Here is the sequence diagram in Plant UML format:
+
+```
+@startuml
+
+actor "App Developer" as AD
+
+box "App A"
+participant "App A" as AA
+endbox
+box "App B"
+participant "App B" as AB
+endbox
+
+database "Dataset Instance" as DI
+
+AD -> AA : Deploy new version with new dataset type
+AA -> DI : Version check
+
+alt Version Conflict
+    DI --x AA : Fail (Version Conflict Error)
+else No Conflict
+    DI --> AA : Pass (No Conflict)
+    AA -> AB : Check for Dataset Instance Version
+    AB -> DI : Version check
+    alt Version Conflict
+        DI --x AB : Fail (Version Conflict Error)
+    else No Conflict
+        DI --> AB : Pass (No Conflict)
+        AB --> AA : Acknowledge
+    end
+end
+
+@enduml
+```
+The above plant UML script illustrates the behaviour according to the user story. The app developer deploys the new version with new dataset type. A version check is made on the dataset instance. If there is a version conflict, the deployment fails and sends a version conflict error to the app. If there is no conflict, then the deployment passes at the first app and checks for the dataset instance version on the next app, if the version conflicts at the second app then the deployment fails and sends a version conflict error to the second app else if the second app doesn't have conflict with the version, it will acknowledge the first app and the process completes.

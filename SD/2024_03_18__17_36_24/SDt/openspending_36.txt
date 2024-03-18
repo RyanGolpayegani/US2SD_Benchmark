@@ -1,0 +1,23 @@
+@startuml
+title Normalize Measurements by GDP Sequence Flow
+
+actor API_User
+entity API_Service 
+database DatasetDB
+entity GDP_Service
+
+API_User -> API_Service : Request Data
+activate API_Service
+API_Service -> DatasetDB : Fetch Data
+activate DatasetDB
+DatasetDB -->> API_Service : Return Data
+deactivate DatasetDB
+API_Service -> GDP_Service : Request GDP Data
+activate GDP_Service
+GDP_Service -->> API_Service : Return GDP Data
+deactivate GDP_Service
+API_Service -> API_Service : Normalize Data by GDP
+API_Service -->> API_User : Return Normalised Data
+deactivate API_Service
+
+@enduml

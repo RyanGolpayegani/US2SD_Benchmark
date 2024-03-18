@@ -1,0 +1,25 @@
+@startuml
+title Object Lifecycle Events Tracking in Repository
+
+actor "Repository Manager" as Manager
+
+boundary "System Interface" as Interface
+control "Object Event Tracker" as Tracker
+entity "Object Repository" as Repository
+note over Repository: Stores all objects and their related events
+
+Manager -> Interface : Logs into Repository Manager (credentials)
+Interface -> Tracker : Validates login (credentials)
+alt successful login
+Tracker -> Interface : Confirm successful login
+else unsuccessful login
+Tracker -> Interface : Return error message
+end
+Manager -> Interface : Requests object event history (object_id)
+Interface -> Tracker : Forward request to fetch events (object_id)
+Tracker -> Repository : Fetch all events related to object (object_id)
+Repository --> Tracker : Return all related events (object_event_list)
+Tracker --> Interface : Display object event list (object_event_list)
+Interface --> Manager : Display object event list (object_event_list)
+
+@enduml

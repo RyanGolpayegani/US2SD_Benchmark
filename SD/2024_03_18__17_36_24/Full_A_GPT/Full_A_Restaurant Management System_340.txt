@@ -1,0 +1,56 @@
+Here's a simple sequence diagram in PlantUML format to get you started. Note that your exact implementation will need more specific details depending on your application structure and business rules:
+
+```
+@startuml
+actor Employee
+
+box "Order Management System" 
+participant OrderEntryScreen
+participant OrderSystem
+participant Database
+end box
+
+Employee -> OrderEntryScreen : Go to order entry screen
+activate OrderEntryScreen
+OrderEntryScreen -> OrderSystem : Prompt for order search
+activate OrderSystem
+OrderSystem -> OrderEntryScreen : Display order search form
+deactivate OrderSystem
+OrderEntryScreen -> Employee : Display order search form
+deactivate OrderEntryScreen 
+Employee -> OrderEntryScreen : Enter search parameters and submit
+activate OrderEntryScreen
+OrderEntryScreen -> OrderSystem : Send order search request
+deactivate OrderEntryScreen
+activate OrderSystem
+OrderSystem -> Database : Submit search query
+activate Database
+Database --> OrderSystem : Return search results
+deactivate Database
+OrderSystem -> OrderEntryScreen : Return search results to display
+deactivate OrderSystem
+Employee -> OrderEntryScreen : Select a specific order and click 'Add Note'
+activate OrderEntryScreen
+OrderEntryScreen -> OrderSystem : Send 'add note' request
+deactivate OrderEntryScreen
+activate OrderSystem
+OrderSystem -> OrderEntryScreen : Display note input form
+deactivate OrderSystem
+Employee -> OrderEntryScreen : Enter note details and submit
+activate OrderEntryScreen
+OrderEntryScreen -> OrderSystem : Send note details
+deactivate OrderEntryScreen
+activate OrderSystem
+OrderSystem -> Database : Save note to order
+activate Database
+Database --> OrderSystem : Confirm note has been saved
+deactivate Database
+OrderSystem -> OrderEntryScreen : Confirm note has been saved
+deactivate OrderSystem
+OrderEntryScreen -> Employee : Confirm note has been saved
+deactivate OrderEntryScreen
+@enduml
+```
+This sequence diagram assumes there's an Order Management System, within which OrderEntryScreen is the UI interface that interacts with the Employee. Order system is the backend business logic part and Database is where the order and note data is stored.
+
+The flow starts with Employee navigating to order entry screen, searching for an order, selecting it, adding a note, and getting a confirmation. More detailed controls, validations, error handling, etc would need to be added based on real scenarios.

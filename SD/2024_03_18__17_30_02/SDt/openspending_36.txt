@@ -1,0 +1,18 @@
+@startuml
+title API User Sequence Diagram 
+
+actor "API User" as user
+participant "API Service" as service
+participant "GDP Service" as gdp
+
+user -> service : Send Request to normalise measures 
+activate service
+service -> gdp : Fetch GDP data
+activate gdp
+gdp -->> service : Return GDP data 
+deactivate gdp
+service -> service : Calculate normalisation
+service -->> user : Return normalised measures 
+deactivate service
+
+@enduml

@@ -1,0 +1,36 @@
+Here is the sequence diagram in Plant UML language:
+
+```PlantUML
+@startuml
+title Object Lifecycle Events Tracking in Repository
+
+actor "Repository Manager" as Manager
+
+boundary "System Interface" as Interface
+control "Object Event Tracker" as Tracker
+entity "Object Repository" as Repository
+note over Repository: Stores all objects and their related events
+
+Manager -> Interface : Logs into Repository Manager (credentials)
+Interface -> Tracker : Validates login (credentials)
+alt successful login
+Tracker -> Interface : Confirm successful login
+else unsuccessful login
+Tracker -> Interface : Return error message
+end
+Manager -> Interface : Requests object event history (object_id)
+Interface -> Tracker : Forward request to fetch events (object_id)
+Tracker -> Repository : Fetch all events related to object (object_id)
+Repository --> Tracker : Return all related events (object_event_list)
+Tracker --> Interface : Display object event list (object_event_list)
+Interface --> Manager : Display object event list (object_event_list)
+
+@enduml
+```
+
+1. The sequence starts with the Repository Manager logging into the repository manager system.
+2. The system interface forwards these credentials to the Object Event Tracker, which validates them. 
+3. If the validation is successful, the repository manager proceeds with the request to fetch the object event history. If it's not, an error message is returned.
+4. The Event Tracker controls then retrieves all the events associated with the specified object from the Object Repository, which are then displayed to the Repository Manager via the system interface.
+
+This is the syntax in PlantUML language which you could run in any PlantUML compiler to generate the sequence diagram.
