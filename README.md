@@ -13,17 +13,12 @@ This tool is an automated benchmark creator for creating requirement related Sof
       3. Prj desc + USs + 3 USs from multiple prompts same prj
       4. for 3 Directional Stimulus Prompting (DSP)
 
-   ### Goal: prove the best way to get SDs
-
-   ### Outcome: finding out the best prompt
+   ### Goal: Prove the best way to get SDs
 
    Based on the results create the benchmark
 
 2. Replace all the picture in this readme with repo's new name.
 3. Change parameters for BART and Pegasus to get better summaries.
-   <img src="images/BART.png" alt="Alt text">
-   <img src="images/Pegasus.png" alt="Alt text">
-3. Add Draw.io API
 4. Add `Gemini` script --> Gemini API key needed
 
 ## How to use:
@@ -31,7 +26,7 @@ This tool is an automated benchmark creator for creating requirement related Sof
 1. For using this tool first clone the this repo with following command:
 
 ```
-git clone https://github.com/RezaGolpayegani/Artifact_Factory.git
+git clone https://github.com/RezaGolpayegani/US2SD_Benchmark.git
 ```
 
 1. Go to the folder:
