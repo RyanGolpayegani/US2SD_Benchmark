@@ -1,4 +1,4 @@
-# Artifact_Factory
+# US2SD_Benchmark
 
 This tool is an automated benchmark creator for creating requirement related Software Artifact benchmarks. This tool prompts LLMs (ChatGPT, Gemini) to generate artifacts such as Sequence Diagrams.
 
@@ -19,7 +19,8 @@ This tool is an automated benchmark creator for creating requirement related Sof
 
    Based on the results create the benchmark
 
-2. Change parameters for BART and Pegasus to get better summaries.
+2. Replace all the picture in this readme with repo's new name.
+3. Change parameters for BART and Pegasus to get better summaries.
    <img src="images/BART.png" alt="Alt text">
    <img src="images/Pegasus.png" alt="Alt text">
 3. Add Draw.io API
@@ -36,7 +37,7 @@ git clone https://github.com/RezaGolpayegani/Artifact_Factory.git
 1. Go to the folder:
 
 ```
-cd Artifact_Factory
+cd US2SD_Benchmark
 ```
 
 1. Install the requirements:
