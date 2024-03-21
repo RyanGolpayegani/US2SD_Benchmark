@@ -4,21 +4,21 @@ This repositry includes all of the files associated with US2SD Benchmark which i
 
 ## To Do:
 
-1. ### Find a better prompt!!!
-
-   1. Experiment:
-      1. 100 Random USs
-      ### DONE -> 2024_03_18\_\_17_36_24
-      2. Prj desc + USs
-      3. Prj desc + USs + 3 USs from multiple prompts same prj
-      4. for 3 Directional Stimulus Prompting (DSP)
-
-   ### Goal: Prove the best way to get SDs
-
-   Based on the results create the benchmark
+1. ### Experiment with 100 Random USs prompt as follows:
+   1. US only (0)  ### DONE -> 2024_03_18__17_36_24
+   2. Prj desc + USs (DSP)
+      1. BART
+      2. BERTSUM
+      3. Pegasus
+      4. Roberta
+      5. T5
+      6. LLM
+   3. Prj desc + USs + N USs from same prj
+      1. 3
+      2. 4
+      3. 5
 
 2. Replace all the picture in this readme with repo's new name.
-3. Change parameters for BART and Pegasus to get better summaries.
 4. Add `Gemini` script --> Gemini API key needed
 
 ## How to use:
