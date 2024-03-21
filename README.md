@@ -1,4 +1,3 @@
-# Testing 323232
 # US2SD_Benchmark
 
 This repositry includes all of the files associated with US2SD Benchmark which is a dataset of Sequence Diagrams (SD). These SDs are generated using LLMs such as ChatGPT and Gemini.
@@ -9,7 +8,7 @@ This repositry includes all of the files associated with US2SD Benchmark which i
 
    1. Experiment:
       1. 100 Random USs
-      ### DONE -> 2024_03_18__17_36_24
+      ### DONE -> 2024_03_18\_\_17_36_24
       2. Prj desc + USs
       3. Prj desc + USs + 3 USs from multiple prompts same prj
       4. for 3 Directional Stimulus Prompting (DSP)
