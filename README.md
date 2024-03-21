@@ -1,6 +1,6 @@
 # US2SD_Benchmark
 
-This tool is an automated benchmark creator for creating requirement related Software Artifact benchmarks. This tool prompts LLMs (ChatGPT, Gemini) to generate artifacts such as Sequence Diagrams.
+This repositry includes all of the files associated with US2SD Benchmark which is a dataset of Sequence Diagrams (SD). These SDs are generated using LLMs such as ChatGPT and Gemini.
 
 ## To Do:
 
