@@ -42,8 +42,17 @@ for index, row in N_Random_US.iterrows():
 
     # Create the prompt 
     user_story = row["User Story"]
+
+
+    # Different Prompts 
+    # Zero-Shot
+    # prompt = "This is my user story: " + user_story + " generate detailed Sequence Diagram in Plant UML format"
+    # DSP
     prompt = "This is my user story: " + user_story + " generate detailed Sequence Diagram in Plant UML format"
     
+
+
+
     # Call GPT API
     completion = openai.chat.completions.create(
             model = Engine_model,
