@@ -1,0 +1,28 @@
+In this situation, you want a written user story to be converted into a sequence diagram that is represented in a Plant UML format. Below is a sample text-description of how it might be translated:
+
+```plantuml
+@startuml
+User->App: Enter Credentials
+App->AuthService: Validate Credentials
+AuthService->App: Verification Status
+alt Verification Passed
+   App->Provider: Add Provider
+   Provider->App: Confirmation
+   App->DB: Store Provider Details
+   DB->App: Confirmation
+   App->User: Notify Success
+else Verification Failed
+   App->User: Notify Failure
+end
+@enduml
+```
+In this sequence diagram:
+
+- The user enters their credentials into the app.
+- The app sends these to the AuthService to validate.
+- AuthServiceresponds back to the app with the verification status.
+- If the verification pass:
+   - The app will add a provider and the provider will send back a confirmation.
+   - The app will then store the provider details in the DB.
+   - The DB sends back a confirmation and the app notify the user of the successful operation. 
+- If the verification fails, the app simply notify the user that the operation failed.
