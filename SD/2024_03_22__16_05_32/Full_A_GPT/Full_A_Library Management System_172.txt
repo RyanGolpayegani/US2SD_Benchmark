@@ -1,0 +1,38 @@
+Here's a detailed sequence diagram for the user story "As a library member, I want to reserve more than one book" using PlantUML syntax:
+
+```PlantUML
+@startuml
+actor Member
+actor Librarian
+database LibraryDatabase
+
+note over Member, Librarian: Member wants to reserve \nmultiple books.
+
+Member -> LibraryDatabase: Search by book title
+LibraryDatabase --> Member: Display search results
+
+alt Book exists in database
+    Member -> LibraryDatabase: Select and reserve book
+    LibraryDatabase -> LibraryDatabase: Check book availability
+    alt Book is available
+        LibraryDatabase --> Member: Confirm book reservation
+        note over Member: Member can repeat \nthis process to reserve \nanother book.
+    else Book is not available
+        LibraryDatabase --> Member: Inform book is currently unavailable
+    end
+else Book does not exist in database
+    LibraryDatabase --> Member: Inform no such book exists
+end
+
+Member -> Librarian: Checkout reserved books
+Librarian -> LibraryDatabase: Verify reservations and update book status
+LibraryDatabase --> Librarian: Confirm book status update
+
+Librarian --> Member: Confirm checkout and provide return date
+note over Member: Member has now reserved \nand checked out multiple books.
+@enduml
+```
+
+This diagram just talks about the interaction for reserving and checking out multiple books. It does not consider the additional descriptions given later on (like adding new books, suggesting books etc.). Each of those need to be handled in a separate user story and their own sequence diagrams.
+
+Please note: If you want to generate a graphical representation of the above PlantUML sequence diagram, you need to use a PlantUML viewer or an IDE plugin which supports PlantUML.

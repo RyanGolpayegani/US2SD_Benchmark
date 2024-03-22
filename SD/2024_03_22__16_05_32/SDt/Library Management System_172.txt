@@ -1,0 +1,30 @@
+@startuml
+actor Member
+actor Librarian
+database LibraryDatabase
+
+note over Member, Librarian: Member wants to reserve \nmultiple books.
+
+Member -> LibraryDatabase: Search by book title
+LibraryDatabase --> Member: Display search results
+
+alt Book exists in database
+    Member -> LibraryDatabase: Select and reserve book
+    LibraryDatabase -> LibraryDatabase: Check book availability
+    alt Book is available
+        LibraryDatabase --> Member: Confirm book reservation
+        note over Member: Member can repeat \nthis process to reserve \nanother book.
+    else Book is not available
+        LibraryDatabase --> Member: Inform book is currently unavailable
+    end
+else Book does not exist in database
+    LibraryDatabase --> Member: Inform no such book exists
+end
+
+Member -> Librarian: Checkout reserved books
+Librarian -> LibraryDatabase: Verify reservations and update book status
+LibraryDatabase --> Librarian: Confirm book status update
+
+Librarian --> Member: Confirm checkout and provide return date
+note over Member: Member has now reserved \nand checked out multiple books.
+@enduml

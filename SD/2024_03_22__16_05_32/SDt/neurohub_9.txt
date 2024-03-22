@@ -1,0 +1,35 @@
+@startuml
+title Creating and Attaching a File to a Logbook
+
+actor Researcher
+boundary "Logbook Page" as LP
+control "Logbook Controller" as LC
+entity "Database" as DC
+actor User
+
+Researcher -> LP : Wants to create a logbook page
+activate LP
+LP -> LC : Call operation Create()
+activate LC
+LC -> DC : Send query create
+activate DC
+DC -->> LC : Return pageId
+deactivate DC
+LC -->> LP : Return pageId
+deactivate LC
+LP -->> Researcher : Page created
+deactivate LP
+
+Researcher -> LP : Wants to attach a file
+activate LP
+LP -> LC : Call operation AttachFile(pageId)
+activate LC
+LC -> DC : Send query attachFile
+activate DC
+DC -->> LC : Return fileId
+deactivate DC
+LC -->> LP : Return fileId
+deactivate LC
+LP -->> Researcher : File attached
+deactivate LP
+@enduml

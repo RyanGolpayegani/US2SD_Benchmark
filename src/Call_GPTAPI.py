@@ -29,6 +29,46 @@ current_time = datetime.now()
 formatted_time = current_time.strftime("%Y_%m_%d__%H_%M_%S")
 print("Formatted time:", formatted_time)
 
+# Loading prj desc
+import os
+project_descriptions = {}
+def read_project_descriptions(directory):
+  """
+  Reads project descriptions from a directory and stores them in a dictionary.
+
+  Args:
+      directory: The path to the directory containing project description files.
+
+  Returns:
+      A dictionary where keys are file names (without extension) and values are project descriptions (text content).
+  """
+  for filename in os.listdir(directory):
+    # Ignore hidden files
+    if filename.startswith('.'):
+      continue
+    # Get file path
+    filepath = os.path.join(directory, filename)
+    # Check if it's a regular file
+    if os.path.isfile(filepath):
+      # Extract filename without extension
+      project_name = os.path.splitext(filename)[0]
+      # Read file content
+      with open(filepath, 'r') as file:
+        description = file.read().strip()
+      # Add to dictionary
+      project_descriptions[project_name] = description
+
+  return project_descriptions
+
+project_dir = "data/Project_Descriptions/BART"
+descriptions = read_project_descriptions(project_dir)
+
+# # Access project descriptions
+# for project, description in descriptions.items():
+#   print(f"Project: {project}")
+#   print(f"Description: {description}")
+#   print("-" * 20)
+
 
 # Generate a response
 for index, row in N_Random_US.iterrows():
@@ -42,13 +82,21 @@ for index, row in N_Random_US.iterrows():
 
     # Create the prompt 
     user_story = row["User Story"]
+    project_name = row["Project Name"]
+    prj_desc = descriptions[project_name]
 
 
     # Different Prompts 
     # Zero-Shot
     # prompt = "This is my user story: " + user_story + " generate detailed Sequence Diagram in Plant UML format"
-    # DSP
-    prompt = "This is my user story: " + user_story + " generate detailed Sequence Diagram in Plant UML format"
+    # DSP US + Prj desc -> Bart
+    prompt = "This is my user story: "\
+          + user_story + \
+        " generate detailed Sequence Diagram in Plant UML\
+              format" \
+              + "\n Here is project describtion of the \
+            project that this user story belongs to:" +\
+            prj_desc
     
 
 
@@ -114,3 +162,4 @@ for index, row in N_Random_US.iterrows():
         os.makedirs(dir_text_file_name_Selected_USs)  
     with open(text_file_name_Selected_USs, "w") as text_file_Selected_USs:
         text_file_Selected_USs.write(user_story)
+
