@@ -1,6 +1,5 @@
 import openai
 import pandas as pd
-from datetime import datetime
 import os
 from tqdm import tqdm
 
@@ -21,8 +20,8 @@ project_names = All_Data['Project Name'].unique()
 for project in tqdm(project_names):
     combined_string = All_Data.loc[All_Data['Project Name'] == project, 'User Story'].str.cat(sep=', ')
     # Generate a response
-    prompt = combined_string
-    print(project)
+    prompt = "Write a project description based on the following text:\n" + combined_string
+    # print(project)
 
     # Call GPT API
     completion = openai.chat.completions.create(
