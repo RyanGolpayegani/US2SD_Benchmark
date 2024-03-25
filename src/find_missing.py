@@ -1,9 +1,9 @@
 import os
 
 # Specify the paths to your text and picture folders
-text_folder = "SD/2024_03_18__17_36_24/SDt"
-picture_folder = "SD/2024_03_18__17_36_24/SDi"
-main_folder = "SD/2024_03_18__17_36_24"
+text_folder = "Experiment/US BART/SDt"
+picture_folder = "Experiment/US/SDi"
+main_folder = "Experiment/US BART"
 
 # Extract base filenames (without extensions) from the text files
 text_filenames = [os.path.splitext(f)[0] for f in os.listdir(text_folder) if f.endswith(".txt")]
