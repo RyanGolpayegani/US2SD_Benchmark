@@ -1,0 +1,34 @@
+@startuml
+title DB/IR Administrator Views Subscriber List For Specified Report
+
+actor DBAdmin
+entity DBSystem
+database ReportDB
+entity NotifService
+entity ReportRequester
+
+DBAdmin -> DBSystem: View report subscribers
+activate DBSystem
+
+DBSystem -> ReportDB: Fetches subscribers list for specified report
+activate ReportDB
+
+ReportDB --> DBSystem: Returns subscribers list
+deactivate ReportDB
+
+DBSystem --> DBAdmin: Show subscribers list
+deactivate DBSystem
+
+DBAdmin -> NotifService: Request to check missing reports
+activate NotifService
+
+NotifService -> ReportRequester: Verify report complaints
+activate ReportRequester
+
+ReportRequester --> NotifService: Return results of report complaints
+deactivate ReportRequester
+
+NotifService --> DBAdmin: Show results of missing report complaints
+deactivate NotifService
+
+@enduml

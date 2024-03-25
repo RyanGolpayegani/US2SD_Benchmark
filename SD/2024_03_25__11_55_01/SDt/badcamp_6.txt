@@ -1,0 +1,19 @@
+@startuml
+actor Trainee
+database Database
+participant "Authentication System" as auth
+participant "Training System" as train
+
+Trainee -> auth : Sign In
+auth -> Database : Validate User
+Database -> auth : User Details
+auth -> Trainee : Verified User
+Trainee -> train : View Training Schedule
+train -> Database : Get Schedule
+Database -> train : Return Schedule
+train -> Trainee : Display Schedule
+Trainee -> train : Select Class for Registration
+train -> Database : Check Registration limit (1/day per user)
+Database -> train : Return Registration count
+train -> Trainee : Registration Confirmation/Denial
+@enduml

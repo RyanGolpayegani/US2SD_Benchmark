@@ -1,0 +1,29 @@
+@startuml
+autonumber
+actor Employee as e
+participant "Order System" as o
+database "Store Inventory" as i
+
+e -> o: Add Store Order
+activate o
+
+o -> i: Check Inventory
+activate i
+note right: The system checks if\nthe ingredients needed\nfor the order are available.
+i --> o: Inventory Status 
+deactivate i
+
+alt sufficient inventory
+    o -> i: Update Inventory
+    activate i
+    note right: The system updates the inventory\nafter order addition.
+    i --> o: Inventory Updated
+    deactivate i
+else insufficient inventory
+    o -> e: Unable to Add Order
+end
+
+o --> e: Acknowledge Add Order
+deactivate o
+
+@enduml

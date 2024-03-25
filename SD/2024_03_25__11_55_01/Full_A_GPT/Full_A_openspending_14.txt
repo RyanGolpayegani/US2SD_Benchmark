@@ -1,0 +1,34 @@
+As text-based design is not supported here, the equivalent plant UML code is provided for the sequence diagram:
+
+```
+@startuml
+DataPublishingUser -> PlatformAdministrator: ProvideGeoJSONSource()
+activate PlatformAdministrator
+PlatformAdministrator --> DataPublishingUser: AcknowledgeSource()
+deactivate PlatformAdministrator
+DataPublishingUser -> DataSystem: UploadGeoJSONSource()
+activate DataSystem
+DataSystem -> GeoJSONDatabase: StoreSourceInDatabase()
+note right: The GeoJSON source data is stored in the database.
+activate GeoJSONDatabase
+GeoJSONDatabase --> DataSystem: ConfirmStorage()
+deactivate GeoJSONDatabase
+DataSystem --> DataPublishingUser: ReturnSourceUploadStatus()
+deactivate DataSystem
+DataPublishingUser -> MapVisualisation: UpdateVisualisation()
+activate MapVisualisation
+MapVisualisation --> DataPublishingUser: ConfirmVisualisationUpdate()
+deactivate MapVisualisation
+@enduml
+```
+
+This sequence diagram tells the steps happening in the flow. 
+
+1. The Data Publishing User provides the Platform Administrator with the GeoJSON source.
+2. The Platform Administrator acknowledges the source provided.
+3. The Data Publishing User uploads the GeoJSON source to the Data System.
+4. The Data System stores the source in the GeoJSON Database.
+5. The GeoJSON Database confirms that the storage was successful.
+6. The Data System lets the Data Publishing user know the status of the source upload.
+7. The Data Publishing user updates the map visualisation with the new data.
+8. The Map Visualisation confirms that the update was successful.

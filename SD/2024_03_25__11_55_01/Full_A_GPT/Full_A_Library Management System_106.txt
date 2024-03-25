@@ -1,0 +1,40 @@
+Below is a representation of the sequence diagram in Plant UML format:
+
+```plantuml
+@startuml
+autonumber
+participant Librarian as L
+participant BookInventory as BI
+participant Book as B
+
+L -> BI: requestBookInfo(bookId)
+activate BI
+BI -> B : getBookInfo()
+activate B
+B -->> BI: provideBookInfo()
+deactivate B
+BI -->> L: returnBookInfo(bookId)
+deactivate BI
+L -> BI : updateBookInfo()
+activate BI
+BI -> B : setBookInfo()
+activate B
+B -->> BI: updateConfirmation()
+deactivate B
+BI -->> L: updatedBookInfo()
+deactivate BI
+@enduml
+```
+
+Explanation of the Diagram:
+
+1. The Librarian requests the current book information from the BookInventory database using the book's ID.
+2. The BookInventory makes a call to the targeted Book to get the needed information.
+3. The Book class sends back the information to the BookInventory.
+4. The BookInventory class then returns the book information to the Librarian.
+5. The Librarian requests the BookInventory to update the book information in the database.
+6. The BookInventory makes a call to the targeted Book to set the new information.
+7. The Book class sends back a confirmation of the update to the BookInventory.
+8. Finally, the BookInventory class returns the updated information to the Librarian.
+
+The 'participant' keyword denotes the actors involved, the class uses a "->" arrow to indicate a synchronous method call. The lines vertically aligned with the class indicate activation & deactivation of use during period between method calls. The "getBookInfo" and "setBookInfo" methods are referred to as interaction fragments, and the process of updating requires these two to function.

@@ -1,0 +1,27 @@
+Below is a sample sequence diagram in PlantUML for the user story:
+
+```puml
+@startuml
+title Book Borrow Due Date Lookup
+
+actor Member
+participant "Book system" as BS
+database LibraryDB
+
+Member -> BS : Check book status(book_id)
+activate BS
+BS -> LibraryDB : retrieveBookStatus(book_id)
+activate LibraryDB
+LibraryDB --> BS : BookStatus
+deactivate LibraryDB
+BS --> Member : BookStatus (including due date if borrowed)
+deactivate BS
+@enduml
+```
+
+In this Sequence Diagram :
+
+- The member makes a request to check the book status by passing the book_id.
+- The book system retrieves the book status from the library database.
+- The library database then returns the information, including the book status, to the book system.
+- Finally, the book system presents the information, which includes the due date if the book has been borrowed, to the Member.

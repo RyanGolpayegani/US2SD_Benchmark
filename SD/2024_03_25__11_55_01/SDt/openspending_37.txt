@@ -1,0 +1,15 @@
+@startuml
+
+actor APIUser
+participant APIService
+participant DataProcessingService
+database Database
+
+APIUser -> APIService: Request(normalise measures by GINI and related indexes, dataset_id)
+APIService -> Database: FetchDataset(dataset_id)
+Database --> APIService: Dataset(dataset)
+APIService -> DataProcessingService: NormaliseDataset(dataset, 'GINI', 'related indexes')
+DataProcessingService --> APIService: NormalisedData
+APIService --> APIUser: Response(NormalisedData)
+
+@enduml

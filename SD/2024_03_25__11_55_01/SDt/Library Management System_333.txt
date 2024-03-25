@@ -1,0 +1,21 @@
+@startuml
+participant "Staff" as S
+participant "System" as SY
+participant "Database" as DB
+
+activate S
+S -> SY : select book for checkout
+activate SY
+SY -> DB : retrieve book details
+activate DB
+Db --> SY : return book details
+deactivate DB
+SY --> S : display book details
+S -> SY : confirm checkout
+SY -> DB : update book record to 'checked out'
+activate DB
+DB --> SY : confirm success 
+deactivate DB
+SY --> S : display checkout confirmation
+deactivate SY
+@enduml

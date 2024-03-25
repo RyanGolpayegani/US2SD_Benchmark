@@ -1,0 +1,16 @@
+@startuml
+actor Owner
+participant USAspending
+database "Owner system"
+participant Middleware
+
+Owner->USAspending: Send grant records
+USAspending->USAspending: Filter grant records
+USAspending-->Owner: Display filtered grant records
+Owner-->USAspending: Confirm sending grant record
+USAspending->Middleware: Send grant records to middleware
+Middleware->"Owner system": Update records
+"Owner system"-->Middleware: Acknowledge receiving records
+Middleware-->USAspending: Acknowledge updating records
+USAspending-->Owner: Notify grant records sending successful
+@enduml

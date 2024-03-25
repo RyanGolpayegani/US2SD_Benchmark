@@ -1,0 +1,33 @@
+```plantuml
+@startuml
+title Normalise Measures by GDP Use Case
+ 
+actor APIUser  
+participant GDPNormaliser
+database Dataset
+
+APIUser ->  GDPNormaliser: InitiateRequest()
+activate APIUser
+ 
+
+GDPNormaliser -> Dataset: FetchDataByID()
+activate GDPNormaliser
+ 
+
+GDPNormaliser -> GDPNormaliser: ParseData()
+
+
+GDPNormaliser -> GDPNormaliser: CalculateGDPNormalization()
+note right
+    Process of normalising measure by the GDP of the corresponding entries.
+end note
+
+
+APIUser <-- GDPNormaliser: ReturnNormalisedData()
+deactivate GDPNormaliser
+
+@enduml
+```
+Upon initiating the request by the API user, the GDP Normaliser fetches the data from the database by ID. It then parses the data, calculates the GDP normalisation by comparing it with the GDP of corresponding entries. Once done, it returns the normalised data to the API user.
+
+However, this is a simple flow and actual implementation might include error checkings as well as other API middleware functions such as authentication, authorisation checks before giving the user the authority to access and normalise the data.

@@ -1,0 +1,43 @@
+Sequence diagrams illustrate how objects interact with each other in a particular scenario of a software system.
+
+Here is an example in PlantUML format for the mentioned user story:
+
+``` 
+@startuml
+title Upload Data and Associate it with a Publication
+
+actor Faculty 
+entity Repository 
+entity NotificationService 
+entity PublicationService 
+
+Faculty -> Repository: Upload Data
+activate Repository
+
+Repository -> PublicationService: Associate with Publication
+activate PublicationService
+
+PublicationService --> Repository: Data Associated
+deactivate PublicationService
+
+Repository --> Faculty: Show Uploaded and Associated Data
+deactivate Repository
+
+Faculty -> Repository: Verify Uploaded Data
+activate Repository
+
+Repository --> Faculty: Display Verification Message
+deactivate Repository
+
+alt if Someone Downloads Data
+  Repository -> NotificationService: Trigger Notification
+  activate NotificationService
+
+  NotificationService --> Faculty: Send Download Notification
+  deactivate NotificationService
+end
+
+@enduml
+```
+
+This language is designed to provide a description of objects interaction over time. The "actor Faculty" indicates the user of the system. The "->" symbol represents interactions such as method calls from one object to another. The "activate" keyword is used to focus on the object that is currently active or executed. The "-->" symbol represents responses from one object to another. The "deactivate" keyword is used to remove the focus from the object. The "alt" keyword is used to define alternatives to a base sequence.

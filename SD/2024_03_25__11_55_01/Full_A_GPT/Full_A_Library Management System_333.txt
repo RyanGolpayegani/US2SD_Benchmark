@@ -1,0 +1,36 @@
+Below is the sequence diagram in PlantUML format for the user story "As a staff, I want to checkout a book, so that I can keep track of books after reservation".
+
+Code:
+
+```
+@startuml
+participant "Staff" as S
+participant "System" as SY
+participant "Database" as DB
+
+activate S
+S -> SY : select book for checkout
+activate SY
+SY -> DB : retrieve book details
+activate DB
+Db --> SY : return book details
+deactivate DB
+SY --> S : display book details
+S -> SY : confirm checkout
+SY -> DB : update book record to 'checked out'
+activate DB
+DB --> SY : confirm success 
+deactivate DB
+SY --> S : display checkout confirmation
+deactivate SY
+@enduml
+```
+
+Explanation:
+
+- The sequence starts with the "Staff" initiating the process by selecting a book for checkout. 
+- The "System" then retrieves the book details from the "Database".
+- The "Database" returns the book details to the "System".
+- The "System" displays the book details to the "Staff".
+- The "Staff" confirms the checkout, and the "System" updates the book record to 'checked out' in the "Database".
+- Upon success confirmation from the "Database", the "System" displays checkout confirmation to the "Staff". This marks the end of the sequence.

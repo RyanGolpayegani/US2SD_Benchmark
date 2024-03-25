@@ -1,0 +1,44 @@
+@startuml
+
+actor RepositoryManager
+participant StaffInterface
+participant VersioningSystem
+participant ObjectVersion
+
+RepositoryManager -> StaffInterface: Requests available versions of an object
+activate StaffInterface
+
+StaffInterface -> VersioningSystem: Fetch available versions of object
+activate VersioningSystem
+
+VersioningSystem --> ObjectVersion: Gets object versions
+activate ObjectVersion
+
+ObjectVersion --> VersioningSystem: Returns object versions
+deactivate ObjectVersion
+
+VersioningSystem --> StaffInterface: Returns available object versions
+deactivate VersioningSystem
+
+StaffInterface --> RepositoryManager: Displays available versions
+deactivate StaffInterface
+
+RepositoryManager -> StaffInterface: Selects a version to restore
+activate StaffInterface
+
+StaffInterface -> VersioningSystem: Requests selected version restoration
+activate VersioningSystem
+
+VersioningSystem --> ObjectVersion: Restores selected version
+activate ObjectVersion
+
+ObjectVersion --> VersioningSystem: Acknowledges restored version
+deactivate ObjectVersion
+
+VersioningSystem --> StaffInterface: Confirm restoration
+deactivate VersioningSystem
+
+StaffInterface --> RepositoryManager: Confirms restoration
+deactivate StaffInterface
+
+@enduml

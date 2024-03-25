@@ -1,0 +1,46 @@
+The Plant UML sequence diagram for entering customer reviews as an employee would be defined as follows:
+
+```plantUML
+@startuml
+boundary "User Interface" as UI
+Database Reviews
+Actor Employee
+participant "Reviews System" as RS
+
+Employee -> UI: Enter review
+activate UI
+UI -> RS: Handle review entry
+activate RS
+RS -> Reviews: Check customer's consent
+activate Reviews
+Reviews --> RS: Consent Status
+deactivate Reviews
+alt Consent Given
+RS --> UI: Allow review entry
+deactivate RS
+UI --> Employee: Submit review
+deactivate UI
+Employee -> UI: Confirm submission
+activate UI
+UI -> RS : Submit review
+activate RS
+RS -> Reviews : Save review
+activate Reviews
+Reviews --> RS : Confirmation
+deactivate Reviews
+RS --> UI : Review saved successfully
+deactivate RS
+UI --> Employee : Show success message
+deactivate UI
+else Consent Not Given
+RS --> UI: Deny review entry
+deactivate RS
+UI --> Employee: Show error message
+deactivate UI
+end
+@enduml
+```
+
+This diagram starts with the employee entering the review via the User Interface (UI), which then attempts to handle the review entry. It does so by checking with the Reviews Database for customer's consent. 
+If consent is given, the system allows the employee to submit the review, save it, and finally confirm to the employee that the action was successful. 
+If consent was not given, the system denies the review entry, and shows an error message to the employee.

@@ -1,0 +1,17 @@
+@startuml
+title Search Dataset by Title and Metadata
+
+Actor User as u
+participant "Search Service" as s
+database "Dataset Repository" as d
+
+u -> s: SearchRequest(title, metadata)
+activate s
+s -> d: queryDatasets(title, metadata)
+activate d
+d --> s: DatasetList
+deactivate d
+s --> u: SearchResponse(DatasetList)
+deactivate s
+
+@enduml

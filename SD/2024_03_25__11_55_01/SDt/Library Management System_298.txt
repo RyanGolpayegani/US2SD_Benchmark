@@ -1,0 +1,16 @@
+@startuml
+title Book Borrow Due Date Lookup
+
+actor Member
+participant "Book system" as BS
+database LibraryDB
+
+Member -> BS : Check book status(book_id)
+activate BS
+BS -> LibraryDB : retrieveBookStatus(book_id)
+activate LibraryDB
+LibraryDB --> BS : BookStatus
+deactivate LibraryDB
+BS --> Member : BookStatus (including due date if borrowed)
+deactivate BS
+@enduml

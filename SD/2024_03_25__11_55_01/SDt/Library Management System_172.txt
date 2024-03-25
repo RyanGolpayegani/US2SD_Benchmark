@@ -1,0 +1,23 @@
+@startuml
+actor LibraryMember
+participant LibrarySystem
+database LibraryDatabase
+entity Book
+
+LibraryMember -> LibrarySystem: Request to reserve a book
+activate LibrarySystem
+LibrarySystem -> LibraryDatabase: Check book availability
+activate LibraryDatabase
+LibraryDatabase --> LibrarySystem: Return book availability
+deactivate LibraryDatabase
+alt Book is available
+LibrarySystem -> LibraryDatabase: Reserve book for member
+activate LibraryDatabase
+LibraryDatabase --> LibrarySystem: Confirm book reservation
+deactivate LibraryDatabase
+LibrarySystem --> LibraryMember: Confirm book reservation
+else Book is unavailable
+LibrarySystem --> LibraryMember: Inform book unavailability
+end
+deactivate LibrarySystem
+@enduml

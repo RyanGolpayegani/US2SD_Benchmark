@@ -1,0 +1,28 @@
+@startuml
+actor Librarian
+entity "Library System" as system
+database "Book Records Database" as bookDB
+
+Librarian -> system: login()
+activate system
+system --> Librarian: showDashboard()
+
+Librarian -> system: startNewBookEntry()
+activate system
+system -> bookDB: createNewRecord()
+activate bookDB
+bookDB --> system: generateNewRecordID()
+deactivate bookDB
+system --> Librarian: displayBookEntryForm(newRecordID)
+
+Librarian -> system: inputBookInfo(bookInfo)
+activate system
+system -> bookDB: saveBookInfo(bookInfo)
+activate bookDB
+bookDB --> system: confirmationOfSaving()
+deactivate bookDB
+system --> Librarian: showConfirmation()
+
+Librarian -> system: logout()
+deactivate system
+@enduml

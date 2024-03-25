@@ -1,0 +1,22 @@
+@startuml
+Actor Supervisor
+
+box "System" #LightBlue
+  participant VerificationSystem
+  participant Database
+  participant LogSystem
+end box
+
+Supervisor -> VerificationSystem : View()
+activate VerificationSystem
+VerificationSystem -> Database : GetUserRole()
+activate Database
+Database --> VerificationSystem : Role
+deactivate Database
+VerificationSystem -> LogSystem : RetrieveLog()
+activate LogSystem
+LogSystem --> VerificationSystem : LogData
+deactivate LogSystem
+VerificationSystem --> Supervisor : LogData
+deactivate VerificationSystem
+@enduml

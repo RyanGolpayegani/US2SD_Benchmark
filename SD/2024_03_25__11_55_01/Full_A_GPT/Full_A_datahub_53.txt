@@ -1,0 +1,39 @@
+Here is the detailed sequence diagram for the User Story in PlantUML format:
+
+```
+@startuml
+
+actor Consumer
+participant "Consumer\nInterface" as CI
+participant "System\nInterface" as SI
+participant "Publisher\nDatabase" as PD
+participant Publisher
+
+Consumer -> CI : Request to view Publisher's profile
+activate CI
+CI -> SI : Get publisher details
+activate SI
+SI -> PD : Fetch publisher data
+activate PD
+PD --> SI : Returns publisher data
+deactivate PD
+SI --> CI : Provide publisher details
+deactivate SI
+CI --> Consumer : Display Publisher's profile
+deactivate CI
+
+Consumer -> CI : Request to view Publisher's packages
+activate CI
+CI -> SI : Get publisher packages
+activate SI
+SI -> PD : Fetch publisher packages
+activate PD
+PD --> SI : Returns publisher packages
+deactivate PD
+SI --> CI : Provide publisher packages
+deactivate SI
+CI --> Consumer : Display Publisher's packages
+
+@enduml
+```
+This flow assumes that there are frontend interfaces (Consumer Interface, System Interface) before the actual backend (Publisher Database). The consumer first, requests to view the publisher's profile, which passes through the frontend interfaces to fetch the publisher's details from the publisher's database. The details are then displayed to the consumer. The same process is followed to fetch and display the publisher's packages to the consumer.

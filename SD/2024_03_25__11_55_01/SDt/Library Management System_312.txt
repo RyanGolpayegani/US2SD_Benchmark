@@ -1,0 +1,31 @@
+@startuml
+
+participant "Member" as M
+database "Library Database" as LD
+participant "Library System" as LS
+
+M -> LS: RequestUpdateReservation(bookId, newDate)
+activate LS
+
+LS -> LD: getReservationDetails(bookId)
+activate LD
+LD -->> LS: ReservationDetails
+deactivate LD 
+
+LS -> LS: validateChanges(ReservationDetails, newDate)
+activate LS
+LS -->> LS: isValid
+
+alt isValid
+    LS -> LD: UpdateReservation(bookId, newDate)
+    activate LD
+    LD -->> LS: ConfirmationMessage
+    deactivate LD 
+else
+    LS --> M: ErrorMessage
+end
+
+deactivate LS 
+LS --> M: ConfirmationMessage
+
+@enduml

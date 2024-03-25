@@ -60,7 +60,7 @@ def read_project_descriptions(directory):
 
   return project_descriptions
 
-project_dir = "data/Project_Descriptions/RoBERTa"
+project_dir = "data/Project_Descriptions/T5"
 descriptions = read_project_descriptions(project_dir)
 
 # # Access project descriptions

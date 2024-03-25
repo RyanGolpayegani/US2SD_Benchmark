@@ -1,0 +1,29 @@
+@startuml
+
+participant "Moderator" as M
+participant "System" as S
+
+M -> S: RequestGameTranscript(gameID)
+note right: The moderator requests \nthe transcript for a specific game.
+
+S -> S: FetchGameTranscript(gameID)
+note right: System fetches the transcript\nfrom the database.
+activate S #Yellow
+
+S --> M: ReturnTranscriptData
+note right: Returns the transcript data\nto the moderator.
+deactivate S
+
+M -> S: ExportTranscriptAsHTML(data)
+note right: Asks system to turn transcript data\ninto an HTML file.
+activate S #Yellow
+
+S -> S : ConvertToHTMLFormat(data)
+note right: System converts the \ntranscript data into HTML.
+activate S #Yellow
+
+S --> M: TransmitHTMLFile
+note right: The HTML file is sent to the moderator.
+deactivate S
+
+@enduml

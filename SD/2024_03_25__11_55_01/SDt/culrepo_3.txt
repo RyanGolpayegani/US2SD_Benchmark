@@ -1,0 +1,35 @@
+@startuml
+title Upload Data and Associate it with a Publication
+
+actor Faculty 
+entity Repository 
+entity NotificationService 
+entity PublicationService 
+
+Faculty -> Repository: Upload Data
+activate Repository
+
+Repository -> PublicationService: Associate with Publication
+activate PublicationService
+
+PublicationService --> Repository: Data Associated
+deactivate PublicationService
+
+Repository --> Faculty: Show Uploaded and Associated Data
+deactivate Repository
+
+Faculty -> Repository: Verify Uploaded Data
+activate Repository
+
+Repository --> Faculty: Display Verification Message
+deactivate Repository
+
+alt if Someone Downloads Data
+  Repository -> NotificationService: Trigger Notification
+  activate NotificationService
+
+  NotificationService --> Faculty: Send Download Notification
+  deactivate NotificationService
+end
+
+@enduml

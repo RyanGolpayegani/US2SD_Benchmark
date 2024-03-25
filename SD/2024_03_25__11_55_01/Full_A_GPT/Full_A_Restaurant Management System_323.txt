@@ -1,0 +1,35 @@
+Here is the sequence diagram code in PlantUML format that corresponds to the user story described above:
+
+```plantuml
+@startuml
+autonumber
+actor Employee as e
+participant "Order System" as o
+database "Store Inventory" as i
+
+e -> o: Add Store Order
+activate o
+
+o -> i: Check Inventory
+activate i
+note right: The system checks if\nthe ingredients needed\nfor the order are available.
+i --> o: Inventory Status 
+deactivate i
+
+alt sufficient inventory
+    o -> i: Update Inventory
+    activate i
+    note right: The system updates the inventory\nafter order addition.
+    i --> o: Inventory Updated
+    deactivate i
+else insufficient inventory
+    o -> e: Unable to Add Order
+end
+
+o --> e: Acknowledge Add Order
+deactivate o
+
+@enduml
+```
+
+This diagram assumes that an employee interacts with an order system to add store orders, which checks with the store inventory, updates it if necessary, and provides update status back to the employee. Adjustments can be done based on the specific nature of the system.

@@ -1,0 +1,19 @@
+@startuml
+participant "Repository Manager" as R
+participant "Collection" as C
+participant "Object" as O
+participant "Language Change Reporting System" as L
+
+R -> C : isThereAnyLanguageChange()
+activate C
+C -> O : isThereAnyLanguageChange()
+activate O
+O --> C : languageChangeStatus()
+deactivate O
+C --> R : languageChangeStatus()
+deactivate C
+R -> L : reportLanguageChange(languageChangeStatus())
+activate L
+L --> R : acknowledgeReport()
+deactivate L
+@enduml

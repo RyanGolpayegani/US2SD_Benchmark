@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram based on your user story in PlantUML format would look like this:
+
+```plantuml
+@startuml
+autonumber
+actor Depositor
+participant "Web Interface" as W
+database "Data Repository" as D
+
+Depositor -> W: Access Where-to-Deposit page
+W -> Depositor: Show available repositories
+Depositor -> W: Select a repository
+W -> D: Query to check repository access rights
+D --> W: Return access rights
+
+alt Repository access rights granted
+    W -> Depositor: Provide depositing options
+    Depositor -> W: Choose to deposit data manually
+    W -> Depositor: Show upload form
+    Depositor -> W: Fill form and attach file(s)
+    W -> D: Store data into repository
+    D --> W: Confirms data storage
+    W --> Depositor: Confirm data deposit
+else Repository access rights denied
+    W -> Depositor: Deny access with an error message
+end
+
+Depositor -> W: Request to apply embargo
+W -> D: Apply embargo on the data
+D --> W: Confirm embargo application
+W --> Depositor: Confirm embargo application
+
+Depositor -> W: Request to add metadata
+W -> Depositor: Provide metadata adding form
+Depositor -> W: Fill form with metadata
+W -> D: Store metadata into repository
+D --> W: Confirm metadata storage
+W --> Depositor: Confirm metadata addition
+
+Depositor -> W: Grant deposit rights to others
+W -> D: Update deposit rights in the repository
+D --> W: Confirm deposit rights update
+W --> Depositor: Confirm deposit rights update
+@enduml
+```
+
+This sequence diagram starts with the depositor accessing the 'Where-to-Deposit' page on the web interface and selecting a repository. The access rights for the selected repository are then checked. If access is granted, the depositor is provided with options to deposit their data manually, apply embargo, add metadata, and grant deposit rights to others. If access is denied, an error message is displayed to the depositor. Each operation is confirmed back to the depositor once completed. Note that your specific web interface and data repository might have different or additional steps.

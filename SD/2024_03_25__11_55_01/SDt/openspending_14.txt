@@ -1,0 +1,19 @@
+@startuml
+DataPublishingUser -> PlatformAdministrator: ProvideGeoJSONSource()
+activate PlatformAdministrator
+PlatformAdministrator --> DataPublishingUser: AcknowledgeSource()
+deactivate PlatformAdministrator
+DataPublishingUser -> DataSystem: UploadGeoJSONSource()
+activate DataSystem
+DataSystem -> GeoJSONDatabase: StoreSourceInDatabase()
+note right: The GeoJSON source data is stored in the database.
+activate GeoJSONDatabase
+GeoJSONDatabase --> DataSystem: ConfirmStorage()
+deactivate GeoJSONDatabase
+DataSystem --> DataPublishingUser: ReturnSourceUploadStatus()
+deactivate DataSystem
+DataPublishingUser -> MapVisualisation: UpdateVisualisation()
+activate MapVisualisation
+MapVisualisation --> DataPublishingUser: ConfirmVisualisationUpdate()
+deactivate MapVisualisation
+@enduml

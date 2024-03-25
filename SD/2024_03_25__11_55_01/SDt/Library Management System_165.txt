@@ -1,0 +1,23 @@
+@startuml
+participant LibraryMember
+participant LibrarySystem
+participant Librarian
+participant Book
+
+LibraryMember -> LibrarySystem: SearchBookByTitle(title)
+activate LibrarySystem
+LibrarySystem -> Book: getBookByTitle(title)
+activate Book
+Book --> LibrarySystem: bookDetails
+deactivate Book
+LibrarySystem --> LibraryMember: bookDetails
+deactivate LibrarySystem
+LibraryMember -> LibrarySystem: orderBook(bookDetails)
+activate LibrarySystem
+LibrarySystem -> Librarian: processBookOrder(bookDetails)
+activate Librarian
+Librarian --> LibrarySystem: OrderConfirmation
+deactivate Librarian
+LibrarySystem --> LibraryMember: OrderConfirmation
+deactivate LibrarySystem
+@enduml

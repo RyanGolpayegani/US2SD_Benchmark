@@ -1,0 +1,21 @@
+Generating sequence diagrams for a specific user story could vary way too much depending on many aspects of a system. Nevertheless, the following PlantUML code produces a simplified, general sequence assuming that "USAspending" is a system component and "Owner system" is another system component.
+
+```plantuml
+@startuml
+actor Owner
+participant USAspending
+database "Owner system"
+participant Middleware
+
+Owner->USAspending: Send grant records
+USAspending->USAspending: Filter grant records
+USAspending-->Owner: Display filtered grant records
+Owner-->USAspending: Confirm sending grant record
+USAspending->Middleware: Send grant records to middleware
+Middleware->"Owner system": Update records
+"Owner system"-->Middleware: Acknowledge receiving records
+Middleware-->USAspending: Acknowledge updating records
+USAspending-->Owner: Notify grant records sending successful
+@enduml
+```
+This sequence diagram shows the owner requesting "USAspending" to send grant records. "USAspending" filters these records and presents them to the owner. The owner confirms this information, and "USAspending" sends the records to the "Middleware". The middleware updates the "Owner system", which then acknowledges the update. This acknowledgment is passed up to "USAspending", which then notifies the owner that the sending of grant records was successful.

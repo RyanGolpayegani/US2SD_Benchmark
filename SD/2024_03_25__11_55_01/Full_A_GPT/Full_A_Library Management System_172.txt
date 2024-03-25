@@ -1,0 +1,41 @@
+Since it's not possible to draw diagrams via text, I will describe the Plant UML sequence diagram and show how to write in code for the user story: "As a library member, I want to reserve more than one book."
+
+First, there are four main objects interacting: "LibraryMember", "LibrarySystem", "Book" and "LibraryDatabase".
+
+1. The "LibraryMember" starts the interaction requesting to the "LibrarySystem" to reserve a book.
+2. The "LibrarySystem" sends a request to the "LibraryDatabase" to check if the book is available.
+3. The "LibraryDatabase" returns the availability status of the book to the "LibrarySystem".
+4. If the book is available, the "LibrarySystem" sends another request to the "LibraryDatabase" to reserve the book under the "LibraryMember"'s account.
+5. The "LibraryDatabase" reserves the book and sends a confirmation to the "LibrarySystem".
+6. The "LibrarySystem" sends the reservation confirmation back to the "LibraryMember".
+
+This process is repeated for each book that the Library Member wants to reserve.
+
+Here is the PlantUML code for the above sequence diagram:
+
+```plantuml
+@startuml
+actor LibraryMember
+participant LibrarySystem
+database LibraryDatabase
+entity Book
+
+LibraryMember -> LibrarySystem: Request to reserve a book
+activate LibrarySystem
+LibrarySystem -> LibraryDatabase: Check book availability
+activate LibraryDatabase
+LibraryDatabase --> LibrarySystem: Return book availability
+deactivate LibraryDatabase
+alt Book is available
+LibrarySystem -> LibraryDatabase: Reserve book for member
+activate LibraryDatabase
+LibraryDatabase --> LibrarySystem: Confirm book reservation
+deactivate LibraryDatabase
+LibrarySystem --> LibraryMember: Confirm book reservation
+else Book is unavailable
+LibrarySystem --> LibraryMember: Inform book unavailability
+end
+deactivate LibrarySystem
+@enduml
+```
+This diagram can be generated using any tool that supports Plant UML, such as PlantText, IntelliJ IDEA with the PlantUML plugin, etc. Just copy and paste the above code into one of those tools to generate the sequence diagram.

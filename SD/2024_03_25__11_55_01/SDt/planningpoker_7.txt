@@ -1,0 +1,23 @@
+@startuml
+autonumber
+participant Moderator
+participant System
+participant Database
+
+Moderator -> System: RequestEditItem(ItemID)
+activate System
+System -> Database: GetItem(ItemID)
+activate Database
+Database --> System: ReturnItemDetails(ItemDetails)
+deactivate Database
+System --> Moderator: DisplayItemDetails(ItemDetails)
+deactivate System
+Moderator -> System: SubmitEdit(ItemID, UpdatedDetails)
+activate System
+System -> Database: UpdateItem(ItemID, UpdatedDetails)
+activate Database
+Database --> System: ConfirmUpdate
+deactivate Database
+System --> Moderator: ConfirmUpdate
+deactivate System
+@enduml

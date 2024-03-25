@@ -1,0 +1,34 @@
+Here is a sequence diagram written in PlantUML format:
+
+```
+@startuml
+actor Librarian
+entity "Library System" as system
+database "Book Records Database" as bookDB
+
+Librarian -> system: login()
+activate system
+system --> Librarian: showDashboard()
+
+Librarian -> system: startNewBookEntry()
+activate system
+system -> bookDB: createNewRecord()
+activate bookDB
+bookDB --> system: generateNewRecordID()
+deactivate bookDB
+system --> Librarian: displayBookEntryForm(newRecordID)
+
+Librarian -> system: inputBookInfo(bookInfo)
+activate system
+system -> bookDB: saveBookInfo(bookInfo)
+activate bookDB
+bookDB --> system: confirmationOfSaving()
+deactivate bookDB
+system --> Librarian: showConfirmation()
+
+Librarian -> system: logout()
+deactivate system
+@enduml
+``` 
+
+This sequence diagram represents the process of a library manager creating a book record. The flow starts with the librarian logging into the system. Once logged in, the librarian requests to add a new book entry. The system interacts with the book records database to create a new record and generate an ID for it. The book entry form is displayed to the librarian with the new record ID. The librarian inputs the information of the new book. The system saves this new book information in the book records database. After the process is completed, the librarian logs out.

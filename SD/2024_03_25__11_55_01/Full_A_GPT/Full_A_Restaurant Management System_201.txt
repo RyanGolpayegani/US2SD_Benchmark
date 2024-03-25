@@ -1,0 +1,50 @@
+Following is the Sequence Diagram in Plant UML format for User Story "As a manager, I want to see the remaining items":
+
+```plantuml
+@startuml
+title Check Remaining Items - Sequence Diagram
+
+'define actors
+actor Manager
+
+'define objects
+database "Inventory DB" as DB
+box "Inventory Management System" #LightCyan
+ participant "API Controller" as API
+ participant "Service Layer" as Service
+ participant "Data Access Layer" as DAO
+end box
+
+'autostart
+Manager -> API : Request remaining items
+activate API
+
+'API calls service layer
+API -> Service : getRemainingItems()
+activate Service
+
+'Service calls Data access layer
+Service -> DAO : fetchRemainingItems()
+activate DAO
+
+'DAO fetches data from database
+DAO -> DB : SELECT remaining_items FROM inventory
+activate DB
+DB --> DAO : Return result set
+deactivate DB
+
+'DAO returns data to Service
+DAO --> Service : Return remaining items list
+deactivate DAO
+
+'Service returns data to API
+Service --> API : Return remaining items list
+deactivate Service
+
+'API returns data to Manager
+API --> Manager : Return remaining items list
+deactivate API
+
+@enduml
+```
+In this Sequence Diagram, The manager initiates the process by requesting for the remaining items from the API Controller. The API Controller forwards this request to the Service Layer. The Service Layer then asks the Data Access Layer to fetch the required data. The Data Access Layer queries the Inventory Database and retrieves the remaining items list. This information is returned back to the Service Layer which forwards it to the API Controller. Finally, The API Controller presents the remaining items list to the Manager.
