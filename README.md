@@ -5,13 +5,14 @@ This repositry includes all of the files associated with US2SD Benchmark which i
 ## To Do:
 
 1. ### Experiment with 100 Random USs prompt as follows:
-   1. US only (0)  ### DONE -> 2024_03_18__17_36_24
+
+   1. US only (0) `DONE`
    2. Prj desc + USs (DSP)
-      1. BART
-      2. BERTSUM
-      3. Pegasus
-      4. Roberta
-      5. T5
+      1. BART `DONE`
+      2. BERTSUM `DONE`
+      3. Pegasus `DONE`
+      4. Roberta `DONE`
+      5. T5 `DONE`
       6. LLM
    3. Prj desc + USs + N USs from same prj
       1. 3
@@ -19,7 +20,7 @@ This repositry includes all of the files associated with US2SD Benchmark which i
       3. 5
 
 2. Replace all the picture in this readme with repo's new name.
-4. Add `Gemini` script --> Gemini API key needed
+3. Add `Gemini` script --> Gemini API key needed
 
 ## How to use:
 
