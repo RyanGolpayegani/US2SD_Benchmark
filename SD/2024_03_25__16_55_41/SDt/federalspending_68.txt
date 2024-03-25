@@ -1,0 +1,21 @@
+@startuml
+
+participant "FABS User" as A
+participant "Frontend Interface" as B
+participant "Backend Server" as C
+participant "Error Data Store" as D
+participant "Submission Data Store" as E
+
+A -> B : Initiates Submission
+B -> C : Sends Submission Request
+alt Error occurs
+    C -> D : Stores Error Message
+    C -> E : Updates Submission Status
+    C --> B : Sends Error Response Message
+    B --> A : Shows Error Message
+else No Error
+    C --> B : Sends Success Response Message 
+    B --> A: Shows Success Message
+end
+
+@enduml

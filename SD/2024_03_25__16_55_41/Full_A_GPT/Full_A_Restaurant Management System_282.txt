@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram for a specific user story like "As a waiter, I want to deselect order items." would be extremely difficult in text because UML diagrams are ideally a visual product. However, using Plant UML language, the sequence diagram would look something like this:
+
+```plantuml
+@startuml
+title DeSelect Order Items Sequence Diagram
+
+actor Waiter as wait
+entity OrderManagement as ord
+entity Database as db
+box "Restaurant System" #LightPink 
+  participant OrderItem as itm
+end box
+
+activate wait
+wait -> ord: deselectOrder(int orderID, int itemID)
+activate ord
+ord -> db: getItem(int itemID)
+activate db
+db --> ord: Item
+deactivate db
+ord -> itm: deselectItem(Item item)
+activate itm
+itm -> db : updateItemStatus(int itemID, String status)
+activate db
+db --> itm: Confirmation
+deactivate db
+itm --> ord: Confirmation
+deactivate itm
+ord --> wait: Confirmation
+deactivate ord
+deactivate wait
+
+@enduml
+```
+This PlantUML code could be used to generate a sequence diagram for the case of a waiter deselecting order items. Of course, the code needs to be put into a PlantUML compiler to visualize it. 
+The flow starts from the waiter initiating an order item deselection. The order management system gets the information of item from database and calls the `deselectItem` method. The order item status updates in the database and confirmation messages are passed back up the chain to the waiter.

@@ -1,0 +1,26 @@
+@startuml
+actor Manager as m
+
+box "Web Application" 
+    participant "Dashboard" as d 
+    participant "Data Analyzer" as a
+end box 
+
+database "Database" as db
+
+m -> d : Input request to view customer satisfaction ratio
+activate d
+d -> a : Forward request
+deactivate d
+activate a
+a -> db : Query for customer reviews data
+activate db
+a <-- db : Return customer reviews data
+deactivate db
+a -> a : Calculate customer satisfaction ratio
+a --> d : Return ratio report
+deactivate a
+activate d
+m <-- d : Display ratio report
+deactivate d
+@enduml

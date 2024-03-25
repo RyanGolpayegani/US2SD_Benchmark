@@ -1,0 +1,33 @@
+@startuml
+actor RepositoryManager
+participant DAMS
+participant Collection
+participant Role
+
+RepositoryManager -> DAMS : IndicateNameRole(collectionID, objectID, componentName, name, role)
+activate DAMS
+
+DAMS -> Collection : GetCollection(collectionID)
+activate Collection
+Collection --> DAMS : CollectionData
+deactivate Collection
+
+DAMS -> DAMS : GetObject(objectID, CollectionData)
+activate DAMS
+DAMS --> DAMS : ObjectData
+deactivate DAMS
+
+DAMS -> DAMS : GetComponent(componentName, ObjectData)
+activate DAMS
+DAMS --> DAMS : ComponentData
+deactivate DAMS
+
+DAMS -> Role : AssignRole(name, role)
+activate Role
+Role --> DAMS : confirmationMessage
+deactivate Role
+
+DAMS --> RepositoryManager : confirmationMessage
+deactivate DAMS
+
+@enduml

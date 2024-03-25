@@ -1,0 +1,43 @@
+Unfortunately, I can't provide a UML diagram here. However, I can explain how it should be structured:
+
+Title: Representation of FABS Errors for User Submission 
+
+Participants: 
+1. FABS User
+2. Frontend Interface
+3. Backend server
+4. Error data store
+
+Flow:
+1. The FABS User kicks off the process by initiating a 'Submission' on the Frontend Interface.
+2. The Frontend Interface then sends a 'Submission Request' to the Backend Server, which processes the request.
+3. If there's an error during the processing, the Backend Server generates an 'Error Message' and saves it in the Error Data Store. It should also changes 'Submission Status' to "Error" or similar in Submission Data Store.
+4. The Backend Server then sends a 'Response' including the error information back to the Frontend Interface.
+5. Lastly, the Frontend Interface would show the 'Error Message' to the FABS User. 
+
+In PlantUML text, the diagram could look like this:
+
+```
+@startuml
+
+participant "FABS User" as A
+participant "Frontend Interface" as B
+participant "Backend Server" as C
+participant "Error Data Store" as D
+participant "Submission Data Store" as E
+
+A -> B : Initiates Submission
+B -> C : Sends Submission Request
+alt Error occurs
+    C -> D : Stores Error Message
+    C -> E : Updates Submission Status
+    C --> B : Sends Error Response Message
+    B --> A : Shows Error Message
+else No Error
+    C --> B : Sends Success Response Message 
+    B --> A: Shows Success Message
+end
+
+@enduml
+```
+This diagram suggests when a user initiates a submission, and if there's an error, the error message will be stored and displayed to the user. If not, a success message will be displayed.

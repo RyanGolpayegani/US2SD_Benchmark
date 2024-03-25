@@ -1,0 +1,43 @@
+Supposing the system uses an Interface (CollectionManager) for repository manager to commit any operations. Here's how the plantUML sequence diagram can be represented:
+
+```
+@startuml
+actor RepositoryManager as rm
+interface CollectionManager as cm
+entity Collection as c
+entity ObjectComponent as oc
+entity Object as o
+
+rm -> cm : describeFacet(collectionFacet:CollectionFacet)
+activate cm
+cm -> c : setFacet(collectionFacet:CollectionFacet)
+activate c
+c --> cm : isUpdated: Boolean
+deactivate c
+cm --> rm : isUpdated:Boolean
+deactivate cm
+
+rm -> cm : describeFacet(objectFacet:ObjectFacet)
+activate cm
+cm -> o : setFacet(objectFacet:ObjectFacet)
+activate o
+o --> cm : isUpdated: Boolean
+deactivate o
+cm --> rm : isUpdated:Boolean
+deactivate cm
+
+rm -> cm : describeFacet(objectComponentFacet:ObjectComponentFacet)
+activate cm
+cm -> oc : setFacet(objectComponentFacet:ObjectComponentFacet)
+activate oc
+oc --> cm : isUpdated: Boolean
+deactivate oc
+cm --> rm : isUpdated:Boolean
+deactivate cm
+@enduml
+```
+
+In this Sequence Diagram:
+
+- The repository manager interacts with the CollectionManager interface, which has methods for describing different facets of a collection, object, and object component.
+- The CollectionManager interface interacts with the respective entity (Collection, Object, or ObjectComponent), sets the described facet and returns whether the operation was successful.

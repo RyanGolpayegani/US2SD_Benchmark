@@ -1,0 +1,20 @@
+@startuml
+participant "Moderator" as M
+participant "Game Interface" as GI
+participant "Transcript Export System" as TES
+participant "Database" as DB
+
+M -> GI : Open Game Options
+GI -> M: Display Options Menu
+M -> GI : Selects 'Export Transcript'
+GI -> TES: Request Export
+activate TES
+TES -> DB : Fetch Game Transcript
+activate DB
+DB --> TES: Return Transcript Data
+deactivate DB
+TES --> GI: Generate HTML File
+GI --> M: Provide Download
+deactivate TES
+M -> GI : Download HTML File
+@enduml

@@ -1,0 +1,36 @@
+Unfortunately, it's impossible to generate detailed sequence diagrams in PlantUML format through text mediums like this one due to graphical nature of UML diagrams. However, the pseudo-code below explains how a sequence diagram for the user story "As a library member, I want to reserve more than one book" might look. 
+
+```
+@startuml
+title Reserve Multiple Books
+
+actor "Library Member" as member
+participant "Library Management System" as system
+participant "Book Inventory" as inventory
+
+member -> system: Request to reserve books
+activate system
+
+system -> inventory: Check book availability
+activate inventory
+
+inventory -->> system: Return book availability
+deactivate inventory
+
+alt If books are available
+  system -->> member: Show available books
+  member -> system: Select books and confirm reservation
+  system -> inventory: Reserve selected books
+  activate inventory
+  inventory -->> system: Confirm reservation
+  deactivate inventory
+  system -->> member: Reserve confirmation
+else If books are not available
+  system -->> member: Show unavailable message
+end
+
+deactivate system
+
+@enduml
+```
+This sequence diagram describes the interaction between a library member, library management system, and book inventory for reserving multiple books. It handles two different conditions: when the books requested by the library member are available and when they are not available. For the first case, it confirms the reservation after the member selects the books and for the second case, it displays an unavailable message to the member.

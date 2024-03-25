@@ -1,0 +1,23 @@
+@startuml
+actor User
+participant "Dataset Type" as D
+participant "Uniform Schema" as S
+participant "JSON Schema String" as JSON
+participant "SQL Schema String" as SQL
+
+User -> D : Select Dataset Type
+D -> S : Get Default Schema
+S --> User: Display Default Schema
+
+User -> S : Edit Schema
+User -> JSON : Specify JSON Schema
+User -> SQL : Specify SQL Schema
+
+JSON -> S : Finalize JSON Schema
+SQL -> S : Finalize SQL Schema
+
+S --> User : Update Schema
+User -> D : Save Dataset with new Schema
+D --> User : Confirm Dataset Saved
+
+@enduml

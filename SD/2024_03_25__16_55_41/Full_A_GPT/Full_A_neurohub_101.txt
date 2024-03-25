@@ -1,0 +1,35 @@
+Here's a sequence diagram description in PlantUML syntax for the given user story, "As a researcher, I want to have a group-level repository for sharing papers/reviews/comments with other researchers."
+
+This Situation assumes that there exists a User class, a GroupRespository class and a Repository class.
+
+```plantuml
+@startuml
+participant "User" as user
+participant "GroupRepository" as groupRepository
+participant "Repository" as repository
+user -> groupRepository : createGroupRepository("ResearchGroup")
+groupRepository -> groupRepository : handleGroupCreation()
+activate groupRepository
+groupRepository --> user : repositoryID
+deactivate groupRepository
+user -> groupRepository : addMember("User2")
+groupRepository -> groupRepository : handleAddMember()
+activate groupRepository
+groupRepository --> user : memberId
+deactivate groupRepository
+user -> repository : uploadFile("researchPaper.pdf")
+activate repository
+repository -> repository : handleUpload()
+repository --> user : uploadConfirmation
+deactivate repository
+user -> repository : shareFile("researchPaper.pdf", repositoryID, memberId)
+activate repository
+repository -> repository : handleShare()
+repository --> user : shareConfirmation
+deactivate repository
+@enduml
+```
+
+This diagram description assumes that the researcher creates a group repository and then invites another user to the repository. The researcher then uploads a file to the repository and shares it with the other member. Expectations of the sequence of actions are represented via the methods handleGroupCreation(), handleAddMember(), handleUpload(), and handleShare() in the corresponding classes.
+
+Please ensure you have Graphviz and PlantUML extensions installed in order to view and edit such diagrams.

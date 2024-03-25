@@ -1,0 +1,47 @@
+To generate a sequence diagram in PlantUML for this user story, we first analyze the actions of the depositor - depositing and maintaining datasets. Below is a representation of how these actions might interact with the 'Web Interface', 'Database', and 'Archive System' components.
+
+Please note that this is a basic example, the actual diagram can differ based on your project's complexity and unique requirements.
+
+ ```PlantUML
+@startuml
+title Depositor Data Deposit Sequences
+
+actor Depositor
+boundary WebInterface
+control DatasetManager
+database Database
+entity ArchiveSystem
+
+Depositor -> WebInterface : Access Web Interface
+WebInterface -> DatasetManager : Initialize Dataset Manager
+DatasetManager -> Database : Check Database Availability
+Database --> DatasetManager : Send Availability Status
+DatasetManager --> WebInterface : Prepare User Interface Based on Status
+WebInterface --> Depositor : Present Interface
+
+Depositor -> WebInterface : Submit Dataset
+
+group Deposit Dataset
+   WebInterface -> DatasetManager : Process Dataset Submission
+   DatasetManager -> Database : Insert Dataset Details in DB
+   Database --> DatasetManager : Confirm Changes
+   DatasetManager --> WebInterface : Update Submission Status
+end
+
+group Publish To Archive
+   DatasetManager -> ArchiveSystem : Publish Dataset To Archive
+   ArchiveSystem --> DatasetManager : Confirm Publication
+   DatasetManager --> WebInterface : Update Publication Status
+   WebInterface --> Depositor : Show Publication Confirmation
+end
+
+Depositor -> WebInterface : Maintain (Add/Delete/Update) Dataset and Metadata
+WebInterface -> DatasetManager : Process Update Requests
+DatasetManager -> Database : Execute Updates in DB
+Database --> DatasetManager : Confirm Changes
+DatasetManager --> WebInterface : Update Request Status
+WebInterface --> Depositor : Show Update Confirmation
+
+@enduml
+ ```
+This sequence diagram covers the case of a depositor accessing the web interface, depositing a dataset, and then maintaining it afterward. All interactions with the database or the archive system are intermediated by a controller called 'DatasetManager' in this case.

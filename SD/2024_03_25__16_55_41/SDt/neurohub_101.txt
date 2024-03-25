@@ -1,0 +1,25 @@
+@startuml
+participant "User" as user
+participant "GroupRepository" as groupRepository
+participant "Repository" as repository
+user -> groupRepository : createGroupRepository("ResearchGroup")
+groupRepository -> groupRepository : handleGroupCreation()
+activate groupRepository
+groupRepository --> user : repositoryID
+deactivate groupRepository
+user -> groupRepository : addMember("User2")
+groupRepository -> groupRepository : handleAddMember()
+activate groupRepository
+groupRepository --> user : memberId
+deactivate groupRepository
+user -> repository : uploadFile("researchPaper.pdf")
+activate repository
+repository -> repository : handleUpload()
+repository --> user : uploadConfirmation
+deactivate repository
+user -> repository : shareFile("researchPaper.pdf", repositoryID, memberId)
+activate repository
+repository -> repository : handleShare()
+repository --> user : shareConfirmation
+deactivate repository
+@enduml

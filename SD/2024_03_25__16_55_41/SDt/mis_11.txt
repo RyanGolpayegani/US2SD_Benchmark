@@ -1,0 +1,16 @@
+@startuml
+actor "Collection Curator" as A
+entity "Repository System" as B
+database "Remote Storage Site" as C
+
+A -> B: Ingest Collection
+activate B
+B -> B: Queue for Replication
+B -> C: Start Replication
+activate C
+C --> B: Replication Status
+deactivate C
+B -> B: Process Replication Status
+B -> A: Display Replication Status
+deactivate B
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+title Depositor Data Deposit Sequences
+
+actor Depositor
+boundary WebInterface
+control DatasetManager
+database Database
+entity ArchiveSystem
+
+Depositor -> WebInterface : Access Web Interface
+WebInterface -> DatasetManager : Initialize Dataset Manager
+DatasetManager -> Database : Check Database Availability
+Database --> DatasetManager : Send Availability Status
+DatasetManager --> WebInterface : Prepare User Interface Based on Status
+WebInterface --> Depositor : Present Interface
+
+Depositor -> WebInterface : Submit Dataset
+
+group Deposit Dataset
+   WebInterface -> DatasetManager : Process Dataset Submission
+   DatasetManager -> Database : Insert Dataset Details in DB
+   Database --> DatasetManager : Confirm Changes
+   DatasetManager --> WebInterface : Update Submission Status
+end
+
+group Publish To Archive
+   DatasetManager -> ArchiveSystem : Publish Dataset To Archive
+   ArchiveSystem --> DatasetManager : Confirm Publication
+   DatasetManager --> WebInterface : Update Publication Status
+   WebInterface --> Depositor : Show Publication Confirmation
+end
+
+Depositor -> WebInterface : Maintain (Add/Delete/Update) Dataset and Metadata
+WebInterface -> DatasetManager : Process Update Requests
+DatasetManager -> Database : Execute Updates in DB
+Database --> DatasetManager : Confirm Changes
+DatasetManager --> WebInterface : Update Request Status
+WebInterface --> Depositor : Show Update Confirmation
+
+@enduml

@@ -1,0 +1,38 @@
+Due to the limitation of this text-based interface, a textual representation of the PlantUML sequence diagram is given below. To generate the actual diagram, copy this code to a PlantUML compiler:
+
+```
+@startuml
+actor "Staff" as S
+entity "Library Management System" as LMS
+database "Book Inventory" as BI
+database "Borrower Information" as BOI
+
+S -> LMS : Request Book Checkout
+activate LMS
+LMS -> BI : Retrieve Book Status
+activate BI
+BI --> LMS : Return Book Status
+deactivate BI
+LMS -> BOI : Retrieve Staff's Borrowing Details
+activate BOI
+BOI --> LMS : Return Borrowing Details
+deactivate BOI
+
+alt If the book is available and staff's borrowing limit is not reached
+    LMS -> BI : Update Book Status to 'checked out'
+    activate BI
+    BI --> LMS : Confirm Book Status Update
+    deactivate BI
+    LMS -> BOI : Update Staff's Borrowing Details
+    activate BOI
+    BOI --> LMS : Confirm Borrowing Details Update
+    deactivate BOI
+    LMS --> S : Confirm Book Checkout
+else If the book is not available or staff's borrowing limit is reached
+    LMS --> S : Reject Book Checkout
+end
+deactivate LMS
+@enduml
+```
+
+This sequence diagram represents the interaction between the staff member, the library management system, and the various databases within the system when attempting to checkout a book. The condition that the book is available and the staff member hasn't reached their borrowing limit is checked before allowing the checkout. If this condition is not met, then the book checkout is rejected.

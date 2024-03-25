@@ -1,0 +1,41 @@
+In order to generate a detailed Sequence Diagram for the provided user story, several interactions between the objects need to be mapped out, which are detailed below:
+
+1. User ("Zooniverse admin") requests the automated analysis of an image.
+2. The system ("Admin Panel") triggers the Image Analysis Module which then performs the automated analysis on the chosen image.
+3. The result of the automated analysis is then sent back to the system.
+4. The system then requests the Citizen Annotations Module to fetch the citizen annotations for the chosen image.
+5. The Citizen Annotations Module fetches the required annotations and sends them back to the system.
+6. The system then requests the Comment Module to fetch the comments on the image from Talk.
+7. The Comment Module fetches the required comments and sends them back to the system.
+8. The system takes all three sets of data (automated analysis, citizen annotations, and comments) and processes them together to assess how interesting, appealing, or complex the image is.
+9. The system presents the result to the user ("Zooniverse admin").
+
+The aforementioned interactions, formatted in PlantUML, are as follows:
+
+```
+@startuml
+
+autonumber
+actor Admin as "Zooniverse admin"
+participant AdminPanel as "System (Admin Panel)"
+participant ImageAnalysis as "Image Analysis Module"
+participant CitizenAnnotations as "Citizen Annotations Module"
+participant Comments as "Comment Module"
+
+Admin -> AdminPanel : Request Automated Analysis of Image
+AdminPanel -> ImageAnalysis : Trigger Automated Analysis
+ImageAnalysis --> AdminPanel : Return Automated Analysis
+
+AdminPanel -> CitizenAnnotations : Fetch Citizen Annotations
+CitizenAnnotations --> AdminPanel : Return Citizen Annotations
+
+AdminPanel -> Comments : Fetch Comments from Talk
+Comments --> AdminPanel : Return Comments
+
+AdminPanel -> AdminPanel : Process Data
+AdminPanel --> Admin : Return Assessment
+
+@enduml
+```
+
+This script should generate the desired sequence diagram in visual representation.

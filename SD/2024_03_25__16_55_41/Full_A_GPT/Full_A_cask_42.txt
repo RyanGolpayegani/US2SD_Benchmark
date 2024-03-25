@@ -1,0 +1,33 @@
+Creating a sequence diagram in PlantUML could be rendered by following this text arrangement:
+
+```
+@startuml
+actor User
+participant "Dataset Type" as D
+participant "Uniform Schema" as S
+participant "JSON Schema String" as JSON
+participant "SQL Schema String" as SQL
+
+User -> D : Select Dataset Type
+D -> S : Get Default Schema
+S --> User: Display Default Schema
+
+User -> S : Edit Schema
+User -> JSON : Specify JSON Schema
+User -> SQL : Specify SQL Schema
+
+JSON -> S : Finalize JSON Schema
+SQL -> S : Finalize SQL Schema
+
+S --> User : Update Schema
+User -> D : Save Dataset with new Schema
+D --> User : Confirm Dataset Saved
+
+@enduml
+```
+
+In the above example, the `User` firstly selects a `Dataset Type` (D), and from there they can see the `Uniform Schema` (S). From here, they are able to edit their schema. 
+
+If they wish to edit the `JSON Schema String` (JSON), they will specify the JSON schema, which in turn finalizes the JSON schema to the `Uniform Schema` (S). The same process happens if the user wishes to edit the `SQL Schema String` (SQL). 
+
+Following the completion of the schema, the `Uniform Schema` (S) updates the schema to the `User`. The `User` then saves the dataset with the new schema on the `Dataset Type` (D) they selected. Lastly, the `Dataset Type` (D) confirms that the dataset is saved back to the `User`.

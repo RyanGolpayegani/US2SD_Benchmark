@@ -1,0 +1,42 @@
+To generate a detailed sequence diagram in Plant UML format, we would need more low-level details about the sequence of actions performed in the tool. However, here's a broad sequence flow based on the given user story.
+
+Please note that the diagram is in a textual format. You can use online PlantUML editor tools to create the visualization.
+```
+@startuml
+participant Researcher
+participant DataManager
+participant PackageImporter
+
+Researcher -> DataManager: request(dataPackage)
+activate DataManager
+DataManager -> PackageImporter: importRequest(dataPackage, "Julia")
+activate PackageImporter
+
+PackageImporter --> DataManager: isPackageImporting()
+note over DataManager
+DataManager checks if the data is being imported
+end note
+DataManager --> Researcher: isInProgress()
+
+loop
+    PackageImporter --> DataManager: isPackageImported()
+    note over DataManager
+    DataManager checks if the data is imported
+    end note
+    DataManager --> Researcher: isInProgress()
+end
+
+until PackageImporter --> DataManager: isPackageImported() is true
+
+DataManager --> Researcher: importSuccess(dataPackage_in_Julia)
+note over Researcher
+Researcher can now start using the data for analysis and visualizations
+end note
+
+deactivate DataManager
+deactivate PackageImporter
+
+@enduml
+``` 
+
+In this sequence diagram, the user "Researcher" requests a data package from the "DataManager". The "DataManager" then initiates an import request with the "PackageImporter", specifying the language as Julia. An iterative process then occurs until the data package is successfully imported into Julia. Once done, the DataManager responds to the Researcher that the import has been successful.

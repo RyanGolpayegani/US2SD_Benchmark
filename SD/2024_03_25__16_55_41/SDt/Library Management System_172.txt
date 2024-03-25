@@ -1,0 +1,31 @@
+@startuml
+title Reserve Multiple Books
+
+actor "Library Member" as member
+participant "Library Management System" as system
+participant "Book Inventory" as inventory
+
+member -> system: Request to reserve books
+activate system
+
+system -> inventory: Check book availability
+activate inventory
+
+inventory -->> system: Return book availability
+deactivate inventory
+
+alt If books are available
+  system -->> member: Show available books
+  member -> system: Select books and confirm reservation
+  system -> inventory: Reserve selected books
+  activate inventory
+  inventory -->> system: Confirm reservation
+  deactivate inventory
+  system -->> member: Reserve confirmation
+else If books are not available
+  system -->> member: Show unavailable message
+end
+
+deactivate system
+
+@enduml

@@ -1,0 +1,61 @@
+Below is an example of how the PlantUML sequence diagram could look like for this scenario:
+
+```
+@startuml
+title Dataset Developer Explore Dataset Instance 
+
+actor DatasetDeveloper
+
+box "Dataset Management Software" 
+
+participant DatasetManagementService 
+participant Dataset 
+participant DeploymentService 
+
+end box 
+
+DatasetDeveloper -> DatasetManagementService : request dataset list
+activate DatasetManagementService 
+DatasetManagementService -> Dataset : provide dataset list
+activate Dataset 
+Dataset -> DatasetManagementService : return dataset list
+deactivate Dataset 
+DatasetManagementService -> DatasetDeveloper : response dataset list
+deactivate DatasetManagementService 
+
+DatasetDeveloper -> DatasetManagementService : select specific dataset
+activate DatasetManagementService 
+DatasetManagementService -> Dataset : provide dataset details
+activate Dataset 
+Dataset -> DatasetManagementService : return dataset details
+deactivate Dataset 
+DatasetManagementService -> DatasetDeveloper : response dataset details
+deactivate DatasetManagementService 
+
+DatasetDeveloper -> DeploymentService : deploy dataset
+activate DeploymentService 
+DeploymentService -> Dataset : deploy dataset instance
+activate Dataset 
+Dataset -> DeploymentService : confirm dataset instance deployment
+deactivate Dataset 
+DeploymentService -> DatasetDeveloper : confirm dataset deployment
+deactivate DeploymentService 
+
+DatasetDeveloper -> DatasetManagementService : request dataset instance
+activate DatasetManagementService 
+DatasetManagementService -> Dataset : provide dataset instance details
+activate Dataset 
+Dataset -> DatasetManagementService : return dataset instance details
+deactivate Dataset 
+DatasetManagementService -> DatasetDeveloper : response dataset instance details
+deactivate DatasetManagementService 
+
+@enduml
+```
+
+In the above diagram:
+
+- Dataset Developer interacts with Dataset Management Service to get the list of datasets.
+- Dataset Management Service pulls the list from Dataset and provides the list to Dataset Developer.
+- Dataset Developer selects a specific dataset and requests for its deployment through Deployment Service.
+- Once deployed, Dataset Developer requests the details of the newly created dataset instance again from Dataset Management Service.

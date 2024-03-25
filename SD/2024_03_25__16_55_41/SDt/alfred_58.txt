@@ -1,0 +1,24 @@
+@startuml
+' Defines the actors and their roles
+actor OlderPerson as OP
+participant "ALFRED System" as AS
+participant "Fall Detection Sensor" as FDS
+participant "Emergency Alert System" as EAS
+participant "Specific Contact" as SC
+
+' The chain of interactions
+OP->AS : Uses ALFRED 
+activate AS
+AS->FDS : Activates Fall Detection Sensor 
+activate FDS
+FDS--AS : Sends Sensor Data
+deactivate FDS
+AS -> AS : Analyzes Sensor Data  
+note right : If a fall is detected, Proceed to notify 
+AS->EAS : Sends Emergency Alert
+activate EAS
+deactivate AS
+EAS-->SC : Notifies Specific Contact 
+note left : May include text, call or email feature
+deactivate EAS
+@enduml

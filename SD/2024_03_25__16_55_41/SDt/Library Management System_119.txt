@@ -1,0 +1,28 @@
+@startuml
+title Library Manager Book and Checkout Sequence
+
+participant "Library Manager" as LM
+participant "Book Registry" as BR
+participant "Checkout System" as CS
+
+LM -> BR: SearchBook(bookID)
+activate BR
+BR -> BR: findBookByID(bookID)
+note right: Searches for a book \nby the given ID.
+BR --> LM: ReturnBookInfo
+deactivate BR
+
+LM -> CS: CheckoutBook(custID, bookID)
+activate CS
+CS -> CS: processCheckout(custID, bookID)
+note right: Process the book checkout \nfor the customer.
+CS --> LM: ReturnCheckoutStatus
+deactivate CS
+
+LM -> BR: UpdateBookStatus(bookID, status)
+activate BR
+BR -> BR: updateBook(bookID, status)
+note right: The book status is updated \nto "checked out".
+BR --> LM: ReturnUpdatedBookInfo
+deactivate BR
+@enduml

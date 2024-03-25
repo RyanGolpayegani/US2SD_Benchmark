@@ -1,0 +1,31 @@
+@startuml
+title Add Future Release Dates As DB/IR Administrator
+
+actor "DB/IR Administrator" as admin
+participant "Repository System" as system
+participant "Calendar Management" as calendar
+participant "Notification Service" as notify
+
+admin -> system : Login(credentials)
+activate system
+system -> admin : Authenticate User Role
+admin <-- system : Access as DB/IR Administrator
+
+admin -> system : Select Dataset/Report
+activate system
+system -> admin : Display Dataset/Report Details
+
+admin -> system : Set Future Release Date
+deactivate system
+system -> calendar : Update Release Date
+activate calendar
+calendar --> system : Confirm Update
+
+system -> notify : Schedule Patron Notification
+activate notify
+notify --> system : Confirm Schedule
+
+system -> admin : Confirm Release Date and Notification
+deactivate notify
+deactivate calendar
+@enduml

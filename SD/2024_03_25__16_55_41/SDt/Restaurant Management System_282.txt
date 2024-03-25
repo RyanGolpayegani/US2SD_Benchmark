@@ -1,0 +1,30 @@
+@startuml
+title DeSelect Order Items Sequence Diagram
+
+actor Waiter as wait
+entity OrderManagement as ord
+entity Database as db
+box "Restaurant System" #LightPink 
+  participant OrderItem as itm
+end box
+
+activate wait
+wait -> ord: deselectOrder(int orderID, int itemID)
+activate ord
+ord -> db: getItem(int itemID)
+activate db
+db --> ord: Item
+deactivate db
+ord -> itm: deselectItem(Item item)
+activate itm
+itm -> db : updateItemStatus(int itemID, String status)
+activate db
+db --> itm: Confirmation
+deactivate db
+itm --> ord: Confirmation
+deactivate itm
+ord --> wait: Confirmation
+deactivate ord
+deactivate wait
+
+@enduml

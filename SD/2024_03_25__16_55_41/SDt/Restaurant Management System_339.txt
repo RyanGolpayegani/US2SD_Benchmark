@@ -1,0 +1,22 @@
+@startuml
+title Enter Customer Reviews Sequence Diagram
+
+actor Employee
+participant System
+database ReviewDb
+
+Employee -> System : Login()
+alt Success
+    System --> Employee: Show Dashboard options
+    Employee -> System : Add Review Option()
+    System --> Employee: Request Customer Consent
+    Employee -> System : Add Consent Confirmation()
+    System --> Employee: Request Review Details
+    Employee -> System : Add Review Details()
+    System -> ReviewDb: SaveReview()
+    ReviewDb --> System: Confirm Save Review
+    System --> Employee: Confirm Save Review
+else Failure
+    System --> Employee: Show Error Login 
+end
+@enduml
