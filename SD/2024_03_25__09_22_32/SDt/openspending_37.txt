@@ -1,0 +1,27 @@
+@startuml
+title Normalise Measures by GINI and Related Socioeconomic Indexes
+
+actor API_User as "API User"
+component Data as "Published Dataset"
+component Normaliser as "GINI & Socioeconomic Indexes Normaliser"
+database DB as "Database"
+
+API_User -> Data : Request Data
+Data -> Data : Validate Request
+Data -> DB : Fetch Dataset
+DB --> Data : Return Dataset
+Data --> API_User: Return Requested Dataset
+
+API_User -> Normaliser : Request Normalisation
+activate Normaliser
+
+Normaliser -> Normaliser : Generate Socioeconomic Indexes
+Normaliser -> DB : Fetch GINI values
+DB --> Normaliser : Return GINI values
+
+Normaliser -> Normaliser : Normalise measures
+Normaliser --> API_User : Return Normalised Data
+
+deactivate Normaliser
+
+@enduml

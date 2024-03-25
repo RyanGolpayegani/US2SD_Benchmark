@@ -1,0 +1,26 @@
+@startuml
+
+actor Waiter
+box "Restaurant Management System"
+participant System
+participant Order
+end box
+
+Waiter -> System: selectOrder(orderId)
+activate System
+System --> Order: getOrderItems()
+activate Order
+Order --> System: return orderItems
+deactivate Order
+System --> Waiter: return orderItems
+deactivate System
+Waiter -> System: deselectOrderItem(orderId, itemId)
+activate System
+System -> Order: removeOrderItem(itemId)
+activate Order
+Order --> System: Confirm removal
+deactivate Order
+System --> Waiter: Confirm removal
+deactivate System
+
+@enduml

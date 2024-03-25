@@ -1,0 +1,42 @@
+This is a written overview of the sequence diagram:
+
+1. The Moderator starts a new game and the system responds by creating a new game instance.
+2. The system generates a unique game URL and delivers it to the Moderator.
+3. The Moderator invites Estimators by sharing the unique URL.
+4. The Estimators access the game via the shared URL.
+5. The system verifies the URL and if valid, gives the Estimators access to the game.
+6. The game begins and the system communicates this to the Moderator and the Estimators.
+
+Plant UML code for the sequence diagram:
+
+```
+@startuml
+actor "Moderator" as mod
+participant "Estimation Game System" as sys
+actor Estimators
+
+mod -> sys: Start new game
+activate sys
+sys -> sys: Create new game instance
+sys --> mod: Generate and deliver unique game URL
+deactivate sys
+
+mod -> Estimators: Invite via URL
+
+Estimators -> sys: Access game via URL
+activate sys
+sys -> sys: Validate URL
+
+alt URL is valid
+sys --> Estimators: Grant access to game
+else URL is not valid
+sys --> Estimators: Deny access to game with invalid URL message
+end
+
+sys --> mod: Game begins
+sys --> Estimators: Game begins
+deactivate sys
+@enduml
+```
+
+This PlantUML code will generate a sequence diagram that represents the interactions between Moderator, Estimators, and the Estimation Game System.

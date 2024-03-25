@@ -1,0 +1,28 @@
+@startuml
+
+"DigitalRecords Archivist" -> "System": Request access for admin
+activate "System"
+"System" -> "Database": Verify Archivist's Credentials
+note right: System checks if the Archivist\nhas necessary permissions to grant\nprivileges to other admins
+activate "Database"
+"Database" -> "System": Return Verification Status
+deactivate "Database" 
+
+alt Verification Successful
+    "System" -> "DigitalRecords Archivist": Provide admin list
+    activate "DigitalRecords Archivist"
+    "DigitalRecords Archivist" -> "System": Select an admin to grant privileges
+    deactivate "DigitalRecords Archivist"
+    activate "System"
+    "System" -> "Database": Grant embargo privileges to selected Admin
+    activate "Database"
+    "Database" -> "System": Return Success/Fail message
+    deactivate "Database"
+    "System" -> "DigitalRecords Archivist": Display Success/Fail message
+    deactivate "System"
+else Verification Failed
+    "System" -> "DigitalRecords Archivist": Display error message
+    deactivate "System"
+end
+
+@enduml

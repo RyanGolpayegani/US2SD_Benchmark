@@ -1,0 +1,34 @@
+@startuml
+participant "Archivist" as A
+participant "System" as S
+participant "File" as F
+
+A -> S : Access the system
+activate S
+S --> A: Display dashboard
+
+A -> S : Select a file to manage
+activate A
+A --> S : Sends request to open file
+
+S --> F : Fetch file
+activate F
+F --> S : return file details
+deactivate F
+
+S --> A : Display file details
+deactivate S
+activate A
+
+A -> S : Send request to restrict file
+deactivate A
+activate S
+
+S --> F : Send request to change file status to restricted
+activate F
+F --> S: Change status to restricted and confirm
+deactivate F
+
+S --> A : Display confirmation message
+deactivate S
+@enduml

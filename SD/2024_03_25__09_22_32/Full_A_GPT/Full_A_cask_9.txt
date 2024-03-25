@@ -1,0 +1,32 @@
+To generate a sequence diagram for the provided user story, we need to identify the primary actors and understand the flow of interactions between them. Here's how you could represent it in PlantUML format:
+
+Note: The `->` arrow indicates the direction of the communication/message and `..>` depicts a return message (response). 
+
+```plantuml
+@startuml
+actor "App Developer" as dev
+participant "App Artifact" as artifact
+participant "Dataset Type" as d_type
+participant "Deployment Module" as d_module
+participant "Error Handler" as e_handler
+
+dev -> artifact : Include different version of Dataset Type
+dev -> d_module : Deploy New Version of App
+d_module -> d_type : Check Current Dataset Type
+d_module <- d_type : Existing Dataset Type & Version
+d_module -> d_module  : Compare Dataset Versions
+
+alt Version Conflict
+    d_module -> e_handler : Trigger Version Conflict Error
+    e_handler ..> dev : Return Version Conflict Error   
+else No Conflict 
+    d_module -> d_type : Deploy Different Dataset Version
+    e_handler ..> dev : Deployment Successful
+end
+
+@enduml
+```
+
+Note this diagram makes certain assumptions (for instance, that Dataset Types are able to verify their own versions, that there are defined modules to handle deployment and error handling, etc.). You would need to adjust the diagram to match the actual architecture of your system.
+
+Also, this example ignores the detail of shared dataset instances between apps. That would add complexity to the diagram that may not be necessary for understanding the basic workflow, but could potentially be added if needed.

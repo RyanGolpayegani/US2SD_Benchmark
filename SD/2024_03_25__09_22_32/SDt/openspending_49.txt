@@ -1,0 +1,31 @@
+@startuml
+actor Manager
+entity "System: Restaurant Management" as System
+database "Database" as DB
+entity "Customer Satisfaction Ratio Module" as CSR_Module
+entity "Survey Results Module" as Survey_Results
+
+Manager -> System : Requests Customer Satisfaction Ratio
+activate System
+
+System -> CSR_Module : Triggers Customer Satisfaction Ratio Calculation
+activate CSR_Module
+
+CSR_Module -> Survey_Results : Fetches Survey Results
+activate Survey_Results
+
+Survey_Results -> DB : Pulls Survey Data
+activate DB
+
+DB --> Survey_Results : Returns Survey Data
+deactivate DB
+
+Survey_Results --> CSR_Module : Returns Parsed Survey Data
+deactivate Survey_Results
+
+CSR_Module --> System : Returns Calculated Satisfaction Ratio
+deactivate CSR_Module
+
+System --> Manager : Displays Customer Satisfaction Ratio
+deactivate System
+@enduml

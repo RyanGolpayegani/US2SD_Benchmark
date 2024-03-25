@@ -1,0 +1,17 @@
+@startuml
+actor Trainee
+participant "Authentication System" as Auth
+participant "Training System" as TrainingSys
+participant Database
+
+Trainee -> Auth: Authenticate Request
+Auth -> Database : Validate User
+Database -> Auth : User Validated
+Auth -> Trainee: Authentication Successful 
+
+Trainee -> TrainingSys : Request to Register for Training
+TrainingSys -> Database : Check if User Already Registered today
+Database --> TrainingSys : Return Registration Status
+TrainingSys --> Trainee : Registration Confirmation / Rejection Based on Status
+
+@enduml

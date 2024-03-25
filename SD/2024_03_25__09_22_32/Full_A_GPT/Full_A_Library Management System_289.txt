@@ -1,0 +1,31 @@
+Here is an example of detailed sequence diagram in Plant UML format for this user story.
+
+```plantuml
+@startuml
+title See Due Date
+
+User->Membership: Login
+alt Logged In
+Membership-->User: Access Granted
+User->Membership: Request User Details
+Membership->LibraryDatabase: Fetch User Details
+LibraryDatabase-->Membership: Return User Details
+Membership-->User: Display User Details
+User->LibraryDatabase: Search Borrowed Books
+alt Found
+LibraryDatabase-->User: Show Borrowed Books
+User->LibraryDatabase: Request Due Dates
+LibraryDatabase-->User: Display Due Dates
+else Not Found
+LibraryDatabase-->User: No Borrowed Books Found
+end
+else Access Denied
+Membership-->User: Access Denied
+end
+@enduml
+```
+In this diagram, the main actor is the 'User' aka the member. User logs in to the Membership system. If the login is successful, the User requests for his details which is fetched from the 'LibraryDatabase'. Then the User searches for Borrowed Books from the LibraryDatabase which returns all the borrowed books. Then the User requests the due dates of each book, which is displayed by the LibraryDatabase.
+
+If in any case the User is not found or borrowed books are not found, the respective message is shown to the User. If the login fails, the access is denied.
+
+This sequence diagram lays out the possible sequence of interactions between the User, Membership system and LibraryDatabase in the process of retrieving borrowed books and their due dates.

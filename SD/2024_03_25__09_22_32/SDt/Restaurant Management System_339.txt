@@ -1,0 +1,24 @@
+@startuml
+participant Employee
+participant System
+participant Customer
+
+Employee -> System : login()
+System --> Employee : authentication()
+
+alt authorized
+    Employee -> System : requestCustomerConsent(CustomerId)
+    System --> Customer : requestConsent()
+    alt consentGranted
+        Customer --> System : grantConsent()
+        System --> Employee : consentGranted()
+        Employee -> System : enterReview(CustomerId, Review)
+        System --> Employee : confirmReviewReceived()
+    else consentNotGranted
+        Customer --> System : denyConsent()
+        System --> Employee: consentDenied()
+    end
+else unauthorized
+    System --> Employee : errorMessage()
+end
+@enduml

@@ -1,0 +1,30 @@
+Writing entire sequence diagrams in text can be a little bit complex, but an attempt to describe your sequence diagram for the given user story in PlantUML might look like the following:
+
+```
+@startuml
+title View Citation for Dataset
+
+actor DataReuser
+participant "DatasetWebInterface" as DWI
+participant "DataSet" as DS
+
+DataReuser -> DWI : Request Dataset
+ DWI -> DS : Fetch Dataset Info
+activate DS 
+  alt successful case
+   DS -> DWI : Send Dataset Info
+   DWI -> DataReuser : Display Dataset Info
+   DataReuser -> DWI : Request Example Citation
+   DWI -> DS : Fetch Example Citation
+   DS --> DWI : Return Example Citation 
+   deactivate DS 
+   DWI -> DataReuser : Display Example Citation
+  else unsuccessful case
+   DS --> DWI : Error Message
+   deactivate DS 
+   DWI -> DataReuser : Display Error Message
+  end
+@enduml
+```
+
+**Note:** Please incorporate this code to any PlantUML visualizing environment such as PlantUML Viewer extension for Visual Studio Code or draw.io or any PlantUML GUI based software.

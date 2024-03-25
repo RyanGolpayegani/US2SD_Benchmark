@@ -1,0 +1,27 @@
+@startuml
+actor "Moderator" as mod
+participant "Estimation Game System" as sys
+actor Estimators
+
+mod -> sys: Start new game
+activate sys
+sys -> sys: Create new game instance
+sys --> mod: Generate and deliver unique game URL
+deactivate sys
+
+mod -> Estimators: Invite via URL
+
+Estimators -> sys: Access game via URL
+activate sys
+sys -> sys: Validate URL
+
+alt URL is valid
+sys --> Estimators: Grant access to game
+else URL is not valid
+sys --> Estimators: Deny access to game with invalid URL message
+end
+
+sys --> mod: Game begins
+sys --> Estimators: Game begins
+deactivate sys
+@enduml

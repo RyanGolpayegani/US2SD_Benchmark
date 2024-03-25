@@ -1,0 +1,49 @@
+Since I can't draw diagrams here, I will instead describe the necessary elements that should be included in the sequence diagram you will be drawing. In PlantUML, a sequence diagram would generally start with the `@startuml` command, and end with the `@enduml` command.
+
+Here's the entire description written down:
+
+```
+@startuml
+participant Staff as "Staff"
+participant Database as "Database"
+participant Book as "Book"
+
+activate Staff
+
+Staff -> Database: SearchBookByTitle(title)
+activate Database
+Database -> Book: CheckExistence(title)
+activate Book
+Book --> Database: Result(exist or not)
+deactivate Book
+Database --> Staff: Result(exist or not)
+deactivate Database
+
+alt exist
+    Staff -> Database: MakeReservation(bookID)
+    activate Database
+    Database -> Book: Reserve(bookID)
+    activate Book
+    Book --> Database: Result(success or fail)
+    deactivate Book
+    Database --> Staff: Result(success or fail)
+    deactivate Database
+
+    Staff -> Database: Checkout(bookID)
+    activate Database
+    Database -> Book: RemoveFromAvailableList(bookID)
+    activate Book
+    Book --> Database: Result (success or fail)
+    deactivate Book
+    Database --> Staff: Result (success or fail)
+    deactivate Database
+end
+
+deactivate Staff
+
+@enduml
+```
+
+Of course, the exact details of your sequence diagram may be adjusted according to the particulars of your software system and development method. However, the steps above should serve as a good starting point for creating the PlantUML diagram. 
+
+Remember to replace `(title)` and `(bookID)` with actual titles and IDs according to your system when using this in real life situations.

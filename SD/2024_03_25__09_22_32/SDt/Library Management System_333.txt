@@ -1,0 +1,39 @@
+@startuml
+participant Staff as "Staff"
+participant Database as "Database"
+participant Book as "Book"
+
+activate Staff
+
+Staff -> Database: SearchBookByTitle(title)
+activate Database
+Database -> Book: CheckExistence(title)
+activate Book
+Book --> Database: Result(exist or not)
+deactivate Book
+Database --> Staff: Result(exist or not)
+deactivate Database
+
+alt exist
+    Staff -> Database: MakeReservation(bookID)
+    activate Database
+    Database -> Book: Reserve(bookID)
+    activate Book
+    Book --> Database: Result(success or fail)
+    deactivate Book
+    Database --> Staff: Result(success or fail)
+    deactivate Database
+
+    Staff -> Database: Checkout(bookID)
+    activate Database
+    Database -> Book: RemoveFromAvailableList(bookID)
+    activate Book
+    Book --> Database: Result (success or fail)
+    deactivate Book
+    Database --> Staff: Result (success or fail)
+    deactivate Database
+end
+
+deactivate Staff
+
+@enduml

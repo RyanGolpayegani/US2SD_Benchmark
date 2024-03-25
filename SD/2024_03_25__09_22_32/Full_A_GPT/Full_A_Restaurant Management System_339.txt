@@ -1,0 +1,30 @@
+I am an AI language model and currently, I can't directly generate diagrams including UML diagrams. However, I can help you guiding how you can write the required PlantUML sequence diagram syntax for the user story you mentioned:
+
+```plantuml
+@startuml
+participant Employee
+participant System
+participant Customer
+
+Employee -> System : login()
+System --> Employee : authentication()
+
+alt authorized
+    Employee -> System : requestCustomerConsent(CustomerId)
+    System --> Customer : requestConsent()
+    alt consentGranted
+        Customer --> System : grantConsent()
+        System --> Employee : consentGranted()
+        Employee -> System : enterReview(CustomerId, Review)
+        System --> Employee : confirmReviewReceived()
+    else consentNotGranted
+        Customer --> System : denyConsent()
+        System --> Employee: consentDenied()
+    end
+else unauthorized
+    System --> Employee : errorMessage()
+end
+@enduml
+```
+
+In this sequence diagram, the employee logs in to the system and requests the customer's consent to enter a review about them. If the customer grants consent, the employee enters the review, and the system confirms that the review has been received. If the customer denies consent, the system lets the employee know that consent has been denied. If the employee is unauthorized, the system sends an error message.

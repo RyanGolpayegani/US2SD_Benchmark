@@ -1,0 +1,44 @@
+Sure, here is a sequence diagram for the user story "As a waiter, I want to deselect order items." In Plant UML format we can represent the interaction of different entities such as the waiter, the system, and the order. 
+
+Sample Sequence Diagram:
+
+```plantuml
+@startuml
+
+actor Waiter
+box "Restaurant Management System"
+participant System
+participant Order
+end box
+
+Waiter -> System: selectOrder(orderId)
+activate System
+System --> Order: getOrderItems()
+activate Order
+Order --> System: return orderItems
+deactivate Order
+System --> Waiter: return orderItems
+deactivate System
+Waiter -> System: deselectOrderItem(orderId, itemId)
+activate System
+System -> Order: removeOrderItem(itemId)
+activate Order
+Order --> System: Confirm removal
+deactivate Order
+System --> Waiter: Confirm removal
+deactivate System
+
+@enduml
+```
+
+In this sequence diagram:
+
+- The Waiter first selects an order by passing an orderId to the system.
+- The system then interacts with the Order to get its items.
+- Once the order items are retrieved, the system returns these items to the Waiter.
+- The Waiter then interacts with the system to deselect an item from the order by passing both the orderId and itemId.
+- The system removes the order item, receiving a confirmation from the Order, then returns this confirmation to the Waiter. 
+
+You can copy the above code to an online PlantUML editor and get a graphical visualization of this sequence diagram.
+
+Please make sure to modify it according to the exact needs of your project. I was assuming there are methods like `selectOrder`, `getOrderItems`, `deselectOrderItem`, `removeOrderItem` etc to make the waiter's work feasible.

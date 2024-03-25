@@ -1,0 +1,38 @@
+To generate a Sequence Diagram in Plant UML format for the User Story: "As a manager, I want to see the customer satisfaction ratio", we need to identify the different actors involved and the interactions between them. For this user story, some important actors may include: Manager, System, Customer Satisfaction Ratio Module, Survey Results module and Database.
+
+Given this, here's a possible Sequence Diagram expressed in PlantUML code:
+
+```
+@startuml
+actor Manager
+entity "System: Restaurant Management" as System
+database "Database" as DB
+entity "Customer Satisfaction Ratio Module" as CSR_Module
+entity "Survey Results Module" as Survey_Results
+
+Manager -> System : Requests Customer Satisfaction Ratio
+activate System
+
+System -> CSR_Module : Triggers Customer Satisfaction Ratio Calculation
+activate CSR_Module
+
+CSR_Module -> Survey_Results : Fetches Survey Results
+activate Survey_Results
+
+Survey_Results -> DB : Pulls Survey Data
+activate DB
+
+DB --> Survey_Results : Returns Survey Data
+deactivate DB
+
+Survey_Results --> CSR_Module : Returns Parsed Survey Data
+deactivate Survey_Results
+
+CSR_Module --> System : Returns Calculated Satisfaction Ratio
+deactivate CSR_Module
+
+System --> Manager : Displays Customer Satisfaction Ratio
+deactivate System
+@enduml
+```
+This script will generate a sequence diagram where the Manager interacts with the Restaurant System to fetch the Customer Satisfaction Ratio. Then, the system triggers a Customer satisfaction calculation within a Module. The module gathers data from the Survey Results, interacts with the Database to fetch data, calculates the ratio, and returns it back to the Manager through the system.

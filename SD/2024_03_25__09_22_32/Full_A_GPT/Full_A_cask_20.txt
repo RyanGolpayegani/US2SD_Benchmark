@@ -1,0 +1,37 @@
+This is the Sequence Diagram in Plant UML format for the User Story you've described:
+
+```
+@startuml
+actor DatasetDeveloper
+
+box "App Artifact" #LightBlue
+  participant "Dataset Type Code" as DTC
+  participant "Dataset Instance" as DI
+end box
+
+box "Pipeline" #Pink
+  participant "Sink & Source" as SS
+end box
+
+DatasetDeveloper -> DTC : Deploy Dataset Type
+activate DTC
+DTC --> DatasetDeveloper: Acknowledge Dataset Type Deployment
+deactivate DTC
+
+DatasetDeveloper -> DI : Create Instance
+activate DI
+DI --> DatasetDeveloper : Instance Created
+deactivate DI
+
+DI -> SS : Available as Sink & Source
+activate SS
+SS --> DI: Acknowledge Availability
+
+DatasetDeveloper -> DI: Explore Dataset Instance
+activate DI
+DI --> DatasetDeveloper: Dataset Instance Details
+deactivate DI
+@enduml
+```
+
+This diagram starts with the dataset developer deploying a dataset type, which gets acknowledged by the Dataset Type Code. Then, the developer creates an instance from the new dataset type, and the Dataset Instance confirms its creation. The new instance is then made available as a sink or source in the pipeline, and this availability is confirmed. Lastly, the Dataset Developer explores this new dataset instance, and the details are returned.

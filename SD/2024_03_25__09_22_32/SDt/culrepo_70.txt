@@ -1,0 +1,35 @@
+@startuml
+actor "Library Staff Member" as staff
+
+box "Library System" #LightYellow
+participant "Metadata Customization Component" as mcc
+participant "Metadata Database" as mdb
+end box
+
+staff -> mcc : initiateMetadataCustomization()
+activate mcc
+
+mcc -> mdb : retrieveCurrentFields()
+activate mdb
+
+mdb -> mcc : returnCurrentFields()
+deactivate mdb
+
+mcc -> staff : displayCurrentFields()
+staff -> mcc : selectFieldToModify()
+activate mcc
+
+mcc -> staff : requestNewFieldInformation()
+staff -> mcc : provideNewFieldInformation()
+activate mcc
+
+mcc -> mdb : updateFieldInformation()
+activate mdb
+
+mdb -> mcc : confirmUpdate()
+deactivate mdb
+
+mcc -> staff : displayUpdateConfirmation()
+deactivate mcc
+
+@enduml

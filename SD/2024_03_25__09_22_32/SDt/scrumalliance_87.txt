@@ -1,0 +1,26 @@
+@startuml
+
+title Edit Content of Automatic Email
+
+actor Editor
+entity "Email Management System" as EMS
+database "Email Template DB" as DB
+
+Editor -> EMS : Request to Edit Email(templateID)
+activate EMS
+EMS -> DB : Fetch Email Template(templateID)
+activate DB
+DB -->> EMS : Return Email Template
+deactivate DB
+EMS -->> Editor : Display Email Template(text)
+deactivate EMS
+Editor -> EMS : Send Edited Template(text, templateID)
+activate EMS
+EMS -> DB : Update Email Template(text, templateID)
+activate DB
+DB -->> EMS : Confirm Update
+deactivate DB
+EMS -->> Editor : Confirm Update Success
+deactivate EMS
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+'Replace participant name and title as needed
+actor Researcher
+participant RepositoryInterface
+participant RepositoryDatabase
+
+Researcher -> RepositoryInterface: Request Access to Repository
+RepositoryInterface -> RepositoryDatabase: Validate Researcher Access
+RepositoryDatabase --> RepositoryInterface: Grant Access
+
+group Upload Document
+    Researcher -> RepositoryInterface: Upload Document
+    RepositoryInterface -> RepositoryDatabase: Save Document in Database
+    RepositoryDatabase --> RepositoryInterface: Confirm Upload
+    RepositoryInterface --> Researcher: Notify Document Uploaded
+end
+
+group Download Document
+    Researcher -> RepositoryInterface: Request Document
+    RepositoryInterface -> RepositoryDatabase: Fetch Document
+    RepositoryDatabase --> RepositoryInterface: Send Document
+    RepositoryInterface --> Researcher: Show Document
+end
+
+group Share Comment
+    Researcher -> RepositoryInterface: Post Comment
+    RepositoryInterface -> RepositoryDatabase: Save Comment in Database related to document
+    RepositoryDatabase --> RepositoryInterface: Confirm Comment added
+    RepositoryInterface --> Researcher: Notify Comment Posted
+end
+
+@enduml

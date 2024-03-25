@@ -1,0 +1,27 @@
+From the description, there's no specific indication on how a member asks for suggestions or how the system is supposed to handle it. However, one possible scenario could be that a member requests for a suggestion, the system retrieves a random book and returns the suggestion to the member. Here is a PlantUML diagram for this:
+
+```
+@startuml
+title: Random Book Suggestion Workflow
+
+actor Member
+participant System
+
+Member -> System : RequestBookSuggestion()
+activate System
+
+System -> System : SelectRandomBook()
+note right : System selects a random book from the database
+activate System
+
+System --> System : ReturnRandomBook()
+deactivate System
+
+System --> Member: BookSuggestion(randomBook)
+deactivate System
+note right : System sends a random book suggestion to the member
+
+@enduml
+```
+
+This sequence diagram represents an interaction between a `Member` actor and the `System`. When the `Member` sends a `RequestBookSuggestion()` message to the `System`, it becomes focused (represented by the vertical rectangle on the `System` lifeline). The `System` then sends a `SelectRandomBook()` message to itself to select a book from the database. After that, it sends `ReturnRandomBook()` message to itself indicating that it's done with the selection process. Finally, it sends a `BookSuggestion()` message back to the `Member` with the selected book and it's no longer focused after that.

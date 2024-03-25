@@ -1,0 +1,28 @@
+In order to write a Sequence Diagram in PlantUML, you'll first need to identify the different primary objects/actors involved in your order system and the interactions between them. 
+
+Assuming you have a "User", "Waiter", "System", "Kitchen" and "Inventory", a very basic sequence diagram for the user story "As a waiter, I want to see availability of the order items." could look something like this:
+
+```plantuml
+@startuml
+
+actor Waiter
+participant System
+participant Kitchen 
+participant Inventory 
+
+Waiter -> System : check item availability
+activate System
+System -> Inventory : Request item status
+activate Inventory
+Inventory --> System : Return item status
+deactivate Inventory
+System --> Waiter : Display item status
+deactivate System
+
+@enduml
+```
+This diagram works around the assumption that the waiter interacts with a system to check inventory. The system then communicates with the Kitchen or Inventory (depending on your setup) to get the status of items and relay that information back to the waiter.
+
+Remember that this diagram is very simplified and your actual scenario may contain more actors and interactions. For example, you might include the steps where the user places an order and the item status is updated accordingly.
+
+Also, you might want to consider whether the 'check item availability' action is done item by item or if the waiter can do it for the entire order in one go. This would change how the interactions are modeled in your sequence diagram.

@@ -1,0 +1,32 @@
+Below is a basic Plant UML sequence diagram for this user story: "As a trainee, I want to limit to one registration per day per authenticated user, so that we don't have duplicate spaces."
+
+Note: Picture or visual image of diagram cannot be shown here but you can copy the code and paste it to Plant UML online tool to visualize the sequence diagram:
+
+```plantuml
+@startuml
+actor Trainee
+participant "Authentication System" as Auth
+participant "Training System" as TrainingSys
+participant Database
+
+Trainee -> Auth: Authenticate Request
+Auth -> Database : Validate User
+Database -> Auth : User Validated
+Auth -> Trainee: Authentication Successful 
+
+Trainee -> TrainingSys : Request to Register for Training
+TrainingSys -> Database : Check if User Already Registered today
+Database --> TrainingSys : Return Registration Status
+TrainingSys --> Trainee : Registration Confirmation / Rejection Based on Status
+
+@enduml
+```
+
+Here's a brief explanation of the sequence:
+
+1. The `Trainee` initiates the procedure by making an authentication request.
+2. The `Authentication System` validates the user via the `Database`.
+3. Upon successful validation, the `Trainee` now makes a request to the `Training System` to register for a training.
+4. The `Training System` checks the `Database` to verify if that user has already registered for that particular day.
+5. The `Database` gives back the registration status to the `Training System`.
+6. Depending on the previous status, the `Training System` will either confirm or deny the registration to the `Trainee`. If the user had already registered that day, then the registration will be rejected, otherwise, it will be confirmed.

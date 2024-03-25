@@ -89,17 +89,13 @@ for index, row in N_Random_US.iterrows():
     # Different Prompts 
     # Zero-Shot
     # prompt = "This is my user story: " + user_story + " generate detailed Sequence Diagram in Plant UML format"
+
     # DSP US + Prj desc -> Bart
-    prompt = "This is my user story: "\
-          + user_story + \
-        " generate detailed Sequence Diagram in Plant UML\
-              format" \
-              + "\n Here is project describtion of the \
-            project that this user story belongs to:" +\
-            prj_desc
-    
-
-
+    prompt = "This is a project description:\n"\
+    + prj_desc + "\nBased on this project description\
+     generate detailed Sequence Diagram in Plant UML\
+          format for this User Story:"\
+          + user_story 
 
     # Call GPT API
     completion = openai.chat.completions.create(
