@@ -1,0 +1,27 @@
+@startuml
+participant "Reader (User)" as R
+participant "Book" as B
+participant "CommentSection" as CS
+participant "Database" as DB
+
+R -> B : Select Book
+activate B
+B -> CS : Open Comment Section
+activate CS
+
+R -> CS : Write Comment
+CS -> CS : Check Validity of Comment
+
+alt Comment Valid
+    CS -> DB : Save Comment to Database
+    activate DB
+    DB --> CS : Confirmation of Saved Comment
+    deactivate DB
+    CS --> R : Show Success Message
+else Comment Invalid
+    CS --> R : Show Error Message
+end
+
+deactivate CS
+deactivate B
+@enduml

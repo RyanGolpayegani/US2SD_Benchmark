@@ -1,0 +1,24 @@
+@startuml
+title OlderPerson Uses ALFRED to Learn About Art Expositions/museums
+
+actor OlderPerson as OP
+participant "ALFRED" as ALFRED
+participant "Art Expositions/Museum Info Profiler" as AEMP
+database "Art Expositions/Museum Database" as AED
+
+OP -> ALFRED : Request(art expositions/museum information)
+activate ALFRED
+ALFRED -> AEMP : GetUnseenExpositions /MuseumInformation(OP)
+activate AEMP
+
+AEMP -> AED : FetchUnseenExpositions /MuseumInformation(OP)
+activate AED
+AED --> AEMP : ArtExpositions/MuseumInformation
+deactivate AED
+
+AEMP --> ALFRED : ArtExpositions /MuseumInformation
+deactivate AEMP
+ALFRED -> OP : Provide(ArtExpositions/MuseumInformation)
+
+deactivate ALFRED
+@enduml

@@ -1,0 +1,44 @@
+Based on the user story provided, the following is a sequence diagram in PlantUML format:
+
+```plantuml
+@startuml
+
+actor "DigitalRecords Archivist" as A
+participant "Authorization System" as B
+participant "Repository Admin" as C
+
+A -> B: verifyAdminIdentity()
+activate B
+
+B --> A: identityVerified()
+
+A -> B: grantEmbargoPrivileges()
+activate B
+
+note right: The system updates the user's role to include embargo privileges.
+
+B --> C: updateRole()
+activate C
+C -> C: addEmbargoPrivileges()
+deactivate C
+
+C --> A: privilegesGranted()
+
+@enduml
+```
+
+In this sequence:
+
+1) The DigitalRecords Archivist interacts with the Authorization System to verify their admin identity.
+
+2) The Authorization System confirms the identity has been verified.
+
+3) The DigitalRecords Archivist then requests to grant embargo privileges.
+
+4) The system updates the user's role to include embargo privileges.
+
+5) The system signals Repository Admin to update their role.
+
+6) The Repository Admin adds embargo privileges.
+
+7) The Repository Admin confirms to the DigitalRecords Archivist that the privileges have been granted.

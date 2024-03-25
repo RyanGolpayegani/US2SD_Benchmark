@@ -1,0 +1,29 @@
+@startuml
+title FABS User Error Submission
+
+actor User
+entity "FABS System" as FABS
+database "Server" as DB
+
+User -> FABS: Submit data
+activate FABS
+
+FABS -> DB: Validate submission data
+activate DB
+
+DB -->> FABS: Validation result
+deactivate DB
+
+alt Errors Found
+    FABS -> DB: Get corresponding errors
+    activate DB
+    DB -->> FABS: FABS errors descriptions
+    deactivate DB
+    FABS -->> User: Display errors  
+deactivate FABS
+else No Errors
+    FABS -->> User: Data submitted successfully
+    deactivate FABS
+end
+
+@enduml

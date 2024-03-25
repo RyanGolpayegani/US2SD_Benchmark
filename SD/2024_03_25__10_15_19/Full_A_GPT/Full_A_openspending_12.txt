@@ -1,0 +1,23 @@
+In Plant UML, the syntax for sequence diagrams may not be understandable to those not familiar with coding. Here's an outlined version of the Sequence Diagram and mocked-up implementation of the given user story:
+
+```plantuml
+User -> DataPackager: Request to Import Data from Google Sheets
+DataPackager -> GoogleAPI: Send Request for Authorization
+GoogleAPI --> DataPackager: Request for Google Sheets Access
+
+alt Account Authorized
+    GoogleAPI --> DataPackager: Send Access Token
+    DataPackager --> User: Show list of Google Sheets
+    User -> DataPackager: Select Sheet and Confirm Import
+    DataPackager -> GoogleAPI: Send Request to Fetch Data using Access Token
+    GoogleAPI --> DataPackager: Send requested Data
+    DataPackager -> Database: Upload Imported Data
+    Database --> DataPackager: Confirm Data Stored
+    DataPackager --> User: Confirm Imported, converted and Data is ready for use 
+else Account Not Authorized
+    GoogleAPI --> DataPackager: Deny Access
+    DataPackager --> User: Request Manual Data Upload
+end
+```
+
+This sequence insinuates the user requesting the importation of data from a Google Sheets document to the Data Packager. It then proceeds to request authorization of such action from the Google API. Upon authorization, it will fetch the required data, convert it and store it in the database for use by the data packager. If authorization fails, it asks the user to upload the data manually.

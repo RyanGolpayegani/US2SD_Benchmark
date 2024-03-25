@@ -1,0 +1,40 @@
+Due to the limitations of this kind of platform, I cannot directly draw a sequence diagram here. However, I can provide you the PlantUML code that depicts the sequence diagram for the stated user story:
+
+```plantuml
+@startuml
+title FABS User Error Submission
+
+actor User
+entity "FABS System" as FABS
+database "Server" as DB
+
+User -> FABS: Submit data
+activate FABS
+
+FABS -> DB: Validate submission data
+activate DB
+
+DB -->> FABS: Validation result
+deactivate DB
+
+alt Errors Found
+    FABS -> DB: Get corresponding errors
+    activate DB
+    DB -->> FABS: FABS errors descriptions
+    deactivate DB
+    FABS -->> User: Display errors  
+deactivate FABS
+else No Errors
+    FABS -->> User: Data submitted successfully
+    deactivate FABS
+end
+
+@enduml
+```
+
+This FABS User Error Submission diagram explains the process:
+
+- The user submits data to the FABS System.
+- FABS validates the submission data with the server/database.
+- If errors are found, FABS retrieves the corresponding errors from the server, and these FABS error descriptions are shown to the user.
+- If no errors are detected in the submission data, a "Data submitted successfully" message is shown to the user.

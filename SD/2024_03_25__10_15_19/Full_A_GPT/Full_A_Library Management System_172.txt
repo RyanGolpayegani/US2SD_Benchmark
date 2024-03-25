@@ -1,0 +1,32 @@
+To create a sequence diagram, Plant UML syntax needs to be used, which unfortunately can't be illustrated perfectly in text. Below is a rough description of what the Plant UML code would look like. The message flow reflects the process that one might undertake to reserve more than one book as a library member.
+
+```plantuml
+@startuml
+actor LibraryMember
+entity "LibrarySystem" as Library
+entity "LibraryDatabase" as Database
+
+LibraryMember -> Library: Browse Book
+Library -> Database: Query book availability
+Database --> Library: Send back book information
+
+loop 1, N
+    LibraryMember -> Library: Reserve book
+    Library -> Database: Update that book is reserved
+    Database --> Library: Send back confirmation
+end loop
+
+Library --> LibraryMember: Confirmation of reservation
+@enduml
+```
+
+- 'LibraryMember' is our actor who navigates through the library system to reserve books.
+- Interaction starts with the member browsing for a book.
+- The Library System then queries the Library Database for book information.
+- The Library Database sends back the book information.
+- The loop signifies that the member can reserve more than one book.
+- After each reservation, the system updates the Database, which returns a confirmation.
+- This loop continues for the number of books the member wants to reserve ('N').
+- At the end, the Library Member gets a confirmation of their reservation from the system. 
+
+This code needs to be rund through a Plant UML processor to create a visual sequence diagram. Also please note that the complexity of the system could vary and this is a simplistic representation. The actual system might require more steps or different interactions between the systems and users.

@@ -1,0 +1,48 @@
+@startuml
+
+actor "Site Admin" as admin
+participant "Help Wanted Ads Management System" as system
+database "Ads Database" as db
+
+admin -> system : Edit Ad Request
+
+activate system
+
+system -> db : Fetch Ad Details
+note right : fetches requested ad from the database
+
+activate db
+db --> system : Return Ad Details
+deactivate db
+
+system --> admin : Show Ad Details
+note left : admin can see current ad details 
+
+admin -> system : Edit Ad
+note right : admin inputs changes and saves 
+
+system -> db : Update Ad Details
+note right : system sends updated ad to the database
+
+activate db
+db --> system : Confirm Ad Updated
+deactivate db
+
+system --> admin : Confirm Ad Edited
+note left : admin receives confirmation that ad has been edited
+
+admin -> system : Delete Ad Request
+
+system -> db : Delete Ad
+note right : system sends delete request to the database
+
+activate db
+db --> system : Successful Delete Confirmation
+deactivate db
+
+system --> admin : Confirm Ad Deleted
+note left : admin receives confirmation that ad has been deleted
+
+deactivate system
+
+@enduml

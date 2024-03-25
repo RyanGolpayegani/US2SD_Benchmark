@@ -1,0 +1,21 @@
+@startuml
+title Add Data in Bulk to Datastore
+
+actor "Data Publishing User" as user
+boundary "Command Line Interface" as cli
+participant "Python Client" as client
+database "Datastore" as datastore
+
+user -> cli : Input command & data in bulk
+activate cli
+cli -> client : Pass command & data
+activate client
+client -> datastore : ADD data in bulk
+activate datastore
+datastore --> client : Acknowledge upload
+deactivate datastore
+client --> cli : Return upload status
+deactivate client
+cli --> user : Show upload status message
+deactivate cli
+@enduml

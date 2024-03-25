@@ -1,0 +1,34 @@
+In Plant UML, the sequence diagram will be structured as follows:
+
+```
+@startuml
+participant "App Developer" as D
+participant "Deployment Process" as P
+participant "Shared Dataset Instance" as DS
+participant "Conflicting Version App" as CVA
+
+D -> P: Request App Deployment
+activate P
+P -> DS: Check Dataset Version Compatibility
+activate DS
+DS -> DS: Version Matching
+DS -> P: Return Status (Compatible / Incompatible)
+deactivate DS
+alt Incompatible Version
+  P -> D: Return "Version Conflict Error"
+  deactivate P
+else Compatible Version
+  P -> P: Continue Deployment  
+  deactivate P
+end
+@enduml
+```
+
+In this diagram, the following sequence is defined:
+
+1. The developer (D) requests the deployment of their application.
+2. The deployment process (P) checks if their data set version is compatible with the shared data set instance (DS).
+3. The shared data set instance (DS) takes care of matching versions internally.
+4. The shared data set instance (DS) returns a status message to the deployment process (P) indicating whether the data set versions are compatible or not.
+5. If they are not compatible, the deployment process (P) returns an error message "Version Conflict Error" to the developer (D) and stops the deployment.
+6. If they are compatible, the deployment process (P) continues with the deployment.

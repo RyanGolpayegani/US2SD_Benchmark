@@ -1,0 +1,36 @@
+@startuml
+title "Sequence Diagram: Expired Books and Notification"
+
+actor Librarian as L
+boundary "Library Application" as App
+control "Book Controller" as BC
+entity "Book" as B
+database "Book Database" as DB
+
+L -> App : Request list of expired books
+App -> BC : Forward request to controller
+BC -> B : Request expired books
+B -> DB : Verify records 
+DB -> B : Return list of expired books
+B -> BC : Return list to controller
+BC -> App : Return list to application
+App -> L : Show list of expired books
+
+L -> App : Selects a book for notification
+App -> BC : Forward book selection
+BC -> B : Request details for selected book
+DB <-> B : Verify and Return book details
+B -> BC : Return book details to controller
+BC -> App : Return book details to application
+App -> L : Show book details
+
+L -> App : Request to send notification
+App -> L : Confirm notification sending
+L -> App : Confirms notification sending
+App -> BC : Forward notification request
+BC -> B : Request notification sending
+DB <-> B : Update book status 
+BC -> App : Confirm successful notification
+App -> L : Show notification success message
+
+@enduml

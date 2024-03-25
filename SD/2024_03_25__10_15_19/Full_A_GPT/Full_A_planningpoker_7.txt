@@ -1,0 +1,43 @@
+Generate a detailed Sequence diagram in Plant UML format:
+
+```
+@startuml
+title Item Update Flow
+
+actor Moderator
+
+box "System" #LightBlue
+  participant "Item Database"
+  participant "Estimation List"
+end box
+
+== Update Item == 
+
+Moderator -> Estimation List: Selects an item to edit
+activate Estimation List
+
+Estimation List -> Item Database: Fetches selected item details
+activate Item Database
+
+Item Database -> Estimation List: Returns item details
+deactivate Item Database 
+
+Estimation List -> Moderator: Shows item details
+deactivate Estimation List
+
+Moderator -> Estimation List: Edits item details
+activate Estimation List
+
+Estimation List -> Item Database: Update item in database with new details
+activate Item Database
+
+Item Database --> Estimation List: Confirmation of updated item
+deactivate Item Database
+
+Estimation List -> Moderator: Confirmation of updated item
+deactivate Estimation List
+
+@enduml
+```
+
+In this sequence diagram, the flow starts with the Moderator selecting an item to update from the Estimation List. The list then requests the item details from the Item Database, which then returns the requested details. The Estimation List then shows these details to the Moderator, who is able to make the necessary edits. These edited item details are then sent back to the Item Database to update the selected item. Once updated, the Database sends confirmation to the Estimation List which then confirms the update to the Moderator.

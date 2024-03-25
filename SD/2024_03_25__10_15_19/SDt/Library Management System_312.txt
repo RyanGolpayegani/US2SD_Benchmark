@@ -1,0 +1,28 @@
+@startuml
+actor Member
+entity "Online Reservation System" as ORS
+database "Book Database" as BD
+
+Member -> ORS : Update Book Reservation
+activate ORS
+ORS -> BD : Validate Member
+activate BD
+BD --> ORS : Member Validated
+deactivate BD
+ORS -> BD : Check Book Availability
+activate BD
+BD --> ORS : Book Availability Status
+deactivate BD
+alt Book is available
+  ORS -> Member : Show Update Reservation Form
+  Member -> ORS : Submit Updated Reservation Details
+  ORS -> BD : Update Reservation In Database
+  activate BD
+  BD --> ORS : Reservation Updated Successfully
+  deactivate BD
+  ORS -> Member : Show Success Message
+else Book is not available
+  ORS -> Member : Show Error Message
+end
+deactivate ORS
+@enduml

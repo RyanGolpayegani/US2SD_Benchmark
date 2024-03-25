@@ -1,0 +1,29 @@
+@startuml
+autonumber
+actor Researcher
+participant "Repository System" as RS
+participant "Group Repository" as GR
+
+Researcher -> RS: Login(Credentials)
+activate RS
+RS --> Researcher: AuthenticationResult
+deactivate RS
+
+Researcher -> RS: Request(GroupRepository)
+activate RS
+RS -> GR: Request(GroupRepository)
+activate GR
+GR --> RS: Response(GroupRepositoryContent)
+deactivate GR
+RS --> Researcher: Response(GroupRepositoryContent)
+deactivate RS
+
+Researcher -> RS: Submit(NewPaper)
+activate RS
+RS -> GR: Insert(NewPaper)
+activate GR
+GR --> RS: InsertionResult
+deactivate GR
+RS --> Researcher: Response(InsertionResult)
+deactivate RS
+@enduml

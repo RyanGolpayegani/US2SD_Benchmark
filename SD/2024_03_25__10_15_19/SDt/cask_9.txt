@@ -1,0 +1,21 @@
+@startuml
+participant "App Developer" as D
+participant "Deployment Process" as P
+participant "Shared Dataset Instance" as DS
+participant "Conflicting Version App" as CVA
+
+D -> P: Request App Deployment
+activate P
+P -> DS: Check Dataset Version Compatibility
+activate DS
+DS -> DS: Version Matching
+DS -> P: Return Status (Compatible / Incompatible)
+deactivate DS
+alt Incompatible Version
+  P -> D: Return "Version Conflict Error"
+  deactivate P
+else Compatible Version
+  P -> P: Continue Deployment  
+  deactivate P
+end
+@enduml

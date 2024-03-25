@@ -1,0 +1,22 @@
+@startuml
+actor Librarian
+boundary LibrarySystem
+control MemberListController
+entity Member
+database MemberDB
+
+Librarian -> LibrarySystem : Requests to see the member list
+activate LibrarySystem
+LibrarySystem -> MemberListController : Forward request
+activate MemberListController
+
+MemberListController -> MemberDB : Query list of members
+activate MemberDB
+MemberDB --> MemberListController : Returns members data
+deactivate MemberDB
+
+MemberListController --> LibrarySystem : Return list of members
+deactivate MemberListController
+LibrarySystem --> Librarian : Displays members list
+deactivate LibrarySystem
+@enduml

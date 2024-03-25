@@ -1,0 +1,28 @@
+This is a sequence diagram in PlantUML format that describes the interactions for the given user story.
+
+```
+@startuml
+participant "Moderator" as M
+participant "Game System" as GS
+participant "Database" as DB
+participant "File System" as FS
+
+M -> GS : Request Transcript
+activate GS
+GS -> DB : Fetch Game Data
+activate DB
+DB -->> GS : Return Game Data
+deactivate DB
+GS -> GS : Convert Data to HTML
+GS -> FS : Write HTML to File
+activate FS
+FS -->> GS : Confirm File Write
+deactivate FS
+GS --> M : Return File Path/Download
+deactivate GS
+@enduml
+```
+
+This sequence diagram involves 4 participants: the Moderator, the Game System, a Database, and a File System.
+
+The sequence starts when the Moderator requests a transcript from the Game System. The system then fetches the game data from the Database. Once the game data is fetched and returned, the Game System converts the data into HTML format. This HTML is then written to a file in the File System. After the file has been written, the File System confirms back to the Game System. The Game System then returns the file path or download link to the Moderator.

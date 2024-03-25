@@ -1,0 +1,29 @@
+# Sequence Diagram in PlantUML
+
+```puml
+@startuml
+actor Curator
+participant Repository as Repo
+participant RemoteStorageSite as RSS
+database Collection as C
+Curator -> Repo : Queue collection for replication
+activate Repo
+Repo -> C : Pick a collection for replication
+activate C
+C --> Repo : Deliver the needed collection
+deactivate C
+Repo -> RSS : Begin replication
+activate RSS
+RSS --> Repo : Confirm replication
+deactivate RSS
+Repo -> C : Update the replication status
+activate C
+C --> Repo : Confirm status update
+deactivate C
+Repo --> Curator : Display replication status on Staff Interface 
+deactivate Repo
+@enduml
+```
+In this sequence diagram, it starts with the collection curator queuing a collection for replication using the repository. The repository then reaches out to the collection database and fetches the necessary information for replication. It then transmits these details to the Remote Storage Site (RSS) to begin replication.
+
+Upon successful replication, RSS informs back to the repository. Now, the repository updates the replication status in the collection database. After updating the status, the repository confirms this update, then displays the replication status on the Staff Interface for the collection curator to see.

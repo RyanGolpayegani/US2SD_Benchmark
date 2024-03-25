@@ -1,0 +1,44 @@
+The Plant UML code for your sequence diagram will be:
+
+```
+@startuml
+actor Member
+entity "Online Reservation System" as ORS
+database "Book Database" as BD
+
+Member -> ORS : Update Book Reservation
+activate ORS
+ORS -> BD : Validate Member
+activate BD
+BD --> ORS : Member Validated
+deactivate BD
+ORS -> BD : Check Book Availability
+activate BD
+BD --> ORS : Book Availability Status
+deactivate BD
+alt Book is available
+  ORS -> Member : Show Update Reservation Form
+  Member -> ORS : Submit Updated Reservation Details
+  ORS -> BD : Update Reservation In Database
+  activate BD
+  BD --> ORS : Reservation Updated Successfully
+  deactivate BD
+  ORS -> Member : Show Success Message
+else Book is not available
+  ORS -> Member : Show Error Message
+end
+deactivate ORS
+@enduml
+```
+
+Based on this code, the sequence flow will start with the Member, who will interact with the Online Reservation System (ORS) to update a book reservation. 
+
+This request will then cause the ORS to validate the member by checking the Book Database (BD), which will validate the member and send response back to ORS.
+
+Once the member's identity has been verified, the ORS will then check if the selected book is available.
+
+There are two possible outcomes in a sequence diagram: either the book is available (in which case, the ORS presents the member with an update form) or it's not (in which case, the ORS displays an error message). 
+
+If the book is available and the member submits the updated reservation details, the ORS will then communicate with the BD again to update the reservation, at which point the BD will confirm that the update has been successful, and the ORS will show a success message to the member. 
+
+Finally, ORS is deactivated, thereby ending the sequence.

@@ -1,0 +1,28 @@
+@startuml
+title Check Out a Book Process
+
+actor Staff
+participant LibrarySystem
+participant Database
+
+Staff -> LibrarySystem: CheckOut(BookID)
+activate LibrarySystem
+
+LibrarySystem -> Database: IsBookReservedByStaff(BookID, StaffID)
+activate Database
+Database -->> LibrarySystem: True
+deactivate Database
+
+alt True
+    LibrarySystem -> Database: CheckOutBook(BookID, StaffID)
+    activate Database
+    Database -->> LibrarySystem: SuccessMessage
+    deactivate Database
+    
+    LibrarySystem -->> Staff: SuccessMessage
+else False
+    LibrarySystem -->> Staff: ErrorMessage
+end
+deactivate LibrarySystem
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+actor Trainee
+entity "Authentication System" as Auth
+entity "Registration System" as Register
+
+Trainee -> Auth : Login
+Auth -> Trainee : Retrieve User ID
+
+Trainee -> Register : Initiate Registration
+activate Register
+Register -> Auth : Check User ID & Time of Last Registration
+Auth -> Register : Return Time of Last Registration
+
+alt User last registered less than 24 hours ago
+    Register -> Trainee: Restrict from Registering 
+    deactivate Register
+else User last registered more than 24 hours ago
+    Register -> Trainee: Proceed Registration 
+    deactivate Register
+end
+@enduml

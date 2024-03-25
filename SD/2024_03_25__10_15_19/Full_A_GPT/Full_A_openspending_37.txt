@@ -1,0 +1,39 @@
+This will involve creating a sequence diagram that demonstrates how the API user interacts with the system to normalize measures by GINI and related socio-economic indexes. The following is an example of what your sequence diagram might look like in PlantUML:
+
+```sequence diagram
+@startUML
+
+title Normalize Measures by GINI Service
+
+actor API_User
+control NormalizationController
+entity DatasetService as DS
+database Database as DB
+
+-> API_User : Sends normalization request
+API_User -> NormalizationController : /normalize/{measures}
+activate NormalizationController
+NormalizationController -> DS : getDataset({measures})
+activate DS
+DS -> DB : FetchData({measures})
+activate DB
+DB --> DS : ReturnData
+deactivate DB
+DS --> NormalizationController : Dataset
+deactivate DS
+NormalizationController -> NormalizationController : calculateGINI(Dataset)
+NormalizationController --> API_User : Return Normalized Data
+deactivate NormalizationController
+
+@endUML
+```
+The above sequence represents these steps:
+
+1. An API user sends an HTTP request to normalize certain measures.
+2. The NormalizationController gets the request and sends a call to DatasetService to fetch the necessary data.
+3. DatasetService interacts with the Database to fetch the necessary information.
+4. The Database returns the requested data to the DatasetService.
+5. The DatasetService returns the dataset to the NormalizationController.
+6. The NormalizationController performs the GINI normalization on the data fetched.
+7. The results are returned back to the API User.
+The above scenario is just an example and the diagram could change based on the actual system implementation.

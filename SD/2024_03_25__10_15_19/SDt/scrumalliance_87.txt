@@ -1,0 +1,47 @@
+@startuml
+Title: Sequence Diagram for Email Content Editing Process
+
+autonumber
+actor SiteEditor as "Site Editor"
+entity CMS as "Content Management System"
+entity EmailService as "Email Service"
+database DB as "Database"
+
+SiteEditor -> CMS : Log In
+activate CMS
+
+CMS --> SiteEditor : Display Dashboard
+activate SiteEditor
+
+SiteEditor -> CMS : Navigate to Automated Email Content
+CMS --> DB : Retrieve Email Templates
+activate DB
+DB --> CMS : Return Email Templates
+deactivate DB
+
+CMS --> SiteEditor : Show Email Templates
+deactivate SiteEditor
+activate SiteEditor
+
+SiteEditor -> CMS : Select & Edit CS/PO Email Template
+activate CMS
+
+CMS --> DB : Update CS/PO Email Template
+activate DB
+DB --> CMS : Confirm Update
+
+CMS --> SiteEditor : Confirm Template Edit Success
+deactivate CMS
+activate SiteEditor
+
+SiteEditor -> EmailService : Direct Email Service to send test email
+activate EmailService
+
+EmailService -> DB : Get Modified Email Template
+activate DB
+DB -> EmailService : Return Updated Email Template
+deactivate DB
+
+EmailService --> SiteEditor : Send Test Email based on updated Template
+deactivate SiteEditor
+@enduml

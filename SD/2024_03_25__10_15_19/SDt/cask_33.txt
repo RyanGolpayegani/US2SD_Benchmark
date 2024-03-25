@@ -1,0 +1,19 @@
+@startuml
+actor PluginDeveloper
+entity PluginSystem
+database PluginDatabase
+entity DatasetInstance
+entity DatasetType
+entity PipelineSystem
+
+PluginDeveloper -> PluginSystem: DeployPlugin()
+PluginSystem -> PluginDatabase: CheckCurrentVersion()
+PluginDatabase --> PluginSystem: CurrentVersion()
+PluginSystem -> DatasetInstance: UpgradeData(newVersion)
+DatasetInstance -> DatasetType: ApplyUpgrade()
+DatasetType --> DatasetInstance: Upgraded()
+DatasetInstance --> PluginSystem: UpgradeCompleted()
+PluginSystem -> PipelineSystem: UpdatePipeline()
+PipelineSystem --> PluginSystem: PipelineUpdated()
+PluginSystem --> PluginDeveloper: DeploymentSuccessful()
+@enduml

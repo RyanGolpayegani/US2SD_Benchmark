@@ -1,0 +1,19 @@
+@startuml
+actor Waiter
+
+database OrderDatabase
+database ItemDatabase
+
+Waiter -> OrderDatabase: Retrieve orders
+activate OrderDatabase
+OrderDatabase --> Waiter: Provide orders
+deactivate OrderDatabase
+
+loop for each order
+    Waiter -> ItemDatabase: Check item availability(order.item)
+    activate ItemDatabase
+    ItemDatabase --> Waiter: Return availability status
+    deactivate ItemDatabase
+end
+
+@enduml

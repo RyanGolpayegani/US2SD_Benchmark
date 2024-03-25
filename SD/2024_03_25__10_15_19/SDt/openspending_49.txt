@@ -1,0 +1,29 @@
+@startuml
+
+actor "Data Consuming User" as user
+participant "Search Interface" as search
+participant "Database" as db
+participant "Dataset" as dataset
+
+user -> search : Enter Search Terms
+activate search
+
+search -> db: Query Search Terms
+activate db
+
+db -> db: Search Database
+note right: Search involves dataset title and metadata
+
+db -> search: Return Matching Data
+destroy db
+
+search -> user: Display Results
+destroy search
+
+user -> dataset: Select Dataset
+activate dataset
+
+dataset -> user: Provide Dataset Access
+destroy dataset
+
+@enduml

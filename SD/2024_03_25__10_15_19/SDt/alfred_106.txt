@@ -1,0 +1,60 @@
+@startuml
+title Health Tip Application Sequence Diagram
+participant Client as A
+participant Server as B
+participant Database as C
+
+box "Client Side" #LightBlue
+  participant "Older Person" as D
+end box
+
+box "Server Side" #LightYellow
+  participant "Health Tips Generator" as E
+end box
+
+box "Database" #LightGreen
+  participant "Health Tips for Elderly Database" as F
+end box
+
+note right of A
+  An older person interacts 
+  with the client. 
+end note
+
+A -> B : Request to view health tips
+activate B
+note right of B
+  Server processes 
+  the request. 
+end note
+
+B -> C : Fetch health tips data
+activate C
+note right of C
+  Database fetches 
+  health tips. 
+end note
+
+C --> B : Returns health tips data
+note right of B
+  Server receives 
+  health tips data. 
+end note
+B --> A : Sends back health tips data
+note right of A
+  Client receives the
+  health tips.
+end note
+
+D -> E : Sends health issue details
+E -> F : Fetches specific health tips
+F --> E : Returns specific health tips
+E --> D : Sends specific tips to reduce health impairments without medication
+note right of D
+  Older Person receives
+  personalized health tips. 
+end note
+
+deactivate B
+deactivate C
+@enduml

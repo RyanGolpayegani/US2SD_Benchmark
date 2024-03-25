@@ -1,0 +1,41 @@
+This is a sequence diagram representing a series of interactions between objects (Repository Manager, Repository Service, and Database) for basic CRUD (Create, Read, Update, Delete) operations.
+
+```plantuml
+@startuml
+actor "Repository Manager" as RM
+participant "Repository Service" as RS
+database "Database" as DB
+
+RM -> RS: createRecord(recordData)
+activate RS
+RS -> DB: insert(recordData)
+activate DB
+DB --> RS: AcknowledgeRecordCreation
+deactivate DB
+RS --> RM: RecordCreationSuccessMessage
+deactivate RS
+
+RM -> RS: updateRecord(recordId, newRecordData)
+activate RS
+RS -> DB: modify(recordId, newRecordData)
+activate DB
+DB --> RS: AcknowledgeRecordUpdate
+deactivate DB
+RS --> RM: RecordUpdateSuccessMessage
+deactivate RS
+
+RM -> RS: deleteRecord(recordId)
+activate RS
+RS -> DB: remove(recordId)
+activate DB
+DB --> RS: AcknowledgeRecordDeletion
+deactivate DB
+RS --> RM: RecordDeletionSuccessMessage
+deactivate RS
+
+@enduml
+```
+
+The sequence diagram shows the Repository Manager interacting with the Repository Service to create, update and delete records in the database. Note, however, the sequence diagram does not show error-cases nor data validation, which would be important for a complete design.
+
+Regarding the Plant UML format, it's important to highlight that you will need a Plant UML viewer to visualize this diagram. The above text generates the diagram by describing the sequence of operations.

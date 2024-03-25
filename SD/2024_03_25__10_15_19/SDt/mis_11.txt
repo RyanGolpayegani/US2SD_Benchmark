@@ -1,0 +1,22 @@
+@startuml
+actor Curator
+participant Repository as Repo
+participant RemoteStorageSite as RSS
+database Collection as C
+Curator -> Repo : Queue collection for replication
+activate Repo
+Repo -> C : Pick a collection for replication
+activate C
+C --> Repo : Deliver the needed collection
+deactivate C
+Repo -> RSS : Begin replication
+activate RSS
+RSS --> Repo : Confirm replication
+deactivate RSS
+Repo -> C : Update the replication status
+activate C
+C --> Repo : Confirm status update
+deactivate C
+Repo --> Curator : Display replication status on Staff Interface 
+deactivate Repo
+@enduml

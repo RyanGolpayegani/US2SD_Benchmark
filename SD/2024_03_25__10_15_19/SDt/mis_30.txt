@@ -1,0 +1,24 @@
+@startuml
+
+actor "DigitalRecords Archivist" as A
+participant "Authorization System" as B
+participant "Repository Admin" as C
+
+A -> B: verifyAdminIdentity()
+activate B
+
+B --> A: identityVerified()
+
+A -> B: grantEmbargoPrivileges()
+activate B
+
+note right: The system updates the user's role to include embargo privileges.
+
+B --> C: updateRole()
+activate C
+C -> C: addEmbargoPrivileges()
+deactivate C
+
+C --> A: privilegesGranted()
+
+@enduml

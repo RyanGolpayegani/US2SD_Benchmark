@@ -1,0 +1,36 @@
+This detailed sequence diagram in PlantUML format will assist in visually demonstrating interactions between different system components, including "Staff" and "LibrarySystem". 
+
+The process starts with the staff intending to check out a book post reservation. The LibrarySystem checks if the book is reserved by the staff. If true, the book is checked out. If not, the staff will receive an error message.
+
+```plaintext
+@startuml
+title Check Out a Book Process
+
+actor Staff
+participant LibrarySystem
+participant Database
+
+Staff -> LibrarySystem: CheckOut(BookID)
+activate LibrarySystem
+
+LibrarySystem -> Database: IsBookReservedByStaff(BookID, StaffID)
+activate Database
+Database -->> LibrarySystem: True
+deactivate Database
+
+alt True
+    LibrarySystem -> Database: CheckOutBook(BookID, StaffID)
+    activate Database
+    Database -->> LibrarySystem: SuccessMessage
+    deactivate Database
+    
+    LibrarySystem -->> Staff: SuccessMessage
+else False
+    LibrarySystem -->> Staff: ErrorMessage
+end
+deactivate LibrarySystem
+
+@enduml
+```
+
+**Note:** You'll need to use PlantUML software or an online UML diagram tool to visualize this script as a sequence diagram.

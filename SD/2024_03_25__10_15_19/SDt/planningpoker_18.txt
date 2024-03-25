@@ -1,0 +1,20 @@
+@startuml
+participant "Moderator" as M
+participant "Game System" as GS
+participant "Database" as DB
+participant "File System" as FS
+
+M -> GS : Request Transcript
+activate GS
+GS -> DB : Fetch Game Data
+activate DB
+DB -->> GS : Return Game Data
+deactivate DB
+GS -> GS : Convert Data to HTML
+GS -> FS : Write HTML to File
+activate FS
+FS -->> GS : Confirm File Write
+deactivate FS
+GS --> M : Return File Path/Download
+deactivate GS
+@enduml

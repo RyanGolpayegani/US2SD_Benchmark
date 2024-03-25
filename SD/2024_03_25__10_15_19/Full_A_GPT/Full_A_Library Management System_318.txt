@@ -1,0 +1,35 @@
+To generate a detailed Sequence Diagram in PlantUML format for the user story "As a reader, I want to comment on books", we can start by listing the relevant objects that would interact with each other based on the user story. These could include the Reader (User), Book, CommentSection, and Database.
+
+Here is an example of how you might generate the diagram:
+
+```uml
+@startuml
+participant "Reader (User)" as R
+participant "Book" as B
+participant "CommentSection" as CS
+participant "Database" as DB
+
+R -> B : Select Book
+activate B
+B -> CS : Open Comment Section
+activate CS
+
+R -> CS : Write Comment
+CS -> CS : Check Validity of Comment
+
+alt Comment Valid
+    CS -> DB : Save Comment to Database
+    activate DB
+    DB --> CS : Confirmation of Saved Comment
+    deactivate DB
+    CS --> R : Show Success Message
+else Comment Invalid
+    CS --> R : Show Error Message
+end
+
+deactivate CS
+deactivate B
+@enduml
+```
+
+In this scenario, the reader selects a book, the book then opens the comment section. The reader writes a comment, the comment section checks the validity of the comment. If the comment is valid, it is saved to the database and a success message is shown. If not, an error message is displayed.

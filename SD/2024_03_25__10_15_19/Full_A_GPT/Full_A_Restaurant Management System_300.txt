@@ -1,0 +1,29 @@
+Sequence Diagram:
+
+```
+@startuml
+actor Waiter
+
+database OrderDatabase
+database ItemDatabase
+
+Waiter -> OrderDatabase: Retrieve orders
+activate OrderDatabase
+OrderDatabase --> Waiter: Provide orders
+deactivate OrderDatabase
+
+loop for each order
+    Waiter -> ItemDatabase: Check item availability(order.item)
+    activate ItemDatabase
+    ItemDatabase --> Waiter: Return availability status
+    deactivate ItemDatabase
+end
+
+@enduml
+```
+
+This PlantUML sequence diagram outlines the process of a waiter checking the availability of order items. It engages the waiter as the primary actor and the order database and item database as system databases. 
+
+The process starts with the waiter retrieving the orders from the order database. For each order, the waiter will then check the availability of a specific item (order.item) in the item database. The item database will then return the availability status back to the waiter. This 'checking availability' process will continue for all items in the order list.
+
+Do note that for effective usage of the diagram, replace 'order.item' with practical item identification from your application.

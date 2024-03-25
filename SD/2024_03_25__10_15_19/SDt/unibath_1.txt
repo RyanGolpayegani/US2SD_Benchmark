@@ -1,0 +1,45 @@
+@startuml
+actor Depositor
+participant "Web Interface" as WI
+participant "Server" as S
+participant "Database" as DB
+
+Depositor -> WI: Access web interface
+WI -> Depositor: Display login screen
+Depositor -> WI: Enter Login credentials
+WI -> S: Validate login credentials
+S -> WI : Authentication result
+WI -> Depositor: Show dashboard page
+Depositor -> WI: Choose to deposit dataset
+WI -> Depositor: Display dataset deposit form
+Depositor -> WI: Fill in form and Submit dataset for deposit
+WI -> S : Validate and Process dataset deposit
+alt successful validation
+    S -> DB: Save dataset
+    DB -> S: Confirm save
+    S -> WI: Confirm successful deposit
+    WI -> Depositor: Display successful deposit message
+else validation failed
+    S -> WI: Send validation errors
+    WI -> Depositor: Display error message
+end
+Depositor -> WI: Choose to view deposited datasets
+WI -> S: Request deposited datasets
+S -> DB: Fetch deposited datasets
+DB -> S: Return datasets
+S -> WI: Send datasets
+WI -> Depositor: Display datasets
+Depositor -> WI: Choose to maintain (update/delete) datasets
+WI -> Depositor: Display dataset maintenance options
+Depositor -> WI: Select maintenance task and dataset
+WI -> S: Process maintenance task
+alt successful operation
+    S -> DB: Perform maintenance task
+    DB -> S: Confirm operation
+    S -> WI: Confirm successful operation
+    WI -> Depositor: Display successful operation message
+else operation failed
+    S -> WI: Send operation errors
+    WI -> Depositor: Display error message
+end
+@enduml

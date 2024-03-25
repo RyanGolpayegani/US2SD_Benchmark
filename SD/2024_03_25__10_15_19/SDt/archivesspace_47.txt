@@ -1,0 +1,33 @@
+@startuml
+actor "Repository Manager" as RM
+participant "Repository Service" as RS
+database "Database" as DB
+
+RM -> RS: createRecord(recordData)
+activate RS
+RS -> DB: insert(recordData)
+activate DB
+DB --> RS: AcknowledgeRecordCreation
+deactivate DB
+RS --> RM: RecordCreationSuccessMessage
+deactivate RS
+
+RM -> RS: updateRecord(recordId, newRecordData)
+activate RS
+RS -> DB: modify(recordId, newRecordData)
+activate DB
+DB --> RS: AcknowledgeRecordUpdate
+deactivate DB
+RS --> RM: RecordUpdateSuccessMessage
+deactivate RS
+
+RM -> RS: deleteRecord(recordId)
+activate RS
+RS -> DB: remove(recordId)
+activate DB
+DB --> RS: AcknowledgeRecordDeletion
+deactivate DB
+RS --> RM: RecordDeletionSuccessMessage
+deactivate RS
+
+@enduml

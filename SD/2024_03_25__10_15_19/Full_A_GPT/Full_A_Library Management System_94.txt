@@ -1,0 +1,27 @@
+Below is a sequence diagram in PlantUML format that demonstrates the process of a librarian viewing the list of members:
+
+```PlantUML
+@startuml
+actor Librarian
+boundary LibrarySystem
+control MemberListController
+entity Member
+database MemberDB
+
+Librarian -> LibrarySystem : Requests to see the member list
+activate LibrarySystem
+LibrarySystem -> MemberListController : Forward request
+activate MemberListController
+
+MemberListController -> MemberDB : Query list of members
+activate MemberDB
+MemberDB --> MemberListController : Returns members data
+deactivate MemberDB
+
+MemberListController --> LibrarySystem : Return list of members
+deactivate MemberListController
+LibrarySystem --> Librarian : Displays members list
+deactivate LibrarySystem
+@enduml 
+```
+This sequence diagram follows the flow of action from the Librarian, through the LibrarySystem, and involves the MemberListController and the Member Database (MemberDB). The Librarian initiates a request to see the list of members, the LibrarySystem forwards that request to the MemberListController, which in turn queries the MemberDB for the list of members. The MemberDB then returns the data to the MemberListController, which sends it back to the LibrarySystem to display the members list to the Librarian.

@@ -1,0 +1,35 @@
+Here is a tentative sequence diagram in PlantUML for the user story:
+
+```plantuml
+@startuml
+actor Trainee
+entity "Authentication System" as Auth
+entity "Registration System" as Register
+
+Trainee -> Auth : Login
+Auth -> Trainee : Retrieve User ID
+
+Trainee -> Register : Initiate Registration
+activate Register
+Register -> Auth : Check User ID & Time of Last Registration
+Auth -> Register : Return Time of Last Registration
+
+alt User last registered less than 24 hours ago
+    Register -> Trainee: Restrict from Registering 
+    deactivate Register
+else User last registered more than 24 hours ago
+    Register -> Trainee: Proceed Registration 
+    deactivate Register
+end
+@enduml
+```
+
+Explanation :
+
+- The trainee logs in the Authentication System which returns a User ID.
+- The trainee initiates the registration. This activates the Registration System.
+- The Registration system asks the Authentication system to retrieve last registration details for the user.
+- If the user registered in less than 24 hours, the Registration System restricts new registration.
+- If it was more than 24 hours ago, the Registration System proceeds with the registration. 
+
+This is a basic diagram and lacks detail as the full system details are yet known, and can be updated once more details are available.
