@@ -1,0 +1,37 @@
+@startuml
+participant AppDeveloper
+participant NewAppVersion
+participant OldAppVersion
+participant SharedDataSet
+participant DeploymentManager
+
+AppDeveloper -> NewAppVersion: InitializeDeployment()
+activate NewAppVersion
+
+NewAppVersion -> SharedDataSet: getDataSetVersion()
+activate SharedDataSet
+SharedDataSet -> NewAppVersion: Return(datasetVersion)
+deactivate SharedDataSet
+
+NewAppVersion -> OldAppVersion: getDataSetVersion()
+activate OldAppVersion
+OldAppVersion --> NewAppVersion: Return(oldDataSetVersion)
+deactivate OldAppVersion
+
+NewAppVersion -> NewAppVersion: CompareVersions(datasetVersion, oldDataSetVersion)
+
+NewAppVersion ->DeploymentManager: SendDeploymentRequest()
+activate DeploymentManager
+
+NewAppVersion -> NewAppVersion: CheckVersionsMatch()
+alt datasetVersion!=oldDataSetVersion
+  NewAppVersion-> DeploymentManager:  DeploymentFail(Version Conflict Error)
+  DeploymentManager --> AppDeveloper: Return (Deployment Failed : Version Conflict)
+else datasetVersion==oldDataSetVersion
+  NewAppVersion -> DeploymentManager: DeployNewVersion()
+  DeploymentManager --> AppDeveloper:Return (Deployment Successful)
+end
+
+deactivate DeploymentManager
+deactivate NewAppVersion
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+title Extract Metadata from DMP and Import into Data Catalogue
+actor DataLibrarian
+participant DMP_System as DMP
+participant OtherSystem as OS
+participant DataCatalogue as DC
+
+DataLibrarian -> DMP : getRequest(DMP_MetadataPointers)
+activate DMP
+DMP --> DataLibrarian : return(MetadataPointers)
+deactivate DMP
+
+DataLibrarian -> OS : getRequest(Metadata, MetadataPointers)
+activate OS
+OS --> DataLibrarian : return(Resources)
+deactivate OS
+
+DataLibrarian -> DC : putRequest(Resources)
+activate DC
+DC --> DataLibrarian : return(ImportStatus)
+deactivate DC
+@enduml

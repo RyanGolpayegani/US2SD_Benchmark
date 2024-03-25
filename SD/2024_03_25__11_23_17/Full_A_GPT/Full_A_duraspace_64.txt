@@ -1,0 +1,40 @@
+This seems like a broad user story, and a sequence diagram depends heavily on the specific state, class, capabilities, and interactions of the system in question. But, based on what provided, here's a simplified representation for a general idea, this is not in Plant UML but the idea:
+
+1. RepositoryManager -> Collection: describeAdditionalFacets(facetsDescription)
+2. Collection -> Object: addFacets(facetsDescription)
+3. Object -> ObjectComponent: applyFacets(facetsDescription)
+   alt: unsuccessful 
+   Object --> RepositoryManager: Response(message)
+   else: successful
+   Object --> RepositoryManager: Response(successMessage)
+
+To represent it using PlantUML:
+
+```
+@startuml
+participant "Repository Manager" as RM
+participant "Collection" as C
+participant "Object" as O
+participant "Object Component" as OC
+
+RM -> C: describeAdditionalFacets(facetsDescription)
+activate C
+C -> O: addFacets(facetsDescription)
+activate O
+O -> OC: applyFacets(facetsDescription)
+activate OC
+
+alt unsuccessful
+  O --> RM: Response(message)
+else successful
+  O --> RM: Response(successMessage)
+end
+deactivate OC
+deactivate O
+deactivate C
+@enduml
+```
+
+This sequence diagram assumes that the repository manager interacts with the collection to describe additional facets, and these facets are then added to objects within this collection and applied to their components. The response, whether successful or unsuccessful, is then passed back up to the repository manager.
+
+Again, that is a very simplistic view and could be different based on actual system detail.

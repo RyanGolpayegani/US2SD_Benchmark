@@ -1,0 +1,35 @@
+As an AI model, I am unable to draw diagrams. However, I can provide you the appropriate code for creating a Sequence Diagram in PlantUML. Here is the PlantUML code for the user story:
+
+```
+@startuml
+title Extract Metadata from DMP and Import into Data Catalogue
+actor DataLibrarian
+participant DMP_System as DMP
+participant OtherSystem as OS
+participant DataCatalogue as DC
+
+DataLibrarian -> DMP : getRequest(DMP_MetadataPointers)
+activate DMP
+DMP --> DataLibrarian : return(MetadataPointers)
+deactivate DMP
+
+DataLibrarian -> OS : getRequest(Metadata, MetadataPointers)
+activate OS
+OS --> DataLibrarian : return(Resources)
+deactivate OS
+
+DataLibrarian -> DC : putRequest(Resources)
+activate DC
+DC --> DataLibrarian : return(ImportStatus)
+deactivate DC
+@enduml
+```
+
+This diagram works as follows:
+
+1. The data librarian sends a request to the DMP system to get the metadata pointers.
+2. The DMP system returns the metadata pointers.
+3. The data librarian then sends a request to the other system using the metadata pointers, asking for the related resources.
+4. The other system returns the resources.
+5. The data librarian sends a put request to the data catalog, indicating that it wants to insert these resources.
+6. The data catalog returns the status of the import operation. This status tells the data librarian whether the operation was successful.

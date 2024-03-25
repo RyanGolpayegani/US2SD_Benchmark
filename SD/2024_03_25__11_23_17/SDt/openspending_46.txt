@@ -1,0 +1,20 @@
+@startuml
+
+actor DataPublishingUser as DUP
+participant PythonClient as PC
+database DataStore as DS
+
+DUP -> PC: Execute_Bulk_Add(Ordered_Data)
+activate PC
+PC -> DS: Connect_to_dataStore(credentials)
+activate DS
+DS -->> PC: Connection_Status
+deactivate DS
+PC -> PC: parseData(Ordered_Data)
+PC -> DS: Data_Bulk_Insert(parsed_data)
+activate DS
+DS -->> PC : Insert_Status
+deactivate DS
+PC -->> DUP : Bulk_Add_Outcome(Insert_Status)
+
+@enduml

@@ -1,0 +1,56 @@
+@startuml
+
+actor "Site Editor" as SE
+participant "Web Interface" as WI
+participant "Email System" as ES
+participant "Content Management System" as CMS
+participant "Scrum Master\n/Product Owner" as SM
+
+note over SE
+User Story:
+As a site editor,
+I want to edit the content of the email
+automatically sent to new Certified
+Scrum Masters & Product Owners,
+so that I don't need to involve a programmer
+on simple email edits.
+end note
+
+SE -> WI : Log into System
+activate WI
+WI -> SE : Show Dashboard
+
+SE -> WI : Navigate to Email Templates
+WI -> CMS : Get Email Templates
+
+activate CMS
+CMS -> WI : Return Email Templates
+deactivate CMS
+
+WI -> SE : Show Email Templates
+SE -> WI : Select "New Scrum Master/Owner Email"
+
+WI -> CMS : Get "New Scrum Master/Owner Email" Details
+activate CMS
+CMS -> WI : Return Email Template Details
+deactivate CMS
+
+WI -> SE : Show Email Template Details
+SE -> WI : Make Changes to Email Template
+WI -> CMS : Update Email Template
+activate CMS
+CMS --> WI : Confirm Template Updated
+deactivate CMS
+WI -> SE : Confirm Changes Saved
+
+SE -> WI : Trigger Test Email
+WI -> ES : Send Email
+activate ES
+ES --> WI : Confirm Email Sent
+deactivate ES
+WI -> SE : Confirm Email Sent
+
+SE -> WI : Logout 
+deactivate WI
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+
+title View Publisher Profile Sequence
+
+actor Consumer as c
+participant "User Interface" as UI
+participant "Profile Service" as PS
+participant "Database" as DB
+entity Publisher as p
+
+c -> UI : Request to view Publisher Profile
+UI -> PS : Calls fetchProfile(PublisherId)
+activate PS
+PS -> DB : fetchProfileData(PublisherId)
+activate DB
+DB -->> PS : Return ProfileData
+deactivate DB
+PS -->> UI : Returns Publisher Profile
+deactivate PS
+UI -->> c : Displays Publisher's Profile
+
+@enduml

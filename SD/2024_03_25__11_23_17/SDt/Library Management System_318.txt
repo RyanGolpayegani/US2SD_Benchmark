@@ -1,0 +1,40 @@
+@startuml
+title Commenting on a Book
+
+actor Reader as r
+participant "User Interface" as UI
+participant "Comment Service" as CS
+participant "Database" as DB
+
+r->UI: Click on book
+activate UI
+
+UI->CS: getBookDetails(bookId)
+activate CS
+
+CS->DB: fetchBookDetails(bookId)
+activate DB
+DB-->CS: returnBookDetails()
+deactivate DB
+
+CS-->UI: displayBookDetails()
+deactivate CS
+UI->r: Show book details
+
+r->UI: Enter comment
+activate UI
+
+UI-->CS: addComment(bookId, comment)
+activate CS
+
+CS->DB: saveComment(bookId, comment)
+activate DB
+DB-->CS: confirmSave()
+deactivate DB
+
+CS-->UI: displayCommentSuccess()
+deactivate CS
+
+UI-->r: Show comment added successfully
+
+@enduml

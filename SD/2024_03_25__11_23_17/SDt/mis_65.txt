@@ -1,0 +1,43 @@
+@startuml
+title "Restoration of Version Object by Repository Manager"
+actor User as "Repository Manager"
+participant Interface as "Staff Interface"
+participant System as "Repository Management System"
+participant Version as "Version Control System"
+
+activate "Repository Manager"
+"Repository Manager" -> "Staff Interface" : Requests available object versions
+
+activate "Staff Interface"
+"Staff Interface" -> "Repository Management System" : Passes request to system
+
+activate "Repository Management System"
+"Repository Management System" -> "Version Control System" : Retrieves available versions list
+activate "Version Control System"
+"Version Control System" --> "Repository Management System" : Sends versions list
+deactivate "Version Control System"
+
+"Repository Management System" --> "Staff Interface" : Provides versions list to interface
+deactivate "Repository Management System"
+
+"Staff Interface" --> "Repository Manager" : Displays available object versions
+deactivate "Staff Interface"
+
+"Repository Manager" -> "Staff Interface" : Selects a version to restore
+
+activate "Staff Interface"
+"Staff Interface" -> "Repository Management System" : Passes restore request
+
+activate "Repository Management System"
+"Repository Management System" -> "Version Control System" : Requests for version restoration
+activate "Version Control System"
+"Version Control System" --> "Repository Management System" : Restores the version
+deactivate "Version Control System"
+
+"Repository Management System" --> "Staff Interface" : Confirms restoration
+deactivate "Repository Management System"
+
+"Staff Interface" --> "Repository Manager" : Displays restoration confirmation
+deactivate "Repository Manager"
+
+@enduml

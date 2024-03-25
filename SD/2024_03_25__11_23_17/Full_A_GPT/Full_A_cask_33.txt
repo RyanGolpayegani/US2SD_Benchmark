@@ -1,0 +1,36 @@
+Before delving into the sequence diagram, consider the following steps in the process to understand the sequence of actions in detail.
+
+1. The Plugin Developer uploads the new version of the Plugin.
+2. The Pipeline recognizes the Plugin update and initiates a pipeline update process.
+3. The Pipeline then refers to the Dataset Instance created by the previously existing version of the Plugin.
+4. The Dataset Instance sends back the Dataset Type information to the pipeline.
+5. The Pipeline instructs the new version of Plugin to upgrade the code of the Dataset Type.
+6. The Plugin updates the Dataset Type and sends a confirmation to the Pipeline.
+7. The Pipeline completes the update process.
+
+Here is a simple sequence diagram in PlantUML corresponding to the above steps:
+
+```plantuml
+@startuml
+actor PluginDeveloper
+participant Pipeline
+participant DatasetInstance
+
+PluginDeveloper -> Pipeline: Upload new version of Plugin
+activate Pipeline
+Pipeline -> DatasetInstance : Refer existing Dataset Type
+activate DatasetInstance
+DatasetInstance --> Pipeline : Return Dataset Type
+deactivate DatasetInstance
+Pipeline -> Pipeline : Initiate Pipeline update process
+Pipeline -> Plugin : Upgrade Dataset Type
+activate Plugin
+Plugin --> Pipeline : Confirm Dataset Type upgrade
+deactivate Plugin
+Pipeline --> PluginDeveloper : Pipeline updated process completion
+deactivate Pipeline
+@enduml
+```
+Please note that the complexity of this diagram could vary significantly based on the actual plugin and pipeline's functionality and mechanisms. Therefore, the above diagram might require adjustments according to your specific case.
+
+The above sequence diagram assumes that the process of uploading a new plugin version, initiating an update process, referring to a dataset instance, and updating a dataset type is all handled synchronously. In case these operations are asynchronous or involve other components, the diagram might need further adjustments.

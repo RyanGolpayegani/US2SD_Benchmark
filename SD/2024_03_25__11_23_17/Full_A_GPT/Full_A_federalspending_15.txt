@@ -1,0 +1,37 @@
+Creating a sequence diagram for the User Story requires knowledge over the specific details of the system. However, I can provide you an example of how that sequence diagram might look like using PlantUML. 
+
+1. In order to verify that USAspending only sends grant records, it would likely involve several participants including the Owner, the USAspending System, possibly a Grant Record Verification System, and the Owner's System.
+
+2. The process might involve the Owner sending a request to the USAspending System to send grant records. The system then retrieves these records and sends them to the Verification System which confirms they are indeed grant records.
+
+3. The Verification System then sends them to the Owner's system.
+
+4. Once the record is received, the owner's system sends a confirmation back to the owner.
+
+Here is a PlantUML script of that interaction
+
+```plantuml
+@startuml
+    actor Owner
+    participant "USASpending System" as USA
+    participant "Administrator's System" as ADM
+    database "Verification System" as VS
+
+    Owner -> ADM : Request Grant Record
+    activate ADM
+    ADM -> USA : Send Grant Records
+    activate USA
+    USA -> VS : Verify Records
+    activate VS
+    VS --> USA : Verified Grant Records
+    deactivate VS
+    USA --> ADM : Send Verified Grant Records
+    deactivate USA
+    ADM --> Owner : Confirmation of Receipt
+    deactivate ADM
+@enduml
+```
+
+Please, remember to replace the strings in the double-quotes with the actual names of the systems that interact in this specific scenario.
+
+This code can be inputted into a PlantUML tool to get a visual sequence diagram. Make sure to note that this diagram can change in considerable amount, upon knowing the details of the system. You might want to adjust the sequence diagram based on the actual behavior of the system.

@@ -1,0 +1,20 @@
+@startuml
+actor Developer
+box "Data-packaged Data System"
+participant "Client Interface"
+participant "API Gateway"
+participant "Integration Service"
+end box
+box "DSpace System"
+participant DSpace
+end box
+
+Developer -> "Client Interface": Request integration
+"Client Interface" -> "API Gateway": Forward request
+"API Gateway" -> "Integration Service": Request integration
+"Integration Service" -> DSpace: Fetch data-packaged data
+DSpace -->> "Integration Service": Return packaged data
+"Integration Service" -->> "API Gateway": Return processed integration
+"API Gateway" -->> "Client Interface": Forward integration Response
+"Client Interface" -->> Developer: Return integration Response
+@enduml

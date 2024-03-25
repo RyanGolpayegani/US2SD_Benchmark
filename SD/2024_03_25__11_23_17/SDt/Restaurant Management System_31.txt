@@ -1,0 +1,21 @@
+@startuml
+autonumber
+title Updating status of ordered items to served
+actor Chef
+participant "Order management system" as System
+participant Kitchen
+participant Inventory
+
+Chef -> System: Request to update status (orderId, status:served)
+  activate System
+System -> Kitchen: Informs kitchen to prepare food (orderId)
+  activate Kitchen
+Kitchen -> Inventory: Checks for necessary ingredients
+  activate Inventory
+Inventory --> Kitchen: Confirm availability of ingredients
+  deactivate Inventory
+Kitchen --> System: Confirms food preparation
+  deactivate Kitchen
+System --> Chef: Updates status of order to 'served'
+  deactivate System
+@enduml

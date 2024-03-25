@@ -1,0 +1,25 @@
+@startuml
+actor Employee
+entity StoreOrderSystem
+database StoreOrderDatabase
+
+Employee -> StoreOrderSystem: LaunchOrderProcess()
+activate StoreOrderSystem
+StoreOrderSystem -> StoreOrderSystem: InitializeOrderProcess()
+StoreOrderSystem -> Employee: DisplayOrderForm()
+deactivate StoreOrderSystem
+
+Employee -> StoreOrderSystem: SubmitOrderDetails(productName, quantity, date)
+activate StoreOrderSystem
+StoreOrderSystem -> StoreOrderSystem: ValidateOrderDetails(productName, quantity, date)
+alt unsuccessful validation
+StoreOrderSystem -> Employee: ShowValidationError()
+else successful validation
+StoreOrderSystem -> StoreOrderDatabase: SaveOrderDetails(productName, quantity, date)
+activate StoreOrderDatabase
+StoreOrderDatabase -> StoreOrderSystem: ConfirmSaveOrder()
+deactivate StoreOrderDatabase
+StoreOrderSystem -> Employee: DisplaySaveOrderConfirmation()
+end
+deactivate StoreOrderSystem
+@enduml

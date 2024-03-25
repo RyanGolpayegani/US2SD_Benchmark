@@ -1,0 +1,42 @@
+Since I can't draw diagrams here, I will describe how the Plant UML sequence diagram should look for this user story.
+
+```plantuml
+@startuml
+title Library Book Reservation
+
+autonumber
+User -> Librarian: Request to reserve multiple books
+activate Librarian
+Librarian->Database: Check availability of books
+activate Database
+Database-->Librarian: Return book availability
+deactivate Database
+Librarian -> User: Inform book availability
+note right of Librarian: If books are available, proceed to reserve books. Else, notify user.
+alt books are available
+ Librarian -> Database: Reserve books for User
+ activate Database
+ Database --> Librarian: Confirm successful reservation
+ Librarian --> User: Inform successful reservation
+else books are not available
+ Librarian --> User: Inform unavailability of books
+end
+deactivate Librarian
+@enduml
+
+```
+
+Here's what the above Plant UML denotes:
+
+1. The User initiates the sequence by requesting to reserve multiple books. This is represented by the line coming from the 'User' to 'Librarian'.
+
+2. The Librarian then checks with the library Database to see if the requested books are available.
+
+3. If the books are available, the Librarian moves forward to reserve the books for the User in the database. Once done, the Database sends a confirmation back to the Librarian who then informs the User about the successful reservation.
+
+4. On the other hand, if the books are unavailable, the Librarian simply informs the User about the unavailability and the sequence ends there.
+
+5. The @startuml and @enduml tags are used to denote the beginning and end of the sequence diagram. The 'autonumber' is used to automatically allocate sequence numbers.
+
+
+Note: A real sequence diagram would show the messages being passed with arrows between the different classes/objects (User, Librarian, and Database). The messages describe how events trigger transitions from one state to another. The diagram would also show different lifelines denoting the lives of the objects from creation to termination.

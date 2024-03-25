@@ -1,0 +1,37 @@
+As an AI model, I can't draw diagrams. However, I can certainly explain the sequence of actions what it should look like in a sequence diagram.
+
+1. User chooses to import a Google Spreadsheet.
+   - Never interacted with Google before: User redirected to Google Login Screen. User logs in and gives permissions. Redirected back to data packager with access token.
+   - Interacted with Google before: System uses stored access token.
+   
+2. If the login is successful, the system uses access token to call Google API for spreadsheet data. The system requests the data for a specific spreadsheet based on user input (spreadsheet ID or URL).
+
+3. Google API sends back spreadsheet data in CSV or JSON format.
+
+4. The system processes the data and transforms it into a format that can be used within the data packager. This might involve converting columns to specific data types, addressing null values, or other transformations.
+
+5. After data is properly formatted, it is loaded into the data packager.
+
+6. The system then allows the user to perform further actions on the data within the data packager, such as data analysis or visualization.
+
+Here is a simple textual representation of the sequence diagram in PlantUML format:
+
+```plantuml
+actor User
+participant "Data Packager" as DP
+participant "Google API" as GA
+
+User -> DP : Choose to import Google Spreadsheet
+alt Never interacted with Google before
+ User -> DP : Login and gives permissions
+ DP -> GA : Access Token
+else Interacted with Google before
+ DP -> GA:  Access Token
+end
+DP -> GA : Request data
+GA -> DP : Send back data
+DP -> DP : Process and transform data
+DP -> User: Load data into data packager
+```
+
+This sequence flow ensures that the user story, which involves importing and using data from a Google Spreadsheet without needing to deal with data format conversions manually, is fulfilled by the system.

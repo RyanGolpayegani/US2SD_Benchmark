@@ -1,0 +1,18 @@
+@startuml
+User -> Moderator: Request Transcript
+activate Moderator
+Moderator -> GameEngine: RetrieveGameData(gameId)
+activate GameEngine
+GameEngine --> Moderator: GameData
+deactivate GameEngine
+Moderator -> TranscriptService: TranscribeGame(GameData)
+activate TranscriptService
+TranscriptService --> Moderator : Transcript (in text format)
+deactivate TranscriptService
+Moderator -> HTMLExporter: ToHTML(Transcript)
+activate HTMLExporter
+HTMLExporter --> Moderator: Transcript (in HTML format)
+deactivate HTMLExporter
+Moderator -> User: ReturnHTMLTranscript
+deactivate Moderator
+@enduml

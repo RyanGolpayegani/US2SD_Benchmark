@@ -1,0 +1,47 @@
+Below is a detailed sequence description for the use case of ensuring a new version of an app cannot be deployed if it has a different dataset version that is shared by another app.
+
+Please Note: The actual UML syntax can only be visually depicted in a compiler, but per the request, a detailed sequence description considering basic Plant UML format is provided.
+
+In this sequence, the entities involved are: `AppDeveloper`, `NewAppVersion`, `OldAppVersion`, `SharedDataSet`, `DeploymentManager`
+
+```plantuml
+@startuml
+participant AppDeveloper
+participant NewAppVersion
+participant OldAppVersion
+participant SharedDataSet
+participant DeploymentManager
+
+AppDeveloper -> NewAppVersion: InitializeDeployment()
+activate NewAppVersion
+
+NewAppVersion -> SharedDataSet: getDataSetVersion()
+activate SharedDataSet
+SharedDataSet -> NewAppVersion: Return(datasetVersion)
+deactivate SharedDataSet
+
+NewAppVersion -> OldAppVersion: getDataSetVersion()
+activate OldAppVersion
+OldAppVersion --> NewAppVersion: Return(oldDataSetVersion)
+deactivate OldAppVersion
+
+NewAppVersion -> NewAppVersion: CompareVersions(datasetVersion, oldDataSetVersion)
+
+NewAppVersion ->DeploymentManager: SendDeploymentRequest()
+activate DeploymentManager
+
+NewAppVersion -> NewAppVersion: CheckVersionsMatch()
+alt datasetVersion!=oldDataSetVersion
+  NewAppVersion-> DeploymentManager:  DeploymentFail(Version Conflict Error)
+  DeploymentManager --> AppDeveloper: Return (Deployment Failed : Version Conflict)
+else datasetVersion==oldDataSetVersion
+  NewAppVersion -> DeploymentManager: DeployNewVersion()
+  DeploymentManager --> AppDeveloper:Return (Deployment Successful)
+end
+
+deactivate DeploymentManager
+deactivate NewAppVersion
+@enduml
+```
+
+This plantUML diagram creates a sequence diagram in which an AppDeveloper initializes the deployment of the NewAppVersion. The NewAppVersion retrieves the versions of the DataSet used by the OldAppVersion and the SharedDataSet. If the versions match, the New version of the DataSet is deployed by the DeploymentManager and a message about a successful deployment will return to the developer. If the versions don't match, an error message (Version Conflict Error) is returned, deployment fail, and the exception is passed back to the developer.

@@ -1,0 +1,37 @@
+@startuml
+actor Librarian
+boundary "Update Book Info UI" as UI
+control "Library Controller" as LC
+entity "Library Database" as DB
+
+Librarian -> UI: Clicks on "Update Book Info"
+activate UI
+UI -> LC: Triggers UpdateRequest
+activate LC
+
+LC -> DB: Fetches Current Book Details
+activate DB
+DB --> LC: Returns Current Details
+deactivate DB 
+
+LC --> UI: Displays Current Details
+deactivate LC 
+
+UI --> Librarian: Allows Edit
+activate UI
+Librarian -> UI: Submits new info
+UI -> LC: Triggers ConfirmUpdate
+activate LC
+
+LC -> DB : Updates Book Details
+activate DB
+DB --> LC : Returns Update Success Message
+deactivate DB
+
+LC --> UI: Displays Success Message
+deactivate LC
+
+UI --> Librarian: Shows Confirmation of Successful Update
+deactivate UI
+
+@enduml

@@ -1,0 +1,47 @@
+Below is a sequence diagram in PlantUML format:
+
+```plantuml
+@startuml
+actor Librarian
+boundary "Update Book Info UI" as UI
+control "Library Controller" as LC
+entity "Library Database" as DB
+
+Librarian -> UI: Clicks on "Update Book Info"
+activate UI
+UI -> LC: Triggers UpdateRequest
+activate LC
+
+LC -> DB: Fetches Current Book Details
+activate DB
+DB --> LC: Returns Current Details
+deactivate DB 
+
+LC --> UI: Displays Current Details
+deactivate LC 
+
+UI --> Librarian: Allows Edit
+activate UI
+Librarian -> UI: Submits new info
+UI -> LC: Triggers ConfirmUpdate
+activate LC
+
+LC -> DB : Updates Book Details
+activate DB
+DB --> LC : Returns Update Success Message
+deactivate DB
+
+LC --> UI: Displays Success Message
+deactivate LC
+
+UI --> Librarian: Shows Confirmation of Successful Update
+deactivate UI
+
+@enduml
+```
+The above PlantUML code will generate a Sequence diagram where:
+- The 'Librarian' clicks on the "Update Book Info" option in the 'Update Book Info User Interface (UI)'
+- The 'Library Controller' is triggered by the 'UpdateRequest' from the UI, it fetches the current Book details from the 'Library Database'.
+- These details are then displayed back on the UI for the Librarian to edit.
+- Once the Librarian submits the new information, UI triggers a 'ConfirmUpdate' to the 'Library Controller' which updates Book Details in the Database and returns a success message.
+- Library Controller displays the success message on the UI, which in turn shows the Librarian confirmation of a successful update.

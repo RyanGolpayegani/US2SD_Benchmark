@@ -1,0 +1,20 @@
+@startuml
+actor AgencyUser
+boundary UserInterface
+control FileHandlingModule
+entity FileFormatVerificationModule
+
+AgencyUser -> UserInterface : Selects File F
+UserInterface -> FileHandlingModule : Sends File F
+FileHandlingModule -> FileFormatVerificationModule : Verify Format of File F
+FileFormatVerificationModule -->> FileHandlingModule : File Format Verification Status
+
+alt Format Correct
+    FileHandlingModule -> UserInterface : Sends File F
+    UserInterface -->> AgencyUser : Provides File F
+else Format Incorrect
+    FileHandlingModule -> UserInterface : Sends Error Message (Incorrect Format)
+    UserInterface -->> AgencyUser : Shows Error Message (Incorrect Format)
+end
+
+@enduml

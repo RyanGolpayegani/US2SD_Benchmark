@@ -1,0 +1,33 @@
+Here is a basic sample of how you might reflect the user story in a PlantUML sequence diagram:
+
+```
+@startuml
+title Admin Picture Assessment in Zooniverse
+
+actor Admin
+participant CloudVisionAPI
+database ZooniverseDB
+participant ImageAnalysisService
+participant CitizenAnnotations
+participant TalkComments
+
+Admin -> ZooniverseDB : SelectsPicture
+ZooniverseDB -> ImageAnalysisService : SendsPicture
+ImageAnalysisService -> CloudVisionAPI : RequestPictureAnalysis
+CloudVisionAPI -> ImageAnalysisService : ReturnsAnalysisResults
+ImageAnalysisService -> Admin : ShowAnalysisResults
+
+Admin -> CitizenAnnotations : AccessAnnotationsForPicture
+CitizenAnnotations -> Admin : ReturnAnnotationsResults
+
+Admin -> TalkComments : AccessCommentsForPicture
+TalkComments -> Admin : ReturnCommentsResults
+@enduml
+```
+This sample flow starts with the admin selecting a picture in ZooniverseDB. The picture is then analyzed by ImageAnalysisService which includes passing the picture to an imaginary CloudVisionAPI. The results from the automated analysis are then shown to the admin.
+
+In the next phase, the admin accesses annotations and comments relevant to the picture from CitizensAnnotations and TalkComments respectively. These results are shown to the admin for assessment. 
+
+Please note that the names of the classes/resources are indicative, and some implementation details (like some additional parameters for methods, return data structures, etc.) may not bave been included in the sequence diagram in order to maintain a focused and easy-to-understand presentation of the flow.
+
+You should modify and add in more detail to the diagram to suit the actual structure and needs of your Zooniverse project.

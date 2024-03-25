@@ -1,0 +1,26 @@
+@startuml
+' Making the assumption that this system uses a basic MVC architecture
+
+actor Manager
+entity "Customer Satisfaction Controller" as Controller
+database "Customer Database" as Database
+entity "Customer Satisfaction View" as View
+
+Manager -> Controller : requestSatisfactionRate()
+activate Controller
+Controller -> Database : getPositiveFeedbacks()
+activate Database
+Database --> Controller : positiveFeedbacks
+deactivate Database
+Controller -> Database : getTotalFeedbacks()
+activate Database
+Database --> Controller : totalFeedbacks
+deactivate Database
+Controller -> Controller : calculateSatisfactionRate(positiveFeedbacks, totalFeedbacks)
+Controller --> Manager : satisfactionRate
+Controller -> View : showSatisfactionRate(satisfactionRate)
+activate View
+View --> Manager : displaySatisfactionRate
+deactivate View
+deactivate Controller
+@enduml

@@ -1,0 +1,33 @@
+On the assumption that ALFRED is a smart device with capabilities of voice recognition, motions detection and can connect to the internet to send notifications:
+
+**Sequence diagram description:**
+
+1. The user, referred to as 'OlderPerson', triggers ALFRED, the smart device, with usual movement.
+2. The smart device employs it's loT sensor to detect the movement which tracked as a regular movement.
+3. In case of a fall, the device's sensor detects this irregular behavior and triggers a fall detection command.
+4. ALFRED then attempts to communicate with the user to confirm the situation.
+5. This is done by sending an audio message, "We detected a fall, are you okay?" 
+6. If the user responds within a certain timeframe with "I'm okay", the process stops here.
+7. However, if the user doesn't respond within a given timeframe, ALFRED registers it as a potential emergency. 
+8. ALFRED initiates a command to send an emergency message to the specified contact provided by the user. 
+
+```
+@startuml
+OlderPerson -> ALFRED : Regular movement
+ALFRED -> Sensor : Detects regular movement
+
+alt Fall Detected
+  OlderPerson -> ALFRED : Fall
+  ALFRED -> Sensor : Detects irregular movement
+  ALFRED --> OlderPerson : Ask "We detected fall, are you okay?"
+  OlderPerson -->ALFRED : No response
+  ALFRED -> ALFRED : Initiate emergency contact protocol
+  ALFRED -> Internet : Send emergency alert to specific contact
+else No Fall Detected
+  OlderPerson -> ALFRED : Regular movement
+  ALFRED -> Sensor : Detect regular movement
+end
+@enduml
+```
+
+This sequence diagram ensures all possible scenarios and considers all relevant stakeholders.

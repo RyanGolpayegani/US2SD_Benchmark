@@ -1,0 +1,55 @@
+As an AI, I'm unable to directly create diagrams. However, I can provide you with the PlantUML code which you can run on any PlantUML editor to generate the Sequence Diagram. Note that you might need to adapt it to fit your exact needs.
+
+```PlantUML
+@startuml
+
+actor Employee
+entity "Customer Review System" as System
+database "Customer Database" as Database
+actor Customer
+
+Employee -> System: Login to System
+alt successful login
+    System -> Employee: Access to Review Module
+    alt select Review Module
+        Employee -> System: Select 'Enter Review' Option
+        System -> Employee: Show 'Enter Review' Form
+        Employee -> System: Fill the form and Submit
+        System -> System: Validate the review details
+        alt review is valid
+            System -> Database: Save review in database
+            Database --> System: Acknowledge save
+            System -> Employee: Confirm successful submission
+            Employee -> System: Request customer consent
+            System -> Customer: Request consent for review
+            alt consent given
+                Customer -> System: Give Consent for Review
+                System -> Database: Update consent in database
+                Database --> System: Acknowledge update
+                System -> Employee : Confirm consent received
+            else consent denied
+                Customer -> System: Deny Consent for Review
+                System -> Employee: Notify consent denial
+            end
+        else review is invalid
+            System -> Employee: Show Error
+        end
+    else not able to select Review Module
+        System -> Employee: Show Error
+    end
+else unsuccessful login
+    System -> Employee: Show Error
+end
+
+@enduml
+```
+
+This sequence diagram follows the general process:
+
+1. The employee logs in to the system and accesses the review module.
+2. The employee chooses to enter a review and fills in the corresponding form with the input data.
+3. The system validates the review.
+4. If the review is valid, it's saved into the database.
+5. The system then asks for customer consent.
+6. If the customer consents, the review is approved and stored in the system.
+7. If the customer does not consent, the employee is notified.

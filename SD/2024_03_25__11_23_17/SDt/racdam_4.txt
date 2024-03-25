@@ -1,0 +1,22 @@
+@startuml
+title Admin Picture Assessment in Zooniverse
+
+actor Admin
+participant CloudVisionAPI
+database ZooniverseDB
+participant ImageAnalysisService
+participant CitizenAnnotations
+participant TalkComments
+
+Admin -> ZooniverseDB : SelectsPicture
+ZooniverseDB -> ImageAnalysisService : SendsPicture
+ImageAnalysisService -> CloudVisionAPI : RequestPictureAnalysis
+CloudVisionAPI -> ImageAnalysisService : ReturnsAnalysisResults
+ImageAnalysisService -> Admin : ShowAnalysisResults
+
+Admin -> CitizenAnnotations : AccessAnnotationsForPicture
+CitizenAnnotations -> Admin : ReturnAnnotationsResults
+
+Admin -> TalkComments : AccessCommentsForPicture
+TalkComments -> Admin : ReturnCommentsResults
+@enduml

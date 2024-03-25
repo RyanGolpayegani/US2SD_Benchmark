@@ -1,0 +1,41 @@
+@startuml
+
+actor Employee
+entity "Customer Review System" as System
+database "Customer Database" as Database
+actor Customer
+
+Employee -> System: Login to System
+alt successful login
+    System -> Employee: Access to Review Module
+    alt select Review Module
+        Employee -> System: Select 'Enter Review' Option
+        System -> Employee: Show 'Enter Review' Form
+        Employee -> System: Fill the form and Submit
+        System -> System: Validate the review details
+        alt review is valid
+            System -> Database: Save review in database
+            Database --> System: Acknowledge save
+            System -> Employee: Confirm successful submission
+            Employee -> System: Request customer consent
+            System -> Customer: Request consent for review
+            alt consent given
+                Customer -> System: Give Consent for Review
+                System -> Database: Update consent in database
+                Database --> System: Acknowledge update
+                System -> Employee : Confirm consent received
+            else consent denied
+                Customer -> System: Deny Consent for Review
+                System -> Employee: Notify consent denial
+            end
+        else review is invalid
+            System -> Employee: Show Error
+        end
+    else not able to select Review Module
+        System -> Employee: Show Error
+    end
+else unsuccessful login
+    System -> Employee: Show Error
+end
+
+@enduml

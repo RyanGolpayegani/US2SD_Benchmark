@@ -1,0 +1,19 @@
+@startuml
+actor PluginDeveloper
+participant Pipeline
+participant DatasetInstance
+
+PluginDeveloper -> Pipeline: Upload new version of Plugin
+activate Pipeline
+Pipeline -> DatasetInstance : Refer existing Dataset Type
+activate DatasetInstance
+DatasetInstance --> Pipeline : Return Dataset Type
+deactivate DatasetInstance
+Pipeline -> Pipeline : Initiate Pipeline update process
+Pipeline -> Plugin : Upgrade Dataset Type
+activate Plugin
+Plugin --> Pipeline : Confirm Dataset Type upgrade
+deactivate Plugin
+Pipeline --> PluginDeveloper : Pipeline updated process completion
+deactivate Pipeline
+@enduml

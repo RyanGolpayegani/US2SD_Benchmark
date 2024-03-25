@@ -1,0 +1,34 @@
+As the details about how the system or app works or how the user interacts with it are not provided, the below sequence diagram focuses on a conceptual interaction only. Here, we assume that the system may include several components, like User Interface, File Handling Module, and a File Format Verification Module.
+
+Please note that in a real-life project, the diagram would be far more specific and complex and directly related to how the system has been designed.
+
+```plantuml
+@startuml
+actor AgencyUser
+boundary UserInterface
+control FileHandlingModule
+entity FileFormatVerificationModule
+
+AgencyUser -> UserInterface : Selects File F
+UserInterface -> FileHandlingModule : Sends File F
+FileHandlingModule -> FileFormatVerificationModule : Verify Format of File F
+FileFormatVerificationModule -->> FileHandlingModule : File Format Verification Status
+
+alt Format Correct
+    FileHandlingModule -> UserInterface : Sends File F
+    UserInterface -->> AgencyUser : Provides File F
+else Format Incorrect
+    FileHandlingModule -> UserInterface : Sends Error Message (Incorrect Format)
+    UserInterface -->> AgencyUser : Shows Error Message (Incorrect Format)
+end
+
+@enduml
+```
+
+In this sequence diagram:
+
+- The Agency User selects File F through the User Interface.
+- The User Interface then sends File F to the File Handling Module.
+- The File Handling Module sends File F to the File Format Verification Module for format verification.
+- If the format is correct, File F is sent back to the User Interface, which provides it to the Agency User.
+- If the format is incorrect, an error message is sent to the User Interface, which shows it to the Agency User.

@@ -1,0 +1,47 @@
+The following is a detailed Sequence diagram in Plant UML format for the User Story: "As a manager, I want to see the customer satisfaction ratio."
+
+This description assumes a very simple, ideal system. In reality, there would probably be more actors involved, more steps in each use case, and many additional fail scenarios.
+
+```plantuml
+@startuml
+' Making the assumption that this system uses a basic MVC architecture
+
+actor Manager
+entity "Customer Satisfaction Controller" as Controller
+database "Customer Database" as Database
+entity "Customer Satisfaction View" as View
+
+Manager -> Controller : requestSatisfactionRate()
+activate Controller
+Controller -> Database : getPositiveFeedbacks()
+activate Database
+Database --> Controller : positiveFeedbacks
+deactivate Database
+Controller -> Database : getTotalFeedbacks()
+activate Database
+Database --> Controller : totalFeedbacks
+deactivate Database
+Controller -> Controller : calculateSatisfactionRate(positiveFeedbacks, totalFeedbacks)
+Controller --> Manager : satisfactionRate
+Controller -> View : showSatisfactionRate(satisfactionRate)
+activate View
+View --> Manager : displaySatisfactionRate
+deactivate View
+deactivate Controller
+@enduml
+```
+
+This sequence diagram shows:
+
+1. Manager requests the customer satisfaction ratio from the Controller.
+2. Controller gets positive feedbacks from the Customer Database.
+3. Controller gets total feedbacks from the Customer Database.
+4. Controller calculates the satisfaction rate.
+5. Controller returns the satisfaction rate to the Manager.
+6. Finally, Controller tells View to show the satisfaction rate and View displays it to the Manager.
+
+There might be additional checks and steps in a real-world scenario. For example, if the Database cannot provide feedback data (maybe it's momentarily down), then the Controller would likely throw an error, and this error would be captured and handled in the User Interface somehow.  
+
+Remember to replace aliases with actual component names that are relevant to your application.
+
+This Plant UML code can be run in any Plant UML viewer to generate the sequence diagram.

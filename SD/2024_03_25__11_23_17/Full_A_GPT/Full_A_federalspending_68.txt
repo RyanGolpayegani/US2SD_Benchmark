@@ -1,0 +1,28 @@
+Before we can create the sequence diagram, we need to assume the internal processes based on the user story:
+
+1. The FABS user correspondingly uses a system or application.
+2. The FABS user makes a submission via the system.
+3. If the submission has an error, the system detects this error.
+4. The system then repackages the FABS error that has been detected into an error message that accurately represents the issue.
+5. This error message is then relayed back to the user interface.
+6. The user then receives the error.
+
+Let's translate this into a Plant UML sequence diagram:
+
+```
+@startuml
+actor "FABS User" as user
+participant "FABS System" as system
+
+user -> system : Makes Submission
+alt Submission Error
+    system -> system : Detects Submission Error
+    system -> system : Create Error Message
+    system -> user   : Return Error Message
+else No Submission Error
+    system -> user   : Confirm Submission
+end
+@enduml
+```
+
+This code creates a sequence diagram where the user makes a submission, the diagram branches into two possible outcomes depending on whether a submission error occurs. If an error occurs, the system detects the error, creates an error message and then returns this message to the user. If no error occurs, the system simply confirms the user's submission.

@@ -1,0 +1,24 @@
+@startuml
+participant "Authenticated User" as A
+participant "Registration System" as B
+participant "Database" as C
+
+A -> B: Request to register for training
+activate B
+B -> C: Check limit of registration for user
+activate C
+C --> B: Registration info ( number of registrations in the present day )
+deactivate C
+alt no previous registration
+    B --> A : Registration form 
+    A --> B : Fill and submit registration form 
+    B -> C : Save registration details
+    activate C
+    C --> B : Confirmation of saving data
+    deactivate C
+    B --> A : Confirmation of successful registration 
+else Previous Registration found
+    B --> A : Error: Already registered for the day
+end
+deactivate B
+@enduml

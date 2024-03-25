@@ -1,0 +1,40 @@
+This is not a human readable format, but here's how you can define the sequence in PlantUML:
+
+Below is an example of a high-level sequence diagram using PlantUML. You might want to refine it for your system based on the different components, their interactions and the steps involved in this feature:
+
+```plantuml
+@startuml
+
+title Upload Data to the Repository by a Faculty Member
+
+actor "Faculty Member" as FM
+database "Data Repository" as DB
+entity "Publication System" as PS
+
+== Upload Data ==
+FM -> DB: initiateUpload()
+activate DB
+DB -> FM: requestFile()
+deactivate DB
+FM -> DB: sendFile(data)
+activate DB
+DB -> FM: acknowledgeReceipt()
+
+== Associate with Publication ==
+FM -> PS: requestToLinkPublication()
+activate PS
+PS -> FM: requestPublicationDetails()
+deactivate PS
+FM -> PS: providePublicationDetails(publicationID)
+activate PS
+PS -> DB: linkDataToPublication(publicationID, dataID)
+note over DB: This links the uploaded data to the publication in the system for tracking and attribution.
+deactivate PS
+
+== Receive Attribution ==
+DB -> FM: sendAttributionNotification()
+
+@enduml
+```
+
+This diagram assumes a synchronous communication. The faculty member interacts with the data repository to upload the data file. After the data is uploaded, the faculty member uses the publication system to associate it with a publication, providing the necessary details. The publication system communicates back to the data repository to establish this link. Finally, the faculty member receives an attribution notification from the data repository.

@@ -1,0 +1,49 @@
+Title: Commenting on a Book Sequence Diagram
+
+The following PlantUML code describes the sequence of actions when a reader wants to comment on a book:
+
+```
+@startuml
+title Commenting on a Book
+
+actor Reader as r
+participant "User Interface" as UI
+participant "Comment Service" as CS
+participant "Database" as DB
+
+r->UI: Click on book
+activate UI
+
+UI->CS: getBookDetails(bookId)
+activate CS
+
+CS->DB: fetchBookDetails(bookId)
+activate DB
+DB-->CS: returnBookDetails()
+deactivate DB
+
+CS-->UI: displayBookDetails()
+deactivate CS
+UI->r: Show book details
+
+r->UI: Enter comment
+activate UI
+
+UI-->CS: addComment(bookId, comment)
+activate CS
+
+CS->DB: saveComment(bookId, comment)
+activate DB
+DB-->CS: confirmSave()
+deactivate DB
+
+CS-->UI: displayCommentSuccess()
+deactivate CS
+
+UI-->r: Show comment added successfully
+
+@enduml
+```
+This diagram starts with the reader clicking on a book. The User Interface (UI) then sends a request to the Comment Service (CS) to fetch the book's details using the book's Id. The service, in turn, makes a request to the Database (DB) to retrieve the book's details, which it then returns to the Comment Service, which displays the data on the UI.
+
+The reader enters their comment on the UI, which then communicates with the Comment Service to add the comment to the book by using the book's id and the content of the comment. The Comment Service proceeds to save the comment in the Database, confirm the saving, and then display a success message on the UI. The UI then displays to the reader that the comment has been added successfully.

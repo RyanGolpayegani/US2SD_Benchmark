@@ -1,0 +1,22 @@
+@startuml
+participant "Repository Manager" as RM
+participant "Collection" as C
+participant "Object" as O
+participant "Object Component" as OC
+
+RM -> C: describeAdditionalFacets(facetsDescription)
+activate C
+C -> O: addFacets(facetsDescription)
+activate O
+O -> OC: applyFacets(facetsDescription)
+activate OC
+
+alt unsuccessful
+  O --> RM: Response(message)
+else successful
+  O --> RM: Response(successMessage)
+end
+deactivate OC
+deactivate O
+deactivate C
+@enduml
