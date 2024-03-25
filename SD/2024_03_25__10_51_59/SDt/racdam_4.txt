@@ -1,0 +1,20 @@
+@startuml
+participant Archivist
+participant System
+
+Archivist -> System : Request file restriction
+activate System
+System -> System : Verify user privileges
+System --> Archivist : Confirm user privileges
+
+alt sufficient privileges
+    Archivist -> System : Specify file to restrict
+    activate System
+    System -> System : Restrict file from view
+    System --> Archivist : Confirm file restriction
+else insufficient privileges
+    System --> Archivist : Deny request
+end
+
+deactivate System
+@enduml

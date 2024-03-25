@@ -1,0 +1,32 @@
+Here is a sequence diagram in Plant UML format for the described user story:
+
+```
+@startuml
+title Upload Data To Repository and Associate With Publication
+
+actor FacultyMember
+boundary RepositoryUI
+control Repository
+entity Publication
+
+FacultyMember -> RepositoryUI: Access Repository
+RepositoryUI -> Repository: IsAuthenticUser(FacultyMember)
+alt IsAuthentic
+  Repository -> RepositoryUI: AccessGranted
+  FacultyMember -> RepositoryUI: UploadData
+  RepositoryUI -> Repository: SaveDataToRepository(FacultyMember, Data)
+  Repository -> RepositoryUI: DataSavedSuccessfully
+  FacultyMember -> RepositoryUI: AssociateWithData(Publication)
+  RepositoryUI -> Repository: AssociateWithData(Publication, Data)
+  Repository -> Publication: UpdateAssociation(Data)
+  Publication -> Repository: DataAssociationUpdated
+  Repository -> RepositoryUI: DataAssociatedWithPublication
+  RepositoryUI -> FacultyMember: ShowSuccessMessage
+else NotAuthentic
+  Repository -> RepositoryUI: AccessDenied
+  RepositoryUI -> FacultyMember: ShowErrorMessage
+end
+@enduml
+```
+
+In this PlantUML sequence diagram, the actions start with the faculty member trying to access the repository via the RepositoryUI. The Repository will check whether they are an authentic user. If they are authentic, they will be allowed to upload data and associate it with a Publication. If the processes are successful, they will receive a successful message accordingly. If they are not approved as an authentic user, they will receive an error message instead.

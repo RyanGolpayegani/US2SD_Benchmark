@@ -1,0 +1,49 @@
+As an AI model, I can't draw UML diagrams but I can describe how to generate it based on the given user story. 
+
+You should have Actors and several Objects (Classes) in this UML Sequence diagram, it should include: Repository Manager, DAMS (Digital Assets Management System), Collection, Object, and Object Component.
+
+1. Repository Manager sends a request message to the DAMS to know the changes made to language(s) of a certain component.
+    
+2. The DAMS interacts with the Collection class.
+    
+3. The Collection class sends a checkLanguageChanges() message to each of its nested classes, namely Object and Object Component.
+    
+4. The Object class then checks for language changes on itself.
+  
+5. After that, the Object class transfers the checkLanguageChanges() message to its nested class, Object Component.
+   
+6. The Object Component checks for language changes on itself.
+  
+7. Once the check for language changes has been completed by all classes:
+    a. If there are any changes, the system prepares a list of those changes, and,
+    b. If there is no change detected at all, the system prepares a message showing 'No changes detected'.
+    
+8. Finally, DAMS sends this message list back to the Repository Manager.
+
+This process is repeated for each Collection, Object, and Object Component. 
+
+In PlantUML format, this will look like:
+
+```platuml
+@startuml
+actor RepositoryManager
+participant DAMS
+participant Collection
+participant Object
+participant ObjectComponent
+
+RepositoryManager -> DAMS : checkLanguageChanges()
+DAMS -> Collection : checkLanguageChanges()
+Collection -> Object : checkLanguageChanges() 
+Object -> ObjectComponent : checkLanguageChanges()
+
+alt No Language Changes Detected
+ObjectComponent --> DAMS : noChangesMsg
+else
+ObjectComponent --> DAMS: changesDetectedMsg
+end 
+
+DAMS --> RepositoryManager : Return message
+@enduml
+```
+Please note that this is a simplified version of a sequence diagram and the actual functions, return types, and parameters may be different depending on the system’s complexity. The purpose here is to illustrate the interactions based on the given user story. You might want to adjust this to your actual case.

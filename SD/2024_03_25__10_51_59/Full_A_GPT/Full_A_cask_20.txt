@@ -1,0 +1,38 @@
+The sequence diagram below described what happens once a dataset developer decides to explore a dataset instance created from a dataset type that was deployed.
+
+It might be visualized as follows in PlantUML code:
+
+```plantuml
+@startuml
+actor "DataSet Developer" as D
+participant "App Artifacts" as AA #ADD8E6
+participant "Dataset Type Deployment" as DD #FFFFFF
+participant "Dataset Instance" as DI #FFEFD5
+
+D -> AA : Include dataset type code in app artifacts
+activate AA
+
+AA -> DD : Deploy Dataset type
+activate DD
+DD --> AA : Return Deployment status
+deactivate DD
+
+AA -> DI : Create instance of deployed dataset type
+activate DI
+DI --> AA : Return instance creation status
+deactivate DI
+
+D -> DI: Explore dataset instance
+activate DI
+DI --> D: Return instance exploration results
+deactivate DI
+@enduml
+```
+The steps are as follows:
+1. DataSet Developer includes a dataset type code in application artifacts. 
+2. App Artifacts deploy the included dataset type.
+3. Deployment returns a status.
+4. The app creates an instance of the dataset type.
+5.  Dataset Instance returns a status of creation.
+6. DataSet Developer explores the instance of the dataset.
+7. The Dataset Instance returns exploration results.

@@ -1,0 +1,31 @@
+@startuml
+autonumber
+actor Member
+participant "Online Reservation System" as ORS
+database "Book Database" as BD
+
+Member -> ORS : Request to Update Reservation
+activate ORS
+ORS -> BD : Check Availability
+activate BD
+BD -->> ORS : Return Availability Confirmation
+deactivate BD
+ORS -->> Member : Confirm Availability
+ deactivate ORS
+
+alt Available 
+
+Member -> ORS : Confirm Update Reservation Request
+activate ORS
+ORS -> BD : Update Reservation
+activate BD
+BD -->> ORS : Update Confirmation
+deactivate BD
+ORS -->> Member : Confirm Updated Reservation 
+deactivate ORS
+
+else Not Available
+ORS -->> Member : No Update Possible Notification
+deactivate ORS
+end
+@enduml

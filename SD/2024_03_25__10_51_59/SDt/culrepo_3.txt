@@ -1,0 +1,26 @@
+@startuml
+title Upload Data To Repository and Associate With Publication
+
+actor FacultyMember
+boundary RepositoryUI
+control Repository
+entity Publication
+
+FacultyMember -> RepositoryUI: Access Repository
+RepositoryUI -> Repository: IsAuthenticUser(FacultyMember)
+alt IsAuthentic
+  Repository -> RepositoryUI: AccessGranted
+  FacultyMember -> RepositoryUI: UploadData
+  RepositoryUI -> Repository: SaveDataToRepository(FacultyMember, Data)
+  Repository -> RepositoryUI: DataSavedSuccessfully
+  FacultyMember -> RepositoryUI: AssociateWithData(Publication)
+  RepositoryUI -> Repository: AssociateWithData(Publication, Data)
+  Repository -> Publication: UpdateAssociation(Data)
+  Publication -> Repository: DataAssociationUpdated
+  Repository -> RepositoryUI: DataAssociatedWithPublication
+  RepositoryUI -> FacultyMember: ShowSuccessMessage
+else NotAuthentic
+  Repository -> RepositoryUI: AccessDenied
+  RepositoryUI -> FacultyMember: ShowErrorMessage
+end
+@enduml

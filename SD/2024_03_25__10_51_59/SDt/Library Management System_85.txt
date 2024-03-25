@@ -1,0 +1,22 @@
+@startuml
+actor Librarian
+database Database
+entity NotificationCenter
+
+== Seeing Expired Books ==
+
+Librarian -> Database: Extract expired books
+activate Database
+Database --> Librarian: Return list of expired books
+deactivate Database
+
+== Sending Notification ==
+
+loop for each book in expired books
+    Librarian -> NotificationCenter: Send a notification about expiry
+    activate NotificationCenter
+    NotificationCenter --> Librarian: Notification Sent
+    deactivate NotificationCenter
+end
+
+@enduml

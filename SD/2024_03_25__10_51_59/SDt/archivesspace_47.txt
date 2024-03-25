@@ -1,0 +1,31 @@
+@startuml
+title Create, Update, Delete Repository Records
+
+actor "Repository Manager" as RM
+participant "Application Interface" as AI
+participant "Database" as DB
+
+RM -> AI : Send Request
+note right: Request include\naction (Create, Update, Delete)\nand relevant data
+AI -> DB : Create Record
+note right: If the requested action is 'Create',
+AI --> RM : Acknowledge Create
+note right: notify the manager that the\nrecord was created successfully
+
+RM -> AI : Send Request
+AI -> DB : Update Record
+note right: If the requested action is 'Update',
+AI --> RM : Acknowledge Update
+note right: notify the manager that the\nrecord was updated successfully
+
+RM -> AI : Send Request
+AI -> DB : Delete Record
+note right: If the requested action is 'Delete',
+AI --> RM : Acknowledge Delete
+note right: notify the manager that the\nrecord was deleted successfully
+
+DB --> AI : Update Status
+AI --> RM : Report Status
+note right: the interface returns the\nupdated status of the repository
+
+@enduml

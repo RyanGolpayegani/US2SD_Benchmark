@@ -1,0 +1,36 @@
+@startuml
+
+actor Librarian
+participant "BookManagementUI" as UI
+participant "BookManagementSystem" as System
+participant "Database" as DB
+
+Librarian -> UI: Click on Book Information Update
+
+activate UI
+UI -> System: GetClickedBookInformation()
+activate System
+System -> DB: FetchBookInformationByID()
+activate DB
+DB --> System: ReturnBookInformation()
+deactivate DB
+System --> UI: DisplayBookInformation()
+deactivate System
+
+UI --> Librarian: Show current book details
+Librarian -> UI: Input updated pages information
+
+UI -> System: UpdateBookDetails(newPagesInformation)
+
+activate System
+System -> DB: UpdateBookDetailsInDB(newPagesInformation)
+activate DB
+DB --> System: ConfirmUpdate()
+deactivate DB
+System --> UI: ConfirmUpdate()
+deactivate System
+
+UI --> Librarian: Show updated confirmation
+deactivate UI
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+'Create actors
+actor Trainee
+entity RegistrationSystem
+
+Trainee -> RegistrationSystem:Request to Register
+activate RegistrationSystem
+
+RegistrationSystem -> RegistrationSystem:Check if user is authenticated
+note right: If user is not authenticated,
+RegistrationSystem --> Trainee:Ask user to authenticate
+deactivate RegistrationSystem
+Trainee -> RegistrationSystem: Authenticate
+activate RegistrationSystem
+
+RegistrationSystem -> RegistrationSystem:Check registration count for the day
+note right: If registration count for the day reached the limit,
+RegistrationSystem --> Trainee:Registration limit reached, try again tomorrow
+deactivate RegistrationSystem
+note right: If registration count has not reached the limit,
+RegistrationSystem -> RegistrationSystem:Allow registration
+RegistrationSystem --> Trainee:Registration successful
+deactivate RegistrationSystem        
+
+@enduml

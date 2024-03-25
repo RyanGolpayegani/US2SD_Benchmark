@@ -1,0 +1,23 @@
+@startuml
+title Reserve Multiple Books Workflow
+
+actor LibraryMember as LM
+participant "Library System" as LS
+
+note over LM,LS: Start of reservation process.
+
+LM -> LS: RequestBookReservation(list of book titles)
+activate LS
+LS -> LS: CheckBookAvailability(list of book titles)
+note right: System checks if books are available.
+LS --> LM: SendBookAvailabilityStatus(list with status of each book)
+deactivate LS
+LM -> LS: ConfirmReservation(list with books to reserve)
+activate LS
+LS -> LS: ProcessReservation(list with books to reserve)
+note right: System processes the reservation.
+LS --> LM: ReservationConfirmation(list with reserved books)
+deactivate LS
+
+note over LM,LS: End of reservation process.
+@enduml

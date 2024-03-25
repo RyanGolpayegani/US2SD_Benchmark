@@ -1,0 +1,23 @@
+@startuml
+actor PluginDeveloper
+participant AppArtifact
+participant DatasetType
+participant DatasetInstance
+
+PluginDeveloper -> AppArtifact : Include type code
+AppArtifact -> DatasetType : Create DatasetType instance
+AppArtifact --> PluginDeveloper : Return dataset type instance   
+
+PluginDeveloper -> DatasetType : Deploy Type
+DatasetType -> DatasetInstance : Create Instance
+
+DatasetType --> PluginDeveloper : Return instance identifier
+PluginDeveloper --> AppArtifact : Share DatasetType instance
+
+PluginDeveloper -> DatasetType : Delete outdated version
+alt Some Instances of Outdated Version Exist
+    DatasetType --> PluginDeveloper : Operation fail
+else No Instances of Outdated Version Exist
+    DatasetType --> PluginDeveloper : Operation Success
+end
+@enduml

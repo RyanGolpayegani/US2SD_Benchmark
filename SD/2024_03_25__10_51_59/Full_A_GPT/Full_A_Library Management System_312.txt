@@ -1,0 +1,44 @@
+Here is a simple sequence diagram in Plant UML format for the user story. Please note that the actual diagram might be more complex and detailed, this is only an illustrative diagram for clarity.
+
+```plantuml
+@startuml
+autonumber
+actor Member
+participant "Online Reservation System" as ORS
+database "Book Database" as BD
+
+Member -> ORS : Request to Update Reservation
+activate ORS
+ORS -> BD : Check Availability
+activate BD
+BD -->> ORS : Return Availability Confirmation
+deactivate BD
+ORS -->> Member : Confirm Availability
+ deactivate ORS
+
+alt Available 
+
+Member -> ORS : Confirm Update Reservation Request
+activate ORS
+ORS -> BD : Update Reservation
+activate BD
+BD -->> ORS : Update Confirmation
+deactivate BD
+ORS -->> Member : Confirm Updated Reservation 
+deactivate ORS
+
+else Not Available
+ORS -->> Member : No Update Possible Notification
+deactivate ORS
+end
+@enduml
+```
+
+In this sequence diagram:
+1. Member sends a request to update a reservation to the Online Reservation System (ORS).
+2. ORS checks availability in the Book Database (BD).
+3. BD returns confirmation about availability back to ORS.
+4. ORS confirms the availability to the member.
+5. If the book is available, the member confirms the reservation update, then ORS updates the reservation in BD. BD sends update confirmation back to the ORS and ORS confirms the updated reservation to the Member.
+6. If book is not available, ORS sends a notification to the member about no updates being possible.
+7. If-alt loop is used to depict different scenarios.

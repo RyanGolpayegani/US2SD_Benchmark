@@ -1,0 +1,22 @@
+@startuml
+title Check due date of borrowed book
+
+actor Member
+boundary "Member Portal" as MP 
+control "Book Controller" as BC
+database "Book Database" as BD 
+
+Member -> MP: Request book status
+activate MP
+MP -> BC: Send book status request
+activate BC
+BC -> BD: Fetch book status
+activate BD
+BD -->> BC: Returns book status
+deactivate BD
+BC -->> MP: Send book status and due date
+deactivate BC
+MP -->> Member: Show book status and due date
+deactivate MP
+
+@enduml

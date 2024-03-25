@@ -1,0 +1,30 @@
+@startuml 
+participant DigitalRecordsArchivist as A
+participant Collections as B 
+participant Depositors as C 
+
+A -> B : getCollection(collectionID)
+activate B
+B --> A : collectionDetails
+deactivate B
+
+loop for each depositor
+    A -> C : addDepositorToGroup(depositorID, groupID)
+    activate C
+    C --> A : status
+    deactivate C
+end
+
+A -> B : setCloseDate(collectionID, date)
+activate B
+B --> A : status
+deactivate B
+
+loop for each depositor
+    A -> C : setPermission(depositorID, collectionID)
+    activate C
+    C --> A : status
+    deactivate C
+end  
+
+@enduml

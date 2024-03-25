@@ -1,0 +1,43 @@
+Here is a simple detailed sequence diagram in PlantUML format, representing above requirements:
+
+```uml
+@startuml
+
+title Normalize Measures By Gini Sequence Diagram
+
+actor API_User
+control API_Receiver
+entity Gini_Normalizer
+database DatasetDB
+
+API_User -> API_Receiver : Send Request (Base dataset, normalization parameters)
+activate API_Receiver
+
+API_Receiver -> Gini_Normalizer : normalizeDataReq (Base dataset, normalization parameters)
+activate Gini_Normalizer
+
+Gini_Normalizer -> DatasetDB : retrieveData (Base dataset)
+activate DatasetDB
+
+DatasetDB --> Gini_Normalizer : returnData (Raw dataset)
+deactivate DatasetDB
+
+Gini_Normalizer --> API_Receiver : returnData (Normalized dataset)
+deactivate Gini_Normalizer
+
+API_Receiver --> API_User : Send Response (Normalized dataset)
+deactivate API_Receiver
+
+@enduml
+```
+
+In this diagram:
+- "API_User" actor sends a request to normalize dataset based on certain parameters including GINI index. 
+- This request is accepted by "API_Receiver" control.
+- "API_Receiver" then sends the request to "Gini_Normalizer" entity to manipulate data based on normalization parameters provided by "API_User".
+- "Gini_Normalizer" then fetches the base dataset from "DatasetDB" database.
+- "DatasetDB" returns raw dataset to "Gini_Normalizer".
+- "Gini_Normalizer" normalizes the data and then shares it with "API_Receiver".
+- Finally, "API_Receiver" shares the normalized dataset back to "API_User". 
+
+This is a simple form of how this process could look, further details might be added depending on the exact behavior and logic of your system.

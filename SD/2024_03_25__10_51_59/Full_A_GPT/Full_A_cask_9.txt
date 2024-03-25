@@ -1,0 +1,30 @@
+In this scenario, the sequence diagram will involve several actions and actors including the App Developer, Application 1, Application 2, and the App Deployment System. The actions depicted in the diagram will reflect the user story. For this user story, here is a detailed sequence diagram in PlantUML format:
+```plantuml
+@startuml
+
+actor AppDeveloper
+participant AppDeploymentSystem
+participant Application1
+participant DataSetInstance
+participant Application2
+
+AppDeveloper -> AppDeploymentSystem: Deploy App
+activate AppDeploymentSystem
+AppDeploymentSystem-> Application1: Check Dataset Type Version
+activate Application1
+Application1 --> AppDeploymentSystem: Current Dataset Type Version
+deactivate Application1
+activate DataSetInstance
+AppDeploymentSystem -> DataSetInstance: Compare with new version
+DataSetInstance --> AppDeploymentSystem: Version conflict error
+deactivate DataSetInstance
+AppDeploymentSystem --> AppDeveloper: Deployment Failed: Version Conflict Error
+deactivate AppDeploymentSystem
+AppDeveloper -> Application2: Update Dataset Type Version
+activate Application2
+Application2 --> AppDeveloper: Dataset Updated Successfully
+deactivate Application2
+
+@enduml
+```
+This UML sequence diagram reflects the process described in the user story. It starts with the app developer deploying the application. The application deployment system checks the version of the dataset type from application 1. Then, it compares this with the new version in DataSetInstance. A version conflict error occurs if the current version and the new version do not match, causing the deployment to fail. After that, the app developer updates the dataset type version in application 2. The updated process is successful.

@@ -1,0 +1,20 @@
+@startuml
+actor Waiter
+entity OrderSystem
+entity Menu
+
+Waiter -> OrderSystem: AccessOrder(orderId)
+activate OrderSystem
+OrderSystem --> Waiter: ShowOrderDetails(orderItems)
+deactivate OrderSystem
+
+Waiter -> OrderSystem: DeselectItem(itemId)
+activate OrderSystem
+OrderSystem -> Menu: GetItem(itemId)
+activate Menu
+Menu --> OrderSystem: ReturnItemDetails
+deactivate Menu
+OrderSystem --> Waiter: ConfirmRemoveItem
+deactivate OrderSystem
+
+@enduml

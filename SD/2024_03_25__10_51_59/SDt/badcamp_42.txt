@@ -1,0 +1,26 @@
+@startuml
+title Basic Summit Details Management
+
+actor "Summit coordinator" as A
+participant BADCAMP as B
+
+note over A : Sets Summit Information
+
+A -> B: SetSummitDetails(name, date, location, etc)
+B -> B: CheckValidity(name, date, location, etc)
+
+alt valid summit details
+    B-->A: ConfirmSummitDetails(set)
+else missing or invalid detail
+    B-->A: Error(msg)
+end
+
+note right of A: Summit information\nmanually added by\nthe coordinator.
+
+note over A: Views Summit Information
+
+A -> B: GetSummitDetails()
+B -> B: FindSummitDetails()
+B-->A: ReturnSummitDetails(summit)
+
+@enduml

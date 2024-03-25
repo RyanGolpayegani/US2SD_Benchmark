@@ -1,0 +1,26 @@
+@startuml
+entity "Repository Manager" as repo
+database "DAMS" as dams
+entity "Object Life Cycle Tracker" as tracker
+
+repo -> dams : Fetch all objects for which I am a custodian
+activate repo
+activate dams
+
+dams --> repo : Return list of all custodian objects
+
+loop for each custodian object
+repo -> tracker : Track Object's lifecycle events
+activate tracker
+
+tracker -> dams : Fetch Object's lifecycle events
+activate dams
+
+dams --> tracker : Return all Object's lifecycle events
+
+tracker --> repo: Display all Object's lifecycle events
+end
+deactivate dams
+deactivate tracker
+deactivate repo
+@enduml

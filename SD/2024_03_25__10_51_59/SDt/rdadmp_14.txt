@@ -1,0 +1,22 @@
+@startuml
+participant "Data Librarian" as D
+participant "DMP" as P
+participant "External Systems" as E
+participant "Data Catalogue" as C
+
+D -> P : Extract pointers to metadata
+activate P
+P --> D : Provide pointers
+deactivate P
+
+loop for each pointer
+  D -> E: Request metadata using pointer
+  activate E
+  E --> D: Provide metadata
+  deactivate E
+  D -> C: Import metadata to catalogue
+  activate C
+  C --> D: Confirm successful import
+  deactivate C
+end
+@enduml

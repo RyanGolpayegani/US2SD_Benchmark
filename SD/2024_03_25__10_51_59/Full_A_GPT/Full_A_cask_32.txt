@@ -1,0 +1,37 @@
+Here is an example of how the sequence diagram for this user story could be represented using PlantUML language. 
+
+```plantuml
+@startuml
+actor PluginDeveloper
+participant AppArtifact
+participant DatasetType
+participant DatasetInstance
+
+PluginDeveloper -> AppArtifact : Include type code
+AppArtifact -> DatasetType : Create DatasetType instance
+AppArtifact --> PluginDeveloper : Return dataset type instance   
+
+PluginDeveloper -> DatasetType : Deploy Type
+DatasetType -> DatasetInstance : Create Instance
+
+DatasetType --> PluginDeveloper : Return instance identifier
+PluginDeveloper --> AppArtifact : Share DatasetType instance
+
+PluginDeveloper -> DatasetType : Delete outdated version
+alt Some Instances of Outdated Version Exist
+    DatasetType --> PluginDeveloper : Operation fail
+else No Instances of Outdated Version Exist
+    DatasetType --> PluginDeveloper : Operation Success
+end
+@enduml
+```
+
+This sequence diagram shows:
+
+1. The plugin developer includes the dataset type code in the app artifact.
+2. The app artifact creates a dataset type instance and returns that to the plugin developer.
+3. The plugin developer then deploys the dataset type, which creates a dataset instance and returns the identifier to the developer.
+4. Then the dataset type instance is shared by the plugin developer with the app artifact.
+5. Finally, the developer attempts to delete an outdated version of the dataset type. If any instances of this outdated version exist, the operation fails and is notified to the developer, otherwise operation is successful. 
+
+Please note that this is a basic representation, further details could be added based on the specific requirements and conditions of your system.

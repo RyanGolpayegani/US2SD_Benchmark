@@ -1,0 +1,28 @@
+@startuml
+
+title Normalize Measures By Gini Sequence Diagram
+
+actor API_User
+control API_Receiver
+entity Gini_Normalizer
+database DatasetDB
+
+API_User -> API_Receiver : Send Request (Base dataset, normalization parameters)
+activate API_Receiver
+
+API_Receiver -> Gini_Normalizer : normalizeDataReq (Base dataset, normalization parameters)
+activate Gini_Normalizer
+
+Gini_Normalizer -> DatasetDB : retrieveData (Base dataset)
+activate DatasetDB
+
+DatasetDB --> Gini_Normalizer : returnData (Raw dataset)
+deactivate DatasetDB
+
+Gini_Normalizer --> API_Receiver : returnData (Normalized dataset)
+deactivate Gini_Normalizer
+
+API_Receiver --> API_User : Send Response (Normalized dataset)
+deactivate API_Receiver
+
+@enduml

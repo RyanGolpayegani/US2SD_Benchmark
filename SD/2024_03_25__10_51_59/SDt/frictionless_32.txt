@@ -1,0 +1,29 @@
+@startuml
+actor Developer
+participant "Data Source" as DS
+participant "Data Package" as DP
+participant "Data Integration\n Pipeline" as DIP
+participant DSpace
+
+Developer -> DS : Get Data Package
+activate DS
+DS -> DP : Prepare Data Package
+activate DP
+DP --> DS : Return Data Package
+deactivate DP
+DS --> Developer : Send Data Package
+deactivate DS
+
+Developer -> DIP : Initiate Integration
+activate DIP
+DIP -> DP : Access Data Package
+activate DP
+DP --> DIP : Return Data Package
+deactivate DP
+DIP -> DSpace : Integrate Data Package
+activate DSpace
+DSpace --> DIP : Confirm successful Integration
+deactivate DSpace
+DIP --> Developer : Signal Successful Integration
+deactivate DIP
+@enduml

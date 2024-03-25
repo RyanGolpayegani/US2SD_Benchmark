@@ -1,0 +1,28 @@
+@startuml
+title Schema Specification Process 
+
+actor User
+
+User -> DatasetType: SpecifySchema(schemaDetails)
+note right: User specifies the schema
+
+DatasetType -> Artifact: IncludeSchemaInArtifact(schemaDetails)
+note right: Schema is included in the app artifact
+
+Artifact -> DatasetType: CreateDataset(datasetDescription, schemaDetails)
+note right: Dataset of the specified type is created
+
+DatasetType -> Application: ShareSchema(datasetDescription, schemaDetails)
+note right: Schema is shared among multiple \napplications that include the dataset type
+
+User -> DatasetType: DeleteOldVersions(oldDatasetVersion)
+note right: Old versions of the dataset type are tried to be deleted
+
+alt If dataset instances exist with the old version
+        DatasetType --> User: DeletionFailedError
+        note right: Fails if any dataset instances \nexist with the old version
+else No dataset instances with the old version
+        DatasetType --> User: SuccessfulDeletion
+        note right: Successfully deletes if no dataset \ninstances exist with the old version 
+end
+@enduml

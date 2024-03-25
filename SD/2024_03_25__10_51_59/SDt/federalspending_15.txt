@@ -1,0 +1,20 @@
+@startuml
+participant "Owner" as O
+participant "USAspending" as USA
+participant "Owner System" as OS
+
+O -> USA: RequestToSendGrantsOnly
+activate USA
+USA -> USA: ValidateRequest
+note right: Validating request only contains grant records.
+USA --> O: AcknowledgeRequest
+deactivate USA
+activate OS
+USA -> OS: SendGrantsOnly
+note right: Sending only grant records.
+OS --> USA: ConfirmReceipt
+deactivate OS
+activate USA
+USA --> O: ConfirmationOfTransfer
+deactivate USA
+@enduml

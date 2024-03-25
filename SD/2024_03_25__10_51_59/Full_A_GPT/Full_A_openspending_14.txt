@@ -1,0 +1,39 @@
+This sequence diagram details the steps a data publishing user would take to provide the platform administrator with additional GeoJSON sources to improve map-based visualizations of the data:
+
+```
+@startuml
+actor User
+participant "Publishing Platform" as PP
+participant "Platform Administrator" as PA
+
+User -> PP: Login to the Publishing Platform
+activate PP
+
+PP -> User: Display Dashboard
+User -> PP: Navigate to GeoJSON source upload
+
+PP -> User: Display GeoJSON source upload form
+User -> PP: Enter GeoJSON details & Submit
+
+PP -> PA: Notify new GeoJSON source submission
+deactivate PP
+activate PA
+
+PA -> User: Acknowledge GeoJSON source submission & review
+deactivate User
+PA -> PA: Review and verify GeoJSON source
+
+alt GeoJSON valid
+    PA -> PP: Update map-based visualisations using new GeoJSON source
+    activate PP
+    PP --> User: Notify visualisation update successful
+deactivate User
+else GeoJSON invalid
+    PA -> User: Notify GeoJSON source submission issue
+end
+
+deactivate PA
+@enduml
+```
+
+This diagram starts with the user logging into the publishing platform. After being presented with the dashboard, the user navigates to the GeoJSON source upload form, enters the source details, and submits. The platform then notifies the platform administrator that a new GeoJSON has been submitted, and the admin acknowledges the submission and reviews the source. If valid, the admin will update the map-based visualisations with the new source. If invalid, the admin will notify the user of the issue.

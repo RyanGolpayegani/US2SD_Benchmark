@@ -1,0 +1,27 @@
+@startuml
+participant "DB/IR Administrator" as admin 
+participant "Database" as db
+participant "SystemInteractor" as si
+participant "Calendar" as cal
+
+admin -> db: Connect to repository
+activate db
+db-->admin : Connected
+deactivate db
+activate admin 
+
+admin -> si: Check reports/datasets for future release
+activate si
+si -> db: Fetch upcoming reports/datasets from database
+activate db
+db-->si : Send future data release schedule
+
+si-->admin : Display future reports/datasets 
+deactivate si
+activate admin 
+
+admin -> cal: Add future release dates to calendar
+activate cal
+cal-->admin : Future release dates added successfully
+deactivate admin 
+@enduml

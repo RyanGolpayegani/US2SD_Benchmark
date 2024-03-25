@@ -1,0 +1,20 @@
+@startuml
+actor RepositoryManager
+participant DAMS
+participant Collection
+participant Object
+participant ObjectComponent
+
+RepositoryManager -> DAMS : checkLanguageChanges()
+DAMS -> Collection : checkLanguageChanges()
+Collection -> Object : checkLanguageChanges() 
+Object -> ObjectComponent : checkLanguageChanges()
+
+alt No Language Changes Detected
+ObjectComponent --> DAMS : noChangesMsg
+else
+ObjectComponent --> DAMS: changesDetectedMsg
+end 
+
+DAMS --> RepositoryManager : Return message
+@enduml

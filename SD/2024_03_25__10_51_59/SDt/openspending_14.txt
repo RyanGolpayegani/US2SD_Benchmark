@@ -1,0 +1,33 @@
+@startuml
+actor User
+participant "Publishing Platform" as PP
+participant "Platform Administrator" as PA
+
+User -> PP: Login to the Publishing Platform
+activate PP
+
+PP -> User: Display Dashboard
+User -> PP: Navigate to GeoJSON source upload
+
+PP -> User: Display GeoJSON source upload form
+User -> PP: Enter GeoJSON details & Submit
+
+PP -> PA: Notify new GeoJSON source submission
+deactivate PP
+activate PA
+
+PA -> User: Acknowledge GeoJSON source submission & review
+deactivate User
+PA -> PA: Review and verify GeoJSON source
+
+alt GeoJSON valid
+    PA -> PP: Update map-based visualisations using new GeoJSON source
+    activate PP
+    PP --> User: Notify visualisation update successful
+deactivate User
+else GeoJSON invalid
+    PA -> User: Notify GeoJSON source submission issue
+end
+
+deactivate PA
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+
+actor AppDeveloper
+participant AppDeploymentSystem
+participant Application1
+participant DataSetInstance
+participant Application2
+
+AppDeveloper -> AppDeploymentSystem: Deploy App
+activate AppDeploymentSystem
+AppDeploymentSystem-> Application1: Check Dataset Type Version
+activate Application1
+Application1 --> AppDeploymentSystem: Current Dataset Type Version
+deactivate Application1
+activate DataSetInstance
+AppDeploymentSystem -> DataSetInstance: Compare with new version
+DataSetInstance --> AppDeploymentSystem: Version conflict error
+deactivate DataSetInstance
+AppDeploymentSystem --> AppDeveloper: Deployment Failed: Version Conflict Error
+deactivate AppDeploymentSystem
+AppDeveloper -> Application2: Update Dataset Type Version
+activate Application2
+Application2 --> AppDeveloper: Dataset Updated Successfully
+deactivate Application2
+
+@enduml

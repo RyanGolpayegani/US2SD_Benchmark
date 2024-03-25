@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram in over text conversation might be difficult, but I can provide you the Plant UML code that you can paste into any Plant UML editor to see the diagram. The below sequence describes the operations of upgrading the code of a dataset type used by a dataset instance and updating the pipeline.
+
+```plantuml
+@startuml
+title Upgrade Dataset Type Process
+actor Developer
+component Application
+database DatasetType
+database DataSetInstance
+component Pipeline
+
+Developer -> Application: Deploy new version of plugin
+create DatasetType DatasetType
+Application -> DatasetType: Create new DatasetType code
+activate DatasetType
+
+Developer -> Application: Include new DatasetType in app artifact
+Application -> DatasetType: Include DatasetType code in app artifact
+
+Developer -> Application: Delete outdated DatasetType version
+Application -> DatasetType: Delete outdated DatasetType version
+
+Developer -> Application: Create DatasetInstance with new version
+create DataSetInstance DataSetInstance
+Application -> DataSetInstance: Create DatasetInstance of new DatasetType
+activate DataSetInstance
+
+Developer -> Application: Update pipeline to use new version
+Application -> Pipeline: Update to use new DatasetType
+activate Pipeline
+
+note over Developer, Pipeline: If any DatasetInstance is using the outdated DatasetType, the deletion step will fail and have to be handled accordingly.
+@enduml
+```
+
+This sequence diagram includes the actor (Developer), the plugin Application, DataSetType, DataSetInstance and the Pipeline that gets updated. Remember that you will need a Plant UML viewer to see this sequence diagram, which is represented by text here.

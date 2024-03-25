@@ -1,0 +1,37 @@
+Title: Sequence diagram for tracking object's life cycle events
+
+```
+@startuml
+entity "Repository Manager" as repo
+database "DAMS" as dams
+entity "Object Life Cycle Tracker" as tracker
+
+repo -> dams : Fetch all objects for which I am a custodian
+activate repo
+activate dams
+
+dams --> repo : Return list of all custodian objects
+
+loop for each custodian object
+repo -> tracker : Track Object's lifecycle events
+activate tracker
+
+tracker -> dams : Fetch Object's lifecycle events
+activate dams
+
+dams --> tracker : Return all Object's lifecycle events
+
+tracker --> repo: Display all Object's lifecycle events
+end
+deactivate dams
+deactivate tracker
+deactivate repo
+@enduml
+```
+
+This sequence diagram shows a Repository Manager fetching all the objects they have custodianship of from the DAMS. For each object, they use a Life Cycle Tracker to fetch and then display all of the object's life cycle events.
+
+Key:
+- Repository Manager (repo)
+- Digital Asset Management System (DAMS)
+- Object Life Cycle Tracker (tracker)

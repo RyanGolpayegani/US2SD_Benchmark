@@ -1,0 +1,16 @@
+@startuml
+actor RepositoryManager
+entity DAMS
+database RolesRepository
+
+RepositoryManager -> DAMS : AssignRoleToName(collectionId, objectId, name, role)
+activate DAMS
+
+DAMS -> RolesRepository : CreateRole(name, role)
+activate RolesRepository
+RolesRepository --> DAMS : Acknowledge Creation
+deactivate RolesRepository
+
+DAMS --> RepositoryManager : Role assigned successfully
+deactivate DAMS
+@enduml

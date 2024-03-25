@@ -1,0 +1,46 @@
+Unfortunately, it's not possible to create a sequence diagram as plain text within this text-based AI model. However, I can provide you with a textual description of how the Plant UML code might look like.
+
+```
+@startuml
+title Book Checkout Sequence Diagram
+
+actor "Library Manager" as manager
+entity "Book Inventory System" as inventory
+database "Database" as db
+
+manager -> inventory: Request book list
+activate inventory
+inventory -> db: Fetch book list
+activate db
+db --> inventory: Return book list
+deactivate db
+inventory --> manager: Show book list
+deactivate inventory
+
+manager -> inventory: Select book for checkout
+activate inventory
+inventory -> db: Query book availability
+activate db
+db --> inventory: Return book status
+deactivate db
+inventory --> manager: Show book status
+deactivate inventory
+
+alt If book is available
+    manager -> inventory: Checkout book
+    activate inventory
+    inventory -> db: Update book status
+    activate db
+    db --> inventory: Confirm status update
+    deactivate db
+    inventory --> manager: Confirm checkout
+    deactivate inventory
+else If book is not available
+    manager -> inventory: Request other book
+    deactivate inventory
+end
+
+@enduml
+```
+
+The sequence begins with the Library Manager requesting a book list from the Book Inventory System which in turn fetches the books list from the Database. The fetched book list is then displayed to the Manager who selects a book for checkout. The Inventory System queries the book's availability from the Database. If the book is available, it's checked out and the status is updated in the Database. If the book isn't available, the Library Manager can request for another book. The "alt" block is used to show these branching scenarios.
