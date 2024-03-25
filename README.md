@@ -7,16 +7,17 @@ This repositry includes all of the files associated with US2SD Benchmark which i
 1. ### Experiment with 100 Random USs prompt as follows:
 
    1. US only (0) `DONE`
-   2. Prj desc + USs (DSP)
+   2. Prj desc + USs (Few -> DSP)
       1. BART `DONE`
       2. BERTSUM `DONE`
       3. Pegasus `DONE`
       4. Roberta `DONE`
       5. T5 `DONE`
       6. LLM
-         1. GPT4
+         1. GPT4 `DONE`
+         2. Open AI other Models?
          2. Gemini
-   3. Prj desc + USs + N USs from same prj
+   3. ??? Prj desc + USs + N USs from same prj
       1. 3
       2. 4
       3. 5
