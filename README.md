@@ -7,7 +7,7 @@ This repositry includes all of the files associated with US2SD Benchmark which i
 1. ### Experiment with 100 Random USs prompt as follows:
 
    1. US only (0) `DONE`
-   <be> Prj desc + USs (Few -> DSP)
+   <br>Prj desc + USs (Few -> DSP)
    2. BART `DONE`
    3. BERTSUM `DONE`
    4. Pegasus `DONE`
