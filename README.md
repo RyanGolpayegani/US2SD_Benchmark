@@ -53,7 +53,6 @@ pip install -r requirements
 python src/US_to_CSV.py
 ```
 
-<img src="images/US_CSV.png" alt="Alt text">
 
 1. Run `src/Call_GPTAPI.py` this script reads User Stories from the csv file which is created in the previous step and prompts them to ChatGPT 4 you can change the engine model in the script. The outputs of this script are the textual sequence diagram which are stored in `SD/SDT` folder and full answer of ChatGPT which is stored in `SD/Full_A_GPT`. You can run this script with the following command:
 
@@ -62,7 +61,6 @@ python src/Call_GPTAPI.py
 
 ```
 
-<!-- <img src="images/GPT.png" alt="Alt text"> -->
 
 7. Run `src/Call_PUML_API.py` this script sends the textual sequence diagrams to PlantUML Web Server [PlantUML Web Server](https://plantuml.com/sequence-diagram) using its API. The output of this script is visualized sequence diagrams in ".png" format which are stored in `SD/SDi` folder. You can run this script with the following command:
 
@@ -71,7 +69,6 @@ python src/Call_PUML_API.py
 
 ```
 
-<img src="images/PUML.png" alt="Alt text">
 
 ## Acknowledgment
 
