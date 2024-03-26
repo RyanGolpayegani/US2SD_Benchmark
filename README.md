@@ -8,14 +8,14 @@ This repositry includes all of the files associated with US2SD Benchmark which i
 
    1. US only (0) `DONE`
    Prj desc + USs (Few -> DSP)
-      2. BART `DONE`
-      3. BERTSUM `DONE`
-      4. Pegasus `DONE`
-      5. Roberta `DONE`
-      6. T5 `DONE`
-      7. GPT4 `DONE`
-      8. GPT4 Turbo
-      9. Gemini?
+   2. BART `DONE`
+   3. BERTSUM `DONE`
+   4. Pegasus `DONE`
+   5. Roberta `DONE`
+   6. T5 `DONE`
+   7. GPT4 `DONE`
+   8. GPT4 Turbo
+   9. Gemini?
 
 2. Add `Gemini` script --> Gemini API key needed
 
