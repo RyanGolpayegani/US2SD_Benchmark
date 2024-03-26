@@ -22,8 +22,7 @@ This repositry includes all of the files associated with US2SD Benchmark which i
       2. 4
       3. 5
 
-2. Replace all the picture in this readme with repo's new name.
-3. Add `Gemini` script --> Gemini API key needed
+2. Add `Gemini` script --> Gemini API key needed
 
 ## How to use:
 
