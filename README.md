@@ -15,7 +15,7 @@ This repositry includes all of the files associated with US2SD Benchmark which i
       5. T5 `DONE`
       6. LLM
          1. GPT4 `DONE`
-         2. Open AI other Models?
+         2. Open AI other Models? *GPT4 Turbo
          2. Gemini
    3. ??? Prj desc + USs + N USs from same prj
       1. 3
