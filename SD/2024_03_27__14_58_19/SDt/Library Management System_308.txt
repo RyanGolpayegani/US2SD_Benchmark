@@ -1,0 +1,34 @@
+@startuml
+!theme cerulean
+
+actor Member as member
+participant "UI Interface" as UI
+participant "Recommendation \nEngine" as RecEngine
+participant "Book Database" as Database
+participant "Notification \nSystem" as Notification
+
+== Process for Taking Suggestions ==
+
+member -> UI : Access recommendation section
+activate UI
+UI -> RecEngine : Request suggestions for member
+activate RecEngine
+
+RecEngine -> Database : Fetch member’s reading history
+activate Database
+Database --> RecEngine : Return reading history
+deactivate Database
+
+RecEngine -> Database : Query for similar books
+Database --> RecEngine : List of suggested books
+deactivate Database
+
+RecEngine -> Notification : Prepare suggestion list
+activate Notification
+Notification --> UI : Display suggestions
+deactivate Notification
+
+UI --> member : Show book suggestions
+deactivate UI
+
+@enduml

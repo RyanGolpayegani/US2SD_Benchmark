@@ -1,0 +1,50 @@
+Given your requirement, below is a PlantUML sequence diagram that outlines the process through which a data librarian extracts pointers from the DMP to metadata held in other systems for import into a data catalogue.
+
+Please note, due to the text format's limitations, you'll need to interpret and adapt this sample code snippet within a PlantUML environment or any other tool that supports PlantUML for visualization.
+
+```plantuml
+@startuml
+!theme plain
+participant DataLibrarian as librarian
+participant DMPTool
+participant ExternalMetadataSystem as EMS
+participant DataCatalogue
+
+librarian -> DMPTool : Request metadata pointers
+activate DMPTool
+DMPTool -> EMS : Fetch metadata pointers
+activate EMS
+EMS --> DMPTool : Return metadata pointers
+deactivate EMS
+DMPTool --> librarian : Provide metadata pointers
+deactivate DMPTool
+
+librarian -> EMS : Request metadata using pointers
+activate EMS
+EMS --> librarian : Return detailed metadata
+deactivate EMS
+
+librarian -> DataCatalogue : Import metadata
+activate DataCatalogue
+DataCatalogue --> librarian : Confirm metadata import
+deactivate DataCatalogue
+@enduml
+```
+
+In this diagram:
+- **DataLibrarian** represents your role as the initiator of the process.
+- **DMPTool** represents the comprehensive data management planning tool where the research data management plans are stored.
+- **ExternalMetadataSystem (EMS)** symbolizes external systems from which metadata pointers are fetched. It's considered external to DMPTool and contains detailed metadata.
+- **DataCatalogue** represents the system or repository where the imported metadata will reside for future access, analysis, or reporting purposes.
+
+### Sequence Explained:
+
+1. **Request Metadata Pointers**: The process begins with the data librarian requesting metadata pointers from the DMPTool.
+
+2. **Fetch and Provide Metadata Pointers**: DMPTool then fetches these pointers from the External Metadata System (EMS) and provides them back to the data librarian.
+
+3. **Request Metadata Using Pointers**: With metadata pointers at hand, the data librarian then requests the detailed metadata from the EMS.
+
+4. **Import Metadata**: Finally, the librarian imports this detailed metadata into the Data Catalogue for consolidation, cataloguing, or further use.
+
+This sequence diagram outlines a straightforward interaction for extracting and importing metadata. Depending on the complexity of your systems and requirements, additional steps or participants (like authentication systems or more detailed sub-processes) might be necessary for a real-world application.

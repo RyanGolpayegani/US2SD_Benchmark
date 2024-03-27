@@ -1,0 +1,44 @@
+Here's a detailed Sequence Diagram in PlantUML format for the user story: As an OlderPerson, I want to use ALFRED for navigation. This example assumes that the OlderPerson uses a voice command to request navigation assistance, ALFRED processes this request, accesses a navigation system to fetch the route, and then provides instructions back to the user.
+
+Please note that you'll need a PlantUML environment or compatible tool to visualize this diagram.
+
+```plantuml
+@startuml
+participant OlderPerson
+participant "ALFRED" as ALFRED
+participant "Speech Recognition Module" as Voice
+participant "Navigation System" as Navigation
+database "Location Database" as LocationDB
+
+== Navigation Request ==
+OlderPerson -> ALFRED: "Navigate me to the nearest pharmacy"
+ALFRED -> Voice: Process voice command
+Voice -> ALFRED: Text command ("Navigate to nearest pharmacy")
+ALFRED -> Navigation: Request route to nearest pharmacy
+
+== Fetching Route ==
+Navigation -> LocationDB: Fetch current location
+LocationDB --> Navigation: Current Location
+Navigation -> LocationDB: Fetch pharmacy locations
+LocationDB --> Navigation: Pharmacy Locations
+Navigation --> ALFRED: Best Route
+
+== Providing Navigation ==
+ALFRED -> Voice: Convert route instructions to speech
+Voice -> OlderPerson: Speaks route instructions
+@enduml
+```
+
+This diagram depicts the following sequence:
+
+1. The OlderPerson initiates a navigation request using a voice command directed at ALFRED.
+2. ALFRED forwards this voice command to its Speech Recognition Module to interpret and convert the command into text.
+3. The Speech Recognition Module processes the voice command and sends back the interpreted text command to ALFRED.
+4. ALFRED, understanding the request, then communicates with the Navigation System to fetch the route to the nearest pharmacy.
+5. The Navigation System queries the Location Database to ascertain the current location of the user.
+6. Upon obtaining the current location, the Navigation System proceeds to fetch the locations of pharmacies from the Location Database.
+7. With the data on pharmacies, the Navigation System calculates the best route and communicates this back to ALFRED.
+8. ALFRED uses its Speech Technology to translate the route instructions into speech for the OlderPerson.
+9. Finally, the OlderPerson receives spoken route instructions from ALFRED.
+
+This sequence illustrates how ALFRED can assist an older person in navigating to a desired location using voice commands, thereby enhancing their independence and mobility.

@@ -1,0 +1,20 @@
+@startuml
+participant User as user
+participant "API Gateway" as gateway
+participant "Normalization Service" as normalize
+participant "Socioeconomic Data Service" as socioecon
+database "OpenSpending Database" as db
+
+user -> gateway : Request normalization\n(GINI, indexes)
+gateway -> normalize : Invoke normalization process
+normalize -> socioecon : Request socioeconomic data\n(GINI, other indexes)
+socioecon -> db : Fetch socioeconomic data
+db -> socioecon : Return socioeconomic data
+socioecon -> normalize : Socioeconomic data response
+normalize -> db : Fetch fiscal dataset
+db -> normalize : Fiscal dataset response
+normalize -> normalize : Normalize measures\nusing socioeconomic data
+normalize -> gateway : Normalization results
+gateway -> user : Normalized dataset response
+
+@enduml

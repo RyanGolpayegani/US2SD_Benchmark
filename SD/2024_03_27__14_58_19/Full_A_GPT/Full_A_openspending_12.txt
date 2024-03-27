@@ -1,0 +1,35 @@
+To visualize the detailed sequence of actions a Data Publishing User would undertake to import data from a Google Spreadsheet into the OpenSpending platform, we can create a PlantUML sequence diagram. This diagram illustrates the series of interactions between the user and various system components involved in importing data directly from a Google Spreadsheet.
+
+Please note, the following PlantUML code describes a high-level interaction flow and assumes the existence of certain components (like APIs and user interfaces) within the OpenSpending platform, which may or may not align perfectly with the current architecture of OpenSpending. This diagram is designed for illustrative purposes.
+
+```plantuml
+@startuml
+actor User
+participant "Web UI" as UI
+participant "Data Import Service" as ImportService
+participant "Google API" as GoogleApi
+participant "Data Packager" as Packager
+participant "Fiscal Datastore" as Datastore
+
+User -> UI : Navigate to data import section
+UI -> User : Display import options
+User -> UI : Select "Import from Google Spreadsheet"
+UI -> User : Request Google Spreadsheet URL
+User -> UI : Provide Google Spreadsheet URL
+UI -> ImportService : Initiate import process with URL
+ImportService -> GoogleApi : Request access to spreadsheet data
+GoogleApi -> ImportService : Return data in requested format
+ImportService -> Packager : Send retrieved data for packaging
+Packager -> Packager : Process and validate data
+Packager -> Datastore : Store packaged data
+Datastore -> Packager : Confirm data storage
+Packager -> ImportService : Confirm data packaged and stored
+ImportService -> UI : Display success message to user
+UI -> User : Confirm successful import and display next steps
+
+@enduml
+```
+
+This sequence diagram starts with the user navigating to the data import section of the OpenSpending platform and choosing to import data from a Google Spreadsheet. The user is then prompted to provide the URL of the Google Spreadsheet. This URL is passed to the Data Import Service, which then communicates with the Google API to retrieve the spreadsheet data. Once the data is retrieved, it is sent to the Data Packager, which processes and validates the data before storing it in the Fiscal Datastore. The process concludes with a confirmation message to the user indicating a successful import.
+
+To view this diagram, you will need to use a PlantUML editor or an online tool that supports PlantUML, such as the PlantUML demo server or integrated support within editors like Visual Studio Code when equipped with the appropriate extension.

@@ -1,0 +1,26 @@
+@startuml
+participant User as u
+participant "Web Interface" as web
+participant "Dataset Management System" as dms
+participant "Metadata Service" as mds
+participant "Citation Generator" as cg
+
+u -> web : Request dataset details
+web -> dms : Retrieve dataset information
+activate dms
+dms -> mds : Request metadata for dataset
+activate mds
+mds --> dms : Return metadata
+deactivate mds
+dms --> web : Display dataset details
+deactivate dms
+web -> cg : Request example citation using metadata
+activate cg
+cg -> mds : Retrieve citation format
+activate mds
+mds --> cg : Return citation format
+deactivate mds
+cg --> web : Provide example citation
+deactivate cg
+web --> u : Display example citation
+@enduml

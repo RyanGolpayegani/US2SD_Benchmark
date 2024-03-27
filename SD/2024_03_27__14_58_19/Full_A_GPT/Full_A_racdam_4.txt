@@ -1,0 +1,67 @@
+Based on your project description and the specific user story, here is a detailed PlantUML sequence diagram that represents the process an archivist would go through to restrict a file from view. This includes interactions between the archivist (user), the digital archive system interface, and internal system components responsible for managing access control and file metadata updates.
+
+```plantuml
+@startuml
+participant "Archivist" as Archivist
+participant "Digital Archive Interface" as Interface
+participant "Access Control System" as AccessControl
+participant "File Metadata Service" as MetadataService
+participant "Database" as DB
+
+Archivist -> Interface : Selects file to restrict
+activate Interface
+
+Interface -> MetadataService : Fetch file metadata
+activate MetadataService
+
+MetadataService -> DB : Query file details
+activate DB
+DB --> MetadataService : Return file metadata
+deactivate DB
+
+MetadataService --> Interface : Display file metadata
+deactivate MetadataService
+
+Archivist -> Interface : Request to apply restriction
+activate Interface
+
+Interface -> AccessControl : Process restriction request
+activate AccessControl
+
+AccessControl -> MetadataService : Update access level
+activate MetadataService
+
+MetadataService -> DB : Update file with restricted access
+DB --> MetadataService : Confirm update
+deactivate DB
+
+MetadataService --> AccessControl : Confirm access updated
+deactivate MetadataService
+
+AccessControl --> Interface : Restriction applied successfully
+deactivate AccessControl
+
+Interface --> Archivist : Display success message
+deactivate Interface
+
+@enduml
+```
+
+### Explanation:
+1. **Archivist Selects File to Restrict:** The archivist initiates the process by selecting the specific file they wish to restrict via the digital archive interface.
+
+2. **Fetch File Metadata:** The interface communicates with the File Metadata Service to fetch and display the current metadata of the selected file, including its current access level.
+
+3. **Request to Apply Restriction:** After reviewing the file details, the archivist decides to apply the restriction and communicates this decision through the interface.
+
+4. **Process Restriction Request:** The digital archive interface forwards this request to the Access Control System, which is responsible for managing and applying access restrictions.
+
+5. **Update Access Level:** The Access Control System communicates with the File Metadata Service to update the metadata of the file, specifically its access level, to reflect the restriction.
+
+6. **Confirm Access Updated:** The File Metadata Service updates the file's metadata in the database and confirms the update to the Access Control System. 
+
+7. **Restriction Applied Successfully:** The Access Control System then confirms to the digital archive interface that the restriction has been applied successfully.
+
+8. **Display Success Message:** Finally, the digital archive interface informs the archivist that the file has been successfully restricted.
+
+This sequence diagram outlines the steps and interactions necessary for an archivist to restrict a file from view, ensuring that each component of the system operates in coordination to maintain data integrity and enforce access control policies.

@@ -1,0 +1,35 @@
+@startuml
+participant OlderPerson as user
+participant "Voice Interface" as voice
+participant "ALFRED System" as system
+participant "Game Module" as game
+participant "Health Monitoring" as health
+database "Exercise Database" as db
+
+user -> voice : "Start exercise game"
+voice -> system : Interpret request
+system -> game : Fetch game options
+game -> db : Query for mental & physical games
+db -> game : Return game list
+game -> system : Present game options
+system -> voice : Inform about game options
+voice -> user : List game options
+user -> voice : Selects "Opposing Motion Game"
+voice -> system : Interpret selection
+system -> game : Initialize "Opposing Motion Game"
+game -> health : Monitor health parameters
+health -> system : Update health data
+game -> system : Start game instructions
+system -> voice : Relay game instructions
+voice -> user : "Follow the motions displayed"
+user -> game : Performs motions
+game -> health : Monitor motions and health
+health -> game : Feedback on performance
+game -> system : Update game progress
+system -> voice : Guide and encourage user
+voice -> user : "Well done! Keep going."
+... (game continues or concludes) ...
+game -> system : Game concludes
+system -> voice : Provide game summary
+voice -> user : "Game Over. Great job!"
+@enduml

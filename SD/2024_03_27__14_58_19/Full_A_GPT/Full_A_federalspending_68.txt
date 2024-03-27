@@ -1,0 +1,67 @@
+Creating a detailed sequence diagram for the specified user story involves illustrating how different systems and roles interact to achieve the desired outcome: improving the accuracy of submission error messages for FABS users. To design this in PlantUML format, we need to detail interactions between the FABS User, Submission Interface, Validation Service, Error Handling System, and Feedback Mechanism.
+
+Below is a PlantUML code snippet to visualize this process:
+
+```plantuml
+@startuml
+!theme plain
+
+participant "FABS User" as User
+participant "Submission Interface" as Interface
+participant "Validation Service" as Validator
+participant "Error Handling System" as ErrorHandler
+participant "Feedback Mechanism" as Feedback
+
+User -> Interface : Submit Data
+activate Interface
+
+Interface -> Validator : Validate Submission
+activate Validator
+
+alt Valid Data
+    Validator -> Interface : Validation Success
+    deactivate Validator
+
+    Interface -> User : Success Message
+    deactivate Interface
+else Invalid Data
+    Validator -> ErrorHandler : Report Errors
+    activate ErrorHandler
+    ErrorHandler -> Validator : Error Details
+    
+    Validator -> Interface : Validation Fail + Error Details
+    deactivate Validator
+
+    Interface -> Feedback : Format Error Messages
+    activate Feedback
+    Feedback -> Interface : Formatted Error Messages
+    
+    Interface -> User : Error Messages
+    deactivate Interface
+    deactivate Feedback
+end
+
+deactivate User
+
+@enduml
+```
+
+**Explanation of the Diagram:**
+
+1. **FABS User submits data:** The process starts with the FABS user submitting their data through the Submission Interface.
+
+2. **Submission Interface validates submission:** The submitted data is then passed to the Validation Service to check for any inconsistencies or errors.
+
+3. **Validation Service checks the data:**
+   - If the data is valid, the Validation Service informs the Submission Interface, which in turn notifies the user of the successful submission.
+   - If the data is invalid, the Validation Service sends the error details to the Error Handling System.
+
+4. **Error Handling System processes errors:** The Error Handling System processes and categorizes the errors before sending the details back to the Validation Service.
+
+5. **Validation Service forwards errors:** With the processed errors, the Validation Service sends a validation failure notice along with error details to the Submission Interface.
+
+6. **Feedback Mechanism formats error messages:** To ensure the FABS user understands the submission errors, the Submission Interface sends the errors to the Feedback Mechanism, which formats the error messages into a user-friendly format.
+
+7. **FABS User receives error messages:** Finally, the formatted error messages are sent back to the FABS user through the Submission Interface.
+
+This sequence diagram outlines the flow and interaction between different components from the moment a FABS user submits data to receiving feedback in case of errors. It emphasizes the importance of clear and accurate error reporting to improve user experience.

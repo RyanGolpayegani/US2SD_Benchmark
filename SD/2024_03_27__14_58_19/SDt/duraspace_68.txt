@@ -1,0 +1,19 @@
+@startuml
+participant RepositoryManager as RM "Repository Manager"
+participant DIMS_UI as UI "DIMS Interface"
+participant CollectionsManagement as CM "Collections Management"
+participant EventMonitoring as EM "Event Monitoring"
+participant NotificationService as NS "Notification Service"
+
+RM -> UI : Select Collection/Object
+UI -> CM : Query Collection/Object Details
+CM -> CM : Check for language attribute changes
+alt Language Changes Detected
+    CM -> EM : Log Language Change Event
+    EM -> NS : Trigger Language Change Notification
+    NS -> RM : Send Notification
+else No Changes Detected
+    CM -> RM : No language changes found
+end
+
+@enduml

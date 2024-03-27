@@ -1,0 +1,48 @@
+Given the complexity and breadth of the actions involved in the user story, a detailed PlantUML sequence diagram that outlines the process follows below. This scenario assumes the Python client for OpenSpending is well-documented and enables data publishing users to add datasets in bulk to the datastore from the command line or their programs.
+
+```plantuml
+@startuml
+actor "Data Publishing User" as user
+participant "Python Client CLI" as cli
+participant "Authentication Module" as auth
+participant "Data Packager" as packager
+participant "API" as api
+database "OpenSpending Datastore" as datastore
+
+user -> cli : Execute command to add data
+cli -> auth : Request authentication
+auth -> cli : Return authentication token
+cli -> packager : Package data with token\nand dataset details
+packager -> cli : Confirm data packaged
+cli -> api : POST packaged data\nwith authentication token
+api -> datastore : Validate and store data
+datastore -> api : Confirm data stored
+api -> cli : Return success response
+cli -> user : Display success message
+
+@enduml
+```
+
+Explanation of the Flow:
+
+1. **Data Publishing User Executes Command**: The user initiates the process by executing a command in the Python Client's Command Line Interface (CLI), indicating their intention to add datasets in bulk.
+
+2. **Request Authentication**: The Python Client interacts with the Authentication Module to request an authentication token. This step ensures that only authorized users can add data to the OpenSpending Datastore.
+
+3. **Return Authentication Token**: The Authentication Module validates the user's credentials and returns an authentication token to the Python Client.
+
+4. **Package Data with Token and Dataset Details**: The user's data, along with the obtained authentication token and details of the dataset(s), is packaged by the Data Packager component of the Python Client. This might involve formatting the data as required by the OpenSpending datastore and including necessary metadata.
+
+5. **Confirm Data Packaged**: The Data Packager confirms that the data is correctly packaged for submission.
+
+6. **POST Packaged Data with Authentication Token**: The Python Client then sends the packaged data along with the authentication token to the OpenSpending API. This is typically done through a POST request.
+
+7. **Validate and Store Data**: Upon receiving the data, the OpenSpending API performs necessary validations and stores the data in the OpenSpending Datastore.
+
+8. **Confirm Data Stored**: The datastore confirms that the data has been successfully stored.
+
+9. **Return Success Response**: The OpenSpending API returns a success response to the Python Client, indicating that the data has been added to the datastore.
+
+10. **Display Success Message**: Finally, the Python Client displays a message to the user, confirming that the data has been successfully added.
+
+This sequence diagram covers the essential interactions and steps involved in having a Python client for bulk data addition to the OpenSpending Datastore, simplifying the process for data publishing users.

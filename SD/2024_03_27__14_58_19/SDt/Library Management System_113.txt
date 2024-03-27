@@ -1,0 +1,33 @@
+@startuml
+participant LibraryManager as LM
+participant WebInterface as WI
+participant Server as S
+participant Database as DB
+
+LM -> WI : Accesses Book Management
+activate WI
+WI -> S : Request Book Assignment Form
+activate S
+S -> DB : Fetch Next Unique ID
+activate DB
+DB --> S : Unique ID
+deactivate DB
+S --> WI : Display Form with Unique ID
+deactivate S
+WI --> LM : Show Form
+deactivate WI
+
+LM -> WI : Submits New Book Details
+activate WI
+WI -> S : Send New Book Data with ID
+activate S
+S -> DB : Store New Book Information
+activate DB
+DB --> S : Confirmation
+deactivate DB
+S --> WI : Assignment Success
+deactivate S
+WI --> LM : Display Success Message
+deactivate WI
+
+@enduml

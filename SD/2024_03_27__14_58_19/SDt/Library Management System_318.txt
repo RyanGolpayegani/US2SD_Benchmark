@@ -1,0 +1,32 @@
+@startuml
+participant Reader
+participant "Frontend UI" as Frontend
+participant "Backend Server" as Backend
+participant "Authentication Service" as AuthService
+participant "Comment Service" as CommentService
+participant Database
+
+Reader -> Frontend: Select book to comment
+Frontend -> Backend: Request book details
+Backend -> Database: Query book details
+Database -> Backend: Return book details
+Backend -> Frontend: Display book details
+Frontend -> Reader: Show book information
+
+Reader -> Frontend: Enter comment
+Frontend -> Backend: Submit comment request with User ID and Book ID
+Backend -> AuthService: Validate User ID
+AuthService -> Backend: Return validation result
+
+alt if User is validated
+   Backend -> CommentService: Process comment
+   CommentService -> Database: Save comment
+   Database -> CommentService: Confirm save
+   CommentService -> Backend: Return success message
+   Backend -> Frontend: Display success message
+   Frontend -> Reader: Show comment submission success
+else User not validated
+   Backend -> Frontend: Display error message
+   Frontend -> Reader: Show error message
+end
+@enduml

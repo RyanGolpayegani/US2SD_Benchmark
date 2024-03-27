@@ -1,0 +1,50 @@
+Given the project description and focusing on the User Story regarding librarians wanting to see expired books in order to send notifications, I'll outline a detailed sequence diagram in PlantUML format. This diagram will depict the interaction flow involved in identifying expired books and then triggering notifications to the relevant borrowers.
+
+```plantuml
+@startuml
+participant Librarian as L
+participant "CLMS Interface" as UI
+participant "System Backend" as SB
+participant Database as DB
+participant NotificationService as NS
+
+L -> UI : Selects "View Expired Books"
+UI -> SB : RequestExpiredBooksList()
+SB -> DB : QueryExpiredBooks()
+note right of DB: Retrieves all books \nwhose due date has passed
+DB --> SB : ExpiredBooksList
+SB --> UI : ReturnExpiredBooksList()
+UI --> L : Display Expired Books
+L -> UI : Select Books to Notify
+UI -> SB : RequestSendNotifications(SelectedBooks)
+loop for each book in SelectedBooks
+    SB -> DB : QueryBorrowerDetails(bookId)
+    DB --> SB : BorrowerDetails
+    SB -> NS : SendNotification(BorrowerDetails, bookId)
+    NS --> SB : NotificationStatus
+end
+SB --> UI : NotificationsSentStatus()
+UI --> L : Display Notification Status
+@enduml
+```
+
+### Explanation:
+1. **Librarian (L):** The user/actor who wants to perform the action.
+2. **CLMS Interface (UI):** The frontend through which the librarian interacts with the system.
+3. **System Backend (SB):** Acts as the intermediary handling logic, fetching, and processing data.
+4. **Database (DB):** Stores all relevant information, including book status (e.g., expired) and user/borrower details.
+5. **NotificationService (NS):** A dedicated service or module responsible for sending out notifications (email, SMS, etc.).
+
+#### Process Flow:
+- The librarian selects the option to view expired books through the user interface (UI).
+- The UI requests the system backend (SB) to fetch the list of expired books.
+- The System Backend queries the database to retrieve all books with a due date that has already passed.
+- The database returns the list of expired books to the system backend, which then forwards this list to the UI.
+- The UI displays the list of expired books to the librarian.
+- The librarian selects specific books for which to send notifications and communicates this selection back to the UI.
+- The UI requests the system backend to initiate the notification sending process for the selected books.
+- For each selected book, the system backend queries borrower details from the database and then requests the NotificationService to send the appropriate notification.
+- The NotificationService returns the status of each notification attempt back to the system backend, which then aggregates this information.
+- Finally, the system backend communicates the overall notification sending status back to the UI, which displays it to the librarian.
+
+This sequence details the steps involved in identifying expired books and notifying borrowers, as per the librarian's request.

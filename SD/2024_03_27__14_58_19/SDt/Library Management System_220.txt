@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+participant Manager as manager
+participant WebInterface as web
+participant Server as server
+participant Database as db
+
+manager -> web : Accesses missing books report
+activate web
+web -> server : Request missing book numbers
+activate server
+
+server -> db : Query missing book details
+activate db
+
+db --> server : Return missing book details
+deactivate db
+
+server --> web : Return missing book numbers
+deactivate server
+
+web --> manager : Display missing book numbers
+deactivate web
+
+@enduml

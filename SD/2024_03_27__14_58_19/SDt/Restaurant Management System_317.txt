@@ -1,0 +1,24 @@
+@startuml
+participant "Waiter UI" as waiterUI
+participant "Backend Server" as backend
+database "Database" as db
+
+waiterUI -> backend : Update waiting time request\n(table ID, new waiting time)
+activate backend
+backend -> db : Check table ID validity
+activate db
+db --> backend : Table ID validation response
+deactivate db
+
+alt If table ID is valid
+    backend -> db : Update waiting time\n(table ID, new waiting time)
+    activate db
+    db --> backend : Waiting time updated confirmation
+    deactivate db
+    backend --> waiterUI : Update success notification
+    deactivate backend
+else If table ID is invalid
+    backend --> waiterUI : Error notification\n(Invalid table ID)
+    deactivate backend
+end
+@enduml

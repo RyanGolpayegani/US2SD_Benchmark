@@ -1,0 +1,52 @@
+@startuml
+actor "Repository Manager" as RM
+participant "UI: Archival Management" as UI
+participant "Controller: Record Management" as Controller
+participant "Database: Archival Records" as DB
+
+== Record Creation ==
+RM -> UI : Select "Create Record"
+UI -> Controller : InitiateRecordCreation()
+activate Controller
+Controller -> DB : InsertNewRecord(data)
+activate DB
+DB --> Controller : RecordCreatedSuccess()
+deactivate DB
+Controller --> UI : DisplayRecordCreationSuccess()
+deactivate Controller
+UI --> RM : Show "Record Created Successfully"
+
+== Record Update ==
+RM -> UI : Select "Edit Record"
+UI -> Controller : RequestRecordData(recordId)
+activate Controller
+Controller -> DB : FetchRecord(recordId)
+activate DB
+DB --> Controller : ReturnRecordData()
+deactivate DB
+Controller --> UI : DisplayRecordData()
+deactivate Controller
+RM -> UI : Modify and Submit Updated Data
+UI -> Controller : UpdateRecord(recordId, newData)
+activate Controller
+Controller -> DB : ApplyRecordUpdate(recordId, newData)
+activate DB
+DB --> Controller : RecordUpdateSuccess()
+deactivate DB
+Controller --> UI : DisplayRecordUpdateSuccess()
+deactivate Controller
+UI --> RM : Show "Record Updated Successfully"
+
+== Record Deletion ==
+RM -> UI : Select "Delete Record"
+UI -> Controller : RequestDeleteRecord(recordId)
+activate Controller
+Controller -> DB : DeleteRecordById(recordId)
+activate DB
+DB --> Controller : RecordDeletionSuccess()
+deactivate DB
+Controller --> UI : DisplayRecordDeletionSuccess()
+deactivate Controller
+UI --> RM : Show "Record Deleted Successfully"
+
+@enduml

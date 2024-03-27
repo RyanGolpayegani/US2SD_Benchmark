@@ -1,0 +1,58 @@
+To create a detailed sequence diagram for the specified user story "As a researcher, I want to have accurate cross-collection citation information, so that I can find materials again", using PlantUML, you would focus on the interactions between the researcher (user) and the system components involved in generating and retrieving citation information across different collections in the digital archive.
+
+Below is a PlantUML sequence diagram that outlines this process. The diagram encompasses the user's request to find materials using citation information, the system's processing of this request across various digital collections, and the subsequent presentation of accurate citation data to the researcher.
+
+```plantuml
+@startuml
+actor Researcher as researcher
+participant "Search Interface" as searchInterface
+participant "Database" as database
+participant "Citation Generator" as citationGenerator
+participant "Collections API" as collectionsAPI
+participant "Digital Archive" as digitalArchive
+
+researcher -> searchInterface: Enter search criteria\n(including desired citation info)
+activate searchInterface
+
+searchInterface -> database: Query based on criteria
+activate database
+
+database -> collectionsAPI: Fetch relevant collections
+activate collectionsAPI
+
+collectionsAPI -> digitalArchive: Retrieve detailed collection data
+activate digitalArchive
+
+digitalArchive --> collectionsAPI: Return collection data
+deactivate digitalArchive
+
+collectionsAPI --> database: Provide aggregated data
+deactivate collectionsAPI
+
+database --> searchInterface: Return search results with basic citation info
+deactivate database
+
+searchInterface --> researcher: Display search results
+researcher -> searchInterface: Select specific item for detailed citation
+
+searchInterface -> citationGenerator: Request detailed citation
+activate citationGenerator
+
+citationGenerator -> digitalArchive: Access complete item data
+activate digitalArchive
+
+digitalArchive --> citationGenerator: Return item data
+deactivate digitalArchive
+
+citationGenerator --> searchInterface: Provide detailed citation info
+deactivate citationGenerator
+
+searchInterface --> researcher: Display detailed citation info
+deactivate searchInterface
+
+@enduml
+```
+
+This PlantUML diagram starts with the researcher inputting search criteria, including the desire for citation information, into the search interface. The system then queries the database, which interacts with a Collections API to fetch relevant collections from the digital archive. Once the collections data is retrieved and processed, the search results are displayed to the researcher, including basic citation info. When the researcher selects an item for more detailed citation information, the system utilizes a Citation Generator to access complete item data and provide a detailed citation format to the researcher.
+
+This sequence diagram provides a generalized view of the process, which can be expanded or adjusted based on the specific technologies, protocols, and components involved in the Digital Archive Management Enhancement Project's implementation.

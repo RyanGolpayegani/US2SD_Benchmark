@@ -1,0 +1,18 @@
+@startuml
+participant AppDeveloper as dev
+participant "Version Control System" as vcs
+participant "Dataset Management System" as ds
+participant "Deployment System" as deploy
+
+dev -> vcs: Push new app version with updated dataset type
+vcs -> deploy: Trigger deployment process
+deploy -> ds: Request to deploy new app version
+ds -> ds: Check for shared dataset instance versions
+alt Version conflict detected
+    ds -> deploy: Report version conflict error
+    deploy -> dev: Deployment failed with version conflict error
+else No conflict
+    ds -> deploy: Proceed with deployment
+    deploy -> dev: Deployment successful
+end
+@enduml

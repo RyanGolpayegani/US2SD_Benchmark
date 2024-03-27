@@ -1,0 +1,26 @@
+@startuml
+participant "Data Publishing User" as User
+participant "OpenSpending Platform" as Platform
+participant "Platform Administrator" as Admin
+
+User -> Platform : Submit request to add GeoJSON source
+activate Platform
+Platform -> Platform : Validate request content
+Platform -> Admin : Notify of GeoJSON addition request
+deactivate Platform
+activate Admin
+Admin --> Platform : Review GeoJSON source
+activate Platform
+Platform -> Platform : Verify GeoJSON integrity and compatibility
+alt GeoJSON source is valid
+    Platform --> User : Notify GeoJSON source approval
+    Platform -> Platform : Integrate GeoJSON source with dataset
+else GeoJSON source is invalid
+    Platform --> User : Notify GeoJSON source rejection\nProvide reason
+end
+deactivate Platform
+deactivate Admin
+User -> Platform : Validate integration on map-based visualization
+Platform -> Platform : Render visualization with new GeoJSON source
+Platform --> User : Display updated map-based visualization
+@enduml

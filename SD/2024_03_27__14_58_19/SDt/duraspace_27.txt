@@ -1,0 +1,27 @@
+@startuml
+!theme cerulean
+
+participant RepositoryManager as RM "Repository Manager"
+participant Interface as UI "DIMS User Interface"
+participant Control as CC "Central Controller"
+participant Database as DB "DIMS Database"
+
+RM -> UI : Request events for object ID
+activate UI
+
+UI -> CC : Query events for object ID
+activate CC
+
+CC -> DB : Fetch event history for object ID
+activate DB
+
+DB --> CC : Event history data
+deactivate DB
+
+CC --> UI : Display event history
+deactivate CC
+
+UI --> RM : Show event history
+deactivate UI
+
+@enduml

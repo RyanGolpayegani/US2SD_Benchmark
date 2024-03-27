@@ -1,0 +1,17 @@
+@startuml
+actor Customer
+participant "UI: Web/App Interface" as UI
+participant "Backend Server\n(Node.js with Express)" as Server
+database "Database\n(MongoDB/PostgreSQL)" as DB
+
+Customer -> UI: Clicks 'View Menu'
+UI -> Server: GET request /api/menu
+activate Server
+Server -> DB: Query menu items
+activate DB
+DB --> Server: Return menu items
+deactivate DB
+Server --> UI: Menu items data
+deactivate Server
+UI --> Customer: Display menu
+@enduml

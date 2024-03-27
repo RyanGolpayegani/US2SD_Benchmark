@@ -1,0 +1,34 @@
+@startuml
+
+participant PluginDeveloper as PD
+participant VersionControlSystem as VCS
+participant DeploymentManager as DM
+participant DatasetTypeRegistry as DTR
+participant ApplicationEcosystem as AE
+participant PipelineManager as PM
+
+== Plugin Update ==
+PD -> VCS : Commit new plugin version
+VCS -> DM : Trigger plugin deployment
+
+== Dataset Type Upgrading ==
+DM -> DTR : Check for dataset type changes
+DTR --> DM : Dataset type upgrade needed
+DM -> DTR : Deploy updated dataset type
+
+== Dataset Instance Updating ==
+DM -> AE : Identify affected dataset instances
+AE --> DM : List of instances for upgrade
+loop for each dataset instance
+    DM -> AE : Update dataset instance version
+end
+
+== Pipeline Update ==
+DM -> PM : Notify pipeline of dataset type version change
+PM -> AE : Update pipeline configuration
+AE --> PM : Pipeline updated to new dataset version
+
+== Completion ==
+DM --> PD : Deployment and updates successful
+
+@enduml

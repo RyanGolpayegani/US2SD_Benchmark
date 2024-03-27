@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+participant DataLibrarian as librarian
+participant DMPTool
+participant ExternalMetadataSystem as EMS
+participant DataCatalogue
+
+librarian -> DMPTool : Request metadata pointers
+activate DMPTool
+DMPTool -> EMS : Fetch metadata pointers
+activate EMS
+EMS --> DMPTool : Return metadata pointers
+deactivate EMS
+DMPTool --> librarian : Provide metadata pointers
+deactivate DMPTool
+
+librarian -> EMS : Request metadata using pointers
+activate EMS
+EMS --> librarian : Return detailed metadata
+deactivate EMS
+
+librarian -> DataCatalogue : Import metadata
+activate DataCatalogue
+DataCatalogue --> librarian : Confirm metadata import
+deactivate DataCatalogue
+@enduml

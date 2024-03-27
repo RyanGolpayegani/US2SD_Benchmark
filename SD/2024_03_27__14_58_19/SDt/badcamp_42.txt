@@ -1,0 +1,23 @@
+@startuml
+actor "Summit Coordinator" as coordinator
+participant "Web Interface" as web
+participant "Summit Controller" as controller
+participant "Database" as db
+
+coordinator -> web : Access summit information form
+web -> coordinator : Display form
+
+coordinator -> web : Submit summit information
+web -> controller : Validate summit data
+
+alt validation success
+    controller -> db : Save summit information
+    db -> controller : Confirm save
+    controller -> web : Display success message
+    web -> coordinator : Show confirmation
+else validation failure
+    controller -> web : Display error message
+    web -> coordinator : Show error and request correction
+end
+
+@enduml

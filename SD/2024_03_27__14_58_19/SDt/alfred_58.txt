@@ -1,0 +1,40 @@
+@startuml
+
+participant OlderPerson as user
+participant "ALFRED\nDevice" as device
+participant "Fall Detection\nModule" as fallDetection
+participant "Emergency\nNotification\nService" as emergencyService
+participant "Emergency\nContact" as emergencyContact
+
+user -> device : [Wears ALFRED Device]
+activate device
+
+device -> fallDetection : Monitor for falls
+activate fallDetection
+
+fallDetection -> fallDetection : Detect fall
+alt Fall Detected
+    fallDetection -> device : Notify of fall
+    deactivate fallDetection
+    activate device
+
+    device -> emergencyService : Trigger emergency protocol
+    activate emergencyService
+    
+    emergencyService -> emergencyContact : Send emergency notification
+    activate emergencyContact
+    
+    emergencyContact --> emergencyService : Acknowledge receipt
+    deactivate emergencyContact
+    
+    emergencyService --> device : Confirm notification sent
+    deactivate emergencyService
+    
+    device --> user : Notify: "Help is on the way"
+    deactivate device
+    
+else No Fall Detected
+    deactivate fallDetection
+end
+
+@enduml

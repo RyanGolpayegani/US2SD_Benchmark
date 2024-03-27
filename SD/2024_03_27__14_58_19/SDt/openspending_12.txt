@@ -1,0 +1,25 @@
+@startuml
+actor User
+participant "Web UI" as UI
+participant "Data Import Service" as ImportService
+participant "Google API" as GoogleApi
+participant "Data Packager" as Packager
+participant "Fiscal Datastore" as Datastore
+
+User -> UI : Navigate to data import section
+UI -> User : Display import options
+User -> UI : Select "Import from Google Spreadsheet"
+UI -> User : Request Google Spreadsheet URL
+User -> UI : Provide Google Spreadsheet URL
+UI -> ImportService : Initiate import process with URL
+ImportService -> GoogleApi : Request access to spreadsheet data
+GoogleApi -> ImportService : Return data in requested format
+ImportService -> Packager : Send retrieved data for packaging
+Packager -> Packager : Process and validate data
+Packager -> Datastore : Store packaged data
+Datastore -> Packager : Confirm data storage
+Packager -> ImportService : Confirm data packaged and stored
+ImportService -> UI : Display success message to user
+UI -> User : Confirm successful import and display next steps
+
+@enduml

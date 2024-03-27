@@ -1,0 +1,29 @@
+@startuml
+actor Waiter
+participant "Frontend UI" as Frontend
+participant "Order Management Service" as OrderService
+participant "Inventory Service" as Inventory
+
+Waiter -> Frontend: Selects "Check Item Availability"
+activate Waiter
+activate Frontend
+Frontend -> OrderService: Request available menu items
+activate OrderService
+OrderService -> Inventory: Query item stock levels
+activate Inventory
+
+alt Item Available
+    Inventory --> OrderService: Stock level for each item
+    OrderService --> Frontend: Item availability status (Available)
+    Frontend --> Waiter: Display items available
+else Item Not Available
+    Inventory --> OrderService: Stock level (0) for some items
+    OrderService --> Frontend: Item availability status (Not Available)
+    Frontend --> Waiter: Indicate items not available
+end
+
+deactivate Inventory
+deactivate OrderService
+deactivate Frontend
+deactivate Waiter
+@enduml

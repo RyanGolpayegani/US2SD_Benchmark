@@ -1,0 +1,23 @@
+@startuml
+autonumber
+
+actor Developer
+participant "DPIE Portal" as Portal
+participant "DPIE API" as API
+participant "Clojure Environment" as Clojure
+database "Data Package Repository" as Repo
+
+Developer -> Portal : Search/select Data Package
+Portal -> Repo : Query available Data Packages
+Repo -> Portal : Return Data Package options
+Portal -> Developer : Display Data Package options
+Developer -> Portal : Choose specific Data Package
+Portal -> Developer : Provide Data Package ID/URL
+Developer -> API : Request Data Package (ID/URL)
+API -> Repo : Fetch specified Data Package
+Repo -> API : Return Data Package
+API -> Developer : Provide Data Package\n(in Clojure compatible format)
+Developer -> Clojure : Integrate Data Package
+Clojure -> Developer : Data Package ready for analysis & visualization
+
+@enduml

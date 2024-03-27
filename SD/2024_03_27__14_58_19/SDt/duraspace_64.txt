@@ -1,0 +1,26 @@
+@startuml
+actor RepositoryManager as RM
+participant "DIMS Interface" as UI
+participant "Collection Management Module" as CMM
+participant "Metadata Enhancement Engine" as MEE
+participant "Database" as DB
+
+RM -> UI : Select Collection/Object to Describe
+UI -> CMM : Fetch Selected Collection/Object Details
+CMM -> DB : Query Collection/Object Details
+DB --> CMM : Return Details
+CMM --> UI : Display Details
+UI --> RM : Show Collection/Object Info
+RM -> UI : Input Additional Facets Description
+UI -> MEE : Process Additional Descriptions
+alt Valid Description
+    MEE -> DB : Update Collection/Object with New Descriptions
+    DB --> MEE : Confirmation
+    MEE --> UI : Update Success Message
+    UI --> RM : Display Success Message
+else Invalid Description
+    MEE --> UI : Error Message (Invalid Description)
+    UI --> RM : Show Error Message
+end
+
+@enduml

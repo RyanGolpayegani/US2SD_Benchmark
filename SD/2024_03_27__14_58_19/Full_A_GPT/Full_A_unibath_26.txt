@@ -1,0 +1,44 @@
+Given the complexity and multidisciplinary nature of your project, creating a sequence diagram for the specific user story requires thoughtful consideration of the interactions between the user (data reuser) and the system components. Below is a sequence diagram in PlantUML format that outlines the process of a data reuser retrieving an example citation for a dataset.
+
+```plantuml
+@startuml
+participant User as u
+participant "Web Interface" as web
+participant "Dataset Management System" as dms
+participant "Metadata Service" as mds
+participant "Citation Generator" as cg
+
+u -> web : Request dataset details
+web -> dms : Retrieve dataset information
+activate dms
+dms -> mds : Request metadata for dataset
+activate mds
+mds --> dms : Return metadata
+deactivate mds
+dms --> web : Display dataset details
+deactivate dms
+web -> cg : Request example citation using metadata
+activate cg
+cg -> mds : Retrieve citation format
+activate mds
+mds --> cg : Return citation format
+deactivate mds
+cg --> web : Provide example citation
+deactivate cg
+web --> u : Display example citation
+@enduml
+```
+
+### Explanation:
+1. **User (Data Reuser) Requests Dataset Details:** The user initiates the process by requesting the details of a specific dataset from the web interface of the Enhanced Research Data Management Platform.
+2. **Web Interface Retrieves Dataset Information:** The web interface sends a request to the Dataset Management System to retrieve information about the requested dataset.
+3. **Dataset Management System Requests Metadata:** The Dataset Management System requests metadata for the specified dataset from the Metadata Service.
+4. **Metadata Service Returns Metadata:** The Metadata Service returns the metadata, which includes information necessary for citation, back to the Dataset Management System.
+5. **Dataset Management System Displays Dataset Details:** The dataset information, along with its metadata, is sent back to the web interface to be displayed to the user.
+6. **Web Interface Requests Citation Example:** The web interface requests an example citation from the Citation Generator, providing it with the necessary metadata.
+7. **Citation Generator Retrieves Citation Format:** The Citation Generator retrieves the citation format, which could be specific to the academic discipline or publisher preferences, from the Metadata Service.
+8. **Metadata Service Returns Citation Format:** The Metadata Service provides the citation format to the Citation Generator.
+9. **Citation Generator Provides Example Citation:** The Citation Generator generates an example citation for the dataset using the provided metadata and citation format, and sends it back to the web interface.
+10. **Web Interface Displays Example Citation to User:** The web interface displays the example citation for the dataset, allowing the user (data reuser) to correctly reference it in their work.
+
+This sequence diagram captures the interactions between the system components and the user for viewing an example citation for a dataset. The key steps involve retrieving dataset metadata, determining the appropriate citation format, and generating an example citation for the user.

@@ -1,0 +1,37 @@
+Here's a detailed sequence diagram in PlantUML format based on the user story provided. This scenario outlines the process for an authenticated user (trainee) attempting to register for a training session while ensuring that they can only register for one session per day to prevent duplicates.
+
+```plantuml
+@startuml
+!theme plain
+
+participant UserInterface as "Web UI"
+participant SessionValidator as "Session Registration Validator"
+participant Database as "System Database"
+participant ResponseHandler as "Response Handler"
+
+UserInterface -> SessionValidator : requestRegistration(sessionId, userId, date)
+activate SessionValidator
+
+SessionValidator -> Database : queryExistingRegistrations(userId, date)
+activate Database
+Database --> SessionValidator : registrationData
+deactivate Database
+
+SessionValidator -> SessionValidator : checkDuplicate(registrationData)
+alt If no duplicate registration found
+    SessionValidator -> Database : registerUserToSession(sessionId, userId)
+    activate Database
+    Database --> SessionValidator : registrationSuccessful
+    deactivate Database
+    SessionValidator -> ResponseHandler : createSuccessResponse()
+    ResponseHandler --> UserInterface : displaySuccessMessage()
+else Duplicate registration found
+    SessionValidator -> ResponseHandler : createErrorResponse("Duplicate registration")
+    ResponseHandler --> UserInterface : displayErrorMessage("You're already registered for a session on this date.")
+end
+
+deactivate SessionValidator
+@enduml
+```
+
+This PlantUML diagram presents a sequence of interactions for an authenticated user attempting to register for a training session within the BADCamp Enhancement Platform. The process begins when the user initiates a registration request through the Web UI. The Session Registration Validator component then checks with the System Database to determine if the user is already registered for a session on the requested day. If no duplicate registration is found, the user is successfully registered for the chosen session, and a success message is displayed. However, if a duplicate registration is discovered, an error response is generated, informing the user of the duplicate registration and preventing the additional registration entry.

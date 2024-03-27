@@ -1,0 +1,46 @@
+@startuml
+actor "Repository Manager" as RepoManager
+participant "DMPTool Interface" as Interface
+participant "Metadata and Data Storage System" as MetadataSystem
+participant "Provenance and Compliance Checker" as ProvenanceChecker
+database "Data Repository" as DataRepo
+
+== Data Type Inquiry Process ==
+
+RepoManager -> Interface : Request Data Type Details
+activate Interface
+
+Interface -> MetadataSystem : Query Metadata for Data Types
+activate MetadataSystem
+
+MetadataSystem -> MetadataSystem : Retrieve Metadata
+MetadataSystem --> Interface : Return Metadata Info
+deactivate MetadataSystem
+
+Interface -> ProvenanceChecker : Verify Data Provenance & Compliance
+activate ProvenanceChecker
+
+ProvenanceChecker -> ProvenanceChecker : Check Compliance Criteria
+ProvenanceChecker --> Interface : Return Compliance Status
+deactivate ProvenanceChecker
+
+Interface --> RepoManager : Display Data Type & Compliance Info
+deactivate Interface
+
+== Archiving Decision ==
+
+RepoManager -> RepoManager : Evaluate Data for Archiving Suitability
+RepoManager -> Interface : Indicate Archiving Decision
+activate Interface
+
+Interface -> DataRepo : Initiate Archiving Process (if applicable)
+activate DataRepo
+
+DataRepo -> DataRepo : Archive Data
+DataRepo --> Interface : Confirm Archiving Status
+deactivate DataRepo
+
+Interface --> RepoManager : Confirm Archiving Completion
+deactivate Interface
+
+@enduml

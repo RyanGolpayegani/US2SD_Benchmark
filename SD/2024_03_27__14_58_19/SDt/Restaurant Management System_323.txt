@@ -1,0 +1,30 @@
+@startuml
+participant Employee
+participant "Inventory System" as Inventory
+participant "Supplier Management System" as Supplier
+participant Database
+
+== Add Store Order ==
+
+Employee -> Inventory : InitiateAddOrder()
+activate Inventory
+
+Inventory -> Database : CheckInventory()
+activate Database
+Database --> Inventory : InventoryStatus()
+deactivate Database
+
+alt If item stock is low
+    Inventory -> Supplier : RequestRestock()
+    activate Supplier
+    Supplier --> Inventory : RestockConfirmation()
+    deactivate Supplier
+end
+
+Inventory -> Database : UpdateInventory()
+Database --> Inventory : OrderUpdated()
+
+Inventory --> Employee : OrderConfirmation()
+deactivate Inventory
+
+@enduml

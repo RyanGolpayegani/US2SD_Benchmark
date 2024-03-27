@@ -1,0 +1,24 @@
+@startuml
+participant Researcher
+participant UI as "User Interface"
+participant Server as "Neurohub Server"
+participant Database as "Database"
+participant FileSystem as "File System"
+
+Researcher -> UI: Selects 'Create Log Book Page'
+UI -> Server: Request to create new logbook page
+Server -> Database: Create new logbook entry
+Database -> Server: Confirm creation
+Server -> UI: Display new logbook page editor
+Researcher -> UI: Inputs experiment details
+Researcher -> UI: Selects 'Attach File'
+UI -> Researcher: Opens file browser
+Researcher -> UI: Selects file to upload
+UI -> Server: Upload file request
+Server -> FileSystem: Saves file
+FileSystem -> Server: Confirm save
+Server -> Database: Update logbook entry with file metadata
+Database -> Server: Confirm update
+Server -> UI: Confirm file attached
+UI -> Researcher: Display updated logbook page with attachment
+@enduml

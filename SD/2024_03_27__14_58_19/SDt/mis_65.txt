@@ -1,0 +1,19 @@
+@startuml
+participant RepositoryManager as RM "Repository Manager"
+participant StaffInterface as SI "Staff Interface"
+participant VersioningSystem as VS "Versioning System"
+participant Repository as Repo "Repository"
+
+RM -> SI: Request available versions of an object
+SI -> VS: Query available versions
+VS -> Repo: Fetch version metadata
+Repo --> VS: Return version metadata
+VS --> SI: Display available versions
+RM -> SI: Select version to restore
+SI -> VS: Request version restoration
+VS -> Repo: Restore selected version
+Repo --> VS: Confirm restoration
+VS --> SI: Display restoration success message
+SI --> RM: Show restoration success and updated object version
+
+@enduml

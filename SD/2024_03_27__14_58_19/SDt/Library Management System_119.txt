@@ -1,0 +1,56 @@
+@startuml
+!theme amiga
+
+participant LibraryManager as LM
+participant "UI: Book Management Module" as UI
+participant "Backend: Book Management System" as Backend
+database "CLMS Database" as DB
+
+== Book Checkouts Management ==
+
+LM -> UI: Accesses Book Management
+UI -> Backend: Authenticate Manager
+activate Backend
+
+Backend -> DB: Validate Manager Credentials
+activate DB
+DB --> Backend: Credentials Validated
+deactivate DB
+
+Backend --> UI: Access Granted
+deactivate Backend
+
+LM -> UI: Request Checkout Records
+
+UI -> Backend: Fetch Checkout Records
+activate Backend
+
+Backend -> DB: Query Checkout Records
+activate DB
+
+DB --> Backend: Return Checkout Records
+deactivate DB
+
+Backend --> UI: Display Checkout Records
+deactivate Backend
+
+UI --> LM: Checkout Records View
+
+== Book Returns Management ==
+
+LM -> UI: Update Book Return
+UI -> Backend: Process Return Update
+activate Backend
+
+Backend -> DB: Update Return Status
+activate DB
+
+DB --> Backend: Return Status Updated
+deactivate DB
+
+Backend --> UI: Confirm Return Update
+deactivate Backend
+
+UI --> LM: Return Update Confirmed
+
+@enduml

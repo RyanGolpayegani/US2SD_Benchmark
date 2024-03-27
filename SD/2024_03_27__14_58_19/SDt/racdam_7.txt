@@ -1,0 +1,20 @@
+@startuml
+autonumber
+participant Archivist as U
+participant WebInterface as W
+database ArchiveDatabase as D
+participant "RightsManagementSystem" as R
+
+U -> W : Select file(s)
+U -> W : Enter Restriction End Date
+W -> R : Validate date and apply to selected file(s)
+alt success
+    R -> D : Update file metadata with Restriction End Date
+    D --> R : Confirm metadata updated
+    R --> W : Display success message to Archivist
+    W --> U : Confirmation\n(Restriction date set)
+else failure
+    R --> W : Display error message to Archivist
+    W --> U : Error\n(Could not set restriction date)
+end
+@enduml

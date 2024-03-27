@@ -1,0 +1,45 @@
+@startuml
+participant Archivist as A
+participant "Management System" as MS
+participant "Database" as DB
+
+A -> MS : Login()
+activate MS
+
+MS --> A : Display Dashboard
+A -> MS : Navigate to "Manage Deposit Groups"
+MS --> A : Display Deposit Group Interface
+
+A -> MS : Select Collection to Modify
+MS --> DB : Fetch Collection Details()
+activate DB
+
+DB --> MS : Return Collection Details
+MS --> A : Display Group Management Options for Collection
+
+A -> MS : Add People to Deposit Group
+activate MS
+
+MS -> DB : Update Group Members()
+DB --> MS : Confirm Member Addition
+MS --> A : Display Updated Group Members
+
+A -> MS : Remove People from Deposit Group
+MS -> DB : Update Group Members()
+DB --> MS : Confirm Member Removal
+MS --> A : Display Updated Group Members
+
+A -> MS : Set Deposit Window Closure Date
+MS -> DB : Update Closure Date()
+DB --> MS : Confirm Closure Date Update
+MS --> A : Display Updated Closure Date
+
+A -> MS : Ensure Default Permissions Conferred
+MS -> DB : Update Permissions()
+DB --> MS : Confirm Permissions Update
+deactivate DB
+
+MS --> A : Display Confirmation & Updated Details
+
+deactivate MS
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+participant Librarian as librarian
+participant "CLMS UI" as ui
+participant "Server" as server
+participant "Database" as db
+
+librarian -> ui : Selects a book to update
+ui -> server : Request book details
+server -> db : Fetch book details
+db -> server : Return book details
+server -> ui : Display book details
+ui -> librarian : Show book details
+
+librarian -> ui : Inputs updated pages information
+ui -> server : Submit update request
+
+activate server
+server -> db : Update book record with new pages
+db -> server : Confirm update
+deactivate server
+
+server -> ui : Display update success message
+ui -> librarian : Show success message
+
+@enduml

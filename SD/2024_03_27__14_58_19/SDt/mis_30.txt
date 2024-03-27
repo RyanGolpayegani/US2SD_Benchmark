@@ -1,0 +1,27 @@
+@startuml
+
+participant DigitalRecordsArchivist as Archivist
+participant RepositoryAdminManagementSystem as AdminSystem
+database PermissionsDb as Permissions
+participant RepositoryAdmin as Admin
+
+Archivist -> AdminSystem : requestGrantEmbargoPrivileges(AdminID)
+activate AdminSystem
+
+AdminSystem -> Permissions : checkCurrentPrivileges(ArchivistID)
+activate Permissions
+
+Permissions --> AdminSystem : privilegesDetails
+deactivate Permissions
+
+AdminSystem -> Permissions : grantEmbargoPrivileges(AdminID)
+activate Permissions
+
+Permissions -> Permissions : updatePrivileges(AdminID, newPrivileges)
+Permissions --> AdminSystem : confirmation
+deactivate Permissions
+
+AdminSystem --> Archivist : privilegeGrantSuccess(AdminID)
+deactivate AdminSystem
+
+@enduml

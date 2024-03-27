@@ -1,0 +1,18 @@
+@startuml
+actor OlderPerson as Older
+participant "Speech Interface" as Speech
+participant "ALFRED Core System" as Core
+database "Cultural Events DB" as DB
+participant "Content Delivery System" as Content
+participant "Notification System" as Notify
+
+Older -> Speech : "Tell me about art expositions or museums"
+Speech -> Core : Parse request
+Core -> DB : Query for art expositions and museums
+DB --> Core : Return list of events
+Core -> Content : Fetch details for top events
+Content --> Core : Provide event details
+Core -> Notify : Prepare event information message
+Notify --> Older : Display event information
+
+@enduml

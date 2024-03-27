@@ -1,0 +1,41 @@
+Creating a detailed sequence diagram for the specific user story you've mentioned requires outlining how the system components interact to allow library staff members to customize metadata fields for projects. Below is a PlantUML code snippet that illustrates these interactions. This diagram assumes a basic architecture where the library staff interacts with a web interface, which in turn communicates with a server handling business logic, and finally interacts with a database to store or retrieve the customized metadata fields.
+
+```plantuml
+@startuml
+participant "LibraryStaff" as LS
+participant "WebInterface" as WI
+participant "Server" as S
+participant "Database" as DB
+
+LS -> WI : Request Customize Metadata Page
+activate WI
+WI -> S : Fetch Current Metadata Template
+activate S
+S -> DB : Retrieve Template
+activate DB
+DB --> S : Template Data
+deactivate DB
+S --> WI : Template Data
+deactivate S
+WI --> LS : Display Template Editor
+deactivate WI
+
+LS -> WI : Submit Customized Metadata Fields
+activate WI
+WI -> S : Update Template with Custom Fields
+activate S
+S -> DB : Store Updated Template
+activate DB
+DB --> S : Confirmation
+deactivate DB
+S --> WI : Update Confirmation
+deactivate S
+WI --> LS : Display Success Message
+deactivate WI
+
+@enduml
+```
+
+This sequence diagram begins with the library staff member (LS) asking to customize metadata fields through a web interface. The system architecture involves a sequence where the web interface requests the current metadata template from the server, which then fetches it from a database. After displaying the template to the user and receiving their customizations, the process involves submitting the updated template back through the layers (web interface -> server -> database) to save the modifications. The confirmation of this action is relayed back to the library staff member.
+
+Please note that in real-world scenarios, additional steps such as authentication checks, error handling, and logging could be part of the sequence but are omitted here for clarity and simplicity focused on the specified user story.

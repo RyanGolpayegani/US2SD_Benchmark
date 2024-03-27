@@ -1,0 +1,28 @@
+@startuml
+participant PluginDeveloper
+participant PluginSystem
+participant DatasetManagementService
+participant AppManagementService
+
+PluginDeveloper -> PluginSystem : Request to use custom dataset type
+PluginSystem -> DatasetManagementService : Query available dataset types
+DatasetManagementService -> DatasetManagementService : Fetch dataset types with versioning
+DatasetManagementService --> PluginSystem : Return list of dataset types
+
+PluginSystem -> PluginDeveloper : Show available custom dataset types
+PluginDeveloper -> PluginSystem : Selects desired dataset type and version
+
+PluginSystem -> DatasetManagementService : Request dataset type details\n(Selected one)
+DatasetManagementService -> AppManagementService : Check if dataset type is part of an app
+AppManagementService --> DatasetManagementService : Return app details (if any)
+DatasetManagementService --> PluginSystem : Provide dataset type details\n(Including app association)
+
+PluginSystem -> PluginDeveloper : Display dataset type details\n(and associated app info if applicable)
+PluginDeveloper -> PluginSystem : Confirm use of dataset type in plugin
+PluginSystem -> DatasetManagementService : Register plugin usage of dataset type
+DatasetManagementService -> DatasetManagementService : Update dataset type usage records
+
+DatasetManagementService --> PluginSystem : Confirm dataset type availability for plugin
+PluginSystem --> PluginDeveloper : Notify successful inclusion of dataset type in plugin
+
+@enduml

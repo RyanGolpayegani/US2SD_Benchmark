@@ -1,0 +1,38 @@
+To create a detailed sequence diagram for the user story you provided, we will make use of PlantUML. This sequence diagram will illustrate the process a DB/IR (Database/Information Repository) administrator goes through to add future release dates of reports or datasets to a calendar for the patrons' information. 
+
+Given the complexity and the broad capabilities of the described Comprehensive Digital Repository System for Cornell University, the sequence diagram will focus on the core interactions involved in adding a future release date. Note that in a real-world scenario, additional steps or systems might be involved, especially concerning authentication, validation, and notifications.
+
+Below is the PlantUML code for the sequence diagram:
+
+```plantuml
+@startuml
+!theme cerulean
+
+actor "DB/IR Administrator" as admin
+participant "Admin Interface" as adminInterface
+database "Repository System" as repoSystem
+participant "Calendar System" as calendarSystem
+participant "Notification Service" as notifService
+participant "Patron Interface" as patronInterface
+
+admin -> adminInterface : Access Admin Panel
+adminInterface -> repoSystem : Request Future Release Items
+repoSystem -> adminInterface : Return Future Release Items
+admin -> adminInterface : Select Item to Schedule
+admin -> adminInterface : Specify Release Date
+adminInterface -> repoSystem : Update Item with Release Date
+repoSystem -> calendarSystem : Add Release Date to Calendar
+calendarSystem --> repoSystem : Confirm Addition
+repoSystem -> notifService : Trigger Notification Setup
+notifService -> patronInterface : Schedule Notification for Patrons
+
+note over notifService : Notifications scheduled for\nrelease date to inform patrons.
+
+adminInterface --> admin : Confirm Scheduled Date & Notification
+
+@enduml
+```
+
+This diagram starts with the DB/IR Administrator accessing the Admin Panel, followed by requesting future release items from the Repository System. After receiving and selecting an item, the administrator specifies a release date, which is then updated in the item's record in the Repository System. The Repository System coordinates with the Calendar System to add this date, and upon confirmation, triggers the Notification Service to schedule notifications for patrons. The process concludes with the Admin Interface confirming the scheduled date and notification setup back to the administrator.
+
+To visualize this diagram, you would need to use a PlantUML editor or an online tool that supports PlantUML syntax.

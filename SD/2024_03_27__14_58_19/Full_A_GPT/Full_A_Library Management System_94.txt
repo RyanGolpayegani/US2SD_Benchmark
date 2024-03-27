@@ -1,0 +1,31 @@
+To create a sequence diagram for the user story "As a librarian, I want to see the list of members" in PlantUML format, you would follow the interactions between the different components in the CLMS, such as the User Interface (UI), Controller, Business Logic, and the Database. Here's how these interactions can be depicted in a sequence diagram using PlantUML:
+
+```plantuml
+@startuml
+actor Librarian as L
+participant "UI:Library System" as UI
+participant "Controller" as C
+participant "MemberService" as MS
+database "Database" as DB
+
+L -> UI: Request to view members
+UI -> C: GetMembersList()
+C -> MS: listMembers()
+MS -> DB: SELECT * FROM members
+DB -> MS: MembersData
+MS -> C: MembersList
+C -> UI: ShowMembers(MembersList)
+UI -> L: Display Members List
+@enduml
+```
+
+This sequence diagram follows a simple flow:
+
+1. **Librarian's Action**: It starts with the librarian (Librarian) requesting to view the library members through the Library System's User Interface (UI).
+2. **UI Interaction**: The UI sends this request to the system's Controller as an action called `GetMembersList()`.
+3. **Controller to Service**: The Controller forwards the request to the MemberService (a dedicated service for handling member-related operations) with a method called `listMembers()`.
+4. **Database Query**: The MemberService interacts with the Database to fetch all member records using an SQL query `SELECT * FROM members`.
+5. **Data Retrieval and Display**: The fetched members' data (MembersData) is passed back up the chain—MemberService processes it into a structured MembersList, passes it back to the Controller, which then feeds this data to the UI.
+6. **Final Outcome**: The UI finally displays the list of all library members to the Librarian.
+
+This PlantUML diagram gives a clear, step-by-step visualization of the process involved in a librarian viewing the list of library members in the Comprehensive Library Management System (CLMS).

@@ -1,0 +1,60 @@
+Creating a detailed Sequence Diagram for the given User Story ("As a repository manager, I need details on the type of data, so that I can check if the archiving can be arranged.") requires illustrating the flow of communication between different actors and systems involved in the process according to the functionalities outlined in the Comprehensive Data Management Planning Tool (DMPTool) project description.
+
+Given the complexity and the multi-step nature of data management and planning within such a tool, the sequence diagram will simplify some interactions for clarity. Note that implementing this in an actual software development project might require more detailed interactions based on the specific technical architecture of DMPTool.
+
+Below is a PlantUML code snippet that outlines a high-level sequence diagram for the described user story:
+
+```plantuml
+@startuml
+actor "Repository Manager" as RepoManager
+participant "DMPTool Interface" as Interface
+participant "Metadata and Data Storage System" as MetadataSystem
+participant "Provenance and Compliance Checker" as ProvenanceChecker
+database "Data Repository" as DataRepo
+
+== Data Type Inquiry Process ==
+
+RepoManager -> Interface : Request Data Type Details
+activate Interface
+
+Interface -> MetadataSystem : Query Metadata for Data Types
+activate MetadataSystem
+
+MetadataSystem -> MetadataSystem : Retrieve Metadata
+MetadataSystem --> Interface : Return Metadata Info
+deactivate MetadataSystem
+
+Interface -> ProvenanceChecker : Verify Data Provenance & Compliance
+activate ProvenanceChecker
+
+ProvenanceChecker -> ProvenanceChecker : Check Compliance Criteria
+ProvenanceChecker --> Interface : Return Compliance Status
+deactivate ProvenanceChecker
+
+Interface --> RepoManager : Display Data Type & Compliance Info
+deactivate Interface
+
+== Archiving Decision ==
+
+RepoManager -> RepoManager : Evaluate Data for Archiving Suitability
+RepoManager -> Interface : Indicate Archiving Decision
+activate Interface
+
+Interface -> DataRepo : Initiate Archiving Process (if applicable)
+activate DataRepo
+
+DataRepo -> DataRepo : Archive Data
+DataRepo --> Interface : Confirm Archiving Status
+deactivate DataRepo
+
+Interface --> RepoManager : Confirm Archiving Completion
+deactivate Interface
+
+@enduml
+```
+
+This sequence diagram begins with the Repository Manager requesting details about the type of data from the DMPTool Interface. The interface then queries the Metadata and Data Storage System for metadata regarding the data types involved. Once retrieved, the interface asks the Provenance and Compliance Checker to verify the data's provenance and if it meets compliance criteria. The outcomes are presented back to the Repository Manager through the interface.
+
+Based on the information received, the Repository Manager decides whether the archiving can be arranged. If the decision is affirmative, the interface initiates the archiving process with the Data Repository, which then archives the data and sends a confirmation back through the interface to the Repository Manager.
+
+This diagram is a high-level representation. Implementing it in a real-world system may require additional steps and interactions, especially considering security, error handling, and user feedback mechanisms.

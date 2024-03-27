@@ -1,0 +1,78 @@
+To illustrate the detailed Sequence Diagram for the user story "As a library manager, I want to keep books and their checkouts," using PlantUML, we'll define a series of interactions between the Library Manager and the Comprehensive Library Management System (CLMS), including its components such as the User Interface (UI), Book Management System, and Database.
+
+```plantuml
+@startuml
+!theme amiga
+
+participant LibraryManager as LM
+participant "UI: Book Management Module" as UI
+participant "Backend: Book Management System" as Backend
+database "CLMS Database" as DB
+
+== Book Checkouts Management ==
+
+LM -> UI: Accesses Book Management
+UI -> Backend: Authenticate Manager
+activate Backend
+
+Backend -> DB: Validate Manager Credentials
+activate DB
+DB --> Backend: Credentials Validated
+deactivate DB
+
+Backend --> UI: Access Granted
+deactivate Backend
+
+LM -> UI: Request Checkout Records
+
+UI -> Backend: Fetch Checkout Records
+activate Backend
+
+Backend -> DB: Query Checkout Records
+activate DB
+
+DB --> Backend: Return Checkout Records
+deactivate DB
+
+Backend --> UI: Display Checkout Records
+deactivate Backend
+
+UI --> LM: Checkout Records View
+
+== Book Returns Management ==
+
+LM -> UI: Update Book Return
+UI -> Backend: Process Return Update
+activate Backend
+
+Backend -> DB: Update Return Status
+activate DB
+
+DB --> Backend: Return Status Updated
+deactivate DB
+
+Backend --> UI: Confirm Return Update
+deactivate Backend
+
+UI --> LM: Return Update Confirmed
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Library Manager (LM) Accesses Book Management:** The library manager starts the process by accessing the book management module through the user interface.
+
+2. **Authentication:** The backend system authenticates the manager's credentials with the database to ensure that access is authorized.
+
+3. **Fetching and Displaying Checkout Records:**
+   - The library manager requests to view checkout records.
+   - The book management module communicates with the backend to fetch these records from the database.
+   - The checkout records are then displayed to the library manager through the user interface.
+
+4. **Updating Book Returns:**
+   - The library manager updates a book return, signaling a change in the checkout status.
+   - The backend processes this update and modifies the return status in the database.
+   - Confirmation of the return update is sent back to the library manager through the user interface.
+
+This diagram represents a simplified overview of the sequence of interactions involved in managing book checkouts and returns from the perspective of a library manager using the Comprehensive Library Management System.

@@ -1,0 +1,19 @@
+@startuml
+!theme plain
+
+actor Waiter
+participant "UI/Waiter Interface" as UI
+participant "Backend Server" as Backend
+database "Menu Database" as MenuDB
+
+Waiter -> UI: Requests to display menu
+UI -> Backend: GetMenuRequest()
+note right: Fetches current menu details
+Backend -> MenuDB: Query menu items
+MenuDB --> Backend: Return menu details
+Backend --> UI: DisplayMenuResponse(menuDetails)
+UI --> Waiter: Shows menu on device
+
+note over Waiter: Waits for customer choices
+
+@enduml

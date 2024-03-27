@@ -1,0 +1,30 @@
+To fulfill the request for a detailed sequence diagram in Plant UML format that illustrates the process of an API User wanting to normalize measures by GINI and related socioeconomic indexes, the following diagram will depict the interaction process, including user requests, API interactions, and data processing steps.
+
+Please note that this diagram assumes the existence of certain system components based on the project overview provided. Modifications may be needed to align with the actual system architecture of the OpenSpending platform.
+
+```plantuml
+@startuml
+participant User as user
+participant "API Gateway" as gateway
+participant "Normalization Service" as normalize
+participant "Socioeconomic Data Service" as socioecon
+database "OpenSpending Database" as db
+
+user -> gateway : Request normalization\n(GINI, indexes)
+gateway -> normalize : Invoke normalization process
+normalize -> socioecon : Request socioeconomic data\n(GINI, other indexes)
+socioecon -> db : Fetch socioeconomic data
+db -> socioecon : Return socioeconomic data
+socioecon -> normalize : Socioeconomic data response
+normalize -> db : Fetch fiscal dataset
+db -> normalize : Fiscal dataset response
+normalize -> normalize : Normalize measures\nusing socioeconomic data
+normalize -> gateway : Normalization results
+gateway -> user : Normalized dataset response
+
+@enduml
+```
+
+This diagram starts with the API User making a request to normalize measures using the GINI and other socioeconomic indexes. The process flows through an API Gateway, which in turn invokes the Normalization Service. This service requests the necessary socioeconomic data from a Socioeconomic Data Service, which fetches this data from the OpenSpending Database. Once the normalization service receives both the socioeconomic data and the fiscal dataset from the database, it processes the normalization according to the specified parameters. Finally, the normalization results are sent back to the user through the API Gateway.
+
+It's worth noting that this is a simplified view and actual implementations could involve more steps or services, including authentication, error handling, and logging mechanisms. Additionally, for specific details about how data normalization and interactions with the socioeconomic indexes are technically executed, further application details and algorithm specifications would be required.

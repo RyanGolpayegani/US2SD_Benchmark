@@ -1,0 +1,37 @@
+Creating a detailed sequence diagram for the provided user story in PlantUML format involves illustrating the interactions between the app developer, the version control system, the dataset management system, and any other relevant components to handle a version conflict error when deploying a new version of an app that includes a dataset type also used by another app. Here's how the PlantUML code might look for this scenario:
+
+```plantuml
+@startuml
+participant AppDeveloper as dev
+participant "Version Control System" as vcs
+participant "Dataset Management System" as ds
+participant "Deployment System" as deploy
+
+dev -> vcs: Push new app version with updated dataset type
+vcs -> deploy: Trigger deployment process
+deploy -> ds: Request to deploy new app version
+ds -> ds: Check for shared dataset instance versions
+alt Version conflict detected
+    ds -> deploy: Report version conflict error
+    deploy -> dev: Deployment failed with version conflict error
+else No conflict
+    ds -> deploy: Proceed with deployment
+    deploy -> dev: Deployment successful
+end
+@enduml
+```
+
+Explanation of the Sequence:
+
+1. **App Developer (AppDeveloper/dev)**: Initiates the process by pushing the new version of the app, which includes an updated version of a dataset type, to the version control system.
+2. **Version Control System (VersionControl/vcs)**: Receives the new app version and triggers the deployment process by notifying the deployment system.
+3. **Deployment System (Deployment/deploy)**: On receiving the trigger, it requests the deployment of the new app version from the dataset management system.
+4. **Dataset Management System (DatasetManagement/ds)**: It checks for shared dataset instances between the apps and verifies if the new version of the dataset type causes a version conflict.
+5. **Decision Point (alt Version conflict detected)**: If a version conflict is detected due to the shared dataset instance:
+   - The Dataset Management system reports a version conflict error back to the deployment system.
+   - The Deployment system then informs the app developer that the deployment has failed due to a version conflict error.
+6. **Else Path (No conflict)**: If there is no conflict detected:
+   - The Dataset Management system allows the deployment process to proceed.
+   - The Deployment system informs the app developer that the deployment was successful.
+
+This sequence diagram outlines the critical interactions dealing with version conflict detection during the deployment of a new app version that includes a dataset type shared across different apps within an application ecosystem.

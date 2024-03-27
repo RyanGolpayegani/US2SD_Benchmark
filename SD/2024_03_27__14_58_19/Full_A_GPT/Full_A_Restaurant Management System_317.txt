@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the described user story, "As a waiter, I want to update the waiting time of the table," involves several components of the Restaurant Management and Operations System. Below is a PlantUML code snippet that outlines this process. Keep in mind that this diagram assumes a simplistic interaction where the waiter updates the waiting time through a user interface, and this update is processed by the system backend before being recorded in the database.
+
+```plantuml
+@startuml
+participant "Waiter UI" as waiterUI
+participant "Backend Server" as backend
+database "Database" as db
+
+waiterUI -> backend : Update waiting time request\n(table ID, new waiting time)
+activate backend
+backend -> db : Check table ID validity
+activate db
+db --> backend : Table ID validation response
+deactivate db
+
+alt If table ID is valid
+    backend -> db : Update waiting time\n(table ID, new waiting time)
+    activate db
+    db --> backend : Waiting time updated confirmation
+    deactivate db
+    backend --> waiterUI : Update success notification
+    deactivate backend
+else If table ID is invalid
+    backend --> waiterUI : Error notification\n(Invalid table ID)
+    deactivate backend
+end
+@enduml
+```
+
+### Explanation of the Sequence Diagram Steps:
+
+1. **Waiter UI to Backend Server**: The interaction begins with the waiter placing a request to update the waiting time through the User Interface (Waiter UI). The request includes the table ID and the new waiting time to be updated. 
+
+2. **Backend Server to Database**: Upon receiving the request, the backend server validates the table ID by querying the Database. 
+
+3. **Database Response**: The Database responds with a validation result regarding the table ID.
+
+4. **Scenario Handling**: 
+   - **If the table ID is valid**, the backend server proceeds to update the waiting time in the database with the new value provided. Once the waiting time is updated successfully, the database sends a confirmation back to the backend server, which in turn notifies the waiter UI about the successful update.
+   - **If the table ID is invalid**, the backend server sends an error notification back to the waiter UI, indicating an invalid table ID.
+
+This sequence diagram represents a simplified version of the process for updating the waiting time of a table and can be modified or expanded based on more detailed system requirements or additional steps in the process.

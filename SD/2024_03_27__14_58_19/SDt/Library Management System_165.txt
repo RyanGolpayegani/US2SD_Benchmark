@@ -1,0 +1,22 @@
+@startuml
+participant Member as M
+participant "Web Interface" as W
+participant "Server Controller" as SC
+participant "Book Management System" as BMS
+participant "Database" as DB
+
+M -> W : Enter search query\n(Order by title)
+W -> SC : Request to search books\n(Order by title)
+activate SC
+SC -> BMS : Fetch books\n(Order by title)
+activate BMS
+BMS -> DB : Query books\n(Order by title)
+activate DB
+DB --> BMS : Return books list\n(Sorted by title)
+deactivate DB
+BMS --> SC : Books data\n(Sorted by title)
+deactivate BMS
+SC --> W : Display books\n(Sorted by title)
+W --> M : Show books list\n(Ordered by title)
+deactivate SC
+@enduml

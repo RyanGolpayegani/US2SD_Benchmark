@@ -1,0 +1,35 @@
+To create a detailed sequence diagram for the specified user story "As a repository manager, I want to know of any changes made to language(s) indicated for a collection, object, or object component," we'll focus on the interaction among several system components within the DAMS Integration and Management System (DIMS). Here's a breakdown of how this interaction might be diagrammed in PlantUML format:
+
+```plantuml
+@startuml
+participant RepositoryManager as RM "Repository Manager"
+participant DIMS_UI as UI "DIMS Interface"
+participant CollectionsManagement as CM "Collections Management"
+participant EventMonitoring as EM "Event Monitoring"
+participant NotificationService as NS "Notification Service"
+
+RM -> UI : Select Collection/Object
+UI -> CM : Query Collection/Object Details
+CM -> CM : Check for language attribute changes
+alt Language Changes Detected
+    CM -> EM : Log Language Change Event
+    EM -> NS : Trigger Language Change Notification
+    NS -> RM : Send Notification
+else No Changes Detected
+    CM -> RM : No language changes found
+end
+
+@enduml
+```
+Explanation of the Sequence Diagram steps:
+
+1. **Repository Manager initiates**: The process starts with the Repository Manager (RM) selecting a collection or object in the DIMS Interface (UI) to check for any changes.
+2. **Query Collection/Object Details**: The DIMS Interface communicates with the Collections Management module to fetch the details of the selected collection or object.
+3. **Check for Language Attribute Changes**: Within the Collections Management module, there's a self-check to ascertain if there have been any changes to the language(s) indicated for the collection, object, or object component since the last check.
+4. **Language Changes Detected (Alternate Path)**: If language changes are detected:
+    - The change is logged as an event by the Event Monitoring module.
+    - The Event Monitoring module then triggers the Notification Service to inform the Repository Manager about the change.
+    - A notification is sent to the Repository Manager regarding the language change.
+5. **No Changes Detected (Alternate Path)**: If no changes are found in the language attributes, the Collections Management module directly informs the Repository Manager that no language changes have been found.
+   
+This sequence diagram provides a high-level view of the workflow for notifying a repository manager about changes to language(s) in collections, objects, or their components. Note that specific implementation details (like the user authentication process, detailed internal workings of each module, or how changes are technically detected and logged) are abstracted out for clarity and simplicity.

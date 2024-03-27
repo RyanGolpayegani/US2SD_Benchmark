@@ -1,0 +1,26 @@
+@startuml
+actor Owner
+participant "User Interface" as UI
+participant "Pub/Member Management Service" as PMS
+participant "Email Service" as ES
+database "Platform Database" as DB
+
+Owner -> UI : Select 'Invite Member'
+Owner -> UI : Enter email of invitee
+UI -> PMS : Request to invite new member
+activate PMS
+
+PMS -> DB : Check if email already exists
+activate DB
+DB --> PMS : Email not registered
+deactivate DB
+
+PMS -> ES : Send invitation email
+activate ES
+ES --> PMS : Email sent
+deactivate ES
+
+PMS --> UI : Invitation sent confirmation
+UI --> Owner : Display confirmation
+
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+participant ManagerInterface as MI
+participant BackendServer as BS
+participant Database as DB
+
+MI -> BS : Request daily order count per waiter
+activate BS
+BS -> DB : Query order & waiter data
+activate DB
+DB -> DB : Aggregate orders by waiter
+DB --> BS : Return aggregated data
+deactivate DB
+BS --> MI : Display aggregated order data
+deactivate BS
+
+@enduml

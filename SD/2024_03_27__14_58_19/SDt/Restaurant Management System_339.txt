@@ -1,0 +1,21 @@
+@startuml
+actor Employee
+participant "Review Entry Interface" as Interface
+participant "Consent Management Module" as Consent
+database "Database" as DB
+
+Employee -> Interface : Select "Enter Review"
+Interface -> Employee : Prompt for review details and consent
+Employee -> Interface : Provide review details and confirm consent
+Interface -> Consent : Verify consent
+alt Consent verified
+    Consent -> Interface : Consent confirmed
+    Employee -> Interface : Submit review
+    Interface -> DB : Store review
+    DB -> Interface : Confirmation
+    Interface -> Employee : Show success message
+else Consent not verified or declined
+    Consent -> Interface : Consent denied
+    Interface -> Employee : Show error message
+end
+@enduml

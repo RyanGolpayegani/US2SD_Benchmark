@@ -1,0 +1,43 @@
+@startuml
+!theme plain
+
+actor User as U
+participant "User Interface" as UI
+participant "Schema Configuration Service" as SCS
+participant "Dataset Management System" as DMS
+participant "Version Control System" as VCS
+
+U -> UI : Specify Schema
+activate UI
+
+UI -> SCS : Send Schema Specification
+activate SCS
+
+SCS -> SCS : Validate Schema Specification
+
+alt If Schema is Valid
+
+    SCS -> DMS : Apply Schema Across Datasets
+    activate DMS
+
+    loop For Each Dataset Type
+        DMS -> DMS : Update Dataset Schema
+    end
+
+    DMS --> SCS : Confirmation
+    deactivate DMS
+    
+    SCS -> VCS : Commit New Schema Version
+    activate VCS
+    VCS --> SCS : Commit ID
+    deactivate VCS
+
+    SCS --> UI : Success Response with Commit ID
+else If Schema is Invalid
+    SCS --> UI : Error Response
+end
+
+deactivate SCS
+UI --> U : Display Outcome
+
+@enduml

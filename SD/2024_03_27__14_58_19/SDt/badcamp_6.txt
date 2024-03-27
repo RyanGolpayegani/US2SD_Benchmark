@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+
+participant UserInterface as "Web UI"
+participant SessionValidator as "Session Registration Validator"
+participant Database as "System Database"
+participant ResponseHandler as "Response Handler"
+
+UserInterface -> SessionValidator : requestRegistration(sessionId, userId, date)
+activate SessionValidator
+
+SessionValidator -> Database : queryExistingRegistrations(userId, date)
+activate Database
+Database --> SessionValidator : registrationData
+deactivate Database
+
+SessionValidator -> SessionValidator : checkDuplicate(registrationData)
+alt If no duplicate registration found
+    SessionValidator -> Database : registerUserToSession(sessionId, userId)
+    activate Database
+    Database --> SessionValidator : registrationSuccessful
+    deactivate Database
+    SessionValidator -> ResponseHandler : createSuccessResponse()
+    ResponseHandler --> UserInterface : displaySuccessMessage()
+else Duplicate registration found
+    SessionValidator -> ResponseHandler : createErrorResponse("Duplicate registration")
+    ResponseHandler --> UserInterface : displayErrorMessage("You're already registered for a session on this date.")
+end
+
+deactivate SessionValidator
+@enduml

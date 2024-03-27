@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram for the given user story involves illustrating the process flow when a depositor wants to deposit and maintain datasets through the web interface without needing to install and learn new software. Below is a PlantUML code snippet that represents this interaction:
+
+```plantuml
+@startuml
+participant "Depositor" as depositor
+participant "Web Interface" as webInterface
+participant "Backend System" as backend
+participant "Database" as database
+participant "File Storage" as storage
+
+depositor -> webInterface: Access website
+webInterface -> backend: Authenticate user
+backend -> database: Verify credentials
+database -> backend: Authentication Response
+backend -> webInterface: Authentication Status
+depositor -> webInterface: Select "Deposit Dataset"
+depositor -> webInterface: Fill in dataset details and upload files
+webInterface -> backend: Request to deposit dataset
+backend -> database: Store metadata
+database -> backend: Confirmation of metadata storage
+backend -> storage: Upload files
+storage -> backend: Confirmation of file upload
+backend -> webInterface: Dataset deposit successful
+webInterface -> depositor: Show success message
+
+note over depositor,storage: Depositor can manage datasets after deposit
+
+depositor -> webInterface: Request to edit dataset
+webInterface -> backend: Fetch dataset details
+backend -> database: Query dataset metadata
+database -> backend: Return dataset metadata
+backend -> webInterface: Display dataset details
+depositor -> webInterface: Update dataset details and/or files
+webInterface -> backend: Request to update dataset
+backend -> database: Update metadata
+backend -> storage: Update files (if any)
+backend -> webInterface: Dataset update successful
+webInterface -> depositor: Show update success message
+@enduml
+```
+
+This sequence diagram starts with the depositor accessing the web interface and follows through the process of depositing a dataset, including authentication, dataset detail submission, and file upload. It also covers the process for a depositor to edit their dataset information after the initial deposit.
+
+To visualize this UML diagram, you'll need to use PlantUML or any tool that supports PlantUML syntax. The diagram illustrates the key steps involved in depositing and maintaining datasets through a simple web interface, as described in the project description and user story.

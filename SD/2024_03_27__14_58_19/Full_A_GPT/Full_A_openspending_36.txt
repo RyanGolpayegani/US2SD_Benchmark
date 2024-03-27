@@ -1,0 +1,31 @@
+Creating a detailed sequence diagram for the specific user story you provided involves outlining the interactions between the API User and various components of the OpenSpending platform, particularly focusing on the functionality for normalizing measures by GDP. Given the complex nature of the interaction between an API user and a platform's backend, this diagram assumes a simplified version of the process involved in adjusting dataset measures in relation to GDP figures.
+
+Please note that PlantUML code provided below should be run in a PlantUML environment or renderer to visualize the sequence diagram.
+
+```plantuml
+@startuml
+participant User
+participant "API Gateway" as API
+participant "Data Processing Module" as Processing
+participant "GDP Data Service" as GDPService
+participant "Normalization Engine" as Normalize
+participant Database
+
+User -> API: Request Data with GDP Normalization
+API -> Processing: Parse Request
+Processing -> GDPService: Fetch GDP Data
+GDPService -> Processing: Return GDP Data
+Processing -> Normalize: Initiate Normalization
+Normalize -> Database: Fetch Target Dataset
+Database -> Normalize: Return Dataset
+Normalize -> Normalize: Calculate Normalized Measures by GDP
+Normalize -> API: Return Normalized Data
+API -> User: Display Data with Measures Normalized by GDP
+@enduml
+```
+
+This sequence diagram starts with the API User requesting data with measurements normalized by GDP from the OpenSpending platform. The request is received by an API Gateway (labelled as API), which forwards it to the Data Processing Module. This module requests GDP data from an external or internal GDP Data Service, receives it, and then initiates the normalization process by passing both the GDP data and the user's original request to the Normalization Engine.
+
+The Normalization Engine requests the targeted dataset from the Database, receives the dataset, and proceeds to calculate normalized measures based on the GDP data. Once this is complete, the normalized data is returned back through the API Gateway to the user, displaying the information with measures normalized by the contextual GDP constraints.
+
+This diagram simplifies some interactions that might involve more detailed steps, error handling, or security measures in a real implementation. The aim is to provide a clear, high-level overview of the process for normalizing dataset measures by GDP as requested by an API user.

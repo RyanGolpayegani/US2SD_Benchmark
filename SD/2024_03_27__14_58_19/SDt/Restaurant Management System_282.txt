@@ -1,0 +1,19 @@
+@startuml
+participant Waiter as waiter
+participant "UI Interface" as ui
+participant "Order Management System" as oms
+participant "Database" as db
+
+waiter -> ui : Selects "Edit Order"
+ui -> oms : Request to edit order (OrderID)
+oms -> db : Fetch order details (OrderID)
+db -> oms : Order details
+oms -> ui : Display order items
+ui -> waiter : Show order items
+waiter -> ui : Deselects items
+ui -> oms : Update order (deselected items)
+oms -> db : Update order in database
+db -> oms : Confirmation of update
+oms -> ui : Confirm update to waiter
+ui -> waiter : Display updated order
+@enduml

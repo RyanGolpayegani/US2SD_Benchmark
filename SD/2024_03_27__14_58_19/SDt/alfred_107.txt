@@ -1,0 +1,38 @@
+@startuml
+
+participant "OlderPerson" as user
+actor ALFRED_UI as ui
+entity "GameModule" as game
+database "HealthParametersDB" as healthdb
+
+== Game Selection ==
+user -> ui: Select "Play Health Games"
+ui -> game: Fetch "Memory and Physical Health Games"
+game --> ui: Display Game List
+ui --> user: Show Game Selection
+
+== Playing Memory Game ==
+user -> ui: Select "Memory Game"
+ui -> game: Launch "Memory Game"
+loop Game Play
+    game -> user: Show memory puzzles
+    user -> game: Solve puzzles
+    game -> healthdb: Update memory score
+    game --> user: Provide feedback
+end
+
+== Playing Physical Health Game ==
+user -> ui: Select "Physical Health Game"
+ui -> game: Launch "Physical Health Game"
+loop Physical Exercises
+    game -> user: Show physical tasks
+    user -> game: Perform tasks using sensor (i.e., wearable device)
+    game -> healthdb: Update physical scores
+    game --> user: Provide feedback & suggestions
+end
+
+== Game End ==
+game -> ui: Return to Main Menu
+ui --> user: Display Main Menu
+
+@enduml

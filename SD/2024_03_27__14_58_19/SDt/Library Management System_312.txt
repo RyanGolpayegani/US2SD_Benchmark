@@ -1,0 +1,31 @@
+@startuml
+participant Member as M
+participant WebInterface as WI
+participant AuthenticationService as AUTH
+participant ReservationController as RC
+participant Database as DB
+participant NotificationService as NS
+
+M -> WI: Request to update reservation
+WI -> AUTH: Validate member session
+AUTH --> WI: Session valid
+WI -> RC: Update reservation request
+
+group Update reservation process
+    RC -> DB: Check current reservation details
+    DB --> RC: Reservation details
+    RC -> RC: Validate update request
+    alt Update is valid
+        RC -> DB: Process reservation update
+        DB --> RC: Update confirmation
+        RC -> NS: Send update confirmation notification
+        NS --> M: Display notification
+    else Update not valid
+        RC -> WI: Show error message
+        WI --> M: Display error message
+    end
+end
+
+RC --> WI: Update reservation response
+WI --> M: Display update result
+@enduml

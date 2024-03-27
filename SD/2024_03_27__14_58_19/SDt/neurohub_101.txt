@@ -1,0 +1,42 @@
+@startuml
+
+participant Researcher as researcher
+participant "Group Repository" as repo
+participant "Document Management System" as dms
+participant "Collaboration Service" as collab
+participant "Notification Service" as notif
+
+== Share a New Paper ==
+researcher -> repo: Access Group Repository
+repo -> dms: Verify Access Rights
+note right: Checks if researcher\nhas permissions to contribute
+dms --> researcher: Access Granted
+researcher -> repo: Upload New Paper
+repo -> dms: Save Paper
+dms --> repo: Confirmation
+repo --> researcher: Paper Uploaded Successfully
+
+== Comment on a Paper ==
+researcher -> repo: Select Paper
+repo -> dms: Fetch Paper Details
+dms --> researcher: Display Paper and Comments
+researcher -> repo: Submit Comment
+repo -> collab: Save Comment
+collab --> repo: Confirmation
+repo -> notif: Send Notification
+notif -> repo: Notification Sent
+repo --> researcher: Comment Added & Notification Sent
+
+== Review a Paper ==
+researcher -> repo: Select Paper to Review
+repo -> dms: Fetch Paper for Review
+dms --> researcher: Display Paper
+researcher -> repo: Submit Review
+repo -> collab: Save Review Details
+collab --> repo: Confirmation
+repo -> notif: Send Notifications to Authors
+note right: Notifies paper's authors\nabout the new review
+notif -> repo: Notifications Sent
+repo --> researcher: Review Submitted Successfully
+
+@enduml

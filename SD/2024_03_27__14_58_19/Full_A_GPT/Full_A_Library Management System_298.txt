@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the specific user story "As a member, I want to see the due date of the book if the book is already borrowed" involves illustrating the interactions between different components of the Comprehensive Library Management System (CLMS) to fulfill this requirement. Below is a PlantUML code that outlines the process from the perspective of a library member trying to view the due date of a borrowed book.
+
+```plantuml
+@startuml
+!theme cerulean
+
+participant Member
+participant WebInterface
+participant Controller
+database LibraryDB
+participant NotificationService
+
+Member -> WebInterface: Request book details
+WebInterface -> Controller: Retrieve book details and status
+Controller -> LibraryDB: Query for book status and due date
+LibraryDB -> Controller: Return status and due date
+Controller -> WebInterface: Show book status and due date
+WebInterface -> Member: Display book status and due date
+
+alt if the book is borrowed
+    WebInterface -> NotificationService: Request for due date alert setup
+    NotificationService -> Member: Send due date reminder setup confirmation
+end
+
+@enduml
+```
+
+### Explanation:
+
+1. **Member**: This is the library member or user who wants to check the due date of a book they are interested in.
+
+2. **WebInterface**: Represents the front-end user interface of the Comprehensive Library Management System where the member interacts with the system.
+
+3. **Controller**: Acts as the intermediary that processes requests from the WebInterface, interacts with the database, and returns the requested information.
+
+4. **LibraryDB**: This is the database where all information about books, borrowings, members, and due dates are stored.
+
+5. **NotificationService**: A service component that handles sending email or SMS notifications to members regarding due dates or other alerts as required.
+
+6. **Interaction Flow**:
+    - The member starts by requesting the details of a book through the WebInterface.
+    - The WebInterface forwards this request to the Controller.
+    - The Controller queries the LibraryDB for the book's status and its due date if it is currently borrowed.
+    - The LibraryDB returns this information to the Controller.
+    - The Controller then sends this information back to the WebInterface.
+    - The WebInterface displays the status and due date of the book to the member.
+    - If the book is borrowed, the WebInterface requests the NotificationService to set up a due date reminder for the member.
+    - The NotificationService confirms the setup of the due date reminder to the member.
+
+This sequence diagram provides a high-level overview of the interactions involved in viewing the due date of a borrowed book within the Comprehensive Library Management System.

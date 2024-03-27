@@ -1,0 +1,66 @@
+Creating a detailed sequence diagram for the user story "As a library member, I want to reserve more than one book" involves several actors and components interacting within the Comprehensive Library Management System (CLMS). Here's a Plant UML sequence diagram that outlines these interactions:
+
+```plantuml
+@startuml
+actor Member
+entity "Reservation System" as ReservationSystem
+entity "Book Management" as BookManagement
+database "Library Database" as LibraryDB
+
+Member -> ReservationSystem : Search for books
+ReservationSystem -> LibraryDB : Query available books
+LibraryDB -> ReservationSystem : Return search results
+ReservationSystem -> Member : Display available books
+
+loop Reserve Multiple Books
+    Member -> ReservationSystem : Select book for reservation
+    ReservationSystem -> BookManagement : Check book availability
+    BookManagement -> LibraryDB : Query book status
+    LibraryDB -> BookManagement : Return book status
+    alt If book is available
+        BookManagement -> ReservationSystem : Confirm availability
+        ReservationSystem -> Member : Display reservation form
+        Member -> ReservationSystem : Submit reservation request
+        ReservationSystem -> LibraryDB : Update reservation details
+        LibraryDB -> ReservationSystem : Confirm reservation update
+        ReservationSystem -> Member : Display reservation confirmation
+    else If book is not available
+        BookManagement -> ReservationSystem : Show not available message
+        ReservationSystem -> Member : Display not available message
+    end
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Member Begins Search**: The library member starts by searching for books they are interested in reserving through the Reservation System interface.
+
+2. **Querying Available Books**: The Reservation System forwards the search query to the Library Database to fetch available books based on the entered criteria.
+
+3. **Displaying Search Results**: The Library Database returns the search results, which the Reservation System then displays to the member.
+
+4. **Reserving Multiple Books**: Assuming the member wants to reserve multiple books, they select each book for reservation one at a time within a loop sequence.
+
+    a. For each selected book, the Reservation System checks the book's availability with the Book Management component.
+    
+    b. Book Management queries the Library Database for the current status (availability) of the book.
+    
+    c. Depending on the book's availability status returned by the Library Database, the process diverges:
+    
+        - **If the book is available**: 
+            - Book Management confirms availability to the Reservation System.
+            - The Reservation System displays a reservation form to the member.
+            - The member submits the reservation request.
+            - The Reservation System updates the reservation details in the Library Database.
+            - The Library Database confirms the reservation update.
+            - The Reservation System finally displays a reservation confirmation to the member.
+            
+        - **If the book is not available**:
+            - Book Management indicates to the Reservation System that the book is not available.
+            - The member is informed through a displayed message that the book cannot be reserved at the moment.
+    
+5. **End of Process**: This loop continues until the library member has completed reserving all the books they are interested in.
+
+This sequence diagram outlines the process flow and interaction between different components for the scenario where a library member wants to reserve more than one book in the Comprehensive Library Management System (CLMS).

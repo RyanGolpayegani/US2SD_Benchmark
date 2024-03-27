@@ -1,0 +1,44 @@
+@startuml
+participant "Archivist" as Archivist
+participant "Digital Archive Interface" as Interface
+participant "Access Control System" as AccessControl
+participant "File Metadata Service" as MetadataService
+participant "Database" as DB
+
+Archivist -> Interface : Selects file to restrict
+activate Interface
+
+Interface -> MetadataService : Fetch file metadata
+activate MetadataService
+
+MetadataService -> DB : Query file details
+activate DB
+DB --> MetadataService : Return file metadata
+deactivate DB
+
+MetadataService --> Interface : Display file metadata
+deactivate MetadataService
+
+Archivist -> Interface : Request to apply restriction
+activate Interface
+
+Interface -> AccessControl : Process restriction request
+activate AccessControl
+
+AccessControl -> MetadataService : Update access level
+activate MetadataService
+
+MetadataService -> DB : Update file with restricted access
+DB --> MetadataService : Confirm update
+deactivate DB
+
+MetadataService --> AccessControl : Confirm access updated
+deactivate MetadataService
+
+AccessControl --> Interface : Restriction applied successfully
+deactivate AccessControl
+
+Interface --> Archivist : Display success message
+deactivate Interface
+
+@enduml

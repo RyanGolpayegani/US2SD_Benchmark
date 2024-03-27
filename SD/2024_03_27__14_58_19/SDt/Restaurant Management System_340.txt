@@ -1,0 +1,31 @@
+@startuml
+actor Employee
+participant "UI: Order Management" as UI
+participant "Server: Order Controller" as Controller
+database "DB: Orders" as DB
+
+activate Employee
+Employee -> UI : select Order to add notes
+activate UI
+UI -> UI : Display Order details
+
+UI -> Controller : request(OrderID, AddNote)
+activate Controller
+Controller -> DB : query(OrderID)
+activate DB
+DB --> Controller : Order details
+deactivate DB
+
+Controller -> Controller : Validate note addition
+Controller -> DB : update(OrderID, Notes)
+activate DB
+DB --> Controller : Update success
+deactivate DB
+
+Controller --> UI : Note addition success
+deactivate Controller
+UI --> Employee : Display success message
+deactivate UI
+deactivate Employee
+
+@enduml

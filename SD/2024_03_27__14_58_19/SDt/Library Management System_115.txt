@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+
+participant Manager as M
+participant "UI Interface" as UI
+participant "Verification Module" as VM
+participant "Database" as DB
+
+M -> UI : Select "Add New Book"
+UI -> M : Display Add Book Form
+M -> UI : Input Book Details\n(Title, Author, ISBN, etc.)
+UI -> VM : Verify Book Details
+alt Verification Successful
+    VM -> UI : Verification Successful
+    M -> UI : Confirm Book Addition
+    UI -> DB : Add New Book Record
+    DB -> UI : Acknowledge Record Addition
+    UI -> M : Display Success Message
+else Verification Failed
+    VM -> UI : Error in Details
+    UI -> M : Display Error Message\n(Request Correct Details)
+end
+
+@enduml

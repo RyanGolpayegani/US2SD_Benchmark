@@ -1,0 +1,40 @@
+@startuml
+participant Moderator as mod
+participant "Web Interface" as web
+participant "Application Server" as app
+database "Database" as db
+
+mod -> web : Selects item to edit
+activate web
+
+web -> app : Request edit form for item
+activate app
+
+app -> db : Retrieve item details
+activate db
+db -> app : Return item details
+deactivate db
+
+app -> web : Display edit form with item details
+deactivate app
+
+web -> mod : Show edit form
+deactivate web
+mod -> web : Submits edited item details
+activate web
+
+web -> app : Submit update request with edited details
+activate app
+
+app -> db : Update item in database
+activate db
+db -> app : Confirm item updated
+deactivate db
+
+app -> web : Confirm update success
+deactivate app
+
+web -> mod : Display update success message
+deactivate web
+
+@enduml

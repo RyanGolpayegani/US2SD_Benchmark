@@ -1,0 +1,61 @@
+Below is a UML sequence diagram example illustrating how ALFRED might handle fall detection and emergency contact notification. This PlantUML code outlines the interactions between the Older Person (user), the ALFRED system, and the emergency contact.
+
+To visualize the sequence diagram, you'll need to use a PlantUML environment or an online tool that supports PlantUML code.
+
+```plantuml
+@startuml
+
+participant OlderPerson as user
+participant "ALFRED\nDevice" as device
+participant "Fall Detection\nModule" as fallDetection
+participant "Emergency\nNotification\nService" as emergencyService
+participant "Emergency\nContact" as emergencyContact
+
+user -> device : [Wears ALFRED Device]
+activate device
+
+device -> fallDetection : Monitor for falls
+activate fallDetection
+
+fallDetection -> fallDetection : Detect fall
+alt Fall Detected
+    fallDetection -> device : Notify of fall
+    deactivate fallDetection
+    activate device
+
+    device -> emergencyService : Trigger emergency protocol
+    activate emergencyService
+    
+    emergencyService -> emergencyContact : Send emergency notification
+    activate emergencyContact
+    
+    emergencyContact --> emergencyService : Acknowledge receipt
+    deactivate emergencyContact
+    
+    emergencyService --> device : Confirm notification sent
+    deactivate emergencyService
+    
+    device --> user : Notify: "Help is on the way"
+    deactivate device
+    
+else No Fall Detected
+    deactivate fallDetection
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+- The diagram starts with the **OlderPerson** (user) wearing the ALFRED device.
+- ALFRED continuously monitors the user through its **Fall Detection Module**.
+- If a fall is detected:
+  - The **Fall Detection Module** informs the ALFRED device.
+  - The ALFRED device then activates the **Emergency Notification Service**.
+  - The **Emergency Notification Service** sends an emergency notification to the specified **Emergency Contact**.
+  - The **Emergency Contact** acknowledges receipt of the notification.
+  - A confirmation that the notification has been sent is relayed back to the ALFRED device.
+  - The ALFRED device notifies the user that help is on the way.
+- If no fall is detected, the system continues monitoring without triggering the emergency protocol.
+
+This sequence diagram illustrates a simplified interaction flow focusing on core components and interactions for fall detection and emergency notification within the ALFRED system.

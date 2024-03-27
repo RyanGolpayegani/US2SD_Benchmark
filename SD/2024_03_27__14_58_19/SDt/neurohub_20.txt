@@ -1,0 +1,23 @@
+@startuml
+actor Supervisor
+participant "User Interface" as UI
+participant "Authentication Service" as Auth
+participant "Logging Service" as Logs
+participant "Data Retrieval System" as DataRetrieval
+database "Neurohub Database" as DB
+
+Supervisor -> UI: Accesses Neurohub
+UI -> Auth: Request for Authentication
+Auth -> Supervisor: Authentication Successful
+
+Supervisor -> UI: Requests researchers' activities for a period
+UI -> Logs: Query logs by date/period
+Logs -> DB: Retrieve log entries
+DB -> Logs: Log data
+Logs -> DataRetrieval: Parse logs for researcher activities
+DataRetrieval -> DB: Fetch supplemental data (if needed)
+DB -> DataRetrieval: Supplemental data
+DataRetrieval -> UI: Formatted activity report
+UI -> Supervisor: Display activity report
+
+@enduml

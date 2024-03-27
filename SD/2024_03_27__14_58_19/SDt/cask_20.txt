@@ -1,0 +1,28 @@
+@startuml
+actor DatasetDeveloper
+participant "Dataset Management\nSystem" as DMS
+participant "Dataset Type\nRegistry" as DTR
+participant "Dataset Instance\nStorage" as DIS
+
+== Exploration of Dataset Instance by Dataset Developer ==
+
+DatasetDeveloper -> DMS : Request to explore dataset instance
+activate DMS
+
+DMS -> DTR : Query dataset type details
+activate DTR
+DTR -> DTR : Fetch dataset type details
+DTR --> DMS : Return dataset type details
+deactivate DTR
+
+DMS -> DIS : Request dataset instance
+activate DIS
+DIS -> DIS : Fetch Dataset Instance Data
+DIS --> DMS : Return dataset instance details and data
+deactivate DIS
+
+DMS -> DMS : Process Data \n(Resolve versions & schemas)
+DMS --> DatasetDeveloper : Display dataset instance information and data
+deactivate DMS
+
+@enduml

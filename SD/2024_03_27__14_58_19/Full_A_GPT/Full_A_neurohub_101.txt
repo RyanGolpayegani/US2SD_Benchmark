@@ -1,0 +1,50 @@
+Given your request, let's create a detailed sequence diagram in PlantUML format, illustrating the user story of a researcher wishing to have a group-level repository for sharing papers, reviews, and comments with other researchers within the Neurohub platform. This diagram will demonstrate the interactions involved in creating, sharing, and commenting on documents in a group repository.
+
+Please note, this is a textual representation of what a PlantUML diagram code would look like for your scenario. To create a visual diagram, you'd need to use PlantUML software or an online PlantUML editor.
+
+```plantuml
+@startuml
+
+participant Researcher as researcher
+participant "Group Repository" as repo
+participant "Document Management System" as dms
+participant "Collaboration Service" as collab
+participant "Notification Service" as notif
+
+== Share a New Paper ==
+researcher -> repo: Access Group Repository
+repo -> dms: Verify Access Rights
+note right: Checks if researcher\nhas permissions to contribute
+dms --> researcher: Access Granted
+researcher -> repo: Upload New Paper
+repo -> dms: Save Paper
+dms --> repo: Confirmation
+repo --> researcher: Paper Uploaded Successfully
+
+== Comment on a Paper ==
+researcher -> repo: Select Paper
+repo -> dms: Fetch Paper Details
+dms --> researcher: Display Paper and Comments
+researcher -> repo: Submit Comment
+repo -> collab: Save Comment
+collab --> repo: Confirmation
+repo -> notif: Send Notification
+notif -> repo: Notification Sent
+repo --> researcher: Comment Added & Notification Sent
+
+== Review a Paper ==
+researcher -> repo: Select Paper to Review
+repo -> dms: Fetch Paper for Review
+dms --> researcher: Display Paper
+researcher -> repo: Submit Review
+repo -> collab: Save Review Details
+collab --> repo: Confirmation
+repo -> notif: Send Notifications to Authors
+note right: Notifies paper's authors\nabout the new review
+notif -> repo: Notifications Sent
+repo --> researcher: Review Submitted Successfully
+
+@enduml
+```
+
+This sequence diagram outlines the interactions between the researcher and the various components of the Neurohub platform involved in sharing, commenting on, and reviewing papers within a group-level repository. Each interaction sequence illustrates the process from initiating an action (like sharing a new paper), through various service layers (like document management and collaboration services), to the confirmation and notification steps concluding each action.

@@ -1,0 +1,33 @@
+@startuml
+participant "LibraryStaff" as LS
+participant "WebInterface" as WI
+participant "Server" as S
+participant "Database" as DB
+
+LS -> WI : Request Customize Metadata Page
+activate WI
+WI -> S : Fetch Current Metadata Template
+activate S
+S -> DB : Retrieve Template
+activate DB
+DB --> S : Template Data
+deactivate DB
+S --> WI : Template Data
+deactivate S
+WI --> LS : Display Template Editor
+deactivate WI
+
+LS -> WI : Submit Customized Metadata Fields
+activate WI
+WI -> S : Update Template with Custom Fields
+activate S
+S -> DB : Store Updated Template
+activate DB
+DB --> S : Confirmation
+deactivate DB
+S --> WI : Update Confirmation
+deactivate S
+WI --> LS : Display Success Message
+deactivate WI
+
+@enduml

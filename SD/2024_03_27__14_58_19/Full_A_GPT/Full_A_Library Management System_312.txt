@@ -1,0 +1,48 @@
+To illustrate the sequence of operations involved when a library member wants to update an online reservation for books in the Comprehensive Library Management System (CLMS), a detailed sequence diagram is provided below in PlantUML. This diagram outlines the interactions between the system components like the Web Interface, Reservation Controller, Authentication Service, Database, and Notification Service, to perform the task.
+
+```plantuml
+@startuml
+participant Member as M
+participant WebInterface as WI
+participant AuthenticationService as AUTH
+participant ReservationController as RC
+participant Database as DB
+participant NotificationService as NS
+
+M -> WI: Request to update reservation
+WI -> AUTH: Validate member session
+AUTH --> WI: Session valid
+WI -> RC: Update reservation request
+
+group Update reservation process
+    RC -> DB: Check current reservation details
+    DB --> RC: Reservation details
+    RC -> RC: Validate update request
+    alt Update is valid
+        RC -> DB: Process reservation update
+        DB --> RC: Update confirmation
+        RC -> NS: Send update confirmation notification
+        NS --> M: Display notification
+    else Update not valid
+        RC -> WI: Show error message
+        WI --> M: Display error message
+    end
+end
+
+RC --> WI: Update reservation response
+WI --> M: Display update result
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+1. **Member (Library User) Initiates Request**: The process begins when a library member requests to update a reservation through the Web Interface.
+2. **Session Validation**: The Web Interface asks the Authentication Service to validate the member's session to ensure that the request is coming from an authenticated user.
+3. **Reservation Update Request**: Once the session is validated, the Web Interface sends the update reservation request to the Reservation Controller.
+4. **Checking Current Reservation Details**: The Reservation Controller queries the Database to retrieve the current reservation details.
+5. **Validation of Update Request**: The Reservation Controller validates the update request internally. This could involve checking for conflicts, ensuring the requested book is available, and so on.
+6. **Decision Making (alt)**:
+   a. **If Update is Valid**: The Reservation Controller processes the update by requesting the Database to update the reservation. Upon receiving confirmation, it instructs the Notification Service to send a confirmation notification to the member.
+   b. **If Update Not Valid**: The Reservation Controller sends an error message to be displayed to the member through the Web Interface.
+7. **Response & Display**: Finally, the Web Interface displays the update result (success or error message) to the member.
+
+This sequence diagram encapsulates the principal interactions and processes involved when a member of the Comprehensive Library Management System attempts to update an online reservation for books.

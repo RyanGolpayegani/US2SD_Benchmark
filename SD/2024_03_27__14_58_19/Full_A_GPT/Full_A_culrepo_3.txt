@@ -1,0 +1,50 @@
+Below is a detailed PlantUML sequence diagram for the user story provided. The sequence outlines the steps a Cornell faculty member would take to upload data to the repository and associate it with a publication. This sequence also includes interactions with the system to ensure proper attribution for both the data and the publication.
+
+```plantuml
+@startuml
+actor FacultyMember as "Faculty Member"
+participant "Authentication System" as Auth
+participant "Repository UI" as UI
+participant "Content Management System" as CMS
+participant "Database" as DB
+
+== Authentication Phase ==
+FacultyMember -> Auth: Access Repository
+Auth -> Auth: Validate Credentials
+Auth --> FacultyMember: Access Granted
+
+== Data Upload Phase ==
+FacultyMember -> UI: Select 'Upload Data'
+UI -> CMS: Show Upload Form
+FacultyMember -> CMS: Submit Data and Metadata
+CMS -> DB: Save Data
+DB --> CMS: Confirm Data Saved
+CMS --> FacultyMember: Data Upload Successful
+
+== Publication Upload Phase ==
+FacultyMember -> UI: Select 'Associate with Publication'
+UI -> CMS: Show Publication Form
+FacultyMember -> CMS: Submit Publication Details\n(Title, DOI, etc.)
+CMS -> DB: Check if Publication Exists
+alt Publication Not Found
+    DB -> CMS: Prompt to Create New Publication Entry
+    FacultyMember -> CMS: Provides Full Publication Details
+    CMS -> DB: Create New Publication Entry
+else Publication Found
+    CMS -> DB: Retrieve Publication Details
+end
+
+== Association Phase ==
+CMS -> DB: Associate Uploaded Data with Publication
+DB --> CMS: Association Successful
+CMS --> FacultyMember: Data Successfully Associated with Publication
+
+== Attribution Update ==
+CMS -> DB: Update Attribution for Data and Publication
+DB --> CMS: Attribution Updated
+CMS --> FacultyMember: Confirmation of Attribution
+
+@enduml
+```
+
+To render this diagram, ensure you have PlantUML installed or use an online PlantUML editor. This PlantUML sequence diagram captures the basic interactions between a faculty member and the digital repository system for uploading data, associating it with a publication, and ensuring proper attribution. The sequence presupposes system capabilities as outlined in the project description, emphasizing user actions, system responses, and data management processes.

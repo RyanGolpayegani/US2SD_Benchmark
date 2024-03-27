@@ -1,0 +1,30 @@
+@startuml
+actor "Collection Curator" as curator
+participant "Repository System" as system
+participant "Replication Service" as replication
+database "Remote Storage" as storage
+participant "Staff Interface" as interface
+
+== Ingest Collection for Replication ==
+curator -> system : Ingest new collection
+activate system
+system -> replication : Queue for replication
+activate replication
+
+== Replication Process ==
+replication -> storage : Replicate collection
+activate storage
+storage --> replication : Replication complete
+deactivate storage
+
+replication -> system : Update replication status
+deactivate replication
+
+== Update and Display Status ==
+system -> interface : Update item/component status
+activate interface
+curator -> interface : View replication status
+interface --> curator : Display status
+deactivate interface
+
+@enduml

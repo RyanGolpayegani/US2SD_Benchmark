@@ -1,0 +1,32 @@
+@startuml
+participant ManagerUI as "Manager UI"
+participant Server as "Server"
+database Database as "Database"
+
+ManagerUI -> Server : Request to view shift details
+activate Server
+Server -> Database : Fetch current shift data
+activate Database
+Database --> Server : Current shift data
+deactivate Database
+Server --> ManagerUI : Display current shifts
+deactivate Server
+
+ManagerUI -> Server : Edit shift details (employee, date, hours)
+activate Server
+Server -> Database : Validate changes\n(Schedule conflicts, permissions)
+activate Database
+Database --> Server : Validation result
+deactivate Database
+
+alt If validation successful
+    Server -> Database : Update shift details
+    activate Database
+    Database --> Server : Shift update confirmation
+    deactivate Database
+    Server --> ManagerUI : Display success message
+else Validation fails
+    Server --> ManagerUI : Display error message (reason)
+end
+deactivate Server
+@enduml

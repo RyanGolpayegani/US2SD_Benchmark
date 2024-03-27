@@ -1,0 +1,32 @@
+@startuml
+participant Consumer_UI as "Consumer UI"
+participant Platform_Web_Service as "Platform Web Service"
+participant Database as "Database"
+
+actor Consumer
+
+== Consumer Views Publisher's Profile ==
+
+Consumer -> Consumer_UI : Navigate to Publisher's List/Search Page
+Consumer_UI -> Platform_Web_Service : Request Publisher List
+Platform_Web_Service -> Database : Query for Publishers
+Database -> Platform_Web_Service : Return List of Publishers
+Platform_Web_Service -> Consumer_UI : Display Publishers
+Consumer_UI -> Consumer : Show Publisher List/Search Results
+
+== Consumer Selects a Publisher Profile ==
+
+Consumer -> Consumer_UI : Select Publisher Profile
+Consumer_UI -> Platform_Web_Service : Request Publisher Profile (ID)
+Platform_Web_Service -> Database : Query Publisher Data (ID)
+Database -> Platform_Web_Service : Return Publisher Data
+Platform_Web_Service -> Consumer_UI : Display Publisher Profile
+
+== Profile Display includes Packages ==
+
+Platform_Web_Service -> Database : Query Packages by Publisher (ID)
+Database -> Platform_Web_Service : Return Packages List
+Platform_Web_Service -> Consumer_UI : Display Packages on Profile
+Consumer_UI -> Consumer : Show Publisher Profile and Packages
+
+@enduml

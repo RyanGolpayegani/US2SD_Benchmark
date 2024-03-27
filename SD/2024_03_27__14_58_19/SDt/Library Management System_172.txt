@@ -1,0 +1,30 @@
+@startuml
+actor Member
+entity "Reservation System" as ReservationSystem
+entity "Book Management" as BookManagement
+database "Library Database" as LibraryDB
+
+Member -> ReservationSystem : Search for books
+ReservationSystem -> LibraryDB : Query available books
+LibraryDB -> ReservationSystem : Return search results
+ReservationSystem -> Member : Display available books
+
+loop Reserve Multiple Books
+    Member -> ReservationSystem : Select book for reservation
+    ReservationSystem -> BookManagement : Check book availability
+    BookManagement -> LibraryDB : Query book status
+    LibraryDB -> BookManagement : Return book status
+    alt If book is available
+        BookManagement -> ReservationSystem : Confirm availability
+        ReservationSystem -> Member : Display reservation form
+        Member -> ReservationSystem : Submit reservation request
+        ReservationSystem -> LibraryDB : Update reservation details
+        LibraryDB -> ReservationSystem : Confirm reservation update
+        ReservationSystem -> Member : Display reservation confirmation
+    else If book is not available
+        BookManagement -> ReservationSystem : Show not available message
+        ReservationSystem -> Member : Display not available message
+    end
+end
+
+@enduml

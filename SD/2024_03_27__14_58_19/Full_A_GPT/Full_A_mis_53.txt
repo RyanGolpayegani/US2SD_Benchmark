@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram in PlantUML format for the user story you've provided involves outlining the interactions between the data contributor and the various components of the Enhanced Digital Repository Management System (EDRMS) to refer to the Disaster Recovery Plan in grant proposals and Data Management Plans. Please note that this is an illustrative example and might need adjustments based on your actual system design and requirements.
+
+```plantuml
+@startuml
+!theme plain
+
+participant "Data Contributor" as contributor
+participant "EDRMS Interface" as interface
+participant "Authentication System" as auth
+participant "Disaster Recovery\nManagement Module" as recoveryModule
+participant "Repository Database" as database
+
+== Authentication ==
+contributor -> interface : Access EDRMS
+interface -> auth : Request Authentication
+auth -> interface : Authentication Success
+
+== Access Disaster Recovery Plan ==
+contributor -> interface : Request Disaster Recovery Plan
+interface -> recoveryModule : Query Recovery Plan Details
+recoveryModule -> database : Fetch Recovery Plan Data
+database -> recoveryModule : Recovery Plan Data
+recoveryModule -> interface : Recovery Plan Details
+interface -> contributor : Display Disaster Recovery Plan
+
+== Use Disaster Recovery Plan ==
+contributor -> interface : Download/Refer Disaster Recovery Plan
+interface -> recoveryModule : Log Download/Reference
+recoveryModule -> database : Update Access Log
+database -> recoveryModule : Log Updated
+recoveryModule -> interface : Confirm Download/Reference
+interface -> contributor : Download/Reference Confirmed
+
+@enduml
+```
+
+This sequence diagram illustrates the process a data contributor would follow to refer to the Disaster Recovery Plan using the EDRMS:
+
+1. **Authentication**: The data contributor accesses the EDRMS interface, which requests authentication from the Authentication System. Upon successful authentication, the process continues.
+
+2. **Access Disaster Recovery Plan**: The data contributor requests to view the Disaster Recovery Plan. The EDRMS interface queries the Disaster Recovery Management Module for the details, which in turn fetches this information from the repository database. The received data is then displayed to the data contributor through the interface.
+
+3. **Use Disaster Recovery Plan**: If the data contributor decides to download or reference the Disaster Recovery Plan in their grant proposals or Data Management Plans, this action is logged by the Disaster Recovery Management Module in the repository database. Confirmation of this operation is sent back to the data contributor.
+
+This diagram provides a high-level overview and can be detailed further based on more specific system interactions or requirements, such as error handling, specific data fields involved, or other modules that might interact with the Disaster Recovery Management Module.

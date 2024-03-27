@@ -1,0 +1,46 @@
+Creating a sequence diagram for the described user story involves outlining the interaction between the developer, the DPIE system, and DSpace as the developer seeks to integrate data-packaged data with pipelines that use DSpace. This entails steps like selecting a Data Package, invoking the DPIE system to process it, and finally pushing or synchronizing the data to DSpace.
+
+Below is a basic sequence diagram in PlantUML format that illustrates these interactions:
+
+```plantuml
+@startuml
+participant Developer
+participant "DPIE System" as DPIE
+participant "DSpace API" as DSpace
+
+Developer -> DPIE : Select DataPackage \nfor Integration
+activate DPIE
+
+DPIE -> DPIE : Validate DataPackage
+DPIE -> DPIE : Process DataPackage \n(Conversion/Mapping)
+
+DPIE -> DSpace : Authenticate with DSpace
+activate DSpace
+DSpace --> DPIE : Authentication Success
+
+DPIE -> DSpace : Push DataPackage \nto DSpace
+DSpace --> DPIE : Confirm Integration
+deactivate DSpace
+
+DPIE --> Developer : Integration Successful
+deactivate DPIE
+@enduml
+```
+
+This diagram outlines the basic steps for a developer wanting to integrate a Data Package with DSpace using the DPIE system. Here’s a brief explanation of the steps:
+
+1. **Select DataPackage for Integration:** The developer selects the data package they wish to integrate with DSpace.
+
+2. **Validate DataPackage:** The DPIE system validates the selected Data Package according to its schema and integrity.
+
+3. **Process DataPackage (Conversion/Mapping):** The DPIE system processes the Data Package, which could include converting file formats and mapping data fields to those recognized by DSpace.
+
+4. **Authenticate with DSpace:** DPIE connects to the DSpace API, authenticating itself to gain the necessary permissions for data integration.
+
+5. **Push DataPackage to DSpace:** Once authenticated, DPIE pushes or synchronizes the processed Data Package with DSpace.
+
+6. **Confirm Integration:** DSpace confirms the successful integration of the Data Package.
+
+7. **Integration Successful:** DPIE notifies the developer that the Data Package has successfully been integrated with DSpace.
+
+This sequence facilitates the integration of data-packaged data with DSpace, highlighting interactions between the developer, DPIE, and DSpace API. Modifications may be required depending on specific implementation details or additional features of DPIE and DSpace.

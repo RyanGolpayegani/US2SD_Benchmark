@@ -1,0 +1,33 @@
+@startuml
+actor "Agency User" as AgencyUser
+participant "Broker UI" as BrokerUI
+participant "Validation Service" as ValidationService
+participant "Data Processor" as DataProcessor
+participant "Database" as Database
+participant "File Generation Service" as FileGeneration
+participant "Formatting Service" as FormattingService
+participant "Download Manager" as DownloadManager
+
+== Request for File F in Correct Format ==
+AgencyUser -> BrokerUI : Request File F
+BrokerUI -> ValidationService : Validate user & request
+ValidationService -> BrokerUI : Validation response
+
+alt Validation Success
+    BrokerUI -> DataProcessor : Process request for File F
+    DataProcessor -> Database : Query relevant data
+    Database -> DataProcessor : Return data
+    DataProcessor -> FileGeneration : Initiate File F generation
+    FileGeneration -> FormattingService : Format File F
+    FormattingService -> FileGeneration : File F formatted
+    FileGeneration -> DownloadManager : Make File F available for download
+    DownloadManager -> BrokerUI : Provide download link
+    BrokerUI -> AgencyUser : Display download link
+    AgencyUser -> BrokerUI : Request download
+    BrokerUI -> DownloadManager : Trigger download
+    DownloadManager -> AgencyUser : Download File F
+else Validation Failure
+    BrokerUI -> AgencyUser : Display validation error
+end
+
+@enduml

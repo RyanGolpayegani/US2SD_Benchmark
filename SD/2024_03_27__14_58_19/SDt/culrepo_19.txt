@@ -1,0 +1,28 @@
+@startuml
+actor "Library Staff" as staff
+participant "Web Interface" as web
+participant "Authentication Service" as auth
+participant "Statistics Module" as stats
+participant "Database" as db
+participant "Altmetrics Service" as altmetrics
+
+staff -> web : Access Statistics Page
+web -> auth : Validate Access
+auth -> web : Access Granted
+
+group Retrieve Usage Statistics
+    web -> stats : Request Statistics (repo, collection, author, item)
+    stats -> db : Query Usage Data
+    db -> stats : Return Usage Data
+    stats -> web : Display Statistics
+end
+
+group Retrieve Altmetrics
+    web -> altmetrics : Request Altmetrics (author, item)
+    altmetrics -> db : Query Altmetrics Data
+    db -> altmetrics : Return Altmetrics Data
+    altmetrics -> web : Display Altmetrics
+end
+
+staff <- web : View Statistics and Altmetrics
+@enduml

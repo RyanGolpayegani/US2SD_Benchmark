@@ -1,0 +1,44 @@
+Creating a comprehensive sequence diagram for the user story "As a library member, I want to order books according to title" involves detailing the interactions among various system components in the Comprehensive Library Management System (CLMS). For simplicity, this scenario assumes that the library member is already logged in to the system. 
+
+Here’s how you could represent this user story in PlantUML format:
+
+```plantuml
+@startuml
+participant Member as M
+participant "Web Interface" as W
+participant "Server Controller" as SC
+participant "Book Management System" as BMS
+participant "Database" as DB
+
+M -> W : Enter search query\n(Order by title)
+W -> SC : Request to search books\n(Order by title)
+activate SC
+SC -> BMS : Fetch books\n(Order by title)
+activate BMS
+BMS -> DB : Query books\n(Order by title)
+activate DB
+DB --> BMS : Return books list\n(Sorted by title)
+deactivate DB
+BMS --> SC : Books data\n(Sorted by title)
+deactivate BMS
+SC --> W : Display books\n(Sorted by title)
+W --> M : Show books list\n(Ordered by title)
+deactivate SC
+@enduml
+```
+
+**Explanation of the Sequence:**
+
+1. **Member (Library Member):** Initiates the action by wanting to view books ordered by title. This action starts when the member enters a search query with the specific order in mind (though not explicitly mentioned, it's implied through the context).
+
+2. **Web Interface:** Acts as the medium through which the member communicates with the system. It captures the request and forwards it to the server controller for processing.
+
+3. **Server Controller:** Acts as a bridge, receiving the member's request from the Web Interface. It then translates and forwards this request to the Book Management System (BMS) to fetch the required data.
+
+4. **Book Management System:** This component interacts directly with the database, asking for the book records but specifies that the results must be ordered by title.
+
+5. **Database:** Where all book-related information is stored. Upon receiving the query, it processes this request and returns a list of books sorted by title back to the Book Management System.
+
+6. **Returning Data:** The information flows back from the Database to the Book Management System, then to the Server Controller, which finally sends the sorted book list to the Web Interface to be displayed to the member.
+
+This diagram and its description focus on the sequence of actions initiated by a library member with the aim of viewing or ordering books by their titles within the CLMS interface, highlighting the path from user input to data retrieval and presentation.

@@ -1,0 +1,24 @@
+@startuml
+participant OlderPerson
+participant "ALFRED" as ALFRED
+participant "Speech Recognition Module" as Voice
+participant "Navigation System" as Navigation
+database "Location Database" as LocationDB
+
+== Navigation Request ==
+OlderPerson -> ALFRED: "Navigate me to the nearest pharmacy"
+ALFRED -> Voice: Process voice command
+Voice -> ALFRED: Text command ("Navigate to nearest pharmacy")
+ALFRED -> Navigation: Request route to nearest pharmacy
+
+== Fetching Route ==
+Navigation -> LocationDB: Fetch current location
+LocationDB --> Navigation: Current Location
+Navigation -> LocationDB: Fetch pharmacy locations
+LocationDB --> Navigation: Pharmacy Locations
+Navigation --> ALFRED: Best Route
+
+== Providing Navigation ==
+ALFRED -> Voice: Convert route instructions to speech
+Voice -> OlderPerson: Speaks route instructions
+@enduml

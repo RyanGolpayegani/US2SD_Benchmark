@@ -1,0 +1,20 @@
+@startuml
+actor "Data Publishing User" as user
+participant "Python Client CLI" as cli
+participant "Authentication Module" as auth
+participant "Data Packager" as packager
+participant "API" as api
+database "OpenSpending Datastore" as datastore
+
+user -> cli : Execute command to add data
+cli -> auth : Request authentication
+auth -> cli : Return authentication token
+cli -> packager : Package data with token\nand dataset details
+packager -> cli : Confirm data packaged
+cli -> api : POST packaged data\nwith authentication token
+api -> datastore : Validate and store data
+datastore -> api : Confirm data stored
+api -> cli : Return success response
+cli -> user : Display success message
+
+@enduml

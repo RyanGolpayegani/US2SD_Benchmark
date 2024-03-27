@@ -1,0 +1,22 @@
+@startuml
+!theme cerulean
+
+participant Member
+participant WebInterface
+participant Controller
+database LibraryDB
+participant NotificationService
+
+Member -> WebInterface: Request book details
+WebInterface -> Controller: Retrieve book details and status
+Controller -> LibraryDB: Query for book status and due date
+LibraryDB -> Controller: Return status and due date
+Controller -> WebInterface: Show book status and due date
+WebInterface -> Member: Display book status and due date
+
+alt if the book is borrowed
+    WebInterface -> NotificationService: Request for due date alert setup
+    NotificationService -> Member: Send due date reminder setup confirmation
+end
+
+@enduml

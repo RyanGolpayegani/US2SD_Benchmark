@@ -1,0 +1,30 @@
+Creating a sequence diagram requires breaking down the interactions between system elements involved in realizing the described user story. For the given user story of a manager wanting to see the number of orders taken by each waiter on a daily basis to measure performance, the involved elements could include:
+
+- **Manager Interface**: The UI element through which the manager interacts with the system.
+- **Backend Server / API**: Intermediary handling requests and responses.
+- **Database**: Where data related to orders and employees are stored.
+
+Here's how you might structure a sequence diagram in PlantUML syntax to reflect these interactions:
+
+```plantuml
+@startuml
+participant ManagerInterface as MI
+participant BackendServer as BS
+participant Database as DB
+
+MI -> BS : Request daily order count per waiter
+activate BS
+BS -> DB : Query order & waiter data
+activate DB
+DB -> DB : Aggregate orders by waiter
+DB --> BS : Return aggregated data
+deactivate DB
+BS --> MI : Display aggregated order data
+deactivate BS
+
+@enduml
+```
+
+This diagram starts with the "Manager Interface" sending a request to the "Backend Server" to retrieve the daily order count per waiter. The server then queries the "Database" for order and waiter data, which involves aggregating orders by each waiter. Once the database has processed this request, it sends the aggregated data back to the server, which in turn relays this information to be displayed through the Manager Interface.
+
+The sequence diagram as described provides a high-level view of the process. For implementation purposes, details such as the actual data structure of the requests and responses, authentication of the manager, and error handling would need to be considered and fleshed out.

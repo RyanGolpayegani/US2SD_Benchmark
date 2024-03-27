@@ -1,0 +1,40 @@
+@startuml
+participant "Repository Manager" as RM
+participant "DIMS Interface" as DIMS
+participant "Role Management Service" as RMS
+participant "Database" as DB
+
+RM -> DIMS: Access the management interface
+activate DIMS
+
+DIMS -> DIMS: Authenticate and authorize RM
+DIMS --> RM: Show management options
+RM -> DIMS: Select 'Add/Edit Roles'
+activate RMS
+
+DIMS -> RMS: Request role assignment interface
+activate RMS
+RMS --> DIMS: Provide role assignment interface
+DIMS --> RM: Display role assignment options
+
+RM -> DIMS: Submit name and role (e.g., 'John Doe', 'Photographer')
+DIMS -> RMS: Parse and verify role information
+activate RMS
+
+RMS -> DB: Check if name exists
+activate DB
+DB --> RMS: Name exists response
+deactivate DB
+
+RMS -> DB: Assign role to name
+activate DB
+DB --> RMS: Role assigned confirmation
+deactivate DB
+
+RMS --> DIMS: Role assignment success
+deactivate RMS
+
+DIMS --> RM: Confirm role assignment to 'John Doe' as 'Photographer'
+deactivate DIMS
+
+@enduml

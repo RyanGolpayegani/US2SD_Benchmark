@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the user story "As a manager, I want to edit employee shifts" involves outlining the interaction sequence between the system components and actors to accomplish the task of editing employee shifts within the Restaurant Management and Operations System. The PlantUML code below illustrates these interactions.
+
+Please note, for simplicity, this example assumes the manager interacts with a web interface to edit employee shifts, which then communicates with the backend server. The server processes the request, interacts with the database, and finally confirms the operation to the manager.
+
+```plantuml
+@startuml
+participant ManagerUI as "Manager UI"
+participant Server as "Server"
+database Database as "Database"
+
+ManagerUI -> Server : Request to view shift details
+activate Server
+Server -> Database : Fetch current shift data
+activate Database
+Database --> Server : Current shift data
+deactivate Database
+Server --> ManagerUI : Display current shifts
+deactivate Server
+
+ManagerUI -> Server : Edit shift details (employee, date, hours)
+activate Server
+Server -> Database : Validate changes\n(Schedule conflicts, permissions)
+activate Database
+Database --> Server : Validation result
+deactivate Database
+
+alt If validation successful
+    Server -> Database : Update shift details
+    activate Database
+    Database --> Server : Shift update confirmation
+    deactivate Database
+    Server --> ManagerUI : Display success message
+else Validation fails
+    Server --> ManagerUI : Display error message (reason)
+end
+deactivate Server
+@enduml
+```
+
+This sequence diagram begins with the Manager UI requesting the current shift details from the Server, which fetches this data from the Database. Upon receiving this information, the shift details are displayed to the manager through the Manager UI.
+
+When the manager decides to edit an employee's shift, they submit the new details (which could include changes to the employee assigned, the shift date, or the hours worked) to the Server via the UI. The Server then attempts to validate these changes with the Database, checking for any schedule conflicts or permission issues that might prevent the edit.
+
+If the validation is successful, the Database updates the shift details and confirms the update to the Server, which in turn notifies the Manager UI, displaying a success message to the manager. If the validation fails, the Server informs the Manager UI of the failure, providing a reason for the error, and a relevant error message is displayed to the manager.
+
+This sequence ensures that managers can efficiently and effectively edit employee shifts, with the system handling validation and conflict resolution to maintain operational integrity.

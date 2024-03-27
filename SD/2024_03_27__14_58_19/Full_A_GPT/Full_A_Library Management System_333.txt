@@ -1,0 +1,62 @@
+Below is a PlantUML sequence diagram code fragment that models the process of a library staff member ('StaffUser') checking out a book for a customer after reservation. This process involves interaction between the staff user, the system interface (‘LibrarySystem’), and back-end services such as ‘BookManagement’ and ‘ReservationSystem’. Assume here that the book has already been reserved by the customer and is now being checked out.
+
+```plantuml
+@startuml
+participant "StaffUser" as Staff
+participant "LibrarySystem" as System
+participant "ReservationSystem" as Reservation
+participant "BookManagement" as Book
+database "Database" as DB
+
+Staff -> System: Request checkout interface
+activate System
+System --> Staff: Provide checkout interface
+
+Staff -> System: Submit checkout form (BookID, UserID)
+activate System
+
+System -> Reservation: Verify reservation status(BookID, UserID)
+activate Reservation
+Reservation -> DB: Check reservation(BookID, UserID)
+activate DB
+DB --> Reservation: Reservation confirmed
+deactivate DB
+Reservation --> System: Reservation valid
+deactivate Reservation
+
+System -> Book: Process checkout(BookID, UserID)
+activate Book
+Book -> DB: Update book status (checked out)
+activate DB
+DB --> Book: Update successful
+deactivate DB
+Book --> System: Checkout processed
+deactivate Book
+
+System -> Reservation: Update reservation status (completed)
+activate Reservation
+Reservation -> DB: Mark reservation as completed(BookID, UserID)
+activate DB
+DB --> Reservation: Update successful
+deactivate DB
+Reservation --> System: Reservation updated
+deactivate Reservation
+
+System --> Staff: Display checkout confirmation
+deactivate System
+@enduml
+```
+
+This diagram outlines the following steps in the checkout process after reservation:
+1. The library staff member requests the checkout interface from the library system.
+2. The library system provides the checkout interface to the staff member.
+3. The staff member submits the checkout form with the necessary details (BookID, UserID).
+4. The system verifies the reservation status with the reservation system.
+5. The reservation system checks with the database to confirm the reservation is valid.
+6. The library system processes the book checkout through book management.
+7. Book management updates the book's status in the database as checked out.
+8. The system updates the reservation status to completed through the reservation system.
+9. The reservation system updates the booking status in the database.
+10. The library system displays the checkout confirmation to the staff member.
+
+Note that this diagram represents a high-level overview; real-world implementations might involve additional steps or systems such as payment processing if there are any associated fees or more detailed user authentication for security purposes.

@@ -1,0 +1,32 @@
+Creating a detailed sequence diagram for the user story you provided involves visualizing interactions among different system components to achieve the goal of adding restriction end date information to files. Since the outcome is a textual PlantUML format, I'll draft a sequence diagram code for you, focusing on the necessary interactions.
+
+The scenario assumes the archivist interacts with a web interface to set a Restriction End Date for a digital file in the archive management system. The system then processes this information, applying the change to the file's metadata and ensuring the file becomes accessible once the date is reached.
+
+Here is the PlantUML code that reflects this process:
+
+```plantuml
+@startuml
+autonumber
+participant Archivist as U
+participant WebInterface as W
+database ArchiveDatabase as D
+participant "RightsManagementSystem" as R
+
+U -> W : Select file(s)
+U -> W : Enter Restriction End Date
+W -> R : Validate date and apply to selected file(s)
+alt success
+    R -> D : Update file metadata with Restriction End Date
+    D --> R : Confirm metadata updated
+    R --> W : Display success message to Archivist
+    W --> U : Confirmation\n(Restriction date set)
+else failure
+    R --> W : Display error message to Archivist
+    W --> U : Error\n(Could not set restriction date)
+end
+@enduml
+```
+
+This diagram starts with the Archivist (User) selecting files for which they wish to add or update the restriction end date. The interaction is then passed to a Web Interface, which facilitates the input of the new restriction end date. The Rights Management System validates the entered date and applies it to the selected files. After successfully updating the file's metadata in the Archive Database to include the new restriction end date, a success message is returned through the system to the Archivist. If the operation fails at any point, an error message is displayed instead.
+
+Please note that this sequence focuses on the core flow of adding restriction end dates to files and assumes the existence of a Rights Management System and an Archive Database capable of handling these operations. Depending on the specific implementation details of your system, additional steps or components might be necessary.

@@ -1,0 +1,28 @@
+@startuml
+
+participant Moderator as mod
+participant "Web Interface" as web
+participant "Backend Server" as server
+participant "Export Service" as export
+participant "Database" as db
+participant "File System" as fs
+
+mod -> web: Selects "Export Game"
+web -> server: Request export with gameID
+server -> db: Query game data\n(gameID)
+db --> server: Return game data
+server -> export: Generate HTML transcript\ngame data
+export --> server: HTML file
+server -> fs: Save HTML file
+fs --> server: File path
+server -> web: Provide download link
+web -> mod: Display download link
+mod -> web: Clicks download link
+web -> server: Request file\n(file path)
+server -> fs: Retrieve HTML file\n(file path)
+fs --> server: HTML file content
+server --> web: Send HTML file
+web --> mod: Start file download
+mod -> fs: Save HTML file locally
+
+@enduml

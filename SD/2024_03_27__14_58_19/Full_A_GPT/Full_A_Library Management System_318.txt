@@ -1,0 +1,40 @@
+To create a detailed sequence diagram in PlantUML format for the user story "As a reader, I want to comment on books," we'll outline the interactions between components such as the User (reader), Frontend UI, Backend Server, Authentication Service, Comment Service, and Database. This interaction assumes that the reader is already logged in and navigating to a book detail page where they can post comments.
+
+```plantuml
+@startuml
+participant Reader
+participant "Frontend UI" as Frontend
+participant "Backend Server" as Backend
+participant "Authentication Service" as AuthService
+participant "Comment Service" as CommentService
+participant Database
+
+Reader -> Frontend: Select book to comment
+Frontend -> Backend: Request book details
+Backend -> Database: Query book details
+Database -> Backend: Return book details
+Backend -> Frontend: Display book details
+Frontend -> Reader: Show book information
+
+Reader -> Frontend: Enter comment
+Frontend -> Backend: Submit comment request with User ID and Book ID
+Backend -> AuthService: Validate User ID
+AuthService -> Backend: Return validation result
+
+alt if User is validated
+   Backend -> CommentService: Process comment
+   CommentService -> Database: Save comment
+   Database -> CommentService: Confirm save
+   CommentService -> Backend: Return success message
+   Backend -> Frontend: Display success message
+   Frontend -> Reader: Show comment submission success
+else User not validated
+   Backend -> Frontend: Display error message
+   Frontend -> Reader: Show error message
+end
+@enduml
+```
+
+This sequence diagram starts with the reader selecting a book to comment on and interacting with the frontend UI. The system then navigates through several steps including book details fetch, user authentication, comment processing, and finally, saving the comment to the database. Conditional logic is shown for user validation, leading to either a successful comment submission or an error message if the user is not validated.
+
+To use this diagram, you'll need to have PlantUML installed either as a standalone tool, as part of a compatible IDE, or using an online editor that supports PlantUML.

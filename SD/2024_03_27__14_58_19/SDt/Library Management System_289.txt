@@ -1,0 +1,21 @@
+@startuml
+actor Member as M
+participant "Identity Verification\nSystem" as IVS
+database "Library Database" as LD
+participant "Due Date\nDisplay System" as DDS
+
+== View Due Date ==
+M -> IVS: Request to view due dates
+activate IVS
+IVS -> LD: Verify member identity and access rights
+activate LD
+LD --> IVS: Identity and access rights verified
+deactivate LD
+IVS --> M: Access Granted
+deactivate IVS
+M -> LD: Request borrowed books data
+activate LD
+LD -> LD: Retrieve borrowed books and due dates
+LD --> M: Display borrowed books and due dates
+deactivate LD
+@enduml

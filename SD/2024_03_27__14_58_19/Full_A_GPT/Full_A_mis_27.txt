@@ -1,0 +1,53 @@
+Given your request for a PlantUML sequence diagram detailing the process for a Digital Records Archivist managing deposit groups, including adding/removing people, setting deposit window closure dates, and ensuring permissions alignment, here's a comprehensive representation of the interactions:
+
+```plantuml
+@startuml
+participant Archivist as A
+participant "Management System" as MS
+participant "Database" as DB
+
+A -> MS : Login()
+activate MS
+
+MS --> A : Display Dashboard
+A -> MS : Navigate to "Manage Deposit Groups"
+MS --> A : Display Deposit Group Interface
+
+A -> MS : Select Collection to Modify
+MS --> DB : Fetch Collection Details()
+activate DB
+
+DB --> MS : Return Collection Details
+MS --> A : Display Group Management Options for Collection
+
+A -> MS : Add People to Deposit Group
+activate MS
+
+MS -> DB : Update Group Members()
+DB --> MS : Confirm Member Addition
+MS --> A : Display Updated Group Members
+
+A -> MS : Remove People from Deposit Group
+MS -> DB : Update Group Members()
+DB --> MS : Confirm Member Removal
+MS --> A : Display Updated Group Members
+
+A -> MS : Set Deposit Window Closure Date
+MS -> DB : Update Closure Date()
+DB --> MS : Confirm Closure Date Update
+MS --> A : Display Updated Closure Date
+
+A -> MS : Ensure Default Permissions Conferred
+MS -> DB : Update Permissions()
+DB --> MS : Confirm Permissions Update
+deactivate DB
+
+MS --> A : Display Confirmation & Updated Details
+
+deactivate MS
+@enduml
+```
+
+This PlantUML sequence diagram starts with a Digital Records Archivist logging into the management system and navigating to the deposit group management interface for a specific collection. The sequence then moves through the steps of adding and removing people to/from a deposit group, setting the deposit window closure date, and ensuring that the depositors inherit the collection's default permissions. For each action – adding/removing people, setting the deposit window closure date, and updating permissions – the management system interacts with the database to make the necessary updates and confirms each action back to the archivist.
+
+Please note, this diagram is a simplified representation of the process. The actual implementation could involve more complex interactions based on the specific requirements and existing infrastructure of the Enhanced Digital Repository Management System (EDRMS).

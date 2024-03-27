@@ -1,0 +1,25 @@
+@startuml
+participant Librarian as L
+participant "CLMS Interface" as UI
+participant "System Backend" as SB
+participant Database as DB
+participant NotificationService as NS
+
+L -> UI : Selects "View Expired Books"
+UI -> SB : RequestExpiredBooksList()
+SB -> DB : QueryExpiredBooks()
+note right of DB: Retrieves all books \nwhose due date has passed
+DB --> SB : ExpiredBooksList
+SB --> UI : ReturnExpiredBooksList()
+UI --> L : Display Expired Books
+L -> UI : Select Books to Notify
+UI -> SB : RequestSendNotifications(SelectedBooks)
+loop for each book in SelectedBooks
+    SB -> DB : QueryBorrowerDetails(bookId)
+    DB --> SB : BorrowerDetails
+    SB -> NS : SendNotification(BorrowerDetails, bookId)
+    NS --> SB : NotificationStatus
+end
+SB --> UI : NotificationsSentStatus()
+UI --> L : Display Notification Status
+@enduml

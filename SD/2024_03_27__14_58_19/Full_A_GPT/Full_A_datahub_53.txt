@@ -1,0 +1,40 @@
+Here's a detailed PlantUML sequence diagram for the user story of a Consumer wanting to view a publisher's profile in the context of the Data Registry and Publishing Platform project. This sequence incorporates relevant steps including Consumer actions, interaction with the platform's UI, potential backend service calls, and data retrieval processes for displaying a Publisher's profile.
+
+```plantuml
+@startuml
+participant Consumer_UI as "Consumer UI"
+participant Platform_Web_Service as "Platform Web Service"
+participant Database as "Database"
+
+actor Consumer
+
+== Consumer Views Publisher's Profile ==
+
+Consumer -> Consumer_UI : Navigate to Publisher's List/Search Page
+Consumer_UI -> Platform_Web_Service : Request Publisher List
+Platform_Web_Service -> Database : Query for Publishers
+Database -> Platform_Web_Service : Return List of Publishers
+Platform_Web_Service -> Consumer_UI : Display Publishers
+Consumer_UI -> Consumer : Show Publisher List/Search Results
+
+== Consumer Selects a Publisher Profile ==
+
+Consumer -> Consumer_UI : Select Publisher Profile
+Consumer_UI -> Platform_Web_Service : Request Publisher Profile (ID)
+Platform_Web_Service -> Database : Query Publisher Data (ID)
+Database -> Platform_Web_Service : Return Publisher Data
+Platform_Web_Service -> Consumer_UI : Display Publisher Profile
+
+== Profile Display includes Packages ==
+
+Platform_Web_Service -> Database : Query Packages by Publisher (ID)
+Database -> Platform_Web_Service : Return Packages List
+Platform_Web_Service -> Consumer_UI : Display Packages on Profile
+Consumer_UI -> Consumer : Show Publisher Profile and Packages
+
+@enduml
+```
+
+This diagram provides a high-level sequence of interactions and assumes a typical web application architecture with a frontend ("Consumer UI"), a backend web service ("Platform Web Service"), and a database ("Database"). The process starts when the Consumer navigates to the publisher's list or search page, follows through their selection of a specific publisher's profile to view, and concludes with the display of the selected publisher's profile, including the data packages they have available. This visualization aims to highlight the flow and system components involved in fulfilling the Consumer's request within the Data Registry and Publishing Platform.
+
+Please adjust the diagram as necessary to fit specific implementation details or software stack of the project.

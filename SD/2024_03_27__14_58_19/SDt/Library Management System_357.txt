@@ -1,0 +1,41 @@
+@startuml
+actor StaffMember as Staff
+participant "Web Interface" as WebUI
+participant "Library Management Server" as Server
+database "Library Database" as DB
+
+Staff -> WebUI: Access book management page
+activate WebUI
+
+WebUI -> Server: Request book details form
+activate Server
+
+Server -> DB: Fetch latest book data
+activate DB
+DB --> Server: Book data
+deactivate DB
+
+Server --> WebUI: Display book details form with data
+deactivate Server
+
+WebUI --> Staff: Show book details form
+deactivate WebUI
+
+Staff -> WebUI: Enter/Update unique ID for book
+activate WebUI
+
+WebUI -> Server: Submit updated book information
+activate Server
+
+Server -> DB: Update book record with new unique ID
+activate DB
+DB --> Server: Confirm record update
+deactivate DB
+
+Server --> WebUI: Confirm update success
+deactivate Server
+
+WebUI --> Staff: Display update confirmation
+deactivate WebUI
+
+@enduml

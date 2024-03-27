@@ -1,0 +1,44 @@
+@startuml
+actor FacultyMember as "Faculty Member"
+participant "Authentication System" as Auth
+participant "Repository UI" as UI
+participant "Content Management System" as CMS
+participant "Database" as DB
+
+== Authentication Phase ==
+FacultyMember -> Auth: Access Repository
+Auth -> Auth: Validate Credentials
+Auth --> FacultyMember: Access Granted
+
+== Data Upload Phase ==
+FacultyMember -> UI: Select 'Upload Data'
+UI -> CMS: Show Upload Form
+FacultyMember -> CMS: Submit Data and Metadata
+CMS -> DB: Save Data
+DB --> CMS: Confirm Data Saved
+CMS --> FacultyMember: Data Upload Successful
+
+== Publication Upload Phase ==
+FacultyMember -> UI: Select 'Associate with Publication'
+UI -> CMS: Show Publication Form
+FacultyMember -> CMS: Submit Publication Details\n(Title, DOI, etc.)
+CMS -> DB: Check if Publication Exists
+alt Publication Not Found
+    DB -> CMS: Prompt to Create New Publication Entry
+    FacultyMember -> CMS: Provides Full Publication Details
+    CMS -> DB: Create New Publication Entry
+else Publication Found
+    CMS -> DB: Retrieve Publication Details
+end
+
+== Association Phase ==
+CMS -> DB: Associate Uploaded Data with Publication
+DB --> CMS: Association Successful
+CMS --> FacultyMember: Data Successfully Associated with Publication
+
+== Attribution Update ==
+CMS -> DB: Update Attribution for Data and Publication
+DB --> CMS: Attribution Updated
+CMS --> FacultyMember: Confirmation of Attribution
+
+@enduml

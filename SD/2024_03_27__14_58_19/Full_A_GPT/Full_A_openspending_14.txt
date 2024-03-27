@@ -1,0 +1,34 @@
+To create a detailed sequence diagram for the specified user story using PlantUML, the diagram would visualize the interactions between the Data Publishing User and the Platform System, including how the Platform Administrator is involved in the process of adding additional GeoJSON sources for enhancing map-based visualizations. Below is a PlantUML code snippet that represents this sequence of events.
+
+```plantuml
+@startuml
+participant "Data Publishing User" as User
+participant "OpenSpending Platform" as Platform
+participant "Platform Administrator" as Admin
+
+User -> Platform : Submit request to add GeoJSON source
+activate Platform
+Platform -> Platform : Validate request content
+Platform -> Admin : Notify of GeoJSON addition request
+deactivate Platform
+activate Admin
+Admin --> Platform : Review GeoJSON source
+activate Platform
+Platform -> Platform : Verify GeoJSON integrity and compatibility
+alt GeoJSON source is valid
+    Platform --> User : Notify GeoJSON source approval
+    Platform -> Platform : Integrate GeoJSON source with dataset
+else GeoJSON source is invalid
+    Platform --> User : Notify GeoJSON source rejection\nProvide reason
+end
+deactivate Platform
+deactivate Admin
+User -> Platform : Validate integration on map-based visualization
+Platform -> Platform : Render visualization with new GeoJSON source
+Platform --> User : Display updated map-based visualization
+@enduml
+```
+
+For this scenario, the sequence begins with the Data Publishing User submitting a request to the OpenSpending Platform to add an additional GeoJSON source to improve map-based visualizations of their data. The platform then validates the request and notifies the Platform Administrator. The administrator reviews the GeoJSON source for its integrity and compatibility. If the GeoJSON source is valid, the platform integrates it with the dataset and notifies the user of approval. If invalid, the user is notified of the rejection and provided with a reason. Finally, the user validates the integration through the updated map-based visualization on the platform.
+
+Please note, for this to render, you will need a PlantUML environment or an online PlantUML editor.

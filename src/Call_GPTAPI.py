@@ -8,7 +8,8 @@ import os
 Number_of_SDs = 100
 
 # Number_of_SDs += 1
-Engine_model = "gpt-4"
+# Engine_model = "gpt-4"
+Engine_model = "gpt-4-0125-preview"
 
 # Specify the paths for the original and copy CSV files
 original_filename = "data/All_US.csv"
@@ -60,7 +61,7 @@ def read_project_descriptions(directory):
 
   return project_descriptions
 
-project_dir = "data/Project_Descriptions/GPT4"
+project_dir = "data/Project_Descriptions/GPT4-Turbo"
 descriptions = read_project_descriptions(project_dir)
 
 # # Access project descriptions

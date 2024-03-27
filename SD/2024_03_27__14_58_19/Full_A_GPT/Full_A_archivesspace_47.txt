@@ -1,0 +1,58 @@
+Below is a detailed sequence diagram in PlantUML format for the user story: As a Repository Manager, I want to create, update, and delete any records in my repository. This diagram illustrates the interactions between the Repository Manager (user), the User Interface (UI), the Controller, and the Database within the Comprehensive Archival Management System (CAMS).
+
+```plantuml
+@startuml
+actor "Repository Manager" as RM
+participant "UI: Archival Management" as UI
+participant "Controller: Record Management" as Controller
+participant "Database: Archival Records" as DB
+
+== Record Creation ==
+RM -> UI : Select "Create Record"
+UI -> Controller : InitiateRecordCreation()
+activate Controller
+Controller -> DB : InsertNewRecord(data)
+activate DB
+DB --> Controller : RecordCreatedSuccess()
+deactivate DB
+Controller --> UI : DisplayRecordCreationSuccess()
+deactivate Controller
+UI --> RM : Show "Record Created Successfully"
+
+== Record Update ==
+RM -> UI : Select "Edit Record"
+UI -> Controller : RequestRecordData(recordId)
+activate Controller
+Controller -> DB : FetchRecord(recordId)
+activate DB
+DB --> Controller : ReturnRecordData()
+deactivate DB
+Controller --> UI : DisplayRecordData()
+deactivate Controller
+RM -> UI : Modify and Submit Updated Data
+UI -> Controller : UpdateRecord(recordId, newData)
+activate Controller
+Controller -> DB : ApplyRecordUpdate(recordId, newData)
+activate DB
+DB --> Controller : RecordUpdateSuccess()
+deactivate DB
+Controller --> UI : DisplayRecordUpdateSuccess()
+deactivate Controller
+UI --> RM : Show "Record Updated Successfully"
+
+== Record Deletion ==
+RM -> UI : Select "Delete Record"
+UI -> Controller : RequestDeleteRecord(recordId)
+activate Controller
+Controller -> DB : DeleteRecordById(recordId)
+activate DB
+DB --> Controller : RecordDeletionSuccess()
+deactivate DB
+Controller --> UI : DisplayRecordDeletionSuccess()
+deactivate Controller
+UI --> RM : Show "Record Deleted Successfully"
+
+@enduml
+```
+
+This sequence diagram represents the process of creating, updating, and deleting records within the archival management system from the perspective of a Repository Manager. The interactions start with the Repository Manager's actions and flow through the system, involving user interface prompts, controller commands to manage the logic, and the database operations necessary to persist changes.

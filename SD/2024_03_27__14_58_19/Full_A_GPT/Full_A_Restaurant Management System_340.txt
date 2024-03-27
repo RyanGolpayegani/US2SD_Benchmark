@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the user story "As an employee, I want to enter notes to orders" involves outlining the interactions between the employee, the user interface, the server-side application, and the database. Below is a PlantUML description to visualize these interactions.
+
+Please note, this script assumes a web application where the sequence begins with the employee interacting with the user interface to add notes to an order and ends with the successful update of the order details in the database.
+
+```plantuml
+@startuml
+actor Employee
+participant "UI: Order Management" as UI
+participant "Server: Order Controller" as Controller
+database "DB: Orders" as DB
+
+activate Employee
+Employee -> UI : select Order to add notes
+activate UI
+UI -> UI : Display Order details
+
+UI -> Controller : request(OrderID, AddNote)
+activate Controller
+Controller -> DB : query(OrderID)
+activate DB
+DB --> Controller : Order details
+deactivate DB
+
+Controller -> Controller : Validate note addition
+Controller -> DB : update(OrderID, Notes)
+activate DB
+DB --> Controller : Update success
+deactivate DB
+
+Controller --> UI : Note addition success
+deactivate Controller
+UI --> Employee : Display success message
+deactivate UI
+deactivate Employee
+
+@enduml
+```
+
+Explanation of Steps:
+1. The **Employee** selects an order to add notes to it through the **User Interface (UI)** designed for order management. The UI displays details of the selected order.
+2. The UI sends a request to the server-side **Order Controller** to add notes to the specified order, identified by its `OrderID`.
+3. The **Order Controller** queries the **Database (DB)** for the specified order using the `OrderID`.
+4. The Database returns the requested order details to the Order Controller.
+5. The Order Controller validates if the note addition is possible as per business logic (e.g., order status allows note addition).
+6. After validation, the Order Controller updates the order with the new notes in the Database.
+7. The Database confirms the successful update to the Order Controller.
+8. The Order Controller then informs the UI about the successful addition of notes.
+9. The UI displays a success message to the Employee about the addition of notes to the order.
+
+This sequence diagram outlines a basic flow but can be expanded based on specific requirements, such as handling errors, authorization checks, or more detailed interactions.

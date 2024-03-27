@@ -1,0 +1,42 @@
+To create a sequence diagram for the user story "As a library manager, I want to create a book record so that I can add new books to the library," here's the PlantUML code that outlines the process flow from the library manager initiating a request to add a new book to the system, through the system verifying details and updating the database, to finally acknowledging the successful addition of the book. 
+
+```plantuml
+@startuml
+!theme plain
+
+participant Manager as M
+participant "UI Interface" as UI
+participant "Verification Module" as VM
+participant "Database" as DB
+
+M -> UI : Select "Add New Book"
+UI -> M : Display Add Book Form
+M -> UI : Input Book Details\n(Title, Author, ISBN, etc.)
+UI -> VM : Verify Book Details
+alt Verification Successful
+    VM -> UI : Verification Successful
+    M -> UI : Confirm Book Addition
+    UI -> DB : Add New Book Record
+    DB -> UI : Acknowledge Record Addition
+    UI -> M : Display Success Message
+else Verification Failed
+    VM -> UI : Error in Details
+    UI -> M : Display Error Message\n(Request Correct Details)
+end
+
+@enduml
+```
+
+### Explanation:
+1. **Manager to UI Interface**: The library manager (M) initiates the process by selecting the option to add a new book through the User Interface (UI).
+2. **UI Interface to Manager**: The UI then displays a form for adding a new book to the manager.
+3. **Manager Inputs Book Details**: The manager fills in the book details such as Title, Author, ISBN, and other relevant information and submits this information through the UI.
+4. **UI to Verification Module**: The UI passes the book details to the Verification Module (VM) to verify the completeness and correctness of the book details.
+5. **Verification Outcome**: 
+   - If the verification is successful, the VM signals back to the UI that the book details are verified.
+     - The manager confirms the book addition, and the UI sends a request to the Database (DB) to add the new book record.
+     - The Database acknowledges the addition of the new record to the UI, which in turn displays a success message to the manager.
+   - If the verification fails (e.g., missing or incorrect details), the VM sends an error message back to the UI, which informs the manager of the need to correct the details.
+     - The process loops back to the manager inputting corrected book details.
+
+This sequence diagram abstractly represents the flow of actions involved in adding a new book to the library's catalog by a library manager using the Comprehensive Library Management System (CLMS).

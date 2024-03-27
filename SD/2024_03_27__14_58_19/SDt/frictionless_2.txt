@@ -1,0 +1,33 @@
+@startuml
+
+participant Researcher
+participant "DPIE Web Interface" as WebInterface
+participant "DPIE API" as API
+participant "Data Package Repository" as Repo
+participant "Julia Environment" as Julia
+
+Researcher -> WebInterface : Search for desired Data Package
+WebInterface -> API : Request available Data Packages
+API -> Repo : Query Data Packages
+Repo -> API : Return query results
+API -> WebInterface : Display Data Packages
+Researcher -> WebInterface : Select and request Data Package
+WebInterface -> API : Request selected Data Package details
+API -> Repo : Fetch Data Package details
+Repo -> API : Return Data Package details
+API -> WebInterface : Display Data Package details and download option
+Researcher -> WebInterface : Initiate Data Package download
+
+alt Download and integrate into Julia
+    WebInterface -> Researcher : Download Data Package
+    Researcher -> Julia : Load Data Package into Julia environment
+else Direct integration through DPIE (if available)
+    WebInterface -> API : Request integration with Julia
+    API -> Julia : Deploy Data Package directly to Julia environment
+    Julia -> Researcher : Confirm Data Package ready
+end
+
+Julia -> Researcher : Data Package loaded successfully
+Researcher -> Julia : Begin analysis and visualization
+
+@enduml

@@ -1,0 +1,54 @@
+Given the complexity of the project and the specific user story, a detailed sequence diagram in PlantUML format for upgrading a dataset type by a plugin developer would involve several key components and interactions. The diagram will illustrate the steps starting from deploying a new version of the plugin to updating the dataset type and instance, and finally, updating the pipeline.
+
+Please note, PlantUML code can become quite complex for detailed scenarios; simplicity aids understanding while ensuring crucial elements are represented. Here's a simplified sequence diagram capturing the essential steps:
+
+```plantuml
+@startuml
+
+participant PluginDeveloper as PD
+participant VersionControlSystem as VCS
+participant DeploymentManager as DM
+participant DatasetTypeRegistry as DTR
+participant ApplicationEcosystem as AE
+participant PipelineManager as PM
+
+== Plugin Update ==
+PD -> VCS : Commit new plugin version
+VCS -> DM : Trigger plugin deployment
+
+== Dataset Type Upgrading ==
+DM -> DTR : Check for dataset type changes
+DTR --> DM : Dataset type upgrade needed
+DM -> DTR : Deploy updated dataset type
+
+== Dataset Instance Updating ==
+DM -> AE : Identify affected dataset instances
+AE --> DM : List of instances for upgrade
+loop for each dataset instance
+    DM -> AE : Update dataset instance version
+end
+
+== Pipeline Update ==
+DM -> PM : Notify pipeline of dataset type version change
+PM -> AE : Update pipeline configuration
+AE --> PM : Pipeline updated to new dataset version
+
+== Completion ==
+DM --> PD : Deployment and updates successful
+
+@enduml
+```
+
+Explanation:
+
+1. **Plugin Update**: The process begins with the plugin developer committing the new version of their plugin to the version control system, which then triggers the plugin deployment process.
+
+2. **Dataset Type Upgrading**: The deployment manager checks if there are changes to the dataset type associated with the plugin. If an upgrade is needed, the updated dataset type is deployed.
+
+3. **Dataset Instance Updating**: The application ecosystem identifies dataset instances created by the affected plugin that need to be updated to the new dataset type version. Each identified instance is then updated.
+
+4. **Pipeline Update**: With the dataset type and instances updated, the pipeline manager is informed to update the pipeline configuration to reflect the new dataset type version, ensuring compatibility and data integrity.
+
+5. **Completion**: Finally, the deployment manager notifies the plugin developer that the deployment and updates are successful.
+
+This sequence diagram represents a high-level view of the process. Real implementations may involve more detailed steps, especially around error handling and rollback mechanisms, dynamic loading of dataset type implementations, and more nuanced interactions for data integrity checks and version compatibility validations.

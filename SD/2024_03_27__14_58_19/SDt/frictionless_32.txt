@@ -1,0 +1,22 @@
+@startuml
+participant Developer
+participant "DPIE System" as DPIE
+participant "DSpace API" as DSpace
+
+Developer -> DPIE : Select DataPackage \nfor Integration
+activate DPIE
+
+DPIE -> DPIE : Validate DataPackage
+DPIE -> DPIE : Process DataPackage \n(Conversion/Mapping)
+
+DPIE -> DSpace : Authenticate with DSpace
+activate DSpace
+DSpace --> DPIE : Authentication Success
+
+DPIE -> DSpace : Push DataPackage \nto DSpace
+DSpace --> DPIE : Confirm Integration
+deactivate DSpace
+
+DPIE --> Developer : Integration Successful
+deactivate DPIE
+@enduml

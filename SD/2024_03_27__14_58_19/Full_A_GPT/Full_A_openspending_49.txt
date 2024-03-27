@@ -1,0 +1,27 @@
+To generate a detailed Sequence Diagram for the described user story using PlantUML syntax, we focus on the interactions necessary for a Data Consuming User to search for datasets by their title and metadata. Below is a simple outline to help visualize this process:
+
+```plantuml
+@startuml
+participant User
+participant SearchInterface
+participant Database
+participant Dataset
+
+User -> SearchInterface : Enter search query (title/metadata)
+SearchInterface -> Database : Query datasets with search parameters
+Database -> SearchInterface : Return matching dataset references
+SearchInterface -> Dataset : Request details for top matching datasets
+Dataset --> SearchInterface : Send dataset details (title, metadata)
+SearchInterface --> User : Display search results with dataset titles and metadata
+
+@enduml
+```
+Explanation of the Diagram:
+1. **User**: This represents the Data Consuming User who wants to search for datasets.
+2. **SearchInterface**: This acts as the intermediary that the user interacts with, typically a web-based GUI where the user can type their search queries.
+3. **Database**: Represents the backend storage where datasets' details, titles, and metadata are kept. This could be a relational database or a NoSQL database, depending on how OpenSpending is architected.
+4. **Dataset**: Symbolizes the actual datasets within the system. Once the top matches are found, detailed information about these datasets (titles and metadata) is fetched and sent back to the interface.
+
+The sequence starts with the user entering their search criteria (step 1), which could be specific terms they're looking for in the dataset titles or metadata. These search parameters are sent to the interface, which then queries the database (step 2) to find matching datasets. Once the references to these datasets are returned (step 3), the interface requests detailed information for a subset of the top matching datasets (step 4). The requested details are then sent back to the interface (step 5), and subsequently displayed to the user (step 6). 
+
+This sequence diagram outlines the basic interactions needed to achieve the functionality described in your user story, with emphasis on how the system components interact with each other rather than specific implementation details.

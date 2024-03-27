@@ -1,0 +1,25 @@
+@startuml
+participant Owner
+participant USAspendingAPI as API
+participant ValidationService as Validator
+participant DataProcessingService as Processor
+participant Database as DB
+participant OwnerSystem as System
+
+Owner -> API : Request grant records
+API -> Validator : Validate request
+alt Validate Criteria
+    Validator -> Validator : Verify request type
+else Invalid Request
+    Validator -> API : Error response
+    API -> Owner : Error (Invalid request type)
+    deactivate Validator
+end
+
+Validator -> Processor : Process grant record request
+Processor -> DB : Query grant records
+DB -> Processor : Return grant records
+Processor -> API : Send validated grant records
+API -> System : Transmit grant records
+System -> Owner : Confirm receipt
+@enduml

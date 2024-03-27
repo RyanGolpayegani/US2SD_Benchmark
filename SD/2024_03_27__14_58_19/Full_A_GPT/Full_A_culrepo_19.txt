@@ -1,0 +1,38 @@
+Creating a detailed sequence diagram for the described user story involves illustrating the various interactions between a library staff member and the digital repository system components to access usage statistics and altmetrics. Below is the PlantUML code to represent these interactions.
+
+```plantuml
+@startuml
+actor "Library Staff" as staff
+participant "Web Interface" as web
+participant "Authentication Service" as auth
+participant "Statistics Module" as stats
+participant "Database" as db
+participant "Altmetrics Service" as altmetrics
+
+staff -> web : Access Statistics Page
+web -> auth : Validate Access
+auth -> web : Access Granted
+
+group Retrieve Usage Statistics
+    web -> stats : Request Statistics (repo, collection, author, item)
+    stats -> db : Query Usage Data
+    db -> stats : Return Usage Data
+    stats -> web : Display Statistics
+end
+
+group Retrieve Altmetrics
+    web -> altmetrics : Request Altmetrics (author, item)
+    altmetrics -> db : Query Altmetrics Data
+    db -> altmetrics : Return Altmetrics Data
+    altmetrics -> web : Display Altmetrics
+end
+
+staff <- web : View Statistics and Altmetrics
+@enduml
+```
+
+This sequence diagram starts with the library staff member accessing the statistics page via a web interface. The web interface then interacts with an authentication service to validate the access of the library staff. Once access is granted, the web interface requests usage statistics and altmetrics for specific repositories, collections, authors, or items.
+
+The statistics module queries the database for usage data and returns this data to be displayed on the web interface. Similarly, for altmetrics, the web interface requests data from an altmetrics service, which in turn retrieves altmetrics data from the database. The database returns the requested altmetrics data, which gets displayed on the web interface. Finally, the library staff views the comprehensive usage statistics and altmetrics.
+
+This diagram simplifies the complex interactions into a manageable visualization, focusing on the core processes related to the user story.

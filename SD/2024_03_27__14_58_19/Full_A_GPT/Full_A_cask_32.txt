@@ -1,0 +1,38 @@
+Given the complexity of the described system and the specific user story, I'll provide a basic PlantUML sequence diagram that corresponds to the described scenario. This will demonstrate how a plugin developer might interact with the system to use a custom dataset type. This diagram assumes a simplified version of the interactions and the existence of certain components like a Dataset Management Service, App Management Service, and Plugin System within the ecosystem.
+
+Please note, to make this diagram work, ensure you have PlantUML installed or use an online PlantUML editor.
+
+```plantuml
+@startuml
+participant PluginDeveloper
+participant PluginSystem
+participant DatasetManagementService
+participant AppManagementService
+
+PluginDeveloper -> PluginSystem : Request to use custom dataset type
+PluginSystem -> DatasetManagementService : Query available dataset types
+DatasetManagementService -> DatasetManagementService : Fetch dataset types with versioning
+DatasetManagementService --> PluginSystem : Return list of dataset types
+
+PluginSystem -> PluginDeveloper : Show available custom dataset types
+PluginDeveloper -> PluginSystem : Selects desired dataset type and version
+
+PluginSystem -> DatasetManagementService : Request dataset type details\n(Selected one)
+DatasetManagementService -> AppManagementService : Check if dataset type is part of an app
+AppManagementService --> DatasetManagementService : Return app details (if any)
+DatasetManagementService --> PluginSystem : Provide dataset type details\n(Including app association)
+
+PluginSystem -> PluginDeveloper : Display dataset type details\n(and associated app info if applicable)
+PluginDeveloper -> PluginSystem : Confirm use of dataset type in plugin
+PluginSystem -> DatasetManagementService : Register plugin usage of dataset type
+DatasetManagementService -> DatasetManagementService : Update dataset type usage records
+
+DatasetManagementService --> PluginSystem : Confirm dataset type availability for plugin
+PluginSystem --> PluginDeveloper : Notify successful inclusion of dataset type in plugin
+
+@enduml
+```
+
+This sequence diagram outlines the steps undertaken by a plugin developer to use a custom dataset type within their plugin, including interactions with the Plugin System and Dataset Management Service, potentially involving checks with an App Management Service if the dataset type is part of an existing app. The diagram demonstrates the flow from the plugin developer's request down to the confirmation of the dataset type's successful inclusion in their plugin, along with necessary checks for app associations and version details.
+
+Keep in mind, this is a simplified schematic intended to illustrate a possible interaction flow based on the project description you provided. Real-world implementations could have more complex interactions and additional components or services.

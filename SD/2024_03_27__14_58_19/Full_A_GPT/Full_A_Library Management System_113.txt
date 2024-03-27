@@ -1,0 +1,41 @@
+To illustrate the sequence of events for assigning a unique identification number (ID) to a book from the perspective of a library manager in the Comprehensive Library Management System (CLMS), the following PlantUML code provides a detailed sequence diagram:
+
+```plantuml
+@startuml
+participant LibraryManager as LM
+participant WebInterface as WI
+participant Server as S
+participant Database as DB
+
+LM -> WI : Accesses Book Management
+activate WI
+WI -> S : Request Book Assignment Form
+activate S
+S -> DB : Fetch Next Unique ID
+activate DB
+DB --> S : Unique ID
+deactivate DB
+S --> WI : Display Form with Unique ID
+deactivate S
+WI --> LM : Show Form
+deactivate WI
+
+LM -> WI : Submits New Book Details
+activate WI
+WI -> S : Send New Book Data with ID
+activate S
+S -> DB : Store New Book Information
+activate DB
+DB --> S : Confirmation
+deactivate DB
+S --> WI : Assignment Success
+deactivate S
+WI --> LM : Display Success Message
+deactivate WI
+
+@enduml
+```
+
+This sequence diagram starts with the library manager accessing the book management section through the web interface. The server then requests the next available unique ID from the database, which is then used to pre-fill the new book assignment form that is displayed to the library manager. Once the library manager submits the new book details, the information, including the unique ID, is sent back to the server to be stored in the database. A confirmation of successful assignment is then relayed back to the manager.
+
+Please note, to render this diagram, you'll need a PlantUML environment or a compatible tool that supports PlantUML code.

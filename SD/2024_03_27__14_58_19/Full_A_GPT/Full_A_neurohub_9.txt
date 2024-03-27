@@ -1,0 +1,34 @@
+To create a detailed sequence diagram in PlantUML format for the user story "As a researcher, I want to create a log book page for an experiment and attach a file to this website," we will outline the interaction between the researcher, the Neurohub system, and possibly external systems involved in handling the file attachment. This diagram demonstrates the steps from initiating the log book page creation to attaching a file to this page.
+
+Please note, this diagram is a simplified representation and assumes direct interactions, even though some steps might involve more complex processes (such as authentication, error handling, etc.) that are not explicitly shown for clarity.
+
+```plantuml
+@startuml
+participant Researcher
+participant UI as "User Interface"
+participant Server as "Neurohub Server"
+participant Database as "Database"
+participant FileSystem as "File System"
+
+Researcher -> UI: Selects 'Create Log Book Page'
+UI -> Server: Request to create new logbook page
+Server -> Database: Create new logbook entry
+Database -> Server: Confirm creation
+Server -> UI: Display new logbook page editor
+Researcher -> UI: Inputs experiment details
+Researcher -> UI: Selects 'Attach File'
+UI -> Researcher: Opens file browser
+Researcher -> UI: Selects file to upload
+UI -> Server: Upload file request
+Server -> FileSystem: Saves file
+FileSystem -> Server: Confirm save
+Server -> Database: Update logbook entry with file metadata
+Database -> Server: Confirm update
+Server -> UI: Confirm file attached
+UI -> Researcher: Display updated logbook page with attachment
+@enduml
+```
+
+This sequence diagram represents the flow from a researcher deciding to create a new log book page for an experiment, attaching a file to it, and the system's response at each action. It involves interactions with the user interface of Neurohub, backend server processing, database transactions for storing the logbook and file metadata, and finally, the file system where the actual file is stored.
+
+Remember, the details of interactions (like authentication or error handling) and more complex system integrations (for instance, with external data repositories or advanced file management) are simplified. Depending on the project's specifications, additional steps or actors (like external services for file scanning or metadata extraction) might be necessary for a comprehensive depiction.

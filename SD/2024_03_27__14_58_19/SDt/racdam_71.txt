@@ -1,0 +1,48 @@
+@startuml
+actor Researcher as researcher
+participant "Search Interface" as searchInterface
+participant "Database" as database
+participant "Citation Generator" as citationGenerator
+participant "Collections API" as collectionsAPI
+participant "Digital Archive" as digitalArchive
+
+researcher -> searchInterface: Enter search criteria\n(including desired citation info)
+activate searchInterface
+
+searchInterface -> database: Query based on criteria
+activate database
+
+database -> collectionsAPI: Fetch relevant collections
+activate collectionsAPI
+
+collectionsAPI -> digitalArchive: Retrieve detailed collection data
+activate digitalArchive
+
+digitalArchive --> collectionsAPI: Return collection data
+deactivate digitalArchive
+
+collectionsAPI --> database: Provide aggregated data
+deactivate collectionsAPI
+
+database --> searchInterface: Return search results with basic citation info
+deactivate database
+
+searchInterface --> researcher: Display search results
+researcher -> searchInterface: Select specific item for detailed citation
+
+searchInterface -> citationGenerator: Request detailed citation
+activate citationGenerator
+
+citationGenerator -> digitalArchive: Access complete item data
+activate digitalArchive
+
+digitalArchive --> citationGenerator: Return item data
+deactivate digitalArchive
+
+citationGenerator --> searchInterface: Provide detailed citation info
+deactivate citationGenerator
+
+searchInterface --> researcher: Display detailed citation info
+deactivate searchInterface
+
+@enduml

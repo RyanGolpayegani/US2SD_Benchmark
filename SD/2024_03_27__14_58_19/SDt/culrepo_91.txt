@@ -1,0 +1,26 @@
+@startuml
+!theme cerulean
+
+actor "DB/IR Administrator" as admin
+participant "Admin Interface" as adminInterface
+database "Repository System" as repoSystem
+participant "Calendar System" as calendarSystem
+participant "Notification Service" as notifService
+participant "Patron Interface" as patronInterface
+
+admin -> adminInterface : Access Admin Panel
+adminInterface -> repoSystem : Request Future Release Items
+repoSystem -> adminInterface : Return Future Release Items
+admin -> adminInterface : Select Item to Schedule
+admin -> adminInterface : Specify Release Date
+adminInterface -> repoSystem : Update Item with Release Date
+repoSystem -> calendarSystem : Add Release Date to Calendar
+calendarSystem --> repoSystem : Confirm Addition
+repoSystem -> notifService : Trigger Notification Setup
+notifService -> patronInterface : Schedule Notification for Patrons
+
+note over notifService : Notifications scheduled for\nrelease date to inform patrons.
+
+adminInterface --> admin : Confirm Scheduled Date & Notification
+
+@enduml

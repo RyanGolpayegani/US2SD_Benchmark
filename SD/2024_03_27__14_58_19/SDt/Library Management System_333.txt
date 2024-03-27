@@ -1,0 +1,44 @@
+@startuml
+participant "StaffUser" as Staff
+participant "LibrarySystem" as System
+participant "ReservationSystem" as Reservation
+participant "BookManagement" as Book
+database "Database" as DB
+
+Staff -> System: Request checkout interface
+activate System
+System --> Staff: Provide checkout interface
+
+Staff -> System: Submit checkout form (BookID, UserID)
+activate System
+
+System -> Reservation: Verify reservation status(BookID, UserID)
+activate Reservation
+Reservation -> DB: Check reservation(BookID, UserID)
+activate DB
+DB --> Reservation: Reservation confirmed
+deactivate DB
+Reservation --> System: Reservation valid
+deactivate Reservation
+
+System -> Book: Process checkout(BookID, UserID)
+activate Book
+Book -> DB: Update book status (checked out)
+activate DB
+DB --> Book: Update successful
+deactivate DB
+Book --> System: Checkout processed
+deactivate Book
+
+System -> Reservation: Update reservation status (completed)
+activate Reservation
+Reservation -> DB: Mark reservation as completed(BookID, UserID)
+activate DB
+DB --> Reservation: Update successful
+deactivate DB
+Reservation --> System: Reservation updated
+deactivate Reservation
+
+System --> Staff: Display checkout confirmation
+deactivate System
+@enduml

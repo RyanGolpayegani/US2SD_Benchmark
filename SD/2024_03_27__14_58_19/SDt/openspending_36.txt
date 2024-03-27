@@ -1,0 +1,19 @@
+@startuml
+participant User
+participant "API Gateway" as API
+participant "Data Processing Module" as Processing
+participant "GDP Data Service" as GDPService
+participant "Normalization Engine" as Normalize
+participant Database
+
+User -> API: Request Data with GDP Normalization
+API -> Processing: Parse Request
+Processing -> GDPService: Fetch GDP Data
+GDPService -> Processing: Return GDP Data
+Processing -> Normalize: Initiate Normalization
+Normalize -> Database: Fetch Target Dataset
+Database -> Normalize: Return Dataset
+Normalize -> Normalize: Calculate Normalized Measures by GDP
+Normalize -> API: Return Normalized Data
+API -> User: Display Data with Measures Normalized by GDP
+@enduml

@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the user story provided requires understanding of interactions between system actors (e.g., Supervisor, Database, User Interface, Authentication Service) and system components (e.g., Logging Service, Data Retrieval System) in the context of the Neurohub Enhancement and Automation Project. Below is a PlantUML representation to showcase these interactions.
+
+```plantuml
+@startuml
+actor Supervisor
+participant "User Interface" as UI
+participant "Authentication Service" as Auth
+participant "Logging Service" as Logs
+participant "Data Retrieval System" as DataRetrieval
+database "Neurohub Database" as DB
+
+Supervisor -> UI: Accesses Neurohub
+UI -> Auth: Request for Authentication
+Auth -> Supervisor: Authentication Successful
+
+Supervisor -> UI: Requests researchers' activities for a period
+UI -> Logs: Query logs by date/period
+Logs -> DB: Retrieve log entries
+DB -> Logs: Log data
+Logs -> DataRetrieval: Parse logs for researcher activities
+DataRetrieval -> DB: Fetch supplemental data (if needed)
+DB -> DataRetrieval: Supplemental data
+DataRetrieval -> UI: Formatted activity report
+UI -> Supervisor: Display activity report
+
+@enduml
+```
+
+### Explanation:
+- **Supervisor** starts the process by accessing the Neurohub platform, signifying the user's intent to view researchers' activities.
+- The **User Interface (UI)** acts as the front-end component through which the supervisor interacts with the system.
+- The **Authentication Service** is responsible for verifying the identity of the supervisor, ensuring that only authorized personnel can access sensitive data.
+- Once authenticated, the supervisor requests to view researchers' activities within a specified date or period via the UI.
+- The UI forwards this request to the **Logging Service**, which is tasked with querying the logs stored in the **Neurohub Database** for the requested timeframe.
+- The database returns the log data to the Logging Service, which might include information about researcher logins, data uploads, data modification, etc.
+- The Logging Service then sends this data to the **Data Retrieval System**, which may need to fetch additional, related information from the database.
+- The Data Retrieval System formats this information into a comprehensive activity report.
+- Finally, the UI presents this report to the supervisor, completing the interaction.
+
+Please note, this PlantUML sequence diagram is simplified and conceptual. In real implementations, additional steps, such as error handling, permission checks, and further data processing, might be required. Also, depending on the actual architecture of the Neurohub system, the component names and responsibilities may vary.
