@@ -7,14 +7,14 @@ This repositry includes all of the files associated with US2SD Benchmark which i
 1. ### Experiment with 100 Random USs prompt as follows:
 
    1. US only (0) `DONE`
-   <br>Prj desc + USs (Few -> DSP)
+      <br>Prj desc + USs (Few -> DSP)
    2. BART `DONE`
    3. BERTSUM `DONE`
    4. Pegasus `DONE`
    5. Roberta `DONE`
    6. T5 `DONE`
    7. GPT4 `DONE`
-   8. GPT4 Turbo
+   8. GPT4 Turbo `DONE`
    9. Gemini?
 
 2. Add `Gemini` script --> Gemini API key needed
@@ -47,7 +47,6 @@ pip install -r requirements
 python src/US_to_CSV.py
 ```
 
-
 1. Run `src/Call_GPTAPI.py` this script reads User Stories from the csv file which is created in the previous step and prompts them to ChatGPT 4 you can change the engine model in the script. The outputs of this script are the textual sequence diagram which are stored in `SD/SDT` folder and full answer of ChatGPT which is stored in `SD/Full_A_GPT`. You can run this script with the following command:
 
 ```
@@ -55,14 +54,12 @@ python src/Call_GPTAPI.py
 
 ```
 
-
 7. Run `src/Call_PUML_API.py` this script sends the textual sequence diagrams to PlantUML Web Server [PlantUML Web Server](https://plantuml.com/sequence-diagram) using its API. The output of this script is visualized sequence diagrams in ".png" format which are stored in `SD/SDi` folder. You can run this script with the following command:
 
 ```
 python src/Call_PUML_API.py
 
 ```
-
 
 ## Acknowledgment
 
