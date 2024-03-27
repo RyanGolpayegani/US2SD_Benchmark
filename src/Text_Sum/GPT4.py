@@ -4,7 +4,7 @@ import os
 from tqdm import tqdm
 
 # Number_of_SDs += 1
-Engine_model = "gpt-4"
+Engine_model = "gpt-4-0125-preview"
 
 # Specify the paths for the original and copy CSV files
 CSV_file = "data/All_US.csv"
@@ -20,7 +20,8 @@ project_names = All_Data['Project Name'].unique()
 for project in tqdm(project_names):
     combined_string = All_Data.loc[All_Data['Project Name'] == project, 'User Story'].str.cat(sep=', ')
     # Generate a response
-    prompt = "Write a project description based on the following text:\n" + combined_string
+    prompt = "Write a project description based on the \
+        following text:\n" + combined_string
     # print(project)
 
     # Call GPT API
@@ -38,8 +39,8 @@ for project in tqdm(project_names):
     
 
     # Create the destination folder if it doesn't exist
-    Full_A_Folder_Project_Descriptions_dir = "data/Project_Descriptions/GPT4" 
-    Full_A_File_Project_Descriptions_dir = f"data/Project_Descriptions/GPT4/{project}.txt" 
+    Full_A_Folder_Project_Descriptions_dir = "data/Project_Descriptions/GPT4-Turbo" 
+    Full_A_File_Project_Descriptions_dir = f"data/Project_Descriptions/GPT4-Turbo/{project}.txt" 
 
     # Full_A_Folder_Project_Descriptions_dir = "data/Project_Descriptions/GPT4" 
     # File_Project_Descriptions_dir = f"data/Project_Descriptions/GPT4/{project}.txt" 
