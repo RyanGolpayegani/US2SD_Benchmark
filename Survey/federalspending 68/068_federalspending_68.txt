@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+
+participant "FABS User" as User
+participant "Submission Interface" as Interface
+participant "Validation Service" as Validator
+participant "Error Handling System" as ErrorHandler
+participant "Feedback Mechanism" as Feedback
+
+User -> Interface : Submit Data
+activate Interface
+
+Interface -> Validator : Validate Submission
+activate Validator
+
+alt Valid Data
+    Validator -> Interface : Validation Success
+    deactivate Validator
+
+    Interface -> User : Success Message
+    deactivate Interface
+else Invalid Data
+    Validator -> ErrorHandler : Report Errors
+    activate ErrorHandler
+    ErrorHandler -> Validator : Error Details
+    
+    Validator -> Interface : Validation Fail + Error Details
+    deactivate Validator
+
+    Interface -> Feedback : Format Error Messages
+    activate Feedback
+    Feedback -> Interface : Formatted Error Messages
+    
+    Interface -> User : Error Messages
+    deactivate Interface
+    deactivate Feedback
+end
+
+deactivate User
+
+@enduml

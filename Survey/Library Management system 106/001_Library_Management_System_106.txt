@@ -1,0 +1,19 @@
+@startuml
+title "Update Book Information Pages"
+
+actor "Librarian" as librarian 
+box "Library System" 
+participant "Authentication" as auth
+participant "Database" as db
+end box
+
+librarian -> auth: validates_identity()
+auth -> librarian: return validation_status
+alt validation_status == success
+librarian -> db: update_book_info_request()
+db -> librarian: return update_response
+else validation_status == failed
+auth --> librarian: return error_message
+end
+
+@enduml
