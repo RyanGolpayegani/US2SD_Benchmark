@@ -1,0 +1,28 @@
+@startuml
+actor Admin as admin
+participant "Admin Interface" as admin_interface
+participant "Backend Server" as server
+database "Database" as database
+participant "Image Analysis\nService" as analysis_service
+participant "Talk Service" as talk_service
+
+admin -> admin_interface : Request image assessment
+admin_interface -> server : Assess image (image_id)
+server -> database : Fetch image details
+database --> server : Return image details
+server -> analysis_service : Analyze image
+
+alt Image Analysis Available
+    analysis_service --> server : Return analysis data
+    server -> database : Fetch citizen annotations
+    database --> server : Return annotations
+    server -> talk_service : Fetch comments from Talk
+    talk_service --> server : Return comments
+    server -> admin_interface : Aggregate assessment data
+    admin_interface -> admin : Display assessment results
+else No Analysis Data Found
+    server -> admin_interface : Error message
+    admin_interface -> admin : Display error
+end
+
+@enduml
