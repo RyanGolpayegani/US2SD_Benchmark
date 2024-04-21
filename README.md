@@ -4,20 +4,7 @@ This repositry includes all of the files associated with US2SD Benchmark which i
 
 ## To Do:
 
-1. Experiment with 100 Random USs prompt as follows: `DONE`
-
-   1. US only (0) `DONE`
-      <br>Prj desc + USs (Few -> DSP)
-   2. BART `DONE`
-   3. BERTSUM `DONE`
-   4. Pegasus `DONE`
-   5. Roberta `DONE`
-   6. T5 `DONE`
-   7. GPT4 `DONE`
-   8. GPT4 Turbo `DONE`
-
-2. ### Compare and evaluate these 8 variations
-3. Add `Gemini` script --> Gemini API key needed
+2. Compare and evaluate the 8 variations
 
 ## How to use:
 
