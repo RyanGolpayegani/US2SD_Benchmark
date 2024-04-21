@@ -4,7 +4,7 @@ This repositry includes all of the files associated with US2SD Benchmark which i
 
 ## To Do:
 
-2. Compare and evaluate the 8 variations
+Compare and evaluate the 8 variations
 
 ## How to use:
 
