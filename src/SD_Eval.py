@@ -1,8 +1,9 @@
 import os
 import csv
+from tqdm import tqdm
 
 source_dir = "Experiment/US/SDt"
-destination_dir = "Experiment/metrics.csv"
+destination_dir = "Experiment/US/metrics.csv"
 
 def parse_plantuml(text):
   """
@@ -65,38 +66,39 @@ def parse_plantuml(text):
   }
 
 
-for file_name in os.listdir(source_dir):
-   if file_name.endswith(".txt"):
-      file_path = os.path.join(source_dir, file_name)
-      with open(file_path, 'r') as file:
-        plantuml_text = file.read()
+
+
+with open(destination_dir, 'w', newline='') as output_file:
+    # if the output file exists make it empty if it does not exist create an empty file
+    csv_writer = csv.writer(output_file)
+    csv_writer.writerow(['file name', 'lifelines', 'messages', 'nesting_depth', 'cyclomatic_complexity', 'cohesion', 'coupling', 'completeness', 'clarity'])
+
+    for file_name in tqdm(os.listdir(source_dir)):
+        if file_name.endswith(".txt"):
+            file_path = os.path.join(source_dir, file_name)
+        with open(file_path, 'r') as file:
+            plantuml_text = file.read()
          
         metrics = parse_plantuml(plantuml_text)
 
-        with open(destination_dir, 'w', newline='') as output_file:
-            # if the output file exists make it empty if it does not exist create an empty file
-            csv_writer = csv.writer(output_file)
-            file_content_list.append([File_Counter, filename, Line_Counter, Project_Name, line])
-            # print(f"There was {Line_Counter} in {filename}")
-            csv_writer = csv.writer(output_file)
-            csv_writer.writerows(file_content_list)
-        
-
-        print(f"Number of lifelines: {metrics['lifelines']}")
-        print(f"Number of messages: {metrics['messages']}")
-        print(f"nesting_depth: {metrics['nesting_depth']}")
-        print(f"cyclomatic_complexity: {metrics['cyclomatic_complexity']}")
-        print(f"cohesion: {metrics['cohesion']}")
-        print(f"coupling: {metrics['coupling']}")
-        print(f"completeness: {metrics['completeness']}")
-        print(f"clarity: {metrics['clarity']}")
+        csv_writer.writerows([
+            metrics['lifelines'],
+            metrics['messages'],
+            metrics['nesting_depth'],
+            metrics['cyclomatic_complexity'],
+            metrics['cohesion'],
+            metrics['coupling'],
+            metrics['completeness'],
+            metrics['clarity'],
+                                ])
+            
 
 
-
-
-
-
-if not os.path.exists(dir_text_file_name_Selected_USs):
-        os.makedirs(dir_text_file_name_Selected_USs)  
-    with open(text_file_name_Selected_USs, "w") as text_file_Selected_USs:
-        text_file_Selected_USs.write(user_story)
+        # print(f"Number of lifelines: {metrics['lifelines']}")
+        # print(f"Number of messages: {metrics['messages']}")
+        # print(f"nesting_depth: {metrics['nesting_depth']}")
+        # print(f"cyclomatic_complexity: {metrics['cyclomatic_complexity']}")
+        # print(f"cohesion: {metrics['cohesion']}")
+        # print(f"coupling: {metrics['coupling']}")
+        # print(f"completeness: {metrics['completeness']}")
+        # print(f"clarity: {metrics['clarity']}")
