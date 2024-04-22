@@ -2,8 +2,6 @@ import os
 import csv
 from tqdm import tqdm
 
-source_dir = "Experiment/US/SDt"
-destination_dir = "Experiment/US/metrics.csv"
 
 def parse_plantuml(text):
   """
@@ -65,40 +63,59 @@ def parse_plantuml(text):
       "clarity": clarity
   }
 
+parent_folder = "Experiment"
+print(f"Evaluating all SDs in {parent_folder} folder ...")
+for folder in tqdm(os.listdir(parent_folder)):
+  source_dir = f"Experiment/{folder}/SDt"
+  destination_dir = f"Experiment/{folder}/metrics.csv"
+   
 
 
+  with open(destination_dir, 'w', newline='') as output_file:
+      # if the output file exists make it empty if it does not exist create an empty file
+      csv_writer = csv.writer(output_file)
+      csv_writer.writerow([
+        'file name',
+        'lifelines',
+        'messages',
+        'nesting_depth',
+        'cyclomatic_complexity',
+        'cohesion',
+        'coupling',
+        'completeness',
+        'clarity',
+        ])
 
-with open(destination_dir, 'w', newline='') as output_file:
-    # if the output file exists make it empty if it does not exist create an empty file
-    csv_writer = csv.writer(output_file)
-    csv_writer.writerow(['file name', 'lifelines', 'messages', 'nesting_depth', 'cyclomatic_complexity', 'cohesion', 'coupling', 'completeness', 'clarity'])
+      for file_name in os.listdir(source_dir):
+          if file_name.endswith(".txt"):
+              file_path = os.path.join(source_dir, file_name)
+          with open(file_path, 'r') as file:
+              plantuml_text = file.read()
+          
+          metrics = parse_plantuml(plantuml_text)
 
-    for file_name in tqdm(os.listdir(source_dir)):
-        if file_name.endswith(".txt"):
-            file_path = os.path.join(source_dir, file_name)
-        with open(file_path, 'r') as file:
-            plantuml_text = file.read()
-         
-        metrics = parse_plantuml(plantuml_text)
-
-        csv_writer.writerows([
-            metrics['lifelines'],
-            metrics['messages'],
-            metrics['nesting_depth'],
-            metrics['cyclomatic_complexity'],
-            metrics['cohesion'],
-            metrics['coupling'],
-            metrics['completeness'],
-            metrics['clarity'],
-                                ])
-            
+          my_list = [[
+              str(file_name),
+              metrics['lifelines'],
+              metrics['messages'],
+              metrics['nesting_depth'],
+              metrics['cyclomatic_complexity'],
+              metrics['cohesion'],
+              metrics['coupling'],
+              metrics['completeness'],
+              metrics['clarity'],
+              ]]
+          # print(my_list)
+          csv_writer = csv.writer(output_file)
+          csv_writer.writerows(my_list)
+              
 
 
-        # print(f"Number of lifelines: {metrics['lifelines']}")
-        # print(f"Number of messages: {metrics['messages']}")
-        # print(f"nesting_depth: {metrics['nesting_depth']}")
-        # print(f"cyclomatic_complexity: {metrics['cyclomatic_complexity']}")
-        # print(f"cohesion: {metrics['cohesion']}")
-        # print(f"coupling: {metrics['coupling']}")
-        # print(f"completeness: {metrics['completeness']}")
-        # print(f"clarity: {metrics['clarity']}")
+          # print(f"Number of lifelines: {metrics['lifelines']}")
+          # print(f"Number of messages: {metrics['messages']}")
+          # print(f"nesting_depth: {metrics['nesting_depth']}")
+          # print(f"cyclomatic_complexity: {metrics['cyclomatic_complexity']}")
+          # print(f"cohesion: {metrics['cohesion']}")
+          # print(f"coupling: {metrics['coupling']}")
+          # print(f"completeness: {metrics['completeness']}")
+          # print(f"clarity: {metrics['clarity']}")
