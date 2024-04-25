@@ -37,10 +37,10 @@ fig = plt.figure(figsize=(9, 11))
 
 plot = sns.catplot(
     data=df,
-    y="folder name",
-    x="messages",
+    x="folder name",
+    y="messages",
     # hue='cohesion',
-    kind='box',
+    kind='bar',
     palette = 'pastel'
 )
 # palettes: ch:.25, Blues,
@@ -49,7 +49,7 @@ plt.ylabel("Approach")
 plt.xlabel("Messages")
 plt.xticks(rotation=90)
 
-# plt.savefig("../images/1.png", dpi=600, bbox_inches = 'tight')
+plt.savefig("../images/messages3.png", dpi=600, bbox_inches = 'tight')
 
 
 
@@ -164,7 +164,18 @@ plt.ylabel("Coupling")
 plt.xlabel("Approach")
 plt.xticks(rotation=90)
 
-plt.savefig("../images/7.png", dpi=600, bbox_inches = 'tight')
+plt.savefig("../images/7.png",
+            dpi=600,
+            bbox_inches = 'tight')
 
 
+# %%
+Counter(df['nesting_depth'])
+# %%
+sns.displot(
+    data=df,
+    x="nesting_depth",
+    hue="folder name",
+    kind='hist'
+)
 # %%
