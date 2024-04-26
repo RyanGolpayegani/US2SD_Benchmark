@@ -41,12 +41,12 @@ plot = sns.catplot(
     y="messages",
     # hue='cohesion',
     kind='bar',
-    palette = 'pastel'
+    palette = 'pastel',
 )
 # palettes: ch:.25, Blues,
 # plt.title("Number of Messages generated with each approach")
-plt.ylabel("Approach")
-plt.xlabel("Messages")
+plt.ylabel("Messages")
+plt.xlabel("Approach")
 plt.xticks(rotation=90)
 
 plt.savefig("../images/messages3.png", dpi=600, bbox_inches = 'tight')
