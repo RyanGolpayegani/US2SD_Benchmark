@@ -101,17 +101,14 @@ for index, row in All_Data.iterrows():
     for match in matches:
         gpt_code_only = match.strip()
 
-    # Write the PlantUML code to txt file 
-    # as 0000_ProjectName_NoOfLine.txt
-    # And as 0000_Full_A_ProjectName_NoOfLine.txt
+    # Write the PlantUML code to txt file as 0000_ProjectName_NoOfLine.txt and as 0000_Full_A_ProjectName_NoOfLine.txt
     text_file_name_code_only = f"SD/{formatted_time}/SDt/{counter:04d}_{row['Project Name']}_{row['No. of line']}.txt"
     dir_text_file_name_code_only = f"SD/{formatted_time}/SDt"
 
     text_file_name_full_answer = f"SD/{formatted_time}/Full_A_GPT/{counter:04d}_Full_A_{row['Project Name']}_{row['No. of line']}.txt"
     dir_text_file_name_full_answer = f"SD/{formatted_time}/Full_A_GPT"
 
-    # Save PlantUML code
-    # Create the directory if it doesn't exist
+    # Save PlantUML code & Create the directory if it doesn't exist
     if not os.path.exists(dir_text_file_name_code_only):
         os.makedirs(dir_text_file_name_code_only)
     with open(text_file_name_code_only, "w") as text_file_code_only:
