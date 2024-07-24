@@ -1,0 +1,31 @@
+@startuml
+actor User as user
+entity "CSV Validation Service" as validator
+database "OpenSpending Database" as db
+participant "OpenSpending API" as api
+
+user -> api : Upload CSV file for validation
+api -> validator : Send file for validation
+activate validator
+
+validator -> validator : Validate CSV structure
+validator -> validator : Validate data formats in CSV
+validator -> validator : Check for required fields
+alt All checks passed
+    validator -> user : Return success response\n(File is valid)
+else Validation failed
+    validator -> user : Return error response\n(Details of validation issues)
+end
+
+deactivate validator
+
+user -> user : Fix issues (if any)
+alt Issues fixed
+    user -> api : Upload corrected CSV file
+    api -> db : Save CSV to database
+    db -> user : Confirmation of CSV upload
+else Validation issues not fixed
+    user -> api : Decide not to upload yet
+end
+
+@enduml

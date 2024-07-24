@@ -1,0 +1,26 @@
+Creating a detailed sequence diagram for the user story "As a waiter, I want to see total preparation durations of order items" involves several key components of the Restaurant Management and Operations System, including interactions between the waiter, the system's UI, backend server, and possibly the database. Below is a simplified sequence diagram in PlantUML format visualizing these interactions:
+
+```plantuml
+@startuml
+actor Waiter
+participant "UI: Waiter Dashboard" as WaiterUI
+participant "Backend Server" as Server
+database "Database" as DB
+
+Waiter -> WaiterUI: Request order preparation times
+WaiterUI -> Server: GET /order-times/{orderId}
+alt Order ID valid
+    Server -> DB: Query preparation times for order
+    DB --> Server: Return preparation times
+    Server --> WaiterUI: Show total preparation durations
+    WaiterUI --> Waiter: Display total preparation durations
+else Order ID invalid
+    Server --> WaiterUI: Show error message
+    WaiterUI --> Waiter: Display error message
+end
+@enduml
+```
+
+This diagram starts with the waiter requesting the total preparation durations of the items in an order from the waiter dashboard UI. The UI sends a request to the backend server, which then queries the database for the preparation times associated with the specific order ID. Assuming the order ID is valid and the database returns the preparation times successfully, the server calculates the total preparation duration (if necessary) and sends this information back to the UI. The waiter dashboard then displays the total preparation durations to the waiter. If the order ID is invalid or any other error occurs, the server sends an error message back to the UI, which subsequently shows the error message to the waiter.
+
+The sequence diagram assumes a basic operational flow and does not cover possible enhancements or additional steps for calculating the total preparation time, such as processing, status checking, or error handling beyond a simple order ID validation. Depending on the system's complexity and requirements, additional interactions and components may be involved.

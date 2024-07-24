@@ -1,0 +1,40 @@
+@startuml
+participant Administrator as admin
+participant "Web Interface" as web
+participant "API Server" as api
+participant "Database" as db
+
+== Viewing All Datasets ==
+
+admin -> web: Access "View All Datasets" page
+web -> api: Request to fetch all datasets
+api -> db: Query all datasets
+db -> api: Returns dataset list
+api -> web: Display dataset list
+web -> admin: Shows all datasets with management options
+
+== Performing Dataset Management Actions ==
+
+alt Editing a Dataset
+  admin -> web: Selects "Edit" on a dataset
+  web -> api: Request dataset details
+  api -> db: Query dataset details
+  db -> api: Return details
+  api -> web: Display edit options
+  web -> admin: Admin edits dataset details
+  admin -> web: Confirms changes
+  web -> api: Update dataset request
+  api -> db: Executes update
+  db -> api: Confirmation
+  api -> web: Update confirmation
+  web -> admin: Show success message
+else Deleting a Dataset
+  admin -> web: Selects "Delete" on a dataset
+  web -> api: Request deletion
+  api -> db: Deletes dataset
+  db -> api: Confirmation
+  api -> web: Deletion confirmation
+  web -> admin: Show success message
+end
+
+@enduml

@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the user story "As an employee, I want to apply discounts to customers, so that customers visit the regardless again" involves illustrating the interactions between different system components and the user (in this case, an employee) within the context of the Restaurant Management and Operations System. Since PlantUML code cannot be directly executed or visualized here, below is an example of what the PlantUML code for such a sequence diagram could look like. You can use this code with a PlantUML editor or integrator to generate the diagram.
+
+This diagram assumes the process begins with the employee identifying a customer or order eligible for a discount and ends with the system updating the order with the discount and notifying the customer.
+
+```plantuml
+@startuml
+actor Employee
+participant "Employee Interface" as EI
+participant "Discount Module" as DM
+participant "Customer Order" as CO
+participant "Order Management System" as OMS
+participant "Database" as DB
+participant "Customer Notification" as CN
+
+== Apply Discount to Customer Order ==
+
+Employee -> EI: Select order for discount
+EI -> DM: Request apply discount
+DM -> CO: Identify order details
+CO -> OMS: Request discount validation
+OMS -> DM: Validate discount criteria
+DM -> DB: Retrieve discount details
+DB --> DM: Discount parameters
+DM -> OMS: Apply discount to order
+OMS -> DB: Update order with discount
+DB --> OMS: Confirm order updated
+OMS -> CN: Send discount notification to customer
+CN --> Employee: Display confirmation message
+
+@enduml
+```
+
+### Explanation of Each Step:
+1. **Employee selects an order for a discount**: The process begins with the employee choosing an order that they want to apply a discount to through the employee interface.
+2. **Request to apply discount**: The employee interface sends a request to the discount module to apply a discount to the selected order.
+3. **Identify order details**: The discount module requests the details of the selected order from the customer order component.
+4. **Request discount validation**: The customer order details are sent to the Order Management System to validate if the order is eligible for a discount based on predefined criteria.
+5. **Validate discount criteria**: The Order Management System communicates with the discount module to validate the discount based on the order's eligibility.
+6. **Retrieve discount details**: The discount module requests the specific discount details from the database.
+7. **Discount parameters returned**: The database returns the parameters of the discount, such as the percentage off or specific promotional conditions.
+8. **Apply discount to order**: With the discount details provided, the discount is applied to the order through the Order Management System.
+9. **Update order with discount in database**: The Order Management System updates the order with the discount details in the database.
+10. **Confirm order updated**: The database confirms that the order has been updated successfully.
+11. **Send discount notification to customer**: Finally, the Order Management System communicates with the Customer Notification component to send a notification to the customer about the discount applied to their order.
+12. **Display confirmation message**: The employee receives a confirmation message through the employee interface confirming the successful application of the discount.
+
+This sequence diagram is a high-level overview and can be adjusted based on specific project requirements, detail levels, and system architecture.

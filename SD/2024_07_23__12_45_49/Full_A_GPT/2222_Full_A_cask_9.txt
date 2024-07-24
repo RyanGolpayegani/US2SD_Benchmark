@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the specified user story in PlantUML format involves representing the steps and interactions between the app developer, version control system, dataset management system, and potentially other systems or components involved in detecting and handling the version conflict during deployment. Here is a representation of those interactions:
+
+```plantuml
+@startuml
+
+participant AppDeveloper as dev
+participant "Version Control\nSystem" as VCS
+participant "Dataset Management\nSystem" as DMS
+participant "Deployment Engine" as DE
+participant App1
+participant App2
+
+== App Deployment Process Begins ==
+dev -> DE : Deploy new version of App1
+activate DE
+
+DE -> VCS : Check out latest version of App1
+activate VCS
+VCS -> VCS : Retrieve new dataset type version
+deactivate VCS
+
+DE -> DMS : Request deployment of\nnew dataset type version
+activate DMS
+DMS -> DMS : Verify existing dataset instances
+
+alt version conflict with App2's shared dataset instance
+  DMS -> DE : Version conflict error
+  DE -> dev : Deployment failed\n(version conflict)
+else no conflict
+  DMS -> DMS : Update dataset instance to new version
+  DE -> DE : Continue App1 deployment
+  DE -> dev : Deployment successful
+end
+
+deactivate DMS
+deactivate DE
+
+@enduml
+```
+
+This sequence diagram details a scenario where an app developer tries to deploy a new version of an application (App1) that includes a different version of a dataset type also deployed in another application (App2), which shares a dataset instance of this type. The diagram illustrates the following key stages:
+
+1. **App Deployment Process Begins**: The developer initiates the deployment of the new version of App1.
+2. **Version Control System Interaction**: The Deployment Engine checks out the latest version of App1 from the Version Control System, which includes information about the new dataset type version.
+3. **Dataset Management System Verification**: The Deployment Engine requests the deployment of the new dataset type version through the Dataset Management System, which then verifies existing dataset instances for compatibility.
+4. **Version Conflict Handling**:
+    - In the case of a version conflict with App2’s shared dataset instance, the Dataset Management System identifies the issue and sends a version conflict error back to the Deployment Engine, which then informs the developer of the deployment failure due to version conflict.
+    - If no conflict exists, the Dataset Management System updates the dataset instance to the new version, allowing the Deployment Engine to continue with the deployment of App1, eventually leading to a successful deployment notification to the developer.
+
+This simplified diagram encapsulates the key interactions and decision points in handling a version conflict scenario during an application’s deployment process within an advanced dataset management and version control system.

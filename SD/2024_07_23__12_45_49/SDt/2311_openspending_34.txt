@@ -1,0 +1,27 @@
+@startuml
+participant "API User" as User
+participant "API Gateway" as Gateway
+participant "Validation Service" as Validation
+participant "Dataset Service" as DatasetService
+participant "Normalization Engine" as Normalization
+participant "Response Preparation" as ResponsePrep
+
+User -> Gateway: Request normalization of measure by population
+Gateway -> Validation: Validate request parameters
+activate Validation
+Validation --> Gateway: Validation Successful
+deactivate Validation
+Gateway -> DatasetService: Fetch dataset and population data
+activate Dataset WS
+DatasetService --> Gateway: Dataset and Population Data
+deactivate DatasetService
+Gateway -> Normalization: Normalize measure by population
+activate Normalization
+Normalization --> Gateway: Normalized Data
+deactivate Normalization
+Gateway -> ResponsePrep: Prepare normalized data response
+activate ResponsePrep
+ResponsePrep --> Gateway: Normalized Data Response
+deactivate ResponsePrep
+Gateway -> User: Return normalized data
+@enduml

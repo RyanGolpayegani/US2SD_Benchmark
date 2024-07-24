@@ -1,0 +1,38 @@
+Creating a detailed sequence diagram for the process of an employee updating their data within a Restaurant Management and Operations System requires outlining the interaction between the system components (e.g., UI/frontend, server/backend, and database) and the employee. Given the technology stack mentioned—React.js or Angular for the frontend, Node.js with Express for the backend, and MongoDB or PostgreSQL for the database—here's a sequence diagram represented in PlantUML syntax to illustrate this process.
+
+```plantuml
+@startuml
+actor Employee as E
+participant "UI (React.js/Angular)" as UI
+participant "Backend (Node.js/Express)" as BE
+database "Database (MongoDB/PostgreSQL)" as DB
+
+E -> UI : Selects option to update profile
+UI -> BE : GET request for employee data
+BE -> DB : Query employee data
+DB -> BE : Return employee data
+BE -> UI : Display employee data
+E -> UI : Inputs updated data and submits
+UI -> BE : POST request with updated data
+BE -> DB : Update employee data in database
+DB -> BE : Confirmation of updated data
+BE -> UI : Display success message
+UI -> E : Shows confirmation of data update
+
+@enduml
+```
+
+### Explanation:
+- **Employee (E)**: The actor who interacts with the system to update their profile information.
+- **UI (React.js/Angular)**: Represents the frontend of the system where the employee interacts with the graphical user interface to initiate and complete the action of updating their data.
+- **Backend (Node.js/Express)**: The server-side logic that handles requests from the frontend, including fetching existing employee data for editing and processing the update request.
+- **Database (MongoDB/PostgreSQL)**: The datastore that holds all employee data, where queries are made to retrieve and update the employee's information.
+
+### Steps:
+1. **Employee selects option to update profile**: The process starts when the employee decides to update their profile.
+2. **System Retrieves Current Data**: The UI requests the current data from the backend, which, in turn, queries the database. The database returns the employee's current data, which is displayed on the UI.
+3. **Employee Inputs Updated Data**: The employee enters their new information into the provided fields on the UI and submits the update.
+4. **System Updates Data**: The UI sends the updated data to the backend, which updates the existing record in the database with the new details. The database confirms the update.
+5. **Confirmation**: The backend sends a success message to the UI, which then informs the employee that their data has been successfully updated.
+
+This sequence diagram is a high-level overview. Details like authentication, session management, and error handling are crucial for a real-world application but are omitted here for clarity.

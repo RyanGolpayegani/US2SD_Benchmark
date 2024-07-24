@@ -1,0 +1,62 @@
+To generate a sequence diagram for the specified user story ("As an Archivist, I want to add administrative data about the archival description and finding aid-related data to a top-level Resource.") using PlantUML, we first need to outline the main actions and actors involved in this process. For simplicity, we'll focus on the interaction between the Archivist (user), the Archival Management System's Web Interface, and the Backend System which handles data processing and storage.
+
+Given the complexity and the potential for variations in implementations, the following is a simplified example to demonstrate how such an interaction could be depicted.
+
+```plantuml
+@startuml
+participant Archivist
+participant "Web Interface" as Web
+database "Backend System" as Backend
+
+== Add Administrative and Finding Aid Data to Resource ==
+
+Archivist -> Web : Access Resource Creation Form
+activate Web
+Web --> Archivist : Display Form
+
+Archivist -> Web : Enter Administrative Data
+activate Archivist
+deactivate Archivist
+Archivist -> Web : Enter Finding Aid Data
+activate Archivist
+deactivate Archivist
+
+Archivist -> Web : Submit Data
+activate Web
+deactivate Archivist
+
+Web -> Backend : Validate Data
+activate Backend
+Backend --> Web : Validation Response
+deactivate Backend
+
+alt If Data is Valid
+    Backend -> Backend : Create/Update Resource Entry
+    Backend -> Backend : Log Addition/Update
+    Web --> Archivist : Display Success Message
+else Data is Invalid
+    Web --> Archivist : Display Error Message
+    Archivist -> Web : Correct Data
+    Web -> Backend : Validate Corrected Data
+    activate Backend
+    Backend --> Web : Validation Response (Success)
+    deactivate Backend
+    Backend -> Backend : Create/Update Resource Entry
+    Backend -> Backend : Log Addition/Update
+    Web --> Archivist : Display Success Message
+end
+
+@enduml
+```
+
+This sequence diagram illustrates the following steps:
+
+1. The **Archivist** accesses the resource creation or editing form through the **Web Interface**.
+2. The **Web Interface** retrieves and displays the form to the **Archivist**.
+3. The **Archivist** enters the necessary **administrative data** and **finding aid-related data** into the form fields.
+4. The **Archivist** submits the data through the **Web Interface**.
+5. The **Web Interface** sends the data to the **Backend System** for validation.
+6. The **Backend System** validates the data. If the data is invalid, it sends back an error message displayed to the **Archivist**, who then corrects and resubmits. If the data is valid, the process proceeds.
+7. On valid data, the **Backend System** creates or updates the resource entry, logs the operation, and the **Web Interface** displays a success message to the **Archivist**.
+
+Note: This is a simplified view and might not include all error handling, authentication, authorization checks, or other complexities of a real-world system. Adjustments and enhancements should be made based on the specific requirements of the Comprehensive Archival Management System Enhancement project.

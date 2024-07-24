@@ -1,0 +1,25 @@
+@startuml
+participant Researcher
+participant "Front-end Interface" as FE
+participant "Visualization Tool" as VT
+participant "DPIE API" as API
+database "Data Package Repository" as DPR
+
+Researcher -> FE : Selects data for visualization
+FE -> VT : Sends data
+activate VT
+VT -> VT : Generates visualization
+Researcher -> VT : Saves visualization
+VT -> FE : Sends saved visualization information
+deactivate VT
+FE -> API : Request to add visualization to Data Package
+activate API
+API -> DPR : Validates Data Package structure
+DPR -> API : Validation Success
+API -> DPR : Adds visualization to Data Package
+DPR -> API : Update Successful
+API -> FE : Confirmation of Visualization Addition
+FE -> Researcher : Displays confirmation message
+deactivate API
+
+@enduml

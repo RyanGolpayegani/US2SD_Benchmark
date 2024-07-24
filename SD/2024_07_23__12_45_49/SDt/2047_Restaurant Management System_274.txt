@@ -1,0 +1,24 @@
+@startuml
+actor Waiter
+participant "Reservation System" as RS
+participant "Database" as DB
+
+Waiter -> RS: Request reservation info for table
+RS -> DB: Query reservation status
+DB --> RS: Return reservation data
+RS --> Waiter: Display reservation info
+
+alt Reservation is confirmed
+    Waiter -> RS: Acknowledge reservation details
+    Waiter -> Waiter: Prepare table for customers
+else Reservation is pending
+    Waiter -> RS: Check for any special requests/instructions
+    RS -> DB: Query special requests
+    DB --> RS: Return special requests data
+    RS --> Waiter: Display special requests
+    Waiter -> Waiter: Consider special preparations
+else No reservation
+    Waiter -> Waiter: Table is free for walk-in customers
+end
+
+@enduml

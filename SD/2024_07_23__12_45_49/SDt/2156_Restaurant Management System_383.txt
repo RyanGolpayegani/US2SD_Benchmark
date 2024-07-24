@@ -1,0 +1,24 @@
+@startuml
+actor Owner as owner
+participant "Management Interface" as interface
+participant "Report System" as reportSystem
+participant "Database" as database
+participant "Discount Management" as discount
+
+== Generate Sales Report ==
+owner -> interface: Request sales report
+interface -> reportSystem: Generate report for menu item sales
+reportSystem -> database: Query sales data
+database --> reportSystem: Return sales data
+reportSystem --> interface: Display sales report
+interface --> owner: Show report
+
+== Analyze Report and Apply Discounts ==
+owner -> interface: Identify items for discount
+interface -> discount: Set discount on identified items
+discount -> database: Update menu item discounts
+database --> discount: Confirm discount update
+discount --> interface: Display updated discounts
+interface --> owner: Confirm discount adjustments
+
+@enduml

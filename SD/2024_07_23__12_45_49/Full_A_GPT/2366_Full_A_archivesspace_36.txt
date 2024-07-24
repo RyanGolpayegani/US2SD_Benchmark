@@ -1,0 +1,47 @@
+Creating a sequence diagram for the user story "As an Archivist, I want to export a description as EAD" involves detailing the interactions between the various components of the Comprehensive Archival Management System (CAMS). Since the textual description doesn't go into the specifics of the internal architecture or naming conventions of the CAMS, a generic approach will be taken in the diagram. 
+
+To make an accurate sequence diagram, it's essential to identify the key actors and systems that will participate in this process:
+
+1. **Archivist (User)**: Initiates the process by requesting to export a description as Encoded Archival Description (EAD).
+2. **UI/Frontend**: The user interface where the archivist interacts with the system.
+3. **Controller/Server**: Processes the request and handles backend logic.
+4. **Export Service**: A dedicated service or module responsible for generating EAD exports.
+5. **Database**: Stores all archival information, including metadata and descriptions.
+
+Here’s a basic sequence diagram in PlantUML reflecting these interactions for the stated user story:
+
+```plantuml
+@startuml
+participant Archivist as archivist
+participant "UI/Frontend" as UI
+participant "Controller/Server" as server
+participant "Export Service" as exportService
+participant "Database" as db
+
+archivist -> UI : Selects "Export as EAD"
+UI -> server : Request EAD export
+activate server
+server -> exportService : Initiate EAD Export
+activate exportService
+exportService -> db : Fetch Record Details
+activate db
+db --> exportService : Record Data
+deactivate db
+exportService --> server : EAD File
+deactivate exportService
+server -> UI : EAD Export ready
+UI -> archivist : Download EAD File
+deactivate server
+@enduml
+```
+
+This diagram depicts a simple flow where:
+1. The **Archivist** chooses to export a description as EAD through the UI.
+2. The UI requests this action from the **Controller/Server**.
+3. The **Controller/Server** then communicates with the **Export Service**, indicating a need to start the export process.
+4. The **Export Service** fetches the necessary record details from the **Database**.
+5. Once the data is retrieved, the **Export Service** generates the EAD file and sends it back to the **Controller/Server**.
+6. The **Controller/Server** informs the UI that the EAD export is ready.
+7. The UI presents the option for the archivist to download the EAD file.
+
+Adjustments might be necessary to fit the specific implementation details and architecture nuances of the Comprehensive Archival Management System.

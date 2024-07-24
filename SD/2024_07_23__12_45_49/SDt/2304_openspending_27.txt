@@ -1,0 +1,28 @@
+@startuml
+participant APIUser as User
+participant APIServer as Server
+participant Database as DB
+participant GeoDataAPI as GeoAPI
+participant ResponseFormatter as Formatter
+
+User -> Server: Request bordering regions/cities for specific region/city
+activate Server
+
+Server -> DB: Query for region/city details
+activate DB
+DB --> Server: Return region/city details
+deactivate DB
+
+Server -> GeoAPI: Request bordering regions/cities based on region/city details
+activate GeoAPI
+GeoAPI --> Server: Return list of bordering regions/cities
+deactivate GeoAPI
+
+Server -> Formatter: Format bordering regions/cities data
+activate Formatter
+Formatter --> Server: Formatted data
+deactivate Formatter
+
+Server --> User: Provide formatted list of bordering regions/cities
+deactivate Server
+@enduml

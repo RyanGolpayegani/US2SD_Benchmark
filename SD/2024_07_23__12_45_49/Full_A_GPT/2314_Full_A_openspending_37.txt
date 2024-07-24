@@ -1,0 +1,43 @@
+Below is a PlantUML sequence diagram for the stated user story:
+
+```plantuml
+@startuml
+participant "API User" as User
+participant "OpenSpending API" as API
+participant "Data Normalization Service" as Normalization
+participant "Socioeconomic Indexes Service" as Indexes
+participant "Datastore" as Datastore
+
+User -> API : Request normalization by GINI\nand socioeconomic indexes
+API -> Normalization : Fetch normalization parameters
+API -> Indexes : Request GINI and socioeconomic data
+Indexes --> API : Return GINI\nand indexes data
+API -> Datastore : Query datasets with parameters\nand contextual data
+Datastore --> API : Return queried datasets
+API -> Normalization : Apply normalization to datasets\nusing GINI and indexes
+Normalization --> API : Return normalized datasets
+API --> User : Provide normalized datasets
+@enduml
+```
+
+Explanation of the sequence diagram:
+
+1. The **API User** initiates the process by requesting the normalization of measures by GINI and related socioeconomic indexes through the **OpenSpending API**.
+
+2. The **OpenSpending API** forwards this request to the **Data Normalization Service** to fetch the necessary normalization parameters specific to the user's request.
+
+3. Concurrently, the **API** requests GINI and other socioeconomic data from the **Socioeconomic Indexes Service** to incorporate these indexes into the normalization process.
+
+4. The **Socioeconomic Indexes Service** returns the requested GINI and socioeconomic data back to the **API**.
+
+5. The **API** then queries the **Datastore** for datasets that match the query parameters provided by the user, along with the contextual data fetched (i.e., GINI and socioeconomic indexes).
+
+6. The **Datastore** returns the queried datasets to the **API**.
+
+7. The **API** sends these datasets, along with the GINI and socioeconomic information, to the **Data Normalization Service** to apply the normalization process based on the contextual constraints.
+
+8. **Data Normalization Service** processes the normalization and returns the normalized datasets to the **API**.
+
+9. Finally, the **OpenSpending API** provides the normalized datasets back to the **API User**, completing the request.
+
+This sequence ensures that API users can seamlessly normalize fiscal datasets by integrating them with pertinent socioeconomic indexes, enhancing their analysis capabilities in relation to contextual constraints.

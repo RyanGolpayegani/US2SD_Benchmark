@@ -1,0 +1,44 @@
+To visualize the process described in the user story "As a company accountant, I want to view all available activity fees online, so that I can easily create a bill statement." in the context of the RecycleSmart Platform project, a sequence diagram can effectively represent the interactions between the accountant (acting as a user), the platform, and other system components involved in fetching and displaying the information regarding activity fees. 
+
+Here's a sequence diagram in Plant UML format that outlines the expected sequence of actions:
+
+```plantuml
+@startuml
+actor Accountant as acc
+participant "RecycleSmart\nPlatform Interface" as interface
+participant "Authentication\nModule" as auth
+participant "Database" as db
+participant "Fees\nManagement Service" as fees
+
+acc -> interface : Request to view activity fees
+interface -> auth : Validate session
+auth --> interface : Session valid
+
+interface -> fees : Fetch available fees
+fees -> db : Query fees data
+db --> fees : Return fees data
+fees --> interface : Fees details
+interface --> acc : Display fees information
+
+acc -> interface : Select fees for bill statement
+interface -> fees : Process selected fees
+fees -> interface : Confirm selection
+interface --> acc : Display bill statement draft
+acc -> interface : Confirm to create bill statement
+interface -> fees : Generate bill statement
+fees --> interface : Bill statement generated
+interface --> acc : Display/download bill statement
+
+@enduml
+```
+
+This diagram illustrates the following interactions for the use case:
+- The accountant requests to view the activity fees through the RecycleSmart Platform Interface.
+- The platform's Authentication Module validates the accountant's session.
+- Once validated, the interface requests the Fees Management Service to fetch the available fees.
+- The Fees Management Service queries the database to get the fees data, which is then returned to the interface.
+- The accountant selects the fees they wish to include in the bill statement.
+- The platform acknowledges the selection and displays a draft of the bill statement for confirmation.
+- Upon confirmation, the Fees Management Service generates a bill statement, which is then made available for the accountant to display or download.
+
+This sequence diagram provides a high-level overview of the interactions between the system components for viewing and generating a bill statement based on the available activity fees within the RecycleSmart Platform.

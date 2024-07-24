@@ -1,0 +1,58 @@
+Given the scope of your project and focusing on the specific user story for a plugin developer, here's a detailed sequence diagram in PlantUML format. This scenario outlines the sequence when a plugin developer wants to include the code for a dataset type in the plugin artifact, ensuring that upon pipeline creation using this plugin, a corresponding dataset instance is generated, made explorable, and available to apps.
+
+```plantuml
+@startuml
+participant PluginDeveloper as PD
+participant PluginArtifact as PA
+participant DatasetManagementSystem as DMS
+participant ApplicationEcosystem as AE
+participant PipelineCreationTool as PCT
+participant Database as DB
+
+== Inclusion of Dataset Type in Plugin Artifact ==
+PD -> PA : Include Dataset Type Code
+activate PA
+PA -> DMS : Register Dataset Type
+activate DMS
+DMS -> DB : Update Dataset Type Registry
+activate DB
+DB --> DMS : Acknowledge Update
+deactivate DB
+DMS --> PA : Dataset Type Registered
+deactivate DMS
+PA --> PD : Dataset Type Included Successfully
+deactivate PA
+
+== Pipeline Creation Using Plugin ==
+PD -> PCT : Initiate Pipeline Creation
+activate PCT
+PCT -> DMS : Request Dataset Instance Creation
+activate DMS
+DMS -> DB : Create New Dataset Instance
+activate DB
+DB --> DMS : Dataset Instance Created
+deactivate DB
+DMS --> PCT : Dataset Instance Available
+deactivate DMS
+PCT -> AE : Integrate Pipeline with Dataset Instance
+activate AE
+AE --> PCT : Pipeline & Dataset Instance Integrated
+deactivate AE
+PCT --> PD : Pipeline Creation Successful
+deactivate PCT
+
+== Making Dataset Instance Explorable and Available ==
+DMS -> AE : Make Dataset Instance Explorable
+activate AE
+AE --> DMS : Dataset Instance is Now Explorable
+deactivate AE
+DMS -> AE : Make Dataset Instance Available to Apps
+activate AE
+AE --> DMS : Dataset Instance Available to Apps
+deactivate AE
+@enduml
+```
+
+This sequence diagram starts with the plugin developer including the dataset type code in the plugin artifact. The dataset management system then registers this dataset type, updating the dataset type registry in the database. Upon successful registration, the pipeline creation tool can initiate the creation of a pipeline using this plugin, which includes requesting the creation of a dataset instance of the included type. The dataset management system handles this by creating a new instance in the database. Once created, this instance is made explorable and available to applications within the ecosystem, following the system's mechanisms for integration and availability.
+
+Each participant (or system component) is involved in specific actions following a clear sequence, reflecting the high-level interactions needed to fulfill the described user story. This diagram is a simplified representation and can be further detailed with error handling, timeouts, or more specific interactions tailored to your system's architecture and requirements.

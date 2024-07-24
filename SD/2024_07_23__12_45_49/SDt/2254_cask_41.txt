@@ -1,0 +1,30 @@
+@startuml
+actor User
+participant "UI/CLI" as UI
+participant "Dataset Management\nService" as DMS
+database "Metadata Repository" as MetaRepo
+
+== User Requests Dataset Type Information ==
+
+User -> UI: Request dataset type properties
+activate UI
+UI -> DMS: Fetch dataset type details
+activate DMS
+
+DMS -> MetaRepo: Query dataset type metadata
+activate MetaRepo
+MetaRepo -> DMS: Return dataset type metadata
+deactivate MetaRepo
+
+== Processing Information ==
+
+DMS -> DMS: Process metadata to extract\nproperties, allowed values, defaults
+DMS -> UI: Respond with dataset type details
+
+== Display Information to User ==
+
+UI -> User: Display properties, allowed values,\nand default settings
+deactivate DMS
+deactivate UI
+
+@enduml

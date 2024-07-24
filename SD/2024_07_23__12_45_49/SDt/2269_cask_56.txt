@@ -1,0 +1,23 @@
+@startuml
+participant PipelineDesigner as Designer
+participant PipelineService as Service
+participant DatasetRegistry as Registry
+participant SchemaValidator as Validator
+participant ErrorHandling as ErrorHandler
+
+Designer -> Service: Request pipeline creation with dataset
+Service -> Registry: Retrieve dataset details
+Registry --> Service: Dataset details (Schema, properties)
+
+Service -> Validator: Validate dataset against pipeline requirements
+alt Dataset is compatible
+    Validator --> Service: Validation Success
+    Service --> Designer: Pipeline creation initiated
+else Dataset is incompatible
+    Validator --> Service: Validation Failed (Incompatibility details)
+    Service -> ErrorHandler: Handle error, create meaningful message
+    ErrorHandler --> Service: Error message (Incompatibility explanation)
+    Service --> Designer: Error message (Pipeline creation failed due to incompatible dataset)
+end
+
+@enduml

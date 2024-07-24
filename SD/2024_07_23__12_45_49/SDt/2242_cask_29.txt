@@ -1,0 +1,60 @@
+@startuml
+
+participant HydratorUser as User
+participant "App Interface" as App
+participant "Dataset Management System" as DMS
+participant "Pipeline Manager" as PM
+database "Dataset Repository" as DB
+
+== Ensure Dataset Instance Availability for Pipeline ==
+
+User->App: Request available datasets
+
+App->DMS: List available dataset instances
+activate DMS
+
+DMS->DB: Query for dataset instances
+activate DB
+DB-->DMS: Return dataset instances
+deactivate DB
+
+DMS-->App: Dataset instances list
+deactivate DMS
+
+App-->User: Show dataset instances list
+
+User->App: Select dataset instances for pipeline source/sink
+activate App
+
+App->DMS: Verify dataset instances availability
+activate DMS
+
+DMS->DB: Check instance status
+activate DB
+DB-->DMS: Confirm availability
+deactivate DB
+
+DMS-->App: Confirm dataset instances are available
+deactivate DMS
+
+App->PM: Configure pipeline with selected dataset instances
+activate PM
+
+PM->DMS: Register pipeline source/sink
+activate DMS
+
+DMS->DB: Update dataset instance with pipeline details
+activate DB
+DB-->DMS: Confirmation
+deactivate DB
+
+DMS-->PM: Registration confirmation
+deactivate DMS
+
+PM-->App: Pipeline configuration complete
+deactivate PM
+
+App-->User: Pipeline ready with dataset instances as source/sink
+deactivate App
+
+@enduml

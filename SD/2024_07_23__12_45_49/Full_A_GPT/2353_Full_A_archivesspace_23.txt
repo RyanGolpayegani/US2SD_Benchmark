@@ -1,0 +1,47 @@
+To generate a detailed sequence diagram in PlantUML format for the user story, "As a user, I want to add additional properties for repositories," we'll need to outline the interactions between the system components involved in adding new properties to a repository. This sequence will focus on the interaction between the user, system UI, controller, model, and database involved in this process.
+
+Please note, the below PlantUML code is an abstract representation. Depending on your system's architecture, the actual implementation details may vary.
+
+```plantuml
+@startuml
+participant UserInterface as UI
+participant SystemController as Controller
+participant RepositoryModel as Model
+participant Database
+
+UI -> Controller : addPropertiesRequest(properties)
+activate Controller
+
+Controller -> Model : validateProperties(properties)
+activate Model
+Model --> Controller : validationResults
+deactivate Model
+
+alt If properties are valid
+    Controller -> Database : updateRepositoryProperties(properties)
+    activate Database
+    Database --> Controller : updateSuccess
+    deactivate Database
+    Controller --> UI : showSuccessMessage()
+    deactivate Controller
+else If properties are invalid
+    Controller --> UI : showErrorMessage(validationResults)
+    deactivate Controller
+end
+
+@enduml
+```
+
+Explanation:
+
+1. **User Interface (UI)**: This represents the system frontend where the user initiates the request to add additional properties to a repository.
+
+2. **SystemController (Controller)**: Acts as the intermediary that handles the request from the UI. It processes the request by first validating the new properties.
+
+3. **RepositoryModel (Model)**: This component is responsible for validating the properties against the system's business rules or constraints.
+
+4. **Database**: The persistent storage where repository data, including the new properties if valid, is updated.
+
+The sequence starts when the UserInterface sends an `addPropertiesRequest` with the new properties to the SystemController. The controller then asks the RepositoryModel to validate these properties. The model returns the validation results. If valid, the controller commands the database to update the repository with the new properties and informs the UI of success. If not, the controller sends an error message to the UI.
+
+Remember, the above diagram is a simplified representation. Depending on your exact requirements, you might have additional steps or components, such as authentication checks, logging, events firing for successful updates, or more detailed error handling and validation processes.

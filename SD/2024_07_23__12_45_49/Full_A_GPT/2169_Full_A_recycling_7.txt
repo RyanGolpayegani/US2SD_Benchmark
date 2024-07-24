@@ -1,0 +1,44 @@
+To create a detailed sequence diagram for the user story mentioned, we must outline the interaction between the user, the client interface (web app), the server, and the database. Below is a PlantUML code snippet that illustrates these interactions for a user adding donation centers to their favorites on the RecycleSmart platform.
+
+```plantuml
+@startuml
+actor User
+participant "Web Interface" as Web
+participant "Server" as Server
+participant "Database" as DB
+
+User -> Web : Select donation center
+activate Web
+
+Web -> Server : Request to add center to favorites
+activate Server
+
+Server -> DB : Verify user is authenticated
+activate DB
+DB --> Server : User authenticated
+deactivate DB
+
+Server -> DB : Add center to user's favorites
+activate DB
+DB --> Server : Center added successfully
+deactivate DB
+
+Server --> Web : Confirmation of addition
+deactivate Server
+
+Web --> User : Display success message
+deactivate Web
+@enduml
+```
+
+Here's a breakdown of the sequence diagram described in PlantUML:
+
+1. **User Interaction**: The user selects a donation center on the RecycleSmart web interface to add to their favorites.
+2. **Web Interface to Server**: The web interface sends a request to the server to add the selected donation center to the user’s favorites.
+3. **Server Authentication Check**: The server requests the database to verify if the user is authenticated.
+4. **Database Response**: The database verifies the user’s authentication status and responds back to the server.
+5. **Add Center to Favorites**: The server requests the database to add the selected donation center to the user’s favorites.
+6. **Database Confirmation**: The database adds the center and confirms the operation’s success back to the server.
+7. **Confirmation to User**: The server sends a confirmation message back to the web interface, which then displays a success message to the user.
+
+This sequence ensures that the user’s favorites are updated securely while providing feedback to the user throughout the process. The interactions between the server and database also ensure that only authenticated users can modify their favorites, preserving the integrity and security of user data.

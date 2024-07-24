@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for the specified user story involves outlining the interactions between different components and actors in the process of adding a DOI (Digital Object Identifier) to a dataset within the DPIE system. For simplicity and clarity, we will focus on key interactions, assuming the system already includes modules or interfaces for handling DOI requests and integration with database systems and external DOI registration services like DataCite or CrossRef.
+
+**Note:** The following PlantUML code is a high-level representation and might need adjustments based on more specific system designs or requirements of the DPIE project.
+
+```plantuml
+@startuml
+actor ResearcherPublisher as RP
+participant "DPIE Interface" as DPIE
+participant "Data Management Module" as DMM
+database "Data Package Repository" as DPR
+participant "DOI Registration Service" as DOI_Service
+participant "Metadata Update Module" as MUM
+
+RP -> DPIE: Request to add DOI to dataset
+DPIE -> DMM: Validate dataset exists
+DMM -> DPR: Check dataset existence
+DPR -> DMM: Dataset exists confirmation
+DMM --> DPIE: Dataset validation success
+DPIE -> DOI_Service: Request DOI registration
+activate DOI_Service
+DOI_Service -> DPIE: Return new DOI
+deactivate DOI_Service
+DPIE -> MUM: Request to update dataset with DOI
+activate MUM
+MUM -> DPR: Update dataset metadata with DOI
+DPR --> MUM: Dataset updated
+MUM --> DPIE: Update success
+deactivate MUM
+DPIE -> RP: DOI added successfully
+@enduml
+```
+
+Explanation of the Sequence Diagram Steps:
+1. **ResearcherPublisher (RP) requests to add a DOI:** The process begins when a researcher or publisher decides they want to add a DOI to a specific dataset for citation purposes.
+2. **DPIE Interface receives the request:** The system's front end receives this request and forwards it to the Data Management Module for initial validation.
+3. **Data Management Module checks dataset existence:** Before proceeding with the DOI assignment, the system must verify that the dataset exists within the Data Package Repository.
+4. **Data Package Repository confirms dataset existence:** Assuming the dataset is found, the repository confirms its existence back to the Data Management Module.
+5. **DOI Registration Service assigns a DOI:** Upon successful validation, the system interacts with an external DOI Registration Service to generate and assign a new DOI for the dataset.
+6. **Metadata Update Module updates the dataset:** With the new DOI received, the DPIE system instructs its Metadata Update Module to incorporate this DOI into the dataset's metadata stored in the Data Package Repository.
+7. **Data Package Repository confirms the update:** After the dataset metadata is successfully updated to include the new DOI, the repository sends a confirmation message back.
+8. **ResearcherPublisher is informed of the success:** Finally, the DPIE system informs the requester (ResearcherPublisher) that the DOI has been successfully added to the dataset, concluding the process.
+
+This sequence diagram is a broad conceptualization designed to illustrate the steps involved in adding a DOI to a dataset within the DPIE system, focusing on system interactions and data flow. Depending on the specific implementation details, additional steps or interactions might be necessary.

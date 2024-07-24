@@ -1,0 +1,48 @@
+To visualize the sequence of interactions involving a waiter selecting order items in the Restaurant Management and Operations System, we'll use PlantUML language to create the sequence diagram. This diagram illustrates the communication flow between the waiter, the system interface, and the backend components to accomplish this task.
+
+Given the complexity, this diagram simplifies the process focusing on the key interactions.
+
+```plantuml
+@startuml
+participant Waiter
+participant "UI Interface" as UI
+participant "Order Management System" as OMS
+participant Database
+
+Waiter -> UI : Selects "Create New Order"
+UI -> OMS : Initiate Order Creation
+OMS -> Database : Fetch Menu Items
+Database --> OMS : Return Menu Items
+OMS --> UI : Display Menu Items
+Waiter -> UI : Select Order Items
+UI -> OMS : Send Selected Items
+OMS -> Database : Validate Items & Check Availability
+alt Items Valid and Available
+    Database --> OMS : Confirm Items Available
+    OMS --> UI : Confirm & Display Order Summary
+    Waiter -> UI : Confirms Order
+    UI -> OMS : Finalize Order
+    OMS -> Database : Save Order Details
+    Database --> OMS : Order Saved Successfully
+    OMS --> UI : Display Order Successful Message
+    Waitor -> UI : Confirm receipt of success message
+else Some Items Not Available
+    Database --> OMS : Item Availability Error
+    OMS --> UI : Error Message (Item Not Available)
+    Waiter -> UI : Adjusts Order Selection
+    UI -> OMS : Resend Revised Items
+    [-> OMS : Repeat Validation Process
+endif
+
+@enduml
+```
+
+In this diagram:
+- **Waiter**: Initiates the process by creating a new order and selecting items from the menu.
+- **UI Interface**: Acts as the intermediary for input and output interactions between the waiter and the system.
+- **Order Management System (OMS)**: Handles the logic to initiate order creation, item selection, validation, and finalization.
+- **Database**: Stores and manages data on menu items, availability, and order details.
+
+This sequence starts with the waiter selecting to create a new order and ends with the system confirming the order has been successfully saved, ready to be processed further. It includes decision paths for handling cases where selected items might not be available, requiring item selection adjustments.
+
+To render this PlantUML diagram, you would use a PlantUML environment or tool that supports the PlantUML language, allowing you to visualize the sequence diagram described by this code.

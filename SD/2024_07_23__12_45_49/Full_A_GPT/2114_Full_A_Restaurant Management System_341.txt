@@ -1,0 +1,43 @@
+To illustrate the process described in the User Story using PlantUML syntax for a sequence diagram, we're focusing on the employee generating a clock in and out report, which is part of the Employee Scheduling and Shift Management feature of the described Restaurant Management and Operations System.
+
+This sequence diagram will capture interactions between the Employee, System Interface, Authentication Service, Report Generation Module, and Database. Let's detail these interactions step by step:
+
+```plantuml
+@startuml
+participant Employee
+participant SystemInterface as "System Interface"
+participant AuthenticationService as "Authentication Service"
+participant ReportGenerationModule as "Report Generation Module"
+participant Database
+
+title Employee Clock In and Out Report Generation
+
+Employee -> SystemInterface : Request report generation
+SystemInterface -> AuthenticationService : Validate employee credentials
+AuthenticationService -> SystemInterface : Credentials valid
+
+SystemInterface -> ReportGenerationModule : Initiate report generation for employee
+ReportGenerationModule -> Database : Query clock in and out data
+Database -> ReportGenerationModule : Return data
+ReportGenerationModule -> SystemInterface : Compile and format report
+SystemInterface -> Employee : Display generated report
+
+@enduml
+```
+
+Explanation of the Sequence Diagram Steps:
+1. **Employee Requests Report Generation**: The employee interacts with the system, requesting the generation of a clock in and out report.
+   
+2. **System Interface Requests Authentication**: The System Interface forwards the request to the Authentication Service to validate the employee's credentials to ensure secure access.
+   
+3. **Credentials Validation**: The Authentication Service confirms the validity of the employee's credentials and informs the System Interface.
+
+4. **Report Generation Initiated**: Upon successful authentication, the System Interface requests the Report Generation Module to initiate the report generation process for the requesting employee.
+
+5. **Database Querying**: The Report Generation Module queries the Database for the clock in and out data related to the requesting employee.
+
+6. **Data Compilation**: The Database returns the queried data to the Report Generation Module, which then compiles and formats the report.
+
+7. **Report Display**: Finally, the System Interface presents the generated report to the employee, completing the process.
+
+This sequence diagram outlines the crucial interactions within the system for an employee to generate their personal clock in and out report, assuming the pre-existence of authentication mechanisms and the employee’s data in the system database.

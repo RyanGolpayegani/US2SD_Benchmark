@@ -1,0 +1,22 @@
+@startuml
+participant Researcher as user
+participant "DPIE UI/API" as ui
+participant "DPIE Engine" as engine
+database GitHub
+database CKAN
+
+user -> ui : Selects data package
+ui -> engine : Request metadata form
+return Form template
+user -> ui : Submits filled metadata form
+ui -> engine : Validate metadata
+alt validation successful
+    engine -> GitHub : Store metadata + data package
+    GitHub -> CKAN : Sync data package & metadata
+    CKAN --> engine : Confirm catalog listing
+    engine --> ui : Display success message
+else validation failed
+    engine --> ui : Display error message
+end
+ui -> user : Show operation outcome
+@enduml

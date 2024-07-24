@@ -1,0 +1,23 @@
+@startuml
+actor Researcher
+participant "DPIE Portal" as DPIE
+participant "Data Package Repository" as Repository
+participant "Data Package Enhancer" as Enhancer
+database "SPSS Integration Module" as SPSSModule
+participant "SPSS" as SPSS
+
+Researcher -> DPIE: Search for Data Package
+DPIE -> Repository: Query Data Packages
+Repository -> DPIE: Return Results
+DPIE -> Researcher: Display Search Results
+Researcher -> DPIE: Select Data Package
+DPIE -> Enhancer: Request Data Package Enhancement
+Enhancer -> DPIE: Enhance Data Package with SPSS Metadata
+DPIE -> SPSSModule: Send Enhanced Data Package 
+SPSSModule -> SPSS: Import Data Package
+SPSS -> SPSSModule: Confirm Import
+SPSSModule -> DPIE: Confirm Import to Researcher
+DPIE -> Researcher: Notify Import Success
+Researcher -> SPSS: Begin Analysis/Visualization
+
+@enduml

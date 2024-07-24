@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+
+actor Employee as emp
+participant "UI: Employee Dashboard" as ui
+participant "Controller: CustomerManager" as controller
+database "DB: CustomerDatabase" as db
+
+emp -> ui : Enter customer name
+ui -> controller : addNewCustomer(name)
+controller -> db : checkIfCustomerExists(name)
+alt Customer does not exist
+    db -> db : createNewCustomerRecord(name)
+    db -> controller : CustomerCreated(success)
+    controller -> ui : DisplaySuccessMessage()
+else Customer exists
+    db -> controller : CustomerExists(error)
+    controller -> ui : DisplayErrorMessage()
+end
+emp <-- ui : View confirmation/error message
+
+@enduml

@@ -1,0 +1,62 @@
+@startuml
+actor User
+participant "RecycleSmart Website" as Website
+database "Recycling Database" as Database
+participant "Rewards System" as Rewards
+participant "Email Service" as Email
+
+User -> Website: Access website
+activate Website
+Website -> Database: Query recycling centers and events
+activate Database
+Database --> Website: Return results
+deactivate Database
+
+User -> Website: Participate in recycling event
+activate Website
+Website -> Database: Log user participation
+activate Database
+Database --> Website: Confirmation
+deactivate Database
+
+Website -> Rewards: Update user rewards
+activate Rewards
+Rewards -> Database: Calculate new rewards balance
+activate Database
+Database --> Rewards: Update success
+deactivate Database
+
+Rewards --> Website: Display new rewards to user
+deactivate Rewards
+Website --> User: Show participation confirmation and rewards
+
+User -> Website: Request reward details
+Website -> Rewards: Fetch reward details
+activate Rewards
+Rewards -> Database: Retrieve user's rewards data
+activate Database
+Database --> Rewards: User's rewards data
+deactivate Database
+
+Rewards --> Website: Reward details
+deactivate Rewards
+Website --> User: Display reward details
+
+User -> Website: Redeem rewards
+Website -> Rewards: Process redemption request
+activate Rewards
+Rewards -> Email: Send confirmation email
+activate Email
+Email --> User: Redemption confirmation
+deactivate Email
+Rewards -> Database: Update rewards balance
+activate Database
+Database --> Rewards: Update success
+deactivate Database
+
+Rewards --> Website: Update completion
+deactivate Rewards
+Website --> User: Confirm redemption success
+deactivate Website
+
+@enduml

@@ -1,0 +1,54 @@
+To create a detailed sequence diagram in PlantUML format for the user story you provided, we need to conceptualize the interactions between the actors (in this case, the dataset developer) and the components of the advanced dataset management and version control system. The specific user story involves a dataset developer implementing a migration procedure after a dataset instance is upgraded to a new version of its type.
+
+Here's a simplified PlantUML sequence diagram that illustrates this process:
+
+```plantuml
+@startuml
+actor DatasetDeveloper as developer
+participant "Dataset Management System" as DMS
+participant "Version Control" as VC
+participant "Dataset Instance" as DI
+participant "Migration Tool" as MT
+
+== Upgrade Dataset Instance ==
+developer -> DMS: Request dataset type version upgrade
+DMS -> VC: Check latest version
+VC --> DMS: Return latest version info
+DMS -> DI: Perform upgrade to new version
+DI --> DMS: Upgrade success confirmation
+DMS --> developer: Upgrade success notice
+
+== Implement Migration Procedure ==
+developer -> DMS: Request to implement migration procedure
+activate DMS
+DMS -> MT: Provide current and new version details
+activate MT
+MT --> DMS: Migration procedure template
+DMS --> developer: Migration procedure template
+deactivate DMS
+
+developer -> MT: Define migration steps based on template
+activate MT
+MT -> MT: Validate migration steps
+MT --> developer: Confirm migration steps valid
+deactivate MT
+
+== Run Migration Procedure ==
+developer -> DMS: Initiate migration procedure
+DMS -> MT: Execute migration steps
+activate MT
+MT -> DI: Apply migration steps to dataset instance
+DI --> MT: Migration success confirmation
+MT --> DMS: Migration completed
+DMS --> developer: Migration success notice
+deactivate MT
+
+@enduml
+
+```
+
+In this sequence diagram, the process starts when the dataset developer requests a dataset type version upgrade. The Dataset Management System (DMS) checks with the Version Control (VC) for the latest version and, upon receiving the information, performs the upgrade on the Dataset Instance (DI). The DI confirms the success of the upgrade back to the DMS, which in turn notifies the developer.
+
+Then, the developer requests to implement a migration procedure. The DMS provides a migration procedure template that the developer uses to define the migration steps. The Migration Tool (MT) validates these steps, and upon confirmation, the developer initiates the migration procedure through the DMS, which then commands the MT to execute these steps on the DI. Finally, the MT confirms the successful migration to the DMS, which notifies the developer.
+
+This sequence diagram is a basic representation and can be further detailed based on more specific interactions, error handling, and other components of the system per the project's design requirements.

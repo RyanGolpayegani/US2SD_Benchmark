@@ -1,0 +1,42 @@
+To create a detailed Sequence Diagram for the User Story described, using PlantUML syntax, follow this structure:
+
+```plantuml
+@startuml
+actor Archivist as archivist
+participant "Web Interface" as web
+participant "Import Module" as importModule
+participant "Validation Service" as validation
+participant "Database" as db
+
+== Import EAD Data ==
+
+archivist -> web : Select EAD file for import
+web -> importModule : Initiate EAD import process
+importModule -> validation : Validate EAD file format
+alt EAD file is valid
+    validation --> importModule : Validation Success
+    importModule -> db : Store EAD data
+    db --> importModule : Confirm data stored
+    importModule -> web : Show import success message
+    web --> archivist : Display success message
+else EAD file is invalid
+    validation --> importModule : Validation Failure with Errors
+    importModule -> web : Show import failure and errors
+    web --> archivist : Display errors
+end
+
+@enduml
+```
+
+Explanation of the Sequence:
+1. **Archivist initiates the EAD file import**: The sequence starts with the Archivist selecting and initiating the import of an EAD file through the Web Interface.
+
+2. **File validation**: The Import Module calls the Validation Service to validate the file format of the EAD. This step is crucial to ensure that the EAD data can be correctly parsed and stored.
+
+3. **EAD data storage**: If the EAD file is valid, the Validation Service confirms success to the Import Module, which, in turn, proceeds to store the data in the Database.
+
+4. **Confirmation and feedback**: Once the data storage is confirmed by the Database, the Import Module communicates the success to the Web Interface, which then displays a success message to the Archivist.
+
+5. **Handling invalid files**: If the EAD file does not pass validation, the Validation Service sends back an error message to the Import Module, which is then relayed to the Web Interface and shown to the Archivist detailing the reasons for failure.
+
+This sequence diagram is simplistic but captures the key interactions for implementing the EAD data import feature within the Comprehensive Archival Management System (CAMS). Adjustments and enhancements can be made depending on specific implementation details, system architecture, and additional requirements.

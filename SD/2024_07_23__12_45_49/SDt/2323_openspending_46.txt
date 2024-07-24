@@ -1,0 +1,29 @@
+@startuml
+actor "Data Publishing User" as user
+participant "Python Client" as client
+participant "API Gateway" as gateway
+participant "Authentication Service" as auth
+database "Datastore" as datastore
+
+user -> client : Executes script to add data
+client -> gateway : POST /data/add\n{data in bulk}
+activate client
+activate gateway
+
+gateway -> auth : Request user authentication
+activate auth
+auth -->> gateway : Authentication token
+deactivate auth
+
+gateway -> datastore : Store bulk data\nAuthentication token
+activate datastore
+datastore -->> gateway : Data stored successfully
+deactivate datastore
+
+gateway -->> client : Response (Success/Failure)
+deactivate gateway
+
+client -->> user : Display operation result
+deactivate client
+
+@enduml

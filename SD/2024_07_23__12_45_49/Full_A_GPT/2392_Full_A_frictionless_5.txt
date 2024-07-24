@@ -1,0 +1,38 @@
+To create a detailed sequence diagram for the specified user story using PlantUML, you will need to follow several steps to break down the process into a sequence of actions. Considering the complexity of the DPIE project, the sequence might involve interactions between the researcher, a front-end interface, server-side logic, and possibly external services/tools for creating and saving visualizations. Below is an example of how this might be depicted in PlantUML syntax.
+
+```plantuml
+@startuml
+participant Researcher
+participant "Front-end Interface" as FE
+participant "Visualization Tool" as VT
+participant "DPIE API" as API
+database "Data Package Repository" as DPR
+
+Researcher -> FE : Selects data for visualization
+FE -> VT : Sends data
+activate VT
+VT -> VT : Generates visualization
+Researcher -> VT : Saves visualization
+VT -> FE : Sends saved visualization information
+deactivate VT
+FE -> API : Request to add visualization to Data Package
+activate API
+API -> DPR : Validates Data Package structure
+DPR -> API : Validation Success
+API -> DPR : Adds visualization to Data Package
+DPR -> API : Update Successful
+API -> FE : Confirmation of Visualization Addition
+FE -> Researcher : Displays confirmation message
+deactivate API
+
+@enduml
+```
+
+This sequence diagram outlines the following steps:
+1. **Researcher Selection:** The researcher selects the desired data for visualization through the front-end interface.
+2. **Visualization Generation:** The selected data is sent to a visualization tool where the actual visualization is generated.
+3. **Saving the Visualization:** Once the researcher is satisfied with the visualization, they save it, triggering the front-end to send information about the saved visualization to the DPIE API.
+4. **Data Package Update:** The DPIE API validates the structure of the Data Package, adds the visualization to it, and updates the Data Package repository.
+5. **Confirmation:** Upon successful addition of the visualization to the Data Package, the DPIE API sends a confirmation back to the front-end, which in turn notifies the researcher.
+
+Remember, this is a simplification. Depending on the requirements and existing infrastructure of the DPIE project, there might be additional steps involved, such as authentication and authorization, more detailed error handling, and interaction with external data sources or services. This diagram assumes that the visualization tool is capable of both generating and saving visualizations, and that these visualizations can be directly added to Data Packages through the API. Adjustments may be needed to match the specifics of your project's architecture and workflows.

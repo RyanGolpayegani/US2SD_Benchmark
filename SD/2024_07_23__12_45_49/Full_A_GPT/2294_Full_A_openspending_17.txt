@@ -1,0 +1,48 @@
+To illustrate the described user story in a sequence diagram format using PlantUML, it's crucial to break down the process into detailed interactions between the user, the system (OpenSpending platform), and any backend services involved in changing the display of monetary measures across different currencies. Below is a PlantUML code snippet that captures these interactions:
+
+```plantuml
+@startuml
+participant User
+participant WebInterface as "OpenSpending Web Interface"
+participant API as "OpenSpending API"
+participant CurrencyService as "External Currency Conversion Service"
+
+User -> WebInterface: Select dataset with monetary measures
+activate WebInterface
+
+WebInterface -> API: Request dataset information
+activate API
+
+API --> WebInterface: Returns dataset information
+deactivate API
+
+WebInterface --> User: Displays dataset information
+deactivate WebInterface
+
+User -> WebInterface: Request to change currency display
+activate WebInterface
+
+WebInterface -> API: Request current currency rates
+activate API
+
+API -> CurrencyService: Query current rates for specified currencies
+activate CurrencyService
+
+CurrencyService --> API: Return current rates
+deactivate CurrencyService
+
+API --> WebInterface: Provides conversion rates
+deactivate API
+
+WebInterface -> WebInterface: Convert all monetary measures using rates
+WebInterface --> User: Display dataset in selected currency
+deactivate WebInterface
+
+@enduml
+```
+
+This sequence diagram starts with the user selecting a dataset within the OpenSpending web interface that includes monetary measures. After viewing the dataset information, the user decides to change the display of monetary values into a different currency.
+
+The web interface communicates with the OpenSpending API to fetch the current currency rates from an external currency conversion service. Once the conversion rates are obtained, the OpenSpending web interface calculates the monetary values in the new currency and updates the displayed dataset accordingly for the user.
+
+Please note, to render this diagram, you'll need a PlantUML environment set up or you can use an online PlantUML editor.

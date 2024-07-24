@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram for the specific user story, "As a restaurant manager, I want to see employees' service time, so that I can analyse performance," involves illustrating the sequence of messages and interactions between objects in the Restaurant Management and Operations System. Below is a sample PlantUML format sequence diagram tailored towards this user story.
+
+This example assumes the system has modules/components for user authentication, dashboard interface, performance metrics calculation, and data retrieval from the database. The sequence begins with the restaurant manager requesting employee service time data and ends with displaying that data.
+
+```plantuml
+@startuml
+participant Manager as M
+participant "Authentication Module" as Auth
+participant "Dashboard Interface" as DI
+participant "Performance Metrics\nModule" as PM
+participant "Database" as DB
+
+activate M
+M -> Auth : Authenticate
+activate Auth
+Auth --> M : Success
+deactivate Auth
+
+M -> DI : Request "Employee Service Time"
+activate DI
+DI -> PM : Fetch Service Time Data
+activate PM
+PM -> DB : Query Employee Service Times
+activate DB
+DB --> PM : Service Time Data
+deactivate DB
+PM --> DI : Processed Data for Display
+deactivate PM
+DI --> M : Display Employee Service Times
+deactivate DI
+deactivate M
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram Steps:
+1. **Authentication:** The restaurant manager initiates the process by logging into the system. The Authentication Module verifies the manager's credentials.
+2. **Request for Data:** Once successfully authenticated, the manager navigates to the dashboard interface and requests to view the employees' service times.
+3. **Data Fetching:** The Dashboard Interface forwards this request to the Performance Metrics Module, which is responsible for calculating and fetching the relevant data.
+4. **Database Query:** The Performance Metrics Module queries the database to retrieve the service times of all employees.
+5. **Data Processing:** The database returns the service time data back to the Performance Metrics Module, which then processes it for display - could involve calculating averages, identifying outliers, etc.
+6. **Display Processed Data:** Finally, the processed data is sent back to the Dashboard Interface, which then displays the employee service times for the manager.
+
+This sequence demonstrates the flow from the initial request by the manager to the visualization of the service times, highlighting the interaction between different system components in achieving the desired outcome.

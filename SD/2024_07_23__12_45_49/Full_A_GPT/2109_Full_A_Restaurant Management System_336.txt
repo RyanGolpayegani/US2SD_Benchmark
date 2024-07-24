@@ -1,0 +1,34 @@
+To create a Sequence Diagram for the user story "As an employee, I want to edit a store order" using PlantUML, you would describe the interaction between the system components involved in editing a store order. This involves the Employee using a User Interface (UI) to communicate with a Backend Service which then interacts with a Database to update the order details. 
+
+Below is a basic PlantUML code that illustrates this process:
+
+```plantuml
+@startuml
+participant Employee_UI as "Employee Interface"
+participant Backend_Service as "Backend Service"
+database Order_DB as "Order Database"
+
+Employee_UI -> Backend_Service : selectOrderToEdit(orderId)
+Backend_Service -> Order_DB : getOrderDetails(orderId)
+Order_DB --> Backend_Service : orderDetails
+Backend_Service --> Employee_UI : displayOrderDetails(orderDetails)
+
+Employee_UI -> Backend_Service : submitEditedOrder(orderId, editedDetails)
+Backend_Service -> Order_DB : updateOrder(orderId, editedDetails)
+Order_DB --> Backend_Service : confirmUpdate
+Backend_Service --> Employee_UI : displayUpdateConfirmation
+
+@enduml
+```
+
+Explanation of the Flow:
+1. **selectOrderToEdit(orderId)**: The employee selects an order to edit through the Employee Interface, which sends a request to the Backend Service with the order's ID.
+2. **getOrderDetails(orderId)**: The Backend Service requests the details of the selected order from the Order Database using the order's ID.
+3. **orderDetails**: The Order Database returns the details of the selected order to the Backend Service.
+4. **displayOrderDetails(orderDetails)**: The Backend Service sends the order details back to the Employee Interface to display them to the employee.
+5. **submitEditedOrder(orderId, editedDetails)**: After the employee makes the necessary edits, the edited order details along with the order's ID are submitted to the Backend Service from the Employee Interface.
+6. **updateOrder(orderId, editedDetails)**: The Backend Service requests the Order Database to update the order with the new details.
+7. **confirmUpdate**: The Order Database updates the order and sends a confirmation back to the Backend Service.
+8. **displayUpdateConfirmation**: The Backend Service informs the Employee Interface that the order has been successfully updated, and a confirmation message is displayed to the employee.
+
+This sequence diagram focuses on the core interactions needed to achieve the desired user story outcome. Depending on the system's complexity and requirements, additional steps or components (like error handling, authentication, or logging) might be necessary for a comprehensive real-world implementation.

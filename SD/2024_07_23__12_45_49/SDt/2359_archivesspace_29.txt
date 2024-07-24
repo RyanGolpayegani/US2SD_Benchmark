@@ -1,0 +1,28 @@
+@startuml
+participant Archivist
+participant "CAMS Interface" as Interface
+participant "File Upload Manager" as UploadManager
+participant "Data Validation Module" as ValidationModule
+participant "Database" as DB
+
+Archivist -> Interface : Select EAD file(s) for upload
+Interface -> UploadManager : Initiate file upload
+UploadManager -> UploadManager : Check file type and size
+alt If file is valid
+    UploadManager -> ValidationModule : Send file for validation
+    loop For each record in EAD file
+        ValidationModule -> ValidationModule : Validate record structure and content
+    end
+    alt If validation passes
+        ValidationModule --> DB : Import records into database
+        DB --> ValidationModule : Send import success confirmation
+        ValidationModule --> Interface : Display success message to Archivist
+    else Validation fails
+        ValidationModule --> Interface : Display error messages
+    end
+else If file is invalid
+    UploadManager --> Interface : Display file invalid error
+end
+Archivist <- Interface : Receives confirmation/error message
+
+@enduml

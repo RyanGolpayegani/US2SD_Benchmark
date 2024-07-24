@@ -1,0 +1,28 @@
+@startuml
+actor User
+participant "Web Interface" as Web
+participant "Backend System" as Backend
+participant "Database" as DB
+participant "Map Service API\n(Google Maps)" as MapAPI
+
+User -> Web : Selects "View Recycling Centers"
+activate Web
+Web -> Backend : Request recycling center data
+activate Backend
+
+Backend -> DB : Query recycling center locations
+activate DB
+DB --> Backend : Return recycling center data
+deactivate DB
+
+Backend -> MapAPI : Request to plot locations on map
+activate MapAPI
+MapAPI --> Backend : Return map with plotted recycling centers
+deactivate MapAPI
+
+Backend --> Web : Send map view to display
+deactivate Backend
+Web --> User : Display map with recycling centers
+deactivate Web
+
+@enduml

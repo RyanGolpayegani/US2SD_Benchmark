@@ -1,0 +1,56 @@
+To generate a detailed Sequence Diagram in PlantUML format for the specific User Story: "As a waiter, I want to display the menu, so that I can inform customers," we would need to illustrate the flow of actions from the waiter querying the menu to displaying it to the customers. 
+
+This scenario assumes that the waiter interacts with a digital menu system, possibly through a tablet or another device, to fetch and display the menu.
+
+Below is the PlantUML code that represents this sequence diagram:
+
+```plantuml
+@startuml
+actor Waiter
+participant "Waiter Interface" as WI
+participant "API Gateway" as API
+participant "Business Logic" as BL
+database "Menu Database" as DB
+
+== Display Menu to Customer ==
+
+Waiter -> WI: Select "Show Menu"
+activate WI
+WI -> API: GET /menu
+activate API
+API -> BL: Fetch Menu
+activate BL
+BL -> DB: Query Menu Items
+activate DB
+
+DB --> BL: Menu Data
+deactivate DB
+BL --> API: Menu Response
+deactivate BL
+API --> WI: Menu Data
+deactivate API
+WI --> Waiter: Display Menu
+deactivate WI
+
+@enduml
+```
+
+This sequence diagram outlines the following steps:
+
+1. **Waiter Initiates "Show Menu" Action**: The waiter selects a “Show Menu” option on the waiter interface device (e.g., a tablet).
+
+2. **Waiter Interface Requests Menu**: The device, through its waiter interface, sends a request to the back-end system to fetch the menu. This is done by making a call to an API Gateway with a GET request to the /menu endpoint.
+
+3. **API Gateway Forwards Request to Business Logic**: The API gateway receives the menu request and forwards it to the appropriate business logic service for processing.
+
+4. **Business Logic Queries Menu Database**: The business logic layer processes the request and queries the Menu Database for the current menu items.
+
+5. **Menu Database Returns Data**: The Menu Database returns the data for the current menu back to the Business Logic layer.
+
+6. **Business Logic Returns Menu to API Gateway**: The business logic layer processes the menu data as needed (e.g., formatting) and sends it back to the API Gateway.
+
+7. **API Gateway Sends Data to Waiter Interface**: The API Gateway sends the menu data back to the Waiter Interface, which then displays the menu to the waiter.
+
+8. **Waiter Displays Menu to Customers**: Finally, the waiter displays the menu on the device to inform the customers.
+
+This code sets up a fundamental sequence of interactions between the waiter, the software components involved in fetching and displaying a menu, and the underlying menu database. It encapsulates the primary flow from request to display without delving into error handling or alternative paths which can be expanded upon as needed for more detailed system specifications.

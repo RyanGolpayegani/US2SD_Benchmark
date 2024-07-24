@@ -1,0 +1,34 @@
+Certainly! To create a detailed sequence diagram for the user story where a user wants to register their email ID to receive notifications for new events, we will assume a basic flow of interactions between the user, the RecycleSmart platform's interface, the system back-end, and potentially an email service provider. The sequence diagram in PlantUML language will detail these interactions.
+
+```plantuml
+@startuml
+participant User as U
+participant "RecycleSmart Interface" as UI
+participant "System Backend" as SB
+participant "Database" as DB
+participant "Email Service" as ES
+
+U -> UI : Enters Email ID
+UI -> SB : Validate Email
+alt Valid Email
+    SB -> DB : Store Email ID
+    DB --> SB : Confirmation of Email ID Stored
+    SB -> ES : Subscribe to Notification Service
+    ES --> SB : Confirmation of Subscription
+    SB --> UI : Show Success Message
+else Invalid Email
+    SB --> UI : Show Error Message (Invalid Email)
+end
+UI --> U : Display Confirmation/Error Message
+
+@enduml
+```
+
+This diagram outlines the process as follows:
+1. **User Interaction**: The user enters their email ID into the RecycleSmart interface to receive notifications.
+2. **Validation**: The system backend validates the email ID. If the email is valid, the process continues; otherwise, an error message is displayed.
+3. **Database Storage**: Upon validation, the backend requests the database to store the email ID.
+4. **Subscription**: The system then interacts with an email service to subscribe the user to notification services.
+5. **Confirmation**: After successful subscription, a success message is displayed to the user. If there were any issues (for instance, invalid email), an appropriate error message is displayed instead.
+
+This sequence ensures that the user is properly notified about their subscription status and that their email ID is handled securely and efficiently throughout the process.

@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+
+actor Researcher as researcher
+participant "DPIE System" as DPIE
+participant "NetCDF Integration" as NetCDF
+database "Data Storage" as storage
+
+researcher -> DPIE : Request NetCDF data storage
+activate DPIE
+
+DPIE -> NetCDF : Initiate NetCDF integration
+activate NetCDF
+
+NetCDF -> storage : Extract metadata from NetCDF
+activate storage
+storage -> NetCDF : Metadata extracted
+deactivate storage
+
+NetCDF -> storage : Convert data to plaintext
+activate storage
+storage -> NetCDF : Data stored in plaintext\nwith metadata
+deactivate storage
+
+NetCDF -> DPIE : NetCDF data stored as plaintext\nwith metadata
+deactivate NetCDF
+
+DPIE -> researcher : Confirmation &\nAccess details
+deactivate DPIE
+
+@enduml

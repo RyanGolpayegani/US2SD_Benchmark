@@ -1,0 +1,29 @@
+@startuml
+participant Publisher
+participant "Publisher Interface" as UI
+participant "DataPackage API" as DataAPI
+participant "Data Validation Service" as Validation
+participant "Visualization Tool Integration" as VisualTool
+
+Publisher -> UI: Access DPIE
+UI -> DataAPI: Upload DataPackage
+DataAPI -> DataAPI: Process DataPackage
+DataAPI --> UI: Confirm Package Processing
+UI -> Publisher: Request Type Information Addition
+Publisher -> UI: Provide Type Information
+UI -> DataAPI: Update DataPackage with Type Information
+DataAPI -> Validation: Validate Updated DataPackage
+alt Validation Success
+    Validation --> DataAPI: DataPackage Valid
+    DataAPI -> VisualTool: Integrate DataPackage
+    VisualTool -> VisualTool: Prepare for Visualization
+    VisualTool --> DataAPI: Confirmation
+    DataAPI --> UI: Update Success & Visualization Ready
+    UI --> Publisher: Notify Update and Integration Success
+else Validation Failure
+    Validation --> DataAPI: Errors Found
+    DataAPI --> UI: Notify Errors
+    UI --> Publisher: Request Error Correction
+end
+
+@enduml

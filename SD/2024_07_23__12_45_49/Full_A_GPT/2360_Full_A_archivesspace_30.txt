@@ -1,0 +1,42 @@
+Below is a PlantUML sequence diagram detailing the interactions for the User Story: "As a systems administrator, I want to be able to control the location of the demo database and I want it to be backed up."
+
+This sequence diagram assumes the presence of a user interface (UI) for the system administrator, a system configuration interface, a database management system (DBMS), and a backup system. The flow starts with the systems administrator deciding to update the location of the demo database and ensure it's backed up.
+
+```plantuml
+@startuml
+actor "System Administrator" as admin
+participant "System Configuration Interface" as configUI
+participant "Database Management System (DBMS)" as dbms
+participant "Backup System" as backup
+
+== Update Demo Database Location ==
+admin -> configUI : Request to change database location
+activate configUI
+configUI -> dbms : Validate new location
+activate dbms
+dbms --> configUI : Location validation result
+deactivate dbms
+configUI -> dbms : Update database location
+activate dbms
+dbms --> configUI : Update confirmation
+deactivate dbms
+configUI --> admin : Location update confirmation
+deactivate configUI
+
+== Initiate Database Backup ==
+admin -> backup : Request to backup database
+activate backup
+backup -> dbms : Request database details/location
+activate dbms
+dbms --> backup : Database details/location
+deactivate dbms
+backup -> backup : Perform backup operation
+backup --> admin : Backup success confirmation
+deactivate backup
+
+@enduml
+```
+
+To visualize this diagram, you will need a PlantUML environment (e.g., an online editor like planttext.com), or you can integrate PlantUML with your development environment.
+
+This diagram provides a simplified overview. Depending on the actual system architecture, there may be additional steps or components involved (e.g., authentication mechanisms, network storage systems, or cloud storage services) that you might need to consider for a more comprehensive design.

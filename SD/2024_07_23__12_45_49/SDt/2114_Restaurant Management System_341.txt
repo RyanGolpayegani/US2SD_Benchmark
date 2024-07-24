@@ -1,0 +1,20 @@
+@startuml
+participant Employee
+participant SystemInterface as "System Interface"
+participant AuthenticationService as "Authentication Service"
+participant ReportGenerationModule as "Report Generation Module"
+participant Database
+
+title Employee Clock In and Out Report Generation
+
+Employee -> SystemInterface : Request report generation
+SystemInterface -> AuthenticationService : Validate employee credentials
+AuthenticationService -> SystemInterface : Credentials valid
+
+SystemInterface -> ReportGenerationModule : Initiate report generation for employee
+ReportGenerationModule -> Database : Query clock in and out data
+Database -> ReportGenerationModule : Return data
+ReportGenerationModule -> SystemInterface : Compile and format report
+SystemInterface -> Employee : Display generated report
+
+@enduml

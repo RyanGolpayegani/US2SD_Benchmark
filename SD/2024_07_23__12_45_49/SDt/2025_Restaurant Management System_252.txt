@@ -1,0 +1,61 @@
+@startuml
+actor Manager as M
+participant "Web Interface" as W
+participant "Backend Server" as B
+database "Database" as D
+
+== View and Manage Customer Orders ==
+
+M -> W: Request to view orders
+note right of M: Wants to calculate total sales
+
+W -> B: Fetch orders data
+activate B
+
+B -> D: Query order details
+activate D
+
+D --> B: Return order details
+deactivate D
+
+B --> W: Show orders data
+deactivate B
+
+W --> M: Display orders
+
+M -> W: Select and manage orders
+note over M,W: Modify or update as needed
+
+W -> B: Update orders data
+activate B
+
+B -> D: Process updates
+activate D
+
+D --> B: Confirm updates
+deactivate D
+
+B --> W: Show success message
+deactivate B
+
+W --> M: Display confirmation
+
+== Calculate Total Sales ==
+
+M -> W: Request to calculate total sales
+
+W -> B: Calculate sales request
+activate B
+
+B -> D: Sum up sales data
+activate D
+
+D --> B: Return total sales
+deactivate D
+
+B --> W: Display total sales
+deactivate B
+
+W --> M: Show total sales
+
+@enduml

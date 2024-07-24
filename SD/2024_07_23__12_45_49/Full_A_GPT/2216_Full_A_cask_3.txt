@@ -1,0 +1,33 @@
+Based on your project description and the user story provided, creating a detailed sequence diagram in PlantUML format requires illustrating the interactions between the app developer and various components of the dataset management and version control system when deploying a new version of a dataset type. The sequence will include steps such as initiating the deployment, checking for existing datasets of the same type, versioning the new dataset, and deploying it alongside the app artifact without affecting existing datasets.
+
+Below is a basic sequence diagram in PlantUML format that represents this process. Please note, this is a simplified example to fit the user story’s scope. Depending on the complexity and design of your actual system, more actors and interactions might be necessary.
+
+```plantuml
+@startuml
+actor AppDeveloper as developer
+participant "Deployment Module" as deployment
+participant "Version Control" as vcontrol
+participant "Dataset Management" as management
+participant "App Artifact Repository" as repository
+
+== Deployment of a New Dataset Type Version ==
+
+developer -> deployment: initiate deployment
+deployment -> vcontrol: check for existing versions
+vcontrol -> management: retrieve current versions of dataset type
+management --> vcontrol: list of current versions
+vcontrol --> deployment: confirmation of existing versions
+deployment -> vcontrol: create new version
+vcontrol -> management: register new dataset type version
+management --> vcontrol: version registered successfully
+vcontrol --> deployment: new version created
+deployment -> repository: include new dataset type in app artifact
+repository --> deployment: app artifact updated
+deployment --> developer: deployment successful
+
+@enduml
+```
+
+This diagram starts with the app developer initiating the deployment of a new dataset type version. The deployment module then interacts with the version control to check existing versions of that dataset type. The version control consults the dataset management system to retrieve current versions, after which a new version creation process starts. Once the new dataset type version is registered, the updated app artifact, including the new dataset type version, is stored in the app artifact repository. Finally, the deployment module confirms the successful deployment back to the app developer.
+
+Remember, the actual interactions could be more complex, involving error handling, notifications, and other system components such as security checks, dataset configuration, and underlying storage systems. Adjustments might be needed to accurately reflect your system's architecture and processes.

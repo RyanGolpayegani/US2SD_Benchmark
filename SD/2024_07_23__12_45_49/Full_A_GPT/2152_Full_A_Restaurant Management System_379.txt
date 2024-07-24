@@ -1,0 +1,50 @@
+To create a sequence diagram for the user story "As an employee, I want to track the stock so that I can report it to the manager" using PlantUML format, we need to outline the interactions between the system components involved in this process. This scenario involves the employee accessing the inventory system, reviewing stock levels, possibly interacting with the inventory database, and then generating or preparing a report for the manager.
+
+This diagram will illustrate the sequence of actions following the user story's intent.
+
+```plantuml
+@startuml
+participant Employee as E
+participant "Inventory System" as IS
+database "Inventory Database" as ID
+participant "Reporting Tool" as RT
+participant Manager as M
+
+E -> IS : Access inventory
+activate IS
+
+IS -> ID : Query stock levels
+activate ID
+ID --> IS : Return stock levels
+deactivate ID
+
+IS --> E : Show stock levels
+E -> IS : Generate stock report request
+IS -> RT : Compile stock report
+activate RT
+RT -> ID : Retrieve stock data
+activate ID
+ID --> RT : Return stock data
+deactivate ID
+RT --> IS : Stock report ready
+deactivate RT
+
+IS --> E : Display/download stock report
+E -> E : Review stock report
+E -> M : Submit stock report
+note right of M : Manager reviews\nstock report
+
+@enduml
+```
+
+This sequence diagram follows the basic flow of an employee wanting to track stock and report it to the management. Here's an explanation of the steps outlined:
+
+1. **Employee Accesses Inventory**: The employee starts by accessing the inventory system to check stock levels.
+2. **Query Stock Levels**: The inventory system queries the inventory database to get the current stock levels.
+3. **Show Stock Levels**: The system shows the stock levels to the employee through the inventory system interface.
+4. **Generate Stock Report Request**: The employee requests the generation of a stock report based on the visible stock levels.
+5. **Compile Stock Report**: The inventory system instructs the reporting tool to compile a stock report, which involves retrieving detailed stock information from the inventory database.
+6. **Stock Report Ready**: The reporting tool indicates that the stock report is ready and the inventory system presents the report to the employee for review or download.
+7. **Review and Submit**: The employee reviews the stock report and then submits it to the manager for evaluation.
+
+This sequence diagram captures the essential interactions involved in tracking stock and creating a report for management within the context of a Restaurant Management and Operations System.

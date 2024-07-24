@@ -1,0 +1,25 @@
+@startuml
+participant User
+participant "Frontend Application" as Frontend
+participant "Validation System" as Validation
+database "Database" as DB
+
+User -> Frontend : Enters zip code
+activate Frontend
+Frontend -> Validation : Validate zip code
+activate Validation
+
+alt zip code is valid
+    Validation -> DB : Query based on zip code
+    activate DB
+    DB --> Validation : Return results
+    deactivate DB
+    Validation --> Frontend : Zip code valid + data
+    Frontend --> User : Display recycling centers
+else zip code is invalid
+    Validation --> Frontend : Zip code invalid message
+    Frontend --> User : Display error message\n"Please enter a valid zip code."
+end
+deactivate Validation
+deactivate Frontend
+@enduml

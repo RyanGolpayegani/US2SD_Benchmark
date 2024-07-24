@@ -1,0 +1,20 @@
+@startuml
+participant Waiter as waiter
+participant "Reservation System" as system
+participant Database as db
+
+waiter -> system : Enter reservation details\n(Name, Date, Time, Table #)
+system -> db : Check table availability
+alt Table is available
+  db -> system : Confirm availability
+  system -> waiter : Show confirmation message
+  waiter -> system : Confirm reservation
+  system -> db : Save reservation details
+  db -> system : Confirmation of save
+  system -> waiter : Display reservation ID and details
+else Table not available
+  db -> system : Show unavailable message
+  system -> waiter : Display alternative options
+end
+
+@enduml

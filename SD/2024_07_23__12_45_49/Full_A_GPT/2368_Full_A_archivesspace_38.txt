@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the user story "As an Archist, I want to manage Digital Objects" would involve several actors and components of the Comprehensive Archival Management System (CAMS). Let's break down the process into steps and then into a PlantUML format sequence diagram.
+
+### Actors and Components
+- **User**: Archivist
+- **Frontend Interface**: The UI/UX where the archivist interacts with CAMS.
+- **Authentication Service**: Validates user credentials.
+- **Digital Object Management Service**: Allows operations on digital objects.
+- **Database**: Stores all the archival data, including digital objects' metadata.
+
+### Steps to Manage Digital Objects
+1. The archivist logs into CAMS.
+2. The archivist navigates to the digital objects management section.
+3. Depending on the goal, the archivist selects to either create a new digital object, update an existing one, or delete.
+4. The system performs the requested operation (such as saving new data to the database or updating existing data).
+5. The system confirms the operation to the archivist.
+
+### Sequence Diagram in PlantUML
+```plantuml
+@startuml
+actor Archivist as A
+participant "Frontend Interface" as F
+participant "Authentication Service" as AS
+participant "Digital Object Management Service" as DOMS
+database Database as DB
+
+A -> F : Login credentials
+F -> AS : Validate credentials
+AS --> F : Authentication Response
+A -> F : Navigate to Manage Digital Objects
+F -> DOMS : Request digital object form
+DOMS --> F : Display form (Create, Update, Delete)
+A -> F : Fills out form (E.g., Create new digital object)
+F -> DOMS : Process request (E.g., Create)
+DOMS -> DB : Save new digital object
+DB --> DOMS : Confirmation
+DOMS --> F : Operation result
+F --> A : Display result (Success/Failure)
+
+@enduml
+```
+
+In this sequence diagram, the process starts with the archivist logging in and proceeds through managing digital objects (create, update, delete). This is a simplified overview that captures the general flow. Depending on the project specifics, there might be more steps involved, such as error handling, additional validations, or other interactions with components not detailed in the project description.

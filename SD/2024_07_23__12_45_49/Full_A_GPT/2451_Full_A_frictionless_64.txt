@@ -1,0 +1,36 @@
+Given the complexity of the DataPackage Integrator and Enhancer (DPIE) project, designing a sequence diagram for the specific user story of a publisher looking to check data availability and persistence after publication involves illustrating the communication between system components such as the DPIE system, data storage systems, and possibly external verification services.
+
+The sequence diagram below, created with PlantUML syntax, showcases a simplified process where a publisher checks the availability and persistence of a Data Package after it has been published:
+
+```
+@startuml
+participant Publisher as publisher
+participant "DPIE System" as dpi
+participant "Data Storage" as storage
+participant "Verification Service" as verify
+participant "Data Package Repository" as repo
+
+publisher -> dpi : Request availability check
+dpi -> storage : Verify data integrity
+storage -> verify : Request data verification
+verify -> storage : Return verification status
+storage --> dpi : Confirm data availability
+dpi --> publisher : Return availability status
+
+publisher -> dpi : Request persistence check
+dpi -> repo : Verify persistence criteria
+repo -> verify : Request persistence validation
+verify -> repo : Validate persistence
+repo --> dpi : Confirm persistence status
+dpi --> publisher : Return persistence status
+
+@enduml
+```
+
+In this diagram, interaction starts when the Publisher requests a check on the availability and persistence of published data. The DPIE System orchestrates the checks by first verifying data integrity and availability through direct communication with a Data Storage entity. This might involve integrity checks or hashing comparisons.
+
+For availability, the DPIE System may employ a Verification Service that confirms the data is intact and accessible. Once verified, the DPIE System reports back to the Publisher.
+
+For persistence, the DPIE System interacts with the Data Package Repository, where criteria for persistence (like DOI existence, citation, or archival information) are verified. Verification Service could be utilized again to ensure that persistence standards are met according to predefined criteria, such as checking that datasets are accessible over time, have backups, and are mirrored across diverse geographic locations.
+
+This diagram is simplified for clarity. In a real-world application, additional steps for authentication, error handling, detailed verification processes, or notifications could be included.

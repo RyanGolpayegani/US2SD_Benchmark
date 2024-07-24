@@ -1,0 +1,22 @@
+@startuml
+participant Archivist as archivist
+participant "UI/Frontend" as UI
+participant "Controller/Server" as server
+participant "Export Service" as exportService
+participant "Database" as db
+
+archivist -> UI : Selects "Export as EAD"
+UI -> server : Request EAD export
+activate server
+server -> exportService : Initiate EAD Export
+activate exportService
+exportService -> db : Fetch Record Details
+activate db
+db --> exportService : Record Data
+deactivate db
+exportService --> server : EAD File
+deactivate exportService
+server -> UI : EAD Export ready
+UI -> archivist : Download EAD File
+deactivate server
+@enduml

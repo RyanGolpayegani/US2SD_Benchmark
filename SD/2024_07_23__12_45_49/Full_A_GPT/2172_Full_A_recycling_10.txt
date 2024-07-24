@@ -1,0 +1,42 @@
+To accommodate your request for a sequence diagram that outlines the process by which a user views a map displaying special waste drop-off sites within their area on the RecycleSmart platform, the following is a detailed representation written in PlantUML format. This diagram assumes foundational steps such as user authentication are already completed.
+
+Please note, this is a simplified version to cover the core interactions and does not include all error handling and alternative paths that would be necessary for a full production environment.
+
+```plantuml
+@startuml
+participant UserInterface as UI
+participant Server as S
+participant Database as DB
+participant GoogleMapsAPI as GM
+
+UI -> S : RequestSpecialWasteSites(Location)
+activate S
+    S -> DB : GetSpecialWasteSites(Location)
+    activate DB
+    DB --> S : SpecialWasteSitesList
+    deactivate DB
+    S -> GM : RequestMap(SpecialWasteSitesList)
+    activate GM
+    GM --> S : MapDisplay
+    deactivate GM
+    S --> UI : DisplayMap(MapDisplay)
+deactivate S
+
+@enduml
+```
+
+**Explanation of Each Step:**
+
+1. **UserInterface (UI) to Server (S):** The user, through the RecycleSmart platform's UI, requests to view special waste drop-off sites near their location. This is initiated by entering a specific geographic area or allowing the application to access their location data.
+
+2. **Server (S) to Database (DB):** The server processes this request and queries the database for a list of special waste drop-off sites based on the provided location information.
+
+3. **Database (DB) to Server (S):** The database returns a list of special waste drop-off sites to the server. This list contains the necessary data to identify each site, including names, coordinates, and perhaps additional metadata like types of waste accepted.
+
+4. **Server (S) to Google Maps API (GM):** With the list of sites, the server then requests a map display from Google Maps API, integrating the special waste site data so that each location can be accurately represented on the map.
+
+5. **Google Maps API (GM) to Server (S):** Google Maps API processes the server's request, generates a map including the special waste drop-off sites, and returns this map display back to the server.
+
+6. **Server (S) to UserInterface (UI):** Finally, the server sends the map display back to the user's interface, where they can now view the special waste drop-off sites in their chosen area.
+
+This sequence diagram simplifies the back-and-forth communication necessary to fulfill the user's request to view a map of special waste drop-off sites around their area, focusing on the main components involved in the process.

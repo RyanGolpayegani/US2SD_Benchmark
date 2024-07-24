@@ -1,0 +1,24 @@
+@startuml
+actor "Recycling Facility\nRepresentative" as rep
+participant "RecycleSmart\nWeb Interface" as web
+database "RecycleSmart\nDatabase" as db
+participant "Recycling Facility\nInformation System" as facility
+
+== Update Facility Information ==
+
+rep -> web : Access Facility Update Page
+web -> rep : Display Update Form
+
+rep -> web : Submit Updated Info\n(Materials Accepted, etc.)
+web -> facility : Validate Information
+alt Information Valid
+    facility -> db : Update Facility Info
+    db -> facility : Confirmation
+    facility -> web : Update Success Message
+    web -> rep : Display Success Message
+else Information Invalid
+    facility -> web : Error Message (Invalid Info)
+    web -> rep : Display Error Message
+end
+
+@enduml

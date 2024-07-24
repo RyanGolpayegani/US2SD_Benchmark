@@ -1,0 +1,59 @@
+To create a detailed sequence diagram for the user story "As a user, I want to specify as part of dataset configuration whether it is explorable" in PlantUML format, we'll capture the steps involved as interactions between the user, the dataset management system, and potentially the underlying database or storage system where this configuration information is stored or enacted upon. 
+
+Given the advanced nature of the project, we'll break down the sequence into these logical parts:
+
+1. **User Inputs Configuration**: The user specifies the dataset configuration, including whether it is explorable.
+2. **System Processes Configuration**: The dataset management system processes this input, deciding how to apply the configuration.
+3. **System Updates Dataset Metadata**: The system updates the dataset's metadata to reflect the explorability setting.
+4. **Optional: System Enforces or Disables Exploration Features**: Depending on the setting, the system might need to perform additional steps to enable or disable exploration features for the dataset.
+
+Below is the PlantUML code to represent this sequence:
+
+```plantuml
+@startuml
+!theme plain
+
+actor User
+participant "Dataset Management\nSystem" as DMS
+database "Database/Storage" as DB
+
+== Configuration Specification ==
+
+User -> DMS: Specify dataset configuration\n(including explorability)
+activate DMS
+DMS -> DB: Fetch current dataset configuration
+activate DB
+DB --> DMS: Current configuration data
+deactivate DB
+
+DMS -> DMS: Process new configuration\n(Check explorability setting)
+
+alt If explorability is enabled
+    DMS -> DB: Update dataset metadata\n(Set explorability to true)
+    activate DB
+    DB --> DMS: Confirmation
+    deactivate DB
+    DMS -> DB: Enable exploration features
+    activate DB
+    DB --> DMS: Exploration features enabled
+    deactivate DB
+else If explorability is disabled
+    DMS -> DB: Update dataset metadata\n(Set explorability to false)
+    activate DB
+    DB --> DMS: Confirmation
+    deactivate DB
+    Dms -> DB: Disable exploration features
+    activate DB
+    DB --> DMS: Exploration features disabled
+    deactivate DB
+end
+
+DMS --> User: Dataset configuration updated
+deactivate DMS
+
+@enduml
+```
+
+This diagram illustrates the expected interactions based on the user story provided. The "alt" decision branch showcases how the system might handle enabling versus disabling the explorability of a dataset based on the user's configuration. 
+
+Keep in mind, this example assumes a relatively straightforward path for enabling or disabling dataset exploration. Depending on the actual complexity of the dataset management and version control system, there could be more steps involved (e.g., checks for dependencies, notifications to affected parties, etc.).

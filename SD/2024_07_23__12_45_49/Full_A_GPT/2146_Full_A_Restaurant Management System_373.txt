@@ -1,0 +1,38 @@
+Given the broad requirements and scope of your project description, it's essential to clarify that creating a detailed Sequence Diagram for a specific feature outside the main description—like checking remaining annual leave permits—requires a few assumptions. These include the existence of a user authentication system, leave management module, and database interaction for retrieving leave information. 
+
+Here's a simple template for a PlantUML sequence diagram to illustrate how an employee might check their remaining annual leave permit within the Restaurant Management and Operations System. This diagram assumes that the process involves the employee logging into the system, navigating to an employee portal, and then querying their leave balance.
+
+```plantuml
+@startuml
+actor Employee as emp
+participant "Authentication Service" as auth
+participant "Employee Dashboard" as dash
+database "HR Database" as hrdb
+
+emp -> auth : Login(credentials)
+auth -> hrdb : Validate User
+hrdb -> auth : User Validated
+auth --> emp : Authentication Success
+
+emp -> dash : Navigate to Leave Section
+dash -> hrdb : Query Remaining Leave
+hrdb -> dash : Return Leave Data
+dash --> emp : Display Leave Balance
+
+@enduml
+```
+
+This sequence diagram starts with the Employee (emp) interacting with the system. Here's a brief breakdown:
+
+1. **Login Process**:
+   - The Employee submits their login credentials.
+   - The Authentication Service validates these credentials against the HR Database.
+   - The HR Database confirms the validation, and the Authentication Service notifies the employee of a successful login.
+
+2. **Querying Leave Balance**:
+   - The Employee navigates to the leave section of their dashboard.
+   - The dashboard requests the remaining leave balance from the HR Database.
+   - The HR Database sends back the leave balance data to the Employee Dashboard.
+   - The dashboard then displays this leave balance information to the Employee.
+
+This sequence diagram is a simplified representation for checking the remaining annual leave permit. Depending on the specific requirements of your system, you might need to include additional steps or services, such as handling errors, other types of employee requests, or integrating with an external leave management system.

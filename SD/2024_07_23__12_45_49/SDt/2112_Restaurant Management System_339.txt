@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+
+actor Employee
+participant "Employee Interface" as EI
+participant "Review Management System" as RMS
+participant "Database" as DB
+
+== Entering Customer Reviews ==
+
+Employee -> EI : Selects 'Enter Review'
+activate EI
+
+EI -> RMS : Requests review entry form
+activate RMS
+
+RMS -> EI : Returns review entry form
+EI -> Employee : Displays review entry form
+
+Employee -> EI : Submits filled review form with consent
+EI -> RMS : Sends review data with consent
+activate DB
+RMS -> DB : Stores review information
+DB --> RMS : Confirmation
+
+RMS --> EI : Review submission successful
+EI --> Employee : Displays success message
+
+deactivate RMS
+deactivate EI
+@enduml

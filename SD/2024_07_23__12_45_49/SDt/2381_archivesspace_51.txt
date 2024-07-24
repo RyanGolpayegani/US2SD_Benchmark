@@ -1,0 +1,50 @@
+@startuml
+!theme cerulean
+
+participant Archivist
+participant "System Interface" as Interface
+database "Backend System" as Backend
+
+== Create Agent Record ==
+Archivist -> Interface : select "Create Agent"
+Interface -> Backend : requestEmptyAgentTemplate()
+activate Backend
+Backend -> Backend : generateEmptyAgentTemplate()
+Backend -> Interface : returnEmptyAgentTemplate()
+deactivate Backend
+activate Interface
+Interface -> Archivist : displayEmptyAgentForm()
+deactivate Interface
+Archivist -> Interface : fillAgentForm(data)
+activate Interface
+Interface -> Backend : createAgent(data)
+activate Backend
+Backend -> Backend : validateData(data)
+Backend -> Backend : saveNewAgent(data)
+Backend --> Interface : confirmCreation()
+deactivate Backend
+Interface -> Archivist : displayConfirmation()
+deactivate Interface
+
+== Edit Agent Record ==
+Archivist -> Interface : requestAgentEdit(agentId)
+activate Interface
+Interface -> Backend : getAgentDetails(agentId)
+activate Backend
+Backend -> Backend : retrieveAgentData(agentId)
+Backend --> Interface : returnAgentData()
+deactivate Backend
+Interface -> Archivist : displayAgentForm(data)
+deactivate Interface
+Archivist -> Interface : submitEditedAgent(editedData)
+activate Interface
+Interface -> Backend : updateAgent(agentId, editedData)
+activate Backend
+Backend -> Backend : validateEditedData(editedData)
+Backend -> Backend : saveEditedAgent(agentId, editedData)
+Backend --> Interface : confirmUpdate()
+deactivate Backend
+Interface -> Archivist : displayUpdateConfirmation()
+deactivate Interface
+
+@enduml

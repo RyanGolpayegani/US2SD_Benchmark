@@ -1,0 +1,79 @@
+Based on the project description and your request to generate a sequence diagram for the user story "As a waiter, I want to modify orders," using PlantUML, the following is a detailed sequence diagram that describes the process.
+
+Please note, to use the code, you will need a PlantUML environment or a compatible tool that can render PlantUML diagrams.
+
+```plantuml
+@startuml
+actor Waiter
+participant "Waiter Interface" as WI
+participant "Order Management System" as OMS
+participant "Kitchen Display System" as KDS
+participant "Inventory Management" as IM
+database "Database" as DB
+
+== Order Modification Sequence ==
+
+Waiter -> WI: Select the order to modify
+activate WI
+
+WI -> OMS: Request current order details
+activate OMS
+
+OMS -> DB: Fetch order details
+activate DB
+DB --> OMS: Order details
+deactivate DB
+
+OMS --> WI: Display order details
+deactivate OMS
+
+Waiter -> WI: Make modifications (add/remove items)
+WI -> OMS: Update order with modifications
+activate OMS
+
+alt If item removed
+  OMS -> IM: Update inventory
+  activate IM
+  IM -> DB: Adjust stock levels
+  activate DB
+  DB --> IM: Stock updated
+  deactivate DB
+  IM --> OMS: Inventory updated
+  deactivate IM
+else If item added
+  OMS -> IM: Check stock availability
+  activate IM
+  IM -> DB: Query stock levels
+  activate DB
+  DB --> IM: Stock details
+  deactivate DB
+  IM --> OMS: Stock availability confirmed
+  deactivate IM
+end
+
+OMS -> DB: Save updated order
+DB --> OMS: Save confirmation
+deactivate OMS
+
+OMS -> KDS: Send updated order to kitchen
+activate KDS
+KDS --> WI: Update displayed to chef/cook
+deactivate KDS
+
+WI --> Waiter: Confirm order updated
+deactivate WI
+
+@enduml
+```
+
+Explanation:
+1. The sequence begins with the waiter selecting an order to modify through the waiter interface (WI).
+2. The WI requests current order details from the order management system (OMS), which fetches the order details from the database (DB).
+3. Once the details are retrieved and displayed to the waiter, they make the desired modifications (add or remove items) via the WI.
+4. The WI sends the updated order to the OMS. Depending on whether an item is being added or removed, the OMS interacts with the inventory management (IM) system to either adjust stock levels (if an item is removed) or check stock availability (if an item is added).
+5. The IM system adjusts or checks the inventory accordingly in the DB.
+6. Once the inventory is updated or confirmed available, the OMS saves the updated order in the database.
+7. The OMS then sends the updated order information to the kitchen display system (KDS) to inform the kitchen staff of the modification.
+8. Finally, the waiter interface confirms to the waiter that the order has been successfully updated.
+
+This sequence diagram outlines the process flow and interactions between the waiter, interfaces, and systems for modifying an order in the Restaurant Management and Operations System.

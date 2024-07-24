@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+
+actor ResearcherPublisher as RP
+participant "GitHub" as GH
+participant "DPIE Integration\n Service" as DPIE
+participant "Zenodo API" as ZA
+
+== Dataset Publishing Process ==
+RP -> GH : Push dataset with \ndescriptive metadata
+activate GH
+
+GH -> DPIE : Trigger DPIE action via webhook
+activate DPIE
+
+DPIE -> GH : Fetch dataset metadata 
+GH --> DPIE : Return metadata
+
+DPIE -> ZA : POST /deposit/depositions \n{metadata: { ... }}
+activate ZA
+
+ZA --> DPIE : Return deposition_id and \nstatus (created)
+deactivate ZA
+
+DPIE -> ZA : POST /deposit/depositions/:id/files \n{file: dataset.zip}
+activate ZA
+
+ZA --> DPIE : Return file upload status (success)
+deactivate ZA
+
+DPIE -> ZA : POST /deposit/depositions/:id/actions/publish
+activate ZA
+ZA --> DPIE : Return publication status (success)
+deactivate ZA
+
+DPIE --> RP : Notify publication success \nand provide Zenodo DOI
+deactivate DPIE
+
+@enduml

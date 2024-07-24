@@ -1,0 +1,26 @@
+@startuml
+actor Archivist
+participant "Archival Management\nSystem" as AMS
+database "Database" as DB
+
+== Indicate Agent Role in Accession or Resource ==
+
+Archivist -> AMS : select Accession/Resource/Resource Component
+activate AMS
+AMS -> DB : retrieve selected item details
+activate DB
+DB --> AMS : item details
+deactivate DB
+AMS --> Archivist : display item details
+deactivate AMS
+
+Archivist -> AMS : indicate Agent role (Creator/Source/Subject)
+activate AMS
+AMS -> DB : update item with Agent role
+activate DB
+DB --> AMS : confirmation
+AMS --> Archivist : display confirmation message
+deactivate DB
+deactivate AMS
+
+@enduml

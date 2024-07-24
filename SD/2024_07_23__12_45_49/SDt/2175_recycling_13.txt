@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+
+actor User as user
+participant "UI Interface" as UI
+participant "Web Server" as server
+participant "DocumentationService" as docService
+database "DocumentationDB" as DB
+
+== User Requests Documentation ==
+user -> UI: Navigate to Help/Documentation section
+activate UI
+UI -> server: Request User Documentation
+activate server
+
+== Server Processes Request ==
+server -> docService: GetDocumentation()
+activate docService
+docService -> DB: Query Documentation Data
+activate DB
+DB --> docService: Return Documentation Data
+deactivate DB
+docService --> server: Documentation Data
+deactivate docService
+server --> UI: Display Documentation
+deactivate server
+
+== User Views Documentation ==
+UI --> user: Show Documentation Page
+deactivate UI
+
+@enduml

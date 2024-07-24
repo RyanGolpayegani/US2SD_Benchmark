@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the scenario where a researcher wants to generate basic statistics about a dataset using PlantUML syntax requires a clear understanding of the actors, systems, and processes involved in the operation. Below is a simplified example that assumes the DPIE platform includes a service for generating statistics, and the researcher interacts with a web interface to initiate the process.
+
+Please note, this is a textual representation and to visualize it, you'll need to use a PlantUML environment (like an online editor or a locally installed PlantUML tool).
+
+```plantuml
+@startuml
+participant Researcher as researcher
+participant "DPIE Web Interface" as webInterface
+participant "DataPackage Service" as dataService
+participant "Statistics Generator" as statsGen
+database "Data Package Repository" as dataRepo
+
+researcher -> webInterface : Request statistics for dataset
+webInterface -> dataService : Validate dataset exists
+dataService -> dataRepo : Query dataset details
+dataRepo --> dataService : Dataset details
+alt dataset found
+    dataService --> webInterface : Dataset validation success
+    webInterface -> statsGen : Send dataset for statistics generation
+    statsGen -> dataRepo : Fetch dataset
+    dataRepo --> statsGen : Dataset
+    statsGen -> statsGen : Calculate basic statistics
+    statsGen --> webInterface : Statistics result
+    webInterface --> researcher : Display basic statistics
+else dataset not found
+    dataService --> webInterface : Dataset validation failure
+    webInterface --> researcher : Show error message
+end
+@enduml
+```
+
+### Explanation:
+- **Researcher**: Initiates the request for generating basic statistics of a dataset.
+- **DPIE Web Interface**: The front-facing interface where the researcher makes the request.
+- **DataPackage Service**: Validates the existence and accessibility of the requested dataset.
+- **Statistics Generator**: A hypothetical service that calculates basic statistics such as mean, median, mode, etc.
+- **Data Package Repository**: Where datasets are stored and from which the required dataset is fetched for analysis.
+
+### Workflow Steps:
+1. The **Researcher** requests basic statistics about a specific dataset via the **DPIE Web Interface**.
+2. The **Web Interface** relays this request to the **DataPackage Service** to validate if the dataset exists and is accessible.
+3. The **DataPackage Service** queries the **Data Package Repository** for dataset details.
+4. If the dataset is found, the repository returns the dataset details, and the **DataPackage Service** informs the **Web Interface** about the successful validation.
+5. The **Web Interface** then requests the **Statistics Generator** to calculate the basic statistics.
+6. The **Statistics Generator** fetches the dataset from the **Data Package Repository**.
+7. It calculates the basic statistics and returns the results back to the **Web Interface**.
+8. Finally, the **Web Interface** displays the basic statistics to the **Researcher**.
+9. If at any point the dataset is not found or is inaccessible, an error message is relayed back to the **Researcher**.
+
+This sequence diagram presents a high-level overview of the interactions. Implementation details such as specific technologies, data formats, or statistical methods are not included but can be incorporated as needed.

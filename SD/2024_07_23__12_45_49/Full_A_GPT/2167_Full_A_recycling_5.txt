@@ -1,0 +1,37 @@
+Creating a detailed sequence diagram for the user story "As a user, I want to have a flexible pick up time, so that I can more conveniently use the website" involves depicting the interactions between the user, the user interface of the RecycleSmart platform, potentially a back-end server, and the recycling facility's system. Below is a PlantUML code that represents these interactions:
+
+```plantuml
+@startuml
+participant User
+participant "RecycleSmart UI" as UI
+participant "RecycleSmart Server" as Server
+participant "Database" as DB
+participant "Recycling Facility System" as Facility
+
+User -> UI : Select "Schedule Pick-Up"
+UI -> User : Display pick-up scheduling form
+
+User -> UI : Submit pick-up time preferences
+UI -> Server : Send pick-up time preferences, user and facility details
+Server -> DB : Validate user & facility
+DB -> Server : Validation success
+
+alt If validation is successful
+  Server -> Facility : Request pick-up schedule update
+  Facility -> Facility : Process schedule update
+  Facility -> Server : Confirm pick-up time
+  Server -> DB : Store confirmed pick-up time
+  DB -> Server : Confirmation
+  Server -> UI : Display confirmation to User
+  UI -> User : Show confirmation message
+else If validation fails
+  Server -> UI : Display error message
+  UI -> User : Show error message (Try again or contact support)
+end
+
+@enduml
+```
+
+This sequence diagram starts with the user selecting the option to schedule a pick-up via the RecycleSmart UI, which presents them with a form to submit their pick-up time preferences. Once submitted, these preferences are sent to the server, which validates the user and facility details with the help of a database. Upon successful validation, the request to update the pick-up schedule is forwarded to the recycling facility's system. If the facility's system is able to process and confirm the update, this confirmation is stored in the database, and a confirmation message is shown to the user through the UI. If, at any point, validation fails or the facility cannot accommodate the request, an error message is displayed to the user, prompting them to try again or contact support.
+
+Please note, sequence diagrams can be adapted to more detailed or specific interactions based on actual implementation details, such as authentication processes, error handling logic, or direct interactions between the user and the recycling facility system for immediate updates or modifications.

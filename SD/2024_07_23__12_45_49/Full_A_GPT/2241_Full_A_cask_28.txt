@@ -1,0 +1,57 @@
+Creating a detailed sequence diagram for the user story of a hydrator user wanting to explore datasets created by their pipeline, involves depicting the interactions among various components within the Advanced Dataset Management and Version Control System. Given the complexity of the described system, this diagram focuses on the key interactions that enable dataset exploration.
+
+Let's draft a PlantUML script to illustrate this:
+
+```plantuml
+@startuml
+actor HydratorUser as user
+participant "Hydrator Pipeline" as pipeline
+participant "Dataset Management System" as DMS
+participant "Dataset Version Control" as DVC
+participant "Dataset Exploration Interface" as DEI
+participant Database as DB
+
+== Explore Datasets Created by Pipeline ==
+user -> pipeline: Initiate dataset exploration
+pipeline -> DMS: Request attached datasets
+DMS -> DVC: Fetch dataset instances and versions
+DVC --> DMS: Return dataset instances with versions
+DMS --> pipeline: Send dataset details
+pipeline -> DEI: Request dataset exploration UI
+DEI -> DMS: Retrieve dataset schemas/configurations
+DMS -> DB: Query dataset properties & schemas
+DB --> DMS: Return dataset properties & schemas
+DMS --> DEI: Provide data for UI
+DEI --> pipeline: Display exploration UI
+pipeline --> user: Show dataset exploration interface
+
+@enduml
+```
+
+This diagram represents the following process:
+
+1. **Hydrator User Initiates Exploration**: The user, identified as a Hydrator User, initiates the dataset exploration process through the hydrator pipeline interface.
+
+2. **Pipeline Requests Dataset Details**: The Hydrator Pipeline requests information about the datasets it has created from the Dataset Management System (DMS).
+
+3. **DMS Fetches Dataset Information**: The DMS then consults the Dataset Version Control (DVC) to fetch information about the specific dataset instances and their versions that were created by the pipeline.
+
+4. **DVC Returns Dataset Details**: The DVC provides the requested dataset instances along with their respective versions back to the DMS.
+
+5. **DMS Supplies Dataset Details to Pipeline**: The DMS then relays this information back to the Hydrator Pipeline.
+
+6. **Pipeline Requests Dataset Exploration Interface**: Upon receiving the dataset details, the Hydrator Pipeline requests the Dataset Exploration Interface (DEI) to generate a user interface for dataset exploration.
+
+7. **DEI Retrieves Dataset Schemas/Configurations**: The DEI, to generate the exploration UI, requests further details like dataset schemas and configurations from the DMS.
+
+8. **DMS Queries Database**: The DMS then queries the underlying Database (DB) to retrieve the requested dataset properties and schemas.
+
+9. **Database Returns Dataset Properties & Schemas**: The DB provides the dataset properties and schemas back to the DMS.
+
+10. **DMS Provides Data for UI Generation**: The Dataset Management System sends the collected dataset details to the DEI for dataset exploration UI generation.
+
+11. **DEI Displays Exploration UI**: Finally, the DEI generates and provides the dataset exploration UI to the Hydrator Pipeline.
+
+12. **Pipeline Shows UI to User**: The Hydrator Pipeline then displays the dataset exploration interface to the user, allowing them to explore the datasets created by their pipeline.
+
+This sequence diagram outlines the key interactions and flow of operations for a hydrator user seeking to explore datasets created by their pipeline within this Advanced Dataset Management and Version Control System. Note that specific integration details and error handling mechanisms have been abstracted for clarity.

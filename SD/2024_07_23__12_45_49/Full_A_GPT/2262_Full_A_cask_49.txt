@@ -1,0 +1,51 @@
+The PlantUML code below represents a sequence diagram for the user story: "As a user, I want to update a single property of a dataset instance without knowing all other properties." This diagram covers the interactions between the user, the system, and the dataset instance, focusing on how the system facilitates the update of a dataset property without requiring the user to know all other properties of the dataset instance.
+
+```plantuml
+@startuml
+participant User
+participant System
+participant "Dataset Instance" as Dataset
+participant "Version Control" as VersionControl
+database "Dataset Repository" as Repo
+
+autonumber
+User -> System : Request to update dataset property
+activate System
+System -> Dataset : Fetch current configuration
+activate Dataset
+Dataset -> Repo : Request current properties
+activate Repo
+Repo --> Dataset : Return current properties
+deactivate Repo
+Dataset --> System : Return current configuration
+deactivate Dataset
+System -> User : Show current configuration (except sensitive data)
+User -> System : Specify property update
+System -> Dataset : Validate property update
+activate Dataset
+Dataset --> System : Validation success
+deactivate Dataset
+System -> VersionControl : Create new version with updated property
+activate VersionControl
+VersionControl -> Repo : Store updated configuration
+activate Repo
+Repo --> VersionControl : Update success
+VersionControl --> System : Version update confirmation
+deactivate VersionControl
+System -> User : Update success notification
+deactivate System
+@enduml
+```
+
+This sequence diagram illustrates the following process:
+
+1. The user initiates a request to the system to update a property of a dataset instance.
+2. The system retrieves the current configuration of the dataset instance, which includes fetching the current properties from the dataset repository.
+3. The system then presents the current configuration to the user, excluding any sensitive data that should not be revealed.
+4. The user specifies which property they wish to update and submits this update to the system.
+5. The system validates the property update on the dataset instance to ensure it adheres to any constraints or requirements.
+6. Upon successful validation, the system interfaces with the version control to create a new version of the dataset instance that includes the updated property.
+7. The version control system stores the updated configuration in the dataset repository, confirming the update's success.
+8. Finally, the system notifies the user that the property update was successful.
+
+This diagram captures the essential steps required to update a dataset instance's property within an advanced dataset management and version control system, ensuring data integrity and simplifying the process for the user while abstracting the complexity of managing underlying dataset configurations and versions.

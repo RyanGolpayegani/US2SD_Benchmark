@@ -1,0 +1,40 @@
+Given your request to generate a detailed Sequence Diagram in Plant UML format for the user story related to importing data from a Fiscal Data Package descriptor file, below is a simplified example. This example focuses on the process a data publishing user would go through to import data using the Fiscal Data Package descriptor file, without converting data formats.
+
+```plantuml
+@startuml
+actor User as user
+participant "OpenSpending Platform\nImport Interface" as importInterface
+participant "Validation Service" as validationService
+participant "Data Model Editor" as dataModelEditor
+participant "Database" as database
+
+user -> importInterface : Select 'Import Data'
+user -> importInterface : Upload Fiscal Data Package descriptor file
+importInterface -> validationService : Validate descriptor file
+alt File is valid
+    validationService --> importInterface : Validation Successful
+    user -> dataModelEditor : Edit Data Model (optional)
+    dataModelEditor -> database : Import Data to Database
+    database --> user : Display Success Message
+else File is invalid
+    validationService --> importResponse : Validation Failed
+    importInterface --> user : Display Error Message
+end
+@enduml
+```
+
+### Explanation:
+
+1. **User Interactions:** The sequence starts with the user selecting to import data and uploading the Fiscal Data Package descriptor file through the OpenSpending platform's import interface.
+2. **Validation Process:** The import interface passes the descriptor file to a validation service designed to ensure the file meets the necessary criteria.
+    - If the file is valid, the process moves forward.
+    - If the file is invalid, the user is informed of the validation failure.
+3. **Optional Data Model Editing:** Assuming the file is valid, the user has the option to edit the data model. This step is crucial for data publishers who might want to adjust the model based on their specific requirements or to correct any issues.
+4. **Data Importing:** After any optional edits, the data contained within the Fiscal Data Package is imported into the OpenSpending database.
+5. **Success or Error Feedback:** The user receives feedback based on the outcome of the import process. A success message is displayed if the data is imported successfully, while an error message is shown if the import fails at any point.
+
+### Notes:
+
+- This diagram and the sequence are oversimplified to focus on the primary steps involved in importing data based on your user story. Real-world implementations could involve additional steps, services, or error handling mechanisms.
+- The "Validation Service" and "Data Model Editor" are conceptual components and might be integrated in various ways in the actual OpenSpending platform architecture.
+- Adjustments might be necessary to align with specific technical implementations or additional requirements not covered in the user story.

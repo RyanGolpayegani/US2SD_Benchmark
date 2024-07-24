@@ -1,0 +1,34 @@
+@startuml
+actor Archivist
+participant "UI Interface" as UI
+participant "Authentication Service" as Auth
+participant "Resource Management Module" as RMM
+database "CAMS Database" as DB
+
+== Creating a Resource Record ==
+Archivist -> UI : Selects "Create New Resource"
+UI -> Auth : Validate Archivist Credentials
+Auth -> UI : Credentials Valid
+UI -> RMM : Request to Create a New Resource Record
+RMM -> DB : Create New Resource Record Entry
+DB --> RMM : Confirm Creation
+RMM --> UI : Display New Resource Record Form
+UI --> Archivist : New Resource Record Form
+
+== Editing a Resource Record ==
+Archivist -> UI : Access and Edit Resource Record
+UI -> Auth : Validate Archivist Credentials
+Auth -> UI : Credentials Valid
+UI -> RMM : Request to Access Resource Record
+RMM -> DB : Retrieve Resource Record Data
+DB --> RMM : Resource Record Data
+RMM --> UI : Display Resource Record for Editing
+UI --> Archivist : Resource Record Edit Form
+Archivist -> UI : Submit Updated Record
+UI -> RMM : Update Resource Record
+RMM -> DB : Apply Record Updates
+DB --> RMM : Confirm Update
+RMM --> UI : Confirm Updated Record
+UI --> Archivist : Display Updated Record Confirmation
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+actor ResearcherGovernmentPublisher as r
+participant "DPIE Web Interface" as web
+participant "Data Integration\nModule" as integration
+participant "Reference Data\nService" as refdata
+participant "Dataset Validation\nService" as validation
+participant "Metadata\nManagement" as metadata
+participant "Data Storage" as storage
+
+r -> web: Accesses DPIE Web Interface
+web -> integration: Requests to add reference data
+integration -> refdata: Fetches available reference datasets
+refdata -> integration: Returns list of reference datasets
+integration -> web: Shows available datasets
+web -> r: Displays available reference datasets
+r -> web: Selects desired reference datasets
+web -> integration: Sends selection with dataset details
+integration -> refdata: Retrieves selected reference data
+refdata -> integration: Returns selected reference data
+integration -> validation: Validates dataset with reference data
+validation -> validation: Checks dataset integrity
+integration -> metadata: Integrates reference data into dataset
+metadata -> storage: Updates dataset with reference data
+storage -> web: Confirms dataset update
+web -> r: Shows success message
+@enduml

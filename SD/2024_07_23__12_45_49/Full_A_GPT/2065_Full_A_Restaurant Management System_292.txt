@@ -1,0 +1,51 @@
+To create a sequence diagram for the user story, "As a waiter, I want to extract bills for ordered foods and drinks so that I can charge customers accordingly," we need to visualize how the waiter interacts with the Restaurant Management and Operations System and how the system interacts with its components to fulfill this request. Below is a detailed sequence diagram described in PlantUML syntax.
+
+```plantuml
+@startuml
+actor Waiter
+participant "Waiter Interface" as WI
+participant "Order Management System" as OMS
+participant "Financial System" as FS
+database "Database" as DB
+
+== Extract Bill for Customer ==
+Waiter -> WI: Select customer/order to bill
+WI -> OMS: Request order details
+OMS -> DB: Fetch order details
+DB -> OMS: Order details
+OMS -> FS: Generate bill
+FS -> DB: Retrieve pricing details
+DB -> FS: Pricing details
+FS -> OMS: Bill generated
+OMS -> WI: Display bill
+WI -> Wait (er): Show bill
+
+== Customer Payment ==
+Waiter -> WI: Process payment
+WI -> FS: Request payment processing
+FS -> DB: Update payment status
+DB -> FS: Confirm payment update
+FS -> WI: Payment successful
+WI -> Waiter: Show payment confirmation
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Waiter-Initiated Action:** The sequence begins with the waiter selecting a customer or an order that needs to be billed through the Waiter Interface.
+
+2. **Request Order Details:** The Waiter Interface then requests the order details from the Order Management System (OMS), which in turn fetches these details from the Database.
+
+3. **Generate Bill:** The OMS requests the Financial System (FS) to generate a bill for the order. The Financial System retrieves pricing details from the Database, calculates the total, and then returns the generated bill to the OMS.
+
+4. **Display Bill to Waiter:** The Order Management System sends the bill information back to the Waiter Interface, which displays it to the waiter.
+
+5. **Process Payment:** Once the bill is shown and the customer decides to pay, the waiter processes the payment through the Waiter Interface.
+
+6. **Update Payment Status:** The Waiter Interface requests the Financial System to process the payment. The FS updates the payment status in the Database.
+
+7. **Confirm Payment Success:** The Database confirms the payment update back to the Financial System, which then notifies the Waiter Interface that the payment has been successful.
+
+8. **Show Payment Confirmation:** Finally, the Waiter Interface shows a payment confirmation to the waiter, concluding the process.
+
+This sequence diagram captures the interactions between the waiter, the interfaces, and the back-end systems to extract and process bills for ordered foods and drinks.

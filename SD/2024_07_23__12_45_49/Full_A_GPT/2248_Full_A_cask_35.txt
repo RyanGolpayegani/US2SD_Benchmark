@@ -1,0 +1,35 @@
+Creating a PlantUML sequence diagram for the given user story involves detailing the interactions between different entities such as the dataset developer, the version control system, the dataset instance, and potentially other services that are part of the process. Below is an illustrative example of how these interactions might be structured in PlantUML syntax, focusing on implementing an upgrade step during a dataset instance version update.
+
+Please note, the following UML diagram is a generic representation and can be adapted or expanded based on the specific technical architecture and process flow your project employs.
+
+```plantuml
+@startuml
+participant "Dataset Developer" as developer
+participant "Version Control System" as VCS
+participant "Dataset Instance" as Dataset
+database "Migration Scripts" as Scripts
+
+== Upgrade Process ==
+developer -> VCS: Request dataset type upgrade
+VCS -> Dataset: Check current version
+alt If Dataset version is outdated
+  VCS -> Scripts: Fetch upgrade scripts for new version
+  Scripts --> VCS: Return scripts
+  VCS -> Dataset: Apply upgrade scripts
+  Dataset -> Dataset: Upgrade to new version
+  Dataset --> VCS: Upgrade success confirmation
+  VCS --> developer: Upgrade process completed successfully
+else If Dataset is already at latest version
+  VCS --> developer: Dataset instance already at latest version
+end
+
+@enduml
+```
+
+### Key Points in the Sequence Diagram:
+- **Dataset Developer Initiates Upgrade:** The dataset developer requests an upgrade through the version control system (VCS), which acts as the central coordinator for managing dataset versions.
+- **Version Check:** The version control system checks the current version of the dataset instance to determine if an upgrade is necessary.
+- **Fetch and Apply Upgrade Scripts:** If the dataset instance is on an older version, the VCS fetches the appropriate upgrade scripts from a repository or database of migration scripts. These scripts are then applied to the dataset instance to perform the upgrade.
+- **Outcome:** After applying the necessary upgrade scripts, the dataset instance is upgraded to the new version. The version control system confirms the successful upgrade to the dataset developer.
+
+This sequence diagram provides a high-level overview and can be detailed further based on the project's specific requirements, such as handling failures during the upgrade process, rollback mechanisms, notifications to other stakeholders, or integration with other systems for seamless dataset management across different environments.

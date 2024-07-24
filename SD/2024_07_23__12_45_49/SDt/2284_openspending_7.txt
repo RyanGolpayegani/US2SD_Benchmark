@@ -1,0 +1,40 @@
+@startuml
+actor User as user
+participant "User Interface" as UI
+participant "API" as API
+participant "Database" as DB
+
+user -> UI : Selects dataset to edit
+UI -> API : Request dataset details
+API -> DB : Fetch dataset details
+DB --> API : Return dataset details
+API --> UI : Display dataset details
+UI --> user : Show dataset details
+
+user -> UI : Makes edits to data source
+UI -> API : Submit edited data source
+group Validation Process
+    API -> API : Validate data format
+    alt If validation fails
+        API --> UI : Show validation error
+        UI --> user : Display validation error
+        user -> UI : Corrects data and resubmits
+        UI -> API : Submit corrected data source
+    else Validation passes
+    end
+end
+
+group Update Process
+    API -> DB : Update data source in DB
+    DB --> API : Confirm update success
+    API -> API : Trigger data processing
+    alt If processing fails
+        API --> UI : Show processing error
+        UI --> user : Display processing error
+    else If processing succeeds
+        API --> UI : Notify update success
+        UI --> user : Display success message
+    end
+end
+
+@enduml

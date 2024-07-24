@@ -1,0 +1,37 @@
+Creating a detailed sequence diagram for a user story that involves backend changes for bulk updating one ENUM value to another in PlantUML syntax involves defining processes such as receiving the user's request, processing the request in the backend, interacting with the database, and finally, confirming the successful update back to the user. Below is an example of how this can be accomplished.
+
+```plantuml
+@startuml
+actor User
+participant "UI Layer" as UI
+participant "API Controller" as Controller
+participant "Service Layer" as Service
+database "Database" as DB
+
+== Bulk Update Enum Value Process ==
+
+User -> UI: Selects enum values to update
+UI -> Controller: Sends bulk update request
+
+alt Validation Success
+    Controller -> Service: Validates request data
+    Service -> DB: Fetches target enum records
+    DB --> Service: Returns enum records
+    Service -> DB: Updates enum values en masse
+    DB --> Service: Confirms updates
+    Service --> Controller: Confirms success
+    Controller --> UI: Displays success message
+    UI --> User: Shows confirmation of bulk update
+else Validation Failure
+    Controller -> Service: Validates request data
+    Service --> Controller: Returns validation errors
+    Controller --> UI: Displays error messages
+    UI --> User: Indicates failure & reasons
+end
+
+@enduml
+```
+
+This sequence diagram starts with the user initiating the bulk update process through the UI (User Interface). The request is then passed on to the API Controller, which handles the request and forwards it to the Service Layer for validation and processing. The Service Layer communicates with the Database to fetch the target ENUM records and then requests a bulk update of those records. Upon successful update, the Database confirms the updates to the Service Layer, which in turn informs the API Controller. Finally, the UI is updated with a success message for the user. In the case of validation failure, the process returns error messages to the user through the UI, indicating the reasons for failure.
+
+This PlantUML code is designed to visually represent the sequence of interactions among different components in the backend for a bulk update ENUM value feature, following the general objective of enhancing backend functionalities as described in the project description.

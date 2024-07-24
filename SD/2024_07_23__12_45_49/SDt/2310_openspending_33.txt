@@ -1,0 +1,19 @@
+@startuml
+participant "API User" as user
+participant "OpenSpending API" as api
+participant "API Gateway" as gateway
+participant "Data Management Service" as dms
+database "Dataset Database" as db
+
+user -> api : Send data query\n(request for multiple datasets)
+api -> gateway : Validate request\n& route to appropriate service
+gateway -> dms : Request data from\nmultiple datasets
+dms -> db : Fetch Dataset 1 details
+db --> dms : Dataset 1 data
+dms -> db : Fetch Dataset 2 details
+db --> dms : Dataset 2 data
+dms --> gateway : Compile combined dataset
+gateway --> api : Return combined data response
+api --> user : Provide compiled data from\nmultiple datasets
+
+@enduml

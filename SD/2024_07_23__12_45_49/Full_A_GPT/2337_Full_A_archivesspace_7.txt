@@ -1,0 +1,39 @@
+Given the scope of the user story from the Comprehensive Archival Management System Enhancement (CAMS) project, below is a detailed sequence diagram in PlantUML format. This diagram illustrates the process a migration specialist would go through to store the AT (Archivists' Toolkit) or Archon source record IDs in each ASpace (ArchivesSpace) record during the data migration process. 
+
+This process assumes a system architecture where a migration specialist interacts with a Migration Tool (which serves as an interface between the user and the database of the new CAMS), and where there are existing source systems (AT/Archon) and the target system (ASpace).
+
+```plantuml
+@startuml
+participant MigrationSpecialist as MS
+participant MigrationTool as MT
+database AT_ArchonDB as ATDB
+database ASpaceDB as ASDB
+
+MS -> MT : Initiate Migration
+MT -> ATDB : Extract Data and Source Record IDs
+ATDB -> MT : Return Data and IDs
+MT -> MT : Map AT/Archon Records to ASpace Schema
+MT -> ASDB : Insert Mapped Records with Source IDs
+ASDB -> MT : Confirm Insertion
+MT -> MS : Migration Completed
+
+@enduml
+```
+
+### Sequence Diagram Explanation:
+
+1. **Initiate Migration**: The migration specialist starts the migration process using the Migration Tool.
+
+2. **Extract Data and Source Record IDs**: The Migration Tool sends a request to the AT/Archon Database (DB) to extract the necessary data along with the source record IDs. These IDs are crucial for maintaining a link to the original data source and facilitating data integrity checks post-migration.
+
+3. **Return Data and IDs**: The AT/Archon DB returns the requested data and the source record IDs to the Migration Tool.
+
+4. **Map AT/Archon Records to ASpace Schema**: The Migration Tool processes the data, mapping the AT/Archon records to the ASpace schema. This step involves transforming the data format and structure to fit the new system's requirements while attaching the source record IDs to each ASpace record.
+
+5. **Insert Mapped Records with Source IDs**: The Migration Tool then inserts the mapped records along with their source record IDs into the ASpace DB. This is a crucial step where the new ASpace records are created in the database.
+
+6. **Confirm Insertion**: The ASpace DB confirms the successful insertion of the new records to the Migration Tool.
+
+7. **Migration Completed**: Finally, the Migration Tool notifies the migration specialist that the migration process has been completed successfully.
+
+This diagram and the associated steps represent a simplified overview of the data migration process focusing on preserving source record IDs. Depending on the complexity and specifics of the existing systems (AT or Archon) and the target system (ASpace), additional steps and details (such as data validation, error handling, and more sophisticated transformation logic) might be included in a real-world scenario.

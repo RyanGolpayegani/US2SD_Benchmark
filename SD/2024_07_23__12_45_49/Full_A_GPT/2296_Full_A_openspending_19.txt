@@ -1,0 +1,36 @@
+Creating a detailed Sequence Diagram in PlantUML format for the specified user story involves outlining the interactions between the user, the OpenSpending platform, and external components such as social networks. Below is a PlantUML sequence diagram that outlines the process flow from when a data-consuming user decides to share a view state as a URL on social networks.
+
+Please note, the hosting or rendering environment for PlantUML scripts must be properly set up to visualize this diagram.
+
+```plantuml
+@startuml
+actor User as user
+participant "OpenSpending Platform" as osp
+participant "Visualization Service" as vs
+participant "Short URL Service" as sus
+participant "Social Network" as sn
+
+user -> osp : Navigate to desired data visualization
+osp -> vs : Request current view state
+vs -> osp : Return view state data
+osp -> osp : Generate view state URL
+osp -> sus : Send URL for shortening
+sus -> osp : Return Short URL
+user <- osp : Display "Share" options with Short URL
+user -> osp : Select "Share to Social Network"
+osp -> sn : Invoke social network share dialog\nwith Short URL
+sn -> user : Display share interface
+user -> sn : Confirm share
+sn -> sn : Post Short URL to user's profile
+end
+
+@endvariable
+```
+
+In this diagram, the process starts with the user navigating to the desired data visualization on the OpenSpending platform. The platform then communicates with the Visualization Service to fetch the current view state data. Once the view state data is obtained, the OpenSpending platform generates a view state URL representing the current visualization.
+
+To make the URL more user-friendly and suitable for sharing, the OpenSpending platform sends this URL to a Short URL Service, which returns a shortened version of the URL. The user is then presented with the option to share this shortened URL to social networks.
+
+Upon selecting to share to a social network, the OpenSpending platform invokes the share dialog of the chosen social network, passing along the Short URL. The user is then shown the share interface of the social network, where they can confirm the share action. Once confirmed, the social network posts the Short URL to the user's profile, making the shared data visualization accessible to others.
+
+This sequence diagram describes the interactions and flow from the perspective of sharing a view state as a URL to social networks, as required by the given user story.

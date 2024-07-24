@@ -1,0 +1,36 @@
+@startuml
+participant User as user
+participant "API Interface" as api
+participant "Data Normalization Service" as norm
+participant "Geolocation Service" as geo
+participant "Database" as db
+
+user -> api : Request Data Normalization\nwith Geographical Constraints
+activate api
+
+api -> norm : Initiate Normalization Process
+activate norm
+
+norm -> geo : Request Geographical Area Information
+activate geo
+
+geo -> db : Fetch Geographical Data\n(Area, Borders, Metadata)
+activate db
+db --> geo : Geographical Data Response
+deactivate db
+
+geo --> norm : Geographical Area Information
+deactivate geo
+
+norm -> db : Fetch Dataset by Geographical Constraints
+activate db
+db --> norm : Dataset Response
+deactivate db
+
+norm -> norm : Normalize Measures\naccording to Geographical Area
+norm --> api : Normalized Data
+deactivate norm
+
+api --> user : Response with Normalized Dataset
+deactivate api
+@enduml

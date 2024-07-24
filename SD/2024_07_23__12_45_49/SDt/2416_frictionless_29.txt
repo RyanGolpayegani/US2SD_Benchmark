@@ -1,0 +1,27 @@
+@startuml
+participant Researcher
+participant "DPIE Interface" as DPIE
+participant "DataPackage Editor" as Editor
+participant "Reference Data API" as RefAPI
+participant "Validation Service" as Validation
+participant "Data Storage" as Storage
+
+Researcher -> DPIE : Select dataset for enhancement
+DPIE -> Editor : Open DataPackage Editor
+Editor --> Researcher : Display dataset structure
+
+Researcher -> Editor : Request to add inflation data
+Editor -> RefAPI : Query inflation reference data
+RefAPI -> Editor : Return inflation data
+
+Editor --> Researcher : Preview updated dataset
+Researcher -> Editor : Approve data addition
+
+Editor -> Validation : Validate dataset with inflation data
+Validation -> Editor : Return validation success
+
+Editor -> Storage : Save enhanced dataset
+Storage --> Editor : Confirmation of saved dataset
+Editor --> Researcher : Confirm dataset enhancement completion
+
+@enduml

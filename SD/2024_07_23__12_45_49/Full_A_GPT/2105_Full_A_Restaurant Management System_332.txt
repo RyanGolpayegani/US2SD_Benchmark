@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the given user story "As an employee, I want to delete a customer order" involves mapping out the interactions between various system components. Given the technology stack and features mentioned in the project description, let's focus on the key elements likely involved in this user story:
+
+- Employee Interface (the UI through which an employee interacts with the system)
+- Application Server (handling the request processing and business logic)
+- Database (where order data is stored)
+- Authentication Service (validating employee credentials and permissions)
+- Order Management Service (a component of the Application Server for handling order-related operations)
+
+Below is a PlantUML code snippet depicting a sequence diagram for the user story. This diagram assumes the employee has already been authenticated and is authorized to delete customer orders.
+
+```plantuml
+@startuml
+participant EmployeeInterface as EI
+participant AuthenticationService as Auth
+participant ApplicationServer as AS
+participant OrderManagementService as OMS
+participant Database as DB
+
+EI -> Auth: Validate employee credentials
+activate Auth
+Auth --> EI: Credentials valid
+deactivate Auth
+
+EI -> AS: Request to delete customer order [Order ID]
+activate AS
+AS -> OMS: Delete order request [Order ID]
+activate OMS
+OMS -> DB: Query to find order [Order ID]
+activate DB
+DB --> OMS: Order details
+OMS -> DB: Delete order command [Order ID]
+DB --> OMS: Order deletion confirmation
+OMS --> AS: Order successfully deleted
+deactivate DB
+AS --> EI: Confirmation of deletion
+deactivate OMS
+deactivate AS
+
+@enduml
+```
+
+This sequence diagram outlines the following flow:
+
+1. **Employee Interface to Authentication Service**: The employee makes a request through the interface, which is first sent to the Authentication Service to validate their credentials.
+2. **Valid Credentials Confirmation**: The Authentication Service confirms the employee's credentials are valid and allows the process to continue.
+3. **Request to Application Server**: The validated request to delete a customer order, identified by an Order ID, is forwarded to the Application Server.
+4. **Application Server to Order Management Service**: The Application Server processes the request and directs it to the Order Management Service specifically designed to handle order-related operations.
+5. **Query and Delete in Database**: The Order Management Service queries the Database for the specified Order ID, confirms its existence, and issues a command to delete the order.
+6. **Order Deletion Confirmation**: The Database confirms the deletion of the order back to the Order Management Service, which then signals a successful deletion back to the Application Server.
+7. **Confirmation to Employee Interface**: Finally, the Application Server sends a confirmation of the order's deletion back to the Employee Interface, which informs the employee that the action has been successfully completed.
+
+This sequence encapsulates the primary interactions involved in deleting a customer order from the system, ensuring that the process is secure, authorized, and accurate.

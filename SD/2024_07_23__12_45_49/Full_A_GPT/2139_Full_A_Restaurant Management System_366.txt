@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the user story "As an employee, I want to see the amount of products in stock" involves capturing the interaction between system components from when the employee requests inventory information to when the system presents this data. Here's how this could be represented in PlantUML, a plain text UML diagramming tool.
+
+The sequence diagram will include interactions with the following entities:
+
+- `Employee`: The actor who initiates the request.
+- `UI`: The User Interface through which the request is made.
+- `Controller`: Interprets the UI request and handles business logic.
+- `InventoryService`: The service layer responsible for managing inventory data.
+- `Database`: Where inventory data is stored and retrieved from.
+
+Here's the PlantUML code for the sequence diagram:
+
+```plantuml
+@startuml
+actor Employee as emp
+participant "UI" as ui
+participant "Controller" as ctrl
+participant "InventoryService" as invService
+database "Database" as db
+
+emp -> ui : Request stock information
+ui -> ctrl : GetStockInfo()
+activate ctrl
+
+ctrl -> invService : queryInventory()
+activate invService
+
+invService -> db : fetchStockDetails()
+activate db
+db --> invService : stockData
+deactivate db
+
+invService --> ctrl : stockInformation
+deactivate invService
+
+ctrl --> ui : DisplayStockInfo(stockInformation)
+deactivate ctrl
+
+ui --> emp : Show stock information
+@enduml
+```
+
+Explanation of the Steps:
+1. **Employee Requests Stock Information**: The sequence begins with the employee interfacing with the system UI to request information on the stock levels.
+2. **UI Passes Request to Controller**: The UI captures this request and calls the appropriate method (`GetStockInfo()`) in the controller.
+3. **Controller Requests Inventory Data**: The controller, upon receiving the request, asks the Inventory Service to provide the stock information by calling `queryInventory()`.
+4. **Inventory Service Communicates with Database**: The Inventory Service then communicates with the Database to fetch the details about stock levels by executing `fetchStockDetails()`.
+5. **Database Returns Stock Data**: The Database responds to the Inventory Service's request with the stock data.
+6. **Stock Information Passed Back to Controller**: The Inventory Service processes the data (if necessary) and returns the stock information back to the controller.
+7. **Controller Updates UI with Stock Information**: Finally, the controller sends the stock information to the UI, which then displays it to the employee.
+
+This sequence diagram outlines a typical flow for an employee querying product stock levels within the restaurant management and operations system. It illustrates the interactions among the system's components and provides a clear view of the backend processes triggered by a simple user request.

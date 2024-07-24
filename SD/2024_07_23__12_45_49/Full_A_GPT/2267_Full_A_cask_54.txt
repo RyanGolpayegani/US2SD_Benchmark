@@ -1,0 +1,55 @@
+To create a detailed sequence diagram in PlantUML format for the given user story, we'll outline the interaction between different components involved in the process where an app developer attempts to redeploy an application, and the redeployment process checks for dataset reconfigurability before proceeding. If any of the datasets cannot be reconfigured, the redeployment fails.
+
+Please note that this sequence diagram assumes a generic platform where these interactions occur and simplifies some interactions for clarity.
+
+```plantuml
+@startuml
+participant AppDeveloper as developer
+participant DeploymentService as deployment
+participant DatasetManagement as datasetMgmt
+participant AppConfigService as appConfig
+participant DatasetService as dataset
+
+developer -> deployment: initiateRedeployment(appID)
+deployment -> appConfig: checkDeploymentConfig(appID)
+activate appConfig
+appConfig --> deployment: configOK
+deactivate appConfig
+deployment -> datasetMgmt: listDatasets(appID)
+activate datasetMgmt
+datasetMgmt --> deployment: datasetIDs[]
+deactivate datasetMgmt
+
+loop for each datasetID in datasetIDs
+    deployment -> dataset: checkReconfigurability(datasetID)
+    activate dataset
+    alt if dataset is reconfigurable
+        dataset --> deployment: reconfigurable
+        deactivate dataset
+    else dataset not reconfigurable
+        dataset --> deployment: error
+        deactivate dataset
+        deployment -> developer: redeploymentFailed(datasetID)
+        deactivate deployment
+        return
+    end
+end
+
+deployment -> deployment: redeployApplication(appID)
+deployment -> developer: redeploymentSuccess()
+deactivate deployment
+@enduml
+```
+
+This diagram illustrates the following interactions for the user story:
+
+1. **App Developer Initiates Redeployment**: The app developer initiates the redeployment of an application by sending a request to the Deployment Service.
+2. **Check Deployment Configuration**: The Deployment Service checks the application's deployment configuration with the AppConfigService.
+3. **List Associated Datasets**: If the configuration is OK, the Deployment Service then asks the Dataset Management service to list all datasets associated with the application.
+4. **Check Dataset Reconfigurability**: For each dataset associated with the application, the Deployment Service checks if the dataset can be reconfigured (showing an interaction with a generic Dataset Service).
+   - If all datasets are reconfigurable, the process continues.
+   - If any dataset cannot be reconfigured, the Deployment Service informs the app developer that the redeployment failed due to dataset reconfiguration issues and stops the redeployment process.
+5. **Redeploy Application**: If all checks pass, the Deployment Service proceeds with the application redeployment.
+6. **Inform App Developer**: Finally, the Deployment Service informs the app developer that the redeployment has been successful.
+
+This sequence diagram is based on the user story and the functionality described in the project description. It visualizes the interactions required to ensure application redeployment fails if any of its datasets cannot be reconfigured, highlighting the check for dataset reconfigurability as a crucial step in the process.

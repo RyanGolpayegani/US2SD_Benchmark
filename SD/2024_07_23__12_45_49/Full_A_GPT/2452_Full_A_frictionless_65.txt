@@ -1,0 +1,54 @@
+Creating a detailed sequence diagram for the specified user story involves depicting the interactions between the Researcher/Publisher and the DataPackage Integrator and Enhancer (DPIE) system, especially focusing on how a Researcher/Publisher can specify funding sources for a dataset. Below is a sequence diagram in PlantUML format that captures these interactions:
+
+```plantuml
+@startuml
+
+participant ResearcherPublisher as RP
+participant "DPIE Interface" as DPIE
+participant "DPIE Backend" as Backend
+participant "Metadata Editor" as Editor
+participant "Data Storage" as Storage
+
+RP -> DPIE : Access DPIE
+DPIE -> Backend : Authenticate RP
+activate Backend
+Backend -> RP : Authentication Successful
+deactivate Backend
+
+RP -> DPIE : Select Dataset
+DPIE -> Backend : Fetch Dataset Details
+activate Backend
+Backend -> RP : Show Dataset Details
+deactivate Backend
+
+RP -> DPIE : Request to Add Funding Info
+DPIE -> Editor : Open Funding Info Editor
+Editor -> RP : Provide Funding Info Form
+
+RP -> Editor : Fill Funding Information
+Editor -> Backend : Validate Funding Info
+activate Backend
+Backend -> Editor : Funding Info Valid
+deactivate Backend
+
+Editor -> Storage : Update Dataset with Funding Info
+Storage -> Editor : Confirm Update
+Editor -> RP : Funding Info Updated Successfully
+
+@enduml
+```
+
+This diagram outlines the sequence of events when a Researcher or Publisher decides to specify funding sources for their dataset using the DPIE system. Here is a step-by-step description:
+
+1. The Researcher/Publisher accesses the DPIE interface.
+2. The DPIE backend authenticates the Researcher/Publisher.
+3. Upon successful authentication, the Researcher/Publisher selects the dataset for which they want to specify funding sources.
+4. The DPIE system fetches and displays the details of the selected dataset.
+5. The Researcher/Publisher requests to add funding information to the dataset.
+6. The DPIE system opens a Funding Info Editor interface for the Researcher/Publisher to fill in.
+7. The Researcher/Publisher fills in the funding information through the provided form.
+8. The DPIE backend validates the provided funding information for correctness and completeness.
+9. Once validated, the updated dataset, including the new funding information, is saved in the data storage.
+10. The DPIE system confirms the successful update of the funding information to the Researcher/Publisher.
+
+This sequence diagram focuses on the steps a Researcher or Publisher would go through to specify funding information for a dataset within the DPIE system, ensuring that the source of funding is transparently recorded and associated with the respective dataset.

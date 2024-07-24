@@ -1,0 +1,45 @@
+To illustrate the process described in your user story, the sequence diagram below in PlantUML format breaks down the interactions between the Admin, the RecycleSmart platform, and the backend services when the admin wants to view a dashboard to monitor all sites' statuses. This includes fetching data about user activities and the current service status of the recycling centers.
+
+```plantuml
+@startuml
+participant Admin
+participant DashboardInterface as DI
+participant AuthenticationService as AS
+participant DashboardService as DS
+participant Database as DB
+
+Admin -> DI: Request Dashboard Access
+DI -> AS: Verify Admin Credentials
+AS --> DI: Authentication Successful
+
+DI -> DS: Request Site Status Data
+activate DS
+DS -> DB: Query User Activities
+DB --> DS: User Activities Data
+DS -> DB: Query Service Statuses
+DB --> DS: Service Statuses Data
+DS --> DI: Dashboard Data
+deactivate DS
+DI --> Admin: Display Dashboard
+@enduml
+```
+
+### Description of the Sequence:
+
+1. **Admin Requests Dashboard Access:** The admin initiates a request to access the dashboard that monitors the site's statuses.
+   
+2. **Verify Admin Credentials:** The Dashboard Interface forwards the admin's access request to the Authentication Service to verify the admin's credentials.
+   
+3. **Authentication Successful:** The Authentication Service confirms the credentials and notifies the Dashboard Interface.
+   
+4. **Request Site Status Data:** The Dashboard Interface then requests data about the site status, including user activities and service statuses, from the Dashboard Service.
+   
+5. **Query Database for Data:** The Dashboard Service queries the database to fetch the requested data. This involves two steps:
+    - Querying user activities to understand what users are doing on the site.
+    - Querying current service statuses of the recycling centers.
+   
+6. **Return Dashboard Data:** Once the Dashboard Service gathers all the requested data, it compiles and sends it back to the Dashboard Interface.
+   
+7. **Display Dashboard:** Finally, the Dashboard Interface presents the compiled dashboard data to the admin, giving them insight into the sites' statuses and service status.
+
+This sequence diagram provides a high-level view of the interactions and processes involved when an admin user wishes to view a dashboard monitoring all site statuses within the RecycleSmart platform.

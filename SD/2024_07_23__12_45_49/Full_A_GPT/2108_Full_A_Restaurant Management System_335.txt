@@ -1,0 +1,48 @@
+Creating a detailed sequence diagram for the process of an employee editing a customer battery involves several actors and components. Given the user story and the technology stack mentioned in the project description, let's outline a process:
+
+1. **Employee**: Initiates the order editing process.
+2. **UI (User Interface)**: Where the employee interacts with the system.
+3. **API Gateway**: Handles the request and forwards it to appropriate services.
+4. **Order Management Service**: Processes business logic for order modifications.
+5. **Database**: Stores and retrieves the updated order details.
+
+Now, let's put this into a PlantUML format to create a sequence diagram:
+
+```plantuml
+@startuml
+participant Employee as E
+participant "UI (User Interface)" as UI
+participant "API Gateway" as API
+participant "Order Management Service" as OMS
+participant "Database" as DB
+
+E -> UI : Selects "Edit Order"
+UI -> API : Sends edit order request
+API -> OMS : Forwards request to edit
+OMS -> DB : Fetches order details
+DB -> OMS : Returns order details
+OMS -> OMS : Processes modifications
+OMS -> DB : Updates order details
+DB -> OMS : Confirms update success
+OMS -> API : Sends edit confirmation
+API -> UI : Updates UI with confirmation
+UI -> E : Shows edit success message
+@enduml
+```
+
+This sequence diagram outlines the basic flow without getting into the specifics of the technologies (e.g., React.js, Node.js) or database operations, which would depend on the deeper system design and requirements, such as error handling, authentication/authorization, etc.
+
+The process depicted above includes these steps:
+1. The employee interacts with the system through the UI to initiate an order edit.
+2. The UI sends this request to the API Gateway.
+3. The API Gateway forwards the request to the Order Management Service (OMS).
+4. The OMS queries the Database for the order details.
+5. The Database returns the requested order details to the OMS.
+6. Internal logic within the OMS processes the modifications requested.
+7. The OMS sends the updated order details to the Database for updating.
+8. The Database confirms the update success back to the OMS.
+9. The OMS reports the success of the operation back to the API Gateway.
+10. The API Gateway instructs the UI to display a success message.
+11. The Employee sees the message confirming the successful edit.
+
+This scenario can become more complex with the addition of error handling, user permissions checks, and real-time notifications to affected parties (e.g., kitchen staff or customers if relevant).

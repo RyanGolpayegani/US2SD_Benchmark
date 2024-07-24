@@ -1,0 +1,34 @@
+Creating a detailed sequence diagram for the described user story in PlantUML format includes defining the actors involved and how they interact with the system to accomplish the goal of setting a username, making the data more easily discoverable. The necessary components would typically involve the user interface (UI), user account service, and a database to persist the username. Below is a possible PlantUML code that corresponds to this scenario:
+
+```plantuml
+@startuml
+!theme plain
+
+actor User as user
+participant "UI: OpenSpending Platform" as ui
+participant "Account Service" as accountService
+database "Database" as db
+
+user -> ui: Access account settings
+ui -> accountService: Request current username
+accountService -> db: Query current username
+db -> accountService: Return current username
+accountService -> ui: Display current username
+user -> ui: Input new username
+ui -> accountService: Request to update username
+accountService -> db: Check username availability
+alt Username is available
+    db -> accountService: Update username
+    accountService -> ui: Confirm username update
+    ui -> user: Display successful update message
+else Username is not available
+    accountService -> ui: Error - Username taken
+    ui -> user: Display error message
+end
+
+@enduml
+```
+
+This sequence diagram starts with the user accessing the account settings on the OpenSpending Platform's UI. The system then displays the current username by querying it through the Account Service and from the Database. Upon the user entering a new desired username, the system again interacts with the Account Service to check the availability of the new username. Depending on the outcome, it either updates the username (if available) and informs the user of success, or it notifies the user that the desired username is already taken.
+
+Remember to replace "OpenSpending Platform" with the actual user interface component name if it is known, and adjust service names as per your project architecture. This diagram assumes a simplified process for setting a username which can vary based on the actual complexities of your project, such as the inclusion of authentication and authorization processes, detailed error handling, or additional user feedback mechanisms.

@@ -1,0 +1,20 @@
+@startuml
+participant User as U
+participant WebInterface as W
+participant VisualizationService as VS
+participant Database as DB
+
+U -> W: Request dataset visualization
+activate W
+W -> VS: Fetch visualization (ID)
+activate VS
+VS -> DB: Retrieve visualization details
+activate DB
+DB --> VS: Visualization data & metadata
+deactivate DB
+VS --> W: Visualization data & embedded textual description
+deactivate VS
+
+W -> U: Display visualization & textual description
+deactivate W
+@enduml

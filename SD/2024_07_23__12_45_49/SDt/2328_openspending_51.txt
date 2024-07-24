@@ -1,0 +1,28 @@
+@startuml
+participant "API User" as User
+participant "OpenSpending API" as API
+participant "Visualization Customization \nService" as VCSService
+
+User -> API : Request default visualization settings
+activate API
+API -> VCSService : Fetch default settings
+activate VCSService
+VCSService -> API : Default settings
+deactivate VCSService
+API -> User : Default visualization settings
+deactivate API
+
+User -> User : Decide on new color settings
+
+User -> API : Send customization request\nwith new color settings
+activate API
+API -> VCSService : Process new color settings
+activate VCSService
+VCSService -> VCSService : Update visualization customization
+VCSService -> API : Confirm update &\nupdated settings
+deactivate VCSService
+API -> User : Confirmation &\nupdated visualization settings
+deactivate API
+
+User -> User : Integrate customized visualization\ninto platform
+@enduml

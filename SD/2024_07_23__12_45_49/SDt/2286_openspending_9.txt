@@ -1,0 +1,30 @@
+@startuml
+actor User
+participant "Web Interface" as Web
+participant "Data Packager" as Packager
+participant "Backend API" as API
+database "OpenSpending DB" as DB
+
+User -> Web : Select "Import Data"
+User -> Web : Upload Excel file
+Web -> Packager : Validate Excel file
+alt Valid Excel file
+    Packager -> Web : File is valid
+else Invalid Excel file
+    Packager -> Web : Error: Invalid file format/type
+    Web -> User : Display error message
+    deactivate Packager
+end
+alt File is valid
+    Web -> API : Send Excel file for processing
+    API -> Packager : Convert Excel to JSON
+    Packager -> API : JSON data
+    API -> DB : Store JSON data
+    DB -> API : Confirmation of storage
+    API -> Web : Display success message
+    Web -> User : Confirm successful import
+else Error during processing
+    API -> Web : Display error message
+    Web -> User : Show error
+end
+@enduml

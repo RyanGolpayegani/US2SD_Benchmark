@@ -1,0 +1,28 @@
+@startuml
+actor User as user
+participant "UI: OpenSpending Platform" as ui
+participant "Data Management System" as dms
+database "Data Storage" as storage
+
+== Edit Dataset Process ==
+
+user -> ui : Select Dataset to Edit
+ui -> dms : Request Dataset Details
+dms -> storage : Fetch Dataset Details
+storage --> dms : Dataset Details
+dms --> ui : Display Dataset Details
+ui --> user : Show Dataset Details (Editable Form)
+
+user -> ui : Submit Updated Dataset Details
+ui -> dms : Validate Update Request
+alt Validation Success
+  dms -> storage : Update Dataset Information
+  storage --> dms : Confirmation of Update
+  dms --> ui : Notify Update Success
+  ui --> user : Display Success Message
+else Validation Fail
+  dms --> ui : Notify Validation Error
+  ui --> user : Display Error Message
+end
+
+@enduml

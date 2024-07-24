@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+actor Developer as dev
+participant "RecycleSmart\nWeb Platform" as platform
+participant "API Authentication" as auth
+database "RecycleSmart API" as api
+participant "iOS Application" as iosApp
+
+dev -> platform : Request API access
+platform -> auth : Initiate authentication
+activate auth
+auth --> dev : Provide API credentials\n(API Key/Token)
+deactivate auth
+
+dev -> api : Request API data using\nAPI Key/Token
+activate api
+api --> dev : Return requested data
+deactivate api
+
+dev -> iosApp : Integrate API data
+activate iosApp
+iosApp --> dev : Confirm integration success
+deactivate iosApp
+
+@enduml

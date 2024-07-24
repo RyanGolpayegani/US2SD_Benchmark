@@ -1,0 +1,35 @@
+@startuml
+participant Archivist
+participant AuthModule as "Authentication Module"
+participant "Rights Management \nModule" as RightsManagement
+database CAMS_DB as "CAMS Database"
+
+== Authentication Process ==
+Archivist -> AuthModule : Login()
+activate AuthModule
+AuthModule --> Archivist : Authentication Response
+deactivate AuthModule
+
+== Create Rights Management Statement ==
+Archivist -> RightsManagement : Select "Create Rights Management"
+activate RightsManagement
+RightsManagement -> CAMS_DB : Fetch Template
+CAMS_DB --> RightsManagement : Rights Management Template
+RightsManagement --> Archivist : Show Template
+Archivist -> RightsManagement : Fill in Template Details
+RightsManagement -> CAMS_DB : Save New Rights Statement
+CAMS_DB --> RightsManagement : Confirmation
+RightsManagement --> Archivist : Show Confirmation
+
+== Edit Rights Management Statement ==
+Archivist -> RightsManagement : Select Existing Rights Statement
+activate RightsManagement
+RightsManagement -> CAMS_DB : Fetch Selected Statement
+CAMS_DB --> RightsManagement : Rights Statement Details
+RightsManagement --> Archivist : Show Statement Details
+Archivist -> RightsManagement : Modify Details
+RightsManagement -> CAMS_DB : Update Statement
+CAMS_DB --> RightsManagement : Confirmation
+RightsManagement --> Archivist : Show Update Confirmation
+
+@enduml

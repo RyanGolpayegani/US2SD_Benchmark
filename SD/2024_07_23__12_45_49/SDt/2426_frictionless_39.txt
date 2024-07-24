@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+
+participant ResearcherDeveloper as RD
+participant "DPIE Import/Export Handler" as DPIE
+database MSSQL
+
+RD -> DPIE: Choose Operation (Import/Export)
+activate DPIE
+DPIE -> RD: Request Authentication Details
+RD -> DPIE: Provide Authentication Details
+DPIE -> MSSQL: Verify Credentials
+activate MSSQL
+MSSQL --> DPIE: Verification Success
+deactivate MSSQL
+
+alt Import to MS-SQL
+    RD -> DPIE: Import Data Package
+    DPIE -> DPIE: Transform Data to MS-SQL Format
+    DPIE -> MSSQL: Write Data
+    activate MSSQL
+    MSSQL --> DPIE: Confirmation
+    deactivate MSSQL
+else Export from MS-SQL
+    RD -> DPIE: Export Data from MS-SQL
+    DPIE -> MSSQL: Query Data
+    activate MSSQL
+    MSSQL --> DPIE: Data
+    deactivate MSSQL
+    DPIE -> DPIE: Transform Data to Data Package Format
+    DPIE -> RD: Provide Data Package
+end
+
+DPIE -> RD: Notify Completion
+deactivate DPIE
+@enduml

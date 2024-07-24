@@ -1,0 +1,27 @@
+@startuml
+participant Manager as manager
+participant "Web Interface" as web
+participant "Report Module" as reports
+participant Database as db
+
+manager -> web : Request monthly reports
+activate web
+web -> reports : Fetch report data
+activate reports
+reports -> db : Query sales data
+activate db
+db --> reports : Return sales data
+deactivate db
+reports -> db : Query inventory data
+activate db
+db --> reports : Return inventory data
+deactivate db
+reports -> db : Query employee performance
+activate db
+db --> reports : Return employee data
+deactivate db
+reports --> web : Compile report
+deactivate reports
+web --> manager : Display reports
+deactivate web
+@enduml

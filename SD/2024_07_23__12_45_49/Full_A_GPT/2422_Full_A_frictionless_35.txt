@@ -1,0 +1,42 @@
+To create a detailed sequence diagram for the described user story in PlantUML format, we need to outline the interactions between the researcher (user), the DataPackage Integrator and Enhancer (DPIE) system, Microsoft Power BI, and potentially other systems involved in importing datasets without requiring a local download.
+
+Below is an example of how you can structure these interactions in a sequence diagram using PlantUML syntax. Note that this example assumes a sequence where the user initiates an import request within Power BI, which then communicates with DPIE to fetch and validate datasets before importing them into Power BI.
+
+```plantuml
+@startuml
+participant Researcher as user
+participant "Power BI" as powerbi
+participant "DPIE API" as dpie
+participant "Dataset Repository" as repo
+
+user -> powerbi: Select dataset import option
+powerbi -> dpie: Request available datasets
+dpie -> repo: Fetch dataset listings
+repo --> dpie: Return dataset listings
+dpie --> powerbi: Show datasets
+powerbi --> user: Display datasets to import
+user -> powerbi: Choose datasets to import
+powerbi -> dpie: Request dataset by ID
+dpie -> repo: Fetch dataset by ID
+repo --> dpie: Return selected dataset
+dpie -> dpie: Validate dataset integrity
+dpie --> powerbi: Provide validated dataset
+powerbi -> powerbi: Import dataset
+powerbi --> user: Confirmation of dataset import
+@enduml
+```
+
+This UML sketch assumes the following sequence of events:
+1. The researcher selects the option to import datasets within Microsoft Power BI.
+2. Microsoft Power BI requests a list of available datasets from the DPIE system.
+3. DPIE fetches dataset listings from the repository where datasets are stored.
+4. DPIE returns the list of datasets to Microsoft Power BI, which shows them to the researcher.
+5. The researcher chooses which datasets they want to import into Power BI.
+6. Power BI requests the selected datasets from DPIE by specifying dataset IDs.
+7. DPIE fetches the requested datasets from the dataset repository.
+8. DPIE validates the integrity of the datasets to ensure they are not corrupted or tampered with.
+9. Once validated, DPIE sends the datasets to Microsoft Power BI.
+10. Power BI imports the datasets for the researcher’s use.
+11. Power BI confirms the successful import of datasets to the researcher.
+
+Please adjust the details as needed to better fit your specific implementation and workflow.

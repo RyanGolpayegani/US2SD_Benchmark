@@ -1,0 +1,53 @@
+@startuml
+participant Archivist
+participant "Frontend System" as Frontend
+participant "Backend System" as Backend
+database DB
+
+== Assign Level of Description to Resource or Component ==
+
+Archivist -> Frontend : Select Resource/Component
+activate Frontend
+
+Frontend -> Backend : Request existing Levels of Description
+activate Backend
+
+Backend -> DB : Fetch ENUM values for Level of Description
+activate DB
+DB --> Backend : ENUM values
+deactivate DB
+
+Backend --> Frontend : Display ENUM values
+deactivate Backend
+
+Frontend --> Archivist : Show Levels of Description
+deactivate Frontend
+
+Archivist -> Frontend : Assign Level of Description
+activate Frontend
+Archivist -> Frontend : Optionally specify custom value
+activate Frontend
+
+Frontend -> Backend : Submit Level of Description and any custom value
+activate Backend
+
+Backend -> Backend : Validate Level/Custom Value
+alt If custom value is specified
+    Backend -> DB : Store custom value in ENUM list (if not exists)
+    activate DB
+    DB --> Backend : Confirmation/Error
+    deactivate DB
+end
+
+Backend -> DB : Update Resource/Component with Level
+activate DB
+DB --> Backend : Update Confirmation
+deactivate DB
+
+Backend --> Frontend : Operation Status (Success/Failure)
+deactivate Backend
+
+Frontend --> Archivist : Display Status Message
+deactivate Frontend
+
+@enduml

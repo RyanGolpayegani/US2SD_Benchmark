@@ -1,0 +1,30 @@
+Below is a PlantUML sequence diagram that details the process flow when an employee wants to see customer requests in order using the Restaurant Management and Operations System. The diagram assumes a login process, then interaction with the system to fetch and display requests.
+
+```
+@startuml
+actor Employee
+participant "Login System" as Login
+participant "Employee Dashboard" as Dashboard
+participant "Request Management" as ReqMan
+participant "Database" as DB
+
+== Authentication Process ==
+Employee -> Login: Enter credentials
+Login -> DB: Validate user info
+DB -> Login: Return validation result
+Login -> Employee: Authentication success
+
+== View Customer Requests ==
+Employee -> Dashboard: Select "View Requests"
+Dashboard -> ReqMan: Fetch pending requests
+ReqForeign_key -> DB: Query pending requests by datetime
+DB -> ReqMan: Return list of requests
+ReqMan -> Dashboard: Display requests in order
+Dashboard -> Employee: Show requests sequentially
+
+@enduml
+```
+
+This diagram outlines the main interactions between the employee and the system components involved in viewing customer requests in order. It starts with the login process, which authenticates the employee using the "Login System". Once authenticated, the employee selects to view requests from the "Employee Dashboard". The "Request Management" component then fetches these requests from the "Database", ensuring they're ordered (for instance, by datetime to show the most recent or oldest first as per system design). Finally, the requests are displayed sequentially back on the employee's dashboard interface.
+
+Please note, this diagram simplifies the interactions and assumes successful operations at each step. In a comprehensive system design, additional details, error handling, and more complex interactions (such as filtering and sorting requests) could be represented.

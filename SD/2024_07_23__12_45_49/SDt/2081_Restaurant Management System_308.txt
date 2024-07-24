@@ -1,0 +1,26 @@
+@startuml
+actor Waiter
+participant "Waiter Interface" as WI
+participant "Order Management System" as OMS
+participant "Database" as DB
+
+Waiter -> WI: Selects 'View Table Waiting Times'
+activate WI
+
+WI -> OMS: RequestWaitingTimes()
+activate OMS
+
+OMS -> DB: RetrieveOrderDetails()
+activate DB
+
+DB --> OMS: OrderDetails[]
+deactivate DB
+
+OMS -> OMS: CalculateWaitingTimes(OrderDetails)
+OMS --> WI: WaitingTimes[]
+deactivate OMS
+
+WI --> Waiter: DisplayWaitingTimes(WaitingTimes[])
+deactivate WI
+
+@enduml

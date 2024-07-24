@@ -1,0 +1,56 @@
+To visualize the sequence of interactions for the user story "As a waiter, I want to see the track of the order" in the context of a Restaurant Management and Operations System using PlantUML, follow this detailed sequence diagram outline. This example assumes key system components and typical interactions based on the project description provided.
+
+Please note, since PlantUML code cannot be executed or rendered here, the following is a textual representation of what the PlantUML code would look like:
+
+```plantuml
+@startuml
+participant Waiter as waiter
+participant "Order Tracking System" as trackingSystem
+participant "Database" as db
+
+waiter -> trackingSystem: Request order status
+activate waiter
+activate trackingSystem
+
+trackingSystem -> db: Query order by ID
+activate db
+
+db -> trackingSystem: Return order details
+deactivate db
+
+trackingSystem -> waiter: Show order status (Preparing/Cooking/Ready)
+deactivate trackingMediaStorage
+
+waiter -> trackingSystem: Request updates \n(if status == Preparing or Cooking)
+activate trackingSystem
+
+trackingSystem -> trackingSystem: Subscribe to updates
+deactivate trackingSystem
+
+loop Until Order Ready
+    trackingSystem-> waiter: Send real-time updates
+    activate waiter
+    deactivate waiter
+end
+
+trackingSystem -> waiter: Notify when order is ready
+activate trackingSystem
+
+waiter -> waiter: Collect order from kitchen
+
+deactivate trackingSystem
+@enduml
+```
+
+Explanation of steps:
+1. **Waiter Requests Order Status**: The waiter initiates a request to the Order Tracking System to view the current status of an order.
+2. **Order Tracking System Queries Database**: The Order Tracking System queries the back-end database for the specific order's details by ID.
+3. **Database Returns Order Details**: The database returns the requested order details, including its current status, back to the Order Tracking System.
+4. **Show Order Status to Waiter**: The tracking system then displays the current status of the order (e.g., Preparing, Cooking, Ready) to the waiter.
+5. **Request Updates on Order Status**: If the order is not ready, the waiter can request to be kept updated on the status changes.
+6. **Subscription to Updates**: The Order Tracking System subscribes the waiter to real-time updates on the order's status.
+7. **Loop of Real-time Updates**: The Order Tracking System sends real-time updates to the waiter as the order status changes within the kitchen until the order is marked as ready.
+8. **Notification of Order Readiness**: Once the order is ready for serving, the Order Tracking System notifies the waiter.
+9. **Waiter Collects the Order**: Finally, the waiter is informed and proceeds to collect the order from the kitchen for service to the customer.
+
+This sequence diagram aims to capture the flow of interactions involved in tracking an order's status from a waiter's perspective within a restaurant management system.

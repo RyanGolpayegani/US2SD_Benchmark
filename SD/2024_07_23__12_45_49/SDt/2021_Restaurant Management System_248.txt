@@ -1,0 +1,33 @@
+@startuml
+actor Manager as "Restaurant Manager"
+participant "Management Interface" as UI
+participant "Backend Server" as Backend
+database "Database" as DB
+
+Manager -> UI: Access management dashboard
+activate UI
+UI -> Backend: Request current menu items
+activate Backend
+Backend -> DB: Query menu items
+activate DB
+DB --> Backend: Return list of menu items
+deactivate DB
+Backend --> UI: Show menu items to manager
+deactivate Backend
+UI --> Manager: Display menu items
+deactivate UI
+
+Manager -> UI: Request to organize menu items
+activate UI
+UI -> Backend: Send organize command\n(criteria: popularity, stock level)
+activate Backend
+Backend -> DB: Update menu item order
+activate DB
+DB --> Backend: Confirm menu update
+deactivate DB
+Backend --> UI: Confirm update to manager
+deactivate Backend
+UI --> Manager: Display updated menu
+deactivate UI
+
+@enduml

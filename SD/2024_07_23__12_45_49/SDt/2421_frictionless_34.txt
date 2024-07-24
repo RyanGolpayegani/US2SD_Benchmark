@@ -1,0 +1,30 @@
+@startuml
+actor Developer
+
+participant "DPIEIntegrationAPI" as DPIE
+database "DataPackage" as DP
+participant "HDF5Adapter" as HDF5A
+database "HDF5Storage" as HDF5S
+
+Developer -> DPIE: requestIntegration(dataPackageID, 'HDF5')
+activate DPIE
+
+DPIE -> DP: fetchDataPackage(dataPackageID)
+activate DP
+DP --> DPIE: dataPackage
+deactivate DP
+
+DPIE -> HDF5A: convertToHDF5(dataPackage)
+activate HDF5A
+HDF5A -> HDF5S: storeInHDF5Format(convertedData)
+activate HDF5S
+HDF5S --> HDF5A: confirmation(success)
+deactivate HDF5S
+
+HDF5A --> DPIE: conversionResult(success)
+deactivate HDF5A
+
+DPIE --> Developer: integrationResult(success)
+deactivate DPIE
+
+@enduml

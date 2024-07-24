@@ -1,0 +1,47 @@
+Given the requirements of the user story mentioned in the project description of RecycleSmart Platform, below is a detailed sequence diagram in PlantUML format that demonstrates how a user can link their email account to their profile for password recovery purposes.
+
+```plantuml
+@startuml
+actor User
+participant "UI Interface" as UI
+participant "User Profile Service" as UserProfile
+participant "Email Service" as Email
+participant "Database" as DB
+
+User -> UI: Select "Link Email"
+UI -> UserProfile: RequestEmailLinking()
+activate UserProfile
+
+UserProfile -> DB: CheckIfEmailExists(email)
+activate DB
+DB --> UserProfile: EmailNotFound
+deactivate DB
+
+UserProfile -> DB: LinkEmailToUser(email, userID)
+activate DB
+DB --> UserProfile: EmailLinked
+deactivate DB
+
+UserProfile -> Email: SendConfirmation(email)
+activate Email
+Email --> UserProfile: ConfirmationSent
+deactivate Email
+UserProfile --> UI: ShowSuccessMessage()
+deactivate UserProfile
+
+UI --> User: Display "Email linked successfully"
+
+@enduml
+```
+
+This sequence diagram follows the simplified steps for a user wanting to link their email account to their profile on the RecycleSmart platform:
+
+1. **User Interaction**: The user starts the process by selecting the option to link their email within the platform's UI (for instance, through their profile settings).
+2. **Request Handling**: The UI Interface calls the User Profile Service to request email linking.
+3. **Email Verification**: The User Profile Service checks with the Database if the email is already linked with any user profile.
+   - If the email exists in the system associated with another account, it could return an error (not shown in this diagram for simplicity).
+4. **Linking the Email**: Assuming the email is not previously linked, the User Profile Service proceeds to link the email to the user's account.
+5. **Confirmation Email**: The User Profile Service then uses the Email Service to send a confirmation message to the user's email address.
+6. **Success Message**: Finally, the UI Interface shows a success message to the user indicating the email has been linked successfully.
+
+In this diagram, the process focuses on linking the email for future use in receiving a temporary password. The scenario assumes successful email linking without errors for brevity and clarity. Error handling and alternative scenarios (e.g., the email already linked to another account) should also be considered in a comprehensive design.

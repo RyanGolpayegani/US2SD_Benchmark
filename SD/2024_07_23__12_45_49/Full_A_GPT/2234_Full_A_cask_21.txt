@@ -1,0 +1,35 @@
+Given the specifications and requirements outlined in the provided project description, we can translate this particular user story into a PlantUML sequence diagram. The sequence will illustrate the interaction between the dataset developer and the dataset management system to attempt the deletion of an outdated dataset type version. It is important to note that the successful execution of this operation is contingent on ensuring no dataset instances with the specified version exist.
+
+Below is a simplified PlantUML diagram illustrating these interactions:
+
+```plantuml
+@startuml
+actor Developer as "Dataset Developer"
+participant "Dataset Management\nSystem" as DMS
+database "Dataset Repository" as Repo
+
+== Attempt to Delete Dataset Type Version ==
+
+Developer -> DMS : Request to delete dataset type version
+DMS -> Repo : Check for dataset instances of that version
+alt Dataset Instances Found
+    Repo --> DMS : Instances exist, cannot delete
+    DMS --> Developer : Deletion failed; Instances exist
+else No Instances Found
+    Repo --> DMS : No instances found
+    DMS -> Repo : Delete dataset type version
+    Repo --> DMS : Deletion successful
+    DMS --> Developer : Deletion successful; Version deleted
+end
+@enduml
+```
+
+In this diagram:
+
+1. **Dataset Developer** initiates a deletion request for a specific version of a dataset type.
+2. The **Dataset Management System** (DMS) receives this request and checks the **Dataset Repository** for any existing instances of the requested version.
+3. The **Dataset Repository** responds based on whether instances exist:
+    - If **instances of the specified version exist**, it prevents the deletion and informs the DMS, which then communicates failure back to the developer, ensuring the process aligns with the requirement that dataset types with active instances cannot be deleted.
+    - If **no instances are found**, the DMS proceeds to delete the dataset type version from the repository and confirms the successful deletion to the developer.
+
+This flow ensures data integrity and respects the project's goal of handling dataset versions and dependencies carefully within the application ecosystem.

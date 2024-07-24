@@ -1,0 +1,66 @@
+Given the complexity of the desired system and the specific user story you provided, below is a conceptual PlantUML sequence diagram that illustrates the process from the perspective of an app developer deploying a new version of an application that includes an older version of a dataset type, ensuring that the dataset instances created by this deployment use the appropriate dataset code included in the app.
+
+This sequence diagram will cover key interactions between the app developer, application deployment system, dataset management system, and version control system.
+
+```plantuml
+@startuml
+!theme plain
+
+participant "App Developer" as developer
+participant "Deployment System" as deployment
+participant "Dataset Management System" as dataset_mgmt
+participant "Version Control System" as version_ctrl
+
+== Deployment Process ==
+developer -> deployment: Deploy new app version
+activate deployment
+
+deployment -> version_ctrl: Check dataset type version included
+activate version_ctrl
+
+version_ctrl -> version_headers: Previous with $current_version
+version_ctrl -> version_ctrl: Compare versions
+version_ctrl --> dataset_mgmt: Fetch older dataset type code
+deactivate version_ctrl
+
+activate dataset_mgmt
+dataset_mgmt -> dataset_mgmt: Validate compatibility
+dataset_mgmt --> deployment: Provide dataset type code
+deactivate dataset_mgmt
+
+deployment -> dataset_mgmt: Create/Update dataset instances
+activate dataset_mgmt
+
+dataset_mgmt -> dataset_mgmt: Inject dataset type code
+dataset_mgmt -> dataset_mgmt: Update version mapping
+dataset_mgmt --> deployment: Confirm dataset instances updated
+deactivate dataset_mgmt
+
+deployment --> developer: Deployment Successful
+deactivate deployment
+
+@enduml
+```
+
+### Explanation of the Diagram Steps:
+
+1. **Deployment Process Initiation**: The app developer initiates the deployment of a new application version.
+
+2. **Version Check**: The deployment system communicates with the version control system to check the version of the dataset type included in the new app version.
+
+3. **Fetching Dataset Type Code**: Based on the comparison, if an older version of the dataset type is required (as included in the app), the version control system instructs the dataset management system to fetch the corresponding dataset type code.
+
+4. **Validation and Provisioning**: The dataset management system validates the compatibility of the dataset type code with the new application version and provides the necessary code back to the deployment system.
+
+5. **Dataset Instance Creation/Update**: With the provided dataset type code, the deployment system instructs the dataset management system to create or update the dataset instances that will be used by the new application version.
+
+6. **Injection and Version Mapping Update**: The dataset management system injects the appropriate dataset type code into the dataset instances and updates any necessary version mappings.
+
+7. **Completion**: Upon successful update of the dataset instances, the deployment system notifies the app developer that the deployment was successful.
+
+### Notes:
+
+- This diagram assumes a simplified interaction and omits potential error handling and rollback mechanisms for brevity.
+- "version_headers" and "Previous with $current_version" steps are abstract representations of the process to compare current and required dataset version types, which might involve more complex checks and operations in a real system.
+
+This sequence provides a high-level overview and may need adjustments based on the specific implementation details and requirements of the dataset management and version control system being developed.

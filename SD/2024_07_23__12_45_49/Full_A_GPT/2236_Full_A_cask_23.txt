@@ -1,0 +1,45 @@
+To illustrate the user story "As a data scientist, I want to be able to create a dataset instance of an existing dataset type without writing code" using a sequence diagram in PlantUML format, we will depict the interaction between the data scientist (user), UI or CLI, dataset management system, and dataset storage/repository. This sequence will cover the process from when the data scientist initiates the creation of the dataset instance until the instance is successfully created in the repository.
+
+```plantuml
+@startuml
+actor DataScientist as DS
+participant "UI/CLI" as UI
+participant "Dataset Management\nSystem" as DMS
+database "Dataset Repository" as Repo
+
+DS -> UI : Request to create dataset instance
+UI -> DMS : Parse request parameters\n(Select existing dataset type,\nDefine instance properties)
+activate DMS
+DMS -> DMS : Verify permissions\nand dataset type existence
+alt dataset type exists and user has permissions
+    DMS -> Repo : Create new dataset instance\nwith specified properties
+    activate Repo
+    Repo --> DMS : Instance creation confirmation
+    deactivate Repo
+    DMS --> UI : Display success message\nwith instance details
+else dataset type not found or no permissions
+    DMS --> UI : Display error message
+end
+UI --> DS : Show confirmation/error message
+deactivate DMS
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **Data Scientist Request**: The data scientist starts by requesting to create a dataset instance, specifying its type and properties, through the UI or CLI.
+
+2. **UI/CLI Processes Request**: The UI or CLI forwards this request to the dataset management system, providing all necessary information.
+
+3. **Verification**: The dataset management system verifies if the selected dataset type exists and if the data scientist has the necessary permissions to create an instance of this type.
+
+4. **Instance Creation**:
+    - If verification is successful, the system proceeds to create a new instance of the dataset in the repository with the specific properties defined by the data scientist.
+    - Upon the successful creation of the instance, the dataset management system receives a confirmation from the repository.
+    
+5. **Success/Error Message**: Based on the outcome, the dataset management system responds back through the UI/CLI with either a success message detailing the dataset instance created or an error message if the process could not be completed (e.g., dataset type not found, or permission issues).
+
+6. **Confirmation/Error to Data Scientist**: Finally, the UI/CLI displays this message to the data scientist, concluding the process.
+
+This sequence diagram outlines a high-level interaction for creating a dataset instance without writing code, focusing on system interactions and user flow.

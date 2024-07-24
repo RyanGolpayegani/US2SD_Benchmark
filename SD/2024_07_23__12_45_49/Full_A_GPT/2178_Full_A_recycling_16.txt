@@ -1,0 +1,39 @@
+Creating a detailed sequence diagram for the specified user story involves representing objects and the messages that are exchanged between these objects in the system to perform the desired functionality – in this case, allowing an admin to add or remove recycling facilities' information. Below is a representation of what this process might look like in PlantUML syntax, a tool for drawing UML diagrams based on a simple and intuitive language.
+
+```plantuml
+@startuml
+actor Admin
+participant "Admin Interface" as AdminUI
+participant "Authentication Service" as AuthService
+database "RecycleSmart Database" as Database
+participant "Notification Service" as NotifyService
+participant User
+
+== Add or Remove Recycling Facility Information ==
+
+Admin -> AdminUI: Log in to platform
+AdminUI -> AuthService: Authenticate Admin
+AuthService -> AdminUI: Authentication Successful
+
+note over Admin, Database: Admin decides to update facility information
+
+Admin -> AdminUI: Selects add/remove facility info
+AdminUI -> Database: Request add/remove facility data
+Database --> AdminUI: Update confirmation
+AdminUI -> NotifyService: Trigger notification for update
+NotifyService -> User: Send out facility update notification
+
+note over User: Users receive updated information
+
+@enduml
+```
+
+This sequence diagram outlines the following steps for the process:
+
+1. **Authentication**: The admin logs into the platform and is authenticated using the platform's authentication service.
+2. **Decision Making**: The admin decides to either add new facility information or remove existing information.
+3. **Action**: The admin interacts with the admin interface to either add or remove the desired recycling facility information.
+4. **Database Update**: The admin's action triggers a request to update the platform's database with the new or removed information.
+5. **Confirmation & Notification**: Once the database confirms the update, a notification is triggered through the notification service to inform users about the update.
+
+The diagram illustrates a high-level overview and simplifies the real-world complexities, like error handling and security checks, which should also be considered in a fully implemented system.

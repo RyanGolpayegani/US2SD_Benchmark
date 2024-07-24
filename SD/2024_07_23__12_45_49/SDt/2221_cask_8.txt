@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+
+participant "App Developer" as developer
+participant "Deployment System" as deployment
+participant "Dataset Management System" as dataset_mgmt
+participant "Version Control System" as version_ctrl
+
+== Deployment Process ==
+developer -> deployment: Deploy new app version
+activate deployment
+
+deployment -> version_ctrl: Check dataset type version included
+activate version_ctrl
+
+version_ctrl -> version_headers: Previous with $current_version
+version_ctrl -> version_ctrl: Compare versions
+version_ctrl --> dataset_mgmt: Fetch older dataset type code
+deactivate version_ctrl
+
+activate dataset_mgmt
+dataset_mgmt -> dataset_mgmt: Validate compatibility
+dataset_mgmt --> deployment: Provide dataset type code
+deactivate dataset_mgmt
+
+deployment -> dataset_mgmt: Create/Update dataset instances
+activate dataset_mgmt
+
+dataset_mgmt -> dataset_mgmt: Inject dataset type code
+dataset_mgmt -> dataset_mgmt: Update version mapping
+dataset_mgmt --> deployment: Confirm dataset instances updated
+deactivate dataset_mgmt
+
+deployment --> developer: Deployment Successful
+deactivate deployment
+
+@enduml

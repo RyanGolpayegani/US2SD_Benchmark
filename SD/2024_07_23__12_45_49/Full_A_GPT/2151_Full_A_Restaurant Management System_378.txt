@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram for the user story "As an employee, I want to track the stock of resources so that the restaurant always maintains stock," involves highlighting the interaction between different components of the restaurant management system, particularly focusing on inventory management. This would involve interactions from the employee perspective, database access, and possibly notifications for low stock. Below is a PlantUML code representation of such a sequence diagram.
+
+Please note, to render PlantUML code, you would need a PlantUML environment or a tool that supports PlantUML syntax.
+
+```plantuml
+@startuml
+participant Employee
+participant InventorySystem
+participant Database
+participant NotificationService
+
+Employee -> InventorySystem : CheckStock(itemID)
+InventorySystem -> Database : QueryStockLevel(itemID)
+Database -> InventorySystem : ReturnStockLevel
+InventorySystem -> Employee : DisplayStockLevel
+
+alt Stock Level is Below Threshold
+    InventorySystem -> NotificationService : TriggerLowStockAlert(itemID)
+    NotificationService -> Employee : SendLowStockNotification
+    Employee -> InventorySystem : RequestRestock(itemID, quantity)
+    InventorySystem -> Database : UpdateRequestedRestock(itemID, quantity)
+    Database -> InventorySystem : ConfirmRestockRequest
+    InventorySystem -> Employee : DisplayRestockConfirmation
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram
+1. **Employee to InventorySystem**: The sequence starts with an employee (which could be a cook, chef, or inventory manager) checking the stock of a specific item through the Inventory System.
+2. **InventorySystem to Database**: The Inventory System queries the current stock level of the item from the Database.
+3. **Database to InventorySystem**: The Database returns the stock level of the requested item back to the Inventory System.
+4. **InventorySystem to Employee**: The Inventory System then displays the stock level information to the employee.
+
+### Alternative Flow (Low Stock Scenario):
+5. If the checked stock level is below a certain threshold, the InventorySystem triggers a low stock alert.
+6. **InventorySystem to NotificationService**: It sends a request to the Notification Service to alert the concerned employee(s).
+7. **NotificationService to Employee**: A low stock notification is sent to the employee.
+8. **Employee to InventorySystem**: The employee, upon receiving the notification, can request to restock the item directly through the Inventory System.
+9. **InventorySystem to Database**: The request to restock the item, along with the specified quantity, is sent to the Database for updating.
+10. **Database to InventorySystem**: The Database confirms the restock request.
+11. **InventorySystem to Employee**: Finally, a restock confirmation is displayed to the employee, completing the restock process.
+
+This diagram outlines the main interactions involved in tracking and managing stock levels within the Restaurant Management and Operations System from the perspective of an employee role.

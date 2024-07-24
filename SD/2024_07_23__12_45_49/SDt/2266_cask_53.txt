@@ -1,0 +1,34 @@
+@startuml
+participant AppDeveloper as developer
+participant AppDeploymentService as deployService
+participant DatasetManagementService as datasetService
+participant Database as db
+
+developer -> deployService : Deploy Application Request
+activate deployService
+
+deployService -> datasetService : Validate Datasets Creation
+activate datasetService
+
+loop For Each Dataset
+    datasetService -> db : Create Dataset Instance
+    db -> datasetService : Dataset Creation Status
+    alt Dataset Creation Failed
+        datasetService -> deployService : Dataset Creation Failed 
+        deployService -> developer : Application Deployment Failed
+        deactivate datasetService
+        deactivate deployService
+        return
+    end
+end
+
+datasetService -> deployService : All Datasets Validated Successfully
+deactivate datasetService
+
+deployService -> db : Create Application Instance
+db -> deployService : Application Creation Status
+
+deployService -> developer : Application Deployment Success
+deactivate deployService
+
+@enduml

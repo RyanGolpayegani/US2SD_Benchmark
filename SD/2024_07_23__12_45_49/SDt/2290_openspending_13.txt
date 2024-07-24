@@ -1,0 +1,20 @@
+@startuml
+actor User as user
+participant "OpenSpending Platform\nImport Interface" as importInterface
+participant "Validation Service" as validationService
+participant "Data Model Editor" as dataModelEditor
+participant "Database" as database
+
+user -> importInterface : Select 'Import Data'
+user -> importInterface : Upload Fiscal Data Package descriptor file
+importInterface -> validationService : Validate descriptor file
+alt File is valid
+    validationService --> importInterface : Validation Successful
+    user -> dataModelEditor : Edit Data Model (optional)
+    dataModelEditor -> database : Import Data to Database
+    database --> user : Display Success Message
+else File is invalid
+    validationService --> importResponse : Validation Failed
+    importInterface --> user : Display Error Message
+end
+@enduml

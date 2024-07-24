@@ -1,0 +1,17 @@
+@startuml
+actor Developer
+participant "DPIE API" as DPIE
+database "Data Package" as DP
+participant "Feather Library" as Feather
+database "Feather File" as FF
+
+Developer -> DPIE : Request(DataPackage -> Feather)
+DPIE -> DP : Fetch Data Package
+DP -> DPIE : Return Data Package
+DPIE -> Feather : Convert(Data Package)
+Feather -> FF : Write Data(Feather Format)
+FF -> Feather : Confirm Write Success
+Feather -> DPIE : Return Success(Message)
+DPIE -> Developer : Conversion Success(Message)
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+actor Waiter
+participant "Waiter Interface" as WInterface
+participant "Order Management System" as OMS
+participant "Database" as DB
+
+== Add Notes to Order ==
+Waiter -> WInterface: Select order to add notes
+activate WInterface
+
+WInterface -> OMS: Request order details
+activate OMS
+
+OMS -> DB: Fetch order details
+activate DB
+DB --> OMS: Order details
+deactivate DB
+
+OMS --> WInterface: Show order details
+deactivate OMS
+
+Waiter -> WInterface: Enter notes and submit
+WInterface -> OMS: Update order with notes
+activate OMS
+
+OMS -> DB: Save updated order
+activate DB
+DB --> OMS: Confirm save
+deactivate DB
+
+OMS --> WInterface: Confirmation message
+deactivate OMS
+
+WInterface --> Waiter: Show confirmation message
+deactivate WInterface
+@enduml

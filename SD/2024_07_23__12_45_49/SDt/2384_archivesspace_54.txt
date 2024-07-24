@@ -1,0 +1,23 @@
+@startuml
+actor User as user
+participant "UI Login Page" as login
+participant "Authentication Controller" as authController
+database "User Database" as userDB
+participant "Session Manager" as session
+
+== Authentication Process ==
+user -> login: Enter credentials
+login -> authController: Submit credentials
+authController -> userDB: Validate credentials
+alt successful validation
+    userDB -> authController: Return user details
+    authController -> session: Create user session
+    session -> authController: Session ID
+    authController -> login: Authentication successful
+    login -> user: Display dashboard
+else validation failed
+    userDB -> authController: Return error
+    authController -> login: Authentication failed
+    login -> user: Display error
+end
+@enduml

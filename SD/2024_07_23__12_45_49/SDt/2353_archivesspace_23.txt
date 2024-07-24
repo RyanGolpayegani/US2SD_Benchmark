@@ -1,0 +1,27 @@
+@startuml
+participant UserInterface as UI
+participant SystemController as Controller
+participant RepositoryModel as Model
+participant Database
+
+UI -> Controller : addPropertiesRequest(properties)
+activate Controller
+
+Controller -> Model : validateProperties(properties)
+activate Model
+Model --> Controller : validationResults
+deactivate Model
+
+alt If properties are valid
+    Controller -> Database : updateRepositoryProperties(properties)
+    activate Database
+    Database --> Controller : updateSuccess
+    deactivate Database
+    Controller --> UI : showSuccessMessage()
+    deactivate Controller
+else If properties are invalid
+    Controller --> UI : showErrorMessage(validationResults)
+    deactivate Controller
+end
+
+@enduml

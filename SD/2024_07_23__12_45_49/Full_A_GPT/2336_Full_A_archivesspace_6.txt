@@ -1,0 +1,37 @@
+To create a sequence diagram in PlantUML for the user story of authenticating a user via LDAP, we need to outline the sequence of events that occur during the authentication process. The diagram will illustrate how a user interacts with the system and how the system in turn interacts with the LDAP server during user authentication.
+
+Below is an example of a PlantUML code that illustrates this process:
+
+```plantuml
+@startuml
+actor User
+participant "Login Interface" as UI
+participant "Authentication Service" as Auth
+database "LDAP Server" as LDAP
+
+User -> UI : Enter username\nand password
+UI -> Auth : Validate credentials
+Auth -> LDAP : Request authentication
+LDAP -> Auth : Authentication response\n(success or failure)
+Auth -> UI : Authentication result
+UI -> User : Display authentication result
+
+alt Success
+    UI -> User : Display main page
+else Failure
+    UI -> User : Display error message
+end
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **User Interaction**: The user starts the process by entering their username and password into the login interface.
+2. **Credential Validation**: The login interface sends these credentials to the authentication service to validate them.
+3. **LDAP Request**: The authentication service then sends a request to the LDAP server to authenticate the user's credentials.
+4. **LDAP Response**: The LDAP server processes this request and sends back a response to the authentication service indicating whether the authentication was a success or failure.
+5. **Result Handling**: Depending on the response from the LDAP server, the authentication service sends the authentication result back to the login interface.
+6. **User Feedback**: Finally, the login interface displays the result to the user. If the authentication was successful, the user is directed to the main page of the application. If the authentication failed, an error message is displayed.
+
+This PlantUML diagram captures the basic flow of LDAP authentication in a system. However, depending on the specific requirements and configurations of the Comprehensive Archival Management System (CAMS) project, additional steps or components might be necessary.

@@ -1,0 +1,53 @@
+Creating a detailed sequence diagram for the user story "As an Archivist, I want to create and edit Rights Management statements" requires breaking down the process into distinct steps, focusing on the interaction between the Archivist and the Comprehensive Archival Management System (CAMS). Below is a PlantUML code snippet that visualizes these interactions.
+
+```plantuml
+@startuml
+participant Archivist
+participant AuthModule as "Authentication Module"
+participant "Rights Management \nModule" as RightsManagement
+database CAMS_DB as "CAMS Database"
+
+== Authentication Process ==
+Archivist -> AuthModule : Login()
+activate AuthModule
+AuthModule --> Archivist : Authentication Response
+deactivate AuthModule
+
+== Create Rights Management Statement ==
+Archivist -> RightsManagement : Select "Create Rights Management"
+activate RightsManagement
+RightsManagement -> CAMS_DB : Fetch Template
+CAMS_DB --> RightsManagement : Rights Management Template
+RightsManagement --> Archivist : Show Template
+Archivist -> RightsManagement : Fill in Template Details
+RightsManagement -> CAMS_DB : Save New Rights Statement
+CAMS_DB --> RightsManagement : Confirmation
+RightsManagement --> Archivist : Show Confirmation
+
+== Edit Rights Management Statement ==
+Archivist -> RightsManagement : Select Existing Rights Statement
+activate RightsManagement
+RightsManagement -> CAMS_DB : Fetch Selected Statement
+CAMS_DB --> RightsManagement : Rights Statement Details
+RightsManagement --> Archivist : Show Statement Details
+Archivist -> RightsManagement : Modify Details
+RightsManagement -> CAMS_DB : Update Statement
+CAMS_DB --> RightsManagement : Confirmation
+RightsManagement --> Archivist : Show Update Confirmation
+
+@enduml
+```
+
+This sequence diagram outlines the following steps for creating and editing Rights Management statements within CAMS:
+
+1. **Authentication Process**: The Archivist logs into CAMS through the Authentication Module, and upon successful authentication, proceeds to the Rights Management Module.
+
+2. **Create Rights Management Statement**:
+   - The Archivist selects the option to create a new Rights Management statement. The system then fetches a template from the CAMS Database and presents it to the Archivist.
+   - The Archivist fills in the details for the new Rights Management statement. The completed form is saved in the CAMS Database, and a confirmation of the new statement creation is shown.
+
+3. **Edit Rights Management Statement**:
+   - To edit an existing Rights Management statement, the Archivist selects the statement from a list. The system fetches the details of the selected statement for the Archivist to review.
+   - The Archist can modify the details of the Rights Management statement. The updated statement is saved in the CAMS Database, and a confirmation of the update is presented.
+
+This sequence diagram focuses on the main interactions and simplifies backend processes like error handling and data validation for clarity. Adjustments might be necessary to accommodate specific project requirements or when details of the system architecture change.

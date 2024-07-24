@@ -1,0 +1,34 @@
+@startuml
+participant "App Developer" as AD
+participant "Dataset Management System" as DMS
+participant "Version Control" as VC
+participant "Application A" as AA
+participant "Application B" as AB
+participant "Shared Dataset Type" as SDT
+
+AD -> DMS : Deploy new version of Application A with updated dataset type
+activate DMS
+
+DMS -> VC : Check for existing versions of shared dataset type
+activate VC
+VC --> DMS : Return current version details
+deactivate VC
+
+DMS -> SDT : Create new version of shared dataset type
+activate SDT
+SDT --> DMS : New version created
+deactivate SDT
+
+DMS -> AA : Update dataset instances associated with Application A
+activate AA
+AA --> DMS : Dataset instances updated
+deactivate AA
+
+DMS -> AB : Verify dataset instances associated with Application B
+activate AB
+AB --> DMS : Dataset instances remain unchanged
+deactivate AB
+
+DMS --> AD : Deployment successful
+deactivate DMS
+@enduml

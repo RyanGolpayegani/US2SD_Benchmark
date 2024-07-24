@@ -1,0 +1,44 @@
+Creating a detailed Sequence Diagram for the user story "As a waiter, I want to clean the waiting time of the table" involves depicting the sequence of steps and interactions between the waiter, the restaurant management system, and possibly, other entities involved in resetting the waiting time of a table once it's been cleaned or is ready for new customers. Below is an outline of how this process might work, translated into a PlantUML sequence diagram syntax.
+
+The scenario assumes that after a table gets cleaned, the waiter uses the system to update the table's status so it can be ready for new customers, effectively "cleaning" its waiting time or making it immediately available for reservation or walk-in guests.
+
+Note: To execute this PlantUML code, you will need to use a PlantUML environment or an online tool that supports PlantUML diagrams.
+
+```plantuml
+@startuml
+actor Waiter
+participant "Waiter Interface" as WI
+participant "Table Management Module" as TMM
+participant "Database" as DB
+
+== Update Cleaned Table Status ==
+
+Waiter -> WI: Selects "Table Ready"
+activate WI
+
+WI -> TMM: Sends table ready signal
+activate TMM
+
+TMM -> DB: Update table status to "Available"
+activate DB
+DB --> TMM: Confirm table status updated
+deactivate DB
+
+TMM --> WI: Display success message
+deactivate TMM
+
+WI -> Waiter: Shows "Table Ready for New Customers" message
+deactivate WI
+
+@enduml
+```
+
+This diagram outlines the sequence of interactions:
+
+1. **Waiter initiates the process**: The waiter decides that a table has been cleaned and is ready for the next customers.
+2. **Waiter Interface**: The waiter interacts with the waiter interface (possibly a tablet or a computer) to select the "Table Ready" option, signaling that a table has been cleaned.
+3. **Table Management Module**: This component of the system receives the signal from the waiter interface.
+4. **Database update**: The Table Management Module sends a request to the database to update the table's status to "Available", indicating that it's ready for new guests.
+5. **Confirmation**: The database confirms the status has been updated, and a success message is displayed to the waiter through the waiter interface.
+
+This sequence ensures that the table's availability is updated in real-time, allowing the restaurant management system to accurately track table statuses and reduce customer waiting time.

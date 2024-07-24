@@ -1,0 +1,23 @@
+@startuml
+actor Archivist
+participant "Import Interface" as Interface
+participant "Validation Module" as Validation
+participant "Data Transformation" as Transform
+participant "Data Storage" as Storage
+database "CAMS Database" as DB
+
+Archivist -> Interface : Selects EAC-CPF file for import
+Interface -> Validation : Sends file for validation
+alt Validation Success
+    Validation -> Transform : Passes validated EAC-CPF data
+    Transform -> Transform : Converts EAC-CPF to System Format
+    Transform -> Storage : Sends transformed data for storage
+    Storage -> DB : Stores Agent Information
+    DB --> Storage : Confirmation
+    Storage --> Interface : Show success message
+    Interface --> Archivist : Display success confirmation
+else Validation Failure
+    Validation --> Interface : Show error message
+    Interface --> Archivist : Display validation error
+end
+@enduml

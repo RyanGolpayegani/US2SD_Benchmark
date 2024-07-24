@@ -1,0 +1,38 @@
+@startuml
+actor "Data Entry User" as user
+participant "User Interface" as UI
+participant "Authentication Module" as Auth
+participant "Validation Service" as Validator
+participant "Archival Description Controller" as ADC
+database "Archival Database" as DB
+
+== Authentication ==
+user -> UI : Access System
+UI -> Auth : Authenticate User
+Auth -> UI : Authentication Success
+
+== Create Archival Description ==
+user -> UI : Select Create New Record
+UI -> ADC : Initiate New Archival Description
+ADC -> Validator : Validate User Permissions
+Validator -> ADC : Permission Granted
+
+ADC -> DB : Create New Record
+DB -> ADC : Record Creation Success
+ADC -> UI : Display Success Message
+UI -> user : Show Success & New Record Details
+
+== Update Archival Description ==
+user -> UI : Select and Edit Record
+UI -> ADC : Request to Update Record
+ADC -> Validator : Validate Edit Permissions
+Validator -> ADC : Edit Permission Granted
+
+ADC -> Validator : Validate Data
+Validator -> ADC : Data Validation Success
+ADC -> DB : Update Record
+DB -> ADC : Record Update Success
+ADC -> UI : Display Success Message
+UI -> user : Show Updated Record
+
+@enduml

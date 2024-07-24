@@ -1,0 +1,46 @@
+Given your request for a detailed Sequence Diagram in PlantUML format relevant to the user story you've presented, below is a template that outlines the interaction between an API User and the system components involved in retrieving bordering regions or cities when a region or city is queried. This is based on the “API and Developer Tools” objective described in the OpenSpending Enhancement Project.
+
+```plantuml
+@startuml
+participant APIUser as User
+participant APIServer as Server
+participant Database as DB
+participant GeoDataAPI as GeoAPI
+participant ResponseFormatter as Formatter
+
+User -> Server: Request bordering regions/cities for specific region/city
+activate Server
+
+Server -> DB: Query for region/city details
+activate DB
+DB --> Server: Return region/city details
+deactivate DB
+
+Server -> GeoAPI: Request bordering regions/cities based on region/city details
+activate GeoAPI
+GeoAPI --> Server: Return list of bordering regions/cities
+deactivate GeoAPI
+
+Server -> Formatter: Format bordering regions/cities data
+activate Formatter
+Formatter --> Server: Formatted data
+deactivate Formatter
+
+Server --> User: Provide formatted list of bordering regions/cities
+deactivate Server
+@enduml
+```
+
+Explanation:
+
+1. **APIUser (User)**: This participant represents the API user who makes a request to obtain information about regions or cities bordering a specific region or city. This is the initial action that triggers the sequence.
+
+2. **APIServer (Server)**: Acts as the intermediary that processes the request from the API user. It is responsible for fetching the necessary details from the database, communicating with external GeoDataAPIs if needed, formatting the response, and returning the relevant data back to the user.
+
+3. **Database (DB)**: The primary storage that contains detailed data about regions, cities, and their geographical attributes. The server queries this database to retrieve initial details about the specified region or city.
+
+4. **GeoDataAPI (GeoAPI)**: An external API that the server might use to obtain additional geographical data, such as identifying bordering regions or cities based on the queried region/city's details. This external interaction enriches the OpenSpending platform's response with wider geographical context.
+
+5. **ResponseFormatter (Formatter)**: This component takes the raw data received from the database and the GeoDataAPI, formats it for easier consumption, and ensures it matches the expected response structure for the API user.
+
+The sequence diagram aims to provide a clear and simplified view of the process without delving into specific implementation details, focusing instead on the interaction flow relevant to fetching bordering regions or cities for mapping visualizations in the context of the OpenSpending Enhancement Project.

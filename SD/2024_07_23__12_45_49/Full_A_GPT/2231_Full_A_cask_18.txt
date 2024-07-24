@@ -1,0 +1,51 @@
+Below is an example of a detailed sequence diagram in PlantUML format addressing the described user story. This diagram outlines the interactions between the dataset developer, the dataset management system, and relevant components for deploying a new version of a dataset type without affecting existing dataset instances.
+
+```plantuml
+@startuml
+actor DatasetDeveloper as Developer
+participant "Dataset Management System" as DMS
+participant "Version Control" as VC
+participant "Dataset Type Registry" as DTR
+participant "Dataset Instance Manager" as DIM
+
+Developer -> DMS : Deploy new dataset type version
+activate DMS
+
+DMS -> VC : Check current version
+activate VC
+VC --> DMS : Return current version details
+deactivate VC
+
+DMS -> DTR : Register new version
+activate DTR
+DTR --> DMS : Version registered successfully
+deactivate DTR
+
+DMS -> DIM : Update available versions list
+activate DIM
+DIM --> DMS : List updated
+deactivate DIM
+
+DMS -> DTR : Isolate new version impact
+activate DTR
+DTR --> DMS : Impact isolation confirmed
+deactivate DTR
+
+DMS -> VC : Create version branch
+activate VC
+VC --> DMS : Branch created successfully
+deactivate VC
+
+DMS -> DIM : Assign new version to new instances
+activate DIM
+DIM --> DMS : New instances will use new version
+deactivate DIM
+
+DMS --> Developer : New version deployed successfully
+deactivate DMS
+
+@enduml
+```
+This sequence diagram begins with the Dataset Developer deploying a new version of a dataset type through the Dataset Management System (DMS). The system checks the current version with the Version Control (VC) component and registers the new version in the Dataset Type Registry (DTR). It then updates the available versions list in the Dataset Instance Manager (DIM), ensuring existing dataset instances are unaffected.
+
+The DMS then isolates the impact of the new version to prevent it from affecting existing instances and creates a version branch in the Version Control system. Finally, the DMS configures the system so that only new instances of the dataset type will use the new version, informing the developer of the successful deployment. This process ensures that the deployment of a new dataset type version does not impact existing instances, maintaining data integrity and application stability.

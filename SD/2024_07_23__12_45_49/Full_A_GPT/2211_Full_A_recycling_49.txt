@@ -1,0 +1,39 @@
+Creating a detailed sequence diagram for the described user story in PlantUML format involves illustrating the communication process between the actors (e.g., recycling facility representative) and the system components involved in updating facility information and recyclable materials accepted. Below is a basic diagram outline in PlantUML syntax.
+
+```plantuml
+@startuml
+actor "Recycling Facility\nRepresentative" as rep
+participant "RecycleSmart\nWeb Interface" as web
+database "RecycleSmart\nDatabase" as db
+participant "Recycling Facility\nInformation System" as facility
+
+== Update Facility Information ==
+
+rep -> web : Access Facility Update Page
+web -> rep : Display Update Form
+
+rep -> web : Submit Updated Info\n(Materials Accepted, etc.)
+web -> facility : Validate Information
+alt Information Valid
+    facility -> db : Update Facility Info
+    db -> facility : Confirmation
+    facility -> web : Update Success Message
+    web -> rep : Display Success Message
+else Information Invalid
+    facility -> web : Error Message (Invalid Info)
+    web -> rep : Display Error Message
+end
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram Commands:**
+
+- The `actor` represents the Recycling Facility Representative interacting with the system.
+- `participant` denotes the different components of the system: the web interface of the RecycleSmart platform, and the Recycling Facility Information System.
+- The `database` symbolizes the RecycleSmart database where facilities' information is stored.
+- Arrows (`->`) indicate the direction of communication between the actors and the system components.
+- The `alt` block is used to differentiate between successful information validation and an error due to invalid information. It represents a decision in the sequence based on the validation of the updated info.
+- Messages like "Access Facility Update Page," "Submit Updated Info," "Validate Information," etc., are exchanged between the system components to represent the steps involved in updating the recycling facility's information.
+
+This diagram provides a high-level overview. Depending on the specific implementation details and requirements of the RecycleSmart platform, you might need to include more specific actions, decision points, or system components (such as authentication processes, additional validation checks, notification systems for users about the updates, etc.).

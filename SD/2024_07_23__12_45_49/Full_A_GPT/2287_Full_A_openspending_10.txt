@@ -1,0 +1,56 @@
+Below is a detailed PlantUML description for a sequence diagram portraying the process for a Data Publishing User who wants to know the requirements for their data to be visualizable on a map, allowing them to ensure their data meets these criteria.
+
+```plantuml
+@startuml
+participant User as user
+participant "OpenSpending\nPlatform" as platform
+participant "Data Model\nEditor" as editor
+participant "Visualization\nRequirements" as requirements
+participant "Data Validation\nService" as validator
+participant "Map\nVisualization Feature" as mapView
+
+== User Requests Information on Data Visualization Requirements ==
+user -> platform: Access data publishing section
+activate platform
+
+platform -> requirements: Fetch map visualization criteria
+activate requirements
+
+requirements --> user: Display required data fields\nand formats for map visualization
+deactivate requirements
+
+== User Prepares Dataset Based on Requirements ==
+user -> editor: Open Data Model Editor
+activate editor
+
+user -> editor: Input/Edit data\naccording to requirements
+editor -> validator: Validate data with map criteria
+activate validator
+
+validator -> editor: Return validation results
+deactivate validator
+
+alt If Data Meets Requirements
+    editor --> user: Notify data compliance\nwith map visualization
+    deactivate editor
+    
+    user -> platform: Submit validated dataset
+    deactivate platform
+    
+    platform -> mapView: Initiate map visualization process
+    activate mapView
+    
+    mapView -> platform: Generate map visualization
+    mapView --> user: Provide link/access to\nmap visualization
+    deactivate mapView
+else Data Does Not Meet Requirements
+    editor --> user: Notify data non-compliance\nsuggest corrections
+    deactivate editor
+    deactivate platform
+end
+@enduml
+```
+
+This sequence diagram starts with the user accessing the data publishing section of the OpenSpending platform to fetch the necessary requirements for visualizing data on a map. The platform responds with the criteria, including the required data fields and formats. Using the Data Model Editor, the user prepares their dataset according to these requirements and submits it for validation. If the dataset meets the requirements, the platform notifies the user of compliance, accepts the dataset, and proceeds to initiate the map visualization process, eventually providing the user with access to the map visualization. If the dataset does not meet the requirements, the user is notified and given suggestions for corrections.
+
+This diagram is structured to clearly represent the interactions between the user and various components of the OpenSpending platform involved in preparing and visualizing data on a map, providing a straightforward visualization of the required process.

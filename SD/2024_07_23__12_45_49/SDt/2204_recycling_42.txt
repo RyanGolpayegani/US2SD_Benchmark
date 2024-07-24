@@ -1,0 +1,24 @@
+@startuml
+skinparam rectangle<<database>>{
+BackgroundColor DarkOliveGreen
+BorderColor Black
+FontColor White
+}
+actor Admin
+boundary "Admin Panel" as AdminPanel
+control "System" as System
+database "Recycling Center DB" as DB
+
+Admin -> AdminPanel : Login
+Admin -> AdminPanel : Submit new center information
+AdminPanel -> System : Validate information
+alt Information is valid
+    System -> DB : Save center information
+    DB --> System : Confirmation of save
+    System -> AdminPanel : Confirm center addition
+    AdminPanel -> Admin : Display confirmation message
+else Information is invalid
+    System -> AdminPanel : Display error message
+    AdminPanel -> Admin : Show validation errors
+end
+@enduml

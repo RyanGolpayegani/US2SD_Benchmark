@@ -1,0 +1,35 @@
+@startuml
+actor Archivist as arch
+participant "UI: Event Management" as ui
+database "CAMS Backend" as backend
+
+== Create Event Record ==
+arch -> ui : Selects "Create New Event"
+ui -> backend : Request to initialize new Event record
+activate backend
+backend --> ui : Respond with new Event form
+deactivate backend
+ui --> arch : Display new Event form
+arch -> ui : Fills in Event details and selects "Save"
+ui -> backend : Submit new Event details
+activate backend
+backend -> backend : Validates and saves Event details
+backend --> ui : Confirmation of Event creation
+ui --> arch : Display confirmation message
+
+== Edit Event Record ==
+arch -> ui : Requests to edit an Event
+ui -> backend : Fetch Event details
+activate backend
+backend --> ui : Return Event details
+deactivate backend
+ui --> arch : Display Event details
+arch -> ui : Updates Event information and selects "Save"
+ui -> backend : Submit updated Event details
+activate backend
+backend -> backend : Validates and updates Event details
+backend --> ui : Confirmation of Event update
+ui --> arch : Display update confirmation message
+deactivate backend
+
+@enduml

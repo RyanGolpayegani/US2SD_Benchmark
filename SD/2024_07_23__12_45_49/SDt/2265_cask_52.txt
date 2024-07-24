@@ -1,0 +1,26 @@
+@startuml
+actor User as user
+participant "Dataset Management System" as DMS
+database "Dataset Instance" as DB
+
+== Reconfiguration Request ==
+user -> DMS : Request Reconfiguration(datasetId, newConfig)
+activate DMS
+DMS -> DMS : Validate newConfig
+alt Configuration is valid
+    DMS -> DB : Start Transaction
+    activate DB
+    DMS -> DB : Apply newConfig
+    alt Reconfiguration Success
+        DB -> DMS : Commit Transaction
+        DMS -> user : Reconfiguration Successful
+    else Reconfiguration Fails
+        DB -> DMS : Rollback Transaction
+        DMS -> user : Reconfiguration Failed, No Changes Applied
+    end
+    deactivate DB
+else Configuration is invalid
+    DMS -> user : Invalid Configuration
+end
+deactivate DMS
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+participant Developer
+participant "DPIE API" as DPIE
+database "Data Package Repository" as Repo
+participant "C++ DPIE Library" as CppLib
+
+Developer -> DPIE : Request Data Package (DP) integration
+activate DPIE
+DPIE -> Repo : Fetch DP metadata and resources
+activate Repo
+Repo --> DPIE : DP metadata & resources
+deactivate Repo
+DPIE --> Developer : DP metadata & integration instructions
+deactivate DPIE
+
+Developer -> CppLib : Initialize DP integration
+activate CppLib
+CppLib -> DPIE : Retrieve specific DP integration tools for C++
+activate DPIE
+DPIE --> CppLib : DP C++ integration tools (e.g., parsers)
+deactivate DPIE
+CppLib -> CppLib : Process and load DP into C++ environment
+CppLib --> Developer : DP loaded and ready for analysis/visualization
+deactivate CppLib
+
+@enduml

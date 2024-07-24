@@ -1,0 +1,16 @@
+@startuml
+actor Waiter
+participant "System Interface" as UI
+participant "Verification Module" as Verify
+participant "Database" as DB
+participant "Confirmation Module" as Confirm
+
+Waiter -> UI : Select 'Complete Payment'
+UI -> Verify : Check Payment Status
+Verify -> DB : Verify Status == "Completed"
+Verify --> UI : Status Confirmed
+UI -> DB : Delete Customer Data
+DB --> Confirm : Data Deleted
+Confirm --> UI : Notify Deletion Success
+UI --> Waiter : Display 'Customer Deleted'
+@enduml

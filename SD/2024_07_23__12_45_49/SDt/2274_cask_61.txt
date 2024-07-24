@@ -1,0 +1,48 @@
+@startuml
+participant UserInterface
+participant DatasetManager
+participant VersionControl
+participant ExplorationService
+participant Database
+
+UserInterface -> DatasetManager : initiateOperation(datasetInfo)
+activate DatasetManager
+
+DatasetManager -> VersionControl : checkLatestVersion(datasetInfo)
+activate VersionControl
+VersionControl -> VersionControl : verifyVersionCompatibility()
+VersionControl --> DatasetManager : versionDetails
+deactivate VersionControl
+
+DatasetManager -> ExplorationService : prepareExplorationChanges(versionDetails)
+activate ExplorationService
+ExplorationService -> ExplorationService : calculateChanges()
+alt changes are valid
+    ExplorationService -> Database : applyChanges(changes)
+    activate Database
+    Database --> ExplorationService : changeSuccess
+    deactivate Database
+   
+    ExplorationService --> DatasetManager : explorationReady
+else changes are not valid
+    ExplorationService --> DatasetManager : failExploration
+end
+deactivate ExplorationService
+
+alt exploration is ready
+    DatasetManager -> UserInterface : operationSuccess
+else exploration failed
+    DatasetManager -> UserInterface : operationFail
+    DatasetManager -> VersionControl : revertVersion(datasetInfo)
+    activate VersionControl
+    VersionControl -> Database : rollbackChanges()
+    activate Database
+    Database --> VersionControl : rollbackSuccess
+    deactivate Database
+    VersionCountrol --> DatasetManager : versionReverted
+    deactivate VersionControl
+end
+
+deactivate DatasetManager
+UserInterface -> User : displayResult
+@enduml

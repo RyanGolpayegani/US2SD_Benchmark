@@ -1,0 +1,32 @@
+To generate a detailed sequence diagram for the user story, "As a Researcher, I want to be able to reference a remote-controlled vocabulary for my dataset, so that I can be sure that column of my dataset are valid against a single shared list of terms," we'll illustrate the interactions involving the Researcher, the DPIE system, and the external Vocabulary Service (a web service providing the shared list of terms) using PlantUML syntax.
+
+PlantUML is a tool that allows us to generate diagrams from plain text descriptions. Below is an example of how you can write a sequence diagram in PlantUML syntax to represent the interaction described in the user story:
+
+```plantuml
+@startuml
+participant Researcher
+participant "DPIE System" as DPIE
+participant "Vocabulary Service" as VocabService
+
+Researcher -> DPIE : Request validation against shared list
+activate DPIE
+DPIE -> VocabService : Query shared vocabulary
+activate VocabService
+VocabService -> VocabService : Validate available terms
+VocabService --> DPIE : Return validation results
+deactivate VocabService
+DPIE -> DPIE : Analyze results
+DPIE --> Researcher : Provide validation summary
+deactivate DPIE
+
+@enduml
+```
+
+This sequence diagram starts with the Researcher requesting the DPIE System to validate a dataset column against a shared list of terms. The DPIE System, in turn, queries the Vocabulary Service with the specific terms to be validated. The Vocabulary Service validates whether the terms are available in its list and returns the validation results back to the DPIE System. The DPIE System then analyzes these results and provides a validation summary to the Researcher.
+
+### Explanation of Key Components:
+- **Researcher**: The user who initiates the request for data validation.
+- **DPIE System**: Acts as an intermediary, facilitating the validation process by communicating with both the Researcher and the Vocabulary Service.
+- **Vocabulary Service**: An external service that provides a shared list of terms for validating datasets.
+
+This diagram offers a high-level view of the interactions and can be expanded with additional details such as error handling, specific data fields involved, and further interactions based on more complex validation rules.

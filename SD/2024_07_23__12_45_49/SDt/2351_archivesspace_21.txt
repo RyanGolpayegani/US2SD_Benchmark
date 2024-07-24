@@ -1,0 +1,30 @@
+@startuml
+participant Administrator as Admin
+participant "CAMS Interface" as Interface
+participant "Authorization Module" as Auth
+participant "User Management System" as UserSys
+participant "Database" as DB
+
+Admin -> Interface : Select Assign Role Option
+
+Interface -> Auth : Request Admin Authentication
+Auth --> Interface : Authentication Success
+
+Interface -> UserSys : Access User List
+UserSys --> Interface : Display Users
+
+Admin -> Interface : Select User for Advanced Data Entry Role
+Interface -> UserSys : Assign Advanced Data Entry Role to User
+activate UserSys
+
+UserSys -> DB : Update UserRole Set 'AdvancedDataEntry'
+DB --> UserSys : Confirm Update
+deactivate UserSys
+
+UserSys -> Auth : Update Permissions for User
+Auth --> UserSys : Permissions Updated
+
+UserSys --> Interface : Confirmation of Role Assignment
+Interface --> Admin : Display Success Message
+
+@enduml

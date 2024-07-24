@@ -1,0 +1,28 @@
+@startuml
+actor Archivist as archivist
+participant "UI Component" as ui
+participant "Controller" as controller
+participant "Collection Management\nService" as service
+database "Archival Database" as db
+
+== Creating a Collection Management Subrecord ==
+archivist -> ui : Select option to create\nCollection Management subrecord
+ui -> controller : invoke createSubrecord()
+controller -> service : createSubrecord()
+service -> db : insert new subrecord details
+db --> service : confirm creation
+service --> controller : return creation status
+controller --> ui : display creation status
+ui --> archistar : show success/failure message
+
+== Editing a Collection Management Subrecord ==
+archivist -> ui : Select and edit\nCollection Management subrecord
+ui -> controller : invoke editSubrecord(subrecordId, newDetails)
+controller -> service : editSubrecord(subrecordId, newDetails)
+service -> db : update subrecord details
+db --> service : confirm update
+service --> controller : return update status
+controller --> ui : display update status
+ui --> archistar : show success/failure message
+
+@enduml

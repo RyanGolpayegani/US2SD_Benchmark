@@ -1,0 +1,17 @@
+@startuml
+participant User
+participant OpenSpendingPlatform as OSP
+participant CloudStorage as CS
+
+User -> OSP : Update Dataset Preference\n(Set to Auto-Update)
+OSP -> CS : Monitor Source File for Changes
+note right of CS: Monitoring for changes\ncan involve webhooks or\nperiodic checks.
+CS -> CS : Detect Change in Source File
+CS --> OSP : Notify Change Detected
+OSP -> OSP : Fetch Updated Source File
+OSP -> OSP : Validate & Process Updated Data
+OSP -> OSP : Update Dataset with New Data
+OSP --> User : Notify Dataset Updated
+note over User,OSP: The dataset now reflects the current\ndata from the source file, ensuring\nOpenSpelling always shows updated information.
+
+@enduml

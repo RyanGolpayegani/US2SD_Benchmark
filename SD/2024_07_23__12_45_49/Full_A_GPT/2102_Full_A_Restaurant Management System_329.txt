@@ -1,0 +1,43 @@
+Generating a detailed Sequence Diagram for the user story "As an employee, I want to change orders of a table" involves illustrating the flow of messages between the objects or components in the system to achieve the outcome of this user story. Below is a sequence diagram representation in PlantUML format, capturing the essence of this process. This example assumes a simplified interaction flow that might occur within the Restaurant Management and Operations System:
+
+```plantuml
+@startuml
+participant Employee as emp
+participant "Order Management System" as oms
+participant Database as db
+
+== Change Order Process ==
+alt Employee is authenticated
+    emp -> oms : Select table/order to change
+    oms -> db : Retrieve current order details
+    db -> oms : Return order details
+    oms -> emp : Show current order details
+    emp -> oms : Make changes to the order (add/remove items, change quantity)
+    oms -> db : Update order in database
+    db -> oms : Confirm order update
+    oms -> emp : Display order update confirmation
+else Employee is not authenticated
+    oms -> emp : Deny access to change order
+end
+@enduml
+```
+
+This PlantUML sequence diagram describes the following steps in the process:
+
+1. **Initial Check**: The diagram starts with the assumption that there's an authentication step to verify if the employee is authorized to make changes to orders. This is represented by the alternative (`alt`) block.
+
+2. **Order Selection**: Once authenticated, the employee selects the table or specific order they wish to change. This triggers a request to the Order Management System (OMS).
+
+3. **Retrieve Current Order Details**: The OMS queries the database to retrieve current details of the selected order.
+
+4. **Show Current Order Details**: The fetched order details are then displayed to the employee by the OMS.
+
+5. **Make Changes to the Order**: The employee makes the desired changes (such as adding or removing items, adjusting quantities) through the OMS interface.
+
+6. **Update Order in Database**: The OMS processes these changes and updates the order information in the database.
+
+7. **Confirm Order Update**: Upon successfully updating the order, the OMS displays a confirmation to the employee.
+
+8. **Deny Access for Unauthenticated Employee**: In case the employee is not authenticated, the OMS denies access to change the order.
+
+This diagram is simplified and may not cover all potential error handling and complexities in real-world applications. Depending on your requirements, you might want to expand it with more detailed interactions, including specific subsystems for authentication, detailed item selection processes, and direct interactions with inventory or payment modules if changes impact those areas.

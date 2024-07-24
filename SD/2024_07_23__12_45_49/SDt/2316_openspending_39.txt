@@ -1,0 +1,18 @@
+@startuml
+actor "API User" as user
+participant "API Interface" as api
+database "OpenSpending DB" as db
+participant "Visualization Gallery" as gallery
+
+user -> api : Send visualization state\n{JSON data}
+api -> db : Validate & Persist\nVisualization State
+db -> api : Confirmation\n(State Stored)
+api -> user : State Stored\nConfirmation
+user -> api : Request to Share\nStored State
+api -> db : Retrieve\nVisualization State
+db -> api : Visualization State\n{JSON data}
+api -> gallery : Include in Gallery\n{Visualization State}
+gallery -> api : Confirmation\n(State Shared)
+api -> user : Shared Successfully\nURL to Gallery
+
+@enduml

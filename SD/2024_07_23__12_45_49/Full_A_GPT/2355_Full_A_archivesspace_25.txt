@@ -1,0 +1,49 @@
+Given the project description and the requirement for a detailed Sequence Diagram for the given user story using PlantUML, below is a representation of how an Administrator might interact with the Comprehensive Archival Management System (CAMS) to create a new user account. 
+
+This scenario assumes the administrator accesses a User Management Interface, fills in the required information for the new user account, and then submits this information to the system, which then creates the user account and confirms the action.
+
+Please note, to implement this in PlantUML, you would need to have PlantUML installed or use an online PlantUML editor to visualize the diagram based on the code provided.
+
+```plantuml
+@startuml
+actor Administrator as admin
+participant "User Management \nInterface" as umi
+participant "System Backend" as backend
+database "CAMS Database" as db
+
+== User Account Creation Process ==
+
+admin -> umi : Access User Management Section
+umi -> backend : Request User Creation Form
+backend -> umi : Return User Creation Form
+umi -> admin : Display User Creation Form
+
+admin -> umi : Fill in User Details\n(Username, Password, Role)
+umi -> backend : Validate User Details
+alt Validation Success
+    backend -> db : Create New User Account
+    db -> backend : Confirm Account Creation
+    backend -> umi : Show Confirmation Message
+    umi -> admin : Display Success Notification
+else Validation Failed
+    backend -> umi : Show Error Message
+    umi -> admin : Display Error\n(Request Correct Data)
+end
+
+@enduml
+```
+
+### Explanation:
+- **Actor (Administrator)**: Represents the system user with administrative privileges initiating the process.
+- **User Management Interface**: Represents the frontend UI through which the administrator interacts with the system to manage user accounts.
+- **System Backend**: The logical backend that processes requests from the frontend, including validation, interaction with the database, etc.
+- **CAMS Database**: Represents the underlying database where all user account details are stored and managed.
+- **Process Flow**:
+    - The **Administrator** accesses the user management section through the system's interface.
+    - The system backend provides a user creation form to the User Management Interface, which is then displayed to the Administrator.
+    - The Administrator fills out the form with the new user's details and submits it.
+    - The details are sent to the backend, where they're validated.
+    - If validation succeeds, the backend creates a new user account in the CAMS Database and confirms the account creation to the interface, which then notifies the Administrator of the success.
+    - If there's an error in validation, the system notifies the Administrator of the error and requests correct data.
+
+This diagram and accompanying explanation provide a detailed sequence for the specified user story within the context of the Comprehensive Archival Management System Enhancement project.

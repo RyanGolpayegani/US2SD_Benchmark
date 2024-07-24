@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram to represent the user story outlined for the DataPackage Integrator and Enhancer (DPIE) project involves illustrating the interaction between the developer/data wrangler, GitHub, CKAN, and any intermediary services that facilitate the automatic storage and listing process. Given PlantUML's syntax and capabilities, here's an example of how such a sequence could be visualized:
+
+```plantuml
+@startuml
+
+participant DeveloperDataWrangler as Developer
+participant GitHub
+participant DPIE_Integration_Service as DIS
+participant CKAN
+
+Developer -> GitHub: Push Data Package
+activate GitHub
+GitHub -> DIS: Trigger webhook
+activate DIS
+DIS -> DIS: Validate Data Package
+DIS -> CKAN: Store Data Package
+activate CKAN
+CKAN -> CKAN: Generate API
+CKAN -> DIS: Confirm storage and API creation
+DIS -> GitHub: Report storage success
+GitHub -> Developer: Notify of storage success
+deactivate GitHub
+deactivate DIS
+CKAN -> CKAN: List dataset in catalog
+deactivate CKAN
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Developer/Data Wrangler (Developer)**: Initiates the sequence by pushing a Data Package to GitHub. This user represents both developers and data wranglers who are looking to store and share their Data Packages.
+
+2. **GitHub**: Acts as the platform where the Data Package is initially stored. Upon receiving the Data Package, it triggers a webhook that notifies the DPIE Integration Service (DIS) of the new or updated Data Package.
+
+3. **DPIE Integration Service (DIS)**: This is an intermediary service that might be part of the DPIE project. It responds to GitHub's webhook, validating the Data Package before proceeding. Once validation is confirmed, it interacts with CKAN to store the Data Package.
+
+4. **CKAN**: Receives instructions to store the Data Package from the DPIE Integration Service. It generates a data API for the Data Package, confirms the successful storage and API creation back to the DPIE Integration Service, and then lists the dataset in its relevant catalog for public access and discovery.
+
+5. **Notifications to Developer/Data Wrangler**: Throughout this process, the Developer/Data Wrangler is kept informed of the status. After the DPIE Integration Service successfully ensures the Data Package is stored in CKAN, GitHub notifies the user of this success.
+
+This sequence diagram simplifies the interactions but captures the essential steps involved in storing a Data Package in GitHub and automatically storing it into CKAN as outlined in the user story.

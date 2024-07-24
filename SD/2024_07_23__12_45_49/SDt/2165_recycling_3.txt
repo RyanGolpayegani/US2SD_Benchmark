@@ -1,0 +1,18 @@
+@startuml
+
+participant User
+participant "User Interface" as UI
+participant "Server" as Server
+participant "Database" as DB
+
+User -> UI: Enter zip code
+UI -> Server: Request recycling facilities list with zip code
+Server -> DB: Query recycling facilities by zip
+activate DB
+DB -> DB: Retrieve facilities within proximity
+DB --> Server: Return list of facilities
+deactivate DB
+Server -> UI: Display list of facilities on map
+UI --> User: Show facilities and details (types of recyclable waste, operating hours)
+
+@enduml

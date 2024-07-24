@@ -1,0 +1,26 @@
+@startuml
+actor "Data Publishing User" as user
+participant "Web Interface" as web
+participant "Validation Service" as validation
+participant "Dataset Management Service" as management
+database "OpenSpending Database" as db
+
+== Hide a Public Dataset ==
+
+user -> web : Request to hide a dataset
+web -> validation : Validate user permissions
+activate validation
+validation --> web : Permission Granted
+deactivate validation
+
+web -> management : Hide dataset command (dataset ID)
+activate management
+management -> db : Update dataset visibility (Hidden)
+activate db
+db --> management : Dataset visibility updated
+deactivate db
+management --> web : Dataset hidden successfully
+deactivate management
+web --> user : Display success message
+
+@enduml

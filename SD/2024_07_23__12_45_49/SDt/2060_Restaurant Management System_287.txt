@@ -1,0 +1,28 @@
+@startuml
+actor Waiter
+participant "Waiter Interface" as WI
+participant "API Gateway" as API
+participant "Business Logic" as BL
+database "Menu Database" as DB
+
+== Display Menu to Customer ==
+
+Waiter -> WI: Select "Show Menu"
+activate WI
+WI -> API: GET /menu
+activate API
+API -> BL: Fetch Menu
+activate BL
+BL -> DB: Query Menu Items
+activate DB
+
+DB --> BL: Menu Data
+deactivate DB
+BL --> API: Menu Response
+deactivate BL
+API --> WI: Menu Data
+deactivate API
+WI --> Waiter: Display Menu
+deactivate WI
+
+@enduml

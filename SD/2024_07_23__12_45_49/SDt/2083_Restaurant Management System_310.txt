@@ -1,0 +1,18 @@
+@startuml
+actor Waiter
+participant "UI: Waiter Dashboard" as WaiterUI
+participant "Backend Server" as Server
+database "Database" as DB
+
+Waiter -> WaiterUI: Request order preparation times
+WaiterUI -> Server: GET /order-times/{orderId}
+alt Order ID valid
+    Server -> DB: Query preparation times for order
+    DB --> Server: Return preparation times
+    Server --> WaiterUI: Show total preparation durations
+    WaiterUI --> Waiter: Display total preparation durations
+else Order ID invalid
+    Server --> WaiterUI: Show error message
+    WaiterUI --> Waiter: Display error message
+end
+@enduml

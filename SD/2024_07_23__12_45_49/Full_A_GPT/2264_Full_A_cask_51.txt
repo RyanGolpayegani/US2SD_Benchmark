@@ -1,0 +1,58 @@
+Given the complexity of creating a detailed sequence diagram for such a specific and rich functionality within the scope of this project description, I'll outline a basic framework for a PlantUML script to represent the sequence diagram for the user story: "As a user, I want to trigger a migration process for a dataset if updating its properties requires that." This framework will serve as a starting point, which you can then expand upon based on your project's specific implementation details and requirements.
+
+### PlantUML Sequence Diagram Framework
+
+```plantuml
+@startuml
+
+actor User as user
+participant "Dataset Management\nSystem" as DMS
+participant "Version Control" as VC
+participant "Dataset Instance" as DI
+participant "Migration Tool" as MT
+
+== Trigger Dataset Migration Process ==
+
+user -> DMS : requests property update\nfor dataset
+DMS -> DI : validate property\nupdate requirements
+alt Property Update Requires Migration
+    DI -> VC : check current version
+    VC --> DI : current version details
+    DI -> DMS : migration required
+    DMS --> user : confirmation required\nto proceed with migration
+    user -> DMS : confirms migration
+    DMS -> MT : initiate migration
+    MT -> DI : perform migration\n(update properties, version)
+    DI --> MT : migration success
+    MT --> DMS : migration completed
+    DMS --> user : migration successful\nproperties updated
+else Property Update Does Not Require Migration
+    DI -> DI : update properties
+    DI --> DMS : properties updated
+    DMS --> user : update successful\nno migration needed
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram Steps
+
+1. The user requests an update to the properties of a dataset through the Dataset Management System (DMS).
+
+2. The DMS interacts with the Dataset Instance (DI) to validate if the property update requires a migration based on the dataset's current configuration and version.
+
+3. If a migration is required:
+    - The DI checks the current version with the Version Control (VC) system.
+    - The VC provides the current version details back to the DI, which then indicates to the DMS that a migration is needed.
+    - The DMS informs the user that a migration is necessary to proceed with the property update, requesting confirmation to proceed.
+    - Upon receiving user confirmation, the DMS initiates the migration process through the Migration Tool (MT).
+    - The MT performs the migration, which includes updating the properties and version of the dataset instance.
+    - Upon successful completion, the MT informs the DMS of the successful migration.
+    - The DMS notifies the user that the migration was successful and the properties have been updated.
+
+4. If a migration is not required:
+    - The DI directly updates its properties.
+    - The DI informs the DMS that the update was successful without needing a migration.
+    - The DMS then notifies the user that the update was successful and no migration was needed.
+
+This diagram serves as a generic framework and can be modified to fit more specific scenarios or to include more detailed steps related to your project's technology stack and operational procedures.

@@ -1,0 +1,48 @@
+Below is a detailed Sequence Diagram written in PlantUML format, capturing the process for a Basic Data Entry user to create and update basic archival description information within the Comprehensive Archival Management System Enhancement project.
+
+```plantuml
+@startuml
+actor "Data Entry User" as user
+participant "User Interface" as UI
+participant "Authentication Module" as Auth
+participant "Validation Service" as Validator
+participant "Archival Description Controller" as ADC
+database "Archival Database" as DB
+
+== Authentication ==
+user -> UI : Access System
+UI -> Auth : Authenticate User
+Auth -> UI : Authentication Success
+
+== Create Archival Description ==
+user -> UI : Select Create New Record
+UI -> ADC : Initiate New Archival Description
+ADC -> Validator : Validate User Permissions
+Validator -> ADC : Permission Granted
+
+ADC -> DB : Create New Record
+DB -> ADC : Record Creation Success
+ADC -> UI : Display Success Message
+UI -> user : Show Success & New Record Details
+
+== Update Archival Description ==
+user -> UI : Select and Edit Record
+UI -> ADC : Request to Update Record
+ADC -> Validator : Validate Edit Permissions
+Validator -> ADC : Edit Permission Granted
+
+ADC -> Validator : Validate Data
+Validator -> ADC : Data Validation Success
+ADC -> DB : Update Record
+DB -> ADC : Record Update Success
+ADC -> UI : Display Success Message
+UI -> user : Show Updated Record
+
+@enduml
+```
+
+This sequence diagram starts with the user accessing the system and being authenticated. Once authenticated, the user can either create a new archival description or select an existing one to update. Each action (create or update) involves permission and data validation steps to ensure only authorized and accurate data modifications are made.
+
+For creating a new archival description, the process includes the system creating a new record in the archival database and confirming the creation back to the user. For updating an existing description, the diagram outlines the steps for the system to validate changes, update the record in the database, and confirm the update to the user.
+
+Please adjust the diagram as necessary to fit the specific features and workflows of your Comprehensive Archival Management System Enhancement project.

@@ -1,0 +1,26 @@
+@startuml
+participant WaiterUI as Waiter
+participant Controller
+participant ServiceLayer
+participant Database
+
+title Display Table's Tab Sequence
+
+Waiter -> Controller : requestTableTab(tableId)
+activate Controller
+
+Controller -> ServiceLayer : getTableTab(tableId)
+activate ServiceLayer
+
+ServiceLayer -> Database : fetchTabInfo(tableId)
+activate Database
+Database --> ServiceLayer : tabInfo
+deactivate Database
+
+ServiceLayer --> Controller : tabDetails
+deactivate ServiceLayer
+
+Controller --> Waiter : displayTab(tabDetails)
+deactivate Controller
+
+@enduml

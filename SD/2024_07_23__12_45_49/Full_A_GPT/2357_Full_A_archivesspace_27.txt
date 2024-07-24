@@ -1,0 +1,72 @@
+Creating a detailed sequence diagram for the user story provided involves a few actors, including the `Archivist` (the user initiating the action), the `Frontend System` (the user interface where the archivist interacts with the application), and the `Backend System` (the server-side application handling the business logic and database transactions). The following is a PlantUML script that represents the sequence of interactions between these actors for the user story:
+
+```plantuml
+@startuml
+participant Archivist
+participant "Frontend System" as Frontend
+participant "Backend System" as Backend
+database DB
+
+== Assign Level of Description to Resource or Component ==
+
+Archivist -> Frontend : Select Resource/Component
+activate Frontend
+
+Frontend -> Backend : Request existing Levels of Description
+activate Backend
+
+Backend -> DB : Fetch ENUM values for Level of Description
+activate DB
+DB --> Backend : ENUM values
+deactivate DB
+
+Backend --> Frontend : Display ENUM values
+deactivate Backend
+
+Frontend --> Archivist : Show Levels of Description
+deactivate Frontend
+
+Archivist -> Frontend : Assign Level of Description
+activate Frontend
+Archivist -> Frontend : Optionally specify custom value
+activate Frontend
+
+Frontend -> Backend : Submit Level of Description and any custom value
+activate Backend
+
+Backend -> Backend : Validate Level/Custom Value
+alt If custom value is specified
+    Backend -> DB : Store custom value in ENUM list (if not exists)
+    activate DB
+    DB --> Backend : Confirmation/Error
+    deactivate DB
+end
+
+Backend -> DB : Update Resource/Component with Level
+activate DB
+DB --> Backend : Update Confirmation
+deactivate DB
+
+Backend --> Frontend : Operation Status (Success/Failure)
+deactivate Backend
+
+Frontend --> Archivist : Display Status Message
+deactivate Frontend
+
+@enduml
+```
+
+This PlantUML sequence diagram illustrates the following steps for assigning a level of description to a resource or resource component by an Archivist:
+
+1. The Archivist selects a resource or resource component to assign a level of description.
+2. The Frontend System requests existing levels of description from the Backend System.
+3. The Backend System fetches the ENUM values for levels of description from the database and returns them.
+4. The Frontend System displays the levels of description to the Archivist.
+5. The Archivist assigns a level of description and optionally specifies a custom value if the level is not in the predefined list.
+6. The Frontend System submits the assigned level and any custom value to the Backend System.
+7. The Backend System validates the level/custom value and, if a custom value is specified and not already existing, stores the custom value in the ENUM list.
+8. The Backend System updates the resource or component with the specified level of description.
+9. The Backend System sends an operation status (success or failure) back to the Frontend System.
+10. The Frontend System displays a status message to the Archivist.
+
+This diagram abstractly covers the process described in the user story, highlighting the interactions between different components of the system.

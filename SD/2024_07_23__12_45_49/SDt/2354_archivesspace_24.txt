@@ -1,0 +1,23 @@
+@startuml
+participant Archivist
+boundary System
+database CAMSDB as "CAMS Database"
+
+activate Archivist
+Archivist -> System : Request to add notes to a record
+activate System
+System -> CAMSDB : Fetch record details
+activate CAMSDB
+CAMSDB --> System : Record details
+deactivate CAMSDB
+System --> Archivist : Display record details
+Archivist -> System : Input note details (content, type, etc.)
+System -> CAMSDB : Store new note
+activate CAMSDB
+CAMSDB --> System : Confirmation of note addition
+deactivate CAMSDB
+System --> Archivist : Confirm note addition
+deactivate System
+deactivate Archivist
+
+@enduml

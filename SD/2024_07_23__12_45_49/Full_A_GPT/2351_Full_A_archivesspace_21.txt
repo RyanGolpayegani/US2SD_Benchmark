@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram for the user story provided in PlantUML format involves visualizing the interactions between the Application Administrator, the Comprehensive Archival Management System (CAMS), and possibly other components involved in the process of assigning users to an advanced data entry role and enforcing the appropriate permissions. PlantUML code offers a way to generate diagrams from plain text, and while the specific implementation details may vary based on the actual functionalities of CAMS, the following example provides a general outline of how such a sequence might be represented.
+
+```
+@startuml
+participant Administrator as Admin
+participant "CAMS Interface" as Interface
+participant "Authorization Module" as Auth
+participant "User Management System" as UserSys
+participant "Database" as DB
+
+Admin -> Interface : Select Assign Role Option
+
+Interface -> Auth : Request Admin Authentication
+Auth --> Interface : Authentication Success
+
+Interface -> UserSys : Access User List
+UserSys --> Interface : Display Users
+
+Admin -> Interface : Select User for Advanced Data Entry Role
+Interface -> UserSys : Assign Advanced Data Entry Role to User
+activate UserSys
+
+UserSys -> DB : Update UserRole Set 'AdvancedDataEntry'
+DB --> UserSys : Confirm Update
+deactivate UserSys
+
+UserSys -> Auth : Update Permissions for User
+Auth --> UserSys : Permissions Updated
+
+UserSys --> Interface : Confirmation of Role Assignment
+Interface --> Admin : Display Success Message
+
+@enduml
+```
+
+### Explanation:
+- **Admin**: The Application Administrator who wants to assign users to an advanced data entry role.
+- **CAMS Interface**: The graphical user interface (GUI) of the Comprehensive Archival Management System where the administrator interacts with various functionalities.
+- **Authorization Module (Auth)**: This module handles authentication and authorization tasks, ensuring that only authorized users can perform certain actions.
+- **User Management System (UserSys)**: Manages user accounts, roles, and permissions within CAMS.
+- **Database (DB)**: Stores user roles, permissions, and other relevant data.
+
+### Sequence of Events:
+1. **Administrator Selection**: The Admin selects the option to assign roles to users through the CAMS Interface.
+2. **Authentication**: The CAMS Interface requests the Admin to authenticate via the Authorization Module. Upon successful authentication, the process continues.
+3. **User List Access**: The Admin is presented with a list of users fetched from the User Management System through the CAMS Interface.
+4. **Role Assignment**: The Admin selects a user for the advanced data entry role. The CAMS Interface sends this information to the User Management System, which updates the user's role in the Database.
+5. **Permissions Update**: The User Management System then updates the user's permissions through the Authorization Module to reflect the new role.
+6. **Confirmation**: Finally, the CAMS Interface displays a success message to the Administrator, indicating the completion of the role assignment process.
+
+This sequence diagram is a high-level representation and may need adjustments based on the specific requirements and existing backend architecture of the Comprehensive Archivalent Management System.

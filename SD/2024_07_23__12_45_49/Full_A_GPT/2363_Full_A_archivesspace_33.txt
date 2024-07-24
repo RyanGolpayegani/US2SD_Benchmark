@@ -1,0 +1,49 @@
+Certainly! Designing a sequence diagram for the specified user story involves outlining the interaction between different system components when an Archivist wants to rearrange the Resource and/or Digital Object hierarchy using keyboard-based navigation. Below is a detailed PlantUML code sketch that you can use to generate the sequence diagram.
+
+Please note, this example assumes a basic interaction flow and might need adjustments to fit the specific architecture and requirements of your project.
+
+```plantuml
+@startuml
+actor Archivist as archivist
+participant "UI: Archival System Interface" as UI
+participant "Controller: Hierarchy Management" as Controller
+database "Archival Database" as DB
+
+== Rearrange Digital/Resource Hierarchy ==
+
+archivist -> UI: Press keyboard shortcut to rearrange
+UI -> Controller: InitiateHierarchyChange()
+activate Controller
+
+Controller -> DB: FetchCurrentHierarchy()
+activate DB
+DB --> Controller: ReturnHierarchyData
+deactivate DB
+
+Controller -> Controller: CalculateNewHierarchyPositions()
+Controller -> UI: DisplayCurrentHierarchyWithEditOptions()
+UI --> archivist: Show hierarchy & edit options
+archivist -> UI: Use keyboard to rearrange hierarchy
+UI -> Controller: UpdateHierarchy(newPositions)
+activate Controller
+
+Controller -> DB: SaveNewHierarchy()
+activate DB
+DB --> Controller: ConfirmSave
+deactivate DB
+
+Controller --> UI: ConfirmHierarchyChange()
+UI --> archivist: DisplaySuccessMessage()
+
+deactivate Controller
+@enduml
+```
+### Explanation:
+This sequence diagram starts with the `Archivist` interacting with the `UI` of the archival system to initiate rearrangement of the hierarchy. The system responds via a `Controller` that manages hierarchy changes. It fetches the current hierarchy from the database and calculates the new positions based on the archivist's inputs through keyboard navigation. Once the new hierarchy is decided and confirmed by the archivist, the controller updates the database with the new hierarchy and confirms the success of the operation back to the UI, which in turn notifies the archivist.
+
+### How to Use:
+1. Copy the provided PlantUML code.
+2. Use a PlantUML editor or an integration (many IDEs have plugins) to visualize the sequence diagram.
+3. Adjust the component names and interactions as per your actual system architecture and requirements.
+
+This PlantUML blueprint is a starting point. Depending on the complexity of your archival management system, the interactions and components might require further detailing, especially around error handling, authentication checks, and the specific logic to calculate new positions within the hierarchy.

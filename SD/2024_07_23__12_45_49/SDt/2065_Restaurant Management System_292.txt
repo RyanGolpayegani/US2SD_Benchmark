@@ -1,0 +1,27 @@
+@startuml
+actor Waiter
+participant "Waiter Interface" as WI
+participant "Order Management System" as OMS
+participant "Financial System" as FS
+database "Database" as DB
+
+== Extract Bill for Customer ==
+Waiter -> WI: Select customer/order to bill
+WI -> OMS: Request order details
+OMS -> DB: Fetch order details
+DB -> OMS: Order details
+OMS -> FS: Generate bill
+FS -> DB: Retrieve pricing details
+DB -> FS: Pricing details
+FS -> OMS: Bill generated
+OMS -> WI: Display bill
+WI -> Wait (er): Show bill
+
+== Customer Payment ==
+Waiter -> WI: Process payment
+WI -> FS: Request payment processing
+FS -> DB: Update payment status
+DB -> FS: Confirm payment update
+FS -> WI: Payment successful
+WI -> Waiter: Show payment confirmation
+@enduml

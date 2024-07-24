@@ -1,0 +1,35 @@
+Creating a detailed sequence diagram for the user story "As a dataset developer, I want to have the option of forcing applications to have the dataset code injected at runtime" involves illustrating the interactions between the dataset developer, the application ecosystem, and the dataset management system with the focus on runtime injection of dataset code. Below is the PlantUML code to represent these interactions as a sequence diagram.
+
+Please note, this example assumes a basic understanding of how a dataset developer would request a runtime injection through some form of interface or command, and how the system internally might handle such a request.
+
+```plantuml
+@startuml
+actor DatasetDeveloper as "Dataset Developer"
+participant Interface as "Deployment Interface"
+participant VersionControl as "Version Control System"
+participant ApplicationEcosystem as "Application Ecosystem"
+participant Injector as "Runtime Injector"
+
+DatasetDeveloper -> Interface : Request runtime injection for dataset code
+Interface -> VersionControl : Check latest dataset version
+activate VersionControl
+VersionControl --> Interface : Latest version details
+deactivate VersionControl
+Interface -> ApplicationEcosystem : Prepare dataset code for injection
+activate ApplicationEcosystem
+ApplicationEcosystem -> Injector : Inject dataset code at runtime
+Injector -> VersionControl : Fetch specific dataset version
+activate VersionControl
+VersionControl --> Injector : Dataset code (version N)
+deactivate VersionShould be kept reasonably specific to ensure clarity in the sequence of operations and interactions between components involved in enforcing the dataset code injection at runtime. This could involve checking dataset version compatibility, preparing the code for injection, and finally, the injection process itself as perceived in an application ecosystem context.
+
+Control
+Injector -> ApplicationEcosystem : Dataset code injected
+deactivate ApplicationEcosystem
+ApplicationEcosystem --> DatasetDeveloper : Confirm runtime code injection
+@enduml
+```
+
+This diagram succinctly represents the actions taken by a dataset developer to ensure dataset code is injected at runtime within an application. Starting from the request up to the confirmation that the injection has successfully taken place, it captures the key steps and actors involved in the process. The sequence diagram also emphasizes the role of the version control system in ensuring that the correct version of the dataset code is identified and used during the injection process.
+
+Remember, the specific details of how these interactions occur can vary based on the actual implementation of the dataset management and version control system. This diagram should be adapted to reflect the details and nuances of your specific system architecture and the technologies used.

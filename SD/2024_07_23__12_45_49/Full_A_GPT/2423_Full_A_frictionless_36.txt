@@ -1,0 +1,49 @@
+Certainly! Below is a detailed UML sequence diagram in PlantUML format that illustrates the interaction flow for a Researcher or Publisher who wants to automatically transfer descriptive dataset information from GitHub to Zenodo without retyping. This sequence covers the process from the point where the user pushes a dataset to GitHub, triggering actions that eventually lead to the registration and sharing of the dataset on Zenodo, along with its metadata.
+
+Please note that to render this PlantUML code, you'll need to use a PlantUML environment or an online tool that supports PlantUML diagrams.
+
+```plantuml
+@startuml
+!theme plain
+
+actor ResearcherPublisher as RP
+participant "GitHub" as GH
+participant "DPIE Integration\n Service" as DPIE
+participant "Zenodo API" as ZA
+
+== Dataset Publishing Process ==
+RP -> GH : Push dataset with \ndescriptive metadata
+activate GH
+
+GH -> DPIE : Trigger DPIE action via webhook
+activate DPIE
+
+DPIE -> GH : Fetch dataset metadata 
+GH --> DPIE : Return metadata
+
+DPIE -> ZA : POST /deposit/depositions \n{metadata: { ... }}
+activate ZA
+
+ZA --> DPIE : Return deposition_id and \nstatus (created)
+deactivate ZA
+
+DPIE -> ZA : POST /deposit/depositions/:id/files \n{file: dataset.zip}
+activate ZA
+
+ZA --> DPIE : Return file upload status (success)
+deactivate ZA
+
+DPIE -> ZA : POST /deposit/depositions/:id/actions/publish
+activate ZA
+ZA --> DPIE : Return publication status (success)
+deactivate ZA
+
+DPIE --> RP : Notify publication success \nand provide Zenodo DOI
+deactivate DPIE
+
+@enduml
+```
+
+This diagram starts with the Researcher or Publisher (RP) pushing their dataset along with its descriptive metadata to GitHub. Following this, a configured DPIE integration service, triggered via GitHub's webhook, fetches this metadata and communicates with Zen complete the process seamlessly, posting the dataset and its metadata to Zenodo. Finally, once the dataset is successfully published on Zenodo, the DPIE service notifies the researcher or publisher of the publication success and provides the dataset's DOI (Digital Object Identifier) from Zenodo.
+
+Remember, to view the sequence diagram, you'll need to render this PlantUML code in a suitable environment.

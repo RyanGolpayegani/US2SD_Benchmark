@@ -1,0 +1,37 @@
+To create a detailed Sequence Diagram for the user-story: **"As a Repository Manager, I want a tool that makes it easy for researchers/users to add basic metadata to their research data, so that it is more findable and therefore useful"**, here is a representation in PlantUML format.
+
+This sequence diagram illustrates the process where a researcher (or user) interacts with a system (UI or command line) provided by the DataPackage Integrator and Enhancer (DPIE) to add metadata to their research data. The system then interacts with backend components including the DPIE Engine and potentially external integrations such as GitHub and CKAN for storage and catalog listing. Note that in real-world applications, error handling and security measures should also be considered.
+
+```plantuml
+@startuml
+participant Researcher as user
+participant "DPIE UI/API" as ui
+participant "DPIE Engine" as engine
+database GitHub
+database CKAN
+
+user -> ui : Selects data package
+ui -> engine : Request metadata form
+return Form template
+user -> ui : Submits filled metadata form
+ui -> engine : Validate metadata
+alt validation successful
+    engine -> GitHub : Store metadata + data package
+    GitHub -> CKAN : Sync data package & metadata
+    CKAN --> engine : Confirm catalog listing
+    engine --> ui : Display success message
+else validation failed
+    engine --> ui : Display error message
+end
+ui -> user : Show operation outcome
+@enduml
+```
+
+How to interpret the diagram:
+- **Researcher (user):** Initiates the process by selecting their data package and submitting the metadata through a UI or API provided by DPIE.
+- **DPIE UI/API:** The front-end interface that interacts with the researcher, displaying forms and messages.
+- **DPIE Engine:** The core logic of DPIE that handles metadata validation, communicates with external systems such as GitHub and CKAN for data storage and catalog listing.
+- **GitHub:** Used here as a hypothetical storage solution for the data packages and their metadata.
+- **CKAN:** Represents an open-source data portal software where the data package and its metadata are listed for public access.
+
+This sequence diagram simplifies the complex operation into a high-level flow, focusing on the interaction between a researcher, the DPIE system, and external components. Depending on specific requirements and infrastructure, additional steps like user authentication, detailed error handling, and feedback loops might be necessary.

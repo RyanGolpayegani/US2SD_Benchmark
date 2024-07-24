@@ -1,0 +1,19 @@
+@startuml
+actor Waiter
+participant "UI Interface" as UI
+participant "Order Management Module" as OrderModule
+participant "Inventory Module" as Inventory
+participant "Database" as DB
+
+Waiter -> UI : Select 'New Order'
+UI -> OrderModule : Initiate 'Create Order'
+Waiter -> UI : Enter Customer Order Details
+UI -> OrderModule : Capture Order Details
+OrderModule -> Inventory : Check Ingredient Availability
+Inventory --> OrderModule : Confirm Availability
+OrderModule -> DB : Store New Order
+DB --> OrderModule : Confirm Order Stored
+OrderModule -> UI : Display Order Confirmation
+UI --> Waiter : Show Order Confirmation ID
+
+@enduml

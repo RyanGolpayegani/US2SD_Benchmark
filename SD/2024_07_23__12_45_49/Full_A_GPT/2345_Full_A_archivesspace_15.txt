@@ -1,0 +1,38 @@
+Given your request, here’s a simplified sequence diagram in PlantUML format that outlines the flow for an Archivist who wants to see Dates and Extents displayed in both the read and edit views for Accessions and/or Resources before the list of Subjects. This process involves interactions between the Archivist (user), the front-end UI, the back-end server, and the database.
+
+Please note, to fully implement and visualize this sequence diagram, you'll need to either have PlantUML software installed or use an online PlantUML editor.
+
+```plantuml
+@startuml
+participant Archivist as user
+participant "Frontend UI" as frontend
+participant "Backend Server" as backend
+participant "Database" as database
+
+user -> frontend : Request Accession/Resource View
+frontend -> backend : GET request for Accession/Resource data
+backend -> database : Query Accession/Resource data
+database --> backend : Return Accession/Resource data
+backend --> frontend : Accession/Resource data (include Dates and Extents)
+frontend -> frontend : Process data to display Dates and Extents \nbefore the list of Subjects in both views
+frontend --> user : Display Accession/Resource View
+
+user -> frontend : Request edit mode for Accession/Resource
+frontend -> backend : GET editable fields for Accession/Resource
+backend -> database : Query editable fields (include Dates and Extents)
+database --> backend : Return editable fields data
+backend --> frontend : Editable fields data for Accession/Resource
+frontend -> frontend : Enable edit mode, place Dates and Extents fields \nbefore Subjects list
+frontend --> user : Display editable Accession/Resource View
+
+user -> frontend : Submit updated Accession/Resource data
+frontend -> backend : POST updated Accession/Resource data
+backend -> database : Update Accession/Resource record
+database --> backend : Confirm record updated
+backend --> frontend : Update successful
+frontend --> user : Display updated Accession/Resource view with confirmation
+
+@enduml
+```
+
+This diagram simplifies the overall process and focuses on the sequence related to viewing and editing Dates and Extents for Accessions and/or Resources as an Archivist. Depending on your project's specific technology stack, the names of the participants (e.g., "Backend Server", "Database") and the details of the interactions might need adjustments. This example assumes a common web application architecture pattern involving a frontend UI, a backend server, and a database.

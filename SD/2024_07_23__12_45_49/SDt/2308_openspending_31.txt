@@ -1,0 +1,20 @@
+@startuml
+participant User as U
+participant "API Gateway" as A
+participant "Currency Conversion Service" as CCS
+participant "Data Store" as DS
+database "Fiscal Data" as FD
+
+U -> A: Request conversion of monetary measures\nwith specified target currency
+A -> CCS: Retrieve current exchange rates
+CCS -> CCS: Determine conversion rates\nbased on target currency
+CCS -> A: Return conversion rates
+A -> DS: Request monetary measures
+DS -> FD: Fetch monetary measures
+FD -> DS: Return monetary measures
+DS -> A: Return monetary measures to API Gateway
+A -> CCS: Convert monetary values\nusing retrieved rates
+CCS -> A: Return converted monetary measures
+A -> U: Display converted monetary measures
+
+@enduml

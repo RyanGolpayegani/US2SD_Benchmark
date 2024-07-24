@@ -1,0 +1,50 @@
+Given the request, I'll provide a PlantUML code to illustrate a sequence diagram for the user story, "As an employee, I want to know which menu items are available, so that I can inform customers." 
+
+This scenario involves the employee querying the system for available menu items, which then checks the current inventory and responds with the available items.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Employee as E
+participant SystemInterface as SI
+participant InventoryService as IS
+participant Database as DB
+
+E -> SI: Request available menu items
+activate SI
+
+SI -> IS: Check inventory for available items
+activate IS
+
+IS -> DB: Query available ingredients
+activate DB
+
+DB --> IS: Return available ingredients
+deactivate DB
+
+IS --> SI: Compile list of available menu items
+deactivate IS
+
+SI --> E: Display available menu items
+deactivate SI
+
+@enduml
+```
+
+This diagram simplifies the workflow into key interactions:
+
+1. **Employee requests available menu items**: The sequence starts with the employee initiating a request to the system (SystemInterface) for available menu items. This could be triggered via a restaurant management application or a web interface.
+
+2. **SystemInterface forwards request to InventoryService**: The SystemInterface, acting as a mediator between the employee and the back-end services, forwards the request to check the inventory
+   for available items to the InventoryService.
+
+3. **InventoryService queries the Database**: The InventoryService communicates with the Database to fetch information about available ingredients which are crucial to determining which menu items can be prepared.
+
+4. **Database returns available ingredients**: The Database returns a list or status of available ingredients back to the InventoryService.
+
+5. **InventoryService compiles available menu items**: Using the information fetched from the Database, the InventoryService calculates and compiles a list of available menu items based on the ingredients currently in stock.
+
+6. **SystemInterface displays available menu items to the Employee**: Finally, the SystemInterface provides the employee with the information about which menu items are currently available, completing the query process.
+
+This sequence ensures that employees have real-time information about menu item availability, enabling them to accurately inform customers and manage orders effectively.

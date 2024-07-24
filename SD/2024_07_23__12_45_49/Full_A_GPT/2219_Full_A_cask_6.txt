@@ -1,0 +1,54 @@
+For the given user story, creating a detailed sequence diagram involves representing the interaction between the app developer, dataset management system, and applications involved in including and sharing a dataset type's code in their artifacts. Below is a PlantUML representation capturing these interactions.
+
+```plantuml
+@startuml
+actor AppDeveloper as "App Developer"
+participant DatasetManagementSystem as "Dataset Management System"
+participant App1Artifact as "Application 1 Artifact"
+participant App2Artifact as "Application 2 Artifact"
+participant SharedDatasetTypeRepo as "Shared Dataset Type Repository"
+
+== Include Dataset Type in Application 1 Artifact ==
+AppDeveloper -> DatasetManagementSystem : Include Dataset Type
+DatasetManagementSystem -> App1Artifact : Deploy Dataset Type
+
+== Share Dataset Type Across Applications ==
+AppDeveloper -> DatasetManagementDatastore : Share Dataset Type
+activate DatasetManagementSystem
+DatasetManagementSystem -> SharedDatasetTypeRepo : Upload Dataset Type
+SharedDatasetTypeRepo --> DatasetManagementSystem : Confirm Upload
+deactivate DatasetManagementSystem
+
+== Include Shared Dataset Type in Application 2 Artifact ==
+AppDeveloper -> DatasetManagementSystem : Request Shared Dataset Type
+activate DatasetManagementSystem
+DatasetManagementSystem -> SharedDatasetTypeRepo : Fetch Shared Dataset Type
+SharedDatasetTypeRepo --> DatasetManagementSystem : Return Shared Dataset Type
+DatasetManagementSystem -> App2Artifact : Deploy Shared Dataset Type in Artifact
+deactivate DatasetManagementSystem
+
+alt If Version Conflict Exists
+    DatasetManagementSystem -> App2Artifact : Notify Version Conflict
+    AppDeveloper -> DatasetManagementSystem : Resolve Conflict
+    DatasetManagementSystem -> App2Artifact : Update Dataset Type Version
+end
+
+== Confirmation to App Developer ==
+DatasetManagementSystem -> AppDeveloper : Confirm Dataset Type Sharing & Deployment
+
+@enduml
+```
+
+This sequence diagram outlines the key steps involved in the process:
+
+1. **Include Dataset Type in Application 1 Artifact**: The app developer initiates the inclusion of a dataset type into Application 1's artifact through the Dataset Management System, which in turn deploys the dataset type within it.
+
+2. **Share Dataset Type Across Applications**: Next, the app developer shares this dataset type across applications by uploading it to a shared dataset type repository via the Dataset Management System, ensuring it's accessible for other applications.
+
+3. **Include Shared Dataset Type in Application 2 Artifact**: When wanting to include the shared dataset type in Application 2's artifact, the app developer requests the dataset type from the management system which fetches it from the shared repository and deploys it in the second application's artifact.
+
+4. **Version Conflict Handling**: The diagram also illustrates an alternative flow where if a version conflict exists when including the shared dataset type in Application 2, the Dataset Management System notifies the app developer of the conflict. The app developer can then resolve this conflict, prompting the management system to update the dataset type version in Application 2's artifact.
+
+5. **Confirmation**: Finally, the Dataset Management System confirms the successful sharing and deployment of the dataset type across the applications to the app developer.
+
+This sequence diagram is a simple representation and can be expanded or modified based on specific project requirements, such as adding more detailed interactions for conflict resolution or the deployment process.

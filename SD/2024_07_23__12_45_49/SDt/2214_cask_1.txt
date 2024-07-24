@@ -1,0 +1,26 @@
+@startuml
+participant AppDeveloper as AD
+participant ArtifactRepository as AR
+participant DatasetTypeRegistry as DTR
+participant DeploymentManager as DM
+participant DatasetInstanceManager as DIM
+
+AD -> AR : Include dataset type code\nin app artifact
+AD -> AR : Push app artifact with dataset type
+AR -> DTR : Register dataset type
+note right of DTR: Checks for conflicts\nand registers type
+
+AD -> DM : Deploy app with dataset
+DM -> DTR : Retrieves dataset type info
+DTR --> DM : Dataset type details
+DM -> DIM : Create dataset instance of the type
+
+DIM -> DTR : Confirm dataset type compatibility
+DTR --> DIM : Compatibility confirmed
+
+DIM -> DIM : Instantiate dataset
+DIM --> AD : Dataset instance created\nand ready for app
+
+note over AD, DIM : Deployment complete with\napp and dataset instance ready
+
+@enduml

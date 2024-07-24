@@ -1,0 +1,27 @@
+To create a detailed sequence diagram for the user story "As an employee, I want to delete orders so that I will be able to help customers that order wrong meals." using PlantUML, we need to outline the interaction between the system components and the user for the process of deleting an order. This interaction typically involves the Employee (could be a waiter, server, etc.), the Frontend Interface, Backend Server, and the Database.
+
+Below is a PlantUML code snippet to visualize this interaction:
+
+```plantuml
+@startuml
+actor Employee as E
+participant "Frontend Interface" as F
+participant "Backend Server" as B
+participant "Database" as DB
+
+E -> F : Selects the order to delete
+F -> B : Sends delete request (orderId)
+alt Order is found and can be deleted
+    B -> DB : Query to delete order from database (orderId)
+    DB --> B : Confirm deletion
+    B -> F : Return success message
+    F -> E : Display success message
+else Order cannot be deleted
+    B -> F : Return error message
+    F -> E : Display error message
+end
+@enduml
+```
+This diagram starts with the Employee selecting the wrong order to delete, which triggers a delete request to the Backend Server through the Frontal Interface. The Backend Server then attempts to delete the order from the Database. If the order is successfully found and deleted, a confirmation of the deletion is sent back to the Employee through the Frontend Interface. If the order cannot be deleted (for example, if it's already in preparation or another constraint is met), an error message is relayed instead.
+
+Remember, this is a simplified representation focused on the deletion of an order. In a real-world scenario, additional steps might be involved, such as authentication and authorization checks to ensure that the employee has the rights to delete orders, logging the action for audit purposes, or even checking if the order is at a stage where it can be deleted without complications.

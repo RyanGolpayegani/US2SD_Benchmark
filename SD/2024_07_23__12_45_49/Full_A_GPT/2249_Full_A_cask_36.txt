@@ -1,0 +1,61 @@
+Given the project description and the specific user story you've provided, below is a detailed sequence diagram in PlantUML format. This diagram will focus on the interaction sequence between the dataset developer, the dataset management system, and the underlying dataset instance when checking compatibility for an upgrade and potentially rejecting the upgrade if it is found to be incompatible.
+
+```plantuml
+@startuml
+actor DatasetDeveloper as developer
+participant "Dataset Version Control" as DVC
+participant "Dataset Instance" as DI
+database "Dataset Registry" as DR
+
+== Check Upgrade Compatibility for Dataset Instance ==
+
+developer -> DVC : requestUpgradeCheck(datasetInstanceId, newVersion)
+activate DVC
+
+DVC -> DR : getDatasetTypeInfo(newVersion)
+activate DR
+DR --> DVC : datasetTypeDetails
+deactivate DR
+
+DVC -> DI : getExistingVersionDetails(datasetInstanceId)
+activate DI
+DI --> DVC : existingVersionDetails
+deactivate DI
+
+DVC -> DVC : compareVersions(datasetTypeDetails, existingVersionDetails)
+DVC -> DR : getUpgradeCompatibilityRules(datasetTypeID)
+activate DR
+DR --> DVC : compatibilityRules
+deactivate DR
+
+DVC -> DVC : applyCompatibilityRules(compatibilityRules, existingVersionDetails, newVersion)
+alt If Upgrade is Compatible
+  DVC --> developer : upgradeIsCompatible()
+  developer -> DVC : confirmUpgrade(datasetInstanceId, newVersion)
+  DVC -> DI : upgradeInstance(newVersion)
+  DI --> DVC : upgradeSuccess()
+  DVC --> developer : upgradeComplete()
+else If Upgrade is Not Compatible
+  DVC --> developer : upgradeIncompatible(reason)
+end
+
+deactivate DVC
+@enduml
+```
+
+### Explanation
+1. **Dataset Developer Requests Upgrade Check**: The sequence begins with the dataset developer requesting a check for upgrading a dataset instance to a new version.
+
+2. **Dataset Version Control Retrieves Type Info**: The dataset version control (DVC) system queries the dataset registry for information about the new version of the dataset type.
+
+3. **Existing Version Details Are Retrieved**: The DVC system fetches details of the existing version of the dataset instance to determine its current state.
+
+4. **Version Comparison and Compatibility Rules**: The DVC system compares the existing and new version details and fetches upgrade compatibility rules from the dataset registry.
+
+5. **Apply Compatibility Rules**: The DVC applies the compatibility rules to assess if the upgrade is feasible without breaking compatibility.
+
+6. **Upgrade Decision**: 
+   - If the upgrade is compatible, the dataset developer is notified, and upon their confirmation, the upgrade proceeds, and the dataset instance is updated.
+   - If the upgrade is not compatible, the dataset developer is informed about the incompatibility reason, and the upgrade process halts.
+
+This sequence diagram outlines the primary interactions involved in checking and executing an upgrade for a dataset instance while providing a mechanism to reject incompatible upgrades.

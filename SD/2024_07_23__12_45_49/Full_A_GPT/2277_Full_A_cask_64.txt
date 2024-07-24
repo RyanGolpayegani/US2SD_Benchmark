@@ -1,0 +1,42 @@
+Below is a sequence diagram in PlantUML format that illustrates the detailed process for a user disabling the explore feature for a dataset that was initially configured for exploration.
+
+Please note: The diagram represents a simplified interaction flow and assumes there is an existing system or API to interact with datasets, environments for dataset exploration (such as a web interface or CLI), authorization mechanisms, and underlying mechanisms for marking a dataset as non-explorable. It focuses on the high-level interaction without diving into the specifics of the dataset management system's internal implementation.
+
+```plantuml
+@startuml
+actor User as user
+participant "Web Interface" as web
+participant "API Gateway" as api
+participant "Authorization Service" as auth
+participant "Dataset Management" as dm
+participant "Explore Service" as es
+
+== Disable Dataset Explore Feature ==
+user -> web: Select dataset to update
+web -> user: Display dataset details
+
+user -> web: Request to disable explore
+web -> api: API call to disable explore for dataset
+api -> auth: Validate user permission
+auth --> api: Permission granted
+
+api -> dm: Request dataset update
+dm -> es: Disable explore for specified dataset
+es --> dm: Explore disabled
+dm --> api: Update confirmation
+api --> web: Display success message
+web --> user: Explore disabled successfully
+
+@enduml
+```
+
+Explanation of steps in the Diagram:
+
+1. **User Interaction**: The user selects the dataset they wish to update through a web interface and requests to disable the explore feature.
+2. **API Call**: The web interface makes an API call to perform the operation.
+3. **Authorization**: The API gateway checks with the Authorization Service to ensure the user has the necessary permissions to update the dataset settings.
+4. **Update Process**: Once authorized, the request is forwarded to the Dataset Management system to handle the disablement of the explore feature for the selected dataset.
+5. **Disabling Explore**: The Dataset Management system interacts with the Explore Service to effectively disable exploration capabilities for the specified dataset.
+6. **Confirmation**: Upon successful update, a confirmation is sent back through the chain to the user indicating that the explore feature has been successfully disabled.
+
+This diagram encapsulates the essential interactions while abstracting away the finer details specific to the underlying data store and implementation technologies. It provides a clear visualization of the sequence of actions that need to be performed to disable dataset exploration based on the requirements laid out in the project description provided.

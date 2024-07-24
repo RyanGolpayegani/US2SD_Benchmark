@@ -1,0 +1,24 @@
+@startuml
+participant UserInterface as UI
+participant BusinessLogic as BL
+participant DatabaseAPI as DBAPI
+database InventoryDB as DB
+
+UI -> BL : Request inventory location details
+activate BL
+
+BL -> DBAPI : Query inventory information storage
+activate DBAPI
+
+DBAPI -> DB : SELECT inventory_storage_details 
+activate DB
+DB --> DBAPI : Return storage details
+deactivate DB
+
+DBAPI --> BL : Storage details data
+deactivate DBAPI
+
+BL --> UI : Show inventory storage information
+deactivate BL
+
+@enduml

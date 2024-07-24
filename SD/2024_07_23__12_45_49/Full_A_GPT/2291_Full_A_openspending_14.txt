@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the given user story, "As a Data Publishing User, I want to provide the Platform Administrator with additional GeoJSON sources, so that I can improve the map-based visualizations of my data," entails illustrating the interactions between the user, the system components, and the administrator involved in submitting and integrating GeoJSON sources into the OpenSpending system. Below is an example of how this interaction might be captured in PlantUML syntax.
+
+```plantuml
+@startuml
+actor "Data Publishing User" as User
+participant "Data Submission Form" as Form
+database "OpenSpending Platform" as Platform
+actor "Platform Administrator" as Admin
+
+User -> Form : Navigate to submission form
+activate Form
+
+User -> Form : Upload GeoJSON Source
+Form -> Platform : Validate GeoJSON Format
+alt Valid GeoJSON
+    Platform -> Form : Display Success Message
+    deactivate Form
+    Form -> User : Notify Upload Success
+    
+    User -> Platform : Submit GeoJSON for Review
+    Platform -> Admin : Send GeoJSON for Approval
+    
+    Admin -> Platform : Review GeoJSON Source
+    alt GeoJSON Approved
+        Admin -> Platform : Approve GeoJSON Source
+        Platform -> Admin : Integrate GeoJSON into Map Visualization
+        Platform -> User : Notify Approval and Update
+    
+    else GeoJSON Rejected
+        Admin -> Platform : Reject GeoJSON Source with Feedback
+        Platform -> User : Notify Rejection and Feedback
+    end
+else Invalid GeoJSON
+    Platform -> Form : Display Error Message
+    Form -> User : Notify Upload Failure
+    deactivate Form
+end
+
+@enduml
+```
+
+This sequence diagram starts with the "Data Publishing User" navigating to a data submission form on the platform. The user uploads a GeoJSON source which the platform validates. If the GeoJSON is valid, the user is notified of the successful upload, and they can then submit it for review. The "Platform Administrator" reviews the submitted GeoJSON source. If approved, the administrator integrates the GeoJSON into the map visualization feature of the OpenSpending platform, and the user is notified. If the GeoJSON source is rejected, the user also receives a notification along with feedback. The sequence includes conditions handling both the approval and rejection pathways to ensure clarity on the process flow.

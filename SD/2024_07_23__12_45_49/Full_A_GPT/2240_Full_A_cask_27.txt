@@ -1,0 +1,57 @@
+Given the specific user story and the project's complexity, a sequence diagram can illustrate the process involved when a hydrator user specifies an explicit version of the dataset types for instances created by their pipeline and expects pipeline creation to fail if this version specification causes incompatible upgrades for dataset instances shared with other apps or pipelines.
+
+To communicate the sequence effectively, let's draft the PlantUML sequence diagram code. This diagram will show interactions between the Hydrator User, Pipeline Configuration Service, Dataset Management Service, Version Control Service, and possibly other services involved in checking compatibility and managing dataset instances.
+
+```plantuml
+@startuml
+participant HydratorUser as user
+participant "Pipeline Configuration\nService" as configService
+participant "Dataset Management\nService" as datasetService
+participant "Version Control\nService" as versionService
+participant "Dataset Instance\nRepository" as instanceRepo
+
+== Pipeline Creation Process ==
+user -> configService : Specify pipeline with dataset types and versions
+activate configService
+configService -> datasetService : Request dataset type details
+activate datasetService
+datasetService -> versionService : Check version compatibility
+activate versionService
+
+versionService -> instanceRepo : Query existing dataset instances
+activate instanceRepo
+instanceRepo --> versionService : Return existing instance details
+deactivate instanceInfo
+
+versionService -> versionService : Evaluate compatibility
+versionService --> datasetService : Return compatibility result
+deactivate versionService
+datasetService --> configService : Return dataset type details & compatibility
+deactivate datasetService
+
+configService -> configService : Assess overall pipeline compatibility
+alt If compatible
+    configService --> user : Pipeline creation successful
+else If incompatible
+    configService --> user : Pipeline creation fails due to incompatible dataset instance upgrade
+end
+deactivate configService
+
+@enduml
+```
+
+### Diagram Explanation:
+
+1. **Hydrator User (user)**: The hydrator user initializes the process by specifying the desired pipeline configuration, including the dataset types and their explicit versions.
+
+2. **Pipeline Configuration Service (configService)**: Receives the pipeline specification from the user and requests information about the specified dataset types, including version compatibility, from the Dataset Management Service.
+
+3. **Dataset Management Service (datasetService)**: Manages dataset types and instances. It contacts the Version Control Service to check version compatibility for the request.
+
+4. **Version Control Service (versionService)**: Checks version compatibility between the specified versions and existing dataset instances by querying the Dataset Instance Repository. It ensures that the new configuration does not introduce an incompatible upgrade for shared dataset instances.
+
+5. **Dataset Instance Repository (instanceRepo)**: Stores details about each dataset instance, including which applications or pipelines they are associated with and their current version.
+
+The decision point (alt-else block) in the diagram represents the process outcome based on the compatibility check. If the pipeline's dataset type versions are compatible with existing shared dataset instances, the pipeline creation is successful. Otherwise, if an incompatible version upgrade is detected, the pipeline creation fails, notifying the hydrator user.
+
+This sequence diagram outlines the high-level interactions without delving into specific implementation details, which can vary based on the software development environment and the technologies used.

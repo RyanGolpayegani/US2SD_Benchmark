@@ -1,0 +1,19 @@
+@startuml
+participant Researcher
+participant "DPIE System" as DPIE
+participant "Data Package Repository" as Repo
+participant "LibreOffice/OpenOffice" as LibreOffice
+
+Researcher -> DPIE : Request Data Package for Analysis
+DPIe -> Repo : Fetch Data Package
+Repo -> DPIE : Return Data Package
+DPIE -> DPIE : Validate and Enhance Data Package\n- Add metadata\n- Convert to compatible format
+DPIE -> LibreOffice : Install Data Integration Plugin\n(if not already installed)
+activate LibreOffice
+LibreOffice -> DPIE : Confirm Plugin Installation
+DPIE -> LibreOffice : Import Enhanced Data Package
+LibreOffice -> DPIE : Confirm Successful Import
+DPIE -> Researcher : Notify Data Package is Ready for Analysis
+deactivate LibreOffice
+
+@enduml

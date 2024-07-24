@@ -1,0 +1,35 @@
+@startuml
+participant User
+participant "OpenSpreading Frontend" as Frontend
+participant "Data API" as DataAPI
+participant "File Generator" as FileGen
+participant "Database" as DB
+
+User -> Frontend : Choose visualization\nand request CSV download
+activate Frontend
+
+Frontend -> DataAPI : Request data for visualization
+activate DataAPI
+
+DataAPI -> DB : Fetch requested data
+activate DB
+DB --> DataAPI : Return data
+deactivate DB
+
+DataAPI --> Frontend : Provide data
+deactivate DataAPI
+
+Frontend -> FileGen : Send data for CSV creation
+activate FileGen
+
+FileGen -> FileGen : Generate CSV file from data
+
+FileGen --> Frontend : Provide download link to CSV
+deactivate FileGen
+
+Frontend --> User : Offer CSV download link
+deactivate Frontend
+User -> Frontend : Clicks download link
+Frontend -> User : Initiates download of CSV file
+
+@enduml

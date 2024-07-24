@@ -1,0 +1,52 @@
+Given the complexity and breadth of functionality described in this user story, I'll outline a sequence diagram in PlantUML syntax that captures the interactions involved in creating, updating, and deleting archival descriptions by a Repository Manager. This includes interactions with the system for authenticating the user, displaying the management interface, and handling the archival description records.
+
+```plantuml
+@startuml
+autonumber
+
+participant RepositoryManager as RM
+participant AuthenticationSystem as Auth
+participant ManagementInterface as MI
+participant Database as DB
+
+== Authentication ==
+RM -> Auth: login(credentials)
+Auth --> RM: AuthSuccess
+
+== Create Archival Description ==
+RM -> MI: selectCreateArchDescription()
+activate MI
+MI -> DB: createRecord(archivalDescriptionDetails)
+DB --> MI: RecordCreated
+deactivate MI
+MI --> RM: ShowSuccessMessage("Archival Description Created")
+
+== Update Archival Description ==
+RM -> MI: selectUpdateArchDescription(recordID)
+activate MI
+MI -> DB: getRecordByID(recordID)
+DB --> MI: DisplayRecordDetails
+RM -> MI: submitUpdatedRecordDetails(updatedDetails)
+MI -> DB: updateRecord(recordID, updatedDetails)
+DB --> MI: RecordUpdated
+deactivate MI
+MI --> RM: ShowSuccessMessage("Archival Description Updated")
+
+== Delete Archival Description ==
+RM -> MI: selectDeleteArchDescription(recordID)
+activate MI
+MI -> DB: deleteRecord(recordID)
+DB --> MI: RecordDeleted
+deactivate MI
+MI --> RM: ShowSuccessMessage("Archival Description Deleted")
+
+@enduml
+```
+
+This sequence diagram describes the following process:
+1. The Repository Manager (RM) logs in to the Authentication System, which verifies the credentials and sends an authentication success message.
+2. To create an archival description, the RM instructs the Management Interface to initiate the creation process. The Management Interface sends the archival description details to the Database, which creates the record and responds with a success message that the process was completed.
+3. For updating an archival description, the RM selects the archival description to update through the Management Interface, which then retrieves the record by ID from the Database and displays the details. The RM submits updated details, which the Management Interface then updates in the Database. The Database responds with a success message, and the RM is informed that the archival description has been updated.
+4. To delete an archival description, the RM chooses the relevant archival description for deletion through the Management Interface. The Management Interface requests the deletion from the Database, which deletes the specified record and sends a deletion success message. The RM is informed that the archival description has been successfully deleted.
+
+Please adapt and extend this diagram according to the specific technologies, database models, and additional steps or error handling your project may include.

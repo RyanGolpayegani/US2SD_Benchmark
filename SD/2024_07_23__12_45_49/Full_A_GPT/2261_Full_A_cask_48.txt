@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram for the outlined user story in PlantUML format involves capturing the interaction between different components of the system when a user attempts to update the properties of a dataset instance and the process for handling incompatibility errors. Below is a simplified version that abstracts the process:
+
+```
+@startuml
+!theme plain
+
+actor User
+participant "User Interface" as UI
+participant "Dataset Management System" as DMS
+participant "Dataset Instance" as DI
+participant "Version Control" as VC
+participant "Error Handling Module" as EH
+
+User -> UI: Request to update dataset properties
+UI -> DMS: Validate user request
+activate DMS
+DMS -> DI: Fetch current dataset properties
+DI -> DMS: Return current properties
+DMS -> VC: Check compatibility of new properties with current version
+VC -> DMS: Compatibility Result
+alt If properties are incompatible
+  VC -> EH: Invoke error handling  
+  EH -> DMS: Meaningful error message
+  DMS -> UI: Display error message to User
+  UI -> User: Show failure due to incompatibility
+else Properties are compatible
+  DMS -> DI: Update dataset with new properties
+  DI -> DMS: Confirmation of update
+  DMS -> UI: Confirm success to User
+  UI -> User: Show success message
+end
+deactivate DMS
+
+@enduml
+```
+
+This sequence diagram illustrates the following steps:
+1. **User Request**: The user makes a request through the User Interface (UI) to update the properties of a dataset instance.
+2. **Validation**: The UI sends this request to the Dataset Management System (DMS) which handles the validation and processing of dataset updates.
+3. **Fetch Current Properties**: The DMS interacts with the specified Dataset Instance (DI) to fetch its current properties.
+4. **Compatibility Check**: The DMS submits the new properties to the Version Control (VC) system to check for compatibility against the current dataset properties.
+5. **Error Handling**: If the VC finds the properties to be incompatible, it triggers the Error Handling Module (EH) to formulate a meaningful error message.
+6. **User Feedback**: Based on the compatibility check, either an error message indicating failure due to incompatibility or a success message is displayed to the user through the UI.
+
+This diagram is a high-level overview and can be extended with additional specifics such as data validation, user authentication, transaction handling, and logging based on the detailed requirements of the system’s architecture.

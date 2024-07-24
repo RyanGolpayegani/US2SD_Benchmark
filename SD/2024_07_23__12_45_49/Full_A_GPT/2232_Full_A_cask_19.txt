@@ -1,0 +1,52 @@
+Creating a detailed PlantUML sequence diagram for the described user story requires encapsulating the interactions between the app developer and the system components involved in creating a dataset instance with a specific version of a dataset type. Here's a simplified representation of how this process might look:
+
+```plantuml
+@startuml
+participant AppDeveloper as developer
+participant "App Management System" as appSystem
+participant "Dataset Type Repository" as typeRepo
+participant "Dataset Instance Manager" as instanceManager
+participant "Version Control" as versionControl
+
+developer -> appSystem : Request to create dataset instance with specific version
+activate appSystem
+
+appSystem -> typeRepo : Query available versions of dataset type
+activate typeRepo
+
+typeRepo -> versionControl : Fetch version details
+activate versionControl
+
+versionControl --> typeRepo : Return version details
+deactivate versionControl
+
+typeRepo --> appSystem : Return available versions
+deactivate typeRepo
+
+appSystem -> appSystem : Select required version
+activate appSystem
+
+appSystem -> instanceManager : Request creation of dataset instance with selected version
+activate instanceManager
+
+instanceManager -> versionControl : Verify version compatibility
+activate versionControl
+
+versionControl --> instanceManager : Confirm compatibility
+deactivate versionControl
+
+instanceManager -> instanceManager : Create dataset instance
+activate instanceManager
+
+instanceManager --> appSystem : Confirm instance creation
+deactivate instanceManager
+
+appSystem --> developer : Return confirmation of dataset instance creation
+deactivate appSystem
+
+@enduml
+```
+
+This sequence starts with the app developer (you) requesting the creation of a dataset instance with a specific dataset type version via the application management system. The app management system queries the dataset type repository for available versions and, with the help of version control, selects the appropriate version as specified. Next, it instructs the dataset instance manager to create an instance with the chosen version, ensuring version compatibility and successful instance creation.
+
+Remember, the above diagram is simplified for illustrative purposes. The actual implementation might involve additional interactions based on the specifics of the version control system, dataset management features, and the application's architecture. Also, depending on the level of detail you wish to include, the sequence diagram can be expanded to showcase error handling, conditional logic, and interactions with external systems or databases.

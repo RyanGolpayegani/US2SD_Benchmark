@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the described user story in PlantUML format involves illustrating the interactions between different actors and components for performing custom administrative operations on dataset instances. The sequence will include interactions from an app developer standpoint, using both CLI (Command-Line Interface) and REST/UI interfaces.
+
+Please note, the PlantUML code provided below is a conceptual representation intended to align with the project description provided. It outlines a high-level interaction flow and may require adjustments based on specific implementation details, protocols, or APIs used in your actual system.
+
+```plantuml
+@startuml
+actor AppDeveloper as developer
+participant "CLI Tool" as cli
+participant "REST API" as rest
+database "Dataset Management System" as dms
+participant "UI Application" as ui
+actor "Dataset Instance" as dataset
+
+== CLI-based Operations ==
+developer -> cli : Perform operation (e.g., compaction)
+cli -> dms : Request operation on Dataset Instance
+dms -> dataset : Execute Operation
+dataset -> dms : Operation Successful
+dms -> cli : Confirm Success
+cli -> developer : Display Success Message
+
+== REST/UI-based Operations ==
+developer -> ui : Access UI
+ui -> rest : Fetch Dataset Instances
+rest -> dms : Request Dataset Instances
+dms -> rest : Return Dataset Instances
+rest -> ui : Show Dataset Instances
+developer -> ui : Select Dataset Instance & Operation (e.g., rebalance)
+ui -> rest : POST Operation Request
+rest -> dms : Execute Operation on Dataset Instance
+dms -> dataset : Perform Operation
+dataset -> dms : Operation Successful
+dms -> rest : Operation Success Confirmation
+rest -> ui : Display Success Message to Developer
+ui -> developer : Operation Successful
+
+@enduml
+```
+
+In this conceptual diagram:
+
+- The **AppDeveloper** can interact with the dataset management system through both CLI tools and a UI application powered by REST APIs.
+- Operations via the CLI tool involve direct command execution, which interacts with the dataset management system to perform the specified operation on a dataset instance.
+- For REST/UI-based operations, the developer uses a UI application to visualize and select dataset instances. Operations are then executed via REST API calls to the dataset management system, which, similarly, performs the requested operation on the dataset instance.
+- The flow illustrates both types of interactions leading to an operation (such as compaction or rebalance) executed on a dataset instance and the system's response signaling the operation's success.
+
+This diagram serves as a foundational blueprint. Depending on the complexity and specific requirements of your system (like authentication, error handling, more detailed operation steps, etc.), the sequence diagram might need to be expanded with additional components or interaction details.

@@ -1,0 +1,34 @@
+To visualize the interaction for the user story: "As a RepositoryManagerResearcher, I want an app that acts as a match-making service for packaging data, so that owners are paired with data packagers," we will design a sequence diagram using PlantUML code. This code represents the sequence of events in the described match-making process.
+
+The sequence diagram will include the following actors and systems:
+
+- **RepositoryManagerResearcher**: The user initiating the match-making service.
+- **ApplicationInterface**: The front-end interface where the user interacts.
+- **MatchMakingService**: The back-end service that processes match-making.
+- **DataOwnersDB**: Database or service holding the information of data owners.
+- **DataPackagersDB**: Database or service holding the information of data packagers.
+- **NotificationService**: Service used for sending notifications to matched pairs.
+
+Below is the PlantUML code to represent the described interactions:
+
+```plantuml
+@startuml
+actor RepositoryManagerResearcher as researcher
+participant ApplicationInterface as app
+participant MatchMakingService as matchService
+database DataOwnersDB as ownersDB
+database DataPackagersDB as packagersDB
+participant NotificationService as notifier
+
+researcher -> app : Request match-making
+app -> matchService : Initiate match-making
+matchService -> ownersDB : Retrieve Data Owners Info
+matchService -> packagersDB : Retrieve Data Packagers Info
+matchSirvice -> matchService : Process Matching Algorithm
+matchService -> notifier : Send Notification to Matched Pair
+note right of notifier : Notification includes\ncontact information\nand data details.
+notifier -> researcher : Confirmation & Match Details
+@enduml
+```
+
+This sequence diagram outlines the process flow from the initiation of a match-making request by a RepositoryManagerResearcher, through the application interface, processing by the MatchMakingService, interaction with data owners and packagers databases, and finally, notification of the matched pair via the NotificationService. The match-making service processes the request, retrieves necessary information from relevant databases, and applies an algorithm to find a suitable match. Upon finding a match, the NotificationService sends out a notification to both parties with the details required to commence their collaboration.

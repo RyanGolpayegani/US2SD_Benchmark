@@ -1,0 +1,34 @@
+@startuml
+participant User
+participant System
+participant "Dataset Instance" as Dataset
+participant "Version Control" as VersionControl
+database "Dataset Repository" as Repo
+
+autonumber
+User -> System : Request to update dataset property
+activate System
+System -> Dataset : Fetch current configuration
+activate Dataset
+Dataset -> Repo : Request current properties
+activate Repo
+Repo --> Dataset : Return current properties
+deactivate Repo
+Dataset --> System : Return current configuration
+deactivate Dataset
+System -> User : Show current configuration (except sensitive data)
+User -> System : Specify property update
+System -> Dataset : Validate property update
+activate Dataset
+Dataset --> System : Validation success
+deactivate Dataset
+System -> VersionControl : Create new version with updated property
+activate VersionControl
+VersionControl -> Repo : Store updated configuration
+activate Repo
+Repo --> VersionControl : Update success
+VersionControl --> System : Version update confirmation
+deactivate VersionControl
+System -> User : Update success notification
+deactivate System
+@enduml

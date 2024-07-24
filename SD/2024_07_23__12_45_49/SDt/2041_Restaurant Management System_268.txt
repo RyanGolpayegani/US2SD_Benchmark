@@ -1,0 +1,44 @@
+@startuml
+participant ServerUI as "Server UI"
+participant AuthService as "Authentication Service"
+participant BackendServer as "Backend Server"
+participant EmployeeDB as "Employee Database"
+participant ScheduleManager as "Schedule Manager"
+
+title Server Clock-In and Clock-Out Sequence
+
+== Clock In ==
+ServerUI -> AuthService: Authenticate(ServerID, Password)
+AuthService -> ServerUI: AuthToken
+note right: Authentication confirms server's identity
+
+ServerUI -> BackendServer: ClockIn(AuthToken, ServerID, Timestamp)
+activate BackendServer
+BackendServer -> EmployeeDB: LogStartTime(ServerID, Timestamp)
+activate EmployeeDB
+EmployeeDB -> EmployeeDB: UpdateStatus(ServerID, "Clocked In")
+deactivate EmployeeDB
+BackendServer -> ScheduleManager: UpdateSchedule(ServerID, ClockInTime)
+activate ScheduleManager
+ScheduleManager -> ScheduleManager: ConfirmShiftStart(ServerID)
+ScheduleManager -> BackendServer: ShiftStarted(ServerID)
+deactivate ScheduleManager
+BackendEndpoint -> ServerUI: ClockInConfirmed
+deactivate BackendServer
+
+== Clock Out ==
+ServerUI -> BackendServer: ClockOut(AuthToken, ServerID, Timestamp)
+activate BackendServer
+BackendServer -> EmployeeDB: LogEndTime(ServerID, Timestamp)
+activate EmployeeDB
+EmployeeDB -> EmployeeDB: UpdateStatus(ServerID, "Clocked Out")
+deactivate EmployeeDB
+BackendServer -> ScheduleManager: UpdateSchedule(ServerID, ClockOutTime)
+activate ScheduleManager
+ScheduleManager -> ScheduleManager: ConfirmShiftEnd(ServerID)
+ScheduleManager -> BackendServer: ShiftEnded(ServerID)
+deactivate ScheduleManager
+BackendServer -> ServerUI: ClockOutConfirmed
+deactivate BackendServer
+
+@enduml

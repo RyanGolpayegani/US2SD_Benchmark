@@ -1,0 +1,53 @@
+Creating a detailed sequence diagram for the specified user story in PlantUML requires a focus on the interactions between the API User and various components of the OpenSpending Enhancement Project, specifically around the normalization of measures by GDP. Below is the PlantUML code that represents these interactions:
+
+```
+@startuml
+actor APIUser as "API User"
+participant "API Gateway" as APIGateway
+participant "Data Processing Service" as DataProcessing
+database "Datastore" as Datastore
+participant "GDP Normalization Service" as GDPNormalization
+participant "External GDP Data" as ExternalGDP
+
+APIUser -> APIGateway : Request to normalize measure by GDP with dataset identifier
+APIGateway -> DataProcessing : Retrieve specified dataset
+DataProcessing -> Datastore : Fetch dataset details\n(including monetary measures)
+Datastore --> DataProcessing : Return dataset details
+DataProcessing -> GDPNormalization : Send monetary measures for normalization
+GDPNormalization -> ExternalGDP : Request GDP data\n(based on dataset context)
+ExternalGDP --> GDPNormalization : Provide GDP data
+GDPNormalization -> GDPNormalization : Calculate normalized values
+GDPNormalization --> DataProcessing : Return normalized monetary measures
+DataProcessing --> APIGateway : Send normalized data response
+APIGateway --> APIUser : Provide normalized dataset measures by GDP
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram Components
+
+- **API User**: The actor initiating the request. This user wants to normalize dataset measures by GDP.
+
+- **API Gateway**: The initial entry point for the API User's request. It routes the request to the appropriate service for processing.
+
+- **Data Processing Service**: Handles the logic of retrieving the dataset details for which the measures need to be normalized.
+
+- **Datastore**: The database where datasets and their details are stored. It is queried to fetch the relevant dataset's details, including its monetary measures.
+
+- **GDP Normalization Service**: A service dedicated to performing the normalization of monetary measures by GDP. It calculates the normalized values using GDP data.
+
+- **External GDP Data**: Represents external sources or services that provide GDP data necessary for normalization. This could be a public financial API or database that the GDP Normalization Service queries to obtain GDP values relevant to the dataset’s context.
+
+### How the Interaction Flows:
+
+1. **API User initiates a request**: The user sends a request to normalize a dataset's monetary measures by GDP through the API Gateway.
+
+2. **Retrieving dataset details**: The request is routed to the Data Processing Service, which fetches the required dataset details, including its monetary measures, from the Datastore.
+
+3. **Normalization process**: These monetary measures are then passed to the GDP Normalization Service, which requests GDP data from an external source tuned to the dataset's context (e.g., geographical location, fiscal year).
+
+4. **Calculating normalized values**: Upon receiving the GDP data, the GDP Normalization Service calculates the normalized monetary values.
+
+5. **Returning the response**: The normalized measures are sent back to the API User via the API Gateway, completing the request cycle.
+
+This sequence diagram outlines a high-level perspective of what the interaction would look like for an API User wanting to normalize measures by GDP within the OpenSpending platform. The actual implementation may require additional steps or services based on the project's technical architecture and requirements.

@@ -1,0 +1,30 @@
+Crafting a detailed sequence diagram for the user story "As a waiter, I want to see the reservation for each table" involves delineating the interactions between the waiter (user), the system's interface (front end), the system's server-side logic (back end), and the data management services (database) that retrieve the relevant reservation information. Let's break down this process into a PlantUML sequence diagram.
+
+Here’s a simplified version to illustrate these interactions. This example assumes the waiter is accessing the system through a user interface (UI) which then communicates with the back end to fetch reservation data from the database.
+
+```plantuml
+@startuml
+actor Waiter
+participant "UI: Web App" as UI
+participant "Server: Application Logic" as Server
+database "Database: Reservations" as Database
+
+Waiter -> UI : Selects "View Reservations"
+UI -> Server : Request to fetch table reservations
+Server -> Database : Query table reservations
+Database --> Server : Return reservation data
+Server --> UI : Display reservation information
+UI --> Waiter : Show table reservations
+
+@enduml
+```
+
+This sequence diagram follows the steps:
+1. **Waiter Interaction**: The waiter selects an option to view reservations, perhaps through a click or tap interaction within the web application.
+2. **UI Request**: The UI sends a request to the back-end server to fetch reservation data. This request identifies what data is needed, such as today's reservations.
+3. **Server to Database Communication**: The application logic on the server formulates a query to retrieve data about all the table reservations from the database. This might include filtering data to show only reservations for the current shift or day.
+4. **Database Response**: The database processes the server’s query and returns data about the reservations, which might include the reservation time, table numbers, customer names, or any special requests.
+5. **Server Processes Data**: After receiving the data from the database, the server processes it, possibly formatting or filtering the data further to match the waiter's requirements or the app's UI design.
+6. **UI Displays Information**: Finally, the reservation data is passed back to the UI, which then displays it to the waiter, allowing them to see the current reservations, table numbers, and any other relevant details provided by the database.
+
+This diagram can be expanded or adjusted based on more detailed requirements such as handling errors, additional steps for authentication, or integrating with a real-time reservation updating system.

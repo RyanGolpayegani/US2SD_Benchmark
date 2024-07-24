@@ -1,0 +1,72 @@
+Given the scope and detailed nature of your project description for the RecycleSmart platform and the specific user story concerning users receiving tempting rewards for using the website, below is a PlantUML sequence diagram code snippet. This diagram illustrates the sequence of events from the user deciding to use the RecycleSmart platform for recycling purposes to receiving rewards based on their actions.
+
+Note: The actual implementation and logic behind the rewarding system are simplified for the sake of this sequence. The system could involve complex algorithms or integrations not depicted in this basic sequence.
+
+```plantuml
+@startuml
+actor User
+participant "RecycleSmart Website" as Website
+database "Recycling Database" as Database
+participant "Rewards System" as Rewards
+participant "Email Service" as Email
+
+User -> Website: Access website
+activate Website
+Website -> Database: Query recycling centers and events
+activate Database
+Database --> Website: Return results
+deactivate Database
+
+User -> Website: Participate in recycling event
+activate Website
+Website -> Database: Log user participation
+activate Database
+Database --> Website: Confirmation
+deactivate Database
+
+Website -> Rewards: Update user rewards
+activate Rewards
+Rewards -> Database: Calculate new rewards balance
+activate Database
+Database --> Rewards: Update success
+deactivate Database
+
+Rewards --> Website: Display new rewards to user
+deactivate Rewards
+Website --> User: Show participation confirmation and rewards
+
+User -> Website: Request reward details
+Website -> Rewards: Fetch reward details
+activate Rewards
+Rewards -> Database: Retrieve user's rewards data
+activate Database
+Database --> Rewards: User's rewards data
+deactivate Database
+
+Rewards --> Website: Reward details
+deactivate Rewards
+Website --> User: Display reward details
+
+User -> Website: Redeem rewards
+Website -> Rewards: Process redemption request
+activate Rewards
+Rewards -> Email: Send confirmation email
+activate Email
+Email --> User: Redemption confirmation
+deactivate Email
+Rewards -> Database: Update rewards balance
+activate Database
+Database --> Rewards: Update success
+deactivate Database
+
+Rewards --> Website: Update completion
+deactivate Rewards
+Website --> User: Confirm redemption success
+deactivate Website
+
+@enduml
+```
+
+This sequence diagram starts with the user accessing the RecycleSmart website and participating in a recycling event. Upon participation, the website interacts with the back-end database to log the user's action, which triggers an update in the user's rewards through the Rewards System. The Rewards System calculates the new balance with the database and confirms the updated rewards to the user. If the user wishes to see details or redeem their rewards, the sequence shows the interactions involving fetching reward details and processing redemption requests, including sending a confirmation email via an Email Service. Finally, the Rewards System updates the user's rewards balance in the database post-redemption.
+
+Please modify this code as per your actual system design and workflow, especially the logic behind calculating rewards and the process of redeeming them, to ensure it fully represents your intended functionality.

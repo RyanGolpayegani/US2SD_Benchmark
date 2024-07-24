@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the described waiter check-in/check-out feature requires understanding the flow of interactions between different components of the Restaurant Management and Operations System. Here's a sequence diagram that captures these interactions:
+
+```plantuml
+@startuml
+actor Waiter
+participant "Check-In/Out Interface" as CIO
+participant "Authentication Service" as AS
+participant "Employee Database" as ED
+participant "Shift Management System" as SMS
+participant "Payroll System" as PS
+
+== Waiter Check-In ==
+Waiter -> CIO: Access Check-In/Out
+CIO -> AS: Authenticate Waiter
+AS --> CIO: Authentication Success
+CIO -> SMS: Log Check-In Time
+SMS -> ED: Retrieve Waiter Details
+ED --> SMS: Waiter Details
+SMS -> SMS: Calculate Shift Duration
+SMS --> CIO: Check-In Confirmed
+CIO --> Waiter: Display Check-In Confirmation
+
+== Waiter Check-Out ==
+Waiter -> CIO: Access Check-In/Out
+CIO -> AS: Authenticate Waiter
+AS --> CIO: Authentication Success
+CIO -> SMS: Log Check-Out Time
+SMS -> SMS: Calculate Shift Duration
+SMS --> CIO: Check-Out Confirmed
+CIO --> Waiter: Display Check-Out Confirmation and Shift Duration
+SMS -> PS: Update Worked Hours
+PS -> ED: Update Payroll Information
+ED --> PS: Payroll Updated
+@enduml
+```
+
+### Explanation of the Sequence Diagram
+
+1. **Waiter Initiates Check-In/Out**: The waiter accesses the Check-In/Out interface on a device to start the process.
+2. **Authentication**: The interface interacts with the Authentication Service to verify the waiter's identity, ensuring only authorized personnel can check in/out.
+3. **Logging Time**: Based on the action (check-in or check-out), the current time is logged through the Shift Management System (SMS).
+4. **Retrieving Waiter Details**: For both actions, waiter details are fetched from the Employee Database to associate the time log with the correct individual.
+5. **Calculating Shift Duration**: When checking out, the SMS calculates the total duration of the shift by comparing check-in and check-out times.
+6. **Confirmation**: The waiter receives confirmation of the action (check-in/check-out) along with details (like shift duration on check-out) on the interface.
+7. **Updating Payroll**: On check-out, the system updates the Payroll System with the worked hours for accurate compensation.
+
+This sequence diagram provides a high-level view of the process from the waiter's perspective, focusing on the system's interactions required to facilitate the check-in and check-out functionality of the Restaurant Management and Operations System.

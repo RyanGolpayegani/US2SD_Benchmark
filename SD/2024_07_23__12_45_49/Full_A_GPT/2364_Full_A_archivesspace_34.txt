@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the described User Story using PlantUML might look something like this:
+
+```plantuml
+@startuml
+actor Archivist as user
+participant "User Interface" as UI
+participant "Hierarchy Management" as HM
+participant "Database" as DB
+
+
+user -> UI: Selects archival object
+activate UI
+
+UI -> HM: DragStartEvent(archival object)
+activate HM
+
+HM -> UI: Show valid drop targets
+UI -> user: Display drag overlay
+
+user -> UI: Drops object at new position
+UI -> HM: DropEvent(new position)
+HM -> DB: Query parent object ID
+activate DB
+
+DB -> DB: Validate new position
+DB -> HM: Return success and update needed
+
+HM -> DB: Update object hierarchy
+DB -> DB: Save new hierarchy
+DB -> HM: Confirm hierarchy updated
+
+HM -> UI: Display updated hierarchy
+deactivate DB
+deactivate HM
+
+UI -> user: Show success message
+deactivate UI
+
+@enduml
+```
+
+Explanation:
+- The Archivist (user) initiates the interaction by selecting and dragging an archival object in the User Interface (UI) of the Comprehensive Archival Management System.
+- The UI communicates with the Hierarchy Management (HM) component, signaling the start of a drag action with the selected object.
+- The HM component requests the UI to show valid drop targets based on the object's current position and potential new position within the hierarchy.
+- As the user decides on a new position and 'drops' the object, the UI captures this DropEvent and informs the HM of the new position.
+- The HM performs a series of checks and updates. It queries the Database (DB) to get the parent object ID of the new position to ensure the move is valid within the existing hierarchy.
+- Database validations and updates occur, including checking for any conflict or constraint that might prevent the new hierarchy arrangement.
+- Once the DB confirms the updates, the HM component instructs the UI to display the updated hierarchy, reflecting the changes.
+- Finally, the UI shows a success message to the Archivist, indicating that the archival object has been successfully rearranged within the hierarchy.
+
+This sequence diagram provides a high-level view of the interactions between different components when an Archivist wants to rearrange the resource description hierarchy. Depending on the system's architecture, additional steps or components (e.g., authentication, logging, or event handling) could also be involved in this process.

@@ -1,0 +1,37 @@
+Creating a detailed sequence diagram for the given user story in PlantUML format can provide a clear visualization of the interactions between different components in the process of handling a failure during pipeline creation due to an incompatible dataset. Since the user story emphasizes error reporting for incompatible schemas or dataset properties, the focus will be on illustrating the sequence of checks and communications leading up to the error notification.
+
+```plantuml
+@startuml
+participant PipelineDesigner as Designer
+participant PipelineService as Service
+participant DatasetRegistry as Registry
+participant SchemaValidator as Validator
+participant ErrorHandling as ErrorHandler
+
+Designer -> Service: Request pipeline creation with dataset
+Service -> Registry: Retrieve dataset details
+Registry --> Service: Dataset details (Schema, properties)
+
+Service -> Validator: Validate dataset against pipeline requirements
+alt Dataset is compatible
+    Validator --> Service: Validation Success
+    Service --> Designer: Pipeline creation initiated
+else Dataset is incompatible
+    Validator --> Service: Validation Failed (Incompatibility details)
+    Service -> ErrorHandler: Handle error, create meaningful message
+    ErrorHandler --> Service: Error message (Incompatibility explanation)
+    Service --> Designer: Error message (Pipeline creation failed due to incompatible dataset)
+end
+
+@enduml
+```
+
+This PlantUML sequence diagram follows the process from the pipeline designer requesting a pipeline creation with a specific dataset, through the steps of validating the dataset against the requirements of the pipeline, to handling and reporting an error if the dataset is found to be incompatible. The main components involved in this interaction are:
+
+1. **PipelineDesigner**: The user initiating the pipeline creation request.
+2. **PipelineService**: The service component that processes pipeline creation requests.
+3. **DatasetRegistry**: A registry or repository that stores dataset details, including schemas and other properties.
+4. **SchemaValidator**: A component that checks if the dataset's schema and properties meet the pipeline's requirements.
+5. **ErrorHandling**: A mechanism for creating meaningful error messages based on the incompatibility details provided by the SchemaValidator.
+
+In the scenario where the dataset is found to be incompatible with the pipeline's requirements, the SchemaValidator communicates this to the PipelineService, which then invokes the ErrorHandling component to generate a user-friendly error message. This message is ultimately returned to the PipelineDesigner, informing them of the specific reason why the pipeline creation failed. This feedback loop is critical for debugging and correcting issues within the dataset or pipeline specifications.

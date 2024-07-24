@@ -1,0 +1,65 @@
+To create a detailed sequence diagram for the user story "As an Archivist, I want to associate an Instance with a Resource and/or Resource Component" in PlantUML format, you'll want to first understand the basic entities involved and the interactions between them. This involves the `Archivist`, the `Archival Management System (AMS) UI`, possibly a `Controller` to handle business logic, a `Model` for database interactions, and the `Database` itself.
+
+Here’s a possible approach for your sequence diagram in PlantUML:
+
+```plantuml
+@startuml
+participant Archivist as archivist
+participant "AMS UI" as UI
+participant "Controller" as controller
+participant "Model" as model
+participant "Database" as db
+
+== Associate an Instance with a Resource/Component ==
+
+archivist -> UI : Selects Resource/Component
+activate UI
+
+UI -> controller : Request to Associate Instance
+activate controller
+
+controller -> model : Validate Resource/Component
+activate model
+model -> db : Retrieve Resource/Component Details
+activate db
+db -> model : Resource/Component Details
+deactivate db
+model -> controller : Validation Success
+deactivate model
+
+controller -> model : Fetch Instances for Association
+activate model
+model -> db : Query Available Instances
+activate db
+db -> model : Instances List
+deactivate db
+model -> controller : Return Instances
+deactivate model
+
+controller -> UI : Show Instances for Selection
+deactivate controller
+UI -> archivist : Display Instances
+archivist -> UI : Select Instance for Association
+UI -> controller : Associate Selected Instance
+activate controller
+
+controller -> model : Associate Instance with Resource/Component
+activate model
+model -> db : Update Association in Database
+activate db
+db -> db : Validate & Commit Changes
+db -> model : Association Success
+deactivate db
+model -> controller : Confirmation of Association
+deactivate model
+controller -> UI : Display Success Message
+deactivate controller
+UI -> archivist : Confirmation & Summary
+deactivate UI
+
+@enduml
+```
+
+This PlantUML script outlines a plausible sequence of events for associating an Instance with a Resource and/or Resource Component within an archival management system from the perspective of an archivist. The process starts with the archivist selecting the specific Resource or Component to associate, followed by the system (through its UI, Controller, and Model components) validating the selection, fetching available instances for association, and finally updating the database upon the archivist's selection. Each step involves back-and-forth communication between the different layers of the system to ensure data integrity and user feedback.
+
+Remember, this diagram makes assumptions about the architecture and processes of the Comprehensive Archival Management System Enhancement project. You might need to adjust it based on the specific details of your implementation and system design.

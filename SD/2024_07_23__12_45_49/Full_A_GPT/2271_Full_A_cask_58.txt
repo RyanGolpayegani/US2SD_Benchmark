@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram for the given user story "As a user, I want to specify the explore schema separately" using PlantUML requires illustrating the interactions between the user, the system interface (web UI or API), the dataset management system, and potentially other systems/tools that may be involved in specifying a separate explore schema for a dataset. Here's a basic representation:
+
+```plantuml
+@startuml
+actor User
+participant "Web UI/API" as WebUI
+participant "Dataset Management\nSystem" as DMS
+participant "Schema Storage" as SS
+database "Dataset Storage" as DS
+
+User -> WebUI : Request to define explore schema
+WebUI -> DMS : Validate user request
+alt Validation Success
+    DMS -> SS : Store explore schema
+    SS -> DMS : Confirm schema stored
+    DMS -> DS : Link explore schema with dataset
+    DS -> DMS : Confirmation
+    DMS -> WebUI : Success response to user
+    WebUI -> User : Acknowledge schema specification
+else Validation Failure
+    DMS -> WebUI : Error response
+    WebUI -> User : Show error
+end
+@enduml
+```
+
+### Explanation:
+1. **User**: Initiates the process by requesting to specify or define an explore schema separately for a dataset through a user interface (UI) or an application programming interface (API).
+2. **Web UI/API**: Acts as the intermediary that communicates the user's request to the Dataset Management System (DMS). It collects input from the user, such as the details of the explore schema and the target dataset.
+3. **Dataset Management System (DMS)**: Validates the user's request, ensuring the user has the necessary permissions and the explore schema is valid.
+    - If the validation is successful, the DMS processes the request to specify the separate explore schema. This involves storing the schema in a schema storage, linking it with the dataset in the dataset storage, and then acknowledging the successful operation.
+    - If validation fails (perhaps due to schema issues or permission problems), the process is halted, and an error response is generated.
+4. **Schema Storage (SS)**: A component or service where the explore schema definitions are stored. This could be a part of the dataset management system or an external service.
+5. **Dataset Storage (DS)**: Represents the storage system (database, filesystem, etc.) where datasets are stored. This component is where the explore schema is associated with its respective dataset.
+
+This sequence diagram is a high-level overview designed to be adapted or extended based on the specific requirements, components, and workflows of your Dataset Management and Version Control System.

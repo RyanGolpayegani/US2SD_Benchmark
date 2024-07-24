@@ -1,0 +1,59 @@
+Creating a detailed sequence diagram involves outlining the interactions between different system components to achieve the required functionality. For the given user story centered on frontend changes for managing enum lists in the Comprehensive Archival Management System Enhancement project, we will design a sequence diagram that demonstrates the flow of actions from the user's perspective to the backend systems.
+
+Given the complexity and the specificity of tools mentioned, the sequence diagram will focus on the general interaction. Please adapt the sequence accordingly to fit the actual software architectural design and programming languages or frameworks being used.
+
+Below is an example sequence diagram in PlantUML format:
+
+```plantuml
+@startuml
+participant UserInterface as UI
+participant FrontendController as FC
+participant BackendApi as API
+partition Database {
+    entity "ENUM List" as ENUM
+}
+
+UI -> FC : Request ENUM List Management Page
+activate FC
+FC -> API : Get ENUM List Data
+activate API
+API -> ENUM : Fetch ENUM Data
+activate ENUM
+ENUM --> API : ENUM Data
+deactivate ENUM
+API --> FC : ENUM List Data
+deactivate API
+FC --> UI : Display ENUM List Management
+deactivate FC
+
+UI -> FC : Submit ENUM List Update
+activate FC
+FC -> API : Update ENUM List Request
+activate API
+API -> ENUM : Update ENUM List
+activate ENUM
+ENUM --> API : Update Confirmation
+develope ENUM
+API --> FC : Update Status
+deactivate API
+FC --> UI : Display Update Confirmation
+deactivate FC
+
+@enduml
+```
+
+This diagram illustrates a sequence where:
+
+1. **The user requests the ENUM list management page:** The frontend (UserInterface) sends a request to the frontend controller to access the management page.
+   
+2. **Fetching ENUM Data:** The frontend controller communicates with a backend API to retrieve current ENUM list data stored in the database.
+
+3. **Displaying ENUM Data to User:** The retrieved ENUM list is sent back up the chain to be displayed to the user in the UI.
+
+4. **Submitting ENUM List Updates:** The user makes changes to the ENUM list (e.g., adding, editing, or removing ENUM values) and submits these updates.
+
+5. **Updating the ENUM List in the Database:** The frontend controller sends the updated ENUM list to the backend API, which then updates the list in the database.
+
+6. **Confirmation of Update:** Upon successful update, a confirmation is sent back to the UI to notify the user.
+
+This is a simplified view of the interactions and does not cover authentication, error handling, or specific internal logic that would likely be part of a real implementation. Remember to adjust the diagram as per your system's architecture and specific technologies used.

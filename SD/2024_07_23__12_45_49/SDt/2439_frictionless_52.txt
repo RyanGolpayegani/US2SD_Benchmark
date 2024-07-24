@@ -1,0 +1,23 @@
+@startuml
+participant PublisherWebsite as PW "Publisher's Website"
+participant DPIEEmbeddableComponent as DE "DPIE Embeddable\nComponent"
+participant DPIEAPI as API "DPIE API"
+participant DataPackageService as DPS "Data Package\nService"
+participant UserBrowser as UB "User's Browser"
+
+PW -> DE : Embed Preview Button
+DE -> API : Request Data Package ID/URL
+API -> DPS : Lookup Data Package
+DPS --> API : Data Package Details
+API --> DE : Generate Preview URL
+PW -> UB : Display Preview Button
+
+note over UB : User clicks Preview Button
+UB -> DE : Request Preview
+DE -> API : Fetch Preview Data
+API -> DPS : Retrieve Data Package Preview
+DPS --> API : Preview Content
+API --> DE : Format Preview
+DE --> UB : Display Data Preview
+
+@enduml

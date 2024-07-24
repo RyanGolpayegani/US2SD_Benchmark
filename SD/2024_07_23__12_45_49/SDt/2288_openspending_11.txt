@@ -1,0 +1,32 @@
+@startuml
+participant User as user
+participant "UI" as ui
+participant "Data Packager" as datapackager
+participant "Backend Service" as backend
+
+user -> ui : Select "Import Data"
+ui -> user : Display Import Options
+user -> ui : Choose JSON File
+ui -> datapackager : Send JSON for Parsing
+activate datapackager
+
+datapackager -> backend : Validate JSON Format
+activate backend
+backend -> backend : Check JSON against Schema
+backend --> datapackager : Validation Result
+deactivate backend
+
+alt If JSON is valid
+    datapackager -> backend : Store JSON Data
+    activate backend
+    backend --> datapackager : Confirm Data Stored
+    deactivate backend
+    datapackager -> ui : Display Success Message
+    ui -> user : Confirm Successful Import
+else If JSON is invalid
+    datapackager -> ui : Display Error Message
+    ui -> user : Show Error and Options
+end
+
+deactivate datapackager
+@enduml

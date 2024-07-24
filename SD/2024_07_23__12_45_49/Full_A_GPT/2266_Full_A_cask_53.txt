@@ -1,0 +1,42 @@
+Certainly! Below is a detailed PlantUML code snippet to represent the sequence diagram for the described user story: "As an app developer, I want to ensure that application creation fails if any of its datasets cannot be created."
+
+```plantuml
+@startuml
+participant AppDeveloper as developer
+participant AppDeploymentService as deployService
+participant DatasetManagementService as datasetService
+participant Database as db
+
+developer -> deployService : Deploy Application Request
+activate deployService
+
+deployService -> datasetService : Validate Datasets Creation
+activate datasetService
+
+loop For Each Dataset
+    datasetService -> db : Create Dataset Instance
+    db -> datasetService : Dataset Creation Status
+    alt Dataset Creation Failed
+        datasetService -> deployService : Dataset Creation Failed 
+        deployService -> developer : Application Deployment Failed
+        deactivate datasetService
+        deactivate deployService
+        return
+    end
+end
+
+datasetService -> deployService : All Datasets Validated Successfully
+deactivate datasetService
+
+deployService -> db : Create Application Instance
+db -> deployService : Application Creation Status
+
+deployService -> developer : Application Deployment Success
+deactivate deployService
+
+@enduml
+```
+
+This sequence diagram begins with the app developer initiating an application deployment request. The deployment service then requests dataset validation from the dataset management service, which, in turn, attempts to create each dataset instance in the database. If any dataset instance creation fails, the dataset management service immediately informs the deployment service, which then notifies the app developer that the application deployment has failed because a dataset could not be created. If all dataset instances are successfully validated and created, the deployment service proceeds to create the application instance in the database and, upon success, notifies the app developer that the application has been deployed successfully.
+
+Please ensure you have PlantUML or an appropriate plugin/tool that supports PlantUML installed to visualize this sequence diagram. This tool generates diagrams from textual descriptions, making it suitable for quick iterations during software design phases.

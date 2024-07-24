@@ -1,0 +1,43 @@
+@startuml
+participant Waiter1
+participant WaiterInterface
+participant MessageService
+participant Database
+participant Waiter2Interface
+participant Waiter2
+
+title Direct Messaging between Waiters Sequence
+
+== Message Sending Process ==
+Waiter1 -> WaiterInterface : Selects Waiter2 from contact list
+WaiterInterface -> MessageService : Initiates message creation
+activate MessageService
+
+MessageService -> Database : Logs message details
+activate Database
+Database --> MessageService : Confirmation
+deactivate Database
+
+MessageService -> Waiter2Interface : Sends notification
+activate Waiter2Interface
+Waiter2Interface --> Waiter2 : Displays new message
+deactivate Waiter2Interface
+deactivate MessageService
+
+== Message Reading Process ==
+Waiter2 -> Waiter2Interface : Opens message from Waiter1
+activate Waiter2Interface
+Waiter2Interface -> MessageService : Requests message content
+activate MessageService
+
+MessageService -> Database : Retrieves message details
+activate Database
+Database --> MessageService : Returns message content
+deactivate Database
+
+MessageService --> Waiter2Interface : Displays message to Waiter2
+deactivate MessageService
+Waiter2Interface --> Waiter2 : Reads message
+deactivate Waiter2Interface
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+participant Researcher
+participant "DPIE Interface" as DPIE
+participant "Excel Integration Module" as ExcelModule
+participant "Data Package Creator" as Creator
+database "Data Package Repository" as Repository
+
+Researcher -> DPIE: Request to import Excel spreadsheet
+activate DPIE
+
+DPIE -> ExcelModule: Invoke Excel reading functionality
+activate ExcelModule
+ExcelModule --> DPIE: Return structured data
+deactivate ExcelModule
+
+DPIE -> Creator: Provide structured data for packaging
+activate Creator
+Creator -> Creator: Validate and Prepare Data Package
+Creator -> Repository: Store Data Package
+activate Repository
+Repository --> Creator: Confirm storage
+deactivate Repository
+
+Creator --> DPIE: Return Data Package ID and details
+deactivate Creator
+
+DPIE --> Researcher: Provide Data Package ID and access details
+deactivate DPIE
+@enduml

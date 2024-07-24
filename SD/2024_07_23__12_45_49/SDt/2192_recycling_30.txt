@@ -1,0 +1,43 @@
+@startuml
+
+actor Admin
+participant "Admin Dashboard" as Dashboard
+database "RecycleSmart Database" as Database
+participant "User Management Module" as UserModule
+participant "Analytics Module" as Analytics
+
+== User Activity Management ==
+Admin -> Dashboard: Log in to administrative panel
+Dashboard -> Database: Validate admin credentials
+Database --> Dashboard: Display admin interface
+
+== Viewing User Activities ==
+Admin -> Dashboard: Request user activity log
+Dashboard -> UserModule: Fetch user activities
+Usermodule -> Database: Query for user activities
+Database --> Usermodule: Return user activities
+UserModule --> Dashboard: Display activities
+Dashboard --> Admin: Show user activity log
+
+== Managing User Accounts ==
+Admin -> Dashboard: Select manage users
+Dashboard -> UserModule: Retrieve user accounts
+UserModule -> Database: Query User Data
+Database --> UserModule: User account details
+UserModule --> Dashboard: Display user accounts
+Admin -> Dashboard: Issue account modification/delete commands
+Dashboard -> UserModule: Process modifications/deletions
+UserModule -> Database: Update/Delete user data
+Database --> UserModule: Confirm changes
+UserModule --> Dashboard: Update confirmation
+Dashboard --> Admin: Show updated user accounts
+
+== Accessing Analytics for Decision Making ==
+Admin -> Dashboard: Request user analytics
+Dashboard -> Analytics: Gather analytics data
+Analytics -> Database: Retrieve data for analytics
+Database --> Analytics: Data for analytics
+Analytics --> Dashboard: Analytics report
+Dashboard --> admin: Display analytics report
+
+@enduml

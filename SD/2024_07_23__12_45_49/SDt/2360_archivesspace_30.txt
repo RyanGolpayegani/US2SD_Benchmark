@@ -1,0 +1,32 @@
+@startuml
+actor "System Administrator" as admin
+participant "System Configuration Interface" as configUI
+participant "Database Management System (DBMS)" as dbms
+participant "Backup System" as backup
+
+== Update Demo Database Location ==
+admin -> configUI : Request to change database location
+activate configUI
+configUI -> dbms : Validate new location
+activate dbms
+dbms --> configUI : Location validation result
+deactivate dbms
+configUI -> dbms : Update database location
+activate dbms
+dbms --> configUI : Update confirmation
+deactivate dbms
+configUI --> admin : Location update confirmation
+deactivate configUI
+
+== Initiate Database Backup ==
+admin -> backup : Request to backup database
+activate backup
+backup -> dbms : Request database details/location
+activate dbms
+dbms --> backup : Database details/location
+deactivate dbms
+backup -> backup : Perform backup operation
+backup --> admin : Backup success confirmation
+deactivate backup
+
+@enduml

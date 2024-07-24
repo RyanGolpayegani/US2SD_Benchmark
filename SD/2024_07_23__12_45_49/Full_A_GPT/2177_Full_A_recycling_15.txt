@@ -1,0 +1,39 @@
+Given the requirement and the platform's description, below is a PlantUML sequence diagram detailing the user story of a user wanting to create an account on the RecycleSmart platform. This scenario assumes the steps involved in account creation, including input validation, password encryption, and successful account creation confirmation.
+
+```plantuml
+@startuml
+actor User
+participant "SignUp Page" as SignUp
+participant "Validation Service" as Validator
+database "User Database" as DB
+participant "Email Service" as Email
+
+User -> SignUp : Enter Details (Name, Email, Password)
+SignUp -> Validator : Validate Details
+alt Details are Valid
+    Validator -> SignUp : Validation Success
+    SignUp -> DB : Save User Details
+    activate DB
+    DB --> SignUp : Account Created
+    deactivate DB
+    SignUp -> Email : Send Confirmation Email
+    Email -> User : Confirmation Email Sent
+else Details are Invalid
+    Validator -> SignUp : Validation Failed (Reasons)
+    SignUp -> User : Show Validation Errors
+end
+@enduml
+```
+
+### Explanation of the Steps:
+1. **User Enters Details**: The user interaction starts with them entering their sign-up details (i.e., name, email, and password) on the RecycleSmart signup page.
+2. **SignUp Page Validates Details**: The SignUp Page sends the details to the Validation Service to verify if the details are correctly formatted, the email hasn't been used before, etc.
+3. **Validation Service Responds**: 
+   - If the details are valid, the process proceeds.
+   - If not, the Validation Service sends back the reasons for validation failure, which are then shown to the user.
+4. **Details are Saved**: If the validation is successful, the sign-up page instructs the User Database to save the new user's details.
+5. **Account Created**: The User Database confirms that the account has been created and informs the SignUp Page.
+6. **Send Confirmation Email**: Finally, the SignUp Page triggers the Email Service to send a confirmation email to the new user.
+7. **User Receives Email**: The user receives a confirmation email, completing the process.
+
+This sequence diagram offers a high-level overview of the account creation process on the RecycleSmart platform from a technical perspective, aligning with the project description provided.

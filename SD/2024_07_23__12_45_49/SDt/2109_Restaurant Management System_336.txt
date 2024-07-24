@@ -1,0 +1,16 @@
+@startuml
+participant Employee_UI as "Employee Interface"
+participant Backend_Service as "Backend Service"
+database Order_DB as "Order Database"
+
+Employee_UI -> Backend_Service : selectOrderToEdit(orderId)
+Backend_Service -> Order_DB : getOrderDetails(orderId)
+Order_DB --> Backend_Service : orderDetails
+Backend_Service --> Employee_UI : displayOrderDetails(orderDetails)
+
+Employee_UI -> Backend_Service : submitEditedOrder(orderId, editedDetails)
+Backend_Service -> Order_DB : updateOrder(orderId, editedDetails)
+Order_DB --> Backend_Service : confirmUpdate
+Backend_Service --> Employee_UI : displayUpdateConfirmation
+
+@enduml

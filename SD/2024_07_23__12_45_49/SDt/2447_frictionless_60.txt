@@ -1,0 +1,24 @@
+@startuml
+
+actor Researcher
+participant "DPIE App" as App
+participant "Data Package Processor" as DPP
+participant "OpenRefine Reconciliation API Generator" as ORAPI
+database "Tabular Data Package Storage" as TDP
+database "Reconciliation API Endpoint Storage" as RAES
+
+Researcher -> App : requests API generation
+App -> DPP : validates Data Package
+DPP -> TDP : retrieves Tabular Data Package
+TDP --> DPP : returns Tabular Data Package
+DPP --> App : confirms Data Package validity
+
+App -> ORAPI : triggers API generation
+ORAPI -> TDP : fetches Tabular Data Package
+TDP --> ORAPI : returns data
+ORAPI -> RAES : generates Reconciliation API Endpoint
+RAES --> ORAPI : stores & returns API Endpoint URL
+ORAPI --> App : returns API Endpoint URL
+App --> Researcher : provides API Endpoint URL
+
+@enduml

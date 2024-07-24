@@ -1,0 +1,30 @@
+@startuml
+participant Publisher
+participant "DPIE UI" as DPIE_UI
+participant "DPIE Core" as DPIE_Core
+participant "Data Package" as DataPackage
+participant "Metadata Enhancer" as MetadataEnhancer
+
+Publisher -> DPIE_UI : Accesses DPIE UI
+alt Add Metadata
+    DPIE_UI -> DPIE_Core : Request metadata form
+    DPIE_Core -> DPIE_UI : Return metadata form
+    DPIE_UI -> Publisher : Display metadata form
+    Publisher -> DPIE_UI : Submit metadata details
+    DPIE_UI -> MetadataEnhancer : Enhance Data Package with metadata
+    MetadataEnhancer -> DataPackage : Add metadata
+    DataPackage -> MetadataEnhancer : Confirm metadata addition
+    MetadataEnhancer -> DPIE_UI : Confirm enhancement completion
+    DPIE_UI -> Publisher : Display success message
+else Add New Data Columns
+    DPIE_UI -> DPIE_Core : Request data column addition form
+    DPIE_Core -> DPIE_UI : Return form
+    DPIE_UI -> Publisher : Display form
+    Publisher -> DPIE_UI : Submit new data columns details
+    DPIE_UI -> DPIE_Core : Enhance Data Package with new data columns
+    DPIE_Core -> DataPackage : Add new data columns
+    DataPackage -> DPIE_Core : Confirm new columns addition
+    DPIE_Core -> DPIE_UI : Confirm enhancement completion
+    DPIE_UI -> Publisher : Display success message
+end
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+actor User as user
+participant "UI: OpenSpending Platform" as ui
+participant "Account Service" as accountService
+database "Database" as db
+
+user -> ui: Access account settings
+ui -> accountService: Request current username
+accountService -> db: Query current username
+db -> accountService: Return current username
+accountService -> ui: Display current username
+user -> ui: Input new username
+ui -> accountService: Request to update username
+accountService -> db: Check username availability
+alt Username is available
+    db -> accountService: Update username
+    accountService -> ui: Confirm username update
+    ui -> user: Display successful update message
+else Username is not available
+    accountService -> ui: Error - Username taken
+    ui -> user: Display error message
+end
+
+@enduml

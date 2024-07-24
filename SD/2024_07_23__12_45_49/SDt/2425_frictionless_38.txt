@@ -1,0 +1,27 @@
+@startuml
+actor ResearcherPublisher as RP
+participant "DPIE System" as DPIE
+database "CKAN" as CKAN
+
+RP -> DPIE : Prepare Data Package
+activate DPIE
+
+DPIE -> DPIE : Validate Data Package
+note right: Validates integrity\nand conformance to\nData Package profiles
+
+DPIE -> DPIE : Enrich Data Package
+note right: Adds type information,\ncreates visualizations, etc.
+
+DPIE -> CKAN : Publish to CKAN
+activate CKAN
+note over CKAN: Stores Data Package\nand generates Data API
+
+CKAN --> DPIE : Confirm Publication
+note right: Provides URL to\nData Package and API details
+
+DPIe -> RP : Provide Access Details
+note over RP: URL to Data Package\nand API details
+
+deactivate CKAN
+deactivate DPIE
+@enduml

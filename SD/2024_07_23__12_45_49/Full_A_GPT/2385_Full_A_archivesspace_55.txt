@@ -1,0 +1,34 @@
+Creating a sequence diagram for the user login process involves representing different system components and user interactions that lead to successful authentication. PlantUML is a tool that allows for easy creation of UML diagrams, including sequence diagrams, using a simple markup language. Below is an example of how you could create a PlantUML sequence diagram for a user login process in the context of the Comprehensive Archival Management System Enhancement project. This example includes LDAP authentication and local login options as mentioned in the project description.
+
+```plantuml
+@startuml
+participant User
+participant "Login Interface" as Login
+participant "Authentication Controller" as AuthController
+database "LDAP Server" as LDAP
+database "Local Database" as LocalDB
+
+User -> Login: Enter credentials\n(username and password)
+Login -> AuthController: Validate credentials
+alt LDAP Authentication
+    AuthController -> LDAP: Check credentials
+    LDAP --> AuthController: Authentication Success/Failure
+else Local Authentication
+    AuthController -> LocalDB: Check credentials
+    LocalDB --> AuthController: Authentication Success/Failure
+end
+AuthController --> Login: Authentication Result
+alt Authentication Success
+    Login --> User: Display Dashboard/Home Page
+else Authentication Failure
+    Login --> User: Display Error Message\n(Invalid credentials or account not found)
+end
+
+@enduml
+```
+
+This sequence diagram starts with the user entering their credentials (username and password) on the login interface. The login interface then sends these credentials to the Authentication Controller, which is responsible for validating them. This controller may check the credentials against an LDAP server or a local database, depending on the setup. Based on the response from the LDAP server or local database, the Authentication Controller sends the result back to the login interface, which then either shows the user their dashboard/home page (on success) or an error message (on failure).
+
+The `alt` and `else` blocks in PlantUML allow you to illustrate alternative paths, such as LDAP Authentication versus Local Authentication, and success versus failure outcomes.
+
+To use this diagram, you'll need to install PlantUML and run the above code through the PlantUML processor, or use an online PlantUML editor that can render it directly in your web browser.

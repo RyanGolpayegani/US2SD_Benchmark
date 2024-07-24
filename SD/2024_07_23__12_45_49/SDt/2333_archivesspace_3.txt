@@ -1,0 +1,28 @@
+@startuml
+
+autonumber
+participant UserInterface as "Frontend UI"
+participant BackendServer as "Backend Server"
+participant Database as "Database"
+
+== Manage Enum Lists ==
+UserInterface -> BackendServer : Request to access enum management
+activate BackendServer
+BackendServer -> Database : Fetch current enum lists
+activate Database
+Database --> BackendServer : Return enum lists
+deactivate Database
+BackendServer --> UserInterface : Display enum lists
+deactivate BackendServer
+
+UserInterface -> BackendServer : Submit updated enum list
+activate BackendServer
+BackendServer -> BackendServer : Validate changes
+BackendServer -> Database : Update enum list
+activate Database
+Database --> BackendServer : Confirmation of update
+deactivate Database
+BackendServer --> UserInterface : Display success message
+deactivate BackendServer
+
+@enduml

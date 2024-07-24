@@ -1,0 +1,44 @@
+@startuml
+participant Archivist
+participant "Web Interface" as Web
+database "Backend System" as Backend
+
+== Add Administrative and Finding Aid Data to Resource ==
+
+Archivist -> Web : Access Resource Creation Form
+activate Web
+Web --> Archivist : Display Form
+
+Archivist -> Web : Enter Administrative Data
+activate Archivist
+deactivate Archivist
+Archivist -> Web : Enter Finding Aid Data
+activate Archivist
+deactivate Archivist
+
+Archivist -> Web : Submit Data
+activate Web
+deactivate Archivist
+
+Web -> Backend : Validate Data
+activate Backend
+Backend --> Web : Validation Response
+deactivate Backend
+
+alt If Data is Valid
+    Backend -> Backend : Create/Update Resource Entry
+    Backend -> Backend : Log Addition/Update
+    Web --> Archivist : Display Success Message
+else Data is Invalid
+    Web --> Archivist : Display Error Message
+    Archivist -> Web : Correct Data
+    Web -> Backend : Validate Corrected Data
+    activate Backend
+    Backend --> Web : Validation Response (Success)
+    deactivate Backend
+    Backend -> Backend : Create/Update Resource Entry
+    Backend -> Backend : Log Addition/Update
+    Web --> Archivist : Display Success Message
+end
+
+@enduml

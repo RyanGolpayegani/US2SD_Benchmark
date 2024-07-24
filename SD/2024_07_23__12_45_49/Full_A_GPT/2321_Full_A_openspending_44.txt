@@ -1,0 +1,44 @@
+To create a detailed Sequence Diagram for the described user story in PlantUML format, you'd outline the flow and interaction between the user, UI components, and the backend services involved in hiding a dataset. Here’s an example sequence diagram for your requirement:
+
+```plantuml
+@startuml
+actor "Data Publishing User" as user
+participant "Web Interface" as web
+participant "Validation Service" as validation
+participant "Dataset Management Service" as management
+database "OpenSpending Database" as db
+
+== Hide a Public Dataset ==
+
+user -> web : Request to hide a dataset
+web -> validation : Validate user permissions
+activate validation
+validation --> web : Permission Granted
+deactivate validation
+
+web -> management : Hide dataset command (dataset ID)
+activate management
+management -> db : Update dataset visibility (Hidden)
+activate db
+db --> management : Dataset visibility updated
+deactivate db
+management --> web : Dataset hidden successfully
+deactivate management
+web --> user : Display success message
+
+@enduml
+```
+
+This diagram illustrates the process from the user intending to hide a public dataset up until the operation's success confirmation, following these steps:
+
+1. **User Action**: The data publishing user initiates the request to hide a dataset via the web interface, aiming to fix mistakes or use the dataset privately.
+
+2. **Validation**: The system validates the user's permissions to ensure they have the right to alter the dataset's visibility.
+
+3. **Command Processing**: Upon successful validation, the command to hide the dataset is sent to the dataset management service.
+
+4. **Database Update**: The dataset management service communicates with the database to update the dataset's visibility to 'Hidden'.
+
+5. **Confirmation**: The user receives a success message, indicating that the dataset is now hidden and not publicly visible.
+
+This sequence ensures secure and user-intended modification of dataset visibility, fulfilling the user story requirements.

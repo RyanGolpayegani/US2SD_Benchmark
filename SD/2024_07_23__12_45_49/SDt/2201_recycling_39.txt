@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+
+actor User
+participant "Feedback Form" as Form
+participant "RecycleSmart Server" as Server
+database "Admin Dashboard" as Dashboard
+actor Administrator
+
+User -> Form : Access feedback/help section
+User -> Form : Fills out and submits form
+Form -> Server : Submit feedback/help request
+activate Server
+Server -> Dashboard : Forward request to admin
+activate Dashboard
+note right of Dashboard : Admin reviews request\nand prepares response
+Dashboard -> Administrator : Notify new feedback/help request
+Administrator -> Dashboard : Review request
+Administrator -> Server : Prepares and sends response
+Server -> User : Display admin response
+deactivate Server
+deactivate Dashboard
+
+@enduml

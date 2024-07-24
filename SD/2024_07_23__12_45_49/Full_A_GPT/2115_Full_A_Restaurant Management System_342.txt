@@ -1,0 +1,44 @@
+Creating a detailed Sequence Diagram for the User Story: "As an employee, I want to generate reports" involves illustrating the specific interactions between different components of the system for generating reports. This description assumes that the employee can be any restaurant staff member authorized to generate various kinds of operational reports such as sales, inventory levels, or employee performance. 
+
+Here's a simple sequence diagram in PlantUML format:
+
+```plantuml
+@startuml
+participant Employee as E
+participant Frontend as UI
+participant Backend as B
+participant Database as DB
+
+E -> UI : Select "Generate Report"
+activate UI
+UI -> B : Request report parameters
+activate B
+B --> UI : Display parameters form (type, period, etc.)
+UI -> E : Display form
+E -> UI : Submit selected parameters (e.g., sales, last month)
+UI -> B : Send report request with parameters
+activate B
+B -> DB : Query data based on parameters
+activate DB
+DB --> B : Return queried data
+B -> B : Process data (generate report)
+B --> UI : Send generated report
+UI -> E : Display report
+@enduml
+```
+
+This sequence diagram outlines the following steps:
+
+1. **Employee Interaction**: The employee initiates the report generation process by selecting the respective option in the UI (e.g., through a web application fronted by React.js or Angular).
+
+2. **Request Parameters**: The system, through its backend (assumed to be running on Node.js with Express), requests the employee to specify the parameters of the report they wish to generate. For example, this could involve specifying the type of report (sales, inventory, etc.), and the time period the report should cover.
+
+3. **Parameter Submission**: The employee submits the desired parameters for the report through the frontend.
+
+4. **Data Querying**: The backend receives the request along with the specified parameters and queries the database (MongoDB or PostgreSQL) for the relevant data.
+
+5. **Report Generation**: After retrieving the necessary data, the backend processes this data to generate the requested report. This step involves aggregating, filtering, or performing other necessary transformations on the data to create the report.
+
+6. **Report Display**: Finally, the generated report is sent back through the backend to the frontend, where it is displayed to the employee.
+
+Keep in mind, this sequence diagram is simplified for clarity. Real-world implementations may involve additional steps and complexities, such as authentication and authorization checks (to ensure the employee has the right to generate the report), error handling mechanisms, and possibly interactions with third-party services or APIs for extended functionality like advanced data analytics.

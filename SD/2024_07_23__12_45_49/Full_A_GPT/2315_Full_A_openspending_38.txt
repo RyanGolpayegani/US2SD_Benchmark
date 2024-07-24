@@ -1,0 +1,50 @@
+Given the request, I'll outline a PlantUML sequence diagram for the scenario described in the user story. This diagram will focus on the interactions between an API User and the OpenSpending system components to fetch a measure's relative percentage from a dataset. Note that the specific API endpoint names, parameters, or response structures could vary, so the sequence diagram will depict a generic process flow.
+
+```
+@startuml
+participant "API User" as user
+participant "API Gateway" as gateway
+participant "Authentication Service" as authService
+participant "Dataset Service" as datasetService
+participant "Calculation Engine" as calcEngine
+participant "Database" as db
+
+user -> gateway: Request (GET) /api/dataset/{dataset_id}/measure/{measure_id}/relative_percentage
+gateway -> authService: Validate API Key
+authService -> gateway: API Key Valid
+
+alt API Key Invalid
+  authService -> user: Error Response (401 Unauthorized)
+else API Key Valid
+  gateway -> datasetService: Fetch Measure & Dataset Info\n{dataset_id, measure_id}
+  datasetService -> db: Query Dataset & Measure
+  db -> datasetService: Dataset & Measure Data
+  datasetService -> calcEngine: Calculate Relative Percentage\n{measure_data, dataset_id}
+  calcEngine -> db: Fetch Total of Dataset\n{dataset_id}
+  db -> calcEngine: Dataset Total
+  calcEngine -> calcEngine: Compute Percentage\n{measure_value, dataset_total}
+  calcEngine -> user: Response\n{relative_percentage}
+end
+@enduml
+```
+
+### Explanation of Diagram Steps:
+1. **API User Request:** The API User initiates a request to fetch the relative percentage of a measure within a dataset through the API Gateway. The request includes the dataset and measure identifiers.
+
+2. **API Key Validation:** The API Gateway forwards the API Key to the Authentication Service for validation.
+
+3. **Validation Response:** If the API Key is invalid, the Authentication Service responds with an error, stopping the process. If valid, the process continues.
+
+4. **Fetching Dataset and Measure Information:** The Dataset Service is requested to fetch the specific dataset and measure information based on the identifiers provided in the initial request.
+
+5. **Database Query for Data:** The Dataset Service queries the Database to get the necessary data for the requested dataset and measure.
+
+6. **Calculation of Relative Percentage:** The fetched measure data is sent to the Calculation Engine, alongside the dataset ID, to calculate the measure's relative percentage within the dataset.
+
+7. **Fetching Dataset Total:** The Calculation Engine requests the total of the dataset from the Database to use in the percentage calculation.
+
+8. **Percentage Computation:** With the dataset total and the measure value, the Calculation Engine computes the relative percentage.
+
+9. **User Response:** Finally, the relative percentage is sent back to the API User as the response.
+
+This sequence diagram represents a high-level overview of how the system components might interact to fulfill the API User's request. Depending on the specific technologies and architecture of the OpenSpending platform, additional steps or services (like caching or logging) might be involved.

@@ -1,0 +1,37 @@
+Creating a detailed sequence diagram for the user story "As a waiter, I want to see sales price of order items" involves illustrating the interaction between various components of the Restaurant Management and Operations System. This includes interactions with the user interface (UI), backend services, and the database. Below is a sequence diagram described in PlantUML format which outlines the steps required for a waiter to view the sales price of order items.
+
+```plantuml
+@startuml
+participant Waiter as waiter
+participant UI as ui
+participant BackendService as backend
+participant Database as db
+
+waiter -> ui : Select "View Order Details"
+ui -> backend : Request: GET /order/{orderId}/prices
+activate backend
+backend -> db : Query order details with prices
+activate db
+db --> backend : Return order details with prices
+deactivate db
+backend --> ui : Response: Order details with prices
+deactivate backend
+ui --> waiter : Display order prices
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Waiter -> UI**: The sequence starts with the waiter selecting the option to "View Order Details" on the UI. This could be done on a terminal, tablet, or any device provided to the waiter for managing orders.
+
+2. **UI -> BackendService**: The UI sends a request to the backend service to fetch the sales prices of the order items. This is usually a GET request sent to a specific endpoint (`/order/{orderId}/prices`) that includes the identifier for the specific order.
+
+3. **BackendService -> Database**: The backend service processes the request and queries the database for the order details, including the sales prices of each item in the order.
+
+4. **Database -> BackendService**: The database returns the requested order details, including the sales prices, back to the backend service.
+
+5. **BackendService -> UI**: The backend service processes the data received from the database and sends a response back to the UI. This response includes all necessary information about the order, along with the sales prices of each item.
+
+6. **UI -> Waiter**: Finally, the UI displays the order prices to the waiter. This might be in the form of a list or a detailed view, depending on the UI design, allowing the waiter to understand the sales prices of the order items.
+
+This sequence diagram provides a high-level overview of the interactions involved in allowing a waiter to view the sales prices of order items within the Restaurant Management and Operations System. Each step in the sequence is crucial for ensuring the accurate and timely retrieval of pricing information, which is essential for the waiter to fulfill their role efficiently.

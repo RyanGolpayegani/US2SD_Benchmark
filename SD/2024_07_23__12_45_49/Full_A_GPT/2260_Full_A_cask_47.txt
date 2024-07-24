@@ -1,0 +1,42 @@
+Given the complexity and broad scope of the project described, creating a highly detailed sequence diagram for a specific user story without seeing the actual software architecture or APIs involved can involve making several assumptions. The sequence diagram below is a generalized approach to how a user might interact with the system to find out what properties of a dataset can be updated, based on the key features mentioned in the project description.
+
+This sequence diagram uses PlantUML syntax. To visualize it, you would need to use a PlantUML editor or a compatible tool that can render PlantUML code.
+
+```plantuml
+@startuml
+actor User as user
+participant "User Interface" as UI
+participant "API Gateway" as API
+participant "Dataset Management Service" as DMS
+participant "Dataset Type Registry" as DTR
+participant "Dataset Instance" as DI
+
+user -> UI : Select dataset to explore
+UI -> API : GET /datasets/{id}/properties
+API -> DMS : fetchDatasetProperties(id)
+DMS -> DTR : getDatasetType(datasetId)
+DTR --> DMS : datasetType
+DMS -> DI : getProperties(datasetType)
+DI --> DMS : datasetProperties
+DMS --> API : datasetProperties
+API --> UI : Show updatable properties to user
+UI --> user : Display properties
+
+@enduml
+```
+
+### Explanation:
+
+1. **User Interaction**: The user selects a dataset they are interested in exploring through the User Interface (UI), which could be a web-based platform or a desktop application integrated with the dataset management system.
+
+2. **Request to API Gateway**: The UI then sends a request to the API Gateway to retrieve the properties of the selected dataset. This action is typically performed using an HTTP GET request, where `{id}` is the unique identifier for the dataset.
+
+3. **API Gateway to Dataset Management Service (DMS)**: The API Gateway routes the request to the appropriate backend service, in this case, the Dataset Management Service (DMS), which handles operations related to dataset management.
+
+4. **Fetch Dataset Type**: The DMS interacts with the Dataset Type Registry (DTR) to determine the type of the selected dataset. Understanding the dataset type is crucial as different types may have different updatable properties.
+
+5. **Retrieve Dataset Properties**: With the dataset type known, the DMS queries the specific Dataset Instance (DI) to get its properties based on the dataset type. This step is where the system checks what properties are associated with the dataset and which of them can be updated.
+
+6. **Return Properties to User**: The retrieved dataset properties are then passed back through the chain (DMS -> API Gateway -> UI) and ultimately displayed to the user. The UI formats this information to inform the user about which properties of the selected dataset can be updated.
+
+This sequence diagram is a simplification and assumes the existence of services such as the API Gateway, Dataset Management Service, Dataset Type Registry, and mechanisms to define and interact with dataset instances. The actual implementation details may vary depending on the specific requirements, architecture, and technologies used in the project.

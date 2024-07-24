@@ -1,0 +1,52 @@
+Below is a PlantUML representation of a sequence diagram for the user story: "As an Archivist, I want to export agent records as EAC-CPF." This diagram depicts the interactions between the Archivist (the user), the User Interface (UI) of the Comprehensive Archival Management System (CAMS), and the backend systems responsible for handling the export of agent records.
+
+Please note that to visualize this diagram, you'll need to use a PlantUML processor or any compatible tool.
+
+```plantuml
+@startuml
+title Export Agent Records as EAC-CPF
+
+actor Archivist as archivist
+participant "UI: CAMS\nInterface" as UI
+participant "Export\nController" as ExportController
+participant "Agent\nManagement" as AgentManagement
+participant "EAC-CPF\nGenerator" as EACCPFGenerator
+database "CAMS\nDatabase" as CAMSDatabase
+
+== Export Process ==
+archivist -> UI : Select "Export Agent Records"
+UI -> ExportController : Request export (EAC-CPF)
+ExportController -> AgentManagement : Fetch selected agent records
+AgentManagement -> CAMSDatabase : Query agent data
+CAMSDatabase --> AgentManagement : Return agent data
+AgentManagement --> ExportController : Provide agent records
+ExportController -> EACCPFGenerator : Convert records to EAC-CPF format
+EACCPFGenerator --> ExportController : Return EAC-CPF data
+Export_duController -> UI : Provide download link
+UI --> archivist : Download EAC-CPF file
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Interaction Start**: The Archivist decides to export agent records in the EAC-CPF format.
+
+2. **UI Request**: The Archivist performs an action on the User Interface (perhaps by clicking a "Export Agent Records" button) to initiate the export process. 
+
+3. **Export Processing**: The request to export is received by the Export Controller, which orchestrates the overall process.
+
+4. **Fetch and Query Agent Data**: 
+    - The Export Controller asks the Agent Management system to fetch the relevant agent records.
+    - The Agent Management system, in turn, queries the CAMS Database to retrieve the data of the specified agents.
+
+5. **Data Conversion to EAC-CPF**:
+    - The fetched agent records are passed to an EAC-CPF Generator module.
+    - This module converts the data into EAC-CPF format, which is a standard for encoding archival authority records.
+
+6. **Export Completion**: 
+    - The converted EAC-CPF data is sent back from the EAC-CPF Generator to the Export Controller.
+    - The Export Controller provides a download link to the UI.
+    - Finally, the UI offers the Archivist the option to download the exported EAC-CPF file.
+
+This PlantUML sequence diagram outlines the interactions and steps involved from the moment the Archivist decides to export agent records in EAC-CPF format, through processing and conversion of data, to the final step of making the EAC-CPF file available for download.

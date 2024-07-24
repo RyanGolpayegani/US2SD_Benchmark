@@ -1,0 +1,21 @@
+@startuml
+participant "Dataset Developer" as developer
+participant "Version Control System" as VCS
+participant "Dataset Instance" as Dataset
+database "Migration Scripts" as Scripts
+
+== Upgrade Process ==
+developer -> VCS: Request dataset type upgrade
+VCS -> Dataset: Check current version
+alt If Dataset version is outdated
+  VCS -> Scripts: Fetch upgrade scripts for new version
+  Scripts --> VCS: Return scripts
+  VCS -> Dataset: Apply upgrade scripts
+  Dataset -> Dataset: Upgrade to new version
+  Dataset --> VCS: Upgrade success confirmation
+  VCS --> developer: Upgrade process completed successfully
+else If Dataset is already at latest version
+  VCS --> developer: Dataset instance already at latest version
+end
+
+@enduml

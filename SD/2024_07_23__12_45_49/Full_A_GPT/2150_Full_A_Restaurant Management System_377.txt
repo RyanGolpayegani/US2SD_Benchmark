@@ -1,0 +1,77 @@
+To create a sequence diagram that embodies the process of an employee tracking current orders to prepare them, based on the user story from the Restaurant Management and Operations System project description, we'll define the flow of interactions among the system components in PlantUML format. The sequence will involve interactions between the Employee, the Order Management System (OMS), and potentially the Inventory System to check for ingredient availability.
+
+```plantuml
+@startuml
+participant Employee
+participant "Order Management\nSystem (OMS)" as OMS
+participant "Inventory System" as Inventory
+database "Database" as DB
+
+Employee -> OMS: RequestCurrentOrders()
+activate OMS
+OMS -> DB: FetchOrders()
+activate DB
+DB --> OMS: OrdersList()
+deactivate DB
+OMS --> Employee: ShowOrders(OrdersList)
+deactivate OMS
+
+loop For Each Order in OrdersList
+  Employee -> OMS: SelectOrder(orderId)
+  activate OMS
+  OMS -> DB: GetOrderDetails(orderId)
+  activate DB
+  DB --> OMS: OrderDetails()
+  deactivate DB
+  OMS --> Employee: DisplayOrderDetails(OrderDetails)
+  deactivate OMS
+  
+  alt If ingredients needed
+    Employee -> Inventory: CheckIngredients(OrderDetails)
+    activate Inventory
+    Inventory -> DB: VerifyStock(OrderDetails)
+    activate DB
+    DB --> Inventory: StockStatus()
+    deactivate DB
+    Inventory --> Employee: ShowStockStatus(StockStatus)
+    deactivate Inventory
+    alt If Stock Low
+      Employee -> Inventory: RequestRestock(itemList)
+      Inventory -> DB: UpdateStockRequest(itemList)
+      DB --> Inventory: RestockConfirmation()
+      Inventory --> Employee: DisplayRestockConfirmation()
+    end
+  end
+  
+  Employee -> OMS: MarkAsPreparing(orderId)
+  OMS -> DB: UpdateOrderStatus(orderId, 'preparing')
+  DB --> OMS: StatusUpdated()
+  OMS --> Employee: ShowUpdatedStatus('preparing')
+end
+
+@enduml
+```
+
+Explanation:
+
+1. **Employee Request for Current Orders**: The employee initiates the process by requesting the current orders from the Order Management System (OMS).
+
+2. **Fetch Orders from Database**: The OMS interacts with the database to fetch the list of orders.
+
+3. **Show Orders to Employee**: The fetched list of current orders is displayed to the employee.
+
+4. **Loop Through Each Order**: For each order in the list:
+    a. The employee selects an order to prepare.
+    b. The OMS retrieves the details of the selected order from the database.
+    c. The order details are shown to the employee.
+
+5. **Check Ingredient Availability (if needed)**: The employee checks the inventory for ingredient availability for the selected order.
+    a. If ingredients are needed, the Inventory System verifies stock levels.
+    b. Stock statuses are shown to the employee.
+    c. If stock is low, a restock request is initiated and confirmed.
+
+6. **Mark Order as Preparing**: Upon confirming ingredient availability, the employee marks the order as "preparing" in the OMS.
+    a. The order status is updated in the database.
+    b. Confirmation of the status update is shown to the employee.
+
+This sequence diagram outlines the steps an employee would take to track and prepare current orders in the system, ensuring an efficient workflow that incorporates both the Order Management and Inventory systems.

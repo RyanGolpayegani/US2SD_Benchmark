@@ -1,0 +1,55 @@
+Given the user story, we are going to outline a sequence diagram for the scenario where a Developer/Publisher creates an embeddable data summary that can be shared across sites via an iframe. This involves interactions between the user (Developer/Publisher), DPIE (DataPackage Integrator and Enhancer), and potentially other systems for retrieving and processing the data before embedding. Due to the project's broad nature, this sequence will be a high-level overview.
+
+```
+@startuml
+actor DeveloperPublisher as DP
+participant "DPIE Web Interface" as DPIE_UI
+participant "DPIE API" as DPIE_API
+participant "Data Processing" as DataProc
+participant "Embed Code Generator" as EmbedGen
+participant "External Data Source" as ExtData
+
+== Create Embeddable Data Summary ==
+
+DP -> DPIE_UI : Navigate to "Create Data Summary"
+DPIE_UI -> DPIE_API : Request data package configuration form
+activate DPIE_API
+DPIE_API -> DPIE_UI : Return form to UI
+deactivate DPIE_API
+DPIE_UI -> DP : Display configuration form
+
+DP -> DPIE_UI : Submit data package details\n(Selection, Filters, Visuals)
+DPIE_UI -> DPIE_API : POST data package details
+activate DPIE_API
+
+DPIE_API -> DataProc : Process data package instructions
+activate DataProc
+DataProc -> ExtData : Fetch relevant data
+activate ExtData
+ExtData --> DataProc : Return requested data
+deactivate ExtData
+
+DataProc --> DPIE_API : Data package processed
+deactivate DataProc
+
+DPIE_API -> EmbedGen : Generate iframe embed code
+activate EmbedGen
+EmbedGen --> DPIE_API : Provide iframe code snippet
+deactivate EmbedGen
+
+DPIE_API --> DPIE_UI : Send iframe embed code
+deactivate DPIE_API
+DPIE_UI -> DP : Display iframe embed code
+
+DP -> DPIE_UI : Copy iframe code
+
+== Embedding Process ==
+note over DP : Embed iframe code into target website
+DP -> [Target Website] : Embed iframe code
+
+@enduml
+```
+
+This sequence diagram starts with the Developer/Publisher navigating the DPIE web interface to create a data summary. They submit details through a form, which the system processes by first sending these details to an API. This initiates data retrieval and processing, potentially involving fetching from external data sources. Once processed, an embed code generator creates the iframe embed code, which is then provided back to the user for embedding in target websites.
+
+Please note, this diagram assumes a general flow and may need adjustments based on specific project requirements, technical architecture, and available APIs or services within the DPIE ecosystem.

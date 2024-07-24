@@ -1,0 +1,21 @@
+@startuml
+actor APIUser as "API User"
+participant OpenSpendingAPI as "OpenSpending API"
+database DataSet1 as "Dataset 1"
+database DataSet2 as "Dataset 2"
+database DataSetN as "Dataset N"
+
+APIUser -> OpenSpendingAPI : Request data using metadata (MD)
+alt Fetching data from multiple datasets
+    OpenSpendingAPI -> DataSet1 : Query data by MD
+    DataSet1 --> OpenSpendingAPI : Data results 1
+    OpenSpendingAPI -> DataSet2 : Query data by MD
+    DataSet2 --> OpenSpendingAPI : Data results 2
+    OpenSpendingAPI -> DataSetN : Query data by MD
+    DataSetN --> OpenSpendingAPI : Data results N
+    OpenSpendingAPI -> OpenSpendingAPI : Aggregate results
+end
+
+OpenSpendingAPI --> APIUser : Aggregate data from Datasets 1, 2, ..., N
+note right of APIUser : Build user experiences\nwith aggregated data
+@enduml

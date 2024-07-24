@@ -1,0 +1,17 @@
+@startuml
+participant "API User" as User
+participant "OpenSpending API" as API
+participant "Data Normalization Service" as Normalization
+participant "Socioeconomic Indexes Service" as Indexes
+participant "Datastore" as Datastore
+
+User -> API : Request normalization by GINI\nand socioeconomic indexes
+API -> Normalization : Fetch normalization parameters
+API -> Indexes : Request GINI and socioeconomic data
+Indexes --> API : Return GINI\nand indexes data
+API -> Datastore : Query datasets with parameters\nand contextual data
+Datastore --> API : Return queried datasets
+API -> Normalization : Apply normalization to datasets\nusing GINI and indexes
+Normalization --> API : Return normalized datasets
+API --> User : Provide normalized datasets
+@enduml

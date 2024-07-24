@@ -1,0 +1,30 @@
+@startuml
+participant Publisher
+participant DPIEInterface
+participant PackageManager
+participant AnalyticsService
+participant Database
+
+Publisher -> DPIEInterface : request dataset preview count
+activate DPIEInterface
+
+DPIEInterface -> PackageManager : get dataset identifier
+activate PackageManager
+PackageManager -> PackageManager : verify dataset exists
+PackageManager -> DPIEInterface : return dataset identifier
+deactivate PackageManager
+
+DPIEInterface -> AnalyticsService : query preview count for dataset
+activate AnalyticsService
+AnalyticsService -> Database : fetch preview records
+activate Database
+Database -> Database : count preview occurrences
+Database -> AnalyticsService : return count
+deactivate Database
+AnalyticsService -> DPIEInterface : return preview count
+deactivate AnalyticsService
+
+DPIeInterface -> Publisher : display preview count
+deactivate DPIEInterface
+
+@enduml

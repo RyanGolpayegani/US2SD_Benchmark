@@ -1,0 +1,26 @@
+@startuml
+actor Employee as E
+participant "UI: Web Application" as UI
+participant "Backend Server\n(Node.js with Express)" as Backend
+database "Database\n(MongoDB/PostgreSQL)" as DB
+
+E -> UI : Selects 'Add Menu Item'
+UI -> Backend : POST /menu-items {name, description, price, ingredients}
+activate Backend
+
+Backend -> Backend : Validate input data
+alt Validation Success
+    Backend -> DB : Insert new menu item
+    activate DB
+    DB --> Backend : Success
+    deactivate DB
+
+    Backend --> UI : Menu Item Added Successfully
+    UI --> E : Display success message
+else Validation Fail
+    Backend --> UI : Display error message
+    UI --> E : Show input errors
+end
+
+deactivate Backend
+@enduml

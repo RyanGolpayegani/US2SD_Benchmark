@@ -1,0 +1,30 @@
+To create a detailed sequence diagram in PlantUML format for the user story specified, we need to consider several components likely involved in dynamically requesting polygons based on a user query. These would typically encompass the API User (Client), the OpenSpending API, possibly an Authentication service if requests need a user to be authenticated, and a GIS (Geographical Information System) service or database that can provide the polygon data.
+
+Please note that the scenario outlined below is a high-level abstraction and could differ based on the actual implementation details of the OpenSpending platform. 
+
+```
+@startuml
+participant "API User" as user
+participant "OpenSpending API" as api
+participant "Authentication Service" as auth
+database "GIS Database" as gis
+
+user -> api: Send query with parameters for polygon data
+api -> auth: Validate API request
+auth --> api: Return validation result
+alt Authentication successful
+    api -> gis: Request matching polygon data
+    gis --> api: Respond with polygon data
+    api --> user: Return polygon data
+else Authentication failed
+    api --> user: Return error (Authentication failed)
+end
+@enduml
+```
+
+In this sequence diagram, the flow starts with the API User who sends a request to the OpenSpending API with parameters indicating what polygon data is needed. The API may then validate the request by interacting with an Authentication Service. Depending on whether authentication is successful or not, the flow diverges.
+
+- **If authentication is successful**, the API proceeds to request the appropriate polygon data from a GIS Database. Once the GIS Database responds with the data, the API then sends this data back to the user.
+- **If authentication fails**, the API returns an error message indicating the authentication failure directly to the user.
+
+This sequence diagram provides a simplified view focusing on the primary interactions needed to fulfill the user story. Keep in mind, depending on the project's specific requirements and the architecture of the OpenSpending platform, additional details or steps could be included, such as error handling for failed GIS data requests or additional parameter negotiations between the services.

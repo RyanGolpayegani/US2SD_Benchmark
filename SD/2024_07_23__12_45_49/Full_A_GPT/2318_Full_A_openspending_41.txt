@@ -1,0 +1,52 @@
+Given the project description and the specific user story focusing on the desire for a community blog feature within the OpenSpending platform, we can draft a detailed PlantUML sequence diagram. This diagram will illustrate the interactions involved in creating, managing, and viewing content on the community blog feature from the perspective of an OpenSpending Community Member.
+
+Please note, creating a full-featured sequence diagram requires understanding the specific system architecture and interactions, which might require some assumptions for this scenario. Below is a simplified example that focuses on the main steps involved, making some basic assumptions about the platform's architecture and the roles (e.g., Community Member, Blog Administrator).
+
+```plantuml
+@startuml
+participant CommunityMember as CM
+participant BlogSystem as BS
+participant Database as DB
+participant BlogAdministrator as BA
+
+== View Blog ==
+CM -> BS: Request Blog Homepage
+BS -> DB: Query Published Articles
+DB --> BS: Return Articles List
+BS --> CM: Display Articles List
+
+== Submit Blog Post Idea ==
+CM -> BS: Access Blog Idea Submission Form
+BS --> CM: Display Submission Form
+CM -> BS: Submit Idea (Title, Summary, Contact)
+BS -> DB: Store Submission Details
+DB --> BS: Confirm Submission Stored
+BS --> CM: Display Submission Confirmation
+
+== Review Submission ==
+BS -> BA: Notify of New Submission
+BA -> BS: Access Submission List
+BS -> DB: Query Submissions
+DB --> BS: Return Submissions List
+BA -> BS: Review Specific Submission
+BS --> BA: Display Submission Details
+BA -> BS: Approve/Reject Submission with Feedback
+BS -> DB: Update Submission Status
+DB --> BS: Confirmation
+BS -> CM: Notify of Review Outcome (Email/Notification)
+
+== Create and Publish Post ==
+BA -> BS: Access Approved Submission
+BS --> BA: Provide Blog Post Editor
+BA -> BS: Create Blog Post (Write, Edit)
+BA -> BS: Submit for Publication
+BS -> DB: Store Final Blog Post
+DB --> BS: Confirm Post Stored
+BS -> BS: Schedule for Publishing
+BS --> CM: Notify Community Members of New Post (Email/RSS)
+@enduml
+```
+
+This sequence diagram outlines the main interactions between the community member who reads and proposes content, the blog system that facilitates the submission and publication processes, the database that stores and retrieves blog-related data, and the blog administrator who reviews and approves submissions before they go live.
+
+In a real-world scenario, additional details and steps might be necessary, such as handling authentication/authorization, detailed content revision workflows, and specific technical interactions with external systems (e.g., email notification systems, content delivery networks).

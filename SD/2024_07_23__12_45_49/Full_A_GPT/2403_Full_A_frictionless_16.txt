@@ -1,0 +1,42 @@
+Creating a detailed Sequence Diagram for the user story you provided requires breaking down the steps a researcher would take to transform an Excel spreadsheet into a Data Package using the DataPackage Integrator and Enhancer (DPIE) framework. Below is the sequence of interactions represented in PlantUML syntax:
+
+```plantuml
+@startuml
+participant Researcher
+participant "DPIE Interface" as DPIE
+participant "Excel Integration Module" as ExcelModule
+participant "Data Package Creator" as Creator
+database "Data Package Repository" as Repository
+
+Researcher -> DPIE: Request to import Excel spreadsheet
+activate DPIE
+
+DPIE -> ExcelModule: Invoke Excel reading functionality
+activate ExcelModule
+ExcelModule --> DPIE: Return structured data
+deactivate ExcelModule
+
+DPIE -> Creator: Provide structured data for packaging
+activate Creator
+Creator -> Creator: Validate and Prepare Data Package
+Creator -> Repository: Store Data Package
+activate Repository
+Repository --> Creator: Confirm storage
+deactivate Repository
+
+Creator --> DPIE: Return Data Package ID and details
+deactivate Creator
+
+DPIE --> Researcher: Provide Data Package ID and access details
+deactivate DPIE
+@enduml
+```
+This sequence diagram illustrates the following steps:
+1. **Researcher Initiates Import:** The researcher requests to import their Excel spreadsheet into the DPIE system for creating a Data Package.
+2. **Invoke Excel Integration Module:** DPIE engages its Excel Integration Module to read and extract structured data from the Excel spreadsheet.
+3. **Data Structuring:** The extracted structured data is then passed back to the main DPIE system.
+4. **Data Package Creation:** DPIE sends the structured data to the Data Package Creator, which validates, processes, and prepares the data according to the standard schema of a Data Package.
+5. **Data Package Storage:** The prepared Data Package is stored in a Data Package Repository, which then confirms the successful storage.
+6. **Completion:** DPIE finalizes the process by returning the Data Package ID and access details to the researcher, enabling them to access or share their newly created Data Package.
+
+Please note, for this PlantUML sequence to render accurately, you must have PlantUML installed and running or use an online tool or IDE that supports PlantUML syntax. This sequence diagram provides a high-level view focusing on the major components and interactions involved in converting an Excel spreadsheet into a standardized Data Package using the DPIE framework.

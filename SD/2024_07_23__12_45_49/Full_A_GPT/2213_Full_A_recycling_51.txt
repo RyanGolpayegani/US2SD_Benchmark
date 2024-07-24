@@ -1,0 +1,65 @@
+To generate a detailed Sequence Diagram for the user story you provided, using PlantUML, we outline the essential steps that illustrate the process of a recycling facility (or representative) communicating directly with the site admin to convey issues or concerns. This description presumes the existence of a messaging or ticketing system within the RecycleSmart platform where facilities can report issues, which then are addressed by the platform admin.
+
+```plantuml
+@startuml
+participant RecyclingFacility as facility
+participant RecycleSmartPlatform as platform
+participant Database as db
+participant Admin as admin
+
+facility -> platform : Access issue report feature
+activate platform
+
+platform -> db : Fetch admin contact / ticket form
+activate db
+db -> platform : Return admin contact / form
+deactivate db
+
+platform -> facility : Display admin contact / report form
+deactivate platform
+
+facility -> platform : Submit issue report / ticket
+activate platform
+
+platform -> db : Save submitted report / ticket
+activate db
+db -> platform : Confirm report / ticket saved
+deactivate db
+
+platform -> admin : Notify of new issue report / ticket
+activate admin
+admin -> platform : Acknowledge receipt
+deactivate admin
+
+admin -> platform : Review issue report / ticket
+activate platform
+
+platform -> db : Fetch facility details / reported issue
+activate db
+db -> platform : Return details / issue
+deactivate db
+
+platform -> admin : Display facility details / reported issue
+deactivate platform
+
+admin -> facility : Communicate resolution steps / ask for clarification
+activate facility
+facility -> admin : Provide clarification / acknowledge steps (optional)
+deactivate facility
+
+@admin -> platform : Update issue status / resolution
+activate platform
+
+platform -> db : Update report / ticket status
+activate db
+db -> platform : Confirm status updated
+deactivate db
+
+platform -> admin : Confirm issue resolution
+deactivate platform
+@enduml
+```
+
+This sequence diagram starts with the recycling facility accessing the issue report feature on the RecycleSmart platform and ends with the admin updating the issue status as resolved after necessary communication and actions taken. Intermediate steps include interactions with the platform's database for fetching and storing data related to the report, as well as direct communication between the facility and the admin. 
+
+This flow assumes an authenticated session for both the facility representative and the admin, ensuring secure and authorized interactions within the platform. The optional steps represent potential back-and-forth communication for clarification or additional information as needed.

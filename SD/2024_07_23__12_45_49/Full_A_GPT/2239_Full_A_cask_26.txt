@@ -1,0 +1,36 @@
+Creating a detailed PlantUML sequence diagram based on the project description and user story involves outlining the interaction between the different components and actors involved in creating a pipeline that reads or writes a new dataset instance, including the creation of that dataset instance as part of the pipeline creation process. For simplicity, assumptions will be made about the interfaces and components involved, since the description provides a broad outline without specific implementation details.
+
+```plantuml
+@startuml
+actor HydratorUser as user
+participant "Web UI" as UI
+participant "Pipeline Service" as Pipeline
+participant "Dataset Management \nService" as DatasetService
+participant "Dataset Instance \nCreator" as Creator
+participant "Version Control" as VersionControl
+
+user -> UI: Select option to create new pipeline
+UI -> Pipeline: Display pipeline creation form
+user -> UI: Fill in pipeline details\nand specify new dataset instance
+UI -> Pipeline: Initiate pipeline and dataset creation
+Pipeline -> DatasetService: Request dataset type check
+DatasetService -> VersionControl: Verify dataset type and version
+VersionControl --> Dataset: Provides dataset type specifications
+DatasetService --> Pipeline: Dataset type confirmed
+Pipeline -> Creator: Request creation of new dataset instance
+Creator -> DatasetService: Create new dataset instance
+DatasetService -> VersionControl: Register new dataset instance version
+VersionControl --> DatasetService: Confirmation and version details
+Creator --> Pipeline: Dataset instance created successfully
+Pipeline --> UI: Pipeline and dataset instance creation successful
+UI --> user: Display success message and pipeline details
+
+@enduml
+```
+
+This sequence diagram starts with the "Hydrator User" initiating the action by selecting the option to create a new pipeline through a "Web UI." The user fills in the pipeline details, including the specification for a new dataset instance. The "Pipeline Service" then coordinates with the "Dataset Management Service" to check the dataset type and its version with the help of a "Version Control" system. Once the dataset type and version are confirmed, the "Dataset Instance Creator" is called upon to create the new dataset instance, while the version control system registers this new instance and its version. Finally, the pipeline creation process is completed, and the user is notified of the successful creation through the UI.
+
+### Note:
+- The actual interactions and components may vary based on the final system architecture and design specifics that are decided upon during the development process.
+- This diagram assumes a simplified view where direct calls are made between services. In a real-world scenario, these interactions could be more complex, involving message queues, event sourcing, or other asynchronous communication mechanisms.
+- Additional error handling and rollback mechanisms should be included in a comprehensive design to ensure the system's robustness in the face of failed dataset or pipeline creations.

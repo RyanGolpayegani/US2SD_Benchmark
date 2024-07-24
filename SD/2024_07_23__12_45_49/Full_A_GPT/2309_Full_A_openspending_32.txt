@@ -1,0 +1,39 @@
+To create a sequence diagram in PlantUML that depicts the user story for an API user who wants to use metadata to get results from multiple datasets, follow this blueprint. This diagram will illustrate the flow involving an API user, the OpenSpending API, and datasets within the OpenSpending platform.
+
+```plantuml
+@startuml
+actor APIUser as "API User"
+participant OpenSpendingAPI as "OpenSpending API"
+database DataSet1 as "Dataset 1"
+database DataSet2 as "Dataset 2"
+database DataSetN as "Dataset N"
+
+APIUser -> OpenSpendingAPI : Request data using metadata (MD)
+alt Fetching data from multiple datasets
+    OpenSpendingAPI -> DataSet1 : Query data by MD
+    DataSet1 --> OpenSpendingAPI : Data results 1
+    OpenSpendingAPI -> DataSet2 : Query data by MD
+    DataSet2 --> OpenSpendingAPI : Data results 2
+    OpenSpendingAPI -> DataSetN : Query data by MD
+    DataSetN --> OpenSpendingAPI : Data results N
+    OpenSpendingAPI -> OpenSpendingAPI : Aggregate results
+end
+
+OpenSpendingAPI --> APIUser : Aggregate data from Datasets 1, 2, ..., N
+note right of APIUser : Build user experiences\nwith aggregated data
+@enduml
+```
+
+This sequence diagram outlines the following steps:
+
+1. The API User sends a request to the OpenSpending API to retrieve data based on specific metadata that spans multiple datasets.
+2. The OpenSpending API, upon receiving the request, performs a series of actions:
+    - Queries "Dataset 1" using the specified metadata (MD),
+    - Receives the data results from "Dataset 1",
+    - Queries "Dataset 2" using the same MD,
+    - Receives the data results from "Dataset 2",
+    - Continues this pattern for "Dataset N".
+3. After collecting data from all relevant datasets ("Dataset 1", "Dataset 2", ..., "Dataset N"), the OpenSpending API aggregates the results into a format suitable for the API User's request.
+4. Finally, the OpenSpending API sends the aggregated data back to the API User, who can then use this data to build comprehensive user experiences based on information from more than one dataset.
+
+This diagram assumes a simplistic interaction model for clarity and conceptual understanding. Depending on the OpenSpending API's actual capabilities and the complexity of resultant data aggregation needs, additional steps or components (like error handling, data processing services, etc.) can be included for a more detailed representation.

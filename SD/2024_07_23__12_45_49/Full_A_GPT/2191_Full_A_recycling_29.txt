@@ -1,0 +1,40 @@
+Below is a sequence diagram in Plant UML format that illustrates the process of securely capturing and storing a user's personal information in the RecycleSmart platform's database, emphasizing the security measures to protect against identity theft or telephone harassment.
+
+```
+@startuml
+!theme plain
+
+actor User as user
+participant "User Interface" as UI
+participant "Validation Service" as validator
+participant "Security Service" as secService
+database "RecycleSmart DB" as DB
+
+user -> UI : Enter personal information\n(Name, Email, PhoneNumber)
+UI -> validator : Validate information format
+activate validator
+validator -> validator : Check email format
+validator -> validator : Check phone number format
+validator --> UI : Validation results
+deactivate validator
+
+alt If validation fails
+    UI -> user : Show validation error
+else If validation succeeds
+    UI -> secService : Encrypt personal information
+    activate secService
+    secService -> secService : Apply encryption algorithm
+    secService --> UI : Encrypted information
+    deactivate secService
+
+    UI -> DB : Store encrypted information
+    activate DB
+    DB --> UI : Confirmation of storage
+    deactivate DB
+    UI -> user : Confirmation message
+end
+
+@enduml
+```
+
+This diagram follows the process from the moment the user enters their personal information through the user interface, progressing through validation of the input format. Successful validation moves the information through a security service where it is encrypted. This ensures that even if unauthorized access to the database occurred, the personal information would remain secure and unreadable. The final step is the storage of this encrypted data in the Recyclesmart Database (DB), where confirmation of the storage is sent back to the user through the UI. This sequence emphasizes security practices to protect user data from potential identity theft and harassment.

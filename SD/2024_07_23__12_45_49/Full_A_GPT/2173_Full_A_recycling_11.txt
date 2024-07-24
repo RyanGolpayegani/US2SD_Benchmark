@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram for the user story "As a user, I want to be able to view the safe disposal events currently being organized around my area" involves illustrating how the user interacts with the RecycleSmart platform and how the system responds to fetch and display the requested data.
+
+This PlantUML sequence diagram outlines the steps involved in this process:
+
+```plantuml
+@startuml
+actor User
+participant "UI Frontend\n(RecycleSmart)" as Frontend
+participant "Backend Server" as Server
+participant "Database" as DB
+
+User -> FrontshowMessage: Accesses RecycleSmart & \nrequests to view safe disposal events
+activate Frontend
+Frontend -> Server: GET request: /disposal-events?zipCode=[ZIP]
+activate Server
+
+Server -> DB: Query safe disposal events \nby ZIP code
+activate DB
+DB --> Server: Return list of events
+deactivate DB
+
+Server --> Frontend: Response with events data
+deactivate Server
+
+Frontend --> User: Display safe disposal events
+deactivate Frontend
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **User Action**: The sequence begins with the user accessing the RecycleSmart platform, intending to view safe disposal events organized around their area. The user inputs or allows the application to fetch their location (for simplicity, a ZIP code query example is used).
+
+2. **UI Frontend Communication**: The User Interface (UI) of RecycleSmart, upon receiving the user's request, communicates with the backend server by sending a GET request. This request includes parameters to filter the disposal events, such as the ZIP code.
+
+3. **Backend Server Processing**: The backend server, upon receiving the GET request from the frontend, processes this request. It then queries the database for the safe disposal events matching the user's location criteria.
+
+4. **Database Query**: The database receives a query to fetch the relevant safe disposal events based on the ZIP code provided. It processes this query and returns the list of matching events back to the server.
+
+5. **Server to Frontend Response**: After receiving the data from the database, the backend server formats the response, which includes the event data, and sends it back to the UI frontend.
+
+6. **User Interface Display**: Finally, the UI frontend receives the safe disposal events data and displays it to the user, completing the request cycle.
+
+This sequence diagram represents a simplified view of the interactions between the user, the UI frontend, the backend server, and the database in the process of retrieving and displaying safe disposal events within the RecycleSmart platform.

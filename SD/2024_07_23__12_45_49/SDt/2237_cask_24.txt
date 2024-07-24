@@ -1,0 +1,43 @@
+@startuml
+!theme plain
+
+participant DataScientist as DS
+participant "Dataset Management \n System" as DMS
+participant "Version Control \n System" as VCS
+participant "Upgrade & Migration \n Tool" as UMT
+
+== Dataset Instance Upgrade Process ==
+
+DS -> DMS : Request to upgrade dataset instance
+activate DMS
+DMS -> VCS : Check latest version of dataset code
+activate VCS
+VCS --> DMS : Return latest version details
+deactivate VCS
+
+DMS -> DMS : Compare current and latest versions
+DMS -> UMT : Initiate upgrade process
+activate UMT
+UMT -> UMT : Analyze upgrade implications\nand prepare migration steps
+
+alt Successful Upgrade Preparation
+    UMT --> DMS : Upgrade and Migration Plan
+    deactivate UMT
+    DMS -> DS : Approval required for upgrade\nand potential data migration
+    DS -> DMS : Approves upgrade
+    activate DMS
+    DMS -> UMT : Execute upgrade with approved plan
+    activate UMT
+    UMT -> UMT : Apply upgrade and migration steps
+    UMT --> DMS : Upgrade Success
+    deactivate UMT
+    DMS --> DS : Notify upgrade success
+    deactivate DMS
+else Upgrade Preparation Failed
+    UMT --> DMS : Upgrade and Migration Plan Failed
+    deactivate UMT
+    DMS --> DS : Notify upgrade failure\nand reason
+    deactivate DMS
+end
+
+@enduml

@@ -1,0 +1,34 @@
+To illustrate the mentioned user story in a detailed sequence diagram using PlantUML, we'll focus on the interaction flow between the system components such as the user (browser or mobile), frontend application (web app), backend servers, and the database. The process involves the user selecting recyclable waste types, querying for facilities that accept those types, and retrieving information about facilities, including their opening hours. Let's proceed with the PlantUML code to visualize this process.
+
+```plantuml
+@startuml
+actor User as user
+participant "Frontend\nApplication" as frontend
+participant "Backend\nServer" as backend
+database "Database" as db
+
+user -> frontend: Select recyclable waste types
+frontend -> backend: Request facilities for waste types
+backend -> db: Query facilities by waste type
+db -> backend: Return list of facilities
+backend -> frontend: Send facilities and opening hours
+frontend -> user: Display facilities and opening hours
+user -> frontend: Request optimal route and schedule
+frontend -> backend: Calculate optimal route based on user location and facility hours
+backend -> frontend: Return optimal route and schedule
+frontend -> user: Display optimal route and schedule
+
+@enduml
+```
+
+This sequence diagram follows a straightforward approach where:
+- The **User** interacts with the **Frontend Application** by selecting the desired types of recyclable waste they are interested in.
+- The **Frontend Application** sends this selection to the **Backend Server**, which is responsible for handling requests and processing data.
+- The **Backend Server** queries the **Database** to find recycling facilities that match the user's selection criteria, specifically facilities that accept the types of recyclable waste chosen by the user.
+- The **Database** returns the matched list of facilities, including details such as facility names and opening hours, back to the Backend Server.
+- The **Backend Server** then sends this information to the **Frontend Application**, which in turn presents it to the **User**. The user can now view the facilities accepting the selected recyclable wastes along with their opening hours.
+- Upon viewing the facilities, the **User** requests the optimal route and schedule for visiting these facilities. This request is again processed by the **Frontend Application** and sent to the **Backend Server**.
+- The **Backend Server** calculates the optimal route based on the user's current location, the locations of the facilities, and their operating hours. This calculation can involve complex algorithms and may also integrate with third-party services for mapping and routing.
+- Finally, the **Backend Server** returns this calculated optimal route and schedule to the **Frontend Application**, which displays it to the **User** for their convenience.
+
+This sequence diagram abstracts some complexities and external integrations (like third-party maps and routing services) to focus on the main interactions as per the project description and the mentioned user story.

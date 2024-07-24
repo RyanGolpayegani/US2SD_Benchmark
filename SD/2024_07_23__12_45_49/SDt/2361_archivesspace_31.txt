@@ -1,0 +1,24 @@
+@startuml
+participant Archivist as archivist
+participant "UI/Search Interface" as UI
+participant "Search Controller" as controller
+participant "Search Service" as service
+participant "Database" as db
+
+archivist -> UI : Enter search query
+activate UI
+UI -> controller : Forward search request
+activate controller
+controller -> service : Process search query
+activate service
+service -> db : Retrieve matching records\n[Resources, Accessions, Digital Objects]
+activate db
+db --> service : Return search results
+deactivate db
+service --> controller : Send processed results
+deactivate service
+controller --> UI : Display search results
+deactivate controller
+UI --> archivist : Show matching records
+deactivate UI
+@enduml

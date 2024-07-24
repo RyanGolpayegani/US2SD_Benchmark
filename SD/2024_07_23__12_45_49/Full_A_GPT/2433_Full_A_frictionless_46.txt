@@ -1,0 +1,42 @@
+To create a detailed sequence diagram for the given user story using PlantUML, we need to identify the key actors and processes involved in the scenario where a publisher updates their data and verifies its integrity. For the sake of this example, let’s assume a simplified workflow that includes the publisher, DPIE system, and various validation services.
+
+In the scenario, the "publisher" updates data which then goes through a series of checks and validations inside the DPIE system before confirming the data's integrity and storing it. Let's illustrate this in PlantUML syntax.
+
+```plantuml
+@startuml
+actor Publisher
+participant "DPIE System" as DPIE
+participant "Validation Service" as Validation
+participant "Data Storage" as Storage
+
+activate Publisher
+Publisher -> DPIE : Update data package
+activate DPIE
+DPIE -> Validation : Validate updated data
+activate Validation
+Validation -> Validation : Check data integrity
+Validation -> Validation : Ensure conformity to Data Package profiles
+Validation --> DPIE : Validation result
+deactivate Validation
+
+alt if data is good
+    DPIE -> Storage : Store updated data package
+    activate Storage
+    Storage --> DPIE : Confirm data stored
+    deactivate Storage
+    DPIE --> Publisher : Update and validation successful
+else if data has errors
+    DPIE --> Publisher : Update failed - errors found
+end
+
+deactivate DPIE
+@enduml
+```
+
+This sequence diagram starts with the "Publisher" updating the data package, which then gets processed by the "DPIE System". The DPIE System sends the data for validation to the "Validation Service", which performs integrity checks and ensures the data conforms to the specified Data Package profiles. Based on the outcome of these validations, two paths are possible:
+
+1. **If the data is good:** The Validation Service confirms the data’s integrity back to the DPIE System, which then proceeds to store the updated data package in "Data Storage". Following successful storage, the DPIE System notifies the Publisher about the successful update and validation.
+
+2. **If there are errors in the data:** The Validation Service finds issues with the data and reports back to the DPIE system, which then informs the Publisher that the update has failed due to the detected errors.
+
+This diagram provides a high-level overview of the process involved in updating and validating data packages through the DPIE system from the perspective of a publisher.

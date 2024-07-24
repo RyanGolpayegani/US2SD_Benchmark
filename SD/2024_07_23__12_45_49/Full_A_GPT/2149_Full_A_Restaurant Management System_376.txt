@@ -1,0 +1,54 @@
+Creating a detailed Sequence Diagram for the user story "As an employee, I want to see unfulfilled orders" involves outlining the sequence of interactions between the system components and the user from the initiation of the request to the display of the unfulfilled orders. This requires understanding the flow of actions an employee would take to retrieve this information and the system’s response to these actions.
+
+The following is a PlantUML code snippet representing a sequence diagram for the user story. It simplifies the process into key interactions considering the technology stack mentioned (React.js or Angular, Node.js with Express, MongoDB or PostgreSQL).
+
+```plantuml
+@startuml
+!theme plain
+
+actor Employee
+participant "UI (React/Angular)" as UI
+participant "Backend\n(Node.js/Express)" as Server
+participant "Database\n(MongoDB/PostgreSQL)" as DB
+
+== Employee Wants to See Unfulfilled Orders ==
+
+Employee -> UI : Selects to view unfulfilled orders
+UI -> Server : GET /unfulfilledOrders
+activate Server
+
+Server -> DB : Query unfulfilled orders
+activate DB
+DB --> Server : Return unfulfilled orders
+deactivate DB
+
+Server --> UI : Response with unfulfilled orders
+deactivate Server
+UI --> Employee : Display unfulfilled orders
+
+@enduml
+```
+
+### Explanation:
+
+- **Actor (Employee)**: This represents the restaurant system user (e.g., a server or cook) who wants to view the list of unfulfilled orders.
+  
+- **UI (React/Angular)**: Acts as the frontend interface. The employee interacts with the system through this UI, selecting the option to view unfulplied orders.
+
+- **Backend (Node.js/Express)**: This is the server side of the application. It processes the request sent by the UI to retrieve the unfulfilled orders from the database.
+
+- **Database (MongoDB/PostgreSQL)**: This stores all the order information, including the status of whether an order has been fulfilled or not.
+  
+### Sequence of Events:
+
+1. **Employee Selects to View Unfulfilled Orders**: The flow begins when an employee decides to view a list of all orders that haven't been completed or served.
+
+2. **Request to Backend**: The UI sends a request to the backend server to retrieve the list of unfulfilled orders.
+
+3. **Query Database**: The backend server queries the database for orders that have not been marked as fulfilled.
+
+4. **Database Response**: The database returns the list of unfulfilled orders to the backend server.
+
+5. **Display Unfulfilled Orders**: The backend server sends the list back to the UI, which then displays the unfulfilled orders to the employee.
+
+This sequence diagram is a high-level representation and can be expanded to include error handling, authentication, and more detailed interactions based on the project requirements.

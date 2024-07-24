@@ -1,0 +1,38 @@
+@startuml
+
+participant Activist
+participant "DPIE API" as DPIE
+participant "Government Data API" as GovDataAPI
+participant "Data Package" as DataPackage
+participant Validator
+participant "Metadata Repository" as MetaDataRepo
+participant CKAN
+
+== Access Government Data ==
+Activist -> GovDataAPI : Request Data
+GovDataAPI -> Activist : Return Data
+
+== Integrate Data with DPIE ==
+Activist -> DPIE : Integrate Data
+DPIE -> DataPackage : Create Data Package
+
+== Enrich Data Package ==
+DPIE -> DataPackage : Add Metadata
+DPIE -> DataPackage : Add Standardized Terms
+
+== Validate Data Quality ==
+DPIE -> Validator : Validate Data Integrity
+Validator -> DataPackage : Check Conformance
+DataPackage -> Validator : Return Validation Status
+Validator -> DPIE : Validation Results
+
+== Enhance Data for Sharing ==
+DPIE -> DataPackage : Add Visualization Tools
+DPIe -> MetaDataRepo : Store Enriched Metadata
+MetaDataRepo -> CKAN : Push Metadata for Public Access
+
+== Review and Publish ==
+Activist -> CKAN : Review Published Data Package
+CKAN -> Activist : Display Data Package with Enhancements
+
+@enduml

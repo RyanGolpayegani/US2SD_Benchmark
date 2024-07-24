@@ -1,0 +1,51 @@
+To accommodate your request for a detailed sequence diagram in PlantUML format for the specific user story you've mentioned, I've crafted a depiction that outlines the sequence of interactions between the App Developer and the Dataset Management and Version Control System (DMVCS) when the App Developer deploys an artifact without creating an app, ensuring no dataset types or instances are created as a part of this process.
+
+```plantuml
+@startuml
+!theme cerulean
+
+participant "App Developer" as AD
+participant "Deployment Module" as DM
+participant "Dataset Type Manager" as DTM
+participant "Dataset Instance Manager" as DIM
+database "App Artifact Repository" as AAR
+
+AD -> DM : Deploy artifact
+activate AD
+activate DM
+
+DM -> AAR : Check artifact for dataset definitions
+activate AAR
+AAR --> DM : Artifact metadata
+deactivate AAR
+
+DM -> DTM : Extract dataset types from metadata
+activate DTM
+DTM --> DM : No dataset types found
+deactivate DTM
+
+DM -> DIM : Check for dataset instances creation request
+activate DIM
+DIM --> DM : No instances creation request
+deactivate DIM
+
+DM --> AD : Deployment Successful (No datasets created)
+deactivate DM
+deactivate AD
+
+@enduml
+```
+
+This diagram portrays the interactions initiated by the App Developer to deploy an application artifact. It progresses through the steps involved in verifying whether the deployment request includes dataset types or instances within the artifact:
+
+1. **App Developer Deploy Artifact**: The process starts when the App Developer decides to deploy an artifact but intends not to create any application instance from it.
+
+2. **Check Artifact for Dataset Definitions**: The Deployment Module then checks the artifact stored within the App Artifact Repository for any dataset type definitions.
+
+3. **Extract Dataset Types from Metadata**: The Deployment Module queries the Dataset Type Manager to extract and verify any dataset types defined in the artifact's metadata. In this scenario, no dataset types are found.
+
+4. **Check for Dataset Instances Creation Request**: The Deployment Module consults the Dataset Instance Manager to ensure there is no embedded instruction or request within the artifact to create dataset instances. The check confirms no such requests are made.
+
+5. **Deployment Successful (No datasets created)**: Following the verification steps that confirmed both the absence of dataset types and the lack of instructions to create dataset instances, the Deployment Module communicates a successful deployment status back to the App Developer, confirming that no unintended datasets were created as part of the process.
+
+This sequence effectively ensures and reaffirms the App Developer's requirement: deploying an artifact without inadvertently creating any dataset types or instances.

@@ -1,0 +1,39 @@
+Creating a detailed Sequence Diagram for the given user story "As an employee, I want to add a customer order" within the context of a Restaurant Management and Operations System involves several key steps and interactions among system components and user roles. Below is a PlantUML code snippet that represents these interactions. This diagram assumes that the process involves input from the employee, interfacing with the Order Management System, and ends with feedback confirmation to the employee.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Employee as E
+participant "UI Interface" as UI
+participant "Order Management System" as OMS
+database "Database" as DB
+
+== Add Customer Order Process ==
+E -> UI : Select "Add Order"
+activate UI
+UI -> OMS : Request to add order (Order Details)
+activate OMS
+OMS -> DB : Retrieve Item Details
+activate DB
+DB --> OMS : Item Details
+deactivate DB
+OMS -> DB : Save Order
+DB --> OMS : Confirmation
+deactivate OMS
+OMS -> UI : Order Added Successfully
+UI --> E : Display Success Message
+deactivate UI
+@enduml
+```
+
+This diagram follows these steps:
+1. **Employee Initiates Order Addition**: The process begins with the employee selecting the option to add an order through the User Interface (UI).
+2. **Request to Add Order**: The UI interfaces with the Order Management System (OMS) and requests adding a new order, providing necessary order details.
+3. **Retrieve Item Details**: The Order Management System communicates with the Database to retrieve details about the items included in the order, ensuring they are available and verifying their prices.
+4. **Save Order**: The Order Management System sends a request to the Database to save the order details.
+5. **Confirmation**: The Database confirms the successful saving of the order, returning a confirmation to the Order Management System.
+6. **Order Added Successfully**: The Order Management System then informs the UI that the order has been successfully added.
+7. **Display Success Message**: Finally, the UI displays a success message to the employee, indicating the order has been added.
+
+This sequence diagram outlines a simple yet detailed process flow for adding a customer order from the perspective of an employee within a restaurant management system. The diagram can be further customized and detailed based on specific project requirements such as error handling, item customization, and payment processing.

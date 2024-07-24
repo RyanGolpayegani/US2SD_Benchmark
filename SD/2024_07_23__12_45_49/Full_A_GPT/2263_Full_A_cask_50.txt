@@ -1,0 +1,41 @@
+To generate a detailed sequence diagram for the described user story in PlantUML format, let's outline the steps involved in removing a single property of a dataset instance by a user without knowing all other properties. We assume a system architecture where there might be services like DatasetManagementService, DatasetInstanceService, and possibly a PropertyManagementService that interact with each other to fulfill the user's request.
+
+Here's a simple PlantUML code snippet representing this scenario:
+
+```plantuml
+@startuml
+actor User
+participant "UI Interface" as UI
+participant "API Gateway" as API
+participant "DatasetManagementService" as DMS
+participant "DatasetInstanceService" as DIS
+participant "PropertyManagementService" as PMS
+database "DatasetStore" as DS
+
+User -> UI : Selects dataset instance and specifies\nproperty to remove
+UI -> API : Request to remove property from dataset instance
+API -> DMS : Validate dataset instance ID
+DMS -> DIS : Retrieves dataset instance details
+DIS -> DS : Fetch current properties of the instance
+DS --> DIS : Return instance details
+DIS --> DMS : Provide dataset instance metadata
+DMS -> PMS : Request to remove specified property
+PMS -> DS : Remove property from dataset store
+DS --> PMS : Confirm removal
+PMS --> DMS : Return success message
+DMS --> API : Acknowledge successful property removal
+API --> UI : Display success message to user
+UI --> User : Shows confirmation of property removal
+
+@enduml
+```
+
+### Explanation:
+1. **User Interaction**: The user selects the dataset instance and specifies the property they wish to remove through a UI interface.
+2. **UI to API**: The request is sent to the API Gateway, which acts as an entry point for processing the user's request.
+3. **Validation**: The DatasetManagementService validates the provided dataset instance ID.
+4. **Retrieving Instance Details**: The DatasetInstanceService retrieves the details of the specified dataset instance, including all its properties from a dataset store (database).
+5. **Removing the Property**: The PropertyManagementService is tasked with removing the specified property. It requests the DatasetStore to delete the specified property from the dataset instance record.
+6. **Confirmation**: Upon successful removal of the property, a success message is propagated back to the user through the system layers.
+
+This sequence diagram outlines the key interactions within the system to achieve the goal stated in the user story. Note that the actual implementation details and the components' names could vary based on the system's architecture and design decisions made during the project development phase.

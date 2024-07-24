@@ -1,0 +1,31 @@
+Creating a detailed sequence diagram for importing Agent information from EAC-CPF records into the Comprehensive Archival Management System (CAMS) requires illustrating the interactions between different components and actors involved in the process. Below is a PlantUML code snippet that represents these interactions:
+
+```plantuml
+@startuml
+actor Archivist
+participant "Import Interface" as Interface
+participant "Validation Module" as Validation
+participant "Data Transformation" as Transform
+participant "Data Storage" as Storage
+database "CAMS Database" as DB
+
+Archivist -> Interface : Selects EAC-CPF file for import
+Interface -> Validation : Sends file for validation
+alt Validation Success
+    Validation -> Transform : Passes validated EAC-CPF data
+    Transform -> Transform : Converts EAC-CPF to System Format
+    Transform -> Storage : Sends transformed data for storage
+    Storage -> DB : Stores Agent Information
+    DB --> Storage : Confirmation
+    Storage --> Interface : Show success message
+    Interface --> Archivist : Display success confirmation
+else Validation Failure
+    Validation --> Interface : Show error message
+    Interface --> Archivist : Display validation error
+end
+@enduml
+```
+
+This sequence diagram starts with the Archivist selecting and sending an EAC-CPF file through the Import Interface. The file is then passed to a Validation Module to ensure it meets the necessary criteria. If validation passes, the file data is transformed into the system's format by the Data Transformation module. The transformed data is then sent to Data Storage, which interacts with the CAMS Database to store the Agent information. Upon successful storage, the system confirms the action back to the Archivist through the interface. If the validation fails, the system immediately notifies the Archivist of the error, skipping the subsequent steps.
+
+Please note, to visualize this diagram, you need to have PlantUML installed or use an online PlantUML editor. This is a simplified representation; actual system implementations may require more detailed interactions based on specific project requirements, including error handling, user authentication, and more complex data transformation logic.

@@ -1,0 +1,30 @@
+Creating a sequence diagram for the specified user story involves detailing the step-by-step process a Data Publishing User will go through to delete a published dataset on the OpenSpending platform. Below is a sequence diagram written in PlantUML format to depict this process.
+
+```plantuml
+@startuml
+actor "Data Publishing User" as User
+participant "OpenSpending Platform Interface" as Interface
+participant "Dataset Management Service" as ManagementService
+participant "Database" as DB
+
+User -> Interface : Select "My Published Datasets"
+Interface -> ManagementService : Request user's published datasets
+ManagementService -> DB : Query published datasets by user
+DB -> ManagementService : Return list of datasets
+ManagementService -> Interface : Display datasets to user
+User -> Interface : Choose dataset to delete
+Interface -> ManagementService : Request dataset deletion (dataset ID)
+alt If dataset can be deleted
+    ManagementService -> DB : Delete dataset record (dataset ID)
+    DB -> ManagementService : Confirm deletion
+    ManagementService -> Interface : Display success message
+    Interface -> User : Show dataset successfully deleted
+else If dataset cannot be deleted
+    ManagementService -> Interface : Display error message (reason)
+    Interface -> User : Show failure to delete dataset
+end
+
+@enduml
+```
+
+This diagram starts with the user selecting "My Published Datasets" from the OpenSpending platform interface. The platform then requests the list of published datasets from the Dataset Management Service, which queries the database for datasets published by the user. Once the datasets are returned, the user selects one for deletion. The request for deletion is then sent to the management service, which attempts to delete the record from the database. If successful, a confirmation message is displayed; if not, an error message is shown explaining why the deletion could not be processed.

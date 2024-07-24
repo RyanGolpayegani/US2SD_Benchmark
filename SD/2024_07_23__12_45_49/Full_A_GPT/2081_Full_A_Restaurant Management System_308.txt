@@ -1,0 +1,48 @@
+Creating a detailed sequence diagram for the given user story involves depicting the interaction between the waiter, the restaurant management system's backend, and possibly other system components that provide the needed information. Given that PlantUML is a tool for drawing UML diagrams based on a simple and intuitive language, below is a PlantUML representation of the sequence diagram for the user story: "As a waiter, I want to see the waiting time of the tables so that I can keep track of the orders."
+
+Please note that this sequence diagram assumes a basic flow where the waiter requests waiting times for tables from the system, and then the system calculates or retrieves this information based on current orders and their statuses.
+
+```plantuml
+@startuml
+actor Waiter
+participant "Waiter Interface" as WI
+participant "Order Management System" as OMS
+participant "Database" as DB
+
+Waiter -> WI: Selects 'View Table Waiting Times'
+activate WI
+
+WI -> OMS: RequestWaitingTimes()
+activate OMS
+
+OMS -> DB: RetrieveOrderDetails()
+activate DB
+
+DB --> OMS: OrderDetails[]
+deactivate DB
+
+OMS -> OMS: CalculateWaitingTimes(OrderDetails)
+OMS --> WI: WaitingTimes[]
+deactivate OMS
+
+WI --> Waiter: DisplayWaitingTimes(WaitingTimes[])
+deactivate WI
+
+@enduml
+```
+
+This sequence diagram includes the following steps:
+
+1. **Waiter selects to view table waiting times**: The waiter interacts with the waiter interface (could be a tablet, computer, or any other device provided by the restaurant management system) to view the current waiting times for tables. This action starts the sequence of events.
+
+2. **Waiter Interface requests waiting times**: The waiter interface sends a request to the Order Management System to get the waiting times for all active tables.
+
+3. **Order Management System retrieves order details**: The Order Management System requests the current order details (including timestamps, table numbers, order statuses, etc.) from the database to calculate the waiting times.
+
+4. **Database returns order details**: The database returns the list of active order details to the Order Management System.
+
+5. **Order Management System calculates waiting times**: Using the retrieved order details, the Order Management System calculates the waiting times for each active table based on order statuses, preparation times, and any other relevant factors.
+
+6. **Waiter Interface displays waiting times**: Finally, the waiting times calculated by the Order Management System are sent back to the Waiter Interface, which then displays them to the waiter.
+
+This diagram provides a high-level overview of how a waiter might interact with a restaurant management system to view table waiting times, crucial for managing customer expectations and improving service efficiency. Adjustments and additional details might be necessary depending on specific system architectures or requirements.

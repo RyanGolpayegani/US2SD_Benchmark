@@ -1,0 +1,56 @@
+Creating a detailed sequence diagram for the specific user story "As an Archivist, I want to create and edit a Resource record" requires capturing the interaction between the system components involved in creating and editing a record in the Comprehensive Archival Management System (CAMS). Below is a PlantUML code that illustrates these interactions. Keep in makeup that this diagram is a simplification and might need adjustments based on the specific implementations and system architectures you're working with.
+
+```plantuml
+@startuml
+actor Archivist
+participant "UI Interface" as UI
+participant "Authentication Service" as Auth
+participant "Resource Management Module" as RMM
+database "CAMS Database" as DB
+
+== Creating a Resource Record ==
+Archivist -> UI : Selects "Create New Resource"
+UI -> Auth : Validate Archivist Credentials
+Auth -> UI : Credentials Valid
+UI -> RMM : Request to Create a New Resource Record
+RMM -> DB : Create New Resource Record Entry
+DB --> RMM : Confirm Creation
+RMM --> UI : Display New Resource Record Form
+UI --> Archivist : New Resource Record Form
+
+== Editing a Resource Record ==
+Archivist -> UI : Access and Edit Resource Record
+UI -> Auth : Validate Archivist Credentials
+Auth -> UI : Credentials Valid
+UI -> RMM : Request to Access Resource Record
+RMM -> DB : Retrieve Resource Record Data
+DB --> RMM : Resource Record Data
+RMM --> UI : Display Resource Record for Editing
+UI --> Archivist : Resource Record Edit Form
+Archivist -> UI : Submit Updated Record
+UI -> RMM : Update Resource Record
+RMM -> DB : Apply Record Updates
+DB --> RMM : Confirm Update
+RMM --> UI : Confirm Updated Record
+UI --> Archivist : Display Updated Record Confirmation
+
+@enduml
+```
+
+### Explanation:
+1. **Creating a Resource Record:**
+   - The Archivist selects the option to create a new resource through the UI Interface.
+   - The UI Interface requests the Authentication Service to validate the Archivist's credentials.
+   - Once the credentials are validated, the UI Interface sends a request to the Resource Management Module (RMM) to create a new resource record.
+   - The RMM interacts with the CAMS Database to create a new record entry.
+   - Upon successful creation, the database confirms the creation back to the RMM, and then the RMM instructs the UI Interface to display a form for entering the new resource record details to the Archivist.
+
+2. **Editing a Resource Record:**
+   - The Archivist decides to edit a resource record and accesses the record through the UI Interface.
+   - The UI checks the credentials of the Archivist again with the Authentication Service.
+   - After validation, the UI requests the Resource Management Module to retrieve the data for the specified resource record.
+   - The RMM fetches the record data from the CAMS Database and sends it back to the UI, which then displays the record for editing to the Archivist.
+   - Once the Archivist submits the updated record, the UI sends the updated details to the RMM, which then applies these updates in the database.
+   - After the database confirms the update, the RMM signals the UI to display an updated record confirmation to the Archivist.
+
+This sequence diagram abstracts the main steps involved in creating and editing a resource record within the Comprehensive Archival Management System from the perspective of an Archivist, highlighting the system's modular design and the flow of data. Adjustments may be required based on actual system design, security requirements, and error handling mechanisms.

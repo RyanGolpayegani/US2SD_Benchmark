@@ -1,0 +1,25 @@
+@startuml
+actor ResearcherPublisher as RP
+participant "DPIE Interface" as DPIE
+participant "Data Management Module" as DMM
+database "Data Package Repository" as DPR
+participant "DOI Registration Service" as DOI_Service
+participant "Metadata Update Module" as MUM
+
+RP -> DPIE: Request to add DOI to dataset
+DPIE -> DMM: Validate dataset exists
+DMM -> DPR: Check dataset existence
+DPR -> DMM: Dataset exists confirmation
+DMM --> DPIE: Dataset validation success
+DPIE -> DOI_Service: Request DOI registration
+activate DOI_Service
+DOI_Service -> DPIE: Return new DOI
+deactivate DOI_Service
+DPIE -> MUM: Request to update dataset with DOI
+activate MUM
+MUM -> DPR: Update dataset metadata with DOI
+DPR --> MUM: Dataset updated
+MUM --> DPIE: Update success
+deactivate MUM
+DPIE -> RP: DOI added successfully
+@enduml

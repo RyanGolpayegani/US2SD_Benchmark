@@ -1,0 +1,49 @@
+Given the requirement, below is a detailed sequence diagram in PlantUML format. This diagram illustrates the sequence of interactions between a Data Publishing User and the system components involved when adding data to the datastore in bulk using a Python Client.
+
+```plantuml
+@startuml
+actor "Data Publishing User" as user
+participant "Python Client" as client
+participant "API Gateway" as gateway
+participant "Authentication Service" as auth
+database "Datastore" as datastore
+
+user -> client : Executes script to add data
+client -> gateway : POST /data/add\n{data in bulk}
+activate client
+activate gateway
+
+gateway -> auth : Request user authentication
+activate auth
+auth -->> gateway : Authentication token
+deactivate auth
+
+gateway -> datastore : Store bulk data\nAuthentication token
+activate datastore
+datastore -->> gateway : Data stored successfully
+deactivate datastore
+
+gateway -->> client : Response (Success/Failure)
+deactivate gateway
+
+client -->> user : Display operation result
+deactivate client
+
+@enduml
+```
+
+This diagram captures the following key interactions for adding data in bulk:
+
+1. **Script Execution:** The Data Publishing User executes a script or a command via the Python Client designed for data uploading.
+
+2. **Data Posting:** The Python Client sends a request to add data in bulk to the API Gateway. This request includes the data the user intends to publish to the datastore.
+
+3. **Authentication:** The API Gateway requests the Authentication Service to verify the identity of the user attempting the data upload. This step ensures that only authorized users can add or modify data in the datastore.
+
+4. **Data Storage:** After successful authentication, the API Gateway forwards the bulk data to be stored in the Datastore, including the authentication token as proof of authorization.
+
+5. **Operation Result:** The Datastore processes the request and sends a response back through the API Gateway and Python Client to the user, indicating whether the data upload was successful or if there were any errors.
+
+6. **User Notification:** Finally, the Python Client informs the Data Publishing User of the operation's outcome, completing the interaction sequence.
+
+This sequence diagram abstractly outlines the core interactions involved in adding data to the OpenSpending datastore using a Python Client, focusing on the process's main steps from the user's action to the system's response.

@@ -1,0 +1,41 @@
+Given your request, below is a PlantUML sequence diagram that demonstrates how the system ensures atomicity in the reconfiguration process of a dataset. This process involves a user initiating a reconfiguration, the system attempting the reconfiguration, and either rolling back changes upon failure or committing them upon success, to ensure no partial changes are applied.
+
+```plantuml
+@startuml
+actor User as user
+participant "Dataset Management System" as DMS
+database "Dataset Instance" as DB
+
+== Reconfiguration Request ==
+user -> DMS : Request Reconfiguration(datasetId, newConfig)
+activate DMS
+DMS -> DMS : Validate newConfig
+alt Configuration is valid
+    DMS -> DB : Start Transaction
+    activate DB
+    DMS -> DB : Apply newConfig
+    alt Reconfiguration Success
+        DB -> DMS : Commit Transaction
+        DMS -> user : Reconfiguration Successful
+    else Reconfiguration Fails
+        DB -> DMS : Rollback Transaction
+        DMS -> user : Reconfiguration Failed, No Changes Applied
+    end
+    deactivate DB
+else Configuration is invalid
+    DMS -> user : Invalid Configuration
+end
+deactivate DMS
+@enduml
+```
+
+This diagram captures the essential steps to ensure atomicity during dataset reconfiguration:
+
+1. The user initiates a reconfiguration request with the desired dataset identifier and the new configuration parameters.
+2. The Dataset Management System (DMS) validates the supplied new configuration. If the configuration is invalid, the process ends, and the user is informed of the invalid configuration.
+3. Assuming a valid configuration, the DMS starts a transaction with the Dataset Instance (database or datastore) to apply the new configuration.
+4. The system attempts to apply the new configuration to the dataset.
+   - If the reconfiguration is successful, the system commits the transaction, ensuring that the changes are permanently applied. The DMS then informs the user of the successful reconfiguration.
+   - If the reconfiguration fails, the system rolls back the transaction, undoing any changes made during the process. The user is then informed that the reconfiguration has failed and that no changes have been applied.
+
+By encapsulating the reconfiguration process in a transaction, the system ensures that all steps required to reconfigure a dataset are completed successfully as a single atomic action, preserving data integrity and consistency.

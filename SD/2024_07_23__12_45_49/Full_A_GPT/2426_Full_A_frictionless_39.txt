@@ -1,0 +1,59 @@
+To generate a detailed PlantUML sequence diagram for the user story of a Researcher/Developer wanting the ability to import/export from MS-SQL to use Data Packages in workflows, we'll outline the main steps involved in this process. This diagram will represent the interactions between the user, the DPIE system, and the MS-SQL database during the import and export processes.
+
+Given the complexity and the textual nature of this platform, I'll describe a conceptual sequence diagram here. You can then translate this conceptual design into PlantUML syntax.
+
+### Conceptual Design for Import/Export Sequence Diagram
+
+1. **Start**: The Researcher/Developer initiates the process.
+2. **Choose Operation**: The Researcher/Developer selects whether to import into or export from MS-SQL.
+3. **DPIE Import/Export Handler Activation**: The system activates the relevant DPIE Import/Export handler based on the user's choice.
+4. **Authentication**: The DPIE system requests authentication details for the MS-SQL database from the Researcher/Developer.
+5. **Verification**: The DPIE system verifies the provided credentials with the MS-SQL Server.
+6. **Read/Write Data**: Depending on the operation,
+    - For import: The DPIE system reads the specified Data Package and transforms the data into a format compatible with MS-SQL, then writes this data to the MS-SQL database.
+    - For export: The DPIER system queries the MS-SQL database, transforms the resulting data into a Data Package format, and saves or provides this package to the Researcher/Developer.
+7. **Completion**: The process completes, and the DPIE system notifies the Researcher/Developer of the success or failure of the operation.
+8. **End**: The interaction ends.
+
+### PlantUML Syntax for the Sequence Diagram
+
+```plantuml
+@startuml
+!theme plain
+
+participant ResearcherDeveloper as RD
+participant "DPIE Import/Export Handler" as DPIE
+database MSSQL
+
+RD -> DPIE: Choose Operation (Import/Export)
+activate DPIE
+DPIE -> RD: Request Authentication Details
+RD -> DPIE: Provide Authentication Details
+DPIE -> MSSQL: Verify Credentials
+activate MSSQL
+MSSQL --> DPIE: Verification Success
+deactivate MSSQL
+
+alt Import to MS-SQL
+    RD -> DPIE: Import Data Package
+    DPIE -> DPIE: Transform Data to MS-SQL Format
+    DPIE -> MSSQL: Write Data
+    activate MSSQL
+    MSSQL --> DPIE: Confirmation
+    deactivate MSSQL
+else Export from MS-SQL
+    RD -> DPIE: Export Data from MS-SQL
+    DPIE -> MSSQL: Query Data
+    activate MSSQL
+    MSSQL --> DPIE: Data
+    deactivate MSSQL
+    DPIE -> DPIE: Transform Data to Data Package Format
+    DPIE -> RD: Provide Data Package
+end
+
+DPIE -> RD: Notify Completion
+deactivate DPIE
+@enduml
+```
+
+This PlantUML syntax outlines a basic sequence involving a Researcher/Developer interacting with the DPIE system to either import data into MS-SQL or export data from MS-SQL, incorporating steps for authentication and data transformation. To render this diagram, you'll need to use a PlantUML environment or an online tool that supports PlantUML code.

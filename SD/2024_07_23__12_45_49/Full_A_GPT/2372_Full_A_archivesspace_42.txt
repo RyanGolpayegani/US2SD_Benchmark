@@ -1,0 +1,40 @@
+To create a detailed sequence diagram for the user story "As an Archivist, I want to upload an EAD for import from within the frontend application", we can utilize PlantUML code. This will illustrate the sequence of steps involved from the perspective of the Archivist interacting with the frontend application, through the backend processing of the EAD file, and up to the confirmation of the successful import.
+
+Below is an example of how you can write the PlantUML code to generate this sequence diagram:
+
+```plantuml
+@startuml
+actor Archivist
+participant "Frontend Application" as Frontend
+participant "Authentication Service" as Auth
+participant "File Upload Service" as Upload
+participant "EAD Processing Service" as EADProcess
+participant "Database" as DB
+
+== Upload EAD Process ==
+Archivist -> Frontend : Selects "Import EAD"
+Frontend -> Archivist : Requests EAD file
+Archivist -> Frontend : Provides EAD file
+Frontend -> Auth : Validates Archivist's session
+Auth --> Frontend : Session Valid
+Frontend -> Upload : Sends EAD file
+Upload -> EADProcess : Initiates EAD Processing
+EADProcess -> EADProcess : Validates EAD format
+EADProcess -> DB : Saves processed data
+DB --> EADProcess : Confirm data saved
+EADProcess --> Upload : Confirm EAD processed
+Upload --> Frontend : Confirm EAD uploaded
+Frontend -> Archivist : Displays confirmation message
+
+@enduml
+```
+
+### Explanation:
+1. **Actor (Archivist):** Initiates the process by selecting the option to import an EAD (Encoded Archival Description) file from within the frontend application.
+2. **Frontend Application:** Prompts the Archivist to provide the EAD file for import. This component acts as the interface through which the Archivist interacts with the system.
+3. **Authentication Service:** Validates the Archivist's session to ensure the request is authenticated, providing a layer of security.
+4. **File Upload Service:** Receives the EAD file from the frontend application and initiates the processing of the file.
+5. **EAD Processing Service:** Takes the EAD file, validates its format, and processes the data to be stored in the system.
+6. **Database:** The final step where the processed archival data from the EAD file is saved, completing the import process.
+
+This sequence diagram outlines the steps and interactions between different components of the system from the moment the Archivist decides to upload an EAD file until the system confirms that the data import was successful.

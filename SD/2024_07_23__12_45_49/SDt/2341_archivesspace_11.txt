@@ -1,0 +1,31 @@
+@startuml
+actor Archivist as archivist
+participant "UI: Import Page" as importPage
+participant "Import Controller" as importController
+participant "Data Validation Service" as validationService
+participant "Data Import Service" as importService
+participant "Database" as database
+
+== Import Accessions Data Flow ==
+
+archivist -> importPage : Choose "Import Accession CSV"
+importPage -> archivist : Display CSV data format requirements
+archivist -> importPage : Upload Accessions CSV file
+importPage -> importController : POST Upload request with CSV file
+importController -> validationService : Validate CSV format and data
+alt Validation Success
+    validationService -> importController : Return validation success
+    importController -> importService : Process CSV data for import
+    importService -> database : Store Accession records
+    database -> importService : Confirm records stored
+    importService -> importController : Import successful
+    importController -> importPage : Show success message to Archivist
+    importPage -> archivist : Display "Data Imported Successfully"
+else Validation Failure
+    validationService -> importController : Return validation errors
+    importController -> importService : Log import attempt and errors
+    importService -> importController : Acknowledge log creation
+    importController -> importPage : Show error message to Archivist
+    importPage -> archivist : Display "Data Import Failed - Errors Found"
+end
+@enduml

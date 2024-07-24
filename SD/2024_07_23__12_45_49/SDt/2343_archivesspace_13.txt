@@ -1,0 +1,35 @@
+@startuml
+participant UserInterface as UI
+participant FrontendController as FC
+participant BackendApi as API
+partition Database {
+    entity "ENUM List" as ENUM
+}
+
+UI -> FC : Request ENUM List Management Page
+activate FC
+FC -> API : Get ENUM List Data
+activate API
+API -> ENUM : Fetch ENUM Data
+activate ENUM
+ENUM --> API : ENUM Data
+deactivate ENUM
+API --> FC : ENUM List Data
+deactivate API
+FC --> UI : Display ENUM List Management
+deactivate FC
+
+UI -> FC : Submit ENUM List Update
+activate FC
+FC -> API : Update ENUM List Request
+activate API
+API -> ENUM : Update ENUM List
+activate ENUM
+ENUM --> API : Update Confirmation
+develope ENUM
+API --> FC : Update Status
+deactivate API
+FC --> UI : Display Update Confirmation
+deactivate FC
+
+@enduml

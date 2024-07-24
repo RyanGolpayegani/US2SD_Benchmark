@@ -1,0 +1,44 @@
+@startuml
+participant UserInterface as UI
+participant ApiService as API
+participant SchemaService as Schema
+participant DatasetConfig as Config
+participant Database as DB
+
+title Specify Dataset Schema as SQL String Workflow
+
+User -> UI : Enter SQL schema string
+activate UI
+
+UI -> API : Request to update schema (SQL string)
+activate API
+
+API -> Schema : Validate SQL schema
+activate Schema
+
+alt If SQL schema is valid
+    Schema -> Config : Update dataset configuration
+    activate Config
+    Config -> DB : Store updated config
+    activate DB
+    DB --> Config : Acknowledge storage
+    deactivate DB
+    Config --> Schema : Configuration updated
+    deactivate Config
+    Schema --> API : Schema valid and updated
+else If SQL schema is invalid
+    Schema --> API : Error: Invalid schema
+end
+deactivate Schema
+
+alt If update successful
+    API --> UI : Display success message
+else If update fails
+    API --> UI : Display error message
+end
+deactivate API
+
+User <-- UI : See result of operation
+deactivate UI
+
+@enduml

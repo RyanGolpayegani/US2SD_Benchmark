@@ -1,0 +1,20 @@
+@startuml
+participant UserInterface as UI
+participant Server as S
+participant Database as DB
+participant GoogleMapsAPI as GM
+
+UI -> S : RequestSpecialWasteSites(Location)
+activate S
+    S -> DB : GetSpecialWasteSites(Location)
+    activate DB
+    DB --> S : SpecialWasteSitesList
+    deactivate DB
+    S -> GM : RequestMap(SpecialWasteSitesList)
+    activate GM
+    GM --> S : MapDisplay
+    deactivate GM
+    S --> UI : DisplayMap(MapDisplay)
+deactivate S
+
+@enduml

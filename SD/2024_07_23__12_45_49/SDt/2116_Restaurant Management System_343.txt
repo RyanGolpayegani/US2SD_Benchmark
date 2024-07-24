@@ -1,0 +1,33 @@
+@startuml
+participant Employee as E
+participant "Employee Interface" as EI
+participant "Order Management System" as OMS
+participant "Sales Analytics System" as SAS
+database "Database" as DB
+
+E -> EI : Request current orders and best sellers
+activate EI
+
+EI -> OMS : Get current orders
+activate OMS
+OMS -> DB : Query current orders
+activate DB
+DB -> OMS : Return orders
+deactivate DB
+OMS -> EI : Display current orders
+deactivate OMS
+
+EI -> SAS : Get best selling products
+activate SAS
+SAS -> DB : Query best sellers
+activate DB
+DB -> SAS : Return best sellers list
+deactivate DB
+SAS -> EI : Display best sellers
+deactivate SAS
+
+EI -> E : Show current orders and best sellers
+deactivate EI
+
+E -> E : Suggest best sellers to customer
+@enduml

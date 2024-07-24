@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for supporting data migration integrity testing for the Comprehensive Archival Management System (CAMS) project involves illustrating the interactions between various components and actors involved in the migration process. Given the complexity and the broad features of CAMS, this sequence diagram will focus specifically on the core steps of integrity testing post-migration from legacy systems (e.g., AT or Archon) to CAMS.
+
+Please note, PlantUML code provided here represents a simplified version focusing on key interactions. In practice, additional steps may be necessary depending on specific system architectures, data formats, and other technical considerations.
+
+```plantuml
+@startuml
+participant "Source System\n(AT/Archon)" as source
+participant "Migration Tool" as tool
+database "CAMS Database" as CAMSDB
+participant "Data Integrity\nChecker" as checker
+actor Archivist
+
+== Migration Process ==
+Archivist -> tool : Initiate Migration
+tool -> source : Extract Data
+source -> tool : Return Data
+tool -> CAMSDB : Transform & Load Data
+
+== Integrity Testing Process ==
+Archivist -> checker : Start Integrity Check
+checker -> CAMSDB : Fetch Migrated Data
+CAMSDB -> checker : Return Data 
+
+loop For Each Record
+    checker -> source : Fetch Original Record ID
+    source -> checker : Return Original Data
+    checker -> checker : Compare Source\nvs. Migrated Data
+    alt If Data Matches
+        checker -> CAMSDB : Log Success for Record
+    else If Data Mismatch
+        checker -> CAMSDB : Log Error with Details
+    end
+end
+
+Archivist -> checker : Request Integrity Report
+checker -> CAMSDB : Compile Integrity Report
+CAMSDB -> checker : Return Report
+checker -> Archivist : Display Report
+
+@enduml
+```
+
+This sequence diagram highlights the following key steps in the data migration integrity testing process:
+
+1. The Archivist initiates the migration process using the Migration Tool, which extracts data from the Source System (AT or Archon).
+2. The Migration Tool transforms the extracted data according to CAMS requirements and loads it into the CAMS Database.
+3. The Archivist then initiates the integrity check. The Data Integrity Checker fetches the migrated data from the CAMS Database.
+4. For each migrated record, the Data Integrity Checker retrieves the corresponding original record from the Source System by matching the original record ID stored in each ASpace (ArchivesSpace) record.
+5. The Checker then compares the original data with the migrated data in CAMS. If the data matches, a success log is made; if there's a mismatch, an error log with details is created.
+6. Upon completion of the check, the Archivist requests an integrity report, which the Data Integrity Checker compiles by fetching logs from the CAMS Database and presents to the Archivist.
+
+This diagram simplifies interaction flows focusing on core components and processes. In real implementations, additional considerations such as error handling, security checkpoints, and performance metrics may be involved.

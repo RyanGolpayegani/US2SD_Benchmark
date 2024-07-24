@@ -1,0 +1,57 @@
+@startuml
+participant RecyclingFacility as facility
+participant RecycleSmartPlatform as platform
+participant Database as db
+participant Admin as admin
+
+facility -> platform : Access issue report feature
+activate platform
+
+platform -> db : Fetch admin contact / ticket form
+activate db
+db -> platform : Return admin contact / form
+deactivate db
+
+platform -> facility : Display admin contact / report form
+deactivate platform
+
+facility -> platform : Submit issue report / ticket
+activate platform
+
+platform -> db : Save submitted report / ticket
+activate db
+db -> platform : Confirm report / ticket saved
+deactivate db
+
+platform -> admin : Notify of new issue report / ticket
+activate admin
+admin -> platform : Acknowledge receipt
+deactivate admin
+
+admin -> platform : Review issue report / ticket
+activate platform
+
+platform -> db : Fetch facility details / reported issue
+activate db
+db -> platform : Return details / issue
+deactivate db
+
+platform -> admin : Display facility details / reported issue
+deactivate platform
+
+admin -> facility : Communicate resolution steps / ask for clarification
+activate facility
+facility -> admin : Provide clarification / acknowledge steps (optional)
+deactivate facility
+
+@admin -> platform : Update issue status / resolution
+activate platform
+
+platform -> db : Update report / ticket status
+activate db
+db -> platform : Confirm status updated
+deactivate db
+
+platform -> admin : Confirm issue resolution
+deactivate platform
+@enduml

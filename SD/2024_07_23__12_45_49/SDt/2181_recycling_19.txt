@@ -1,0 +1,59 @@
+@startuml
+actor User as user
+participant "UI/UX" as uiux
+participant "Server" as server
+participant "Database" as db
+
+user -> uiux: Access RecycleSmart
+activate uiux
+uiux -> server: RequestInitialPage()
+activate server
+server -> db: FetchPageData()
+activate db
+db --> server: PageData
+deactivate db
+server --> uiux: DisplayPage(Content)
+deactivate server
+uiux --> user: ShowHomePage
+deactivate uiux
+
+user -> uiux: EnterZipCode()
+activate uiux
+uiux -> server: RequestRecyclingCenters(ZipCode)
+activate server
+server -> db: QueryCenters(ZipCode)
+activate db
+db --> server: CentersList
+deactivate db
+server --> uiux: DisplayCenters(CentersList)
+deactivate server
+uiux --> user: ShowCenters(Map, Info)
+deactivate uiux
+
+user -> uiux: SelectCenter()
+activate uiux
+uiux -> server: RequestCenterDetails(CenterID)
+activate server
+server -> db: FetchDetails(CenterID)
+activate db
+db --> server: CenterDetails
+deactivate db
+server --> uiux: DisplayDetails(Details)
+deactivate server
+uiux --> user: ShowDetails(Info)
+deactivate uiux
+
+user -> uiux: SchedulePickUp()
+activate uiux
+uiux -> server: RequestPickUpSchedule(FormData)
+activate server
+server -> db: SavePickUpRequest(FormData)
+activate db
+db --> server: Confirmation
+deactivate db
+server --> uiux: DisplayConfirmation(Confirmation)
+deactivate server
+uiux --> user: ShowConfirmation(Msg)
+deactivate ui_pack
+
+@enduml

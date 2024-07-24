@@ -1,0 +1,48 @@
+To illustrate the process outlined in the user story as a sequence diagram using PlantUML, we will assume a scenario where a Researcher initiates a validation process for their data package through an integration with https://data.mendeley.com/. This scenario will involve the researcher using the DPIE system to upload and validate a data package against standards and datasets found in Mendeley Data.
+
+**Note:** Given the textual nature of this platform, I'll describe a basic sequence diagram content for your scenario, which you can then adapt or expand according to specific needs or system designs that might not be fully detailed here.
+
+```
+@startuml
+participant Researcher
+participant "DPIE System" as DPIE
+participant "DataPackage API" as API
+participant "Mendeley Data Integration" as Mendeley
+participant "Validation Service" as Validation
+
+Researcher -> DPIE: Request Data Validation
+activate DPIE
+DPIE -> API: Invoke Upload DataPackage
+activate API
+API -> DPIE: DataPackage Uploaded
+deactivate API
+
+DPIE -> Mendeley: Initiate Data Validation
+activate Mendeley
+Mendeley -> Validation: Validate against datasets
+activate Validation
+Validation -> Mendeley: Validation Results
+deactivate Validation
+
+Mendeley -> DPIE: Validation Response
+deactivate Mendeley
+DPIE -> Researcher: Display Validation Results
+deactivate DPIE
+@enduml
+```
+
+**Explanation of the Sequence:**
+
+1. **Researcher Initiates Validation:** The Researcher requests the DPIE system to validate their data package. This is the initial trigger for the entire process.
+
+2. **DataPackage Uploaded:** The DPIE system sends the data package to its API, initiating the upload process. Once the data package is successfully uploaded, the API sends a confirmation back to the DPIE system.
+
+3. **Initiate Data Validation:** DPIE then requests data validation by forwarding the data package to the Mendeley Data Integration service. This step involves DPIE integrating with the external service (Mendeley) for additional data validation.
+
+4. **Data Validation Process:** Within the Mendeley service, the data package is validated against available datasets. The validation process is handled by a specialized validation service, which could involve various checks for data integrity, conformity with standards, etc.
+
+5. **Validation Results:** Once the validation is completed, the results are sent back to the DPIE system from Mendeley. This includes details on whether the data package meets the required standards or any discrepancies found.
+
+6. **Display Validation Results to Researcher:** Finally, the DPIE system processes the validation results and displays them to the Researcher. This feedback could inform the Researcher of the next steps, whether that means corrections are needed or if the data package is ready for use.
+
+This sequence diagram outlines a straightforward process for data validation integration with Mendeley, as it might occur in the DPIE system. Depending on the complexity of both the DPIE system and the Mendeley integration, additional steps or components (like error handling, user authentication, more detailed interactions, etc.) could be included to reflect a more detailed design.

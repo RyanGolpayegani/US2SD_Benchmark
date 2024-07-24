@@ -1,0 +1,48 @@
+To create a detailed Sequence Diagram in PlantUML format for the user story "As an employee, I want to know the customer orders and best selling products so that I can suggest these products to them when they are indecisive to choose a product", we'll outline the interaction between the employee, the system's interface, and the backend services including the order management system and the sales analytics system. This diagram illustrates how an employee would retrieve information about current customer orders and data on best selling products.
+
+```plantuml
+@startuml
+participant Employee as E
+participant "Employee Interface" as EI
+participant "Order Management System" as OMS
+participant "Sales Analytics System" as SAS
+database "Database" as DB
+
+E -> EI : Request current orders and best sellers
+activate EI
+
+EI -> OMS : Get current orders
+activate OMS
+OMS -> DB : Query current orders
+activate DB
+DB -> OMS : Return orders
+deactivate DB
+OMS -> EI : Display current orders
+deactivate OMS
+
+EI -> SAS : Get best selling products
+activate SAS
+SAS -> DB : Query best sellers
+activate DB
+DB -> SAS : Return best sellers list
+deactivate DB
+SAS -> EI : Display best sellers
+deactivate SAS
+
+EI -> E : Show current orders and best sellers
+deactivate EI
+
+E -> E : Suggest best sellers to customer
+@enduml
+```
+
+**Explanation:**
+1. **Employee (E)** initiates the process by requesting information on current orders and best selling products from the **Employee Interface (EI)**.
+2. **EI** then makes a request to the **Order Management System (OMS)** to retrieve the current orders.
+3. **OMS** queries the **Database (DB)** for current order data and returns this information back to **EI**.
+4. Almost simultaneously, **EI** requests data on the best selling products from the **Sales Analytics System (SAS)**.
+5. **SAS** queries the **DB** for the best-selling products data and returns this information back to **EI**.
+6. **EI** compiles and displays both sets of information—current orders and best selling products—to the **Employee**.
+7. Finally, the **Employee** uses this information to suggest best selling items to customers who are indecisive.
+
+This sequence diagram provides a high-level overview of the interactions involved in fulfilling the employee's wish to suggest the best selling products to customers based on real-time orders and sales analytics.

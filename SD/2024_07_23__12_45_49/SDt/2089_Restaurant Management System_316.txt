@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+
+actor Waiter
+participant "Authentication System" as Auth
+participant "Order Management System" as OMS
+database "Database" as DB
+
+== Update Order Status ==
+
+Waiter -> OMS: RequestToUpdateOrderStatus(OrderID)
+OMS -> Auth: VerifyWaiterCredentials()
+Auth --> OMS: CredentialsValid
+OMS -> DB: RetrieveOrderDetails(OrderID)
+DB --> OMS: OrderDetails
+OMS --> Waiter: DisplayOrderDetails
+Waiter -> OMS: InputNewStatus(NewStatus)
+OMS -> DB: UpdateOrderStatus(OrderID, NewStatus)
+DB --> OMS: StatusUpdated
+OMS --> Waiter: ConfirmStatusUpdate
+
+@enduml

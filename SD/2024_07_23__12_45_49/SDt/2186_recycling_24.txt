@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+
+actor Executive as exec
+participant "RecycleSmart Platform\n(User Interface)" as UI
+participant "Authentication Service" as AuthService
+database "RecycleSmart Database" as DB
+participant "Analytics and Reporting\nService" as Analytics
+
+exec -> UI : Accesses platform
+UI -> AuthService : Authentication request
+AuthService -> UI : Authentication response
+alt Successful Authentication
+    AuthService --> exec : Access granted
+    exec -> UI : Requests company performance data
+    UI -> Analytics : Fetch performance data request
+    Analytics -> DB : Query company data
+    DB -> Analytics : Return company data
+    Analytics -> UI : Prepare performance report
+    UI -> exec : Displays performance report
+else Authentication Failed
+    AuthService --> exec : Access denied
+end
+
+@enduml

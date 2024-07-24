@@ -1,0 +1,46 @@
+To realize the given user story ("As a Data Publishing User, I want to be able to edit a dataset I have published, So that I can correct or enhance existing data.") in the context of the OpenSpending Enhancement Project, we can draft a detailed sequence diagram in PlantUML format. This diagram will illustrate the process from the user's intention to update a dataset to the completion of this task, involving interactions between the user, the platform's UI, the data management system, and the data storage.
+
+```plantuml
+@startuml
+actor User as user
+participant "UI: OpenSpending Platform" as ui
+participant "Data Management System" as dms
+database "Data Storage" as storage
+
+== Edit Dataset Process ==
+
+user -> ui : Select Dataset to Edit
+ui -> dms : Request Dataset Details
+dms -> storage : Fetch Dataset Details
+storage --> dms : Dataset Details
+dms --> ui : Display Dataset Details
+ui --> user : Show Dataset Details (Editable Form)
+
+user -> ui : Submit Updated Dataset Details
+ui -> dms : Validate Update Request
+alt Validation Success
+  dms -> storage : Update Dataset Information
+  storage --> dms : Confirmation of Update
+  dms --> ui : Notify Update Success
+  ui --> user : Display Success Message
+else Validation Fail
+  dms --> ui : Notify Validation Error
+  ui --> user : Display Error Message
+end
+
+@enduml
+```
+
+### Explanation of the Diagram Components:
+- **User**: The data publishing user who wishes to edit a previously published dataset.
+- **UI: OpenSpending Platform**: The user interface through which the user interacts with platform features, selects datasets for editing, receives forms to edit data, and submits changes.
+- **Data Management System**: Validates user requests, fetches dataset details from the storage, applies updates, and handles errors or success notifications.
+- **Data Storage**: The backend storage that contains all datasets and where the actual data updates are executed.
+
+### Process Flow:
+1. **Selection**: The user selects the dataset they wish to edit through the platform's UI.
+2. **Fetching Details**: The platform requests and then displays the current details of the dataset to the user, allowing them to understand what they are editing.
+3. **Editing**: The user applies their desired changes to the dataset through an editable form provided by the UI.
+4. **Validation and Update**: Upon submission, the system validates the update request. If validation passes, the Data Management System updates the dataset in the Data Storage. A success notification is then shown to the user. If validation fails, an error message is displayed instead.
+
+This diagram provides a high-level view of the process and interactions involved in editing a dataset within the OpenSpending platform from the perspective of a data publishing user.

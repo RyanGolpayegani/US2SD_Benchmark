@@ -1,0 +1,35 @@
+@startuml
+participant "Source System\n(AT/Archon)" as source
+participant "Migration Tool" as tool
+database "CAMS Database" as CAMSDB
+participant "Data Integrity\nChecker" as checker
+actor Archivist
+
+== Migration Process ==
+Archivist -> tool : Initiate Migration
+tool -> source : Extract Data
+source -> tool : Return Data
+tool -> CAMSDB : Transform & Load Data
+
+== Integrity Testing Process ==
+Archivist -> checker : Start Integrity Check
+checker -> CAMSDB : Fetch Migrated Data
+CAMSDB -> checker : Return Data 
+
+loop For Each Record
+    checker -> source : Fetch Original Record ID
+    source -> checker : Return Original Data
+    checker -> checker : Compare Source\nvs. Migrated Data
+    alt If Data Matches
+        checker -> CAMSDB : Log Success for Record
+    else If Data Mismatch
+        checker -> CAMSDB : Log Error with Details
+    end
+end
+
+Archivist -> checker : Request Integrity Report
+checker -> CAMSDB : Compile Integrity Report
+CAMSDB -> checker : Return Report
+checker -> Archivist : Display Report
+
+@enduml

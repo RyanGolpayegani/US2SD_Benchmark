@@ -1,0 +1,36 @@
+To visualize the interaction for the user story "As a developer, I want a DSpace integration, so that I can integrate data-packaged data with pipelines that use DSpace," we can create a detailed sequence diagram using PlantUML. Below is a sample PlantUML sequence diagram code that outlines this process:
+
+```plantuml
+@startuml
+actor Developer
+participant "DPIE API" as DPIE
+participant "DataPackage\nProcessor" as DPProcessor
+database "DSpace Repository" as DSpace
+
+Developer -> DPIE: Request DSpace Integration
+activate DPIE
+DPIE -> DPProcessor: Initiate DataPackage Integration
+activate DPProcessor
+
+DPProcessor -> DSpace: Check for Existing DataPackage
+activate DSpace
+DSpace --> DPProcessor: DataPackage Exists / Not Found
+deactivate DSpace
+
+alt DataPackage Exists
+    DPProcessor -> DSpace: Update DataPackage
+    DSpace --> DPProcessor: Acknowledge Update
+else DataPackage Not Found
+    DPProcessor -> DSpace: Upload DataPackage
+    DSpace --> DPProcessor: Acknowledge Upload
+end
+
+DPProcessor --> DPIE: DSpace Integration Successful
+deactivate DPProcessor
+DPIE --> Developer: Integration Complete
+deactivate DPIE
+
+@enduml
+```
+
+This PlantUML sequence diagram represents the interaction between a developer, the DPIE system (DataPackage Integrator and Enhancer API), a DataPackage Processor (component responsible for handling data packages), and the DSpace Repository (where data packages are stored). The process begins with the developer requesting DSpace integration from the DPIE and ends with the DPIE confirming that the integration is complete. The diagram includes decision points to handle scenarios where the data package either exists or does not exist in the DSpace repository, showing how the system would update existing packages or upload new ones accordingly.

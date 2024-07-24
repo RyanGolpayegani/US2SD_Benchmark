@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+
+actor Developer
+participant "DPIE API" as DPIE
+participant "Data Package\nRepository" as Repository
+participant "Clojure\nEnvironment" as Clojure
+database "Data Package" as DataPackage
+
+Developer -> DPIE : Request Data Package\nfor Clojure
+DPIE -> Repository : Fetch Data Package metadata
+activate Repository
+Repository --> DPIE : Return metadata
+deactivate Repository
+
+DPIE -> DataPackage : Download Data Package
+activate DataPackage
+DataPackage --> DPIE : Data Package (.zip)
+deactivate DataPackage
+
+DPIE --> Developer : Provide Data Package\n& Integration Tools
+Developer -> Clojure : Unzip Data Package
+activate Clojure
+
+note right of Clojure : Process Data\nfor Analysis/Visualization
+Clojure -> Clojure : Analyze and Visualize Data
+
+deactivate Clojure
+
+@enduml

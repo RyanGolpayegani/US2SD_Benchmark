@@ -1,0 +1,18 @@
+@startuml
+participant Manager as mgr
+participant "UI Interface" as ui
+participant "Backend Server" as backend
+participant "Database" as db
+
+mgr -> ui : Requests food sales data
+ui -> backend : GET /api/foodSalesData
+activate backend
+backend -> db : Query total sales per food item
+activate db
+db --> backend : Return sales data
+deactivate db
+backend --> ui : Show sales data
+ui --> mgr : Display food popularity chart
+deactivate backend
+
+@enduml

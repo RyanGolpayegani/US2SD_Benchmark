@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the user story you've provided involves illustrating the interactions between the archivist and the components of the Comprehensive Archical Management System (CAMS) when creating and editing a Collection Management subrecord. Below is a PlantUML code snippet that outlines this process.
+
+Please note this example assumes a simplified scenario where the archivist interacts through a user interface, which then communicates with a backend system responsible for handling the creation and editing of Collection Management subrecords. Adjustments might be necessary to suit the specific architecture and workflows of CAMS.
+
+```plantuml
+@startuml
+actor Archivist as archivist
+participant "UI Component" as ui
+participant "Controller" as controller
+participant "Collection Management\nService" as service
+database "Archival Database" as db
+
+== Creating a Collection Management Subrecord ==
+archivist -> ui : Select option to create\nCollection Management subrecord
+ui -> controller : invoke createSubrecord()
+controller -> service : createSubrecord()
+service -> db : insert new subrecord details
+db --> service : confirm creation
+service --> controller : return creation status
+controller --> ui : display creation status
+ui --> archistar : show success/failure message
+
+== Editing a Collection Management Subrecord ==
+archivist -> ui : Select and edit\nCollection Management subrecord
+ui -> controller : invoke editSubrecord(subrecordId, newDetails)
+controller -> service : editSubrecord(subrecordId, newDetails)
+service -> db : update subrecord details
+db --> service : confirm update
+service --> controller : return update status
+controller --> ui : display update status
+ui --> archistar : show success/failure message
+
+@enduml
+```
+
+This PlantUML sequence diagram starts with the Archivist (actor) wanting to create or edit a Collection Management subrecord. The steps are as follows:
+
+1. The Archivist selects the option to create or edit a Collection Management subrecord through the UI Component. 
+2. The UI Component sends the request to a Controller.
+3. For creation, the Controller asks the Collection Management Service to create a new subrecord, which, in turn, interacts with the Archival Database to insert the new subrecord details. 
+4. For editing, the Controller sends the subrecord ID and the new details to be updated to the Collection Management Service, which updates the respective subrecord in the Archival Database.
+5. The database confirms the creation or update action back to the Collection Management Service.
+6. The Collection Management Service returns the status (success or failure) of the action to the Controller.
+7. The Controller then communicates the status back to the UI Component.
+8. Finally, the UI Component displays a success or failure message to the Archivist based on the response from the Controller.
+
+This sequence diagram is a high-level representation and might need adjustments based on the detailed architecture of the Comprehensive Archival Management System.

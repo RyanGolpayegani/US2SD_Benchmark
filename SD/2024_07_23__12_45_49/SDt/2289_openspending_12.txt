@@ -1,0 +1,53 @@
+@startuml
+actor "Data Publishing User" as User
+participant "OpenSpending Platform" as Platform
+participant "Google Authentication" as GoogleAuth
+participant "Google Spreadsheets" as GoogleSheets
+participant "Data Packager" as Packager
+
+User -> Platform: Select "Import Data"
+activate Platform
+
+Platform -> User: Show data source options
+activate User
+
+User -> Platform: Select "Google Spreadsheet"
+deactivate User
+
+Platform -> GoogleAuth: Request authentication
+activate GoogleAuth
+
+GoogleAuth -> User: Authenticate
+activate User
+
+User -> GoogleAuth: Provide credentials
+deactivate User
+
+GoogleAuth -> Platform: Authentication successful
+deactivate GoogleAuth
+
+Platform -> User: Show list of spreadsheets
+activate User
+
+User -> Platform: Select spreadsheet
+deactivate User
+
+Platform -> GoogleSheets: Retrieve selected data
+activate GoogleSheets
+
+GoogleSheets -> Platform: Data retrieved
+deactivate GoogleSheets
+
+Platform -> Packager: Convert data to compatible format
+activate Packager
+
+Packager -> Platform: Data conversion successful
+deactivate Packager
+
+Platform -> User: Show success message & editing options
+deactivate Platform
+activate User
+
+User -> Platform: Choose to edit or publish dataset
+deactivate User
+@enduml

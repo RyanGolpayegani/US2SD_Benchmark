@@ -1,0 +1,27 @@
+@startuml
+actor Employee as emp
+participant "RecycleSmart Interface" as UI
+participant "Authentication Service" as Auth
+participant "Route Planning System" as RoutePlan
+participant "Mapping Service" as MapService
+
+== Authentication Process ==
+emp -> UI: Access RecycleSmart
+UI -> Auth: Request Authentication
+Auth -> UI: Authentication Successful
+
+== Access Route Planning ==
+emp -> UI: Select "Route Planning"
+UI -> RoutePlan: Fetch Route Planning Tool
+note over Routeplan: Determine User Location
+RoutePlan -> MapService: Request Neighbourhood Routes
+MapService -> RoutePlan: Provide Route Details
+RoutePlan -> UI: Display Route Options
+UI -> emp: Show Route Planning on Map
+
+== Employee Selects a Route ==
+emp -> UI: Select Desired Route
+UI -> RoutePlan: Log Route Selection
+RoutePlan -> emp: Confirm Route & Provide Navigation
+
+@enduml

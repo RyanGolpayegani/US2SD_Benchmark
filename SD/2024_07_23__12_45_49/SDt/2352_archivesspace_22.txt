@@ -1,0 +1,40 @@
+@startuml
+participant "Application Administrator" as AA
+participant "Configuration Interface" as CI
+participant "System Backend" as SB
+participant "Database" as DB
+
+AA -> CI: Access Configuration Module
+activate CI
+
+CI -> SB: Request Current Help Center Settings
+activate SB
+
+SB -> DB: Fetch Help Center Settings
+activate DB
+
+DB --> SB: Return Settings
+deactivate DB
+
+SB --> CI: Display Current Settings
+deactivate SB
+
+AA -> CI: Enter New Help Center URL and Topic Mappings
+activate CI
+
+CI -> SB: Update Help Center Settings
+activate SB
+
+SB -> DB: Store New Settings
+activate DB
+
+DB --> SB: Confirm Update
+deactivate DB
+
+SB --> CI: Update Confirmation Message
+deactivate SB
+
+CI --> AA: Display Success Message
+deactivate CI
+
+@enduml

@@ -1,0 +1,65 @@
+Creating a detailed sequence diagram for the given user story involves illustrating the interactions between different components involved when a plugin developer upgrades the code of a dataset type used by a dataset instance created by that plugin and updates the pipeline to use that version. While it's not feasible to provide a comprehensive visual diagram here, below is the PlantUML code to generate a sequence diagram that depicts the scenario outlined in the user story.
+
+```plantuml
+@startuml
+!theme plain
+
+participant PluginDeveloper as PD
+participant ArtifactRepository as AR
+participant DatasetManagementSystem as DMS
+participant PipelineSystem as PS
+participant DatasetInstance as DI
+participant Pipeline as P
+
+== Plugin Upgrade ==
+PD -> AR : Deploy new plugin version with upgraded dataset type
+activate AR
+AR -> DMS : Notify dataset type version upgrade
+activate DMS
+DMS -> DI : Check for existing instances of dataset type
+activate DI
+DI -> DMS : Report current status
+DMS -> DMS : Validate compatibility
+DMS -> DI : Upgrade dataset instance to new version
+deactivate DI
+DMS -> AR : Upgrade successful
+deactivate DMS
+AR -> PD : Confirm plugin and dataset type upgrade
+deactivate AR
+
+== Pipeline Update ==
+PD -> PS : Update pipeline to use new plugin version
+activate PS
+PS -> P : Check existing pipeline configurations
+activate P
+P -> PS : Report current version and configurations
+PS -> P : Update to new plugin version
+P -> DI : Access upgraded dataset instance
+activate DI
+DI -> P : Provide access based on new version
+deactivate DI
+P -> PS : Pipeline updated successfully
+deactivate P
+PS -> PD : Confirm pipeline update to new plugin version
+deactivate PS
+
+@enduml
+```
+
+### Explanation:
+
+1. **Plugin Developer (PD) to Artifact Repository (AR)**: The plugin developer deploys the new plugin version that includes the upgraded dataset type to an artifact repository.
+
+2. **Artifact Repository (AR) to Dataset Management System (DMS)**: The artifact repository notifies the dataset management system of the dataset type version upgrade.
+
+3. **Dataset Management System (DMS) Operations**: The dataset management system checks for existing instances of the upgraded dataset type. It validates the compatibility of the upgrade and then proceeds to upgrade the relevant dataset instance to the new version.
+
+4. **Dataset Management System (DMS) to Artifact Repository (AR)**: After successfully upgrading the dataset instance, the dataset management system notifies the artifact repository of the successful upgrade.
+
+5. **Plugin Developer (PD) Updates Pipeline**: Subsequently, the plugin developer updates the pipeline to utilize the new version of the plugin, which encompasses the upgraded dataset type.
+
+6. **Pipeline System (PS) and Pipeline (P) Operations**: The pipeline system checks the existing pipeline configurations and updates the pipeline to use the new plugin version. This includes accessing the upgraded dataset instance according to the new dataset type version.
+
+7. **Pipeline (P) to Dataset Instance (DI)**: The updated pipeline accesses the upgraded dataset instance, which provides access based on the new version of the dataset type.
+
+By following the interactions described in this PlantUML sequence diagram code, one can understand the detailed process involved when a plugin developer upgrades the code of a dataset type and updates the pipeline to use the new version within an application ecosystem.

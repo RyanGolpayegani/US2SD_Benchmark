@@ -1,0 +1,45 @@
+To fulfill your request for a detailed sequence diagram in PlantUML format that illustrates the user story of a Data Consuming User wanting to download a CSV of the data used in any visualization they are viewing, the following PlantUML code snippet represents the sequence of interactions between the user, the OpenSpending platform (front end), and the server or backend services involved in providing this functionality. This diagram aims to capture the interactions from the moment the user requests a CSV download through to receiving the file.
+
+Please note, this is a simplified representation and real-world implementations might involve additional steps or services (e.g., authentication, error handling mechanisms).
+
+```plantuml
+@startuml
+participant User
+participant "OpenSpreading Frontend" as Frontend
+participant "Data API" as DataAPI
+participant "File Generator" as FileGen
+participant "Database" as DB
+
+User -> Frontend : Choose visualization\nand request CSV download
+activate Frontend
+
+Frontend -> DataAPI : Request data for visualization
+activate DataAPI
+
+DataAPI -> DB : Fetch requested data
+activate DB
+DB --> DataAPI : Return data
+deactivate DB
+
+DataAPI --> Frontend : Provide data
+deactivate DataAPI
+
+Frontend -> FileGen : Send data for CSV creation
+activate FileGen
+
+FileGen -> FileGen : Generate CSV file from data
+
+FileGen --> Frontend : Provide download link to CSV
+deactivate FileGen
+
+Frontend --> User : Offer CSV download link
+deactivate Frontend
+User -> Frontend : Clicks download link
+Frontend -> User : Initiates download of CSV file
+
+@enduml
+```
+
+This PlantUML sequence diagram starts with the User interacting with the OpenSpending Frontend to request a CSV download of data used in a visualization. The Frontend then communicates with the Data API to fetch the relevant data, potentially from a Database. Once the data is retrieved, it's sent to a File Generator service, which creates the CSV file. Finally, a download link is provided back to the User through the Frontend, allowing them to download the CSV file.
+
+You can visualize this code snippet by using a PlantUML editor or integrations available in various development tools and IDEs.

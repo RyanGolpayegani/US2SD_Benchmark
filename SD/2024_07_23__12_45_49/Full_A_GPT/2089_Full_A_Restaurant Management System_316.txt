@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the user story, "As a waiter, I want to update the track of the offer," entails illustrating the interactions between the waiter, the system, and other components to fulfill the waiter's request. To implement this in PlantUML, follow the structure and code example below. Note that PlantUML syntax is designed to be simple and allows for the quick creation of UML diagrams from plain text.
+
+### PlantUML Sequence Diagram for "As a Waiter, I want to update the track of the order"
+
+The diagram will cover the following steps:
+
+1. The waiter initiates the process to update the order status.
+2. The system verifies the waiter's credentials and permissions.
+3. The waiter selects the order to update from the list of active orders.
+4. The system retrieves and displays the selected order's details.
+5. The waiter inputs the new status for the order.
+6. The system updates the order status and confirms the update to the waiter.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Waiter
+participant "Authentication System" as Auth
+participant "Order Management System" as OMS
+database "Database" as DB
+
+== Update Order Status ==
+
+Waiter -> OMS: RequestToUpdateOrderStatus(OrderID)
+OMS -> Auth: VerifyWaiterCredentials()
+Auth --> OMS: CredentialsValid
+OMS -> DB: RetrieveOrderDetails(OrderID)
+DB --> OMS: OrderDetails
+OMS --> Waiter: DisplayOrderDetails
+Waiter -> OMS: InputNewStatus(NewStatus)
+OMS -> DB: UpdateOrderStatus(OrderID, NewStatus)
+DB --> OMS: StatusUpdated
+OMS --> Waiter: ConfirmStatusUpdate
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram Steps:**
+
+1. **RequestToUpdateOrderStatus(OrderID):** The waiter initiates the update process by selecting an order (via OrderID) that needs a status update.
+2. **VerifyWaiterCredentials():** The system checks the waiter's credentials to ensure they have the authority to update order statuses.
+3. **CredentialsValid:** Assuming verification passes, the process continues.
+4. **RetrieveOrderDetails(OrderID):** The system fetches the details of the selected order from the database.
+5. **DisplayOrderDetails:** The waiter is shown the current details of the order to accurately update its status.
+6. **InputNewStatus(NewStatus):** The waiter inputs the new status (e.g., "Ready for Serving" or "Delivered") into the system.
+7. **UpdateOrderStatus(OrderID, New Status):** The new status is updated in the database.
+8. **ConfirmStatusUpdate:** The system confirms to the waiter that the order status has been successfully updated.
+
+This sequence diagram represents a simplified view of the process a waiter would follow to update an order's status using a Restaurant Management and Operations System. Depending on the complexity of the actual system and the requirements, additional steps or components (like error handling) could be added.

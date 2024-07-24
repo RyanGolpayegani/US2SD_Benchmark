@@ -1,0 +1,57 @@
+Creating a detailed sequence diagram for your user story in PlantUML format involves several steps and components interacting with each other during the dataset upgrade process within a pipeline development context. Given the complexities of the advanced dataset management and version control system described, below is a high-level sequence diagram that outlines the interaction sequence for upgrading a dataset instance to a new version of its code after the creation of a pipeline.
+
+```plantuml
+@startuml
+actor PipelineDeveloper as Developer
+participant "Dataset Management\nSystem" as ManagementSystem
+participant "Dataset Version\nControl" as VersionControl
+participant "Application\nDeployment" as AppDeployment
+participant Database as DB
+participant Pipeline as Pipeline
+
+Developer -> ManagementSystem : Request dataset instance upgrade information
+ManagementSystem -> VersionControl : Query available dataset type versions
+VersionControl --> ManagementSystem : Return available versions
+ManagementSystem --> Developer : Display versions with upgrade impacts
+
+Developer -> ManagementSystem : Select new version for upgrade
+ManagementSystem -> VersionControl : Initiate upgrade process for dataset instance
+activate VersionControl
+
+VersionControl -> AppDeployment : Check application dependencies
+activate AppDeployment
+AppDeployment -> VersionControl : Confirm compatibility
+deactivate AppDeployment
+
+VersionControl -> DB : Prepare dataset instance upgrade
+DB --> VersionControl : Upgrade readiness confirmation
+VersionControl -> DB : Execute upgrade to new version
+DB --> VersionControl : Upgrade success
+deactivate VersionControl
+
+VersionControl -> Pipeline : Update pipeline configuration
+activate Pipeline
+Pipeline -> Pipeline : Validate new dataset version compatibility
+Pipeline --> VersionControl : Configuration validated
+deactivate Pipeline
+
+VersionControl --> ManagementSystem : Upgrade completion status
+ManagementSystem --> Developer : Upgrade success notification
+
+@enduml
+```
+
+### Key Steps Explained:
+1. **Pipeline Developer initiates the upgrade request**: This is where the developer requests information about upgrading a specific dataset instance to a newer version after the creation of a pipeline.
+
+2. **Dataset Management System queries available versions**: The Dataset Management System inquires about available versions from the Dataset Version Control to present options to the developer.
+
+3. **Developer selects a new version for the upgrade**: Upon reviewing the available versions and their respective impacts, the developer makes a selection for the upgrade.
+
+4. **Version Control initiates the upgrade process**: This represents the version control system initiating the steps required for upgrading the dataset instance, including checking application dependencies and confirming compatibility.
+
+5. **Database preparation and execution of the upgrade**: The system prepares the dataset instance residing in the database for the upgrade, executes the necessary steps to upgrade to the selected new version, and confirms success.
+
+6. **Pipeline configuration update**: Finally, the pipeline configuration is updated with the new dataset version, ensuring that the pipeline validates and incorporates the updated dataset instance successfully, maintaining data compatibility and integrity throughout the process.
+
+This diagram provides a generalized view of the sequence of actions involved in upgrading a dataset instance as part of a pipeline development process. Specific details and steps might vary depending on the actual implementation details and requirements of the Advanced Dataset Management and Version Control System.

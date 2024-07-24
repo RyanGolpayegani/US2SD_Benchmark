@@ -1,0 +1,31 @@
+Creating a detailed sequence diagram for the given user story involves illustrating the interaction between different system components and the user (in this case, an employee) for updating a customer's order list. Let’s break down the necessary steps and interactions for this process and then translate it into PlantUML code.
+
+**User Story Breakdown:**
+- An employee (could be a server or a waiter) selects a customer's order to update.
+- The employee marks the finished orders as completed or deletes them from the active list.
+- The system updates the order list in the database.
+- The system confirms the update to the employee.
+- Optionally, the updated order list could be sent back to the employee for verification or further action.
+
+**Sequence Diagram in PlantUML:**
+
+```plantuml
+@startuml
+actor Employee as employee
+participant "UI Interface" as UI
+participant "Server" as server
+database "Database" as db
+
+employee -> UI : Selects finished order to delete/update
+UI -> server : Request to delete/update order
+server -> db : Update order list in database
+db --> server : Confirm update
+server --> UI : Update confirmation
+UI --> employee : Display update confirmation
+
+@enduml
+```
+
+This PlantUML sequence diagram starts with the employee's action to update the order list by selecting finished orders to be deleted or marked as completed. This interaction goes through the UI Interface, communicating with the server to perform the operation. The server then interacts with the database to update the order list. Upon successful update, the confirmation flows back from the database to the server and then to the UI Interface, which finally confirms to the employee that the action has been completed.
+
+Remember, depending on the specific requirements and system design, additional steps or components could be involved (such as authentication for the employee action, logging the action for audit purposes, or notifying other system parts about the order list update). However, this simplified diagram provides a clear overview of the core interactions for the described user story.

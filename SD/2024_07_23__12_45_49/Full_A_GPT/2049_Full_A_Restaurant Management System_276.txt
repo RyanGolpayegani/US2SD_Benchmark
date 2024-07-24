@@ -1,0 +1,48 @@
+Creating a sequence diagram for the user story "As a waiter, I want to clean the track of the order" involves showing the interactions between the waiter and different components of the Restaurant Management and Operations System to successfully complete the order clean-up process. Below is a sample PlantUML code that outlines one possible sequence.
+
+In this scenario, after a customer finishes their meal, the waiter initiates an order clean-up process. This could involve finalizing the order, making sure the payment is processed if not done earlier, updating inventory based on the consumed items, and possibly logging any relevant feedback.
+
+```plantuml
+@startuml
+participant Waiter
+participant "Order Management System" as OMS
+participant "Payment System" as PS
+participant "Inventory Management" as IM
+participant "Customer Feedback Module" as CFM
+
+title Order Cleanup Sequence
+
+Waiter -> OMS: InitiateCleanup(orderId)
+activate OMS
+
+OMS -> PS: VerifyPayment(orderId)
+activate PS
+PS -->> OMS: PaymentConfirmed
+deactivate PS
+
+OMS -> IM: UpdateInventory(orderId)
+activate IM
+IM -->> OMS: InventoryUpdated
+deactivate IM
+
+OMS -> Waiter: RequestFeedback(option)
+deactivate OMS
+activate Waiter
+Waiter -> CFM: LogFeedback(orderId, feedback)
+activate CFM
+CFM -->> Waiter: FeedbackLogged
+deactivate CFM
+deactivate Waiter
+
+Waiter -> OMS: CleanupComplete(orderId)
+activate OMS
+OMS -->> Waiter: OrderClosed
+deactivate OMS
+deactivate Waiter
+
+@enduml
+```
+
+This diagram starts with the waiter initiating the cleanup process by sending a cleanup request for an order to the Order Management System (OMS). The OMS then verifies the payment status with the Payment System. If the payment is confirmed, OMS proceeds to update inventory to reflect the consumed items. Next, the OMS requests the waiter to log any customer feedback, which is managed through the Customer Feedback Module. Finally, once all steps are completed, the waiter sends a cleanup completion signal to the OMS, which then confirms the closure of the order.
+
+Do note, the detailed interactions, especially regarding the payment verification and inventory update, would depend significantly on the specific implementation details of the Restaurant Management and Operations System. This PlantUML code is a simplified representation intended to highlight the key components involved and the flow between them for this specific user story.

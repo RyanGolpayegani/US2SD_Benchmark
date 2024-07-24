@@ -1,0 +1,35 @@
+Below is a detailed PlantUML sequence diagram describing the user story for an API user who wants to visualize budget data on maps using a flexible API with HASC codes for countries, regions, and cities. This sequence includes steps from requesting data using HASC codes to visualizing that data on a map.
+
+```
+@startuml
+actor "API User" as user
+participant "API Gateway" as gateway
+participant "Authentication Service" as auth
+participant "Data Processing Module" as processing
+participant "HASC Code Resolver" as hascResolver
+participant "Fiscal Data API" as fiscalAPI
+participant "Visualization Service" as visualization
+database "Fiscal Data Store" as datastore
+
+user -> gateway : Request data with HASC codes
+gateway -> auth : Validate API Key/User
+auth -> gateway : Validation Response
+
+alt Validation Successful
+    gateway -> processing : Extract HASC codes
+    processing -> hascResolver : Resolve HASC codes to regions
+    hascResolver -> fiscalAPI : Request fiscal data for regions
+    fiscalAPI -> datastore : Fetch data
+    datastore -> fiscalAPI : Return fiscal data
+    fiscalAPI -> processing : Aggregate and prepare data
+    processing -> visualization : Prepare visualization payload
+    visualization -> user : Provide visualization link/embed code
+else Validation Failed
+    gateway -> user : Error Response (Unauthorized)
+end
+@enduml
+```
+
+This diagram illustrates the process flow from the API user making a request, through the system validating their credentials, to resolving HASC codes and fetching the appropriate fiscal data, and finally generating and providing a visualization that the API user can use to display the budget data on maps. 
+
+Keep in mind, this sequence diagram is a high-level overview. Depending on the project's specifics, steps may need to be adjusted, added, or removed. For example, more detailed error handling or additional steps for getting and converting GeoJSON sources for map-based visualizations might be necessary for a complete implementation.

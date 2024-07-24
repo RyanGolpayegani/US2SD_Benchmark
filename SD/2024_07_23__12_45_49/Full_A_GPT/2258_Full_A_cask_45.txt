@@ -1,0 +1,56 @@
+Given your requirements, below is a simplified PlantUML sequence diagram focusing on the user story: configuring time-to-live (TTL) in a uniform way across all dataset types. This representation includes interactions between the user, a generic Dataset Management System (DMS), and underlying dataset instances. It abstracts specific implementation details to focus on the process flow relevant to the story.
+
+Please note, the actual implementation might involve more complex interactions depending on the specific technologies and design patterns you choose to employ.
+
+```plantuml
+@startuml
+participant User
+participant "Dataset Management \n System (DMS)" as DMS
+participant "Dataset Instance" as Dataset
+database "Dataset Configuration \n Storage" as ConfigDB
+
+== Configuring Time-to-Live for a Dataset Type ==
+
+User -> DMS : Request to configure TTL
+activate DMS
+
+DMS -> ConfigDB : Fetch existing configuration
+activate ConfigDB
+ConfigDB --> DMS : Existing configuration data
+deactivate ConfigDB
+
+DMS -> DMS : Generate unified TTL configuration options
+
+DMS --> User : Present TTL configuration options
+deactivate DMS
+
+User -> DMS : Submit chosen TTL settings
+activate DMS
+
+DMS -> ConfigDB : Update TTL settings
+activate ConfigDB
+ConfigDB --> DMS : Confirm update
+deactivate ConfigDB
+
+DMS -> Dataset : Apply TTL settings to dataset instances
+activate Dataset
+Dataset --> DMS : Confirm application
+deactivate Dataset
+
+DMS --> User : Confirm TTL configuration success
+deactivate DMS
+
+@enduml
+```
+
+This diagram illustrates the basic interaction flow based on your requirements:
+
+1. **Request to configure TTL**: The user initiates the process.
+2. **Fetch existing configuration**: The DMS retrieves any existing configuration from a configuration storage/database.
+3. **Present TTL configuration options**: The DMS calculates or retrieves unified TTL configuration options and presents them to the user.
+4. **Submit chosen TTL settings**: The user selects and submits their preferred TTL settings.
+5. **Update TTL settings in the configuration storage**: The new settings are stored.
+6. **Apply TTL settings to dataset instances**: The DMS applies these settings across the designated dataset instances.
+7. **Confirm TTL configuration success**: The user receives confirmation that the TTL settings have been successfully configured.
+
+This sequence diagram provides a high-level overview of configuring TTL across dataset types uniformly. Depending on your project's complexity and specific requirements, additional steps, such as authentication and authorization, detailed error handling, parallel update processes, or rollback mechanisms, might need to be considered and included in a more detailed design.

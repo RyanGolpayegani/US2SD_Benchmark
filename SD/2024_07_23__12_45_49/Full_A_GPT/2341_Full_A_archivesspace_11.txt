@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the user story "As an Archist, I want to import Accessions data in CSV" requires outlining each step in the process, from the user initiating the import to the system processing and storing the data. Below is a basic representation in PlantUML format. This example showcases a simplified flow, illustrating key interactions between the user, front-end components, and back-end services for this process.
+
+Please note that this PlantUML script is a high-level representation and might not cover all intricate details and error handling which would be present in a real-world application.
+
+```plantuml
+@startuml
+actor Archivist as archivist
+participant "UI: Import Page" as importPage
+participant "Import Controller" as importController
+participant "Data Validation Service" as validationService
+participant "Data Import Service" as importService
+participant "Database" as database
+
+== Import Accessions Data Flow ==
+
+archivist -> importPage : Choose "Import Accession CSV"
+importPage -> archivist : Display CSV data format requirements
+archivist -> importPage : Upload Accessions CSV file
+importPage -> importController : POST Upload request with CSV file
+importController -> validationService : Validate CSV format and data
+alt Validation Success
+    validationService -> importController : Return validation success
+    importController -> importService : Process CSV data for import
+    importService -> database : Store Accession records
+    database -> importService : Confirm records stored
+    importService -> importController : Import successful
+    importController -> importPage : Show success message to Archivist
+    importPage -> archivist : Display "Data Imported Successfully"
+else Validation Failure
+    validationService -> importController : Return validation errors
+    importController -> importService : Log import attempt and errors
+    importService -> importController : Acknowledge log creation
+    importController -> importPage : Show error message to Archivist
+    importPage -> archivist : Display "Data Import Failed - Errors Found"
+end
+@enduml
+```
+
+This sequence diagram starts with the Archivist deciding to import Accession data in CSV format. The process flows through the following steps:
+- The Archivist uploads a CSV file through the Import Page.
+- The Import Controller receives the file and forwards it to the Data Validation Service to check for formatting and data integrity.
+- If the CSV passes validation, the Data Import Service processes and stores the data in the Database.
+- The Database confirms the storage of records, leading to a success message being displayed to the Archivist.
+- In case of validation failure, error details are passed back to the Archivist through the Import Page.
+
+To use this script, ensure you have PlantUML installed or use an online PlantUML editor. This sequence diagram can be customized further as per specific project requirements, including more detailed error handling, authentication checks, or additional steps for preprocessing the CSV data.

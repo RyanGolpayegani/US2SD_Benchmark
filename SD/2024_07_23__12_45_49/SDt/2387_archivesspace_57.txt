@@ -1,0 +1,31 @@
+@startuml
+actor Archivist as archivist
+participant "CAMS Interface" as interface
+participant "Authorization Module" as auth
+participant "Container Management" as container_mgmt
+participant "Location Service" as location_service
+participant "Database" as db
+
+== Assign Location Information to a Container ==
+
+archivist -> interface : Selects Container
+interface -> container_mgmt : Retrieve Container Details
+container_mgmt -> db : Query Container Data
+db -> container_mgmt : Container Data
+container_result -> interface : Display Container Details
+archivist -> interface : Requests to Assign Location
+interface -> auth : Validate Archivist Permissions
+auth -> interface : Permissions Granted
+
+alt Permissions Granted
+    archivist -> interface : Input Location Details
+    interface -> location_service : Process Location Information
+    location_service -> db : Update Container with Location
+    db -> location_service : Confirmation
+    location_service -> interface : Location Assigned
+    interface -> archivist : Display Success Message
+else Permissions Denied
+    interface -> archivist : Display Error Message
+end
+
+@enduml

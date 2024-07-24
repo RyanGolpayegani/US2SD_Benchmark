@@ -1,0 +1,69 @@
+To create a sequence diagram that depicts the mentioned user story in Plant UML format, first, let's break down the steps needed to represent this process:
+
+1. The Data Publishing User initiates the import process by selecting the "Import Data" option in the OpenSpending platform.
+2. The user is prompted to choose the source of the data. They select "Google Spreadsheet".
+3. The user then needs to authenticate with Google, assuming they're not already logged in.
+4. Post-authentication, the user selects the specific spreadsheet they want to import.
+5. The platform retrieves the selected data from Google Spreadsheet.
+6. The data is then converted into a format compatible with the data packager.
+7. Finally, the user is shown a success message and has the option to further edit or directly publish the dataset.
+
+Now, here's how you can represent these steps in a Plant UML format to create a detailed sequence diagram:
+
+```plantuml
+@startuml
+actor "Data Publishing User" as User
+participant "OpenSpending Platform" as Platform
+participant "Google Authentication" as GoogleAuth
+participant "Google Spreadsheets" as GoogleSheets
+participant "Data Packager" as Packager
+
+User -> Platform: Select "Import Data"
+activate Platform
+
+Platform -> User: Show data source options
+activate User
+
+User -> Platform: Select "Google Spreadsheet"
+deactivate User
+
+Platform -> GoogleAuth: Request authentication
+activate GoogleAuth
+
+GoogleAuth -> User: Authenticate
+activate User
+
+User -> GoogleAuth: Provide credentials
+deactivate User
+
+GoogleAuth -> Platform: Authentication successful
+deactivate GoogleAuth
+
+Platform -> User: Show list of spreadsheets
+activate User
+
+User -> Platform: Select spreadsheet
+deactivate User
+
+Platform -> GoogleSheets: Retrieve selected data
+activate GoogleSheets
+
+GoogleSheets -> Platform: Data retrieved
+deactivate GoogleSheets
+
+Platform -> Packager: Convert data to compatible format
+activate Packager
+
+Packager -> Platform: Data conversion successful
+deactivate Packager
+
+Platform -> User: Show success message & editing options
+deactivate Platform
+activate User
+
+User -> Platform: Choose to edit or publish dataset
+deactivate User
+@enduml
+```
+
+This sequence diagram outlines the steps involved for a Data Publishing User who wants to import data from a Google Spreadsheet into the OpenSpending platform. The interactions involve the platform itself, Google authentication services, Google Spreadsheets, and the Data Packager component of the platform. Each step from choosing to import data, authenticating with Google, selecting the desired spreadsheet, and finally converting the retrieved data into a format usable by the data packager is delineated.

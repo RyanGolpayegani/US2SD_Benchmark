@@ -1,0 +1,32 @@
+@startuml
+actor User
+participant "User Interface" as UI
+participant "Backend System" as Backend
+database "Database" as DB
+participant "Recommendation Engine" as RE
+participant "Email Service" as Email
+
+User -> UI : Upload weekly schedule
+UI -> Backend : Validate and process schedule
+activate Backend
+Backend -> DB : Store schedule
+activate DB
+DB --> Backend : Confirmation
+deactivate DB
+
+Backend -> RE : Calculate recommendations based on schedule
+activate RE
+RE -> DB : Query available recycling centers
+activate DB
+DB --> RE : Recycling center data
+deactivate DB
+
+RE --> Backend : Best fit recycling center recommendations
+deactivate RE
+Backend -> Email : Send recommendations via email
+activate Email
+Email --> User : Email with recommendations
+deactivate Email
+deactivate Backend
+
+@enduml

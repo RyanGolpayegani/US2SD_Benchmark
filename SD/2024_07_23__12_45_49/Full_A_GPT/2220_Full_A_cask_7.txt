@@ -1,0 +1,56 @@
+Given the complexity and the detailed requirements of the given project description, visualizing how an app developer would interact with the system to update a shared dataset type without affecting instances created by other apps can be comprehensively explained through a PlantUML sequence diagram as follows. This is a textual representation that needs to be transformed into an actual diagram using a PlantUML environment.
+
+Please note, the sequence diagram sketched below assumes a relatively simplistic interaction flow for clarity and conceptual understanding. Real-world systems might require more complex interactions, especially concerning error handling, security checks, and concurrency issues.
+
+```plantuml
+@startuml
+participant "App Developer" as AD
+participant "Dataset Management System" as DMS
+participant "Version Control" as VC
+participant "Application A" as AA
+participant "Application B" as AB
+participant "Shared Dataset Type" as SDT
+
+AD -> DMS : Deploy new version of Application A with updated dataset type
+activate DMS
+
+DMS -> VC : Check for existing versions of shared dataset type
+activate VC
+VC --> DMS : Return current version details
+deactivate VC
+
+DMS -> SDT : Create new version of shared dataset type
+activate SDT
+SDT --> DMS : New version created
+deactivate SDT
+
+DMS -> AA : Update dataset instances associated with Application A
+activate AA
+AA --> DMS : Dataset instances updated
+deactivate AA
+
+DMS -> AB : Verify dataset instances associated with Application B
+activate AB
+AB --> DMS : Dataset instances remain unchanged
+deactivate AB
+
+DMS --> AD : Deployment successful
+deactivate DMS
+@enduml
+```
+
+### Explanation of the Sequence Diagram Steps:
+
+1. **App Developer Deploys a New Version**: The app developer initiates the process by deploying a new version of Application A, which includes an updated shared dataset type.
+
+2. **Dataset Management System Checks Version**: The Dataset Management System (DMS) consults the Version Control to check for existing versions of the shared dataset type to understand if the new deployment is an update or a first-time inclusion.
+
+3. **Create New Version of Shared Dataset Type**: Based on the version details returned, the DMS proceeds to create a new version of the shared dataset type to ensure that updates do not overwrite the existing version but rather provide a new version branch.
+
+4. **Update Dataset Instances for Application A**: DMS then updates dataset instances associated specifically with Application A to start using the newly deployed shared dataset type's code.
+
+5. **Verify Dataset Instances for Other Applications**: DMS verifies dataset instances associated with other applications (like Application B) to ensure they remain unchanged. This is an essential step to ensure that the update does not affect other applications relying on the same shared dataset type.
+
+6. **Deployment Successful**: Upon successful update of the relevant instances and verification that other instances remain unaffected, the DMS confirms back to the app developer that the deployment has been successful.
+
+This sequence effectively ensures that when an app developer deploys a new version of an application with an updated shared dataset type, all relevant dataset instances are updated accordingly, while those belonging to other applications are not affected, thereby maintaining system integrity and application independence.

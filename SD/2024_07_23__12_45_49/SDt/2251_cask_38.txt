@@ -1,0 +1,43 @@
+@startuml
+participant Developer as dev
+participant "CLI/REST API" as api
+participant "Dataset Management System" as dms
+participant "Version Control" as vc
+participant "Database" as db
+
+== Take Dataset Offline for Maintenance ==
+dev -> api: requestTakeDatasetOffline(datasetId)
+api -> dms: validateRequest(datasetId)
+alt If Dataset Exists and User has Permissions
+    dms -> db: lockDataset(datasetId)
+    db -> dms: confirmLock()
+    dms -> vc: createMaintenanceBranch(datasetId)
+    vc -> dms: branchCreated()
+    dms -> api: datasetOfflineSuccess()
+    api -> dev: confirmDatasetOffline()
+else Dataset Does Not Exist or Permission Denied
+    dms -> api: errorResponse("Access Denied or Dataset Not Found")
+    api -> dev: displayError()
+end
+
+== Maintenance or Migration ==
+note right of dev: Developer performs\nmaintenance or migration tasks
+
+== Bringing Dataset Back Online ==
+dev -> api: requestBringDatasetOnline(datasetId)
+api -> dms: validateReactivationRequest(datasetId)
+alt If Maintenance Successful
+    dms -> vc: mergeMaintenanceBranch(datasetId)
+    vc -> dms: mergeSuccess()
+    dms -> db: unlockDataset(datasetId)
+    db -> dms: confirmUnlock()
+    dms -> api: datasetOnlineSuccess()
+    api -> dev: confirmDatasetOnline()
+else Maintenance Unsuccessful or Merge Conflict
+    dms -> vc: abortMerge()
+    vc -> dms: mergeAborted()
+    dms -> api: errorResponse("Maintenance Unsuccessful or Merge Conflict")
+    api -> dev: displayError()
+end
+
+@enduml

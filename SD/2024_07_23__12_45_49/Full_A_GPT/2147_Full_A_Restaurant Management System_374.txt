@@ -1,0 +1,39 @@
+Creating a detailed sequence diagram for the given user story involves identifying the system components that interact when an employee wants to see the order times. Since the user story is broad and could involve multiple roles (e.g., waitstaff viewing order timing for prompt service, kitchen staff needing to know order timing for prioritization), we'll consider a scenario where an employee (perhaps a server) wishes to check the time an order was placed to ensure timely service. This sequence will involve the user interface (UI), backend services, and the database.
+
+Below is a sequence diagram in PlantUML format illustrating this process:
+
+```plantuml
+@startuml
+participant Employee_UI as UI
+participant Server_Backend as Backend
+database Orders_DB as DB
+
+UI -> Backend: Request to view order time
+activate Backend
+
+Backend -> DB: Query order timing details
+activate DB
+
+DB --> Backend: Return order timing details
+deactivate DB
+
+Backend --> UI: Display order time
+deactivate Backend
+
+@enduml
+```
+
+Here's a breakdown of the diagram:
+- **Employee_UI (UI)**: Represents the front-end interface used by the employee. This could be a webpage or an application screen where the employee selects or views orders.
+- **Server_Backend (Backend)**: The server-side logic that processes the employee's request to view order timing. It handles the logic of fetching the relevant data from the database.
+- **Orders_DB (DB)**: The database where order details, including order times, are stored.
+
+The sequence flow is as follows:
+1. The process begins with the employee using the **UI** to request the time of a specific order or a list of orders.
+2. The **UI** sends this request to the **Backend**.
+3. The **Backend** processes this request and sends a query to **Orders_DB** to retrieve the time details of the specified order(s).
+4. **Orders_DB** processes this query and returns the order timing details to the **Backend**.
+5. The **Backend** receives the order timing information and sends it back to the **UI**.
+6. The **UI** then displays the order time information to the employee.
+
+This sequence diagram is a simplified representation and can be expanded to include error handling, authentication steps (e.g., verifying the employee’s permission to view order times), and more detailed interactions based on specific requirements and the software’s architecture.

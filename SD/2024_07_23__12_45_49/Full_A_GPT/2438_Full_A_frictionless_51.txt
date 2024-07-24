@@ -1,0 +1,43 @@
+To illustrate the process described in the user story, you would first need to understand the flow of events for a publisher embedding an interactive preview of their data on a website. The following outlines a sequence diagram in PlantUML format to highlight these steps.
+
+This diagram assumes the publisher has prepared a Data Package and wishes to use the features of DPIE to embed an interactive preview on their site. For simplicity, some steps such as authorization, detailed data processing, and error handling are abstracted away.
+
+```
+@startuml
+!theme plain
+
+actor Publisher as publisher
+participant "DPIE Web Interface" as webInterface
+participant "DPIE API" as dpiApi
+database "Data Package" as dataPackage
+participant "Embeddable Preview Generator" as previewGenerator
+participant "Web Page" as webPage
+
+publisher -> webInterface : log in
+webInterface -> dpiApi : fetch available Data Packages
+dpiApi -> dataPackage : query for packages
+dataPackage -> dpiApi : return packages
+dpiApi -> webInterface : display packages
+publisher -> webInterface : select Data Package for preview
+webInterface -> previewGenerator : request interactive preview\n(generate script)
+previewGenerator -> dataPackage : access selected package
+dataPackage -> previewGenerator : provide data & metadata
+previewGenerator -> previewGenerate: generate iframe or JS code
+previewGenerator -> webInterface : return embed code for preview
+webInterface -> publisher : show embed code
+publisher -> webPage : embed preview code
+
+note over publisher, webPage : Publisher adds the code to\nthe HTML of their site
+
+@enduml
+```
+
+This sequence diagram begins with the publisher logging into the DPIE Web Interface and ends with them embedding the generated interactive preview code into their web page. The steps involve:
+
+1. **Logging into the DPIE Web Interface:** The publisher starts by accessing the DPIE system.
+2. **Fetching Available Data Packages:** The DPIE Web Interface requests a list of available Data Packages the publisher has access to.
+3. **Selecting a Data Package:** The publisher chooses the specific Data Package they wish to embed a preview for.
+4. **Generating Embed Code:** The DPIE system, via the Embeddable Preview Generator, creates an embeddable piece of code (like an iframe or JavaScript snippet) that can be included in the HTML of a webpage.
+5. **Embedding Preview on Website:** Finally, the publisher adds this code to their site, allowing visitors to interact with a preview of the data.
+
+Keep in mind, to implement this into a real system, more details and considerations around security, UI/UX, and specific technology stacks would be required. This sequence diagram serves as a high-level overview of the process.

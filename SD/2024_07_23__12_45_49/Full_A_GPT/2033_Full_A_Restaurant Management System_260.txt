@@ -1,0 +1,32 @@
+Creating a detailed sequence diagram for the specified user story involves depicting the interactions between different components of the Restaurant Management and Operations System when a restaurant manager wants to view the total number of different foods sold to gauge their popularity.
+
+Given the variety in technology stack and feature set, this sequence will abstractly represent how a manager interacts with the system, including backend services and database operations.
+
+```plantuml
+@startuml
+participant Manager as mgr
+participant "UI Interface" as ui
+participant "Backend Server" as backend
+participant "Database" as db
+
+mgr -> ui : Requests food sales data
+ui -> backend : GET /api/foodSalesData
+activate backend
+backend -> db : Query total sales per food item
+activate db
+db --> backend : Return sales data
+deactivate db
+backend --> ui : Show sales data
+ui --> mgr : Display food popularity chart
+deactivate backend
+
+@enduml
+```
+
+This diagram starts with the restaurant manager requesting the total number of different foods sold from the system's user interface (UI). The UI, likely part of a web or mobile application, requests this data from the backend server by calling an API endpoint (e.g., GET /api/foodSalesData).
+
+The backend server then issues a database query to fetch the total sales count per food item. This query assumes there is a database table or collection that records each sale with references to food items, which can be aggregated to count sales per item.
+
+Once the database responds with the sales data, the backend processes this information, perhaps applying additional logic or formatting, and sends it back to the UI. Finally, the UI presents this information to the manager, likely in a graphical format such as a chart, allowing the manager to assess the popularity of different foods served by the restaurant.
+
+This sequence diagram uses a simplified and abstracted approach suitable for understanding the general data flow without getting into the specifics of technology implementations or database schemas. Fleshing this out into a fully detailed diagram would require more granular information about the software architecture, API design, and data models.

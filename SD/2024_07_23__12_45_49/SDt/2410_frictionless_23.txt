@@ -1,0 +1,20 @@
+@startuml
+actor Developer as dev
+participant "DPIE Interface" as dpi
+participant "DataPackage API" as dpapi
+participant "Integration Module\n(SPSS)" as spss
+database "SPSS Pipeline" as pipeline
+
+dev -> dpi : Requests SPSS integration
+dpi -> dpapi : Fetches DataPackage
+dpapi --> dpi : Returns DataPackage
+dpi -> spss : Sends DataPackage for processing
+activate spss
+spss -> spss : Transforms DataPackage\ninto SPSS format
+spss -> pipeline : Integrates with SPSS Pipeline
+deactivate spss
+pipeline -> spss : Confirmation of integration
+spss --> dpi : Returns success message
+dpi --> dev : Shows success notification
+
+@enduml

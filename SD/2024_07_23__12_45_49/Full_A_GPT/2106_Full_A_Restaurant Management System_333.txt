@@ -1,0 +1,35 @@
+Creating a detailed Sequence Diagram for the user story "As an employee, I want to delete a store order" involves illustrating how different system components interact with each other to fulfill this request. For simplicity, let's focus on the main entities involved: Employee User Interface (UI), Order Management Service, Database, and possibly a Notification Service to update relevant parties about the order deletion.
+
+Below is the PlantUML code sketching this sequence:
+
+```plantuml
+@startuml
+actor Employee as emp
+participant "Employee UI" as ui
+participant "Order Management\nService" as oms
+database "Database" as db
+participant "Notification\nService" as ns
+
+== Delete Store Order Sequence ==
+
+emp -> ui : Select order to delete
+ui -> oms : Request deletion of order (orderId)
+
+alt Order Found and Deletion Permitted
+    oms -> db : Query deletion for orderId
+    db --> oms : Confirm deletion
+    oms -> ns : Trigger deletion notifications
+    ns --> oms : Notification status
+    oms --> ui : Display deletion success message
+    ui --> emp : Show success message
+else Order Not Found or Deletion Not Permitted
+    oms --> ui : Display error message (Order not found or not allowed)
+    ui --> emp : Show error message
+end
+
+@enduml
+```
+
+This sequence starts with the employee interacting with the User Interface (UI) to select and request the deletion of a store order. The Order Management Service then processes this request. If the order can be found and is eligible for deletion (there are no constraints like the order being in the delivery process), a deletion query is sent to the Database. Upon successful deletion, the Order Management Service requests the Notification Service to send out appropriate notifications to related parties (e.g., the kitchen or delivery personnel, to inform them of the order cancellation). Finally, the Employee UI updates the employee with a success or error message based on the operation's outcome.
+
+It's important to adapt and modify this PlantUML diagram based on your specific case, especially considering the real system's complexity, the database schema, the employed notification strategies, and any additional steps or verifications that might be necessary for your particular application scenario.

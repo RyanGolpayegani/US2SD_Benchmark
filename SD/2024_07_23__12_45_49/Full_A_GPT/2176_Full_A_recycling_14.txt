@@ -1,0 +1,38 @@
+To visualize the functionality described in the user story "As a user, I want to get feedback when I enter an invalid zip code" as a sequence diagram in PlantUML format, see the code block below. This diagram represents the interactions between the user, the frontend application (RecycleSmart Platform), and the validation system/backend that processes the zip code input.
+
+```plantuml
+@startuml
+participant User
+participant "Frontend Application" as Frontend
+participant "Validation System" as Validation
+database "Database" as DB
+
+User -> Frontend : Enters zip code
+activate Frontend
+Frontend -> Validation : Validate zip code
+activate Validation
+
+alt zip code is valid
+    Validation -> DB : Query based on zip code
+    activate DB
+    DB --> Validation : Return results
+    deactivate DB
+    Validation --> Frontend : Zip code valid + data
+    Frontend --> User : Display recycling centers
+else zip code is invalid
+    Validation --> Frontend : Zip code invalid message
+    Frontend --> User : Display error message\n"Please enter a valid zip code."
+end
+deactivate Validation
+deactivate Frontend
+@enduml
+```
+
+This diagram breaks down the process as follows:
+1. The **User** enters a zip code into the **Frontend Application** (RecycleSmart Platform).
+2. The **Frontend Application** forwards the zip code to the **Validation System** for checking.
+3. The **Validation System** checks whether the zip code is valid.
+   - If the zip code is valid, the system queries the database for information related to the zip code and returns the data to the frontend, which then displays the relevant recycling centers to the user.
+   - If the zip code is deemed invalid, the validation system sends a message back to the frontend application, indicating that the zip code is invalid. The frontend application then displays an error message to the user, asking them to enter a valid zip code.
+
+This sequence diagram is meant to represent a simplified process focusing on the functionality of receiving feedback for an invalid zip code entry on the RecycleSmart platform.

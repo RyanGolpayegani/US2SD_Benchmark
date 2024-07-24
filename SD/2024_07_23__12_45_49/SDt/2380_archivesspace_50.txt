@@ -1,0 +1,53 @@
+@startuml
+actor Archivist
+participant "UI Component\n(Archival Interface)" as UI
+database "CAMS Database" as Database
+
+== Specify Source for Name Form of Agent ==
+Archivist -> UI : Select Agent Name Form to edit
+activate UI
+UI -> Database : Query current Source details
+activate Database
+Database --> UI : Return current Source details
+deactivate Database
+UI --> Archivist : Display Source details
+deactivate UI
+
+Archivist -> UI : Specify new Source for Name Form
+activate UI
+UI -> Database : Update Source for Name Form
+activate Database
+Database --> UI : Confirm Source update
+deactivate Database
+UI --> Archivist : Display confirmation message
+deactivate UI
+
+== Add New Source ==
+Archivist -> UI : Initiate add new Source
+activate UI
+UI --> Archivist : Display new Source form
+Archivist -> UI : Enter new Source details
+UI -> Database : Add new Source to Database
+activate Database
+Database --> UI : Confirm addition of new Source
+deactivate Database
+UI --> Archivist : Display success confirmation
+deactivate UI
+
+== Edit Existing Source ==
+Archivist -> UI : Select existing Source to edit
+activate UI
+UI -> Database : Query selected Source details
+activate Database
+Database --> UI : Return Source details
+deactivate Database
+UI --> Archivist : Display Source details for editing
+Archivist -> UI : Update Source details
+UI -> Database : Apply updates to Source
+activate Database
+Database --> UI : Confirm Source update
+deactivate Database
+UI --> Archivist : Display update confirmation
+deactivate UI
+
+@enduml

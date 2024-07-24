@@ -1,0 +1,24 @@
+@startuml
+
+participant DeveloperDataWrangler as Developer
+participant GitHub
+participant DPIE_Integration_Service as DIS
+participant CKAN
+
+Developer -> GitHub: Push Data Package
+activate GitHub
+GitHub -> DIS: Trigger webhook
+activate DIS
+DIS -> DIS: Validate Data Package
+DIS -> CKAN: Store Data Package
+activate CKAN
+CKAN -> CKAN: Generate API
+CKAN -> DIS: Confirm storage and API creation
+DIS -> GitHub: Report storage success
+GitHub -> Developer: Notify of storage success
+deactivate GitHub
+deactivate DIS
+CKAN -> CKAN: List dataset in catalog
+deactivate CKAN
+
+@enduml

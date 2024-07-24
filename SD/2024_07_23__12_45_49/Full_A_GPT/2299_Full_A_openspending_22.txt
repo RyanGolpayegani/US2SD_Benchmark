@@ -1,0 +1,35 @@
+Creating a detailed sequence diagram for the user story provided involves representing the interactions between different system components to enable stepped zoom on map visualizations for a data-consuming user in the OpenSpending Enhancement Project. Below is an example of how the interactions can be represented in PlantUML syntax. 
+
+Please note that the specific implementation details might vary based on the actual software architecture of the OpenSpending platform, and the below sample assumes a straightforward interaction model for illustrative purposes.
+
+```plantuml
+@startuml
+actor User as user
+participant "UI Component" as ui
+participant "Map Visualization" as mapviz
+participant "Backend API" as backend
+participant "Database" as db
+
+user -> ui : Select map visualization
+ui -> mapviz : Render initial map
+mapviz -> backend : Request map data
+backend -> db : Query geo data
+db -> backend : Return geo data
+backend -> mapviz : Send map data
+mapviz -> ui : Display map with data
+
+ui -> ui : Detect scroll/zoom gesture
+activate ui
+ui -> mapviz : Request stepped zoom
+activate mapviz
+mapviz -> mapviz : Calculate new zoom level
+deactivate mapviz
+mapviz -> ui : Update map to new zoom level
+deactivate ui
+ui -> user : Display updated map
+@enduml
+```
+
+This sequence diagram begins with the user selecting a map visualization, which triggers a sequence of interactions between the UI component, map visualization logic, backend API, and the database to render the initial map. Next, when the user performs a scroll or zoom gesture to initiate a stepped zoom, the UI component calculates and requests the new zoom level from the map visualization logic, which then updates the display accordingly.
+
+Remember, each of these interactions can be more complex in a real-world scenario, potentially involving error handling, more granular control over the zoom levels, authorization checks, and adapting the map rendering based on the user’s preferences or device capabilities.

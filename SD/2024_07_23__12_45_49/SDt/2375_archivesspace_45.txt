@@ -1,0 +1,44 @@
+@startuml
+actor Developer
+participant "Custom Importer API" as ImporterAPI
+participant "Authentication Module" as Auth
+participant "Data Import Module" as DataImport
+participant "Database" as DB
+
+Developer -> ImporterAPI: Request development documentation
+ImporterAPI -> Developer: Provide documentation
+
+Developer -> ImporterAPI: Initialize custom importer development
+activate ImporterAPI
+
+ImporterAPI -> Auth: Request API access
+activate Auth
+Auth --> ImporterAPI: Validate and provide access
+deactivate Auth
+
+Developer -> ImporterAPI: Develop custom import logic
+ImporterAPI -> DataImport: Integrate import logic
+activate DataImport
+
+DataImport -> DB: Create import schema
+activate DB
+DB --> DataImport: Confirm schema creation
+deactivate DB
+
+DataImport -> Auth: Request user data access permission
+Auth --> DataImport: Grant permission
+
+DataImport -> DB: Execute data import
+DB --> DataImport: Confirm import success
+deactivate DataImport
+
+ImporterAPI -> Developer: Notify development success
+deactivate ImporterAPI
+
+Developer -> ImporterAPI: Deploy custom importer
+ImporterAPI -> DataImport: Request deployment
+DataImport -> DB: Update system with new importer
+DB --> DataImport: Confirm update
+DataImport -> Developer: Deployment successful
+
+@enduml

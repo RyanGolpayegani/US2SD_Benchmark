@@ -1,0 +1,44 @@
+To generate a detailed Sequence Diagram for the feature where a waiter displays each table's tab to inform customers, we will outline the sequence of interactions among various system components involved in this process. This includes interactions with the User Interface (UI), the Controller, the Service Layer, and the Database. Given the complexity and the limitations of text format, here's a simplified version of how this might look in Plant UML format:
+
+```plantuml
+@startuml
+participant WaiterUI as Waiter
+participant Controller
+participant ServiceLayer
+participant Database
+
+title Display Table's Tab Sequence
+
+Waiter -> Controller : requestTableTab(tableId)
+activate Controller
+
+Controller -> ServiceLayer : getTableTab(tableId)
+activate ServiceLayer
+
+ServiceLayer -> Database : fetchTabInfo(tableId)
+activate Database
+Database --> ServiceLayer : tabInfo
+deactivate Database
+
+ServiceLayer --> Controller : tabDetails
+deactivate ServiceLayer
+
+Controller --> Waiter : displayTab(tabDetails)
+deactivate Controller
+
+@enduml
+```
+
+This diagram represents the following steps in the process:
+
+1. **Waiter initiates a request**: The waiter, through a user interface (WaiterUI), requests to display a table's tab by providing a table identifier (tableId).
+
+2. **Controller receives the request**: The system's controller receives this request and forwards it to the service layer, asking for the tab details of the specified table.
+
+3. **Service Layer processes the request**: The Service Layer handles the business logic part of the request. It talks to the database to fetch the tab information for the specified table.
+
+4. **Database query**: The Database is queried with the tableId to retrieve tab information, which includes items ordered, prices, totals, discounts, and taxes.
+
+5. **Data return path**: The retrieved tab information is passed back from the Database to the Service Layer, from the Service Layer to the Controller, and finally from the Controller back to the Waiter (user interface), where it can be displayed to inform the customer.
+
+The above sequence assumes a clean and direct path for data retrieval and display, which is ideal for a straightforward task such as displaying a table's tab in a restaurant management system. Modifications and additional error handling can be added depending on specific requirements such as handling non-existent table IDs, database access errors, or unauthorized access attempts.

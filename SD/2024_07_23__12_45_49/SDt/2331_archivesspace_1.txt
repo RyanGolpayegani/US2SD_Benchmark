@@ -1,0 +1,18 @@
+@startuml
+participant Researcher
+participant WebInterface as "Web Interface"
+participant AuthenticationModule as "Authentication Module"
+participant Database as "Database"
+participant FindingAidService as "Finding Aid Service"
+
+Researcher -> WebInterface : Request to view a finding aid
+WebInterface -> AuthenticationModule : Validate researcher's access
+AuthenticationModule -> WebInterface : Access granted
+
+WebInterface -> FindingAidService : Request finding aid (collection/resource ID)
+FindingAidService -> Database : Query for finding aid (ID)
+Database -> FindingAidService : Return finding aid data
+FindingAidService -> WebInterface : Finding aid data
+WebInterface -> Researcher : Display finding aid
+
+@enduml

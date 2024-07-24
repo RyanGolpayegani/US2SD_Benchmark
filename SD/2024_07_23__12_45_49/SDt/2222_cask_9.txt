@@ -1,0 +1,35 @@
+@startuml
+
+participant AppDeveloper as dev
+participant "Version Control\nSystem" as VCS
+participant "Dataset Management\nSystem" as DMS
+participant "Deployment Engine" as DE
+participant App1
+participant App2
+
+== App Deployment Process Begins ==
+dev -> DE : Deploy new version of App1
+activate DE
+
+DE -> VCS : Check out latest version of App1
+activate VCS
+VCS -> VCS : Retrieve new dataset type version
+deactivate VCS
+
+DE -> DMS : Request deployment of\nnew dataset type version
+activate DMS
+DMS -> DMS : Verify existing dataset instances
+
+alt version conflict with App2's shared dataset instance
+  DMS -> DE : Version conflict error
+  DE -> dev : Deployment failed\n(version conflict)
+else no conflict
+  DMS -> DMS : Update dataset instance to new version
+  DE -> DE : Continue App1 deployment
+  DE -> dev : Deployment successful
+end
+
+deactivate DMS
+deactivate DE
+
+@enduml

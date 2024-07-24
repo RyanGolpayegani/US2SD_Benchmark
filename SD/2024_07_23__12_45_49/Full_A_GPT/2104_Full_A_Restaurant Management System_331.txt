@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the specific user story in PlantUML format requires a bit of setup. Since the aim is to illustrate how an employee (such as a waiter) can create a table in the system to enter orders for customers, the diagram should include interactions among various components like the User Interface (UI), Backend Server, and Database. 
+
+Let's draft a sequence diagram in PlantUML syntax:
+
+```plantuml
+@startuml
+participant Employee as E
+participant UI as UI
+participant Server as S
+participant Database as DB
+
+E -> UI : Select Create Table
+activate UI
+UI -> S : Request to create a new table
+activate S
+S -> DB : Check for table availability
+activate DB
+DB --> S : Availability status
+deactivate DB
+alt If table available
+    S -> DB : Create new table entry
+    activate DB
+    DB --> S : Table created successfully
+    deactivate DB
+    S --> UI : Table creation successful
+    deactivate S
+    UI --> E : Display success message
+    deactivate UI
+else If table not available
+    S --> UI : Error, table not available
+    deactivate S
+    UI --> E : Display error message
+    deactivate UI
+end
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+- **Employee to UI**: The sequence starts with the employee (waiter) selecting the option to "Create Table" through the user interface of the system.
+- **UI to Server**: This action triggers a request from the UI to the backend server, asking to create a new table in the system.
+- **Server to Database**: Before creating the new table, the server inquires the database to check for table availability.
+- **Database Response**: The database responds with the availability status.
+    - **If available**, the server then proceeds to create a new table entry in the database. The database confirms the table creation, and the server subsequently informs the UI of the successful creation. The UI then displays a success message to the employee.
+    - **If not available**, the server directly informs the UI about the unavailability, which then displays an error message to the employee.
+
+This diagram provides an overview of the interactions involved in creating a table in the system for entering customer orders. Of course, the actual implementation may require additional steps or details, especially regarding authentication and error handling, which are simplified in this representation.

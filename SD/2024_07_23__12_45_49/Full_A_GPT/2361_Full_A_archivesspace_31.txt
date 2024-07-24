@@ -1,0 +1,49 @@
+Given the complexity of a comprehensive system like the Comprehensive Archival Management System (CAMS), a sequence diagram focusing on an archivist's capability to search within a repository for resources, accessions, and digital object records might involve interactions between the user interface, search processing logic, and the database. The following PlantUML code provides a basic illustration of these interactions.
+
+Please note, the diagram is simplified to focus on the core components and interactions for the specified user story. Depending on the system's architecture, additional components like authentication services, caching layers, or a more intricate business logic layer might be involved.
+
+```plantuml
+@startuml
+participant Archivist as archivist
+participant "UI/Search Interface" as UI
+participant "Search Controller" as controller
+participant "Search Service" as service
+participant "Database" as db
+
+archivist -> UI : Enter search query
+activate UI
+UI -> controller : Forward search request
+activate controller
+controller -> service : Process search query
+activate service
+service -> db : Retrieve matching records\n[Resources, Accessions, Digital Objects]
+activate db
+db --> service : Return search results
+deactivate db
+service --> controller : Send processed results
+deactivate service
+controller --> UI : Display search results
+deactivate controller
+UI --> archivist : Show matching records
+deactivate UI
+@enduml
+```
+
+### Explanation of the Diagram Steps:
+1. **Archivist enters a search query**: This represents an archivist inputting their search criteria into the system through the user interface (UI) or search interface.
+  
+2. **Forward search request**: The UI sends the search request to the search controller, acting as a middleman to pass the request deeper into the system's back-end for processing.
+
+3. **Process search query**: The search controller sends the query to a dedicated search service, responsible for handling the logic behind processing search queries.
+
+4. **Retrieve matching records**: The search service communicates with the database to fetch records that match the criteria of the search query, covering Resources, Accessions, and Digital Objects.
+
+5. **Return search results**: The database returns the search results to the search service.
+
+6. **Send processed results**: After potentially processing or filtering the raw data, the search service sends the results back to the search controller.
+
+7. **Display search results**: The search controller forwards the results to the UI, which then presents the searchable records to the archivist.
+
+8. **Show matching records to the archivist**: Ultimately, the matching records are displayed to the archivist, completing the search interaction within the repository.
+
+This diagram simplifies the actual processing and assumes that the system is set up to manage and index diverse record types such as resources, accessions, and digital objects in a manner that makes them easily searchable.

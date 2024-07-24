@@ -1,0 +1,31 @@
+Given the scope of your request, here's a detailed sequence diagram in PlantUML format for the user story: "As an owner, I want to see the available materials in the depot so I can make the required orders for the materials." This diagram aims to illustrate the interactions between the system components involved in querying the inventory for available materials.
+
+```plantuml
+@startuml
+participant Owner
+participant WebInterface as "Web Interface"
+participant Server as "Backend Server"
+participant Database as "Database"
+
+Owner -> WebInterface : Request inventory overview
+WebInterface -> Server : Retrieve available materials
+activate Server
+Server -> Database : Query available materials
+activate Database
+Database --> Server : Return materials data
+deactivate Database
+Server --> WebInterface : Materials data
+deactivate Server
+WebInterface --> Owner : Display available materials
+@enduml
+```
+
+Explanation of the Sequence:
+1. **Owner Initiates Request**: The sequence begins with the owner requesting an overview of the available materials in the depot. This request is made through the system's web interface.
+2. **Web Interface to Backend Server**: The web interface then communicates this request to the backend server, indicating the need to retrieve the current status of available materials.
+3. **Server Queries Database**: The backend server processes this request by querying the database. This involves executing a database query that fetches the available materials from the inventory data stored.
+4. **Database Returns Materials Data**: The database responds with the data regarding available materials. This data contains detailed information about the quantities and types of materials currently in stock.
+5. **Server to Web Interface**: The backend server processes the materials data and sends it back to the web interface, formatting the data as needed for display purposes.
+6. **Owner Views Available Materials**: Finally, the web interface presents the information about the available materials to the owner, completing the request. This allows the owner to make informed decisions about necessary orders for the restaurant.
+
+This sequence diagram provides a high-level overview of the interaction flow for the specified user story. Depending on the system architecture and specific requirements, additional details and steps could be added, such as authentication, error handling, and logging, among others.

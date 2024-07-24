@@ -1,0 +1,46 @@
+To effectively describe the sequence diagram for the process of an admin onboarding a recycling center on the RecycleSmart platform in PlantUML format, let's outline the major steps involved and translate these into code. Please note that my description simplifies the process and focuses on the critical interactions between the admin, the platform system, and the recycling center database.
+
+1. **Start**: The admin logs in to the admin panel.
+2. **Submit New Center Information**: The admin fills out a form with the recycling center's information.
+3. **Validate Information**: The system checks the information for completeness and correctness.
+4. **Save Information**: After validation, the information is saved to the recycling center database.
+5. **Confirmation**: The system sends a confirmation to the admin.
+6. **Notify Admin of Completion**: The process ends with the admin receiving confirmation that the new center has been successfully onboarded.
+
+Here's how this process can be represented in PlantUML:
+
+```plantuml
+@startuml
+skinparam rectangle<<database>>{
+BackgroundColor DarkOliveGreen
+BorderColor Black
+FontColor White
+}
+actor Admin
+boundary "Admin Panel" as AdminPanel
+control "System" as System
+database "Recycling Center DB" as DB
+
+Admin -> AdminPanel : Login
+Admin -> AdminPanel : Submit new center information
+AdminPanel -> System : Validate information
+alt Information is valid
+    System -> DB : Save center information
+    DB --> System : Confirmation of save
+    System -> AdminPanel : Confirm center addition
+    AdminPanel -> Admin : Display confirmation message
+else Information is invalid
+    System -> AdminPanel : Display error message
+    AdminPanel -> Admin : Show validation errors
+end
+@enduml
+```
+In this sequence diagram:
+
+- The `actor` keyword defines the admin user of the system.
+- `boundary` represents the admin panel interface that the admin interacts with.
+- `control` represents the system that processes the admin's requests.
+- `database` represents the Recycling Center Database where the center's information is stored.
+- The `alt` block is used to handle conditional logic; in this case, it distinguishes between valid and invalid information submissions.
+
+This sequence diagram provides a high-level overview of the interaction flow when an admin wishes to onboard a new recycling center into the RecycleSmart platform. Remember, the diagram can be expanded to include more detailed interactions, error handling, and specific system operations based on the project's full requirements.

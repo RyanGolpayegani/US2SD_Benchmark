@@ -1,0 +1,52 @@
+To create a sequence diagram for the user story "As a restaurant manager, I want to see annual reports" using PlantUML, we'll design a sequence involving interactions among various components of the Restaurant Management and Operations System. The sequence will include the manager initiating a request for annual reports, the system processing this request, and eventually presenting the reports.
+
+This sequence assumes that the Restaurant Management and Operations System has a module for report generation and that the manager has appropriate permissions to access annual reports. It will cover interactions from the point of the manager's request through backend processing to the return and display of the report.
+
+```plantuml
+@startuml
+
+participant "Restaurant Manager" as manager
+participant "UI Interface" as UI
+participant "Report Generation Module" as RGM
+participant "Database" as DB
+participant "Analytics Engine" as AE
+
+== Report Request Flow ==
+manager -> UI: Select "Annual Reports"
+UI -> RGM: Request Annual Reports
+activate RGM
+
+RGM -> DB: Query sales, inventory, and performance data
+activate DB
+DB --> RGM: Return requested data
+deactivate DB
+
+RGM -> AE: Analyze and compile report data
+activate AE
+AE --> RGM: Compiled Report Data
+deactivate AE
+
+RGM --> UI: Display Annual Reports
+UI --> manager: Shows Annual Reports
+
+@enduml
+```
+**Explanation:**
+
+1. **Restaurant Manager initiates a report request:** The sequence begins with the restaurant manager selecting the option to view annual reports through a user interface (UI).
+
+2. **UI forwards the request to Report Generation Module (RGM):** The UI component captures the manager's request and forwards it to the Report Generation Module responsible for handling report requests.
+
+3. **RGM queries the Database:** The Report Generation Module then sends a query to the database to fetch relevant data needed for the report, such as sales data, inventory status, and employee performance metrics over the year.
+
+4. **Database returns data:** The database processes the RGM's query and returns the requested data back to the RGM.
+
+5. **Data sent to Analytics Engine:** RGM sends the raw data to the Analytics Engine, which is responsible for analyzing the data, generating insights, and compiling the data into a structured report format.
+
+6. **Analytics Engine returns compiled report data:** After processing, the Analytics Engine sends the compiled report data back to the RGM.
+
+7. **RGM displays Annual Reports:** The Report Generation Module sends the compiled annual reports back to the UI.
+
+8. **Restaurant Manager views the reports:** Finally, the UI displays the annual reports to the restaurant manager, concluding the sequence.
+
+This sequence diagram is a high-level representation and can be further detailed or adjusted based on specific system designs, such as specific data analysis techniques used by the Analytics Engine, or additional security checks for accessing sensitive financial and operational data.

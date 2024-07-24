@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the user story "As an employee, I want to see orderable menu items" involves outlining the interactions between the user (employee), the system interfaces, and the backend services to fulfill the request. Given the complexity and the specific nature of the interaction, this sequence diagram will represent an overview of the necessary steps involved in displaying orderable menu items to an employee using PlantUML syntax.
+
+```plantuml
+@startuml
+participant Employee as E
+participant Frontend as F
+participant BackendServer as B
+participant Database as DB
+
+E -> F : Select "View Orderable Items"
+activate F
+F -> B : GET /menu/orderable-items
+activate B
+B -> DB : Query orderable items
+activate DB
+DB -> DB : Filter active and in-stock items
+DB --> B : Return item list
+deactivate DB
+B --> F : Orderable items data
+deallocate B
+F -> F : Display items to employee
+F --> E : Show orderable menu items
+deactivate F
+
+@enduml
+```
+
+This sequence diagram starts with an employee deciding to view orderable items on the system. Here's a breakdown of the process:
+
+1. **Employee Interacts with Frontend**: The employee selects the option to "View Orderable Items" on the restaurant management system's interface (Frontend).
+
+2. **Frontend Requests Data from Backend**: The frontend sends a request to the backend server to fetch the details of orderable items. This is typically a GET request to an endpoint like `/menu/orderable-items`.
+
+3. **Backend Queries Database**: Upon receiving the request from the frontend, the backend server queries the system's database to fetch data about menu items that are currently available and in stock.
+
+4. **Database Filters Items**: The database performs a filtering operation to only select items that are marked as active and have sufficient stock available for ordering.
+
+5. **Data Returned to Backend**: The database returns the list of filtered menu items back to the backend server.
+
+6. **Backend Sends Data to Frontend**: The backend server processes the received data if necessary (such as formatting) and sends it over to the frontend.
+
+7. **Frontend Displays Items to Employee**: The frontend system then takes this data and displays the orderable menu items to the employee in a clear and interactive format.
+
+8. **Employee Views Orderable Items**: Finally, the employee is able to view and possibly interact with the list of items that are available for ordering.
+
+This diagram simplifies the real-world interactions by not detailing authentication, error handling, or the internal workings of each system component to focus on the main flow of the employee's user story. In a full-scale system, additional steps for user authorization, error checking, and possibly real-time updates or notifications could also be integrated into this process.

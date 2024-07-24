@@ -1,0 +1,35 @@
+@startuml
+participant HydratorUser as user
+participant "Pipeline Configuration\nService" as configService
+participant "Dataset Management\nService" as datasetService
+participant "Version Control\nService" as versionService
+participant "Dataset Instance\nRepository" as instanceRepo
+
+== Pipeline Creation Process ==
+user -> configService : Specify pipeline with dataset types and versions
+activate configService
+configService -> datasetService : Request dataset type details
+activate datasetService
+datasetService -> versionService : Check version compatibility
+activate versionService
+
+versionService -> instanceRepo : Query existing dataset instances
+activate instanceRepo
+instanceRepo --> versionService : Return existing instance details
+deactivate instanceInfo
+
+versionService -> versionService : Evaluate compatibility
+versionService --> datasetService : Return compatibility result
+deactivate versionService
+datasetService --> configService : Return dataset type details & compatibility
+deactivate datasetService
+
+configService -> configService : Assess overall pipeline compatibility
+alt If compatible
+    configService --> user : Pipeline creation successful
+else If incompatible
+    configService --> user : Pipeline creation fails due to incompatible dataset instance upgrade
+end
+deactivate configService
+
+@enduml

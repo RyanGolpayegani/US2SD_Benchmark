@@ -1,0 +1,36 @@
+@startuml
+participant Developer
+participant "WebSocket Client" as WebClient
+participant "WebSocket Server" as WSServer
+participant "Frictionless Data Tools API" as FDTAPI
+participant "Data Package System" as DPS
+
+Developer -> WebClient: Initiate connection
+WebClient -> WSServer: Connect to WebSocket Server
+activate WSServer
+WSServer -> WSServer: Validate connection
+alt success
+    WSServer --> WebClient: Acknowledge connection
+    activate WebClient
+    WebClient -> FDTAPI: Request Data Package operations
+    activate FDTAPI
+    FDTAPI -> DPS: Request Data Package
+    activate DPS
+    DPS --> FDTAPI: Return Data Package
+    deactivate DPS
+    FDTAPI --> WebClient: Send requested Data Package information
+    WebClient --> Developer: Display Data Package information
+    deactivate FDTAPI
+    deactivate WebClient
+else failure
+    WSServer -> WebClient: Deny connection
+    WebClient -> Developer: Display error message
+end
+deactivate WSServer
+
+Developer -> WebClient: Close connection request
+WebClient -> WSServer: Disconnect
+WSServer --> WebClient: Acknowledge disconnection
+WebClient --> Developer: Confirm disconnection
+
+@enduml

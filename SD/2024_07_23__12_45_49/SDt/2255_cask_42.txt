@@ -1,0 +1,25 @@
+@startuml
+!theme cerulean
+
+participant UserInterface as UI
+participant ApiService as API
+participant SchemaManagement as SchemaMan
+participant VersionControl as VC
+participant DatasetTypeRegistry as Registry
+
+UI -> API : specifySchema(DatasetTypeId, SchemaConfig)
+API -> SchemaMan : getDatasetType(DatasetTypeId)
+SchemaMan -> Registry : fetchDatasetType(DatasetTypeId)
+Registry --> SchemaMan : return DatasetTypeInterface
+SchemaMan -> SchemaMan : validateSchema(SchemaConfig)
+alt Schema is valid
+    SchemaMan -> VC : checkVersionCompatibility(DatasetTypeId)
+    VC --> SchemaMan : VersionCompatible
+    SchemaMan --> API : SchemaValidated
+    API --> UI : displaySuccess(Message)
+else Schema is invalid
+    SchemaMan --> API : SchemaValidationError(Error)
+    API --> UI : displayError(Error)
+end
+
+@enduml

@@ -1,0 +1,35 @@
+Creating a detailed sequence diagram for changing customer orders by an employee involves various components and actors, including the employee, front-end UI, server, database, and possibly, third-party services for notifications or updates. Here's a simplified sequence diagram in PlantUML format to depict this operation:
+
+```plantuml
+@startuml
+participant Employee_UI as "Employee\nUser Interface"
+participant Server_API as "Server/API"
+participant Database as "Database"
+participant NotificationService as "Notification Service"
+
+title Employee Changes Customer Order Sequence
+
+autonumber
+
+== Change Order Process ==
+Employee_UI -> Server_API : Request to change order (OrderID, NewDetails)
+Server_API -> Database : Query to fetch original order
+Database -> Server_API : Original order details
+Server_API -> Database : Update order with NewDetails
+Database -> Server_API : Confirmation of update
+Server_API -> NotificationService : Send notification to kitchen/staff
+NotificationService -> Database : Log notification status
+Database -> NotificationService : Confirmation of log
+NotificationService -> Server_API : Notification sent confirmation
+Server_API -> Employee_UI : Confirm order change to employee
+Employee_UI -> Server_API : Request to display updated order
+Server_API -> Database : Fetch updated order details (OrderID)
+Database -> Server_API : Updated order details
+Server_API -> Employee_UI : Display updated order
+
+@enduml
+```
+
+This diagram outlines the basic flow when an employee requests to change a customer order. It starts with the employee interacting with the user interface to initiate the change. The request is then sent to the server or API, which interacts with the database to fetch and then update the order with the new details. A notification service may also be involved to alert kitchen staff or other relevant parties of the change. Finally, the updated order is confirmed and displayed back to the employee.
+
+This is a simplified representation. The actual complexity might vary based on additional requirements or integration with other systems (e.g., real-time kitchen display systems, payment gatesticks, etc.). Also, error handling and security measures (like authentication and authorization checks) should be included in a comprehensive design, although they're not depicted in this basic outline.

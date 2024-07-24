@@ -1,0 +1,52 @@
+Certainly! Below is a detailed PlantUML sequence diagram code to illustrate the user story of a Data Publishing User wanting to edit the source of data they've already imported to fix bugs or make enhancements in the API built for their data.
+
+```plantuml
+@startuml
+actor User as user
+participant "User Interface" as UI
+participant "API" as API
+participant "Database" as DB
+
+user -> UI : Selects dataset to edit
+UI -> API : Request dataset details
+API -> DB : Fetch dataset details
+DB --> API : Return dataset details
+API --> UI : Display dataset details
+UI --> user : Show dataset details
+
+user -> UI : Makes edits to data source
+UI -> API : Submit edited data source
+group Validation Process
+    API -> API : Validate data format
+    alt If validation fails
+        API --> UI : Show validation error
+        UI --> user : Display validation error
+        user -> UI : Corrects data and resubmits
+        UI -> API : Submit corrected data source
+    else Validation passes
+    end
+end
+
+group Update Process
+    API -> DB : Update data source in DB
+    DB --> API : Confirm update success
+    API -> API : Trigger data processing
+    alt If processing fails
+        API --> UI : Show processing error
+        UI --> user : Display processing error
+    else If processing succeeds
+        API --> UI : Notify update success
+        UI --> user : Display success message
+    end
+end
+
+@enduml
+```
+
+This sequence diagram begins with the user selecting the dataset they wish to edit through the user interface (UI). The UI requests the details of the dataset from the API, which fetches this information from the database (DB) and returns it to the UI to display to the user. The user then makes the necessary edits to the data source.
+
+Once the user submits the edited data source, the API performs a validation process on the updated data. If the validation fails, an error message is shown to the user, who must then correct the data and resubmit. If the validation passes, the process moves on to the update process.
+
+During the update process, the API updates the data source in the database and triggers data processing. If the processing fails, an error message is displayed to the user. If the processing succeeds, the API notifies the UI of the successful update, and the UI displays a success message to the user.
+
+This sequence diagram abstracts some complexities and assumes a straightforward update mechanism for the sake of clarity. Adjustments might be needed to cater to specific technical architectures or additional steps in your data processing workflow.

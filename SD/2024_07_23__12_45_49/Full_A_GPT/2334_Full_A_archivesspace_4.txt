@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for the importation of EAD files (as exported by Archon) into the Comprehensive Archival Management System (CAMS) involves illustrating the sequence of operations from the archivist's initiation of the import process to the system processing and storing these files. Below, the PlantUML code outlines this sequence.
+
+Note: This diagram assumes a web-based interface for the CAMS system, where the Archivist uploads the EAD file, and the system processes the file, validates it, and then stores the relevant data in the database. It simplifies the interactions for clarity.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Archivist
+participant "Web Interface" as Web
+participant "Import Module" as Import
+participant "Validation Module" as Validation
+participant "Database" as DB
+
+== Import EAD File ==
+Archivist -> Web : Select and Upload EAD File
+Web -> Import : Initiate Import Process
+Import -> Validation : Validate EAD File
+alt Valid EAD File
+  Validation -> Import : File Is Valid
+  Import -> DB : Store EAD Data
+  DB --> Import : Confirm Data Stored
+  Import --> Web : Display Success Message
+  Web --> Archivist : Show Confirmation & Details
+else Invalid EAD File
+  Validation -> Import : Error in File
+  Import --> Web : Display Error Message
+  Web --> Archistrate : Show Error & Suggest Corrections
+end
+
+@enduml
+```
+
+This sequence diagram focuses on the essential steps an archivist would go through when importing an EAD file exported by Archon into the Comprehensive Archival Management System. The steps include:
+
+1. **Selection and Upload**: The Archivist selects the EAD file for upload via the system's web interface.
+2. **Initiate Import Process**: The web interface communicates with the Import Module to start processing the uploaded file.
+3. **Validate EAD File**: Before processing, the Import Module sends the file to the Validation Module to ensure it meets the necessary criteria for import.
+4. **File Validation**: The system handles two possible outcomes:
+   - **Valid File**: If the file is valid, the Validation Module signals this to the Import Module, which then proceeds to store the data from the EAD file in the database. Upon successful storage, the Archivist is notified of the success.
+   - **Invalid File**: If the file fails validation, the Import Module informs the Web Interface, which then notifies the Archivist of the failure and suggests possible corrections.
+
+This diagram can be expanded or modified to incorporate more specific steps or interactions based on the archival system's detailed requirements or capabilities.

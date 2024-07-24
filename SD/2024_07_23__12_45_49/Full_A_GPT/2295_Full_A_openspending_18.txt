@@ -1,0 +1,38 @@
+Given the requirements of the user story, I'll provide a sequence diagram in PlantUML format that outlines how a data consuming user interacts with the system to see textual descriptions accompanying embedded visualizations. This sequence assumes that the platform already has embedded visualizations with associated textual descriptions as part of the dataset.
+
+```
+@startuml
+participant User as U
+participant WebInterface as W
+participant VisualizationService as VS
+participant Database as DB
+
+U -> W: Request dataset visualization
+activate W
+W -> VS: Fetch visualization (ID)
+activate VS
+VS -> DB: Retrieve visualization details
+activate DB
+DB --> VS: Visualization data & metadata
+deactivate DB
+VS --> W: Visualization data & embedded textual description
+deactivate VS
+
+W -> U: Display visualization & textual description
+deactivate W
+@enduml
+```
+
+### Explanation of the Sequence:
+
+1. **User Request:** The sequence begins with the data consuming user requesting to see a dataset visualization on the web interface.
+
+2. **Fetch Visualization:** The web interface forwards the request to the Visualization Service, specifying which visualization is being requested (using an ID or other unique identifier).
+
+3. **Retrieve Visualization Details:** The Visualization Service then requests the visualization details, including any textual descriptions, from the Database.
+
+4. **Database Responds:** The Database returns the requested visualization details, including data for rendering the visualization and the accompanying textual description.
+
+5. **Display Visualization and Description:** Finally, the Visualization Service sends the visualization data along with the embedded textual description back to the web interface, which then displays both to the user.
+
+This sequence demonstrates the backend process involved in ensuring that when a data-consuming user views an embedded visualization, they also receive a textual description to aid in their understanding of what is being visualized. Note, this is a simplified version and actual implementations may vary or involve additional steps such as checking user permissions or processing data for visualization.

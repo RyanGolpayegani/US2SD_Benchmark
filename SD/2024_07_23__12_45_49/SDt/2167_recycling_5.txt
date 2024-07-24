@@ -1,0 +1,29 @@
+@startuml
+participant User
+participant "RecycleSmart UI" as UI
+participant "RecycleSmart Server" as Server
+participant "Database" as DB
+participant "Recycling Facility System" as Facility
+
+User -> UI : Select "Schedule Pick-Up"
+UI -> User : Display pick-up scheduling form
+
+User -> UI : Submit pick-up time preferences
+UI -> Server : Send pick-up time preferences, user and facility details
+Server -> DB : Validate user & facility
+DB -> Server : Validation success
+
+alt If validation is successful
+  Server -> Facility : Request pick-up schedule update
+  Facility -> Facility : Process schedule update
+  Facility -> Server : Confirm pick-up time
+  Server -> DB : Store confirmed pick-up time
+  DB -> Server : Confirmation
+  Server -> UI : Display confirmation to User
+  UI -> User : Show confirmation message
+else If validation fails
+  Server -> UI : Display error message
+  UI -> User : Show error message (Try again or contact support)
+end
+
+@enduml

@@ -1,0 +1,65 @@
+Creating a detailed sequence diagram for the specified user story in the PlantUML format involves illustrating the interactions between the data scientist, the dataset management system, and potentially other system components involved in upgrading a dataset instance to a new version of its code. Below is an annotated sequence diagram to fit the premise of the described project.
+
+Please note that PlantUML syntax can be rendered using PlantUML tools or plugins available in various IDEs or online PlantUML viewers. This is a conceptual representation that might need adjustments based on your specific system architecture and implementation details.
+
+```plantuml
+@startuml
+!theme plain
+
+participant DataScientist as DS
+participant "Dataset Management \n System" as DMS
+participant "Version Control \n System" as VCS
+participant "Upgrade & Migration \n Tool" as UMT
+
+== Dataset Instance Upgrade Process ==
+
+DS -> DMS : Request to upgrade dataset instance
+activate DMS
+DMS -> VCS : Check latest version of dataset code
+activate VCS
+VCS --> DMS : Return latest version details
+deactivate VCS
+
+DMS -> DMS : Compare current and latest versions
+DMS -> UMT : Initiate upgrade process
+activate UMT
+UMT -> UMT : Analyze upgrade implications\nand prepare migration steps
+
+alt Successful Upgrade Preparation
+    UMT --> DMS : Upgrade and Migration Plan
+    deactivate UMT
+    DMS -> DS : Approval required for upgrade\nand potential data migration
+    DS -> DMS : Approves upgrade
+    activate DMS
+    DMS -> UMT : Execute upgrade with approved plan
+    activate UMT
+    UMT -> UMT : Apply upgrade and migration steps
+    UMT --> DMS : Upgrade Success
+    deactivate UMT
+    DMS --> DS : Notify upgrade success
+    deactivate DMS
+else Upgrade Preparation Failed
+    UMT --> DMS : Upgrade and Migration Plan Failed
+    deactivate UMT
+    DMS --> DS : Notify upgrade failure\nand reason
+    deactivate DMS
+end
+
+@enduml
+```
+
+### Explanation:
+
+1. **Data Scientist's Request:** The sequence begins with the Data Scientist (DS) requesting to upgrade a dataset instance to a new version via the Dataset Management System (DMS).
+
+2. **Version Check:** The DMS then interacts with the Version Control System (VCS) to check for the latest version of the dataset code.
+
+3. **Comparison and Plan:** Following the version check, the DMS internally compares the current dataset instance's version with the latest one and initiates an upgrade process by engaging the Upgrade & Migration Tool (UMT).
+
+4. **Approval Process:** Before proceeding with the upgrade, the DMS seeks approval from the Data Scientist, detailing the required upgrade and any data migration implications.
+
+5. **Upgrade Execution:** Upon receiving approval, the DMS instructs the UMT to execute the upgrade plan, involving data migration steps if necessary.
+
+6. **Outcome Notification:** Finally, depending on whether the upgrade preparation and execution were successful or not, the Data Scientist is notified of the outcome.
+
+This diagram is a high-level representation and can be customized or detailed further based on specific requirements, such as error handling, authentication, or interaction with other system components not covered in the basic scenario.

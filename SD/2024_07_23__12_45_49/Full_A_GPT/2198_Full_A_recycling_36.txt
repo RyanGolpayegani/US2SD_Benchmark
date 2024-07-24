@@ -1,0 +1,45 @@
+Below is a PlantUML sequence diagram for the user story: "As a user, I want to view all locations of recycling centers on a map, so that I can check which routes to take to drop off waste." This sequence diagram outlines the interactions between the system components involved in fulfilling this user request within the RecycleSmart platform. 
+
+```plantuml
+@startuml
+actor User
+participant "Web Interface" as Web
+participant "Backend System" as Backend
+participant "Database" as DB
+participant "Map Service API\n(Google Maps)" as MapAPI
+
+User -> Web : Selects "View Recycling Centers"
+activate Web
+Web -> Backend : Request recycling center data
+activate Backend
+
+Backend -> DB : Query recycling center locations
+activate DB
+DB --> Backend : Return recycling center data
+deactivate DB
+
+Backend -> MapAPI : Request to plot locations on map
+activate MapAPI
+MapAPI --> Backend : Return map with plotted recycling centers
+deactivate MapAPI
+
+Backend --> Web : Send map view to display
+deactivate Backend
+Web --> User : Display map with recycling centers
+deactivate Web
+
+@enduml
+```
+
+#### Explanation:
+
+1. **User Interaction**: The user initiates the process by selecting the option to "View Recycling Centers" on the web interface.
+2. **Web Interface to Backend System**: The web interface requests the recycling center data from the backend system.
+3. **Backend System Queries Database**: The backend system queries the database to retrieve the locations of the recycling centers.
+4. **Database Response**: The database returns the data of recycling center locations to the backend system.
+5. **Backend System to Map Service API**: The backend system sends a request to the Map Service API (e.g., Google Maps) to plot these locations on a map.
+6. **Map Service API Response**: The Map Service API returns a map with the recycling centers plotted.
+7. **Backend System to Web Interface**: The backend system sends the map view back to the web interface.
+8. **User Views Map**: Lastly, the web interface displays the map with the recycling centers to the user, allowing them to plan which route to take for dropping off waste.
+
+This diagram provides a high-level overview of the system's interactions during the fulfillment of the user's request to view recycling center locations on a map.

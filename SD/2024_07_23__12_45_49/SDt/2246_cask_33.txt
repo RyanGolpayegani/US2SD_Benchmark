@@ -1,0 +1,43 @@
+@startuml
+!theme plain
+
+participant PluginDeveloper as PD
+participant ArtifactRepository as AR
+participant DatasetManagementSystem as DMS
+participant PipelineSystem as PS
+participant DatasetInstance as DI
+participant Pipeline as P
+
+== Plugin Upgrade ==
+PD -> AR : Deploy new plugin version with upgraded dataset type
+activate AR
+AR -> DMS : Notify dataset type version upgrade
+activate DMS
+DMS -> DI : Check for existing instances of dataset type
+activate DI
+DI -> DMS : Report current status
+DMS -> DMS : Validate compatibility
+DMS -> DI : Upgrade dataset instance to new version
+deactivate DI
+DMS -> AR : Upgrade successful
+deactivate DMS
+AR -> PD : Confirm plugin and dataset type upgrade
+deactivate AR
+
+== Pipeline Update ==
+PD -> PS : Update pipeline to use new plugin version
+activate PS
+PS -> P : Check existing pipeline configurations
+activate P
+P -> PS : Report current version and configurations
+PS -> P : Update to new plugin version
+P -> DI : Access upgraded dataset instance
+activate DI
+DI -> P : Provide access based on new version
+deactivate DI
+P -> PS : Pipeline updated successfully
+deactivate P
+PS -> PD : Confirm pipeline update to new plugin version
+deactivate PS
+
+@enduml

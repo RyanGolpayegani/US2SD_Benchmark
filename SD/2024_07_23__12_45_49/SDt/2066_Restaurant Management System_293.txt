@@ -1,0 +1,25 @@
+@startuml
+participant WaiterApp
+participant BackendAPI
+participant KitchenManagementSystem
+participant NotificationService
+
+WaiterApp -> BackendAPI : SubmitOrder(orderDetails)
+activate WaiterApp
+activate BackendAPI
+BackendAPI -> KitchenManagementPanel : CreateOrder(orderDetails)
+activate KitchenManagementSystem
+
+note over KitchenManagementSystem : Chef/cook marks item as ready
+
+KitchenManagementSystem -> BackendAPI : UpdateOrderStatus(orderId, itemReady)
+deactivate KitchenManagementSystem
+BackendAPI -> NotificationService : SendNotification(waiterId, message)
+activate NotificationService
+NotificationService -> WaiterApp : DisplayNotification(message)
+deactivate BackendAPI
+deactivate NotificationAggregator
+WaiterApp --> WaiterApp : AcknowledgeNotification()
+deactivate WaiterApp
+
+@enduml

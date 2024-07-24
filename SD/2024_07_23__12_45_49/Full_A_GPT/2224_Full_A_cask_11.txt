@@ -1,0 +1,57 @@
+Creating a detailed Sequence Diagram in PlantUML format for the described user story involves illustrating the interactions among various components and actors throughout the process of deploying a dataset type independently and enabling apps to create and use instances of that dataset type. Below is a simplified sequence diagram to fit the user story within the scope of the Advanced Dataset Management and Version Control System project. 
+
+```plantuml
+@startuml
+
+actor DatasetDeveloper as "Dataset Developer"
+participant DatasetManager as "Dataset Management System"
+participant Database as "Database"
+participant App as "Application"
+
+== Dataset Type Deployment ==
+DatasetDeveloper -> DatasetManager : Deploy dataset type
+activate DatasetManager
+DatasetManager -> Database : Register dataset type
+activate Database
+Database --> DatasetManager : Confirmation
+deactivate Database
+DatasetManager --> DatasetDeveloper : Deployment Success
+deactivate DatasetManager
+
+== App Creating Dataset Instance ==
+App -> DatasetManager : Request to create dataset instance
+activate DatasetManager
+DatasetManager -> Database : Check dataset type exists
+activate Database
+Database --> DatasetManager : Dataset type confirmed
+deactivate Database
+DatasetManager -> Database : Create dataset instance
+activate Database
+Database --> DatasetManager : Instance Creation Confirmation
+deactivate Database
+DatasetManager --> App : Dataset instance ready
+deactivate DatasetManager
+
+== App Using Dataset Instance ==
+App -> DatasetManager : Request access to dataset instance
+activate DatasetGlobals
+DatasetManager -> Database : Validate access rights
+activate Database
+Database --> DatasetManager : Access Granted
+deactivate Database
+DatasetManager --> App : Provide dataset instance access
+deactivate DatasetManager
+
+
+@enduml
+```
+
+This diagram is a simplified view emphasizing the key interactions for deploying and using dataset types independently by apps, based on the user story provided. Here are the steps outlined in this sequence diagram:
+
+1. **Dataset Type Deployment**: The dataset developer deploys a new dataset type to the Dataset Management System. The system then registers this new type in the database, confirming the deployment process's success back to the developer.
+
+2. **App Creating Dataset Instance**: An application requests the creation of a dataset instance of the newly deployed type. The Dataset Management System checks if the dataset type exists, proceeds to create an instance in the database, and informs the app once the dataset instance is ready for use.
+
+3. **App Using Dataset Instance**: When the app needs to use the dataset instance, it requests access from the Dataset Management System. The system validates the app's access rights with the database and, upon confirmation, provides the app with access to the dataset instance.
+
+This sequence is generalized and might need to be further detailed or adjusted depending on specific project requirements, technology stack, dataset types, and operational contexts.

@@ -1,0 +1,29 @@
+@startuml
+actor SuperUser as SU
+participant "Dashboard Interface" as Dashboard
+participant "Authentication Service" as AuthService
+participant "Database" as DB
+participant "Analytics Engine" as Analytics
+participant "Notification Service" as Notify
+
+== Authentication ==
+SU -> AuthService : authenticate(superuser credentials)
+AuthService -> DB : validate_credentials(superuser_id)
+DB --> AuthService : credentials_valid
+AuthService --> SU : authentication_success
+
+== Viewing User Stats ==
+SU -> Dashboard : select(View User Stats)
+Dashboard -> Analytics : request_stats(recycling_center_id)
+Analytics -> DB : fetch_user_visits_and_waste(recycling_centre_id)
+DB --> Analytics : visit_data, waste_data
+Analytics --> Dashboard : compile_stats(visit_data, waste_data)
+Dashboard --> SU : display(stats)
+
+== Notifications ==
+Analytics -> Notify : check_if_stats_update_needed()
+Notify --> Analytics : update_needed
+Analytics -> Notify : generate_notification(superuser_id, stats_summary)
+Notify -> SU : send_notification(stats_update)
+
+@enduml

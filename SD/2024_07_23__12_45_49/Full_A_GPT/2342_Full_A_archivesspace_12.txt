@@ -1,0 +1,50 @@
+Creating a detailed Sequence Diagram for the user story "As an Archrist, I want to import Resources from MARCXML records" involves several steps and components interacting with each other. Here's how it could be represented using PlantUML syntax.
+
+Please note: Implementing this in a real-world scenario might require adjustments depending on the specific system architecture, technologies used, and how the import process is envisioned to work within the Comprehensive Archival Management System (CAMS). The following diagram is a simplified version and may need customization for real application contexts.
+
+```plantuml
+@startuml
+actor Archivist as archivist
+participant "Web Interface" as web
+database "CAMS Database" as db
+participant "Import Module" as importMod
+participant "MARCXML Parser" as parser
+participant "Resource Manager" as resourceMan
+
+== Import Resources from MARCXML Records ==
+
+archivist -> web : Select "Import MARCXML"
+web -> importMod : Trigger import process
+importMod -> parser : Send MARCXML data
+parser -> parser : Parse MARCXML to CAMS format
+parser -> resourceMan : Send parsed data
+
+alt Successful Parsing
+    resourceMan -> db : Store new Resources
+    db -> resourceMan : Confirm storage
+    resourceMan -> web : Respond with success message
+    web -> archivist : Display success message
+else Parsing Error
+    resourceMan -> web : Respond with error message
+    web -> archivist : Display error message
+end
+@enduml
+```
+
+Explanation of the Sequence Diagram components and process:
+- **Archivist:** The user who initiates the import process.
+- **Web Interface:** Represents the CAMS user interface through which the archivist interacts with the system.
+- **CAMS Database:** The backend storage where all system data, including imported resources, are kept.
+- **Import Module:** A dedicated module within CAMS responsible for handling import requests.
+- **MARCXML Parser:** A service or function dedicated to converting MARCXML records into a format compatible with CAMS.
+- **Resource Manager:** Manages operations related to resources within CAMS, including storing the parsed data.
+
+**Process Flow:**
+1. The Archivist selects the option to import MARCXML records through the Web Interface.
+2. The Web Interface triggers the import process by notifying the Import Module.
+3. The Import Module sends the MARCXML data to the MARCXML Parser for conversion.
+4. Upon successful parsing, the resources in CAMS format are passed on to the Resource Manager.
+5. Depending on the parsing result, the Resource Manager attempts to store the new resources in the CAMS Database. A success or error message is generated accordingly.
+6. The Web Interface displays a message to the Archivist based on the outcome of the import operation.
+
+This sequence ensures that the process of importing resources from MARCXML records is clear, modular, and accounts for success or failure states.

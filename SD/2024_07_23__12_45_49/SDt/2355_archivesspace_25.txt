@@ -1,0 +1,26 @@
+@startuml
+actor Administrator as admin
+participant "User Management \nInterface" as umi
+participant "System Backend" as backend
+database "CAMS Database" as db
+
+== User Account Creation Process ==
+
+admin -> umi : Access User Management Section
+umi -> backend : Request User Creation Form
+backend -> umi : Return User Creation Form
+umi -> admin : Display User Creation Form
+
+admin -> umi : Fill in User Details\n(Username, Password, Role)
+umi -> backend : Validate User Details
+alt Validation Success
+    backend -> db : Create New User Account
+    db -> backend : Confirm Account Creation
+    backend -> umi : Show Confirmation Message
+    umi -> admin : Display Success Notification
+else Validation Failed
+    backend -> umi : Show Error Message
+    umi -> admin : Display Error\n(Request Correct Data)
+end
+
+@enduml

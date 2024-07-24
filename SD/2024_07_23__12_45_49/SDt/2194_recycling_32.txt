@@ -1,0 +1,30 @@
+@startuml
+participant User as U
+participant "RecycleSmart Platform" as RSP
+participant "Notification System" as NS
+participant "Employee Interface" as EI
+participant Employee as E
+
+U -> RSP : Submit Recycling Request
+activate RSP
+
+RSP -> NS : Trigger Case Creation
+activate NS
+
+NS -> EI : Create Case & Assign to Employee
+activate EI
+
+EI -> E : Notify Employee of New Case
+activate E
+
+E -->> EI : Acknowledge Notification
+deactivate E
+deactivate EI
+
+EI -->> NS : Update Case Status (In-Progress)
+deactivate NS
+
+NS -->> RSP : Log Case Status Update
+deactivate RSP
+
+@enduml

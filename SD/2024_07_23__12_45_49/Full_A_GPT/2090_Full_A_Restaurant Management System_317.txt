@@ -1,0 +1,40 @@
+Creating a detailed Sequence Diagram for the specified user story "As a waiter, I want to update the waiting time of the table" involves outlining the interactions between different system components from the moment the waiter decides to update the waiting time, through the system processing this update, to the system reflecting this new waiting time. The components involved might include the Waiter Interface, the Restaurant Management System Backend, and possibly the Customer Interface to update customers on their expected wait times.
+
+Below is an example of a sequence diagram representing this process in PlantUML format:
+
+```
+@startuml
+participant Waiter as waiter
+participant "Waiter Interface" as UI
+participant "Backend System" as backend
+participant "Database" as db
+
+waiter -> UI: Selects table to update
+UI -> backend: Request update waiting time
+activate backend
+
+backend -> db: Retrieve current wait time
+activate db
+db --> backend: Return current wait time
+deactivate db
+
+backend -> db: Update waiting time
+activate db
+db --> backend: Confirm waiting time updated
+deactivate db
+
+backend --> UI: Update success confirmation
+deactivate backend
+
+UI --> waiter: Display success message
+@enduml
+```
+
+This sequence diagram starts with the waiter selecting the table they want to update the waiting time for, through a Waiter Interface. The system then proceeds through the following steps:
+1. The Waiter Interface sends the request to update the waiting time to the Backend System.
+2. The Backend System retrieves the current waiting time from the Database.
+3. The Backend System updates the waiting time in the Database.
+4. The Backend System sends a confirmation of the update success back to the Waiter Interface.
+5. Finally, the Waiter Interface displays a success message to the waiter.
+
+This is a simplified view focusing on the core interactions and does not include error handling and other possible intermediate steps for clarity. The actual implementation might require additional steps, including authentication and authorization checks, logging, and notifications to other parts of the system or other users (e.g., updating the waiting time display to customers via a Customer Interface).

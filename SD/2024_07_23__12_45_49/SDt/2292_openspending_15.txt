@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+
+participant User as user
+participant WebInterface as web
+database OpenSpendingDB as db
+participant APIServer as api
+participant DataProcessingModule as processing
+
+== Data Filtering, Sorting, and Aggregating ==
+
+user -> web : Selects filters, sort criteria, and aggregate functions
+web -> api : Requests data with specified filters, sort, and aggregate
+api -> db : Fetches unprocessed data
+db --> api : Returns unprocessed data
+api -> processing : Sends data for processing with user criteria
+processing -> processing : Filters, sorts, and aggregates data
+processing --> api : Returns processed data
+api --> web : Sends processed data
+web --> user : Displays data according to filters, sort, and aggregates
+
+@enduml

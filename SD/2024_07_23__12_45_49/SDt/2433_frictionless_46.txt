@@ -1,0 +1,28 @@
+@startuml
+actor Publisher
+participant "DPIE System" as DPIE
+participant "Validation Service" as Validation
+participant "Data Storage" as Storage
+
+activate Publisher
+Publisher -> DPIE : Update data package
+activate DPIE
+DPIE -> Validation : Validate updated data
+activate Validation
+Validation -> Validation : Check data integrity
+Validation -> Validation : Ensure conformity to Data Package profiles
+Validation --> DPIE : Validation result
+deactivate Validation
+
+alt if data is good
+    DPIE -> Storage : Store updated data package
+    activate Storage
+    Storage --> DPIE : Confirm data stored
+    deactivate Storage
+    DPIE --> Publisher : Update and validation successful
+else if data has errors
+    DPIE --> Publisher : Update failed - errors found
+end
+
+deactivate DPIE
+@enduml

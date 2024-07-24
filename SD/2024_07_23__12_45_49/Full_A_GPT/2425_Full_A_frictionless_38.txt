@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the specific user story: "As a Researcher/Publisher, I want to publish Data Packages to CKAN, so that my data is findable, and I can have a data API" - involves illustrating the interaction between the Researcher/Publisher and the DataPackage Integrator and Enhancer (DPIE) system, along with the integration with CKAN (Comprehensive Knowledge Archive Network). Below is a PlantUML sequence diagram that captures these interactions.
+
+```plantuml
+@startuml
+actor ResearcherPublisher as RP
+participant "DPIE System" as DPIE
+database "CKAN" as CKAN
+
+RP -> DPIE : Prepare Data Package
+activate DPIE
+
+DPIE -> DPIE : Validate Data Package
+note right: Validates integrity\nand conformance to\nData Package profiles
+
+DPIE -> DPIE : Enrich Data Package
+note right: Adds type information,\ncreates visualizations, etc.
+
+DPIE -> CKAN : Publish to CKAN
+activate CKAN
+note over CKAN: Stores Data Package\nand generates Data API
+
+CKAN --> DPIE : Confirm Publication
+note right: Provides URL to\nData Package and API details
+
+DPIe -> RP : Provide Access Details
+note over RP: URL to Data Package\nand API details
+
+deactivate CKAN
+deactivate DPIE
+@enduml
+```
+
+This sequence diagram starts with the Researcher/Publisher preparing the Data Package, which is then sent to the DPIE system. DPIE performs a series of actions on this package:
+
+1. **Validate Data Package**: The DPIE system validates the integrity and conformance of the Data Package to specified profiles.
+2. **Enrich Data Package**: It enriches the Data Package by adding types, creating visualizations, and potentially more based on the description provided.
+3. **Publish to CKAN**: The DPIE system then interacts with CKAN to publish the Data Package. This step involves storing the Data Package in CKAN and generating a Data API for it.
+4. **Confirmation and Access Details**: Once the publication is confirmed by CKAN, DPIE communicates back to the Researcher/Publisher with the URL to the Data Package and details of the API.
+
+This sequence diagram captures the essential steps involved. However, remember that actual implementations may involve more detailed interactions based on specific requirements and system architectures.

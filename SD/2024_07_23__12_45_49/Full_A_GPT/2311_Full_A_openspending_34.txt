@@ -1,0 +1,43 @@
+To create a detailed Sequence Diagram for the given user story "As an API User, I want to be able to normalize measures by population, So that I work with datasets in reference to their contextual constraints" using PlantUML, here’s a breakdown of the interactivity flow that such a functionality might involve:
+
+1. **API User Calls**: The API User initiates the process by making a request to the OpenSpending API to normalize a dataset measure by population.
+2. **API Gateway**: The request is received by the OpenSpending API gateway, which routes the request to the appropriate service.
+3. **Validation Service**: Validates the API user's request, checking for requisite parameters such as dataset identifier, measure to be normalized, and the population data reference.
+4. **Dataset Service**: Fetches the requested dataset and the population data needed for normalization.
+5. **Normalization Engine**: Takes the raw dataset and population data, performing the calculations to normalize the specified measures by population.
+6. **Response Preparation**: Prepares the normalized data for response.
+7. **API User Receives Response**: The API gateway sends the normalized data back to the API user.
+
+Below is a representation of this flow in PlantUML syntax:
+
+```plantuml
+@startuml
+participant "API User" as User
+participant "API Gateway" as Gateway
+participant "Validation Service" as Validation
+participant "Dataset Service" as DatasetService
+participant "Normalization Engine" as Normalization
+participant "Response Preparation" as ResponsePrep
+
+User -> Gateway: Request normalization of measure by population
+Gateway -> Validation: Validate request parameters
+activate Validation
+Validation --> Gateway: Validation Successful
+deactivate Validation
+Gateway -> DatasetService: Fetch dataset and population data
+activate Dataset WS
+DatasetService --> Gateway: Dataset and Population Data
+deactivate DatasetService
+Gateway -> Normalization: Normalize measure by population
+activate Normalization
+Normalization --> Gateway: Normalized Data
+deactivate Normalization
+Gateway -> ResponsePrep: Prepare normalized data response
+activate ResponsePrep
+ResponsePrep --> Gateway: Normalized Data Response
+deactivate ResponsePrep
+Gateway -> User: Return normalized data
+@enduml
+```
+
+This diagram models the sequence of operations which might typically be involved in normalizing dataset measures by population through the OpenSpending API, starting from the initial user request, through various validation and processing steps, and finally returning the normalized data back to the user.

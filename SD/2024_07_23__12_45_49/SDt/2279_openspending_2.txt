@@ -1,0 +1,36 @@
+@startuml
+actor User as user
+participant "User Interface" as UI
+participant "API Server" as API
+participant "Database" as DB
+participant "Data Model Service" as DMS
+participant "Data Validation Service" as DVS
+
+user -> UI : Request to edit data model
+UI -> API : GET /data_models/:id/edit
+API -> DB : Fetch data model details
+DB -> API : Return data model details
+API -> UI : Display data model form
+user -> UI : Submit edited data model
+UI -> API : PUT /data_models/:id
+API -> DMS : Validates new data model structure
+DMS -> API : Respond with validation result
+
+alt If data model validation is successful
+
+  API -> DB : Update data model in DB
+  DB -> API : Confirm update success
+  API -> DVS : Initiate data re-validation
+  DVS -> DB : Re-validate existing data against new model
+  DB -> DVS : Return re-validation results
+  DVS -> API : Inform about data re-validation status
+  API -> UI : Notify user of successful update & re-validation
+  
+  else If data model validation fails
+  
+  API -> UI : Respond with error message
+  UI -> user : Display error and request corrections
+  
+end
+
+@enduml

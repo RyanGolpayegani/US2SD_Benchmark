@@ -1,0 +1,46 @@
+Given the complexity of the OpenSpending Enhancement Project and focusing on the user story of persistently storing visualization states in the database for easier sharing and inclusion in a visualization gallery, below is a detailed sequence diagram in PlantUML format. This sequence diagram outlines the interactions involved in this process from the API user's perspective.
+
+```plantuml
+@startuml
+actor "API User" as user
+participant "API Interface" as api
+database "OpenSpending DB" as db
+participant "Visualization Gallery" as gallery
+
+user -> api : Send visualization state\n{JSON data}
+api -> db : Validate & Persist\nVisualization State
+db -> api : Confirmation\n(State Stored)
+api -> user : State Stored\nConfirmation
+user -> api : Request to Share\nStored State
+api -> db : Retrieve\nVisualization State
+db -> api : Visualization State\n{JSON data}
+api -> gallery : Include in Gallery\n{Visualization State}
+gallery -> api : Confirmation\n(State Shared)
+api -> user : Shared Successfully\nURL to Gallery
+
+@enduml
+```
+
+### Explanation of the Diagram Steps:
+
+1. **Send visualization state {JSON data}:** The API user sends a request to the API Interface to store a specific visualization state. This state is typically represented as a JSON object, detailing various aspects of the visualization such that it can be reproduced later.
+
+2. **Validate & Persist Visualization State:** The API Interface processes the request and validates the provided JSON data. Upon successful validation, the API Interface commands the OpenSpending Database (DB) to persist the visualization state.
+
+3. **Confirmation (State Stored):** The OpenSpending DB confirms that the visualization state has been successfully stored.
+
+4. **State Stored Confirmation:** The API Interface relays this confirmation back to the API User, informing them that the process of storing the state was successful.
+
+5. **Request to Share Stored State:** At a later time, the API user may request to share this previously stored visualization state.
+
+6. **Retrieve Visualization State:** The API Interface requests the specific visualization state from the OpenSpending DB.
+
+7. **Visualization State {JSON data}:** The OpenSpending DB sends the requested visualization state back to the API Interface.
+
+8. **Include in Gallery {Visualization State}:** The API Interface forwards this visualization state to the Visualization Gallery, requesting its inclusion for public sharing.
+
+9. **Confirmation (State Shared):** The Visualization Gallery confirms the visualization state has been included and is now part of the gallery.
+
+10. **Shared Successfully + URL to Gallery:** Finally, the API Interface sends a confirmation back to the API user that the visualization state has been successfully shared, along with the URL where it can be accessed in the gallery.
+
+This sequence diagram outlines the desired interactions as part of the OpenSpending Enhancement Project for an API user to persistently store and share visualization states, promoting better accessibility and sharing of fiscal data visualization.

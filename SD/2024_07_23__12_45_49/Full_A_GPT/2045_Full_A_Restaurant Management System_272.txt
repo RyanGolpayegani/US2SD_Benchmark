@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the user story "As a waiter, I want to add notes to order" involves mapping out the sequence of interactions among different components of the Restaurant Management and Operations System, from the perspective of the waiter's role. Given the platforms and technologies suggested in the project description, let's draft a PlantUML sequence diagram to illustrate these actions.
+
+```plantuml
+@startuml
+actor Waiter
+participant "Waiter Interface" as WInterface
+participant "Order Management System" as OMS
+participant "Database" as DB
+
+== Add Notes to Order ==
+Waiter -> WInterface: Select order to add notes
+activate WInterface
+
+WInterface -> OMS: Request order details
+activate OMS
+
+OMS -> DB: Fetch order details
+activate DB
+DB --> OMS: Order details
+deactivate DB
+
+OMS --> WInterface: Show order details
+deactivate OMS
+
+Waiter -> WInterface: Enter notes and submit
+WInterface -> OMS: Update order with notes
+activate OMS
+
+OMS -> DB: Save updated order
+activate DB
+DB --> OMS: Confirm save
+deactivate DB
+
+OMS --> WInterface: Confirmation message
+deactivate OMS
+
+WInterface --> Waiter: Show confirmation message
+deactivate WInterface
+@enduml
+```
+
+This diagram follows these steps:
+1. The waiter selects an order to add notes through the Waiter Interface (which could be a terminal or tablet app specifically designed for restaurant staff).
+2. The Waiter Interface sends a request to the Order Management System to fetch the details of the requested order.
+3. The Order Management System queries the Database to retrieve the order details.
+4. Once the Order Management System has the order details, it sends them back to the Waiter Interface.
+5. The waiter enters their notes into the interface, which then sends an update request, including the notes, back to the Order Management System.
+6. The Order Management System updates the order with the notes in the Database.
+7. After the Database confirms the update, the Order Management System sends a confirmation message to the Waiter Interface.
+8. Finally, the Waiter Interface displays a confirmation message to the waiter.
+
+Please note that this sequence diagram assumes a simplistic interaction for clarity and may need adjustments based on the specific requirements and architecture of the Restaurant Management and Operations System, such as authentication steps, more detailed error handling, and interaction with other system components not covered in this user story.

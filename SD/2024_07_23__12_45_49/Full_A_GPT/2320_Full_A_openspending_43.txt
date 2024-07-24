@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for the mentioned user story requires breaking down the process of a Data Publishing User adding a dataset in a hidden state into distinct interactions between the user, the OpenSpending platform, and its underlying services. Below is a PlantUML sequence diagram that captures these interactions:
+
+```plantuml
+@startuml
+participant User
+participant WebInterface as "Web Interface"
+participant ValidationService as "Validation Service"
+participant DataService as "Data Service"
+participant Database as "Database"
+
+User -> WebInterface : Select "Add New Dataset"
+WebInterface -> User : Display "New Dataset Form"
+User -> WebInterface : Fill in dataset details\nand select "Hidden" state
+WebInterface -> ValidationService : Validate dataset information
+ValidationService -> WebInterface : Return validation results
+
+alt If dataset information is valid
+    ValidationService -> DataService : Send dataset details with "Hidden" state
+    DataService -> Database : Store dataset information \n(set visibility to hidden)
+    Database -> DataService : Confirm dataset stored
+    DataService -> WebInterface : Display success message
+    WebInterface -> User : Show "Dataset added successfully" notification
+else If dataset information is invalid
+    ValidationPoint -> WebInterface : Display error messages
+    WebInterface -> User : Show errors, ask for correction
+end
+
+User -> WebInterface : [Optional] Edit dataset details
+WebInterface -> ValidationService : Validate updated information
+ValidationService -> DataService : Update dataset details
+DataService -> Database : Apply updates to dataset
+Database -> DataService : Confirm updates applied
+DataService -> WebInterface : Display update success message
+WebInterface -> User : Show "Dataset updated successfully" notification
+
+@enduml
+```
+
+This sequence diagram starts with the user selecting to add a new dataset through the web interface, filling in the necessary details, and setting the dataset state to "Hidden." The web interface then interacts with a Validation Service to ensure that the dataset information provided by the user is valid. If the dataset details are deemed valid, the information is passed to a DataService responsible for interacting with the database to store the dataset. The database confirms the dataset storage back to the DataService, which in turn informs the web interface to display a success message to the user.
+
+In scenarios where the dataset information requires validation feedback or corrections, the Validation Service communicates this to the web interface, prompting the user to make necessary adjustments. Additionally, there's an optional flow where the user can edit the dataset details post-submission, which would undergo a similar validation and update process.
+
+This sequence diagram abstracts the interaction between main components involved in the process of adding a dataset in a hidden state, from the initial user action to the backend services managing data validation, storage, and confirmation.

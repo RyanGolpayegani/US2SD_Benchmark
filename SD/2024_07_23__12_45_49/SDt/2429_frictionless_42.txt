@@ -1,0 +1,37 @@
+@startuml
+actor Publisher as publisher
+participant "DPIE System" as DPIE
+participant "Excel Integration" as Excel
+participant "Data Package Cleaner" as Cleaner
+database "Data Package" as DataPkg
+
+== Export Cleaned Data Package to Excel ==
+
+publisher -> DPIE: Request Excel output for Data Package
+activate DPIE
+
+DPIE -> Cleaner: Send Data Package for cleaning
+activate Cleaner
+Cleaner -> DataPkg: Validate and Clean Data
+activate DataPkg
+DataPkg --> Cleaner: Cleaned Data Package
+deactivate DataPkg
+
+Cleaner --> DPIE: Cleaned Data Package
+deactivate Cleaner
+
+DPIE -> Excel: Request Excel output for Cleaned Data Package
+activate Excel
+Excel -> DataPkg: Fetch Cleaned Data Package
+activate DataPkg
+DataPkg --> Excel: Cleaned Data Package Data
+deactivate DataPkg
+
+Excel -> Excel: Generate Excel File from Data Package
+Excel --> DPIE: Excel File
+deactivate Excel
+
+DPIE --> publisher: Excel File with Cleaned Data Package
+deactivate DPIE
+
+@enduml

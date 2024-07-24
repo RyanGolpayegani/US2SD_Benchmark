@@ -1,0 +1,46 @@
+To create a detailed sequence diagram in PlantUML format for the user story "As an employee, I want to record a customer with name", we would depict the interaction between several components of the system such as the User Interface (UI), the Controller, and the Database. This specific sequence diagram will demonstrate how an employee records a new customer's name in the system.
+
+Please note that the detailed steps and components of the operation may vary based on the actual implementation details of your Restaurant Management and Operations System. However, the sequence below provides a general framework.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Employee as emp
+participant "UI: Employee Dashboard" as ui
+participant "Controller: CustomerManager" as controller
+database "DB: CustomerDatabase" as db
+
+emp -> ui : Enter customer name
+ui -> controller : addNewCustomer(name)
+controller -> db : checkIfCustomerExists(name)
+alt Customer does not exist
+    db -> db : createNewCustomerRecord(name)
+    db -> controller : CustomerCreated(success)
+    controller -> ui : DisplaySuccessMessage()
+else Customer exists
+    db -> controller : CustomerExists(error)
+    controller -> ui : DisplayErrorMessage()
+end
+emp <-- ui : View confirmation/error message
+
+@enduml
+```
+
+### Explanation of the Diagram:
+
+1. **Employee (Actor)**: Initiates the process by entering the customer's name into the Employee Dashboard (UI).
+
+2. **UI: Employee Dashboard**: The interface where the employee interacts with the system. It sends the customer's name to the `CustomerManager` controller for processing.
+
+3. **Controller: CustomerManager**: This logical component handles business operations related to customers. It first checks if the customer exists in the database.
+
+4. **DB: CustomerDatabase**: The storage system where customer data is kept. It is queried to check if a customer with the given name already exists.
+
+5. **Conditional Logic**:
+    - If the customer does **not** exist, a new customer record is created, and a success message is sent back through the controller to the UI.
+    - If the customer **exists**, an error message indicating the customer already exists is sent back.
+
+6. **Employee Gets Confirmation/Error Message**: Depending on the outcome, the employee views a confirmation message if the customer was successfully added or an error message if the customer could not be added because they already exist.
+
+This sequence diagram outlines the essential steps for recording a new customer's name, ensuring there's feedback for the employee at every stage of the process. It is a high-level representation and does not include exception handling and other detailed error-checking mechanisms for clarity and simplicity.
