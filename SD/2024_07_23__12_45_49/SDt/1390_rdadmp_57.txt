@@ -1,0 +1,27 @@
+@startuml
+
+participant ArchiveManager as AM
+participant DMPTool as DMPT
+participant MetadataTool as MDT
+participant Repository as Repo
+
+AM -> DMPT : Requests metadata association
+DMPT -> MDT : Fetch existing metadata
+MDT --> DMPT : Return metadata
+DMPT -> DMPT : Validate completeness \n& detail of metadata
+alt Metadata is complete and detailed
+    DMPT --> AM : Confirm metadata adequacy
+    AM -> DMPT : Initiate metadata association
+    DMPT -> Repo : Submit metadata with data
+    Repo --> DMPT : Confirm data and metadata submission
+    DMPT --> AM : Confirm successful \nmetadata association
+else Metadata is incomplete or vague
+    DMPT --> AM : Request additional metadata details
+    AM -> MDT : Provide/Update additional metadata
+    MDT --> DMPT : Updated metadata provided
+    DMPT -> Repo : Submit updated metadata with data
+    Repo --> DMPT : Confirm updated submission
+    DMPT --> AM : Confirm successful \nmetadata association
+end
+
+@enduml

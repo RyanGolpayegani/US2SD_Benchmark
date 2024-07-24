@@ -1,0 +1,33 @@
+@startuml
+!theme cerulean
+
+participant "Agency User" as user
+participant "Broker Platform" as broker
+participant "Data Validation Service" as validation
+participant "SAM API" as samAPI
+database "SAM Database" as samDB
+
+== Request Data from SAM ==
+user -> broker : Request data
+broker -> samAPI : Fetch data request
+samAPI -> samDB : Query requested data
+samDB --> samAPI : Return requested data
+samAPI --> broker : Data payload
+
+== Validate Data Completeness ==
+broker -> validation : Validate data completeness
+alt Data is complete
+    validation --> broker : Validation success
+    broker --> user : Display complete data
+else Data is incomplete
+    validation --> broker : Validation fail (Data gaps found)
+    broker -> samAPI : Request missing data
+    samAPI -> samDB : Query missing data
+    samDB --> samAPI : Return missing data
+    samAPI --> broker : Data payload (missing data)
+    broker --> validation : Re-validate data
+    validation --> broker : Validation success
+    broker --> user : Display complete data
+end
+
+@enduml

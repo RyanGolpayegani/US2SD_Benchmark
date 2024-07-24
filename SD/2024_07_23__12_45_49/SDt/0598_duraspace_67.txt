@@ -1,0 +1,29 @@
+@startuml
+actor RepositoryManager as RM "Repository Manager"
+participant WebInterface as WI "DIMS Web Interface"
+participant CollectionObjectManager as COM "Collection/Object Manager"
+participant LanguageService as LS "Language Service"
+participant Database as DB "DIMS Database"
+
+== Indicate Language for Collection/Object ==
+RM -> WI: Access collection/object details
+WI -> COM: Request collection/object details form
+COM -> WI: Return details form
+WI -> RM: Display details form
+RM -> WI: Input/select language(s)
+WI -> COM: Validate input
+alt Validation Success
+    COM -> LS: Request available languages
+    LS -> COM: Return languages list
+    COM -> LS: Verify selected language(s) against list
+    LS -> COM: Confirmation of language(s)
+    COM -> DB: Update collection/object with language(s)
+    DB -> COM: Confirm update
+    COM -> WI: Update success message
+    WI -> RM: Display success message
+else Validation Failure
+    COM -> WI: Error message (invalid language(s))
+    WI -> RM: Display error message
+end
+
+@enduml

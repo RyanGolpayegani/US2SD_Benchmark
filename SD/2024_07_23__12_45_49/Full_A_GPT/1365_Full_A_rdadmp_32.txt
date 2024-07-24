@@ -1,0 +1,44 @@
+To generate a comprehensive sequence diagram for the described user story using PlantUML, we will outline the key interactions between the Data Librarian and the DMPTool's system components needed to import administrative information into a Data Management Plan (DMP). This will cover steps from initiating the import, through processing the import request, to finalizing the pre-population of the DMP.
+
+Please note, the actual implementation might vary based on system architecture and software design. The sequence diagram below is conceptual and aims to demonstrate the basic flow.
+
+```plantuml
+@startuml
+participant DataLibrarian as DL
+participant "DMPTool Interface" as UI
+participant "Authentication Module" as Auth
+participant "Administrative Info Importer" as Importer
+participant "Project Database" as DB
+participant "DMP Repository" as DMPR
+
+== Import Process ==
+DL -> UI : Select "Import Admin Info"
+UI -> Auth : Request Authentication
+Auth --> UI : Authentication Success
+UI --> DL : Display Import Form
+DL -> UI : Enter Project ID\nand Confirm
+UI -> Importer : Initiate Import Process\n(Project ID)
+Importer -> DB : Query Administrative Info\n(Project ID)
+DB --> Importer : Return Admin Info
+Importer -> DMPR : Update DMP\nwith Admin Info
+DMPR --> Importer : Confirmation of Update
+Importer --> UI : Display Success\nMessage to Data Librarian
+UI --> DL : Confirm Successful\nImport & Prepopulation
+@enduml
+```
+
+### Explanation of the Sequence:
+
+1. **Data Librarian Initiates Import:** The Data Librarian selects the option to "Import Admin Info" on the DMPTool Interface.
+2. **Authentication Request:** The interface requests authentication to ensure that the user has the necessary permissions to import administrative information.
+3. **Authentication Success:** The authentication module returns a success message, allowing the process to proceed.
+4. **Display Import Form:** Following authentication, the Data Librarian is presented with a form to enter the Project ID for which the administrative information will be imported.
+5. **Data Librarian Submits Project ID:** Upon entering the Project ID and confirming the action, the DMPTool interface sends a request to the Administrative Info Importer to initiate the import process.
+6. **Query Administrative Info:** The Administrative Info Importer queries the Project Database for administrative information associated with the provided Project ID.
+7. **Administrative Info Retrieved:** The Project Database returns the requested administrative information to the importer.
+8. **DMP Update:** The Administrative Info Importer then updates the corresponding DMP with the retrieved administrative information.
+9. **Update Confirmation:** The DMP Repository sends a confirmation back to the importer once the DMP has been successfully updated.
+10. **Success Message:** The importer communicates a success message back to the DMPTool interface, informing the Data Librarian of the successful import and pre-population of the DMP.
+11. **Confirmation to Data Librarian:** Finally, the Data Librarian receives a confirmation that the administrative information has been successfully imported and prepopulated in the DMP.
+
+This sequence diagram outlines the steps involved in importing administrative information into a DMP, streamlining the pre-population process and ensuring that researchers and data librarians can efficiently manage and document essential project details.

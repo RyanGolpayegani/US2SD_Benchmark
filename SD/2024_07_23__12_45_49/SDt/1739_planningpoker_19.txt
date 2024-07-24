@@ -1,0 +1,21 @@
+@startuml
+participant Moderator
+participant "AEPT Web Interface" as WebInterface
+participant "Backend Server" as Server
+participant "Database" as DB
+
+Moderator -> WebInterface : Selects game to export
+WebInterface -> Server : Requests game data (ID: XYZ)
+Server -> DB : Queries for game data (ID: XYZ)
+DB -> Server : Returns game data
+Server -> WebInterface : Prepares CSV file
+WebInterface -> Server : Requests CSV file of game (ID: XYZ)
+Server -> WebInterface : Sends CSV file
+WebInterface -> Moderator : Downloads CSV file
+
+note over Moderator
+Moderator now has a CSV file of the game
+transcript for further processing.
+end note
+
+@enduml

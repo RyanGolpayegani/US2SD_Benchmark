@@ -1,0 +1,45 @@
+@startuml
+!theme plain
+
+actor Researcher as researcher
+participant "Web Interface" as webinterface
+participant "Upload Service" as uploadservice
+participant "Authentication Service" as authservice
+participant "File Management System" as filesys
+participant "Metadata Service" as metadataservice
+database "Neurohub Database" as db
+
+== Authentication ==
+researcher -> webinterface : Accesses Neurohub
+webinterface -> authservice : Validate session
+authservice -> webinterface : Session valid
+
+== Initiate Bulk Upload ==
+researcher -> webinterface : Select "Bulk Upload"
+webinterface -> uploadservice : Prepare for bulk upload
+uploadservice -> filesys : Create upload session
+
+== File Selection ==
+researcher -> webinterface : Selects files & directories
+webinterface -> uploadservice : Upload files & directories
+
+== Metadata Assignment ==
+uploadservice -> metadataservice : Request metadata template
+metadataservice --> uploadservice : Provide template
+uploadservice -> researcher : Present metadata form
+researcher -> webinterface : Inputs metadata
+webinterface -> uploadservice : Attach metadata to files
+
+== Upload Processing ==
+uploadservice -> filesys : Validate file types & sizes
+filesys -> uploadservice : Validation passed
+uploadservice -> filesys : Store files & directories
+filesys -> db : Update records with new files & metadata
+db -> filesos : Confirm successful update
+
+== Completion ==
+filesys -> uploadservice : Confirm upload completion
+uploadservice -> webinterface : Display success message
+webinterface -> researcher : Show upload summary
+
+@enduml

@@ -1,0 +1,48 @@
+Creating a detailed sequence diagram for the user story "As a repoadmin, I want to continue to provide access to the repository in the event that the server fails" involves illustrating the interactions between the repoadmin, the primary server, a backup server, and possibly other components that ensure continuity of service in a failure scenario. This sequence will encapsulate the high-level process of detecting server failure, switching to a backup server, and notifying relevant parties of the switch. Since the actual implementation details can vary widely based on the specific technologies and architectures in use, this diagram will present a generalized view suitable for the EDRMS context.
+
+Please note, due to the text-based limitation, the description below represents how you would write the sequence diagram in PlantUML syntax, which can be translated into a visual diagram using a PlantUML editor or compatible tool.
+
+```
+@startuml
+!theme cerulean
+
+participant Repoadmin
+participant PrimaryServer as "Primary Server"
+participant HealthCheckService as "Health Check Service"
+participant BackupServer as "Backup Server"
+participant NotificationService as "Notification Service"
+
+Repoadmin -> PrimaryServer : Regular operation interaction
+alt Primary Server is down
+    Repoadmin -> HealthCheckService : Triggers health check on Primary Server
+    HealthCheckService -> PrimaryServer : Check status
+    note right of HealthCheckService : Server does not respond\nor reports failure
+    HealthCheckService -> BackupServer : Activate as primary
+    BackupServer --> HealthCheckService : Activation confirmed
+
+    HealthCheckService -> NotificationService : Send failure notification
+    NotificationService -> Repoadin : Notify server failover
+
+    Repoadmin -> BackupServer : Continue operation on Backup
+else Primary Server is operational
+    Repoadmin -> PrimaryServer : Continue normal operations
+end
+
+@enduml
+```
+
+### Explanation:
+
+- **Repoadmin and Primary Server Interaction**: Represents the normal interactions that occur during regular operations between the repository administrator (repoadmin) and the primary server hosting the repository.
+
+- **Alternate Flow (Primary Server is down)**:
+    - The health check service periodically checks the status of the primary server or is triggered by the repoadin if an issue is suspected.
+    - If the primary server does not respond or reports a failure state, the health check service initiates the switch to a backup server.
+    - The backup server is activated to take over the role of the primary server, ensuring continuous access to the repository.
+    - A notification service sends out alerts about the server's status change to the repoadmin or other stakeholders as configured.
+    - The repoadmin then continues repository operations using the backup server.
+
+- **Normal Flow (Primary Server is operational)**:
+    - Represents the scenario where the primary server is functioning correctly, and normal operations continue without the need for failover actions.
+
+This diagram simplifies the complex processes involved in a real-world server failover scenario but captures the essential steps a repoadin would expect in a system designed with high availability and disaster recovery capabilities, as outlined in the Enhanced Digital Repository Management System (EDRMS) project description.

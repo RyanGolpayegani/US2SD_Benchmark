@@ -1,0 +1,58 @@
+Below is a PlantUML sequence diagram that captures the process a Data Analyst would go through to update a previously downloaded data package using the Data Registry and Publishing Platform. The sequence diagram outlines the interactions between the Data Analyst, the Platform UI, the Data Package Management System, and the Database.
+
+```plantuml
+@startuml
+actor "Data Analyst" as Analyst
+participant ":Platform UI" as UI
+participant ":Data Package\nManagement System" as DPMS
+participant ":Database" as DB
+
+
+== Update Data Package ==
+
+Analyst -> UI : Request to update\n data package
+
+UI -> DPMS : Validate Analyst\npermissions
+
+note right of DPMS : Checks Analyst's update permissions\n on the requested data package
+
+DPMS -> DB : Retrieve latest\nversion information
+DB --> DPMS : Latest version details
+
+alt Latest Version Available
+    DPMS --> UI : Display latest version\ndetails to Analyst
+    note over Analyst, UI : Analyst reviews version\ninformation & confirms update
+    
+    Analyst -> UI : Confirm update
+    UI -> DPMS : Initiate data package update
+    
+    note right of DPMS : Processes update\n for Analyst
+    
+    DPMS -> DB : Update Analyst's data package\nto latest version
+    DB --> DPMS : Update confirmation
+    
+    DPMS --> UI : Confirmation of\nupdated data package
+    UI --> Analyst : Display update success message
+    
+else Not Latest Version or Error
+    DPMS --> UI : Display error or\nno update message
+    UI --> Analyst : Display no newer versions\nor error message
+    
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+- **Initiation**: The Data Analyst initiates the update process by requesting to update a data package through the Platform UI.
+- **Permission Validation**: The system then validates the Analyst's permissions to ensure they have update access to the requested data package.
+- **Version Check**: The Data Package Management System communicates with the Database to retrieve the latest version details of the specified data package.
+- **Decision Making**:
+  - If a newer version of the package is available, the details are displayed to the Data Analyst for review. The Analyst then has the option to confirm the update.
+  - Upon confirmation, the system processes the update for the Analyst, updating their data package to the latest version and confirming the update.
+- **Outcome**:
+  - A success message is displayed to the Analyst if the update is successful.
+  - If the data package is already at the latest version or if there is an error during the process, an appropriate message is displayed.
+
+This sequence diagram aims to provide a clear, step-by-step narrative of the interactions involved in updating a previously downloaded data package to ensure that the Data Analyst can work with the most current data.

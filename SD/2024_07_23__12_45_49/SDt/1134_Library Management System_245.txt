@@ -1,0 +1,30 @@
+@startuml
+participant MemberUI as Member
+participant LibrarySystem as System
+participant FineCalculationService as FineCalc
+participant Database as DB
+participant PaymentService as Payment
+
+Member -> System: requestFineCalculation(bookID, returnDate)
+activate System
+
+System -> FineCalc: calculateFine(returnDate, dueDate)
+activate FineCalc
+
+FineCalc -> DB: getBookDueDate(bookID)
+activate DB
+DB --> FineCalc: return dueDate
+deactivate DB
+
+FineSet -> System: return fineDetails
+deactivate FineCalc
+
+System -> Member: showFine(fineDetails)
+Member --> System: confirmPayment()
+activate Payment
+System -> Payment: processFinePayment(fineDetails)
+Payment -> System: paymentConfirmation()
+
+System --> Member: showPaymentConfirmation()
+deactivate System
+@enduml

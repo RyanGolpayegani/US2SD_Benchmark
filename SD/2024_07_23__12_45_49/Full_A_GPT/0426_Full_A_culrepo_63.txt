@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram for the given user story in a text format can be complex due to the intricacies of interactions and the specificity of actions involved in the process of uploading a revised report or dataset. Below is a PlantUML code representation of a sequence diagram that illustrates the steps a DB/IR (Database/Information Repository) administrator might follow to upload a revised report/dataset due to an error in the report/document within the context of the comprehensive digital repository system for Cornell University.
+
+Please note that this sequence diagram is a high-level representation. Actual implementation details could vary based on system architecture, specific software development practices, and technology stack chosen for the project.
+
+```plantuml
+@startuml
+actor Admin as "DB/IR Administrator"
+participant "Authentication System" as Auth
+participant "Repository Dashboard" as Dashboard
+participant "Content Management" as CM
+participant "Database" as DB
+
+== Upload Revised Report/Dataset ==
+
+Admin -> Auth: Authenticate
+Auth --> Admin: Authentication Success
+
+Admin -> Dashboard: Access Content Management
+Dashboard --> Admin: Display Options
+
+Admin -> CM: Select Upload Revised Content
+CM --> Admin: Request File and Metadata
+
+Admin -> CM: Provide File and Metadata\n(Error Correction Note)
+CM -> DB: Check Existing Report/Dataset ID
+
+alt If Report/Dataset Exists
+    DB --> CM: Verify Ownership and Permissions
+    CM --> Admin: Request Confirmation
+    Admin -> CM: Confirm Upload
+    CM -> DB: Update Report/Dataset with New Version
+    DB --> CM: Update Success
+    CM --> Admin: Display Success Message
+else Report/Dataset Not Found
+    DB --> CM: Error Message (Content Not Found)
+    CM --> Admin: Display Error Message
+end
+
+@enduml
+```
+
+This sequence diagram starts with the DB/IR Administrator authenticating themselves in the system. Once authenticated, they navigate to the repository dashboard and access content management features. The administrator selects the option to upload revised content, for which the process requests the revised file along with metadata, including a note about the correction of error(s). The system then checks if the report/dataset exists in the database. If it does, and the administrator has the proper permissions, the admin is asked to confirm the upload. Upon confirmation, the database is updated with the new version of the report/dataset, and a success message is displayed to the administrator. If the report/dataset does not exist or another issue arises, an error message is displayed.
+
+This diagram assumes a simplified interaction flow for clarity and focuses on the core elements related to the upload process within the digital repository system. Additional steps, error handling, and security checks can be included based on specific project requirements and system architecture.

@@ -1,0 +1,37 @@
+@startuml
+participant UserResearcher as UR
+participant CalendarSystem as CS
+participant InterviewParticipant as IP
+
+UR -> CS : Access calendar
+activate CS
+CS --> UR : Display available slots
+deactivate CS
+
+loop for each participant
+    UR -> IP : Propose interview time
+    activate IP
+    IP -> CS : Check availability
+    activate CS
+    CS --> IP : Confirm availability
+    deactivate CS
+
+    alt if time is suitable
+        IP --> UR : Accept interview time
+        UR -> CS : Schedule interview
+        activate CS
+        CS --> UR : Confirm interview scheduled
+        deactivate CS
+    else if time not suitable
+        IP --> UR : Decline interview time
+        UR -> CS : Propose new time
+        CS --> UR : Display new available slots
+    end
+    deactivate IP
+end
+
+UR -> UR : Prepare interview questions based on hypothesis #1
+UR -> CS : Prepare for interviews
+CS --> UR : Setup completed
+
+@enduml

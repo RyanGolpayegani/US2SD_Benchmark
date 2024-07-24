@@ -1,0 +1,45 @@
+@startuml EDRMS_Fedora4_Audit_Check
+!theme plain
+participant Developer
+participant "EDRMS API" as EDRMS
+participant "Fedora Repository" as Fedora
+database "Audit Log" as AuditLog
+
+== Determine Fedora 4 Audit Service Usability ==
+
+Developer -> EDRMS : CheckAuditServiceIntegrationCapability()
+activate EDRMS
+EDRMS -> Fedora : QueryAuditServiceStatus()
+activate Fedora
+
+Fedora --> EDRMS : AuditServiceStatusResponse(enabled, details)
+deactivate Fedora
+
+EDRMS -> EDRMS : EvaluateIntegrationPotential(details)
+EDRMS --> Developer : IntegrationEvaluationResult(canIntegrate, reason)
+deactivate EDRMS
+
+alt canIntegrate == true
+    Developer -> EDRMS : InitiateIntegrationSetup()
+    activate EDRMS
+
+    EDRMS -> Fedora : EnableAuditEventCapture()
+    activate Fedora
+
+    Fedora -> AuditLog : InitializeAuditLogDatabase()
+    activate AuditLog
+
+    AuditLog --> Fedora : AuditLogReady()
+    deactivate AuditLog
+
+    Fedora --> EDRMS : AuditEventCaptureEnabled()
+    deactivate Fedora
+
+    EDRMS --> Developer : IntegrationSetupComplete()
+    deactivate EDRMS
+
+else canIntegrate == false
+    Developer -> Developer : ExploreAlternativeSolutions()
+end
+
+@enduml

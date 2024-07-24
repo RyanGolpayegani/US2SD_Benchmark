@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the user story "As a member, I want to see new books" involves illustrating the interaction between the user (library member) and the library management system components to fulfill this request. Below is a PlantUML code that represents these interactions:
+
+```plantuml
+@startuml
+actor Member as member
+participant "UI Interface" as ui
+participant "Controller" as controller
+participant "Book Service" as service
+database "Library Database" as db
+
+member -> ui : Access CLMS
+ui -> controller : Request to view new books
+activate controller
+controller -> service : Fetch new books
+activate service
+service -> db : Query new books
+activate db
+db -> service : Return new books data
+deactivate db
+service -> controller : New books data
+deactivate service
+controller -> ui : Display new books
+deactivate controller
+ui -> member : Show new books list
+@enduml
+```
+
+### Explanation:
+
+1. **Member -> UI Interface**: The sequence starts with the library member accessing the Comprehensive Library Management System (CLMS) through a user interface (UI), indicating an intention to view new books.
+
+2. **UI Interface -> Controller**: The UI forwards the member's request to the system's controller to process the request to view new books.
+
+3. **Controller -> Book Service**: The controller, which manages the logic of handling user requests, asks the Book Service (a backend service dedicated to managing book-related operations) to fetch information about new books.
+
+4. **Book Service -> Library Database**: The Book Service sends a query to the Library Database to retrieve data on new books that have been added to the library catalog recently.
+
+5. **Library Database -> Book Service**: The Library Database returns the requested data about new books to the Book Service.
+
+6. **Book Service -> Controller**: Having received the data from the Library Database, the Book Service passes this information back to the Controller.
+
+7. **Controller -> UI Interface**: The Controller, now with the information on new books, instructs the UI Interface to display this information.
+
+8 cheer for the member to view. This concludes the sequence where the member's request to see new books is fulfilled by the system through a series of interactions across different components of the Comprehensive Library Management System.
+
+This sequence diagram aims to provide a high-level overview of the interactions involving multiple system components to fulfill the user story of viewing new books in the CLMS.

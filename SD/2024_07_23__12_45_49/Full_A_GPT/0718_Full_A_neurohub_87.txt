@@ -1,0 +1,40 @@
+Given the scope of the user story within the Neurohub Enhancement and Automation Project, a detailed sequence diagram is outlined below using PlantUML syntax. This diagram illustrates the sequence of interactions between the user (researcher), the Web Interface of Neurohub, the System Backend, and the Data Storage, focusing on the ability to link objects by association and search data by type and association.
+
+Please note, this diagram assumes a simplified view of the operations that might be involved in linking files and searching for them based on these links. Adjustments might be necessary to align with the specific technical architecture of Neurohub.
+
+```plantuml
+@startuml
+
+actor Researcher as R
+participant "Web Interface" as W
+participant "System Backend" as B
+database "Data Storage" as D
+
+== Linking File A and File B ==
+R -> W : Select File A
+R -> W : Choose "Link File" option
+W -> B : Request to link File A to another file
+B -> D : Fetch available files for linking
+D -> B : Return list of files
+B -> W : Display files to Researcher
+R -> W : Select File B as the linkage target
+W -> B : Send linkage information (File A -> File B)
+B -> D : Store link between File A and File B
+D -> B : Confirm linkage saved
+B -> W : Show confirmation to Researcher
+W -> R : Display success message
+
+== Searching Files by Association ==
+R -> W : Enter search criteria (linked to File B)
+W -> B : Translate to query (all files linked to File B)
+B -> D : Execute search query
+D -> B : Return search results
+B -> W : Format and present the results
+W -> R : Display files linked to File B
+
+@enduml
+```
+
+This PlantUML script begins with the researcher selecting File A to link it to File B through the web interface. The system backend then interacts with the data storage to fetch, select, and eventually store the link between the two files. The diagram also illustrates the sequence where a researcher searches for files by association, showing the backend translating the search criteria to a query, executing it against the data storage, and returning the relevant linked files to the user.
+
+To render this diagram, you would need a PlantUML environment (like an online PlantUML editor or a local setup that can process PlantUML syntax) as these platforms can interpret the syntax and generate the visual sequence diagram accordingly.

@@ -1,0 +1,57 @@
+Below is a PlantUML sequence diagram detailing the process of a researcher accessing digitized archival materials without mediation, as outlined in the "Digital Archive Management Enhancement Project" description. This diagram covers interactions from the researcher's initial access to the digital archive system, the search and filtering operations, and the ultimate retrieval of desired archival materials.
+
+```plantuml
+@startuml
+participant Researcher
+participant "Search Interface" as SearchUI
+participant "Authentication System" as Auth
+participant "Access Control" as Access
+participant Database
+participant "File Server" as FileServer
+
+Researcher -> SearchUI: Enter search terms\n& filters
+SearchUI -> Database: Query based on terms\n& filters
+Database -> SearchUI: Return search results
+SearchUI --> Researcher: Display search results
+
+Researcher -> SearchUI: Select desired archival materials
+SearchUI -> Auth: Request access for researcher
+activate Auth
+Auth --> Researcher: Validate identity (if not already)
+Researcher -> Auth: Provide credentials
+Auth -> Access: Check permissions for materials
+deactivate Auth
+
+activate Access
+Access -> Database: Verify access rights for materials
+Database --> Access: Access rights details
+Access --> Researcher: Access granted/denied
+deactivate Access
+
+alt Access Granted
+    Access -> FileServer: Fetch digitized materials
+    FileServer -> Researcher: Provide access to materials
+else Access Denied
+    Access -> Researcher: Show access denied message
+end
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram Steps:**
+
+1. **Researcher Initiation:** The researcher begins by entering search terms and filters into the Search Interface to find desired archival materials.
+
+2. **Query Processing:** The Search Interface sends this query to the Database, which processes and returns search results.
+
+3. **Results Display:** The Search Interface displays the results to the researcher, who then selects the desired archival materials for access.
+
+4. **Authentication Request:** The Search Interface requests the Authentication System to validate the researcher’s identity if not already done.
+
+5. **Credentials Provision:** The researcher provides credentials to the Authentication System, which checks these and then passes the access request to the Access Control system.
+
+6. **Permission Verification:** The Access Control system verifies the researcher's permissions for the requested materials with the Database.
+
+7. **Access Granting:** Depending on the permissions, the researcher is either granted or denied access. If access is granted, the Access Control system instructs the File Server to fetch and provide the digitized materials to the researcher. If access is denied, a denial message is displayed.
+
+This sequence ensures that digitized archival materials are accessible in an efficient and secure manner, according to the user's rights and permissions, embodying the objectives of the Digital Archive Management Enhancement Project.

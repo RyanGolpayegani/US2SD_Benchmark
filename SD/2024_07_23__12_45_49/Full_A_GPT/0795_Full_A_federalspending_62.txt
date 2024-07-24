@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram in PlantUML format for the user story can be quite extensive due to the complexity of the system interactions involved in accessing raw agency published files from FABS via USAspending. Here’s an attempt to illustrate a simplified sequence of interactions based on the user's requirements.
+
+Please note, this illustration simplifies the interactions and assumes a basic setup where a user requests files, and after several backend processes, the files are made available for access.
+
+```plantuml
+@startuml
+participant UserUI as "User Interface"
+participant BrokerSystem as "Broker System"
+participant ValidationService as "Validation Service"
+participant DataProcessing as "Data Processing Service"
+participant USAspendingAPI as "USAspending API"
+participant FABSModule as "FABS Module"
+participant USAspendingDB as "USAspending Database"
+
+UserUI -> BrokerSystem: Request raw agency files
+BrokerSystem -> ValidationService: Validate User Request
+ValidationService -> BrokerSystem: Validation Response
+
+alt if Request is valid
+    BrokerSystem -> DataProcessing: Process Request for raw files
+    DataProcessing -> FABSModule: Request raw files from FABS
+    FABSModule -> USAspendingAPI: Call for raw agency files
+    USAspendingAPI -> USAspendingDB: Retrieve raw files
+    USAspendingDB -> USAspendingAPI: Raw files data
+    USAspendingAPI -> FABSModule: Raw files response
+    FABSModule -> DataProcessing: Raw files processed
+    DataProcessing -> BrokerSystem: Data ready for User
+    BrokerSystem -> UserUI: Provide access to raw files
+else Request is invalid
+    BrokerSystem -> UserUI: Error Message (Invalid Request)
+end
+
+@enduml
+```
+
+This sequence diagram outlines the following high-level steps:
+
+1. **User Request**: The user interacts with the User Interface to request raw agency published files from FABS.
+2. **Request Validation**: The Broker System validates the request with the Validation Service.
+3. **Data Processing**: For a valid request, the Broker System forwards it to the Data Processing Service, which in turn requests the raw files from the FABS Module.
+4. **Retrieving Raw Files**: The FABS Module makes an API call to USAspending API, which fetches the requested files from the USAspending Database.
+5. **Data Response**: The raw files data is sent back through the FABS Module and Data Processing Service to the Broker System.
+6. **User Access**: Finally, the Broker System provides the user with access to the requested raw files.
+
+For invalid requests, an error message is directly sent back to the User Interface from the Broker System.
+
+This diagram can be copied into a PlantUML editor or viewer to visualize the sequence diagram. Adjustments may be necessary based on the specific implementations of the Broker System, Validation Service, Data Processing Services, and USAspending API interactions.

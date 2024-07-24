@@ -1,0 +1,23 @@
+@startuml
+actor Patron
+participant "CDRS Portal" as Portal
+participant "Notification System" as NotifSystem
+participant "Content Database" as ContentDB
+participant "Email Service" as Email
+
+== Subscription Process ==
+Patron -> Portal : Search for Topics/Keywords
+Portal -> ContentDB : Query for matching Topics/Keywords
+ContentDB --> Portal : Return Topics with Subscription Option
+Portal --> Patron : Display Topics with \nSubscription Button
+Patron -> Portal : Clicks Subscribe on Topics of Interest
+Portal -> NotifSystem : Register Patron for Updates
+NotifSystem --> Portal : Confirmation of Subscription
+Portal --> Patron : Display Subscription Confirmation
+
+== Notification Process ==
+ContentDB -> NotifSystem : Notify of New Reports/Datasets
+NotifSystem -> Email : Generate Notification Email
+Email -> Patron : Send Notification with Links
+
+@enduml

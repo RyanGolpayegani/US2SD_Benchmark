@@ -1,0 +1,27 @@
+@startuml
+actor Librarian
+participant "UI Dashboard" as UI
+participant "Library Management\nSystem" as LMS
+database "Library Database" as DB
+
+Librarian -> UI : Request to view unavailable books
+activate Librarian
+activate UI
+
+UI -> LMS : Fetch unavailable books list
+activate LMS
+
+LMS -> DB : Query unavailable books
+activate DB
+
+DB --> LMS : Return list of unavailable books
+deactivate DB
+
+LMS --> UI : Show list of unavailable books
+deactivate LMS
+
+UI --> Librarian : Display unavailable books
+deactivate UI
+deactivate Librarian
+
+@enduml

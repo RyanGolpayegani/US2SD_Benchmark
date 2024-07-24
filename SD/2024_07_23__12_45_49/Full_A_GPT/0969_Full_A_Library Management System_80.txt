@@ -1,0 +1,41 @@
+Given the comprehensive nature of the requested feature, detailing a sequence diagram for both searching books and placing reservations involves multiple actors and systems. Below is a PlantUML code representation that outlines the interactions between the user (Librarian), the front-end interface, and the back-end server, including a database for searching books and placing reservations.
+
+```plantuml
+@startuml
+actor Librarian
+participant "Frontend Interface" as UI
+participant "Backend Server" as Backend
+database "Library Database" as DB
+
+== Search Books ==
+Librarian -> UI : Enter search criteria\n(title, author, category, publication date)
+UI -> Backend : Send search request
+Backend -> DB : Query books by criteria
+DB --> Backend : Return book results
+Backend --> UI : Display search results
+UI --> Librarian : Show book results
+
+== Place Reservation ==
+Librarian -> UI : Selects book for reservation
+UI -> Backend : Send reservation request\n(bookID, librarianID)
+Backend -> DB : Check book availability
+alt Book is available
+    DB --> Backend : Book is available
+    Backend -> DB : Create reservation\n(set book as reserved, add librarianID)
+    DB --> Backend : Reservation confirmed
+    Backend --> UI : Show reservation success
+    UI --> Librarian : Display success message
+else Book is unavailable
+    DB --> Backend : Book is unavailable
+    Backend --> UI : Show book unavailable message
+    UI --> Librarian : Display unavailable message
+end
+
+@enduml
+```
+
+This sequence diagram starts with the librarian entering search criteria into the frontend interface, which then communicates with the backend server. The server queries the library database for books that match the criteria and returns the results to the frontend, where they are displayed to the librarian.
+
+For reservations, the process involves the librarian selecting a book to reserve through the frontend interface. The backend then checks the availability of the book in the database. If the book is available, a reservation is made, setting the book as reserved and associating it with the librarian's ID. The success of the reservation is then communicated back to the librarian through the interface. If the book is unavailable, a message indicating this is displayed instead.
+
+This sequence diagram is a simplified representation meant to showcase the interactions for the specified user story within the Comprehensive Library Management System (CLMS) project. Depending on the specific technologies and detailed requirements, additional steps or alternative flows might be necessary.

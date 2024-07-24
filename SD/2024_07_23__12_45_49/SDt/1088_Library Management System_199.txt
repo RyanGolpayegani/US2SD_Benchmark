@@ -1,0 +1,39 @@
+@startuml
+participant Manager as M
+participant "Web Interface" as WI
+participant "Server" as S
+participant "Database" as DB
+
+M -> WI : Selects 'Manage Categories'
+activate M
+activate WI
+
+WI -> S : Request to display categories
+activate S
+
+S -> DB : Query existing categories
+activate DB
+DB --> S : Return categories list
+deactivate DB
+
+S --> WI : Display categories
+WI --> M : Shows existing categories
+deactivate S
+
+M -> WI : Select 'Update Category'
+activate WI
+WI -> S : Send update request
+activate S
+
+S -> DB : Update category details
+activate DB
+DB --> S : Confirm category updated
+deactivate DB
+
+S --> WI : Display success message
+WI --> M : Shows confirmation
+deactivate S
+deactivate WI
+deactivate M
+
+@enduml

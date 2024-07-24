@@ -1,0 +1,40 @@
+@startuml
+actor BrokerUser as "Broker User"
+participant "Broker UI" as UI
+participant "Submission Processing" as Processing
+participant "Validation Service" as Validation
+database "DUNS Service" as DUNSDB
+participant "Error Handling" as ErrorHandling
+
+BrokerUser -> UI : Submit records
+activate UI
+
+UI -> Processing : Process submission
+activate Processing
+
+Processing -> Validation : Validate records
+activate Validation
+
+Validation -> DUNSDB : Check DUNS
+activate DUNSDB
+DUNSDB --> Validation : No error found
+deactivate DUNSDB
+
+Validation --> Processing : Validation Passed
+deactivate Validation
+
+Processing --> UI : Submission Successful
+deactivate Processing
+
+UI --> BrokerUser : Display Success Message
+deactivate UI
+
+alt If validation fails
+    Validation -> ErrorHandling : Handle DUNS Error
+    activate Error cine
+    ErrorHandling -> UI : Show DUNS error message
+    deactivate ErrorHandling
+    UI -> BrokerUser : Display DUNS Error
+    deactivate UI
+end
+@enduml

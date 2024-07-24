@@ -1,0 +1,43 @@
+To illustrate how an ethics manager interacts with the Comprehensive Data Management Planning Tool (DMPTool) to be informed about the data for checking sensitivity, below is a detailed sequence diagram in PlantUML format. This diagram focuses on the processes involved when an ethics manager requests data sensitivity information and receives the necessary details to proceed with their evaluation.
+
+```plantuml
+@startuml
+participant "Ethics Manager" as EM
+participant "DMPTool Interface" as DMP_UI
+participant "Data Retrieval System" as DRS
+participant "Metadata Repository" as MR
+participant "Security & Sensitivity\nAssessment Module" as SSAM
+
+== Request for Data Sensitivity Information ==
+EM -> DMP_UI : Request(Data Information)
+activate DMP_UI
+DMP_UI -> DRS : Fetch Data Details()
+activate DRS
+DRS -> MR : Retrieve Metadata()
+activate MR
+MR --> DRS : Data Metadata
+deactivate MR
+DRS --> DMP_UI : Data Details
+deactivate DRS
+DMP_UI -> SSAM : Check Sensitivity(Data Details)
+activate SSAM
+SSAM -> SSAM : Evaluate Sensitivity Level()
+SSAM --> DMP_UI : Sensitivity Report
+deactivate SSAM
+DMP_UI --> EM : Display Sensitivity Report
+deactivate DMP_UI
+
+@enduml
+```
+
+This sequence diagram outlines the following process:
+1. The ethics manager initiates a request for information on data sensitivity by interacting with the DMPTool interface.
+2. The DMPTool interface then forwards this request to the data retrieval system to fetch relevant data details.
+3. The data retrieval system queries the metadata repository to retrieve metadata associated with the requested data.
+4. The metadata repository responds with the requested data metadata.
+5. The data retrieval system sends the retrieved data details back to the DMPTool interface.
+6. The DMPTool interface then requests an evaluation of the data's sensitivity level from the security & sensitivity assessment module, providing it with the data details.
+7. The security & sensitivity assessment module processes this information, evaluates the sensitivity level of the data, and generates a sensitivity report.
+8. Finally, the DMPTool interface presents the sensitivity report to the ethics manager, informing them of the data’s sensitivity levels and allowing them to proceed with their checks accordingly.
+
+Using this diagram, stakeholders can understand how the DMPTool facilitates communication and processes to aid an ethics manager in assessing data sensitivity, ensuring compliance and ethical management of research data.

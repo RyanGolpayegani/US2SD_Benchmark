@@ -1,0 +1,54 @@
+Creating a sequence diagram for the described user story involves visualizing the interactions between various system components and users required for a repository manager to identify all files belonging to an object in the Digital Asset Management System (DIMS). Below is a PlantUML code snippet to generate such a Sequence Diagram:
+
+```plantuml
+@startuml
+participant RepoManager as RM "Repository Manager"
+participant DIMS_UI as UI "DIMS User Interface"
+participant CacheSystem as Cache "Cache System"
+participant DIMSEngine as Engine "DIMS Engine"
+participant DAMSDatabase as DB "DAMS Database"
+
+RM -> UI : Request object file list
+activate RM
+activate UI
+
+UI -> Engine : Get files for object [ObjectID]
+activate Engine
+
+Engine -> Cache : Check if file list in cache
+activate Cache
+alt Cache Hit
+    Cache -> Engine : Return cached file list
+else Cache Miss
+    Cache -> Engine : Return cache miss signal
+    Engine -> DB : Query files for ObjectID
+    activate DB
+    DB -> Engine : Return file list from DB
+    deactivate DB
+    Engine -> Cache : Update cache with new file list
+end
+Cache --> Engine : Return file list
+Engine -> UI : Display file list to RM
+UI -> RM : Show file list
+deactivate Engine
+deactivate UI
+deactivate RM
+@enduml
+```
+
+This sequence diagram starts with the Repository Manager requesting the list of files belonging to a specific object. The flow illustrates the system checking a cache first for speedier response times before querying the underlying database if needed. This design choice is common in systems where performance and scalability are crucial, considering the potentially vast size of digital collections managed in DAMS.
+
+### Explanation of Steps:
+1. **Repository Manager Initiates Request:** The action begins with the repository manager requesting a list of all files belonging to a specific object through the DIMS User Interface.
+
+2. **Query Forwarded to DIMS Engine:** The DIMS User Interface forwards this request to the DIMS Engine, which is responsible for logic processing.
+
+3. **Cache System Check:** Before hitting the database, the DIMS Engine checks with a Cache System to see if the list of files for the requested object is already available, aiming to improve response time.
+
+4. **Database Query if Needed:** If the information is not in the cache, the DIMS Engine queries the DAMS Database to obtain the list of files associated with the object.
+
+5. **Cache Update:** After retrieving the necessary information from the database, the cache is updated with this new file list for future queries.
+
+6. **Information Displayed to Repository Manager:** Finally, the system displays the list of files to the repository manager through the DIMS User Interface.
+
+This sequence diagram outlines a potential interaction flow for fulfilling the repository manager's user story, integrating cache mechanisms for efficiency and delineating the roles of system components in the process.

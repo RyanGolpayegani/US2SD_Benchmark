@@ -1,0 +1,38 @@
+@startuml
+participant Manager as manager
+participant UI as ui
+participant InventorySystem as inventory
+participant Database as db
+
+manager -> ui : Access inventory system
+activate ui
+
+ui -> inventory : Request backup food list
+activate inventory
+
+inventory -> db : Fetch current backup food list
+activate db
+db --> inventory : Return backup food list
+deactivate db
+
+inventory --> ui : Display backup food list
+deactivate inventory
+
+ui -> manager : Show backup food list
+manager -> ui : Update list
+activate ui
+
+ui -> inventory : Send updated list
+activate inventory
+
+inventory -> db : Update backup food list
+activate db
+db --> inventory : Confirm list updated
+deactivate db
+
+inventory --> ui : Confirm update success
+deactivate inventory
+
+ui --> manager : Show update confirmation
+deactivate ui
+@enduml

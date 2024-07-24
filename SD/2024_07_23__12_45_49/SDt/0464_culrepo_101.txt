@@ -1,0 +1,31 @@
+@startuml
+actor AssetManager as AM
+participant "Web Interface" as UI
+participant "Repository System" as RS
+participant "Database" as DB
+participant "Integrity Checker" as IC
+
+AM -> UI: Request asset withdrawal
+UI -> RS: Initiate withdrawal process
+RS -> DB: Retrieve asset metadata
+DB --> RS: Metadata for verification
+RS -> IC: Initiate integrity check
+note right of IC: Hashes and verifies\nasset integrity
+IC --> RS: Integrity confirmation
+RS -> DB: Log withdrawal event
+DB --> RS: Log confirmation
+RS --> UI: Present asset & verification info
+UI --> AM: Display asset & integrity status
+
+AM -> UI: Initiate asset return
+UI -> RS: Start return process
+RS -> IC: Verify returned asset integrity
+note right of IC: Re-hashes and checks\nagainst original
+IC --> RS: Integrity match confirmation
+RS -> DB: Update asset status
+DB --> RS: Update confirmation
+RS --> UI: Display re-deposit confirmation
+UI --> AM: Confirm asset re-deposit and integrity status
+
+note over AM: Assures asset integrity\nthroughout the process.
+@enduml

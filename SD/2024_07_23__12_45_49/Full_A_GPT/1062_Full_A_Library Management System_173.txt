@@ -1,0 +1,38 @@
+Given your project description and user story on a library member wanting to search for a book by its name to check availability, the sequence diagram in PlantUML format might look something like this:
+
+```plantuml
+@startuml
+actor LibraryMember as member
+participant "Search Interface" as search
+participant "Book Controller" as controller
+database "Book Database" as db
+participant "Results Page" as results
+
+== Book Search Sequence ==
+
+member -> search : Enter book name
+search -> controller : Request book search("book name")
+activate controller
+
+controller -> db : Query book by name("book name")
+activate db
+db -> db : Fetch matching books
+deactivate db
+
+db -> controller : Return search results
+controller -> results : Display available books
+results -> member : Show search results and availability
+
+@enduml
+```
+
+This sequence diagram showcases the following steps:
+
+1. **Library Member Initiates Search**: The library member starts the process by entering the book name into the search interface.
+2. **Search Request Processed**: The search interface sends the book name to the Book Controller, which is responsible for handling the search logic.
+3. **Database Query**: The Book Controller queries the Book Database for books matching the entered name.
+4. **Fetching Results**: The Book Database fetches the list of matching books based on the search criteria.
+5. **Results Returned**: The Book Database returns the search results to the Book Controller.
+6. **Displaying Results**: The Book Controller then sends the results to the Results Page, which displays the available books to the library member.
+
+This PlantUML diagram offers a simple sequential visualization of the search functionality from the user's perspective, focusing on the system's backend process of querying and displaying book availability based on name searches.

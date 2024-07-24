@@ -1,0 +1,18 @@
+@startuml
+participant Trainer
+participant "Community Platform" as CP
+database Database
+
+Trainer -> CP: Selects course/event to delete
+activate CP
+
+CP -> CP: Verify trainer's permissions
+CP -> Database: Request course/event deletion
+activate Database
+Database -> Database: Delete course/event record
+Database --> CP: Confirm deletion
+deactivate Database
+
+CP --> Trainer: Display deletion confirmation message
+deactivate CP
+@enduml

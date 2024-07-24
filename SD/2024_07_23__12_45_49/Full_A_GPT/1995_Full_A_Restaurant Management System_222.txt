@@ -1,0 +1,44 @@
+The following is a possible sequence diagram in PlantUML format depicting the user story: "As a manager, I want to view reports on customer orders so that I can pinpoint recurring orders."
+
+This scenario imagines a simplified process where the manager uses the Restaurant Management and Operations System to request and view reports on customer orders, with the objective of identifying trends or recurring orders.
+
+```plantuml
+@startuml
+
+actor Manager
+participant "Management \nInterface" as ManagementInterface
+participant "Backend Server" as Server
+participant "Database" as DB
+
+Manager -> ManagementInterface : Request report on customer orders
+activate ManagementInterface
+
+ManagementInsertface -> Server: GET /reports/customerOrders
+activate Server
+
+Server -> DB : Query Customer Orders
+activate DB
+
+DB --> Server : Return Order Data
+deactivate DB
+
+Server --> ManagementInterface : Report Data with recurring orders
+deactivate Server
+
+ManagementInterface --> Manager : Display Report with Trends
+deactivate ManagementInterface
+
+@enduml
+```
+
+Explanation of each step:
+
+1. **Manager requests a report**: The Manager interacts with the Management Interface to request a report focusing on customer orders. This request aims to look for patterns or recurring orders among customers.
+
+2. **Management Interface requests data**: The Management Interface sends a request to the Backend Server for information concerning customer orders. This is typically a REST API call using a method like GET and specifying the endpoint (in this example, "/reports/customerOrders").
+
+3. **Server queries the Database**: The Backend Server processes this request and, in turn, queries the Database to retrieve the relevant customer order data.
+
+4. **Database returns order data**: The Database processes the query and returns the data concerning all customer orders to the Backend Server.
+
+5. **Server processes and sends report data**: The Backend Server processes the raw data to identify any trends or recurring orders and then sends this informa

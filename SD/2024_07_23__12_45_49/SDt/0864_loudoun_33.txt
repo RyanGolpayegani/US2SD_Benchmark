@@ -1,0 +1,29 @@
+@startuml
+
+actor StaffMember as "Staff Member"
+participant PortalBackend as "Portal Backend"
+participant HearingSystem as "Hearing Management\nSystem"
+database Database as "Database"
+
+== Capture Hearing Decision ==
+
+StaffMember -> PortalBackend : Selects "Record Hearing Decision"
+PortalBackend -> HearingSystem : Request to\nopen hearing record
+HearingSystem -> Database : Retrieve hearing details
+Database -> HearingSystem : Return hearing details
+
+HearingSystem --> PortalBackend : Display hearing details\n(Form/Input Screen)
+PortalBackend --> StaffMember : Show hearing details\nand decision form
+
+StaffMember -> PortalBackend : Submits decision\nand corresponding details
+PortalBackend -> HearingSystem : Save hearing decision
+HearingSystem -> Database : Update hearing record\nwith decision
+
+activate HearingSystem
+Database --> HearingSystem : Confirm update
+deactivate HearingSystem
+
+HearingSystem --> PortalBackend : Confirmation of\nrecord update
+PortalBackend --> StaffMember : Display success message\nand next steps
+
+@enduml

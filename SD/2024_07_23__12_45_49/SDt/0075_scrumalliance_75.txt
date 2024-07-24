@@ -1,0 +1,34 @@
+@startuml
+actor Trainer
+participant "Notification Service" as NS
+participant "Survey System" as SS
+participant "Database" as DB
+
+== Notification of Survey Results ==
+Trainer -> NS : Request Notification Settings
+NS -> DB : Fetch Notification Preferences
+DB -> NS : Response with Preferences
+note right of NS : Preferences include\nnotify on new survey results
+NS --> Trainer : Notification Settings Confirmed
+
+== New Survey Submitted ==
+SS -> DB : New Survey Results Submitted
+DB --> SS : Confirmation
+
+== Check for Notification Preference ==
+SS -> NS : Check if Trainer Opted for Notification
+NS -> DB : Retrieve Trainer Notification Preference
+DB --> NS : Notification Preference
+
+== Notify Trainer ==
+alt If Trainer opted for notification
+  NS -> Trainer : Notify about New Survey Results
+  Trainer -> SS : Access Survey Results
+  SS -> DB : Fetch Survey Results for Trainer's Class
+  DB --> SS : Survey Results Data
+  SS --> Trainer : Display Survey Results
+else Trainer did not opt for notifications
+  NS --> [Trainer] : No Action Taken
+end
+
+@enduml

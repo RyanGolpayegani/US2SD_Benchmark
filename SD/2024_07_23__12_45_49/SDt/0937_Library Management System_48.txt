@@ -1,0 +1,48 @@
+@startuml
+participant Librarian
+participant "Library Management\nSystem Interface" as Interface
+participant "Server" as Server
+database "Database" as DB
+
+Librarian -> Interface : Select "Manage Books" option
+activate Interface
+Interface -> Server: Request book management options
+activate Server
+
+Server -> DB: Fetch existing categories
+activate DB
+DB --> Server: Return categories
+deactivate DB
+
+Server --> Interface: Display categories (Subject, Author, Title)
+deactivate Server
+Interface --> Librarian: Show book categorization options
+deactivate Interface
+
+Librarian -> Interface : Select "Categorize Books"
+activate Interface
+Interface -> Server: Request book categorization interface
+activate Server
+Server -> DB: Query for uncategorized books
+activate DB
+DB --> Server: Return list of uncategorized books
+deactivate DB
+
+Server --> Interface: Display uncategorized books with fields (Subject, Author, Title)
+deactivate Server
+Librarian -> Interface : Categorize books by Subject, Author, and Title
+activate Interface
+
+Interface -> Server: Submit categorized books
+activate Server
+Server -> DB: Update book records with Subject, Author, Title
+activate DB
+DB --> Server: Confirmation of update
+deactivate DB
+
+Server --> Interface: Display success message
+deactivate Server
+Interface --> Librarian: Confirm books have been categorized
+deactivate Interface
+
+@enduml

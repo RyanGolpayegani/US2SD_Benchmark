@@ -1,0 +1,22 @@
+@startuml
+participant SystemsAdministrator as admin
+participant "Ubuntu Package Management System" as apt
+participant "Software Repository" as repo
+participant "Neurohub Dependencies" as dependencies
+
+admin -> apt: search for Neurohub dependencies
+apt -> repo: query available packages
+repo --> apt: return list of packages (Neurohub dependencies)
+apt --> admin: display available Neurohub dependencies
+
+admin -> apt: select required dependencies
+apt -> dependencies: download selected dependencies
+dependencies -> apt: validate and install dependencies
+apt --> admin: confirm successful installation
+
+admin -> apt: verify installation
+apt -> dependencies: check installation status
+dependencies --> apt: return installation details
+apt --> admin: display installation summary (Success/Failure)
+
+@enduml

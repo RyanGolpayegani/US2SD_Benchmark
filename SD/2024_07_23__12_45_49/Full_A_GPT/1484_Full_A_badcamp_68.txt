@@ -1,0 +1,60 @@
+To create a sequence diagram in PlantUML format for the user story "As an anonymous user, I want to fill out a user registration form, so that I can register for the camp and get an account on the website," follow the steps outlined below. This sequence diagram will describe the interactions between the user (Anonymous User), the front-end application (Website UI), the back-end application (Server), and the database system (Database) for the registration process.
+
+Here's a basic example of how this might look in PlantUML syntax:
+
+```plantuml
+@startuml
+!theme plain
+
+participant "Anonymous User" as User
+participant "Website UI" as UI
+participant "Server" as Server
+participant "Database" as DB
+
+User -> UI : Access registration page
+activate UI
+UI -> Server : Request registration form
+activate Server
+Server -> UI : Return registration form
+UI -> User : Display registration form
+
+User -> UI : Submit filled registration form
+activate UI
+UI -> Server : Send registration data
+activate Server
+Server -> DB : Check if user exists
+activate DB
+
+alt User exists
+    DB -> Server : User exists error
+    deactivate DB
+    Server -> UI : Error: User already exists
+    deactivate Server
+    UI -> User : Show "user exists" message
+    deactivate UI
+else User does not exist
+    DB -> Server : User does not exist confirmation
+    deactivate DB
+    Server -> DB : Create user account
+    activate DB
+    DB -> Server : Account creation confirmation
+    deactivate DB
+    Server -> UI : Account created successfully
+    deactivate Server
+    UI -> User : Display "account created" message and login prompt
+    deactivate UI
+end
+
+@enduml
+```
+
+### Explanation:
+
+1. **Access Registration Page:** The "Anonymous User" starts the registration process by requesting the registration page through the "Website UI".
+2. **Request and Display Registration Form:** The "Website UI" requests the registration form from the "Server", which fetches and returns it. The "Website UI" then displays this registration form to the user.
+3. **Submit Registration Form:** After filling out the form, the user submits it. The "Website UI" captures the submitted data and sends it to the "Server".
+4. **Check if User Exists:** The "Server" queries the "Database" to check if the user already exists based on provided details (like email).
+5. **User Exists Case:** If the user already exists, the "Database" informs the "Server", which then sends an error message back to the "Website UI", and the user is informed that an account with the given details already exists.
+6. **User Does Not Exist Case:** If the user does not exist, the "Database" sends a confirmation back to the "Server". Then, the "Server" instructs the "Database" to create a new user account with the submitted details. The "Database" confirms account creation, and the "Server" signals the "Website UI" that the account was created successfully. The "Website UI" shows the user a message confirming account creation and might prompt the user to login.
+
+This sequence diagram demonstrates the steps and system interactions involved in an anonymous user registering for an account on the BADCamp Experience and Administration Enhancement Platform.

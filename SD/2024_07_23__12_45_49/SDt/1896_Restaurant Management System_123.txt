@@ -1,0 +1,20 @@
+@startuml
+actor Manager as manager
+participant "Management Interface" as interface
+participant "Backend Server" as backend
+database "Database" as db
+
+manager -> interface : Select "Manage Backup Food List"
+interface -> backend : Request to view backup food list
+backend -> db : Query backup food list
+db -> backend : Return backup food list
+backend -> interface : Display backup content
+manager -> interface : Choose "Delete Backup List"
+interface -> backend : Request to delete backup list
+activate backend
+backend -> db : Delete backup food list command
+db --> backend : Confirmation of deletion
+deactivate backend
+backend -> interface : Confirm deletion to manager
+interface -> manager : Display deletion confirmation
+@enduml

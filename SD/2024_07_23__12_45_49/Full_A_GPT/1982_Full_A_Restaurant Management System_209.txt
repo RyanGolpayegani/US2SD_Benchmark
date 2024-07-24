@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram in PlantUML format based on the provided project description involves visualizing the interactions between various objects when a manager stores orders to calculate total sales. Given the possible complexity of a restaurant management system, this sequence diagram focuses on a simplified flow for clarity and understanding. The sequence includes initiating the order storage process, interacting with the database, and calculating the sales totals.
+
+Please note, the depiction is simplified and may not cover all exceptional flows or error handling for brevity and clarity.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Manager as M
+participant FrontendApplication as FA
+participant BackendServer as BS
+participant Database as DB
+
+title Store Orders and Calculate Total Sales
+
+M -> FA : Store order details
+FA -> BS : Request to store order
+activate BS
+BS -> DB : Save order data
+activate DB
+DB --> BS : Acknowledge data saved
+deactivate DB
+
+BS -> DB : Query orders for sales calculation
+activate DB
+DB --> BS : Return orders data
+deactivate DB
+
+BS -> BS : Calculate total sales
+BS --> FA : Send total sales data
+deactivate BS
+FA --> M : Display total sales
+
+@enduml
+```
+
+### Explanation:
+1. **Manager (M)**: Initiates the order storage process by interacting with the **Frontend Application (FA)**, like a web interface or a management dashboard.
+2. **Frontend Application (FA)**: Receives the manager's request and forwards it to the **Backend Server (BS)** for processing.
+3. **Backend Server (BS)**: Handles the request by performing two primary tasks--storing order data and calculating total sales. It communicates with the **Database (DB)** for both saving the received order data and retrieving it later for sales calculations.
+4. **Database (DB)**: Stores order details when requested and provides stored data back to the Backend Server upon request for total sales calculations.
+5. After calculating the total sales, the Backend Server sends this information back through the chain to the Frontend Application, which then presents the calculated total sales to the Manager.
+
+This simplified sequence diagram aims to visualize the process flow based on the project description's requirements. It's important to note that real-world implementations may involve additional steps or processes, like authentication and authorization, error handling, and data validation, to ensure the system's security, reliability, and accuracy.

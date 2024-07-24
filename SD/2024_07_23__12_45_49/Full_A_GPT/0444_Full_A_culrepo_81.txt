@@ -1,0 +1,56 @@
+Given the complexity of the project described and focusing on the particular user story regarding a library discovery operator wanting to harvest useful metadata from the repository via the Open Archives Initiative Protocol for Metadata Harvesting (OAI-PMH), I'll provide a simplified PlantUML code to visualize the sequence of interactions. This diagram will illustrate the process of harvesting metadata incrementally for making Cornell publications discoverable in an external repository.
+
+```plantuml
+@startuml
+actor LibraryDiscoveryOperator as operator
+entity "OAI-PMH Service" as OAI
+database "Digital Repository System" as Repository
+entity "External Discovery System" as External
+
+operator -> OAI: Request Metadata\n(Initial Harvest)
+activate OAI
+OAI -> Repository: Query for Available Metadata
+activate Repository
+Repository -> OAI: Return Requested Metadata
+deactivate Repository
+OAI -> operator: Respond with Metadata
+deactivate OAI
+operator -> External: Update Discovery System\nwith Metadata
+activate External
+External --> operator: Acknowledge Update
+deactivate External
+
+... Some Time Later ...
+
+operator -> OAI: Request Updated Metadata\n(Incremental Harvest)
+activate OAI
+OAI -> Repository: Query for New/Updated Metadata
+activate Repository
+Repository -> OAI: Return New/Updated Metadata
+deactivate Repository
+OAI -> operator: Respond with Updated Metadata
+deactivate OAI
+operator -> External: Update Discovery System\nwith New Metadata
+activate External
+External --> operator: Acknowledge Update\n(Incremental)
+deactivate External
+
+@enduml
+```
+
+### Explanation:
+1. **LibraryDiscoveryOperator**: This actor represents the library discovery operator who initiates requests to harvest metadata from Cornell's Digital Repository System.
+   
+2. **OAI-PMH Service**: This service acts as an intermediary that facilitates the harvesting of metadata by understanding and implementing the OAI-PMH protocol. It processes requests from the Library Discovery Operator and queries the Digital Repository System for metadata.
+
+3. **Digital Repository System**: This is Cornell University's comprehensive repository that holds all the scholarly output, data, and publications. It serves the metadata requested by the OAI-PMH Service based on the specifications of the request (initial or incremental).
+
+4. **External Discovery System**: This represents an external system where the harvested metadata is used to update the repository's discoverability and accessibility of Cornell publications.
+
+### Flow of Interaction:
+- The Library Discovery Operator sends a request to the OAI-PMH Service to harvest metadata. Initially, this might be for all available metadata in the Digital Repository System.
+- The OAI-PMH Service queries the repository for the available metadata.
+- The repository responds with the requested metadata.
+- The Library Discovery Operator uses the metadata to update the External Discovery System, making Cornell publications discoverable.
+- At a later time, the operator requests updated metadata to capture new or updated records since the last harvest (incremental harvest).
+- The process repeats, with the repository only returning metadata that has changed or been added since the last request, ensuring that the discovery system remains up-to-date with minimal data transfer.

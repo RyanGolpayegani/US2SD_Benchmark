@@ -1,0 +1,44 @@
+Generating a detailed sequence diagram for the described user story involves illustrating the interaction between different system components from the moment the moderator initiates a new round of estimation by entering an item, to submitting that item for estimation. Below is a sequence diagram in PlantUML format capturing these interactions.
+
+Please note, to render this PlantUML code, you'll need to use a PlantUML processor or an online tool that can interpret and draw UML diagrams from PlantUML code.
+
+```plantuml
+@startuml
+actor Moderator
+participant "Web Interface" as WebUI
+participant "Backend System" as Backend
+participant "Database" as DB
+
+Moderator -> WebUI : Enter estimation item\nto start a new round
+activate WebUI
+
+WebUI -> Backend : Create new estimation round
+activate Backend
+
+Backend -> DB : Save new estimation round details
+activate DB
+DB --> Backend : Confirmation
+deactivate DB
+
+Backend --> WebUI : New round created\nwith entered item
+deactivate Backend
+
+WebUI --> Moderator : Display new round\nand ready for estimates
+deactivate WebUI
+
+@enduml
+```
+
+### Explanation of the Diagram:
+
+1. **Moderator Action**: The interaction begins with the Moderator entering details for a new estimation item in a multi-line text field provided within the web interface to initiate a new round.
+
+2. **Web Interface Processing**: The web interface (WebUI), upon receiving the input from the Moderator, sends a request to the backend system to create a new estimation round with the details provided by the Moderator.
+
+3. **Backend System Processing**: The backend system receives the request to create a new estimation round and processes it. It then interacts with the database to save the details of the new estimation round.
+
+4. **Database Interaction**: The database stores the details of the new estimation round and sends a confirmation back to the backend system.
+
+5. **Completion and Feedback**: Upon successful creation of the new estimation round and storing its details in the database, the backend system sends a confirmation back to the web interface, which then notifies the Moderator that the new round has been created and is now ready for estimates.
+
+This sequence diagram provides a high-level view of the interaction flow for the specified user story within the Agile Estimation and Planning Tool (AEPT) project. By following these steps, the moderator can efficiently start a new round of estimation for an item with the collaboration of the agile development team.

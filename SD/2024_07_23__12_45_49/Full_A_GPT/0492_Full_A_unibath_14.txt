@@ -1,0 +1,55 @@
+To create a detailed sequence diagram for a depositor specifying a disposal policy for data on the Enhanced Research Data Management Platform, you can use the following PlantUML code. This code outlines the interactions between the depositor and the system, including steps like logging in, selecting datasets, specifying disposal policies, and saving these policies.
+
+Please note, this code is a representation and can be adjusted based on the specific implementation details and workflow of the Enhanced Research Data Management Platform.
+
+```plantuml
+@startuml
+actor Depositor as dep
+participant "Web Interface" as web
+participant "Authentication System" as auth
+participant "Dataset Management" as manage
+participant "Policy Engine" as policy
+participant "Data Archive" as archive
+
+dep -> web : Access Platform
+web -> auth : Authenticate User
+auth -> web : Authentication Successful
+
+alt Authentication Success
+    dep -> web : Select Dataset Management
+    web -> manage : Request Dataset Selection
+    dep -> manage : Choose Dataset for Disposal Policy
+    manage -> dep : Dataset Selected
+
+    dep -> manage : Specify Disposal Policy
+    manage -> policy : Initiate Disposal Policy Specification
+    policy -> manage : Policy Specification Interface
+
+    dep -> policy : Enter Disposal Policy Details
+    policy -> archive : Apply Disposal Policy
+    archive -> policy : Disposal Policy Set
+    policy -> manage : Confirm Policy Set
+    manage -> web : Display Confirmation to Depositor
+    dep -> web : Confirm and Save
+    web -> archive : Save Policy to Dataset
+    archive -> web : Policy Saved Successfully
+    web -> dep : Display Success Message
+else Authentication Failure
+    web -> dep : Display Login Error
+end
+
+@enduml
+```
+
+**Explanation of the Steps:**
+
+1. **Access Platform**: The depositor accesses the platform through the web interface.
+2. **Authenticate User**: The web interface interacts with the authentication system to log the user in.
+3. **Authentication Success/Failure**: If the authentication is successful, the process moves forward. If not, an error message is shown.
+4. **Select Dataset Management**: The depositor selects the option to manage datasets.
+5. **Choose Dataset for Disposal Policy**: The depositor selects the dataset to apply a disposal policy to.
+6. **Specify Disposal Policy**: The depositor enters details for the disposal policy through the Policy Engine interface.
+7. **Apply Disposal Policy**: The policy is applied and saved to the selected dataset in the Data Archive.
+8. **Display Success Message**: A confirmation of the successful setting of the disposal policy is shown to the depositor.
+
+This sequence diagram outlines the process from the depositor's perspective, focusing on specifying a disposal policy within the Enhanced Research Data Management Platform. Depending on the platform's exact implementation, additional steps or adjustments might be necessary.

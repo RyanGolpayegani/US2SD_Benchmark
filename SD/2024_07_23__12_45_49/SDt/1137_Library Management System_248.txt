@@ -1,0 +1,20 @@
+@startuml
+!theme cerulean
+
+actor Member
+participant "Reservation Interface" as RI
+participant "Reservation System" as RS
+database "Database" as DB
+
+== Delete Online Book Reservation ==
+
+Member -> RI: Select reservation to delete
+RI -> RS: Request deletion of reservation (reservationId)
+RS -> DB: Query reservation by reservationId
+DB --> RS: Return reservation details
+RS -> DB: Delete reservation record
+DB --> RS: Confirm deletion
+RS --> RI: Display deletion confirmation
+RI -> Member: Display deletion success message
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+participant Researcher as user
+participant "Search Interface" as search
+participant "Authorization Service" as auth
+participant "File Management System" as fileManager
+participant "Media Streaming Service" as mediaStream
+
+== User Requests Film Clips ==
+user -> search : Enter search keywords
+search -> fileManager : Retrieve matching files
+fileManager --> search : Return film clip metadata
+search --> user : Display film clip options
+
+== User Selects a Film Clip ==
+user -> search : Select specific film clip
+search -> auth : Check user permissions
+auth --> search : Permission granted
+
+== Streaming Film Clip ==
+search -> fileManager : Request film clip access
+fileManager -> mediaStream : Fetch film clip
+mediaStream --> fileManager : Stream film clip
+fileManager --> user : Display film player UI
+user -> mediaPlayer : Interacts with player controls
+
+@enduml

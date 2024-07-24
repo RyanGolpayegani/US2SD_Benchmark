@@ -1,0 +1,25 @@
+@startuml
+participant User as U
+participant WebUI as WUI
+participant APIGateway as API
+participant AuthService as Auth
+participant DatasetService as DS
+participant VersionControl as VC
+participant Storage as S
+
+U -> WUI : Navigate to specific DataPackage
+WUI -> API : Request for DataPackage (with version)
+API -> Auth : Validate User Session
+Auth -> API : Session Validated
+
+API -> DS : Query DataPackage Version Info
+DS -> VC : Request specific version details
+VC -> DS : Return version metadata
+DS -> API : Return DataPackage metadata
+
+API -> S : Request DataPackage at Version
+S -> API : Return DataPackage Data
+API -> WUI : Respond with DataPackage Data
+WUI -> U : Display DataPackage Version
+
+@enduml

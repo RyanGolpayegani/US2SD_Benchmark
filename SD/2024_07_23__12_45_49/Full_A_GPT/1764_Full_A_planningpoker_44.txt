@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the user story specified requires representing the interactions among different components/system actors involved in adding a glossary of commonly used terms to the Agile Estimation and Planning Tool (AEPT). Given the nature of your user story, the primary actors might include the Developer (initiating the request for a glossary), the AEPT System (where the glossary is to be implemented), and a Database (to store the glossary terms). Here’s how this could be represented in PlantUML syntax:
+
+```plantuml
+@startuml
+participant Developer
+participant AEPTSystem as System
+database GlossaryDB as DB
+
+== Glossary Request Initialization ==
+Developer -> System: RequestGlossaryCreation()
+activate System
+
+System -> DB: CheckExistingGlossary()
+activate DB
+DB --> System: GlossaryExists(Yes/No)
+deactivate DB
+
+alt If Glossary Exists
+  System --> Developer: ShowExistingGlossary()
+else If Glossary Does Not Exist
+  System -> System: CreateGlossary()
+  System -> DB: InitializeGlossaryDB()
+  activate DB
+  DB --> System: GlossaryDBInitialized()
+  deactivate DB
+  System --> Developer: ConfirmGlossaryCreation()
+  Developer -> System: SubmitGlossaryTerms()
+  activate System
+  System -> DB: StoreGlossaryTerms()
+  activate DB
+  DB --> System: TermsStoredSuccess()
+  deactivate DB
+  System --> Developer: GlossaryUpdated()
+end
+
+deactivate System
+@enduml
+```
+
+This sequence diagram starts with the Developer initiating a request to create or access a glossary of commonly used terms (`RequestGlossaryCreation()`). The System then checks with the Database to determine if a glossary already exists (`CheckExistingGlossary()`). Based on the response from the Database (`GlossaryExists(Yes/No)`), there are two paths:
+
+1. **If the Glossary Exists:** The System simply shows the existing glossary to the Developer (`ShowExistingGlossary()`).
+
+2. **If the Glossary Does Not Exist:** The System will initialize and create a new glossary (`CreateGlossary()`) and initialize the related Database for storing the glossary terms (`InitializeGlossaryDB()`). Once initialized, the System confirms the creation of the glossary with the Developer (`ConfirmGlossaryCreation()`), who then submits the terms to be added to the glossary (`SubmitGlossaryTerms()`). The System stores these terms in the Database (`StoreGlossaryTerms()`), and upon successful storage, notifies the Developer that the glossary has been updated (`GlossaryUpdated()`).
+
+This sequence diagram represents a simplified flow and can be further detailed or customized based on specific project requirements, technological constraints, and additional features or functionalities you plan to implement within the AEPT.

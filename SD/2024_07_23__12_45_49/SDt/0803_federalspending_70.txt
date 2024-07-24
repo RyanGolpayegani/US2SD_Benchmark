@@ -1,0 +1,21 @@
+@startuml
+participant AgencyUser as User
+participant BrokerSystem as Broker
+database FABSDatabase as DB
+participant DataProcessingService as DPS
+participant DataValidationService as DVS
+
+User -> Broker : Request load of historical Financial Assistance data
+Broker -> DPS : Initiate data loading process
+loop Data Loading
+    DPS -> DB : Load historical data batch
+    DB --> DPS : Confirm batch loaded
+end
+Broker -> DPS : All batches loaded
+DPS -> DVS : Validate loaded historical data
+DVS -> DB : Validate data against rules
+DB --> DVS : Data validation results
+DVS --> DPS : Validation complete
+DPS --> Broker : Historical data loaded and validated
+Broker -> User : Notify data ready for FABS go-live
+@enduml

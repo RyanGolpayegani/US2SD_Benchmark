@@ -1,0 +1,60 @@
+Below is a sequence diagram crafted in PlantUML format that outlines the process of a faculty member collecting their publications into a single online access point within the proposed Comprehensive Digital Repository System for Cornell University. This process aims to help faculty members easily manage their work and raise the profile of their research. Please note that to visualize this diagram, you'll need to use a PlantUML editor or a compatible tool.
+
+```plantuml
+@startuml
+!theme plain
+
+actor FacultyMember as faculty
+participant "RepositorySystem" as system
+participant "ContentManagement" as content
+participant "ProfilePage" as profile
+participant "ExternalSources" as external
+database "RepositoryDB" as repo
+
+
+== Collect Publications from Repository ==
+faculty -> system: Access Repository System
+system -> content: Authenticate and Authorize Faculty Member
+activate content
+
+content -> repo: Query Faculty Publications
+return List of Publications
+content -> profile: Display Publications
+faculty -> profile: Select Publications to Highlight
+profile -> content: Update Faculty Profile with Selected Publications\n(Set Visibility and Ordering)
+deactivate content
+
+== Integrate External Publications ==
+faculty -> system: Request to Add External Publications
+activate system
+system -> external: Search for Faculty Member External Publications
+external -> faculty: Display External Publications List
+faculty -> external: Select Publications to Include
+external -> content: Send Selected External Publications
+content -> repo: Add/Link External Publications to Profile
+deactivate system
+
+== Finalize Profile ==
+faculty -> profile: Review and Organize Publications
+profile -> repo: Update Publication List and Metadata
+repo -> faculty: Confirm Profile Update
+
+@enduml
+
+```
+
+### Explanation
+
+1. **Access Repository System:** The faculty member accesses the digital repository system to manage their publications.
+2. **Authenticate and Authorize Faculty Member:** The system checks if the faculty member is authorized to add or modify content.
+3. **Query and Display Publications:** The system fetches the list of publications from the repository associated with the faculty member and displays it for selection.
+4. **Select Publications to Highlight:** The faculty selects the publications they wish to highlight on their profile.
+5. **Update Faculty Profile:** The selected publications are added to the faculty member's profile with specified visibility and ordering.
+6. **Request to Add External Publications:** The faculty member initiates a request to integrate external publications into their repository profile.
+7. **Search for External Publications:** The system searches external sources for publications by the faculty member not already in the repository.
+8. **Display External Publications List:** A list of found external publications is presented to the faculty member for selection.
+9. **Send Selected External Publications:** Selected publications are sent to the content management subsystem to be added or linked to the faculty's profile.
+10. **Review and Organize Publications:** The faculty member finalizes the organization and visibility settings of their publications on their profile.
+11. **Confirm Profile Update:** The repository database updates the faculty's profile with the changes, and a confirmation is sent to the faculty member.
+
+This sequence diagram represents a high-level overview of how a faculty member can compile their publications within the new digital repository system, both from internal and external sources, to enhance the visibility of their work.

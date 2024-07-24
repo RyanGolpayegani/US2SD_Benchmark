@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+
+actor FacultyMember as faculty
+participant "RepositorySystem" as system
+participant "ContentManagement" as content
+participant "ProfilePage" as profile
+participant "ExternalSources" as external
+database "RepositoryDB" as repo
+
+
+== Collect Publications from Repository ==
+faculty -> system: Access Repository System
+system -> content: Authenticate and Authorize Faculty Member
+activate content
+
+content -> repo: Query Faculty Publications
+return List of Publications
+content -> profile: Display Publications
+faculty -> profile: Select Publications to Highlight
+profile -> content: Update Faculty Profile with Selected Publications\n(Set Visibility and Ordering)
+deactivate content
+
+== Integrate External Publications ==
+faculty -> system: Request to Add External Publications
+activate system
+system -> external: Search for Faculty Member External Publications
+external -> faculty: Display External Publications List
+faculty -> external: Select Publications to Include
+external -> content: Send Selected External Publications
+content -> repo: Add/Link External Publications to Profile
+deactivate system
+
+== Finalize Profile ==
+faculty -> profile: Review and Organize Publications
+profile -> repo: Update Publication List and Metadata
+repo -> faculty: Confirm Profile Update
+
+@enduml

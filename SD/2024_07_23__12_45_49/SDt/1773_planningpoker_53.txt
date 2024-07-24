@@ -1,0 +1,39 @@
+@startuml
+
+' Define actors
+actor Mike
+participant "Web Interface" as Web
+participant "Server" as Server
+participant "Database" as DB
+participant "Analytics Module" as Analytics
+
+' Mike interacts with the Web Interface
+Mike -> Web: access metrics dashboard
+activate Web
+
+' Web Interface requests metrics data from Server
+Web -> Server: request metrics data
+activate Server
+
+' Server queries Database for metrics
+Server -> DB: query game usage metrics
+activate DB
+DB --> Server: return metrics data
+deactivate DB
+
+' Server processes data with Analytics Module
+Server -> Analytics: process metrics data
+activate
+  Analytics -> Analytics: calculate usage statistics
+  Analytics --> Server: return processed data
+deactivate Analytics
+
+' Server sends processed data back to Web Interface
+Server --> Web: send metrics data
+deactivate Server
+
+' Web Interface displays metrics to Mike
+Web --> Mike: display metrics dashboard
+deactivate Web
+
+@enduml

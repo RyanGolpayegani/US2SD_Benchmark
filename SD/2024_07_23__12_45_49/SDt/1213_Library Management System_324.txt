@@ -1,0 +1,31 @@
+@startuml
+participant StaffMemberInterface
+participant CheckoutManagementSystem
+participant Database
+
+alt Book Checkout Process
+    StaffMemberInterface -> CheckoutManagementSystem : initiateBookCheckout(borrowerId, bookId)
+    activate CheckoutManagementSystem
+
+    CheckoutManagementMSystem -> Database : verifyBookAvailability(bookId)
+    activate Database
+    Database --> CheckoutManagementSystem : bookAvailable=true
+    deactivate Database
+
+    CheckoutManagementSystem -> Database : checkBorrowerStatus(borrowerId)
+    Database --> CheckoutManagementSystem : borrowerStatus=active
+    deactivate Database
+
+    CheckoutManagementSystem -> Database : createCheckoutRecord(borrowerId, bookId)
+    Database --> CheckoutBorrowerManagementSystem : checkoutRecordCreated
+    deactivate Database
+
+    CheckoutManagementSystem --> StaffMemberInterface : displayCheckoutSuccess()
+    deactivate CheckoutScript
+    
+else Book Not Available or Borrower Inactive
+    CheckoutManagementSystem -> StaffMemberInterface : displayError(message)
+    deactivate CheckoutManagementSystem
+end
+
+@enduml

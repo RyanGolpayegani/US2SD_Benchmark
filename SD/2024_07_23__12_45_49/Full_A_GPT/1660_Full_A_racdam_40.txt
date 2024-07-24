@@ -1,0 +1,64 @@
+To generate a detailed Sequence Diagram in PlantUML format for the user story described, we’ll outline the necessary interactions involved when a researcher wants to download reports from the digital archive for use in talks and articles. The process involves several key actors and components: the User (Researcher), the Authentication System, the User Interface (UI), the Search System, the File Management System, and the Download Management System. The interaction allows the researcher to authenticate, search for specific reports, select a report, and initiate a download.
+
+```plantuml
+@startuml
+actor Researcher as R
+participant "Authentication System" as Auth
+participant "User Interface" as UI
+participant "Search System" as Search
+participant "File Management\nSystem" as FileManage
+participant "Download Management\nSystem" as Download
+
+activate R
+
+R -> Auth : Authenticate
+activate Auth
+Auth -> R : Authentication Successful
+deactivate Auth
+
+R -> UI : Access Search Interface
+activate UI
+R -> Search : Submit Search Query
+activate Search
+Search -> FileManage : Request Matching Files
+activate FileManage
+FileManage -> Search : Return Search Results
+deactivate FileManage
+Search -> R : Display Search Results
+deactivate Search
+
+R -> UI : Select Desired Report
+UI -> FileManage : Request File Details
+activate FileManage
+FileManage -> UI : Return File Details
+deactivate FileManage
+UI -> R : Display File Details
+
+R -> Download : Download Request
+activate Download
+Download -> FileManage : Verify File Access Permissions
+activate FileManage
+FileManage -> Download : Access Granted
+deactivate FileManage
+
+Download -> R : Prepare Download Link
+Download -> FileManage : Log Download Activity
+FileManage -> Download : Log Recorded
+deactivate FileManage
+
+Download -> R : Provide Download
+deactivate Download
+deactivate UI
+deactivate R
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+- **Authentication**: The researcher starts by authenticating through the Authentication System. This step is crucial to ensure that the researcher has the necessary permissions to access and download the reports.
+- **Search and Selection**: Once authenticated, the researcher uses the User Interface to access the Search System and submits a query to find specific reports. The File Management System then returns the search results to the researcher, who selects the desired report.
+- **Download Initiation**: After selecting a report, the researcher requests to download it. The Download Management System checks with the File Management System to ensure the researcher has the appropriate access permissions.
+- **Download Preparation and Logging**: Upon verifying access permissions, the Download Management System prepares the download link for the researcher. It also logs the download activity with the File Management System to keep a record of file usage.
+- **Download Execution**: Finally, the researcher receives the download link and proceeds to download the report for use in immediate and future talks and articles.
+
+This sequence diagram illustrates the interactions between different systems and the researcher to facilitate the downloading of reports from a digital archive, which is part of the Digital Archive Management Enhancement Project's objective to make archival materials more accessible and usable.

@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram for the described user story involves depicting the interactions between the user (Member) and the system components when searching for a book by subject category. For simplicity, let's assume the primary components involved in this process are:
+
+- **Member (User):** The person initiating the search.
+- **UI (User Interface):** The front-end interface where the user inputs their search criteria.
+- **Controller:** The back-end controller that processes requests and responses.
+- **Search Service:** A dedicated service for handling search queries.
+- **Database:** The storage system where book data is maintained.
+
+Below is a basic representation of the process in PlantUML format:
+
+```plantuml
+@startuml
+actor Member
+participant UI
+participant Controller
+participant SearchService
+database Database
+
+Member -> UI : Enter subject category
+UI -> Controller : Search request(subject category)
+activate Controller
+
+Controller -> SearchService : Get books by subject(subject category)
+activate SearchService
+
+SearchService -> Database : Query books(subject category)
+activate Database
+
+Database --> SearchService : Return books
+deactivate Database
+
+SearchService --> Controller : Books list
+deactivate SearchService
+
+Controller --> UI : Display books
+deactivate Controller
+
+UI --> Member : Show search results
+@enduml
+```
+
+This sequence diagram starts with the Member entering their desired subject category into the UI. The UI then sends this information as a search request to the Controller, which forwards the request to the SearchService. The SearchService queries the Database for books matching the subject category. The Database returns the matching books to the SearchService, which then passes the list back to the Controller. Finally, the Controller instructs the UI to display the search results to the Member.
+
+The diagram simplifies the interactions and omits potential error handling and other complexities such as authentication and logging for the sake of clarity. This focus on the main flow provides a clear overview of the steps involved in searching for a book by subject category in the proposed Comprehensive Library Management System (CLMS).

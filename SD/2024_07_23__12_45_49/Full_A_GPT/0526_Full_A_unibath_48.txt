@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram for the described user story in PlantUML requires breaking down the process of storing archived data directly on the HCP (Hierarchical Storage Management) object store. Below is an example of how this might be depicted. Note that specific implementations might vary based on the actual architecture and requirements of the University of Bath's IT infrastructure and the capabilities of the HCP object store.
+
+```plantuml
+@startuml
+participant "UnivIT service" as univIT
+participant "Data Management Platform" as platform
+participant "HCP Object Store" as HCP
+database "Metadata Database" as metadataDB
+
+== Store Archived Data ==
+univIT -> platform : Request to Archive Data
+activate platform
+
+platform -> metadataDB : Validate Data & Metadata
+activate metadataDB
+return Validated Data & Metadata
+deactivate metadataDB
+
+platform -> HCP : Store Data
+activate HCP
+HCP -> HCP : Write Data to Storage
+HCP -> platform : Confirm Storage & Generate URI
+deactivate HCP
+
+platform -> metadataDB : Update Metadata with URI
+activate metadataDB
+metadataDB -> platform : Confirm Update
+deactivate metadataDB
+
+platform --> univIT : Confirmation & Data URI
+deactivate platform
+
+@enduml
+```
+
+This sequence diagram outlines the following steps:
+1. **Request to Archive Data**: The process begins with the UnivIT service requesting the data management platform to archive data.
+2. **Validate Data & Metadata**: The platform then validates the data and its metadata with a metadata database to ensure everything is in order before archiving.
+3. **Store Data**: Once validated, the platform proceeds to store the data in the HCP object store.
+4. **Write Data to Storage**: The HCP object store internally handles the writing of data to its storage system.
+5. **Confirm Storage & Generate URI**: After the data is successfully stored, the HCP object store confirms the storage to the platform and generates a URI for the stored data.
+6. **Update Metadata with URI**: The platform updates the metadata database with the new URI linked to the data.
+7. **Confirmation & Data URI**: Finally, the platform sends a confirmation along with the data URI back to the UnivIT service.
+
+This diagram assumes a simplified process focusing on key interactions. Depending on the system's complexity, additional details such as error handling, authentication, and logging might be necessary for a complete implementation.

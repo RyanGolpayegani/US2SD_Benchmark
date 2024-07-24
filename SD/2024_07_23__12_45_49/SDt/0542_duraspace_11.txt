@@ -1,0 +1,28 @@
+@startuml
+
+actor "Repository Manager" as RM
+boundary "DIMS Frontend Interface" as Frontend
+control "Backend Server" as Backend
+entity "Database" as Database
+
+RM -> Frontend : Select collection to update
+Frontend -> Backend : Request edit form for collection
+Backend -> Database : Fetch collection data
+Database -> Backend : Return collection data
+Backend -> Frontend : Display edit form with data
+Frontend -> RM : Display form
+
+RM -> Frontend : Input/Update names (creator, source, subject)
+Frontend -> Backend : Submit updated names info
+Backend -> Database : Update collection with new names
+alt Successful update
+    Database -> Backend : Acknowledge update success
+    Backend -> Frontend : Confirm update to RM
+    Frontend -> RM : Display success message
+else Update failure
+    Database -> Backend : Notify update failure
+    Backend -> Frontend : Inform RM of failure
+    Frontend -> RM : Display error message
+end
+
+@enduml

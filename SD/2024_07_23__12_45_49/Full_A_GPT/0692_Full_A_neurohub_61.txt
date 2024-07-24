@@ -1,0 +1,43 @@
+To illustrate how to structure a sequence diagram in PlantUML format for the user story specified, I'll provide a general example which you can adapt and expand upon. This example focuses on a user action where the user decides to post content to Neurohub with an option to share it simultaneously on Twitter.
+
+```plantuml
+@startuml
+participant UserUI as "User Interface"
+participant NeurohubSystem as "Neurohub System"
+participant TwitterAPI as "Twitter API"
+database TwitterDB as "Twitter Database"
+
+UserUI -> NeurohubSystem : PostContentWithShareOption(content, shareOnTwitter=true)
+activate NeurohubSystem
+
+alt shareOnTwitter is true
+    NeurohubSystem -> TwitterAPI : ShareContentToTwitter(content)
+    activate TwitterAPI
+    TwitterAPI -> TwitterDB : SaveTweet(content)
+    activate TwitterDB
+    TwitterDB --> TwitterAPI : Confirmation
+    deactivate TwitterDB
+    TwitterAPI --> NeurohubSystem : ShareConfirmation
+    deactivate TwitterAPI
+else shareOnTwitter is false
+    NeurohubSystem -> NeurohubSystem : SaveContentLocally(content)
+end
+
+NeurohubSystem --> UserUI : PostConfirmation
+deactivate NeurohubSystem
+@enduml
+```
+
+### Explanation:
+
+1. **UserUI to NeurohubSystem:** The user interacts with the Neurohub System through a User Interface (UI), deciding to post new content. They indicate they want this content also shared on their Twitter feed by enabling the respective option.
+
+2. **Decision Making in NeurohubSystem:** Based on the user's choice to share the content on Twitter (`shareOnTwitter=true`), the Neurohub System follows different paths:
+   - If `shareOnTwitter` is true, Neurohub System communicates with the Twitter API to share the content.
+   - If the user decides not to share the content on Twitter (`shareOnTwitter=false`), the content is simply saved locally on the Neurohub platform.
+
+3. **Interaction with TwitterAPI and TwitterDB:** When sharing to Twitter, the system interacts with the Twitter API, which in turn saves the tweet to the Twitter Database. Upon successful saving, the Twitter Database sends a confirmation back to the Twitter API, which then sends a share confirmation back to the Neurohub System.
+
+4. **Final Confirmation to UserUI:** After processing the content posting (and sharing on Twitter if applicable), the Neurohub System sends a confirmation back to the user interface, indicating the action's success.
+
+This sequence diagram outlines the interaction flow for a feature that allows users to push posted content directly to their Twitter feed from the Neurohub platform. Adjustments and expansions can be made based on specific project requirements, APIs, and system design.

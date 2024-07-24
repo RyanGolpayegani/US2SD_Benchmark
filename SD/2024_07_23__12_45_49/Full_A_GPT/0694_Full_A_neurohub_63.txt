@@ -1,0 +1,48 @@
+Below is a simple representation of a sequence diagram in PlantUML format to illustrate the user story: "As a user, I want to have the details of the workflow execution to be recorded in a Neurohub log book while executing a workflow." This sequence diagram assumes a basic interaction model involving the User, the Neurohub System (which includes the Workflow Execution Engine and the Logbook Module), and the Logbook where records are stored.
+
+```plantuml
+@startuml
+
+participant User
+participant "Workflow Execution Engine" as Engine
+participant "Logbook Module" as Logbook
+database "Logbook Database" as DB
+
+User -> Engine: Initiate workflow execution
+activate Engine
+
+Engine -> Logbook: Start workflow execution log
+activate Logbook
+
+Logbook -> DB: Record start of execution
+activate DB
+DB --> Logbook: Confirmation
+deactivate DB
+
+Engine -> Engine: Execute workflow steps
+... // Workflow Execution Steps
+
+Engine --> User: Workflow execution result
+deactivate Engine
+
+Engine -> Logbook: End workflow execution log
+activate Logbook
+
+Logbook -> DB: Record end of execution details
+activate DB
+DB --> Logbook: Confirmation
+deactivate DB
+
+Logbook --> Engine: Log update confirmation
+deactivate Logbook
+
+@enduml
+```
+
+This diagram outlines a simplified process:
+- The **User** initiates the execution of a workflow via the Neurohub platform.
+- The **Workflow Execution Engine** starts the process and notifies the **Logbook Module** to record the start of the execution.
+- The **Logbook Module** writes this event into the **Logbook Database** and, after executing the workflow steps, it records the end of the execution details, including any outcomes or errors.
+- Throughout the process, the user is kept informed of the execution progress and results.
+
+This model is abstract and can be expanded with more detailed interactions, error handling routines, and specific logging details based on the actual requirements of the Neurohub Enhancement and Automation Project.

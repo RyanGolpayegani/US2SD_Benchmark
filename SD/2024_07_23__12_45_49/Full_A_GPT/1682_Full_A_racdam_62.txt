@@ -1,0 +1,71 @@
+Here is a detailed sequence diagram written in PlantUML format, which depicts the actions involved when an archivist wants to upload inventories to simplify the process for donor representatives to request their material. This diagram follows the steps that might be involved in the Digital Archive Management Enhancement Project's system:
+
+```plantuml
+@startuml
+actor Archivist as A
+participant "Authentication System" as Auth
+participant "Upload Interface" as UI
+participant "Database" as DB
+participant "File Storage" as FS
+participant "Notification System" as NS
+database "Archival Collections" as AC
+
+activate A
+A -> Auth: Sign In
+activate Auth
+Auth --> A: Authentication Success
+deactivate Auth
+
+A -> UI: Access Upload Interface
+activate UI
+
+A -> UI: Choose Inventory File(s)
+A -> UI: Provide Metadata
+A -> UI: Define Access Rights
+UI -> DB: Save Metadata & Access Rights
+activate DB
+DB --> UI: Confirmation
+deactivate DB
+
+A -> UI: Upload File(s)
+UI -> FS: Store Files in Archive
+activate FS
+FS --> UI: Upload Success
+deactivate FS
+
+UI -> DB: Update Inventory List
+activate DB
+DB -> AC: Add New Entries
+activate AC
+AC --> DB: Update Successful
+deactivate AC
+DB --> UI: Inventory Updated
+deactivate DB
+
+UI --> A: Display Upload Success Message
+deactivate UI
+
+A -> NS: Send Notification to Donor Representatives
+activate NS
+NS -> A: Notification Sent
+deactivate NS
+deactivate A
+
+@enduml
+```
+
+Explanation:
+
+1. **Archivist Authentication**: The process begins with the archivist signing into the authentication system to access the upload interface.
+
+2. **Access Upload Interface**: Once authenticated, the archivist accesses the upload interface to start the process.
+
+3. **Inventory File Upload**: The archivist chooses the inventory file(s), provides metadata, and defines the access rights for the files.
+
+4. **Save Metadata & Rights, and Upload Files**: The system saves the metadata and access rights in the database and then stores the actual files in the file storage.
+
+5. **Update Inventory List**: After successful upload, the system updates the inventory list in the archival collections database.
+
+6. **Notification to Donor Representatives**: Finally, the archivist can send a notification to donor representatives about the new uploads, making them aware that new materials are available for request.
+
+This sequence diagram provides a high-level overview of the steps involved from an archivist's perspective in uploading inventories to facilitate easier access for donor representatives. It covers the key touchpoints, including authentication, metadata entry, file storage, and notifications, while ensuring that each action is logically connected to enhance the understanding of the overall process.

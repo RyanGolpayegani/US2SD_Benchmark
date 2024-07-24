@@ -1,0 +1,28 @@
+@startuml
+actor Developer
+boundary "Existing Fedora Repository" as EFR
+boundary "New Fedora 4 Repository" as NFR
+database "Migration Database" as MDB
+control "Data Migration Tool" as DMT
+
+== Preparation ==
+Developer -> EFR : Assess current version\nand data structure
+Developer -> NFR : Install Fedora 4\nConfigure settings
+Developer -> DMT : Configure migration tool\nfor data structure & mapping
+
+== Migration ==
+Developer -> DMT : Initiate data export from EFR
+EFR -> MDB : Extract data\nand metadata
+Developer -> DMT : Transform data\naccording to Fedora 4 requirements
+DMT -> NFR : Import data\nand metadata
+
+== Verification and Finalization ==
+Developer -> NFR : Validate data integrity\nand functionality
+Developer -> NFR : Perform user acceptance testing
+Developer --> Developer : Fix issues (if any)\nRepeat validation
+
+== Go-live ==
+Developer -> EFR : Decommission or archive
+Developer -> NFR : Switch production to Fedora 4
+
+@enduml

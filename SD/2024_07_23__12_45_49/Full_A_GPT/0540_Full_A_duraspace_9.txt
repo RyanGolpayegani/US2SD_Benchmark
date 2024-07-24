@@ -1,0 +1,45 @@
+To create a detailed Sequence Diagram in PlantUML format for the user story—**"As a repository manager, I want to say one collection is related to another collection"**—we need to outline the sequence of events that occur from the point the repository manager decides to relate one collection to another, through the system processing this request, to the point where the system confirms the relationship setup. Below is a simplified visualization of these steps rendered in PlantUML syntax.
+
+```plantuml
+@startuml
+participant RepositoryManager as RM "Repository Manager"
+participant DIMS_UI as UI "DIMS Interface"
+participant CollectionManagementSystem as CMS "Collection Management"
+participant Database as DB "Database"
+
+RM -> UI : Select "Relate Collections"
+UI -> RM : Display Collections List
+RM -> UI : Select Two Collections to Relate
+UI -> CMS : Process Relation Request([Collection A], [Collection B])
+CMS -> DB : Retrieve Collection Records
+DB -> CMS : Collection Records
+CMS -> DB : Update Collections with Relation
+DB -> CMS : Confirmation of Update
+CMS -> UI : Relation Successful
+UI -> RM : Display Success Message
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+1. **Repository Manager to DIMS Interface:** The repository manager (RM) starts the process by selecting the option to relate two collections within the DIMS user interface (UI). 
+   
+2. **DIMS Interface to Repository Manager:** The UI then displays a list of available collections to the repository manager.
+   
+3. **Repository Manager to DIMS Interface:** The repository manager chooses two collections that they want to relate and submits this selection back to the UI.
+   
+4. **DIMS Interface to Collection Management System:** The UI processes this request and forwards it to the Collection Management System component, specifying which two collections (Collection A and Collection B) are to be related.
+   
+5. **Collection Management System to Database:** The Collection Management System retrieves the records of the specified collections from the database to verify their existence and current status.
+   
+6. **Database to Collection Management System:** The database returns the requested collection records.
+   
+7. **Collection Management System to Database:** After verifying the information, the Collection Management System updates the database records to reflect the new relationship between the two collections.
+   
+8. **Database to Collection Management System:** The database confirms the successful update to the Collection Management System.
+   
+9. **Collection Management System to DIMS Interface:** The Collection Management System then communicates to the DIMS Interface that the relation was successfully established.
+   
+10. **DIMS Interface to Repository Manager:** Finally, the DIMS Interface notifies the repository manager that the collections have been successfully related, typically by displaying a success message.
+
+This diagram simplifies the interaction and focuses on the primary flow from the perspective of the repository manager's intention to relate two collections within the DIMS framework. Adjustments may be needed based on specific system architectures or additional requirements.

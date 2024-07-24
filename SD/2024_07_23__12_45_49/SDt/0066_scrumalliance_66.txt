@@ -1,0 +1,36 @@
+@startuml
+participant Editor as E
+participant CMS as CMS
+participant Database as DB
+
+== Content Placement Flexibility ==
+
+E -> CMS : Access CMS Dashboard
+activate CMS
+
+CMS -> CMS : Display Dashboard Options
+CMS -> E : Show Content Sections
+E -> CMS : Select Content Section
+activate CMS
+
+E -> CMS : Choose "Reorganize Content"
+CMS -> DB : Fetch Current Content Layout
+activate DB
+DB -> CMS : Return Current Layout
+deactivate DB
+
+E -> CMS : Specify New Content Order
+activate CMS
+
+CMS -> E : Display Content Preview
+E -> CMS : Confirm Changes
+CMS -> DB : Update Content Layout
+activate DB
+DB -> DB : Save New Layout
+DB -> CMS : Confirm Update
+deactivate DB
+
+CMS -> E : Show Success Message
+deactivate CMS
+
+@enduml

@@ -1,0 +1,40 @@
+To illustrate the sequence of interactions for a repository support team member who wants to rename a collection in the digital repository system for Cornell University, we will use PlantUML syntax to create a sequence diagram. 
+
+Given the complexity of such a system, the diagram will simplify the process while capturing the key interactions. We'll assume the digital repository has a web front-end that interacts with a back-end server, which in turn communicates with a database that stores the information about the collections.
+
+```plantuml
+@startuml
+participant UserInterface as UI
+participant AuthenticationServer as Auth
+participant ApplicationServer as AppSrv
+participant Database as DB
+
+UI -> Auth: Authenticate Request
+Auth --> UI: Authentication Success
+
+UI -> AppSrv: Rename Collection Request(collectionID, newName)
+alt Collection Found and Permission Granted
+    AppSrv -> DB: Check Collection by collectionID
+    DB --> AppSrv: Collection Data
+    AppSrv -> DB: Update Collection Name(newName)
+    DB --> AppSrv: Update Success
+    AppSrv --> UI: Rename Successful
+else Collection Not Found or Permission Denied
+    AppSrv --> UI: Error Message
+end
+
+@enduml
+```
+
+This diagram walks through the following steps:
+
+1. **Authentication:** The user interface sends an authentication request to determine if the repository support team member is logged in and has the necessary permissions to rename a collection.
+2. **Request to Rename Collection:** Once authenticated, the user initiates a request to rename a collection by specifying the collection's ID and the new name.
+3. **Check Collection and Permissions:** The Application Server checks if the collection exists in the database and if the user has the necessary permissions.
+4. **Collection Found and Permission Granted Path:**
+    - If the collection is found and permissions are verified, the Application Server updates the collection name in the database.
+    - A success confirmation is sent back to the user interface.
+5. **Collection Not Found or Permission Denied Path:**
+    - If the collection does not exist or the user lacks the necessary permissions, an error message is sent back to the user interface.
+
+This sequence diagram provides a high-level overview of the process for renaming a collection within the proposed digital repository system for Cornell University. The actual implementation details may vary based on the system's infrastructure, the database schema, and specific permission mechanisms employed.

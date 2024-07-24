@@ -1,0 +1,28 @@
+@startuml
+actor Chef as chef
+participant "Chef Interface" as chefInterface
+participant "Menu Management\nSystem" as menuManagement
+participant "Inventory Management\nSystem" as inventoryManagement
+database "Database" as db
+
+chef -> chefInterface : Request ingredient amounts
+chefInterface -> menuManagement : Fetch ingredient list for dishes
+menuRequst : str menuRequst
+activate menuManagement
+menuManagement -> db : Query ingredient list
+activate db
+db -> menuManagement : Return ingredient list
+deactivate db
+menuManagement -> chefInterface : Provide ingredient list
+deactivate menuManagement
+chefInterface -> inventoryManagement : Request available amounts
+inventoryRequest : str inventoryRequest
+activate inventoryManagement
+inventoryManagement -> db : Query available ingredient amounts
+activate db
+db -> inventoryHead : Return available amounts
+deactivate db
+inventoryManagement -> chefInterface : Provide available amounts
+deactivate inventoryManagement
+chefInterface -> chef : Display available ingredient amounts
+@enduml

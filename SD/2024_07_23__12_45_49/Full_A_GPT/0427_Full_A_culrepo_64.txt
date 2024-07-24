@@ -1,0 +1,33 @@
+Creating a detailed sequence diagram for the described user story involves illustrating the interaction between different system components and actors to achieve the objective of uploading a new version of a report or dataset while retaining previous versions for patron use. Below is a PlantUML code that represents these interactions.
+
+```
+@startuml
+!theme plain
+
+actor Administrator as admin
+participant "Content Management\nSystem" as cms
+database "Digital Repository\nDatabase" as db
+participant "Version Control\nModule" as vcm
+participant "User Interface" as ui
+
+== Upload New Version of Report/Dataset ==
+
+admin -> cms : Select report/dataset for update
+cms -> db : Retrieve current version details
+db -> cms : Return current version details
+cms -> admin : Display current version details
+
+admin -> ui : Upload new version with metadata
+ui -> cms : Parse upload details
+cms -> vcm : Initiate version increment
+vcm -> db : Create new version entry\nRetain old versions
+db -> vcm : Confirm version creation
+vcm -> cms : Update successful
+cms -> admin : Display success message &\nnew version details
+
+@enduml
+```
+
+This sequence diagram begins with the DB/IR Administrator (admin) selecting the report/dataset that they want to update in the Content Management System (CMS). The CMS retrieves the current version details from the Digital Repository Database (db), and these details are shown to the admin. The admin then uploads a new version through the User Interface (ui), and the CMS parses these upload details.
+
+The Version Control Module (vcm) is called upon to handle the version increment, which then works with the database to create a new version entry while ensuring old versions are retained for patron use. Upon successful creation of the new version, the database confirms this back to the version control module, which then notifies the CMS. Finally, the CMS displays a success message and the details of the new version to the Administrator.

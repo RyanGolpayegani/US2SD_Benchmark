@@ -1,0 +1,76 @@
+Creating a detailed sequence diagram for your specific user story in PlantUML syntax involves representing the various entities involved (such as the Inspection Supervisor, the Portal, and relevant backend systems) and the sequence of interactions that occur when an Inspection Supervisor manages inspector workloads. Below is an example sequence diagram that outlines these interactions:
+
+```plantuml
+@startuml
+participant "Inspection Supervisor" as supervisor
+participant "Portal Interface" as portal
+database "Workload Management System" as workloadSystem
+entity "Inspector Profiles" as inspectors
+entity "Service Level Agreements (SLA) Database" as sladb
+entity "Inspection Scheduling System" as scheduling
+
+== Manage Inspector Workload ==
+
+supervisor -> portal : Access Workload Management
+activate portal
+
+portal -> workloadSystem : Fetch Current Workloads
+activate workloadSystem
+workloadSystem -> inspectors : Retrieve Inspector Data
+activate inspectors
+inspectors --> workloadSystem : Inspector Data
+deactivate inspectors
+
+workloadSystem --> portal : Display Current Workloads
+deactivate workloadSystem
+portal --> supervisor : Show Workloads and Inspectors
+deactivate portal
+
+supervisor -> portal : Select Inspector to Manage
+activate portal
+
+portal -> workloadSystem : Request Inspector Details
+activate workloadSystem
+workloadSystem -> inspectors : Query Selected Inspector
+activate inspectors
+inspectors --> workloadSystem : Inspector Details
+deactivate inspectors
+
+workloadSystem --> portal : Show Inspector Details
+deactivate workloadSystem
+portal --> supervisor : Display Details
+deactivate portal
+
+supervisor -> portal : Assign/Reassign Inspections
+activate portal
+
+portal -> scheduling : Update Inspection Assignments
+activate scheduling
+scheduling -> inspectors : Notify Inspector(s)
+activate inspectors
+inspectors --> scheduling : Acknowledge Notification
+deactivate inspectors
+
+scheduling -> sladb : Update SLA Compliance Status
+activate sladb
+sladb --> scheduling : SLA Status Updated
+deactivate sladb
+
+scheduling --> portal : Confirm Updated Assignments
+deactivate scheduling
+portal --> supervisor : Display Confirmation
+deactivate portal
+
+@enduml
+```
+
+### Explanation:
+- **Inspection Supervisor**: Initiates the process of managing inspector workloads by interacting with the Portal Interface.
+- **Portal Interface**: The front-end interface through which the supervisor accesses the Workload Management System.
+- **Workload Management System**: Back-end system responsible for handling inspector workloads, assignments, and details.
+- **Inspector Profiles**: Database storing information about each inspector, including their skills, current workload, and availability.
+- **Service Level Agreements (SLA) Database**: Contains information about service level requirements to ensure inspections meet predetermined quality and timeliness standards.
+- **Inspection Scheduling System**: Manages the scheduling and assignment of inspections to inspectors, ensuring efficient workload distribution and SLA compliance.
+
+### Note:
+This sequence diagram serves as a conceptual outline based on the user story provided. Depending on the specific implementation details and requirements of the County Services & Property Information Portal, additional steps or systems may be involved (e.g., authentication processes, more detailed interactions for inspection assignment reevaluation, etc.).

@@ -1,0 +1,47 @@
+Creating a sequence diagram in PlantUML for the user story "As a reader, I want to see the bestseller books so that I can follow the trend" involves outlining the interactions between the reader (user), the front-end system, the back-end server, the database, and possibly other modules like the recommendation engine if used for determining bestsellers. Here's how you could structure it:
+
+```plantuml
+@startuml
+participant Reader
+participant "Front End" as FE
+participant "Back End" as BE
+database DB
+participant "Recommendation \n Engine" as RE
+
+Reader -> FE : Request bestseller books
+FE -> BE : Get bestseller list
+activate BE
+BE -> DB : Query bestseller criteria
+activate DB
+DB --> BE : Return book data
+deactivate DB
+BE -> RE : Determine bestsellers
+activate RE
+RE --> BE : Bestseller book list
+deactivate RE
+BE --> FE : Send bestseller books
+FE --> Reader : Display bestseller books
+deactivate BE
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Reader initiates the request:** The sequence starts with the reader requesting to see the bestseller books through the front-end interface, which could be a web or mobile application.
+
+2. **Front End forwards the request:** The front-end system receives the reader's request and forwards it to the back-end system to retrieve the list of bestseller books.
+
+3. **Back End queries the Database:** The back-end system then queries the database to fetch book data relevant to determining bestsellers. This could involve complex queries fetching information like sales data, borrow rates, or other criteria set by the library for bestseller status.
+
+4. **Database returns book data:** The database processes the query and returns the necessary book data to the back-end system.
+
+5. **Back End consults the Recommendation Engine:** With the book data at hand, the back-end system consults the recommendation engine (or a similar component) that applies an algorithm to determine which books are currently the bestsellers. This could be based on recent trends, historical borrow rates, or even external sales data.
+
+6. **Recommendation Engine returns bestsellers:** The recommendation engine processes the request and returns a list of bestseller books to the back-end system.
+
+7. **Back End sends list to Front End:** The back-end system then sends the list of bestseller books to the front-end system.
+
+8. **Front End displays the bestsellers to the Reader:** Finally, the front-end system presents the list of bestsellers to the reader, potentially with options to filter, sort, or directly reserve/borrow these books.
+
+This sequence effectively covers the process from the initial user request to the final display of bestseller books, incorporating the various system components that would typically be involved in such a feature within a Comprehensive Library Management System (CLMS).

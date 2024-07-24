@@ -1,0 +1,37 @@
+@startuml
+participant Manager as M
+participant "Management UI" as UI
+participant "Backend Server" as BS
+participant "Database" as DB
+
+M -> UI : Access menu design feature
+activate UI
+UI -> BS : Request current menu data
+activate BS
+BS -> DB : Query current menu items
+activate DB
+
+DB --> BS : Return current menu items
+deactivate DB
+BS --> UI : Send current menu data
+deactivate BS
+UI --> M : Display current menu items
+deactivate UI
+
+M -> UI : Modify/add menu items
+activate UI
+UI -> BS : Submit updated menu
+activate BS
+BS -> DB : Update menu in database
+activate DB
+
+DB --> BS : Confirm menu update
+deactivate DB
+BS --> UI : Confirm update success
+UI --> M : Display success message
+deactivate UI
+BS -> BS : Generate new menu version
+BS --> UI : Forward updated menu
+UI --> M : Display updated menu
+deactivate BS
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+participant OlderPerson as user
+participant "ALFRED (Voice Recognition)" as alfredVoice
+participant "ALFRED (System Core)" as alfredCore
+participant "Messaging Service" as messagingService
+participant Recipient as recipient
+
+user -> alfredVoice : Says "Send a message to [Recipient Name]"
+activate alfredVoice
+alfredVoice -> alfredCore : Translates voice to text\n"Send a message to [Recipient Name]"
+activate alfredCore
+alfredCore -> alfredCore : Identifies Recipient\nand prepares message prompt
+alfredCore -> alfredVoice : Requests message content
+deactivate alfredCore
+activate alfredVoice
+alfredVoice -> user : Asks for the message content
+deactivate alfredVoice
+user -> alfredVoice : Provides the message content via voice
+activate alfredVoice
+alfredVoice -> alfredCore : Translates message content from voice to text
+activate alfredCore
+deactivate alfredVoice
+alfredCore -> messagingService : Sends message content\nand Recipient details
+activate messagingService
+messagingService -> recipient : Delivers the message
+deactivate messagingService
+recipient -> messagingService : Acknowledges receipt
+messagingService -> alfredCore : Confirms delivery
+deactivate alfredCore
+alfredCore -> alfredVoice : Informs success to user
+activate alfredVoice
+alfredVoice -> user : Confirms message sent
+deactivate alfredVoice
+
+@enduml

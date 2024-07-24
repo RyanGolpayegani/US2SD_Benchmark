@@ -1,0 +1,36 @@
+@startuml
+actor BrokerUser as "Broker User"
+participant BrokerUI as "Broker UI"
+participant ValidationService as "Validation Service"
+participant Database as "Database"
+participant ErrorHandler as "Error Handler"
+participant UserNotificationService as "User Notification Service"
+
+BrokerUser -> BrokerUI : Submits data for validation
+BrokerUI -> ValidationService : Validate submission
+activate ValidationService
+
+ValidationService -> Database : Fetch latest validation rules and error codes
+activate Database
+Database --> ValidationService : Return validation rules and error codes
+deactivate Database
+
+ValidationService -> ErrorHandler : Check submission against validation rules
+activate ErrorHandler
+ErrorHandler -> ErrorHandler : Identify errors and map to updated error codes
+ErrorHandler --> ValidationService : Return list of errors with updated error codes
+deactivate ErrorHandler
+
+ValidationService --> BrokerUI : Return validation results with errors and updated codes
+BrokerUI -> UserNotificationService : Notify user of submission errors with details
+activate UserNotificationService
+UserNotificationService --> BrokerUser : Display errors and error codes with descriptive messages
+
+BrokerUser -> BrokerUI : Adjusts submission based on error feedback
+BrokerUI -> ValidationService : Re-validate adjusted submission
+[...]
+ValidationService --> BrokerUI : Return validation success message
+BrokerUI -> UserNotificationService : Notify user of successful submission
+UserNotificationService --> BrokerUser : Display success message
+
+@enduml

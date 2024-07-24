@@ -1,0 +1,81 @@
+Creating a detailed sequence diagram for the user story "As a librarian, I want to calculate fines for overdue books" involves illustrating the series of interactions among different system components in the context of this specific process. Below is a simple sequence diagram in PlantUML format that outlines the steps involved in calculating fines for overdue books within the Comprehensive Library Management System (CLMS).
+
+```plantuml
+@startuml
+!theme plain
+
+participant Librarian
+participant "Library System" as System
+database "Database" as DB
+
+Librarian -> System : Log in to the system
+activate System
+
+System -> DB : Validate librarian credentials
+activate DB
+
+DB --> System : Credentials valid
+deactivate DB
+
+System --> Librarian : Display dashboard
+deactivate System
+
+Librarian -> System : Request overdue books list
+activate System
+
+System -> DB : Retrieve overdue books information
+activate DB
+
+DB --> System : Return overdue books data
+deactivate DB
+
+System --> Librarian : Display overdue books list
+deactivate System
+
+loop for each overdue book
+    Librarian -> System : Select overdue book for fine calculation
+    activate System
+
+    System -> DB : Retrieve book return date and current date
+    activate DB
+
+    DB --> System : Return dates
+    deactivate DB
+
+    System -> System : Calculate fine based on dates
+    System --> Librarian : Display calculated fine
+    deactivate System
+end
+
+Librarian -> System : Confirm fine calculation
+activate System
+
+System -> DB : Update book record with fine
+activate DB
+
+DB --> System : Record updated
+deactivate DB
+
+System --> Librarian : Display confirmation message
+deactivate System
+
+@enduml
+```
+
+This sequence diagram starts with the librarian logging into the CLMS and continues through the process of calculating fines for overdue books. The steps include:
+
+1. **Librarian Logs In:** The librarian logs into the system, initiating the sequence.
+2. **System Validates Credentials:** The system communicates with the database to validate the librarian's credentials.
+3. **Display Dashboard:** Once validated, the system displays the dashboard to the librarian.
+4. **Request Overdue Books List:** The librarian requests a list of overdue books.
+5. **Retrieve Overdue Books Information:** The system retrieves the information about overdue books from the database.
+6. **Display Overdue Books List:** The overdue books list is displayed to the librarian.
+7. **Select Overdue Book for Fine Calculation:** The librarian selects an overdue book to calculate the fine.
+8. **Retrieve Book Return and Current Dates:** The system retrieves the book's return date and the current date.
+9. **Calculate Fine:** The system calculates the fine based on the overdue duration.
+10. **Display Calculated Fine:** The calculated fine is displayed to the librarian.
+11. **Confirm Fine Calculation:** The librarian confirms the fine calculation for the book.
+12. **Update Book Record with Fine:** The system updates the book record in the database with the fine details.
+13. **Display Confirmation Message:** A confirmation message is displayed to the librarian.
+
+This diagram provides a high-level view of the interactions between the librarian, the library system, and the database during the fine calculation process.

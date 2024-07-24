@@ -1,0 +1,41 @@
+Given the request, I'll outline a sequence diagram for the user story: "As a manager, I want shift timestamps to be logged by the system, so that I can navigate payments and performance assessments of my employees." This sequence diagram will showcase the interactions between the manager, the system, and other components necessary for logging shift timestamps and utilizing them for payments and performance assessments. 
+
+To illustrate this process in PlantUML format, the sequence involves the Manager initiating a request to log shift timestamps, the system processing this request, and then the system updating the employee management and payroll modules.
+
+```plantuml
+@startuml
+actor Manager
+participant "Management\nInterface" as ManagementInterface
+participant "Employee\nManagement\nModule" as EmployeeManagementModule
+participant "Shift\nManagement\nSystem" as ShiftManagementSystem
+participant Database
+participant "Payroll\nModule" as PayrollModule
+
+== Log Shift Timestamps ==
+Manager -> ManagementInterface: Request to log shift
+ManagementInterface -> ShiftManagementSystem: Trigger shift logging
+ShiftManagementSystem -> Database: Store timestamp data
+Database --> ShiftManagementSystem: Confirm data logged
+
+== Utilize Timestamps for Payments and Assessments ==
+ShiftManagementSystem -> EmployeeManagementModule: Process shift data for performance assessment
+EmployeeManagementModule -> Database: Fetch employee performance data
+Database --> EmployeeManagementModule: Return performance data
+EmployeeManagementModule --> Manager: Display performance assessment
+
+ShiftManagementSystem -> PayrollModule: Calculate payment based on shift data
+Payroll/[hidden] --> Database: Fetch hourly rates
+PayrollModule -> Database: Store calculated pay
+Database --> PayrollModule: Confirm pay stored
+PayrollModule --> Manager: Display payroll information based on shifts
+
+@enduml
+```
+
+This sequence diagram begins with the manager initiating a request through the management interface to log an employee's shift timestamps. The system, through the Shift Management System, processes this request and stores the timestamp data in the database. Once the data is confirmed as logged, the shift management system informs both the Employee Management Module and the Payroll Module.
+
+For performance assessments, the Employee Management Module processes the shift data, retrieves related performance data from the database, and presents it to the manager. 
+
+Simultaneously, the Payroll Module calculates the payment based on the logged shift data and stores this information in the database. Once the pay information is confirmed stored, the calculated payments are displayed to the manager.
+
+This drafted sequence diagram lays out the series of events and interactions necessary for logging shift timestamps and utilizing them for both assessing employee performance and navigating payments.

@@ -1,0 +1,16 @@
+@startuml
+actor Librarian as librarian
+participant "UI" as ui
+participant "Controller" as controller
+participant "Sorting Service" as sortingService
+participant "Database" as database
+
+librarian -> ui : Requests sorting of books by ID and genre
+ui -> controller : SortBooksByIdAndGenre()
+controller -> sortingService : PrepareSortQuery("ID", "Genre")
+sortingService -> database : ExecuteSortQuery()
+database --> sortingService : SortedBooks
+sortingService --> controller : Return sorted list
+controller --> ui : Display sorted books
+ui --> librarian : Shows sorted books list
+@enduml

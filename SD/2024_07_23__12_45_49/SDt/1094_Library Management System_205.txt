@@ -1,0 +1,22 @@
+@startuml
+actor Manager
+participant "LibraryManagementSystemInterface" as Interface
+database "Database" as DB
+
+Manager -> Interface : requestAccountDeletion(userID)
+activate Interface
+
+Interface -> DB : verifyManagerPermissions(managerID)
+activate DB
+DB --> Interface : permissionGranted
+deactivate DB
+
+Interface -> DB : deleteAccount(userID)
+activate DB
+DB --> Interface : accountDeletionSuccess
+deactivate DB
+
+Interface -> Manager : showDeletionConfirmation()
+deactivate Interface
+
+@enduml

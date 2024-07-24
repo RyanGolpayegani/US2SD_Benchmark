@@ -1,0 +1,49 @@
+Below is a PlantUML script that represents a detailed sequence diagram for the user story provided. This sequence diagram outlines the steps involved when a site admin wants to approve each help wanted ad before it gets published on the site.
+
+```plantuml
+@startuml
+actor Recruiter
+participant "Job Submission Form" as Form
+participant "Website Backend" as Backend
+participant "Job Approval Queue" as Queue
+actor Admin
+participant "Job Database" as Database
+
+== Job Posting Submission ==
+Recruiter -> Form : Submit Help Wanted Ad
+Form -> Backend : Validate Submission
+alt Submission is Invalid
+    Backend -> Recruiter : Display Error Message
+else Submission is Valid
+    Backend -> Queue : Add Job to Approval Queue
+    Recruiter -> Backend : Display "Pending Approval" Message
+end
+
+== Job Approval Process ==
+Admin -> Queue : Review Job Listings
+loop For Each Job in Queue
+    alt Job is Approved
+        Admin -> Backend : Approve Job Listing
+        Backend -> Database : Save to Job Database
+        Backend -> Admin : Display "Job Approved" Message
+        Backend -> Recruiter : Send "Job Approved" Email Notification
+    else Job is Rejected
+        Admin -> Backend : Reject Job Listing
+        Backend -> Admin : Display "Job Rejected" Message
+        Backend -> Recruiter : Send "Job Rejected" Email Notification
+    end
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram
+
+- **Recruiter Submission**: The sequence begins with the recruiter submitting the help wanted ad through a job submission form.
+- **Validation**: The website backend validates the submission. If invalid (e.g., missing required fields), an error message is displayed to the recruiter. If valid, the ad is added to the job approval queue, and the recruiter sees a "Pending Approval" message.
+- **Admin Review**: The admin reviews job listings in the approval queue.
+- **Approval/Rejection Loop**: For each job in the queue, the admin has the option to approve or reject it.
+    - **If Approved**: The backend saves the job to the database, the admin sees a "Job Approved" message, and the recruiter receives an email notification about the approval.
+    - **If Rejected**: The admin marks the listing as rejected, sends a "Job Rejected" message to the recruiter via email, and the admin interface updates to reflect the rejected status.
+
+This diagram assumes a basic flow and does not cover all possible exceptions or errors for simplicity’s sake. Additional steps, such as logging activities or handling edge cases, can be added to provide more detailed insights into specific operations within the system.

@@ -1,0 +1,46 @@
+To accomplish the creation of a sequence diagram in PlantUML format for the described user story, "As a library member, I want to keep track of books from an app so I can know if it is taken or in the library before I go," we would model the interactions between various components such as the Library Member (User), Library Management System (LMS) Frontend, Backend Server, and Database.
+
+Below is a detailed PlantUML sequence diagram script illustrating these interactions:
+
+```plantuml
+@startuml
+actor Member as member
+participant "LMS Frontend\nApp" as frontend
+participant "Backend\nServer" as backend
+database "Library\nDatabase" as database
+
+member -> frontend : Request book status
+activate frontend
+
+frontend -> backend : API call: getBookStatus(bookID)
+activate backend
+
+backend -> database : Query: SELECT status FROM books WHERE book_id = ?
+activate database
+
+database --> backend : Return book status
+deactivate database
+
+backend --> frontend : Return book status (Available/Unavailable)
+deactivate backend
+
+frontend --> member : Display book status
+deactivate frontend
+
+@enduml
+```
+### Explanation of the Sequence Diagram:
+- **Member (Library Member)**: The user who interacts with the LMS Frontend App to find out the status of a particular book.
+- **LMS Frontend App**: The interface through which the library member makes a request for the book's status.
+- **Backend Server**: Processes the request from the frontend. It communicates with the database to retrieve the book's current status (whether it's available or taken).
+- **Library Database**: Holds all the data related to books, including their availability status.
+
+### Flow Description:
+1. **Initiation**: The sequence begins with the library member requesting the status of a book through the LMS Fronte
+nd App.
+2. **Processing Request**: The LMS Frontend App forwards this request to the Backend Server by making an API call with the specified `bookID`.
+3. **Database Query**: The Backend Server then queries the Library Database to fetch the status of the requested book using its `bookID`.
+4. **Responding to Request**: The database responds with the status of the book (Available or Unavailable).
+5. **Result Display**: The Backend Server sends this information back to the LMS Frontend App, which then displays it to the library member.
+
+This diagram effectively captures the sequence of interactions required for a library member to check the availability of a book using the Comprehensive Library Management System (CLMS).

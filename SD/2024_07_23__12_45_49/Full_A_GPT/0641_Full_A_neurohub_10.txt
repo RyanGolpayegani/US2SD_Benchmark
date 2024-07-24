@@ -1,0 +1,44 @@
+To design a detailed sequence diagram for your user story in PlantUML format, we'll outline the sequence of actions a researcher would take to create a logbook page for an experiment and attach a directory that contains multiple files. This sequence includes interactions between the researcher, the Neurohub platform's user interface, and the backend services responsible for processing the request and managing data storage.
+
+Below is a basic sequence diagram in PlantUML syntax that represents these interactions:
+
+```plantuml
+@startuml
+participant Researcher
+participant "UI: Neurohub Interface" as UI
+participant "Backend Service" as Backend
+participant "Data Storage" as Storage
+
+Researcher -> UI: Navigate to 'Create Logbook Page'
+UI -> Backend: Request page creation form
+activate Backend
+Backend -> UI: Return page creation form
+deactivate Backend
+UI -> Researcher: Display page creation form
+
+Researcher -> UI: Fill form and attach directory
+activate UI
+UI -> Backend: Submit form data and directory path
+activate Backend
+
+Backend -> Storage: Create logbook page entry
+activate Storage
+Storage --> Backend: Confirm logbook page creation
+deactivate Storage
+
+Backend -> Storage: Initiate directory file attachment process
+activate Storage
+Storage --> Backend: Confirm files attached
+deactivate Storage
+
+Backend --> UI: Confirm page creation and file attachment
+deactivate Backend
+UI --> Researcher: Display confirmation message
+deactivate UI
+
+@enduml
+```
+
+This diagram details the interaction flow starting from the researcher's intention to create a new logbook page up until the confirmation of the action, including all the key players: the researcher, the Neurohub interface, the backend service, and the data storage systems. 
+
+Each step in the sequence is crucial for understanding how the system functions as a whole from the user's action to the system's response. Additional complexities, such as error handling and data validation, can be added for a more detailed representation depending on the requirements of your project.

@@ -1,0 +1,55 @@
+Given the complexity and the broad nature of the features outlined for the Scrum Alliance Community Platform Enhancement project, the following is a simplified sequence diagram that represents the user story of moving people from a pending state to the registered state upon proof of payment. This sequence involves interactions among the Site Admin, a Payment Verification System, and the Course Registration System.
+
+```plantuml
+@startuml
+participant SiteAdmin
+participant PaymentVerificationSystem
+participant CourseRegistrationSystem
+
+SiteAdmin -> PaymentVerificationSystem : VerifyPayment(proof)
+activate SiteAdmin
+activate PaymentVerificationSystem
+
+PaymentVerificationSystem --> SiteAdmin : VerificationStatus
+deactivate PaymentVerificationSystem
+
+alt If Payment Verified
+
+    SiteAdmin -> CourseRegistrationSystem : MoveToRegistered(pendingMembers)
+    activate CourseRegistrationSystem
+ 
+    CourseRegistrationSystem --> SiteAdmin : UpdateStatus(success/failure)
+    deactivate CourseRegistrationSystem
+
+else If Payment Not Verified
+
+    SiteAdmin -> CourseRegistrationSystem : KeepAsPending(pendingMembers)
+    activate CourseRegistrationSystem
+ 
+    CourseRegistrationSystem --> SiteAdmin : NoActionRequired
+    deactivate CourseRegistrationSystem
+
+end
+
+@enduml
+```
+
+### Explanation:
+
+1. **Start**: The Site Admin initiates the process by sending a request to verify the payment with the provided proof of payment.
+
+2. **Payment Verification**: 
+    - The `PaymentVerificationSystem` receives the request from the Site Admin to verify the payment proof.
+    - Upon receiving the request, it processes the verification and returns the status back to the Site Admin.
+
+3. **Decision Making**:
+    - If the payment is successfully verified, the Site Admin proceeds to move the members from a pending state to the registered state.
+    - If the payment is not verified, the members remain in the pending state, and no further action is required.
+
+4. **Update Registration**:
+    - In case of successful verification, the `CourseRegistrationSystem` is instructed to update the status of the members from pending to registered, based on the instruction from the Site Admin.
+    - The `CourseFSRegistrationSystem` confirms the update back to the Site Admin.
+
+5. **End of Process**: Depending on the payment verification result, appropriate actions are taken to update the members' registration status.
+
+This simplified sequence diagram outlines the core interactions and decision points for managing the registration status of members in a trainer's class based on the payment verification outcome.

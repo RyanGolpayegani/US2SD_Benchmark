@@ -1,0 +1,31 @@
+Creating a detailed Sequence Diagram for the user story "As a manager, I want to follow list of borrowed books" involves detailing the interaction between the various components and actors in the system necessary to achieve this functionality in the Comprehensive Library Management System (CLMS). The following is an example of how you could represent this in PlantUML format:
+
+```plantuml
+@startuml
+actor Manager
+participant "Web Interface" as Web
+participant "Backend Server" as Server
+database "Library Database" as DB
+
+Manager -> Web : Log in as Manager
+Web -> Server : Authenticate Manager
+Server -> DB : Validate Manager Credentials
+DB --> Server : Authentication Success
+Server --> Web : Display Manager Dashboard
+
+Manager -> Web : Request List of Borrowed Books
+Web -> Server : Fetch Borrowed Books Information
+Server -> DB : Query Borrowed Books Data
+
+DB --> Server : Return Borrowed Books Data
+Server --> Web : Display Borrowed Books List
+Web --> Manager : Show List of Borrowed Books
+
+@enduml
+```
+
+This sequence diagram begins with the Manager logging into the system through the Web Interface, which then communicates with the Backend Server to authenticate the Manager by checking their credentials against the Library Database. Upon successful authentication, the Manager is shown their dashboard.
+
+When the Manager requests the list of borrowed books, the Web Interface sends this request to the Backend Server, which in turn queries the Library Database for the information regarding all borrowed books. The Library Database sends this data back to the Server, which is then displayed to the Manager through the Web Interface.
+
+This diagram simplifies the process to focus solely on the interactions necessary for a manager to follow the list of borrowed books, excluding potential error handling or other secondary processes for clarity. It assumes the system uses a standard three-tier architecture involving a client (Web Interface), a server (Backend Server), and a database (Library Database).

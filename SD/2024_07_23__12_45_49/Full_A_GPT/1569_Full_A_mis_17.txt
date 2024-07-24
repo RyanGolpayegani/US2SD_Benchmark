@@ -1,0 +1,41 @@
+Creating a detailed Sequence Diagram for the specified user story in PlantUML format involves illustrating the interactions between the user (in this case, the collection curator) and the Enhanced Digital Repository Management System (EDRMS) components required to create deposit forms specific to each collection. Here is a high-level representation of how this process could be modeled using PlantUML syntax:
+
+```plantuml
+@startuml
+participant Curator as C
+participant "UI Interface" as UI
+participant "Form Management Module" as FMM
+participant "Collection Database" as DB
+participant "Form Template Storage" as FTS
+
+C -> UI: Accesses deposit form creation page
+UI -> FMM: Requests available form templates
+FMM -> FTS: Retrieve form templates
+FTS --> FMM: Form templates
+FMM --> UI: Display templates
+UI --> C: Shows form templates
+
+C -> UI: Selects a template & customizes it
+UI -> FMM: Submits customized form data
+FMM -> FMM: Validate form customization
+alt Successful Validation
+    FMM -> DB: Create new form entry for collection
+    DB --> FMM: Confirmation
+    FMM --> UI: Success Message
+    UI --> C: Shows success notification
+else Validation Failure
+    FMM --> UI: Error Message
+    UI --> C: Shows error notification & reasons
+end
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+- **Curator (`C`)**: This participant is the collection curator who initiates the process to create a collection-specific deposit form.
+- **UI Interface (`UI`)**: Acts as the intermediary that the curator interacts with to select, customize, and submit the deposit form.
+- **Form Management Module (`FMM`)**: This module processes requests from the UI, interacting with both the form template storage and the collection database to manage form templates and collection-specific form entries.
+- **Collection Database (`DB`)**: Stores information about the collections and the forms associated with each collection.
+- **Form Template Storage (`FTES`)**: Holds the available form templates that the curator can choose from and customize.
+
+The sequence starts with the curator accessing the deposit form creation page and ends with either a success notification (if the form is validated and stored successfully) or an error notification (if the validation fails). The diagram includes decision making (alt, else) to capture the conditional steps based on the outcome of form validation.

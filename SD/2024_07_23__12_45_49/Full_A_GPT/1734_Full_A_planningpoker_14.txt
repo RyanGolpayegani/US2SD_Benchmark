@@ -1,0 +1,35 @@
+To create a detailed sequence diagram for the user story "As a moderator, I want to import stories from a spreadsheet, so that I don't have to copy and paste each individual story." in PlantUML format, you would describe the flow from the moderator initiating the import process to the stories being imported into the Agile Estimation and Planning Tool (AEPT). Below is a PlantUML diagram representation of this process:
+
+```plantuml
+@startuml
+!theme cerulean
+
+participant Moderator
+participant "Import Interface" as ImportUI
+participant "File System" as FileSystem
+participant "Spreadsheet Parser" as Parser
+participant "AEPT Database" as Database
+
+Moderator -> ImportUI : Select "Import Stories"
+ImportUI -> FileSystem : Browse for file
+FileSystem -> Moderator : Display file selection dialog
+Moderator -> FileSystem : Select spreadsheet file (.xlsx or .csv)
+FileSystem -> ImportUI : Return file path
+ImportUI -> Parser : Parse spreadsheet file
+Parser -> Parser : Validate and extract stories
+alt Parsing Success
+    Parser -> Database : Save extracted stories
+    Database -> Parser : Confirmation of saved stories
+    Parser -> ImportUI : Show success message
+    ImportUI -> Moderator : Display success and imported stories summary
+else Parsing or Saving Error
+    Parser -> ImportUI : Show error message
+    ImportUI -> Moderator : Display error and suggestions
+end
+
+@enduml
+```
+
+This sequence diagram starts with the moderator selecting the "Import Stories" option within the application. Then, it moves through the process of selecting a spreadsheet file using the file system dialog. Once a file is selected, it's passed to a spreadsheet parser that validates and extracts the story details from the file. If the parsing and validation are successful, the stories are saved to the AEPT database, and a success message is displayed to the moderator, along with a summary of the imported stories. In case of any errors during the parsing or saving process, an error message is shown, providing suggestions or actions to the moderator.
+
+Please note that for a functioning implementation, you would need to adapt this sequence diagram based on specific technology choices, error handling policies, and user interface designs.

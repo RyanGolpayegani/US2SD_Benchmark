@@ -1,0 +1,19 @@
+@startuml
+actor "Repository Manager" as repoManager
+participant "DIMS Interface" as interface
+participant "Curatorial Access Control" as cac
+participant "Collection Management" as collectionManagement
+database "DIMS Database" as database
+
+== Determine Curatorial Collections ==
+repoManager -> interface: Request collections list
+interface -> cac: Validate manager identity
+cac -> database: Retrieve manager details
+database --> cac: Manager information
+cac --> interface: Identity confirmed
+interface -> collectionSeeingManagement: Fetch collections under manager
+collectionManagement -> database: Query collections with manager ID
+database --> collectionManagement: List of collections
+collectionManagement --> interface: Display collections
+interface --> repoManager: Show list of collections
+@enduml

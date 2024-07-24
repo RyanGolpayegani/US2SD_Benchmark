@@ -1,0 +1,39 @@
+@startuml
+actor OlderPerson
+participant "ALFRED Interface" as Interface
+participant "Privacy Settings" as Privacy
+participant "Reminder System" as Reminder
+participant "Health Monitor" as Health
+
+== Control Privacy Settings ==
+OlderPerson -> Interface : ActivateSettings()
+activate Interface
+Interface -> Privacy : OpenPrivacySettings()
+activate Privacy
+Privacy --> OlderPerson : DisplaySettings()
+OlderPerson -> Privacy : AdjustSettings()
+Privacy --> Interface : ConfirmAdjustments()
+Interface --> OlderPerson : DisplayConfirmation("Privacy settings updated")
+deactivate Privacy
+
+== Configure Reminders ==
+OlderPerson -> Interface : SetReminders()
+activate Interface
+Interface -> Reminder : OpenReminderSettings()
+activate Reminder
+Reminder --> OlderPerson : DisplayCurrentReminders()
+OlderPerson -> Reminder : AddNewReminder("Medication at 8 PM")
+Reminder --> Interface : ConfirmReminderSet()
+Interface --> OlderPerson : DisplayConfirmation("Reminder set for Medication at 8 PM")
+deactivate Reminder
+
+== Review Health Monitoring Data ==
+OlderPerson -> Interface : RequestHealthData()
+activate Interface
+Interface -> Health : FetchLatestData()
+activate Health
+Health --> OlderPerson : DisplayHealthData()
+deactivate Health
+
+deactivate Interface
+@enduml

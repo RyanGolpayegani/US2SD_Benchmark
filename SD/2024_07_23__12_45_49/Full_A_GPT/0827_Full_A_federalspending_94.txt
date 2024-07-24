@@ -1,0 +1,47 @@
+Below is a sequence diagram in PlantUML format that represents the user story: "As a FABS user, I want to have my validations run in a reasonable amount of time". This diagram assumes an interaction across components like the FABS user interface, the back-end validation service, and a database for persisted data. This simplifies the process to focus primarily on validation time efficiency.
+
+```
+@startuml
+participant "FABS User" as User
+participant "FABS Web Interface" as WebUI
+participant "Validation Service" as Validator
+participant "Database" as DB
+
+activate User
+User -> WebUI: Submit file for validation
+activate WebUI
+WebUI -> Validator: Request data validation
+activate Validator
+
+Validator -> DB: Fetch relevant validation rules
+activate DB
+DB --> Validator: Validation rules
+deactivate DB
+
+Validator -> Validator: Run validations against submission
+note right of Validator: Optimized algorithms\nto ensure efficiency
+
+Validator -> DB: Log validation results
+activate DB
+DB --> Validator: Acknowledge logging
+deactivate DB
+
+Validator --> WebUI: Validation results
+deactivate Validator
+
+WebUI --> User: Display validation results
+deactivate WebUI
+
+User -> WebUI: Request re-submission (if needed)
+WebUI -> Validator: Request data re-validation
+Validator -> DB: Log new submission
+DB --> Validator: Acknowledge logging
+Validator --> WebUI: New Validation results
+WebUI --> User: Display new validation results
+
+@enduml
+```
+
+This sequence diagram illustrates a simplified process where a FABS user submits a file for validation through the web interface, which then forwards the request to the back-end validation service. The validation service fetches the necessary rules from the database, performs the validation, logs the results back in the database, and finally, returns the outcome to the web interface for the user to view. If the validations do not pass, there is a pathway for re-submission highlighted, emphasizing the iterative nature of achieving acceptable validation times. 
+
+This model supports scenarios where optimizations in the validation process are crucial to ensuring validations run within a reasonable timeframe, such as implementing optimized algorithms and ensuring effective communication with the database to fetch rules and log results efficiently.

@@ -1,0 +1,50 @@
+Creating a detailed UML sequence diagram for the specified user story involves depicting the flow between different system components as they interact to fulfill the requirement of making item metadata discoverable while the item is itself under embargo. Given the technical specificity and the context required to accurately represent this process, I'll outline a basic PlantUML sequence diagram that corresponds to the user story. 
+
+This diagram will include actors and components like the Collection Curator, the EDRMS system (including its Embargo Management module and Search module), and potentially an external system or user trying to access metadata. Please note that in a real-world scenario, additional details and components could be involved based on system architecture and design specifics which aren't detailed in the project description. 
+
+**PlantUML Code:**
+
+```plantuml
+@startuml
+actor Curator as "Collection Curator"
+participant "EDRMS System" as EDRMS
+database "Repository" as Repo
+participant "Embargo Management" as Embargo
+participant "Search Module" as Search
+
+Curator -> EDRMS : Requests to set embargo on an item
+EDRMS -> Repo : Verifies item exists
+EDRMS -> Embargo : Sets embargo on the item
+Embargo -> Repo : Updates item status to "Under Embargo"
+EDRMS --> Curator : Confirms embargo set
+
+activate Embargo
+Curator -> EDRMS : Requests to make metadata discoverable
+EDRMS -> Embargo : Verifies item is under embargo
+Embargo -> Search : Updates to allow metadata visibility
+deactivate Embargo
+
+Search -> Repo : Ensures metadata is indexed & Searchable
+EDRMS --> Curator : Confirms metadata is discoverable while item is embargoed
+
+actor User as "External User/System"
+User -> Search : Searches for item
+Search -> Repo : Retrieves item metadata
+alt item under embargo
+    Search -> User : Returns item metadata without access to the item
+else item not under embargo
+    Search -> User : Returns item metadata and access
+end
+
+@enduml
+```
+
+**Explanation of the Diagram Steps:**
+
+1. *Set Embargo:* The Collection Curator requests the EDRMS system to set an embargo on an specific item. The system verifies the item exists within the repository and then sets the embargo, confirming this action back to the curator.
+
+2. *Make Metadata Discoverable:* Subsequently, the Curator requests to make the item's metadata discoverable even while it remains under embargo. The system checks the embargo status and updates the system to allow for the metadata's visibility, confirming this to the curator once done.
+
+3. *External Access:* An external user or system searches for the item. The Search module of the EDRMS checks the repository, and if the item is still under embargo, it returns only the metadata to the external requestor, not the item itself.
+
+This sequence diagram outlines a simplified interaction flow based on the provided user story and project description. Depending on project specifics, additional steps or components (like authentication and authorization checks, detailed interaction with external systems for indexing metadata, or logging actions for auditing) might be necessitated.

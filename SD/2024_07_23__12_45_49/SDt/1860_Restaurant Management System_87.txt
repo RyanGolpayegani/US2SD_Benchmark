@@ -1,0 +1,15 @@
+@startuml
+participant ManagementUser as Management
+actor SystemInterface as Interface
+entity ReportingModule as Report
+database "RestaurantDB" as DB
+
+Management -> Interface : Request monthly order count
+Interface -> Report : Fetch order data for given month
+Report -> DB : Query orders by date range
+DB --> Report : Return order data
+Report -> Report : Process order data to calculate total
+Report --> Interface : Send monthly order count
+Interface --> Management : Display monthly order total
+
+@enduml

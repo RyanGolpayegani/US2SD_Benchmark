@@ -1,0 +1,34 @@
+@startuml
+actor Member as member
+entity "Web Interface" as web
+control "Library System" as system
+database "Database" as db
+entity "Notification Service" as notifier
+
+== Book Suggestion and Temporary ID Assignment Process ==
+
+member -> web: Select "Suggest a Book"
+web -> system: Initiate book suggestion
+system -> db: Check if book already exists
+
+alt Book exists
+    db -> system: Book exists message
+    system -> web: Show "Book Already Exists"
+    web -> member: Display message
+else Book does not exist
+    db -> system: OK to proceed
+    system -> db: Generate temporary unique ID
+    db -> system: Temporary unique ID generated
+    system -> web: Display temporary unique ID
+    web -> member: Show ID and confirmation
+    member -> web: Submits full book details
+    web -> system: Capture book details and temporary ID
+    system -> db: Store book suggestion and ID
+    db -> system: Confirmation of storage
+    system -> notifier: Send notification to librarian
+    notifier -> system: Notification sent confirmation
+    system -> web: Acknowledge receipt to member
+    web -> member: Display acknowledgment message
+end
+
+@enduml

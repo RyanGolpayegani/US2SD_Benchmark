@@ -1,0 +1,34 @@
+Given the project description and focusing solely on the attendee's desire to get detailed directions to the summit venue, below is a detailed sequence diagram written in PlantUML format. This sequence describes the interactions between the attendee (user), the web interface of the BADCamp Experience and Administration Enhancement Platform, and the system components involved in providing directions to the summit venue.
+
+```plantuml
+@startuml
+participant Attendee
+participant "Web Interface" as Web
+database "Event Database" as DB
+participant "Mapping Service" as Map
+
+Attendee->Web: Access Summit Details Page
+Web->DB: Query Summit Venue Details
+DB->Web: Return Summit Venue Details
+Web->Attendee: Display Summit Venue Details including Address
+
+Attendee->Web: Request Directions to Venue
+Web->Map: Send Request with Venue Address
+Map->Map: Calculate Directions based on Current Location
+Map->Web: Return Directions Information
+Web->Attendee: Display Directions and Map
+
+@enduml
+```
+
+Explanation:
+- **Attendee accesses the Summit Details Page**: This is the initial interaction where the attendee navigates to the desired summit's details page on the BADCamp platform.
+- **Web Interface queries the Event Database**: The web interface requests specific venue details for the requested summit from the event database.
+- **Event Database returns summit venue details**: Upon successful query, the event database returns the details of the summit venue, including its address, to the web interface.
+- **Web Interface displays summit venue details**: The address and possibly other related venue information are displayed to the attendee, enabling them to understand where the event is located.
+- **Attendee requests directions to the venue**: After reviewing the venue details, the attendee requests directions to better plan their journey.
+- **Web Interface sends request to Mapping Service**: The request, along with the venue's address, is sent to an integrated mapping service (like Google Maps API) to calculate the best possible route to the venue from the attendee’s current location.
+- **Mapping Service calculates and returns directions**: The mapping service calculates the directions and sends this information back to the web interface.
+- **Web Interface displays directions and map**: The web interface presents the calculated directions and visual map to the attendee, thus aiding them in navigating to the summit venue easily on the day of the event.
+
+This sequence ensures that the attendee has all the necessary information and tools to arrive at the summit venue without any inconvenience, enhancing their overall experience with the BADCamp event.

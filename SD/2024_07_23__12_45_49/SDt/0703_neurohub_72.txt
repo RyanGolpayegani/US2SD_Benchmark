@@ -1,0 +1,43 @@
+@startuml
+participant Researcher
+participant WebInterface as "Web Interface"
+participant UploadService as "Upload Service"
+participant MetadataService as "Metadata Service"
+participant DataService as "Data Service"
+participant BackupService as "Backup Service"
+participant VerificationService as "Verification Service"
+
+Researcher -> WebInterface: Access Data Curation Service
+activate WebInterface
+
+WebInterface -> UploadService: Initiate Upload
+activate UploadService
+
+UploadService -> Researcher: Request File & Details
+activate Researcher
+
+Researcher -> UploadService: Provide File & Details
+deactivate Researcher
+
+UploadService -> MetadataService: Assign Metadata
+activate MetadataService
+
+MetadataService -> DataService: Save File & Metadata
+activate DataService
+deactivate MetadataService
+
+DataService -> BackupService: Backup Data
+activate BackupService
+deactivate DataService
+
+BackupService -> VerificationService: Verify Backup Integrity
+activate VerificationService
+VerificationService -> BackupService: Integrity Confirmed
+deactivate VerificationService
+
+BackupService --> Researcher: Confirmation & Access Details
+deactivate BackupService
+
+deactivate WebInterface
+
+@enduml

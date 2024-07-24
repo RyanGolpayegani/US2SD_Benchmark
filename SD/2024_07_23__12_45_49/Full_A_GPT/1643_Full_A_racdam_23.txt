@@ -1,0 +1,41 @@
+Creating a detailed sequence diagram for the user story in PlantUML format involves showcasing the process an archivist goes through when uploading scans of images for future research requests. Below is a PlantUML code snippet that captures this process, highlighting interactions between the archivist, the digital archive system, and subsystems like file management, licensing, and user authentication.
+
+```plantuml
+@startuml
+actor Archivist
+participant "Authentication System" as Auth
+participant "File Management System" as FileSys
+participant "Licensing Module" as License
+participant "Metadata Editor" as MetaEdit
+participant "Digital Archive Database" as Database
+
+== Authentication ==
+Archivist -> Auth: Enter credentials
+Auth -> Archivist: Authenticated
+
+== Uploading Scans ==
+group Uploading Image Scans
+    Archivist -> FileSys: Select images for upload
+    activate FileSys
+    FileSys -> Database: Check for existing files
+    Database --> FileSys: Confirmation
+    FileSys -> Archivist: Display upload form
+    deactivate FileSys
+
+    Archivist -> MetaEdit: Enter metadata
+    activate MetaEdit
+    MetaEdit -> License: Apply default license
+    deactivate MetaEdit
+
+    License -> Database: Store license info
+    Archivist -> FileSys: Confirm upload
+    FileSys -> Database: Store file and metadata
+    Database --> Archivist: Upload success
+end
+
+@enduml
+```
+
+This sequence diagram visualizes the steps an archivist would take within the system to upload images. It starts with the archivist authenticating themselves using the authentication system. Once authenticated, the archivist selects the images they wish to upload. The file management system then checks with the digital archive database to see if these files already exist. If not, the archivist is prompted to fill in metadata for these images, including applying a default license through the licensing module. Finally, the confirmed uploads, along with their metadata, are stored in the database, completing the process.
+
+Keep in mind, this is a simplified representation. Depending on the project's specific technical architecture and requirements, additional details and steps might be necessary, such as error handling mechanisms, more nuanced user permission checks, file validation processes, and interaction with other system components or external services (like cloud storage APIs).

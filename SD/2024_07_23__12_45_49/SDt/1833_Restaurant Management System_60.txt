@@ -1,0 +1,30 @@
+@startuml
+actor Customer
+participant "Web Interface" as Web
+participant "API Gateway" as API
+participant "Order Management Service" as Order
+database "Database" as DB
+
+== Keeping Records of Orders by Restaurant ==
+
+Customer -> Web: Select "My Orders"
+Web -> API: Request order history
+API -> Order: Get customer orders
+Order -> DB: Query orders by customer ID
+DB -> Order: Return orders list
+Order -> API: Return orders data
+API -> Web: Display orders to customer
+Web -> Customer: Show order history by restaurant
+
+== Customer Reviews Order Details ==
+
+Customer -> Web: Select order details by restaurant
+Web -> API: Request specific order details
+API -> Order: Get details for selected order
+Order -> DB: Query detailed order info
+DB -> Event: Return detailed info
+Order -> API: Return order details
+API -> Web: Display detailed order
+Web -> Customer: Show order details
+
+@enduml

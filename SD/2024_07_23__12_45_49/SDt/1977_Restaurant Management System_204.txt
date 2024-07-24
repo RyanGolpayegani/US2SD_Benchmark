@@ -1,0 +1,20 @@
+@startuml
+actor Manager as manager
+participant "Management Interface" as interface
+participant "Backend Server" as backend
+database "Database" as db
+
+manager -> interface : Request total tips information
+interface -> backend : Query total tips
+
+activate backend
+backend -> db : Fetch total tips data
+activate db
+db --> backend : Tips data
+deactivate db
+
+backend -> backend : Calculate total tips
+backend --> interface : Total tips information
+interface --> manager : Show total tips information
+
+@enduml

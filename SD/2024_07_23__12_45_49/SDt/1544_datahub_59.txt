@@ -1,0 +1,30 @@
+@startuml
+participant OwnerUI as UI
+participant AuthService as Auth
+participant OrgService as Org
+participant Database as DB
+
+note over UI, DB: As an Owner, viewing organization members and roles
+
+UI -> Auth: authenticateOwner(request)
+activate Auth
+Auth --> UI: isAuthenticated
+deactivate Auth
+
+UI -> Org: getOrganizationMembers(request)
+activate Org
+Org -> DB: queryOrganizationMembers(ownerId)
+activate DB
+DB --> Org: returnMembersList
+deactivate DB
+
+Org -> DB: queryMemberRoles(members)
+activate DB
+DB --> Org: returnMembersRoles
+deactivate DB
+
+Org --> UI: displayMembersAndRoles(members, roles)
+deactivate Org
+
+note over UI: Owner reviews organization members and their roles
+@enduml

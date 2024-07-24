@@ -1,0 +1,29 @@
+@startuml
+actor LibraryMember as member
+participant "Notification Service" as notification
+participant "Database" as db
+participant "Email Service" as email
+participant "SMS Service" as sms
+
+== Receive Due Date Notifications ==
+
+member -> notification: Checks for upcoming due dates
+activate notification
+
+notification -> db: Query due dates for member's borrowed books
+activate db
+db --> notification: Due dates data
+deactivate db
+
+notification -> email: Prepares due date notification email
+activate email
+email -> member: Sends due date email notification
+deactivate email
+
+notification -> sms: Prepares due date SMS notification
+activate sms
+sms -> member: Sends due date SMS notification
+deactivate sms
+
+deactivate notification
+@enduml

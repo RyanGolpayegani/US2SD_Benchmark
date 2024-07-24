@@ -1,0 +1,30 @@
+@startuml
+participant FABSUser as User
+participant "Broker UI" as UI
+participant "Submission Process" as Submission
+participant "Validation Engine" as Validation
+participant "Error Handling Module" as ErrorModule
+participant "Database" as DB
+
+User -> UI : Submit file
+UI -> Submission : Initiate submission process
+activate Submission
+Submission -> Validation : Validate file content
+activate Validation
+Validation -> DB : Retrieve validation rules
+DB --> Validation : Validation rules
+alt Validation Success
+    Validation --> Submission : Success response
+    Submission --> UI : Display success message
+    UI --> User : Show success notification
+else Validation Fails
+    Validation --> ErrorModule : Generate error details
+    ErrorModule -> Validation : Error message with specifics
+    Validation --> Submission : Error response with specifics
+    Submission --> UI : Display error message
+    UI --> User : Show error notification with specifics
+end
+deactivate Validation
+deactivate Submission
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+actor Member
+participant "Library Web Interface" as WebInterface
+participant "Book Management System" as BookSystem
+database "Library Database" as LibraryDB
+
+Member -> WebInterface : Request to view all books
+activate WebInterface
+
+WebInterface -> BookSystem : Fetch all books
+activate BookSystem
+
+BookSystem -> LibraryDB : Query all books
+activate LibraryDB
+
+LibraryDB --> BookSystem : Return all book data
+deactivate LibraryDB
+
+BookSystem --> WebInterface : Show all books data
+deactivate BookSystem
+
+WebInterface --> Member : Display books
+deactivate WebInterface
+
+@enduml

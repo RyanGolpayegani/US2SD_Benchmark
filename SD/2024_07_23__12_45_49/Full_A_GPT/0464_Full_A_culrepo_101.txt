@@ -1,0 +1,37 @@
+Given the user story's requirements, below is a detailed sequence diagram in PlantUML format. This sequence diagram outlines the interactions necessary for an asset manager to verify that assets withdrawn from the repository are identical to those initially deposited. It incorporates steps for checking out and checking back in assets, including verification processes to ensure data integrity and consistency.
+
+```plantuml
+@startuml
+actor AssetManager as AM
+participant "Web Interface" as UI
+participant "Repository System" as RS
+participant "Database" as DB
+participant "Integrity Checker" as IC
+
+AM -> UI: Request asset withdrawal
+UI -> RS: Initiate withdrawal process
+RS -> DB: Retrieve asset metadata
+DB --> RS: Metadata for verification
+RS -> IC: Initiate integrity check
+note right of IC: Hashes and verifies\nasset integrity
+IC --> RS: Integrity confirmation
+RS -> DB: Log withdrawal event
+DB --> RS: Log confirmation
+RS --> UI: Present asset & verification info
+UI --> AM: Display asset & integrity status
+
+AM -> UI: Initiate asset return
+UI -> RS: Start return process
+RS -> IC: Verify returned asset integrity
+note right of IC: Re-hashes and checks\nagainst original
+IC --> RS: Integrity match confirmation
+RS -> DB: Update asset status
+DB --> RS: Update confirmation
+RS --> UI: Display re-deposit confirmation
+UI --> AM: Confirm asset re-deposit and integrity status
+
+note over AM: Assures asset integrity\nthroughout the process.
+@enduml
+```
+
+This diagram illustrates the process flow from the asset manager's perspective when withdrawing and returning assets to the repository, ensuring that the digital assets’ integrity is maintained. The "Integrity Checker" component plays a crucial role in verifying that the content of the assets remains unchanged upon re-deposit, thus addressing the asset manager's concerns directly.

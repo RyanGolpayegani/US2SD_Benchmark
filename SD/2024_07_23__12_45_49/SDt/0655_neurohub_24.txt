@@ -1,0 +1,27 @@
+@startuml
+participant UserInterface as UI
+participant SearchModule as SM
+participant FilterModule as FM
+participant Database as DB
+
+UI -> SM: initiateSearch(query)
+activate SM
+SM -> DB: fetchResults(query)
+activate DB
+DB --> SM: results
+deactivate DB
+
+SM -> FM: filterResults(results, fileType)
+activate FM
+FM -> DB: getFilesOfType(fileType)
+activate DB
+DB --> FM: filteredResults
+deactivate DB
+
+FM --> SM: filteredResults
+deactivate FM
+SM --> UI: displayResults(filteredResults)
+deactivate SM
+
+UI -> User: showFilteredResults(filteredResults)
+@enduml

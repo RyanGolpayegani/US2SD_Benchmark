@@ -1,0 +1,30 @@
+@startuml
+participant Manager as manager
+participant "Management System UI" as ui
+participant "Backend Server" as server
+participant "Database" as db
+
+== Employee Data Viewing ==
+manager -> ui : Access the management dashboard
+ui -> server : Request employee list with clock data
+server -> db : Query employee data and clock history
+db --> server : Return requested data
+server --> ui : Display employee data and clock history
+ui --> ResourceManager : Shows employee list and clock times
+
+== Employee Clock In/Out Management ==
+manager -> ui : Select an employee to update clock times
+ui -> server : Request specific employee data
+server -> db : Query for employee clock data
+db --> server : Return employee clock data
+server --> ui : Display employee clock data
+ui --> ResourceManager : Shows detailed clock in/out times
+
+manager -> ui : Modify clock in/out times
+ui -> server : Send updated clock times
+server -> db : Update clock times in the database
+db --> server : Confirm update
+server --> ui : Confirm update to manager
+ui --> ResourceManager : Update confirmation message
+
+@enduml

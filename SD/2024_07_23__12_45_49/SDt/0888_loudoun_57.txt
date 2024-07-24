@@ -1,0 +1,26 @@
+@startuml
+participant "Technical Staff" as Staff
+participant "Customer Portal" as Portal
+participant "Authentication Service" as Auth
+participant "GIS Property Management Module" as GIS
+participant "Database" as DB
+
+== Update GIS Property Management with Split/Merged Parcel Pin ==
+
+Staff -> Portal: Initiates GIS Update
+Portal -> Auth: Verify Staff Identity
+Auth --> Portal: Identity Confirmation
+Portal --> Staff: Authentication Successful
+
+Staff -> GIS: Request Update Form
+GIS --> Staff: Provide Update Form
+
+Staff -> GIS: Submit Update Form with New Parcel Pin Details
+GIS -> DB: Validate Parcel Pin
+DB --> GIS: Validation Success
+
+GIS -> DB: Update Parcel Pin Reference
+DB --> GIS: Update Confirmation
+GIS --> Staff: Display Update Success Message
+
+@enduml

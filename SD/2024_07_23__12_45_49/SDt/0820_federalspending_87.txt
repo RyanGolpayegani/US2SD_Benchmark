@@ -1,0 +1,44 @@
+@startuml
+participant FABSUser as user
+participant Dashboard as dashboard
+participant API as api
+participant Database as db
+participant DataProcessor as dp
+participant NotificationService as ns
+
+user -> dashboard : Request Submission Dashboard
+activate dashboard
+
+dashboard -> api : Fetch Dashboard Data
+activate api
+
+api -> db : Query Submission Data
+activate db
+db --> api : Return Data
+deactivate db
+
+api -> dp : Request Additional Info\n(e.g., IG requests, status)
+activate dp
+dp -> db : Query Additional Data
+activate db
+db --> dp : Return Additional Data
+deactivate db
+
+dp --> api : Return Enriched Data
+deactivate dp
+
+api --> dashboard : Return Dashboard Data with Additional Info
+deactivate api
+
+dashboard -> ns : Request for Latest Notifications
+activate ns
+ns -> db : Query Notifications for User
+activate db
+db --> ns : Return Notifications
+deactivate db
+ns --> dashboard : Return Notifications
+deactivate ns
+
+dashboard --> user : Display Dashboard with Additional Info & Notifications
+deactivate dashboard
+@enduml

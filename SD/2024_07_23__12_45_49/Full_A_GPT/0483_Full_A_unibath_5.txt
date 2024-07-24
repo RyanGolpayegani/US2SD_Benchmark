@@ -1,0 +1,42 @@
+To illustrate the process described in your user story through a sequence diagram with PlantUML, we'll detail the interactions between the depositor and the Enhanced Research Data Management Platform. This diagram assumes some key interactions, such as selecting the datasets to deposit, the system's handling of file versions and formats, and the final confirmation of the dataset deposit.
+
+Below is the PlantUML code which depicts these steps:
+
+```plantuml
+@startuml
+actor Depositor
+participant "Web Interface" as Web
+participant "File Version\nManagement" as Version
+participant "Format Conversion\nService" as Format
+participant "Metadata\nGenerator" as Meta
+participant "Data Repository" as Repo
+
+Depositor -> Web : Navigate to deposit section
+Web -> Depositor : Request dataset files
+Depositor -> Web : Selects and uploads dataset files
+
+alt If files need version handling
+    Web -> Version : Check/Select version
+    Version -> Web : Version approved
+else If files need format conversion
+    Web -> Format : Convert to acceptable format
+    Format -> Web : Conversion complete
+end
+
+Web -> Meta : Generate metadata for dataset
+Meta -> Web : Metadata attached
+
+Web -> Repo : Deposit dataset with metadata
+Repo -> Web : Confirm dataset deposit
+Web -> Depositor : Display confirmation message
+@enduml
+```
+
+This sequence diagram starts with the **Depositor** navigating to the deposit section on the web interface of the Enhanced Research Data Management Platform. It moves through the process of uploading the dataset files, wherein the system may need to handle file versioning or format conversion.
+
+1. **File Version Management**: This conditional step checks and selects the right version of the dataset files if needed, ensuring that the depositor does not have to spend time finding the right version.
+2. **Format Conversion Service**: Another conditional path where the dataset files are converted to an acceptable format for deposit if necessary, sidestepping the depositor's need to manually convert files.
+3. **Metadata Generation and Attachment**: The system generates and attaches metadata to the dataset to enhance discoverability and manageability.
+4. **Dataset Deposit Confirmation**: Finally, the dataset, along with its metadata, is deposited in the data repository, and the depositor receives a confirmation message.
+
+This diagram captures the simplified, efficient process desired for depositing files into the Enhanced Research Data Management Platform, focusing on ease of use and minimizing depositor workload regarding version selection and file format conversion.

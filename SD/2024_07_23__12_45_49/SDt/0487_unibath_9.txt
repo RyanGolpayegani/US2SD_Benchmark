@@ -1,0 +1,25 @@
+@startuml
+participant Depositor as depositor
+participant "Web Interface" as web
+participant "Deposit API" as api
+participant "File Splitter" as splitter
+participant "Storage Service" as storage
+participant "Metadata Service" as metadata
+participant "DOI Service" as doi
+
+depositor -> web : Selects file for deposit
+web -> api : Initiate deposit request
+note right of api : Validates file size\nand user permissions
+api -> splitter : Send large file
+splitter -> splitter : Split file into chunks
+loop For each chunk
+    splitter -> storage : Upload chunk
+end
+storage -> api : Confirm all chunks uploaded
+api -> metadata : Generate metadata for file
+metadata -> api : Return metadata ID
+api -> doi : Request DOI for file
+doi -> api : Return DOI
+api -> web : Return deposit success\nwith metadata and DOI
+web -> depositor : Display success message\nand deposit details
+@enduml

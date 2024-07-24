@@ -1,0 +1,55 @@
+@startuml
+participant "Extension Administrator\nor Staff Content Manager" as Admin
+participant "User Interface (UI)" as UI
+participant "Task Scheduler" as Scheduler
+participant "Notification Service" as Notifier
+participant "Content Management System\n(CMS)" as CMS
+database "IR Database" as IRDB
+
+== Initialization ==
+Admin -> UI: Access Dashboard
+activate Admin
+activate UI
+UI -> Scheduler: Register for Periodic Reminders
+activate Scheduler
+Scheduler --> UI: Confirmation
+UI --> Admin: Confirmation Message
+deactivate UI
+
+== Periodic Check ==
+Scheduler -> Notifier: Trigger Periodic Check
+activate Notifier
+Notifier -> CMS: Check for Updates/Attention Needed Items
+activate CMS
+CMS -> IRDB: Query for Items Needing Attention
+activate IRDB
+IRDB --> CMS: Return Results
+deactivate IRDB
+CMS --> Notifier: List of Items Needing Attention
+deactivate CMS
+
+== Notification Process ==
+alt Items Needing Attention Found
+    Notifier -> UI: Generate Notification Message
+    activate UI
+    UI -> Admin: Display Notification
+    Admin --> UI: Review and Take Action
+    deactivate Admin
+    UI -> CMS: Process Admin Actions (Approvals/Moves)
+    activate CMS
+    CMS -> IRDB: Update Items Status
+    activate IRDB
+    IRDB --> CMS: Confirm Updates
+    deactivate IRDB
+    CMS --> UI: Confirmation of Actions
+    deactivate CMS
+    UI --> Admin: Display Confirmation Message
+else No Items Need Attention
+    Notifier -> UI: No Action Required Notification
+    UI --> Admin: Display Message
+    deactivate Admin
+end
+deactivate UI
+deactivate Notifier
+
+@enduml

@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the given user story in PlantUML format involves illustrating the interactions between the librarian, the library management system (CLMS), and potentially other entities involved in the process of checking when a borrowed book will return. Below is a PlantUML script that visualizes these interactions.
+
+```plantuml
+@startuml
+participant Librarian
+participant "CLMS Interface" as Interface
+database "CLMS Database" as Database
+
+Librarian -> Interface : Access book management section
+activate Interface
+
+Interface -> Database : Query to find the borrowed book details
+activate Database
+Database --> Interface : Return book details including due date
+deactivate Database
+
+Interface --> Librarian : Display borrowed book return date
+deactivate Interface
+
+Librarian -> Interface : Query for waiting list of the book
+activate Interface
+
+Interface -> Database : Fetch waiting list for the book
+activate Database
+Database --> Interface : Return list of users waiting for the book
+deactivate Database
+
+Interface --> Librarian : Display list of users demanding the book
+deactivate Interface
+
+Librarian -> Interface : Select notification option for users
+activate Interface
+
+Interface -> Database : Trigger notification process for waiting users
+activate Database
+Database --> Interface : Confirm notifications sent
+deactivate Database
+
+Interface --> Librarian : Confirm successful notification to users
+deactivate Interface
+
+@enduml
+```
+This sequence diagram starts with the librarian accessing the book management section of the CLMS to check the return date of a borrowed book. The system subsequently queries the database for the details of the book, including its due date, and displays this information to the librarian. The librarian then checks if there are any users on the waiting list for this book and chooses to notify them. The CLMS processes this request and confirms the successful notification to the librarian.
+
+Please note, to render this diagram, you need to use a PlantUML environment or an online tool that supports PlantUML syntax.

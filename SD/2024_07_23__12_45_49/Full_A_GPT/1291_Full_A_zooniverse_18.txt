@@ -1,0 +1,38 @@
+Creating a detailed sequence diagram for the user story "As a user, I want to search content items using automatic speech recognition" involves illustrating the interactions between the user, the Advanced Media Identification & Discovery Platform (AMIDP), and potentially external services or databases that contribute to the fulfillment of this user story. Below is a PlantUML code snippet to represent these interactions:
+
+```plantuml
+@startuml
+actor User as u
+participant "UI Interface" as ui
+participant "Speech Recognition Module" as srm
+participant "Content Query Processor" as cqp
+database "Content Database" as db
+
+u -> ui : Speaks into device
+ui -> srm : Captures audio input
+srm -> srm : Processes and converts speech to text
+srm -> cqp : Sends converted text
+activate cqp
+
+cqp -> db : Queries for matching content items
+activate db
+db --> cqp : Returns matched content items
+deactivate db
+
+cqp --> ui : Displays search results
+ui --> u : Shows search results to user
+deactivate cqp
+
+@enduml
+```
+
+### How to Read the Sequence Diagram
+
+1. **User Interaction**: The user speaks their query into the device interface.
+2. **UI Interface**: The front-end interface captures the audio input and forwards it to the Speech Recognition Module.
+3. **Speech Recognition Module (SRM)**: This module processes the audio input, converting the speech to text. This conversion is essential for the next step, where the text query is handled.
+4. **Content Query Processor (CQP)**: Receives the converted text from the SRM. It processes this text query to search for matching content items within the Content Database.
+5. **Content Database**: This stores all the content items that AMIDP manages. Upon receiving a query, it returns the matched content items based on the search parameters derived from the user's spoken words.
+6. **Results Display**: Finally, the search results are displayed to the user through the UI Interface, completing the search interaction.
+
+This sequence diagram is a high-level representation aimed at showcasing the flow from when the user initiates a search via speech to when they receive their search results. Each component in the diagram plays a critical role in achieving the user's goal of searching content items using automatic speech recognition within the AMIDP ecosystem.

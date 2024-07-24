@@ -1,0 +1,19 @@
+@startuml
+participant RepositoryManager as manager
+participant DIMSInterface as interface
+participant CollectionManagementModule as collectionModule
+participant Database as db
+
+manager -> interface : access DIMS
+interface -> collectionModule : select collection/object/component
+activate collectionModule
+
+manager -> collectionDatabaseModule : update subjects
+collectionModule -> db : fetch existing subjects
+db --> collectionModule : return existing subjects
+collectionModule -> db : add new subjects
+db --> collectionModule : confirm update
+collectionModule --> manager : display update confirmation
+
+deactivate collectionModule
+@enduml

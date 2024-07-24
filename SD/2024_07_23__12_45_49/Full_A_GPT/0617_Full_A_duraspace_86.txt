@@ -1,0 +1,49 @@
+Creating a detailed sequence diagram for the given user story "As a user, I want to know if an object or object component is under copyright and, where possible, who the rights holder is" involves several actors and system components of the DAMS Integration and Management System (DIMS). This sequence will outline the interactions from the point a user requests copyright information to the system responding with the required information. Given the complexity and feature-rich nature of DIMS, the sequence will focus on essential steps to fulfill this particular user request.
+
+To create this sequence diagram in PlantUML format, follow these steps and code:
+
+```plantuml
+@startuml
+participant "User" as user
+participant "User Interface" as ui
+participant "Search & Navigation Module" as search
+participant "Database" as db
+participant "Copyright and Rights Management" as rightsManagement
+
+user -> ui : Request object/component details
+ui -> search : Query object/component by ID or Name
+search -> db : Fetch object/component metadata
+db -> search : Return metadata
+search -> ui : Display metadata including rights info
+ui --> user : Object/component details with \nbasic rights information
+
+alt If detailed rights info is available
+    ui -> rightsManagement : Request detailed copyright and \nrights information
+    rightsManagement -> db : Query detailed rights data
+    db -> rightsManagement : Return detailed rights data
+    rightsManagement -> ui : Detailed rights info
+    ui --> user : Display detailed copyright and \nrights holder information
+else No detailed rights info available
+    ui --> user : Display message: "Detailed copyright \ninformation not available."
+end
+
+@enduml
+```
+
+Here's a brief walkthrough of the sequence diagram:
+
+1. **User initiates the request**: The user asks the system (through the user interface) for details about an object or its component to determine if it's under copyright and who holds those rights.
+
+2. **User Interface to Search & Navigation Module**: The request for specific object or component details is passed to the Search & Navigation Module.
+
+3. **Search & Navigation Module interacts with the Database**: The module fetches the object or component metadata from the database.
+
+4. **Display basic information**: Basic metadata, including preliminary rights information available directly from the metadata, is shown to the user.
+
+5. **Conditional copyright details**: If detailed copyright and rights holder information is available and accessible:
+   - The User Interface requests detailed information from the Copyright and Rights Management module.
+   - This module queries the database for detailed rights information, which, if found, is presented to the user.
+
+6. **Handling unavailability of detailed information**: If no detailed rights information is available, the system informs the user accordingly.
+
+This sequence outlines the general flow of interactions to satisfy the user story using the PlantUML notation, which can be easily rendered into a visual sequence diagram using compatible tools or software that supports PlantUML.

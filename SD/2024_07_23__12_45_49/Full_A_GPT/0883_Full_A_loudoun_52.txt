@@ -1,0 +1,51 @@
+Creating a detailed PlantUML sequence diagram for the described user story involves mapping out the interaction between the enforcement staff member and the County Services & Property Information Portal system, focusing on the issuance of a Notice of Violation. The sequence covers the steps from initiating the process of issuing a notice to the final delivery of the notice to the responsible party.
+
+```plantuml
+@startuml
+autonumber
+actor "Enforcement Staff" as staff
+participant "User Authentication Module" as auth
+participant "Violation Management System" as vms
+participant "Notice of Violation Generator" as novGen
+participant "Database" as db
+participant "Communication Module" as comm
+
+== Authentication ==
+staff -> auth: Request to Issue Notice of Violation
+auth -> auth: Verify Identity
+auth --> staff: Authentication Successful
+
+== Record Violation Details ==
+staff -> vms: Access Violation Entry Form
+vms -> staff: Display Form
+staff -> vms: Submit Violation Details
+vms -> db: Save Violation Record
+db --> vms: Confirmation
+vms --> staff: Violation Recorded Successfully
+
+== Generate Notice of Violation ==
+staff -> novGen: Initiate Notice Generation
+novGen -> novGen: Retrieve Template
+novGen -> db: Query Violation Details
+db -> novGen: Provide Violation Details
+novGen -> novGen: Populate Template with Details
+novGen -> novGen: Generate Final Notice PDF
+novGen --> staff: Notice of Violation Ready
+
+== Send Notice of Violation ==
+staff -> comm: Send Notice to Responsible Party
+comm -> db: Query Contact Information
+db -> comm: Provide Contact Information
+comm -> comm: Email Notice
+comm --> staff: Notice Sent Confirmation
+
+@enduml
+```
+
+This sequence diagram details the process within the system from the moment an enforcement staff member decides to issue a Notice of Violation. It starts with the staff member authenticating themselves in the system. After authentication, the staff member records the violation details, which are saved in the system's database.
+
+Next, they initiate the generation of a Notice of Violation, which involves fetching the relevant template, pulling the saved violation details from the database, and populating the template with these details. The system then generates a final Notice of Violation document, typically in PDF format.
+
+Finally, the diagram shows how the system sends the notice to the responsible party, including querying for contact information from the database, and using the communication module to email the notice, concluding with a confirmation of the notice being sent.
+
+This sequence provides a high-level overview focusing on key steps and system interactions involved in issuing a Notice of Violation, following the requirements outlined in the project description.

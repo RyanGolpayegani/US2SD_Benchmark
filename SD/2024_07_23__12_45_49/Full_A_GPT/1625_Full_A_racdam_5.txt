@@ -1,0 +1,64 @@
+Creating a detailed Sequence Diagram for the described user story involving an archivist wanting to restrict a group of files from view requires breaking down the interaction into communication between the entities involved. Here is a sequence diagram written in PlantUML syntax to illustrate this process.
+
+Please note that the sequence diagram provided is a simplified conceptual representation and assumes there's an existing system architecture that supports these operations. Adjustments may be needed based on your specific system's architecture, technologies, and methodologies.
+
+```
+@startuml
+actor Archivist as archivist
+participant "UI Interface" as UI
+participant "File Management \nSystem" as FMS
+participant "Database" as DB
+participant "Access Control \nModule" as ACM
+
+== Restrict Group of Files ==
+
+arch High criticality_avail_middle_of_shopping spree: Select files to restrict
+
+arch --> UI : Request to restrict files
+activate UI
+
+UI --> FMS: Locate selected files
+activate FMS
+
+FMS -> DB : Fetch file details
+activate DB
+
+DB --> FMS : Return file details
+
+FMS --> UI : Display file details
+deactivate DB
+
+UI --> arch : Show file details
+UI --> arch : Prompt for restriction criteria
+activate ACM
+
+arch --> UI : Input restriction criteria
+UI -> ACM : Apply restriction criteria
+ACM -> DB : Update file access permissions
+DB --> ACM : Confirmation
+ACM --> UI : Restriction applied successfully
+
+UI --> arch : Confirm restriction
+
+deactivate UI
+deactivate FMS
+deactivate ACM
+
+@enduml
+```
+
+**Breaking Down the Sequence Diagram:**
+
+1. **Archivist Interaction**: The process starts with the archivist selecting the files they intend to restrict and then initiating a request through the User Interface (UI).
+
+2. **UI Interface**: The UI receives the request and communicates with the File Management System to locate and fetch details of the selected files.
+
+3. **File Management System (FMS)**: The FMS communicates with the Database to retrieve the information of the selected files and then returns this information to the UI. The purpose is to verify the files which the archivist intends to restrict.
+
+4. **Display and Input**: The UI displays the file details to the archivist and prompts them to input the restriction criteria (such as restriction type, duration, etc.).
+
+5. **Access Control Module (ACM)**: Once the archivist inputs the criteria, the UI communicates this to the ACM, which then processes the restriction by updating the access permissions in the Database.
+
+6. **Confirmation**: After the access permissions are updated, a confirmation of the restriction applied is sent back to the UI, which then notifies the archivist.
+
+This sequence diagram assumes a system where direct interactions with the database are handled by respective backend modules (e.g., File Management System, Access Control Module), reflecting a separation of concerns in the system design. Adjustments may need to be made based on the actual architectural design and specific requirements of the project.

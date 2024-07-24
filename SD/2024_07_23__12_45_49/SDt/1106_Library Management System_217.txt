@@ -1,0 +1,33 @@
+@startuml
+actor Manager
+participant "UI Interface" as UI
+participant "Server" as Server
+participant "Database" as DB
+
+== Request Member Contact Information ==
+Manager -> UI : Login(credentials)
+UI -> Server : Validate Manager Login
+Server -> DB : Query Manager Credentials
+DB -> Server : Return Credentials Validation
+Server -> UI : Authentication Status
+UI --> Manager : Display Authentication Result
+
+alt Authentication Successful
+    Manager -> UI : Navigate to Member Management
+    UI -> Server : Request Member List
+    Server -> DB : Query Member Data
+    DB -> Server : Return Member Data
+    Server -> UI : Display Members
+    UI --> Manager : Show Member List
+
+    Manager -> UI : Select Member
+    UI -> Server : Request Member Contact Info
+    Server -> DB : Query Contact Info for Member
+    DB -> Server : Return Member Contact Info
+    Server -> UI : Display Member Contact Info
+    UI --> for Manager : Show Member Contact Info
+else Authentication Failure
+    UI --> Manager : Show Login Error
+end
+
+@enduml

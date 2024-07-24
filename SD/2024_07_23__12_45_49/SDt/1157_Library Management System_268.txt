@@ -1,0 +1,27 @@
+@startuml
+actor Member
+participant "Search Interface" as Search
+participant "Reservation System" as Reservation
+database "Library Database" as DB
+
+Member -> Search : enters search criteria
+Search -> DB : query books based on criteria
+DB -> Search : return search results
+Search -> Member : display available books
+
+Member -> Reservation : select book for reservation
+Reservation -> DB : check book availability
+
+alt If book is available
+    DB -> Reservation : confirm book is available
+    Reservation -> Member : show available dates for reservation
+    Member -> Reservation : select date and confirm reservation
+    Reservation -> DB : create reservation record
+    DB -> Reservation : confirm reservation
+    Reservation -> Member : display reservation confirmation
+else If book is not available
+    DB -> Reservation : book not available
+    Reservation -> Member : inform book is currently unavailable
+end
+
+@enduml

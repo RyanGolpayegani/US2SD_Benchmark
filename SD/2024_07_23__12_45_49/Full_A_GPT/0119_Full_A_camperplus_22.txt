@@ -1,0 +1,53 @@
+Creating a sequence diagram in PlantUML format for the user story involves outlining the communication process between different system components and actors to achieve the goal of notifying all parents at once about upcoming events. This will involve the Camp Management & Communication Platform, specifically focusing on the functionalities utilized by a camp administrator to create and send a notification to all parents.
+
+Below is a PlantUML sequence diagram depicting this process:
+
+```plantuml
+@startuml
+actor CampAdministrator
+entity "Notification System" as NotificationSystem
+database "Parent Database" as ParentDB
+entity "Email/SMS Service" as EmailService
+actor Parent
+
+CampAdministrator -> NotificationSystem : CreateEventNotification(content)
+activate NotificationSystem
+
+NotificationSystem -> ParentDB : FetchAllParentContacts()
+activate ParentDB
+ParentDB --> NotificationSystem : ParentContacts
+deactivate ParentDB
+
+loop for each ParentContact in ParentContacts
+    NotificationSystem -> EmailService : SendNotification(ParentContact, content)
+    activate EmailService
+    EmailService --> NotificationSystem : NotificationStatus(success/failure)
+    deactivate EmailService
+end
+
+NotificationSystem --> CampAdministrator : NotificationReport(status report)
+deactivate NotificationSystem
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **CampAdministrator**: This is the actor initiating the process, in this case, to notify parents about an upcoming event.
+
+2. **Notification System**: This component represents the core functionality within the Camp Management & Communication Platform responsible for handling the creation, sending, and tracking of notifications.
+
+3. **Parent Database (ParentDB)**: Holds records of all the parents, including their contact details. It's queried by the Notification System to obtain a list of contacts to whom the notification will be sent.
+
+4. **Email/SMS Service (EmailService)**: This represents the service used by the Notification System to actually dispatch the notifications to parents. It could be an internal service or an integration with external providers for sending emails or SMS messages.
+
+5. **Parent**: The final recipients of the notifications. Although they do not play an active role in the sequence diagram, they are the target of the notification process.
+
+6. **Process Flow**:
+   - The CampAdministrator creates and submits the content of the event notification to the Notification System.
+   - The Notification System fetches all parent contacts from the Parent Database.
+   - For each contact fetched, the Notification System sends the notification content to the Email/SMS Service, which then sends the notification to the parents.
+   - The Email/SMS Service reports the status (success or failure) of each notification back to the Notification System.
+   - Finally, the Notification System compiles a report of the notification status for each parent and presents it to the CampAdministrator.
+
+This diagram outlines a simplified version of the process, focusing on the key steps and actors involved in sending a notification to all parents about upcoming events through the Camp Management & Communication Platform.

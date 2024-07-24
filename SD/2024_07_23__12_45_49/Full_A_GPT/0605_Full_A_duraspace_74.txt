@@ -1,0 +1,49 @@
+Below is a sequence diagram in PlantUML format based on the user story: "As a repository manager, I want to indicate all subjects that are pertinent to a collection, object, or object component."
+
+This sequence diagram illustrates the steps involved when a repository manager updates the subjects associated with a digital asset (collection, object, or component) in the DAMS Integration and Management System (DIMS).
+
+```plantuml
+@startuml
+participant RepositoryManager as manager
+participant DIMSInterface as interface
+participant CollectionManagementModule as collectionModule
+participant Database as db
+
+manager -> interface : access DIMS
+interface -> collectionModule : select collection/object/component
+activate collectionModule
+
+manager -> collectionDatabaseModule : update subjects
+collectionModule -> db : fetch existing subjects
+db --> collectionModule : return existing subjects
+collectionModule -> db : add new subjects
+db --> collectionModule : confirm update
+collectionModule --> manager : display update confirmation
+
+deactivate collectionModule
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Repository Manager (manager):** The user, in this scenario, the repository manager initiates the sequence by accessing the DAMS Integration and Management System (DIMS) to manage digital assets.
+
+2. **DIMS Interface (interface):** The frontend interface of DIMS through which the repository manager interacts with the system.
+
+3. **Collection Management Module (collectionModule):** This is a backend module of DIMS responsible for handling operations related to collections, objects, and components, including the management of subjects related to these digital assets.
+
+4. **Database (db):** The database where all data about collections, objects, components, and their subjects are stored.
+
+- The repository manager accesses DIMS and navigates to the specific collection, object, or component they wish to update.
+
+- The repository manager indicates the desire to update the subjects associated with the digital asset, which triggers a fetch request for existing subjects associated with that asset.
+
+- The database returns the existing subjects, allowing the repository manager to evaluate what is currently listed.
+
+- The repository manager adds new subjects or updates existing ones as needed.
+
+- Updates are confirmed to the database, which then returns a confirmation of the update to the collection management module.
+
+- Finally, the repository manager receives a confirmation that the subjects have been updated successfully.
+
+This sequence ensures that the process of updating subjects related to a digital asset in the DAMS is systematic, efficient, and secure, in line with the objectives of the DIMS project.

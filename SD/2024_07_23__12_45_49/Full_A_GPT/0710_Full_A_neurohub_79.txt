@@ -1,0 +1,44 @@
+To create a sequence diagram for the user story you've provided using PlantUML, we focus on depicting how various system components and actors interact to annotate physiology images with standard metadata and facilitate their subsequent search and comprehension. This example outlines the essential steps starting from the researcher's request to annotate images, through the system processing to add standard metadata, and eventually enabling the searchability and understanding of the data.
+
+```plantuml
+@startuml
+actor Researcher
+participant "Web Interface" as WebUI
+participant "Annotation Service" as Annotate
+participant "Metadata Repository" as MetadataRepo
+participant "Search Service" as Search
+
+Researcher -> WebUI: Request to annotate image
+WebUI -> Annotate: Initiate annotation process
+activate Annotate
+
+Annotate -> MetadataRepo: Fetch standard metadata template
+activate MetadataRepo
+MetadataRepo --> Annotate: Return metadata template
+deactivate MetadataRepo
+
+Annotate -> Annotate: Apply metadata to image
+Annotate -> MetadataRepo: Save annotated image metadata
+activate MetadataRepo
+MetadataRepo --> Annotate: Confirm metadata saved
+deactivate MetadataRepo
+
+Annotate --> WebUI: Confirm image annotated
+deactivate Annotate
+
+Researcher -> WebUI: Search for annotated images
+WebUI -> Search: Initiate search
+activate Search
+
+Search -> MetadataRepo: Query by metadata
+activate MetadataRepo
+MetadataRepo --> Search: Return search results
+deactivate MetadataRepo
+
+Search --> WebUI: Display search results
+WebUI --> Researcher: Show annotated images
+
+@enduml
+```
+
+This sequence diagram encapsulates the flow from a researcher's request to annotate physiology images with standard metadata, processing that request, applying and saving the metadata, and finally leveraging that annotated data for search and retrieval. Note that the interactions with the "Metadata Repository" are central for both storing the newly annotated data and retrieving it during searches, emphasizing the system's capability to understand and manage the annotated data effectively.

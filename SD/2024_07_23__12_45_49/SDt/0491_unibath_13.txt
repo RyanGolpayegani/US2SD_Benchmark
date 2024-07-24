@@ -1,0 +1,18 @@
+@startuml
+actor Depositor
+boundary "Enhanced Research\nData Management Platform" as Platform
+database "External Repository" as ExtRepo
+database "University Repository" as UniRepo
+
+Depositor -> Platform : Request to link external data
+Platform -> Platform : Validate depositor's credentials
+Platform -> ExtRepo : Request external data details
+note right: Data details include\n- Metadata\n- DOI\n- Access policies
+ExtRepo --> Platform : Return data details
+Platform -> Platform : Generate metadata and DOI for linked data
+Platform -> UniRepo : Register external data reference
+note right of UniRepo: Store metadata\nand DOI reference without duplicating data
+UniRepo --> Platform : Confirm data registration
+Platform --> Depositor : Confirm external data linked\nProvide DOI and metadata link
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+actor User as user
+participant "Broker UI" as ui
+participant "Validation Service" as validationService
+participant "SAM API" as samApi
+database "Broker Database" as db
+
+user -> ui : Submit record with DUNS and ActionType
+ui -> validationService : Request validation (DUNS, ActionType)
+validationService -> db : Check if ActionType is B, C, or D
+alt is B, C, or D
+  db --> validationService : ActionType valid
+  validationService -> samApi : Check if DUNS registered (ignore expiration)
+  samApi --> validationService : DUNS registered
+  validationService -> ui : Record Accepted
+  ui --> user : Show success message
+else ActionType invalid
+  db --> validationService : ActionType invalid
+  validationService -> ui : Record Rejected (Invalid ActionType)
+  ui --> user : Show error message
+end
+@enduml

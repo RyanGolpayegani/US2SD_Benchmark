@@ -1,0 +1,19 @@
+@startuml
+participant "Repository Manager" as RM
+participant "DIMS Interface" as DIMS
+participant "DAMS Backend" as DAMS
+participant "Database" as DB
+
+RM -> DIMS : Request object's event history
+DIMS -> DAMS : Retrieve object ID
+DAMS -> DB : Query event history by object ID
+DB -> DAMS : Return event history
+DAMS -> DIMS : Process event data
+DIMS -> RM : Display object's event history
+
+alt Event History Found
+    DIMS -> RM : Show list of all events
+else No Event History Found
+    DIMS -> RM : Display "No events found for this object"
+end
+@enduml

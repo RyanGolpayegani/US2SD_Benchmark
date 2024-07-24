@@ -1,0 +1,24 @@
+@startuml
+participant Researcher as researcher
+participant "Workstation\n(Network Drive Software)" as workstation
+participant "Neurohub\nPlatform" as neurohub
+
+researcher -> workstation : Open network drive
+workstation -> neurohub : Authenticate user
+alt successful authentication
+    neurohub -> workstation : Authentication success
+    else authentication fails
+    neurohub -> workstation : Authentication failed
+    workstation -> researcher : Show error
+    stop
+end
+
+workstation -> neurohub : Request access to workspace files
+neurohub -> workstation : Return list of files in workspace
+workstation -> researcher : Display files
+researcher -> workstation : Select file(s) to access
+workstation -> neurohub : Request file(s) data
+neurohub -> workstation : Send file(s) data
+workstation -> researcher : Open/Display file(s)
+
+@enduml

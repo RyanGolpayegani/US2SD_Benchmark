@@ -1,0 +1,21 @@
+@startuml
+actor MedicalCaregiver as mc
+participant "ALFRED UI" as ui
+participant "Backend Server" as server
+participant "Database" as db
+participant "Notification Service" as notif
+
+== Regular Exercise Summary Collection ==
+
+mc -> ui : Request Exercise Summary
+ui -> server : Fetch Exercise Summary Request
+server -> db : Query Exercise Data
+db --> server : Return Exercise Data
+server -> notif : Schedule Regular Summary
+notif -> server : Fetch Updated Summary
+server -> db : Query Latest Exercise Data
+db --> server : Return Latest Exercise Data
+server -> notif : Prepare Summary
+notif --> mc : Send Exercise Summary Notification
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+actor Archivist
+participant "Upload Interface" as UI
+participant "Server" as Server
+participant "File Processing Module" as FPM
+participant "Metadata Management" as MM
+participant "Rights Management" as RM
+participant "Database" as DB
+
+== Upload Process ==
+Archivist -> UI : Selects file to upload
+UI -> Server : Sends file
+activate Server
+
+Server -> FPM : Process file for upload
+activate FPM
+FPM -> MM : Assign unique identifier\nand request metadata
+activate MM
+Archivist -> MM : Enter metadata (title, date, creator)
+MM -> RM : Request licensing/rights assignment
+activate RM
+Archivist -> RM : Applies license/rights
+deactivate MM
+RM -> FPM : Confirm licensing/rights settings
+deactivate RM
+
+FPM -> DB : Store file and metadata
+activate DB
+DB --> FPM : Confirm storage
+deactivate DB
+FPM -> Server : Upload successful
+deactivate FPM
+Server -> UI : Display confirmation message
+deactivate Server
+UI -> Archivist : Shows success message to Archivist
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+participant Moderator
+participant "AEPT Web Application" as WebApp
+participant Database
+participant Estimator
+
+== Game Creation ==
+Moderator -> WebApp: CreateGame(name, description)
+activate WebApp
+WebApp -> Database: SaveNewGame()
+activate Database
+Database --> WebApp: GameID
+deactivate Database
+WebApp --> Moderator: GameCreated(GameID, URL)
+deactivate WebApp
+
+== Inviting Estimators ==
+Moderator -> WebApp: InviteEstimators(GameID)
+activate WebApp
+loop Each Estimator
+    WebApp -> Estimator: SendInvitationEmail(GameID, URL)
+    activate Estimator
+    Estimator --> WebApp: AcknowledgeEmail()
+    deactivate Estimator
+end
+deactivate WebApp
+
+@enduml

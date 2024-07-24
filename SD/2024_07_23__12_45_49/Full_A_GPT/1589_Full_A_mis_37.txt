@@ -1,0 +1,49 @@
+Certainly! Below is a simplified PlantUML code sketching out a sequence diagram for the user story of a batch submitter wanting to provide their data and metadata in a simple, documented format to the repository staff for ingest into the Enhanced Digital Repository Management System (EDRMS). This example assumes the process involves a batch submitter preparing data and metadata, submitting it through a designated submission interface, and the repository staff processing the batch submission.
+
+```plantuml
+@startuml
+participant "Batch Submitter" as BS
+participant "Submission Interface" as SI
+participant "Repository Staff" as RS
+participant "EDRMS" as EDRMS
+
+== Preparation ==
+BS -> SI : Access submission guidelines
+SI -> BS : Provide guidelines and template
+
+BS -> BS : Prepare data and metadata according to template
+
+== Submission ==
+BS -> SI : Submit data and metadata package
+
+SI -> RS : Notify of new batch submission
+RS -> SI : Review submission details
+SI -> RS : Provide submission data and metadata
+
+== Ingest Process ==
+RS -> EDRMS : Create new batch submission record
+EDRMS -> EDRMS : Validate data and metadata format
+EDRMS --> RS : Notify validation success/failure
+
+alt If validation successful
+    RS -> EDRMS : Initiate data and metadata ingest
+    EDRMS -> EDRMS : Store data and metadata in repository
+    EDRMS --> RS : Confirm successful ingest
+    RS -> SI : Update submission status
+    SI -> BS : Notify batch submission success
+else Validation fails
+    EDRMS --> RS : Report validation errors
+    RS -> SI : Request data/metadata revision
+    SI -> BS : Notify need for revision and provide reasons
+    BS -> BS : Revise data and metadata
+    note right of BS : Process loops until validation is successful
+    BS -> SI : Resubmit revised data and metadata
+end
+
+
+@enduml
+```
+
+In this scenario, the batch submitter initially accesses the submission interface to get the guidelines and template for data and metadata preparation. Once the data package is prepared, the batch submitter submits it through the interface. The repository staff gets notified of the new submission and can review the details before initiating the ingest process in the EDRMS. The system then validates the format of the data and metadata. If validation passes, the ingest process moves forward, and the data is stored in the repository, with the submitter being notified of the success. If validation fails, the submitter is asked to revise and resubmit their package.
+
+This sequence diagram is fairly high-level and abstracts away some potential complexities and conditional pathways that might exist in a real-world system implementation to keep the focus on the primary flow described in the user story.

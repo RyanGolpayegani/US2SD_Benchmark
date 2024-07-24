@@ -1,0 +1,37 @@
+Given the specifics of your request, below is a PlantUML format sequence diagram that illustrates how a Database/Information Retrieval (DB/IR) administrator might search for administrator accounts using full or partial email or name. Please note that this diagram assumes a general process and might need adjustments to fit the specific architecture and technologies used at Cornell University.
+
+```plantuml
+@startuml
+
+actor DBIRAdmin as "DB/IR Admin"
+
+participant UISystem as "UI System"
+participant Controller as "Search Controller"
+database AccountDB as "Accounts Database"
+
+DBIRAdmin -> UISystem : Enter search query (name/email)
+UISystem -> Controller : SearchRequest(query)
+activate Controller
+
+Controller -> AccountDB : FindAccountsByQuery(query)
+activate AccountDB
+AccountDB --> Controller : AccountsList
+deactivate AccountDB
+
+Controller --> UISystem : DisplayResults(AccountsList)
+deactivate Controller
+
+UISystem --> DBIRAdmin : Show search results
+
+@enduml
+```
+
+This diagram provides a high-level sequence of events:
+1. **DB/IR Admin** inputs a search query, which can be a full or partial name or email, into the **UI System**.
+2. The **UI System** sends this query to the **Search Controller**.
+3. The **Search Controller** processes the request and queries the **Accounts Database** for matching administrator accounts based on the given input.
+4. The **Accounts Database** returns a list of accounts that match the search criteria.
+5. The **Search Controller** sends these results back to the **UI System**.
+6. The **UI System** finally displays these search results to the **DB/IR Admin**.
+
+Please adjust the sequence diagram as needed based on your project's technology stack, specific components, or additional requirements.

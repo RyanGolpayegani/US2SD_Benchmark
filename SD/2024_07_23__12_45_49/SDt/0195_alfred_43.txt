@@ -1,0 +1,23 @@
+@startuml
+participant OlderPerson as OP
+participant "ALFRED's Speech Recognition" as ASR
+participant "ALFRED's Core System" as ACS
+participant "Phone Call Assistant" as PCA
+participant Phone
+
+OP -> ASR: "Alert me faster for incoming calls"
+ASR -> ACS: Process voice command
+ACS -> PCA: "Increase call alert urgency"
+PCA -> Phone: Configure call settings
+
+alt Incoming Call
+    Phone -> PCA: Incoming call signal
+    PCA -> ACS: Notify about incoming call
+    ACS -> OP: Alert "Incoming call"
+else Missed Call Configuration
+    Phone -> PCA: Missed call signal
+    PCA -> ACS: Log missed call
+    ACS -> OP: Alert "Missed call & Caller ID"
+end
+
+@enduml

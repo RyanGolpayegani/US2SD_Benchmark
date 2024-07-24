@@ -1,0 +1,50 @@
+To generate a detailed sequence diagram for the user story provided, we will use PlantUML syntax. This diagram aims to illustrate the process flow when a camp administrator wants to view all camp groups and their scheduled events, subsequently notifying the counselors about their groups' daily activities. Please note that for actual implementation, your PlantUML environment or editor should be set up to render this code.
+
+```plantuml
+@startuml
+participant Administrator as A
+participant "Camp Management System" as CMS
+participant Database as DB
+participant NotificationSystem as NS
+participant Counselor as C
+
+A -> CMS : Request to view all camp groups and events
+CMS -> DB : Fetch camp groups and events
+DB --> CMS : Return camp groups and events
+CMS --> A : Display camp groups and events
+
+loop for each Camp Group
+    A -> CMS : Select camp group to notify
+    CMS -> DB : Fetch selected camp group details
+    DB --> CMS : Return camp group data (including counselors)
+    CMS --> A : Display camp group details
+    A -> CMS : Request to notify counselors
+    CMS -> NS : Prepare notification
+    CMS -> DB : Fetch counselor contact info
+    DB --> CMS : Return counselor contact info
+    NS -> C : Send notification to counselors
+    C --> NS : Acknowledge receipt
+    NS --> CMS : Confirm notification sent
+    CMS --> A : Display notification status
+end
+
+@enduml
+```
+
+### Explanation of the Diagram:
+
+- **Administrator (A):** Represents the camp administrator who initiates the request to view all camp groups and their scheduled events, and then requests to notify the counselors about their daily activities.
+- **Camp Management System (CMS):** The central system that processes the administrator's requests, interacts with the database to fetch the required information, prepares notifications, and communicates with the notification system.
+- **Database (DB):** Stores all the data related to camp groups, events, counselors, and their contact information.
+- **NotificationSystem (NS):** The system responsible for sending out notifications to the counselors. It sends notifications and receives acknowledgments.
+- **Counselor (C):** Represents the counselors who receive notifications about their group's activities for the day.
+
+### Steps:
+
+1. **Request to View:** The administrator requests to view all camp groups and their events.
+2. **Fetch and Display Data:** The Camp Management System fetches this information from the database and displays it to the administrator.
+3. **Loop for Notification:** For each camp group, the administrator can select to notify the counselors. Details of the selected camp group are fetched and displayed.
+4. **Send Notification:** Upon the administrator's request, the system prepares and sends a notification to the counselors via the Notification System, which includes fetching counselor contact information from the database.
+5. **Acknowledgment:** Counselors receive the notification and acknowledge receipt. The acknowledgment is relayed back to the administrator, confirming the notification was successful.
+
+This sequence diagram provides a high-level overview of the processes involved when a camp administrator wants to view camp groups, their schedules, and notify counselors about the day's activities. Note that actual implementation details might require additional elements based on specific project requirements and infrastructure.

@@ -1,0 +1,35 @@
+@startuml
+participant Researcher
+participant "Search Interface" as SearchUI
+participant "Authentication System" as Auth
+participant "Access Control" as Access
+participant Database
+participant "File Server" as FileServer
+
+Researcher -> SearchUI: Enter search terms\n& filters
+SearchUI -> Database: Query based on terms\n& filters
+Database -> SearchUI: Return search results
+SearchUI --> Researcher: Display search results
+
+Researcher -> SearchUI: Select desired archival materials
+SearchUI -> Auth: Request access for researcher
+activate Auth
+Auth --> Researcher: Validate identity (if not already)
+Researcher -> Auth: Provide credentials
+Auth -> Access: Check permissions for materials
+deactivate Auth
+
+activate Access
+Access -> Database: Verify access rights for materials
+Database --> Access: Access rights details
+Access --> Researcher: Access granted/denied
+deactivate Access
+
+alt Access Granted
+    Access -> FileServer: Fetch digitized materials
+    FileServer -> Researcher: Provide access to materials
+else Access Denied
+    Access -> Researcher: Show access denied message
+end
+
+@enduml

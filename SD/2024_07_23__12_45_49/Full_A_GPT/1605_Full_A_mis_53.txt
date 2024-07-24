@@ -1,0 +1,44 @@
+Constructing a detailed sequence diagram in Plant UML format requires a conceptual understanding of the interactions between various actors and systems within the EDRMS project, especially focusing on how a data contributor can access the Disaster Recovery Plan. Given the nature of the User Story, the involved actors and components could include the Data Contributor, Repository Interface (web portal or UI), Authentication System, Disaster Recovery Plan Module, and potentially external Documentation or Storage Systems.
+
+Below is an example of how these interactions might be structured in a Plant UML Sequence Diagram. Keep in mind that this represents a simplified and conceptual workflow tailored to the described user story.
+
+```plantuml
+@startuml
+actor DataContributor as DC
+participant "Authentication\nSystem" as Auth
+participant "Repository\nInterface" as UI
+participant "Disaster Recovery\nPlan Module" as DRPM
+participant "Storage\nSystem" as Storage
+
+== Accessing Disaster Recovery Plan ==
+
+DC -> UI : Access Repository
+activate UI
+
+UI -> Auth : Request Authentication
+activate Auth
+
+Auth -> UI : Authenticate User
+deactivate Auth
+
+UI -> DRPM : Request Disaster Recovery Plan Access
+activate DRPM
+
+DRPM -> Storage : Fetch Disaster Recovery Plan
+activate Storage
+
+Storage -> DRPM : Return Disaster Recovery Document
+deactivate Storage
+
+DRPM -> UI : Provide Access to Disaster Recovery Plan
+deactivate DRPM
+
+UI -> DC : Display Disaster Recovery Plan
+deactivate UI
+
+@enduml
+```
+
+This sequence starts with the Data Contributor accessing the repository interface, which prompts an authentication process. Upon successful authentication, the next step involves requesting access to the Disaster Recovery Plan, handled by a specific module dedicated to this task. This module retrieves the plan from a storage system, which is then presented back to the user through the interface.
+
+Keep in mind this is a high-level overview. Your actual implementation may require adjustments based on the more detailed interactions and functionalities of your specific system infrastructure, such as handling of permissions, the specific processes involved in authentication and document retrieval, error handling, and the presentation of the document.

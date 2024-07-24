@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+actor Editor as editor
+participant "Login System" as login
+participant "Editor Dashboard" as dashboard
+participant "Article Management" as articleMgmt
+participant "Article Editor" as articleEditor
+participant "Database" as db
+
+editor -> login: navigate to site
+login -> editor: display login page
+editor -> login: submit credentials
+login -> dashboard: validate credentials
+login -> editor: authentication failed [Optional]
+
+dashboard -> editor: show editor dashboard
+editor -> articleMgmt: select to create new article
+articleMgmt -> articleEditor: open article editor interface
+editor -> articleEditor: inputs article content
+editor -> articleEditor: inputs teaser
+articleEditor -> db: save article and teaser
+db -> articleEditor: confirm save
+articleEditor -> editor: show success message
+editor -> dashboard: navigate back
+
+@enduml

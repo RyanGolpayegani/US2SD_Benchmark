@@ -1,0 +1,29 @@
+@startuml
+actor FacultyMember as "Cornell Faculty Member"
+participant "Digital Repository System" as Repository
+participant "Metadata Enrichment Module" as MetadataModule
+participant "Google Indexing Bot" as GoogleBot
+participant "Google Search Console" as SearchConsole
+participant "Google Search" as GoogleSearch
+
+== Deposit Item ==
+FacultyMember -> Repository : Deposits item
+Repository -> MetadataModule : Invoke metadata enrichment
+MetadataModule -> Repository : Enriched metadata response
+Repository -> FacultyMember : Item deposited successfully
+
+== SEO and Visibility ==
+Repository -> GoogleBot : Notifies of new content
+alt SEO metadata present
+    GoogleBot -> MetadataModule: Extracts SEO metadata
+    MetadataModule -> GoogleBot: Returns enriched metadata
+end
+
+GoogleBot -> SearchConsole : Indexes item
+SearchConsole -> GoogleSearch : Updates search database
+
+== Search Item ==
+FacultyMember -> GoogleSearch : Searches for deposited item
+GoogleSearch -> FacultyMember : Displays item high in search results
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+actor OlderPerson as user
+participant "Voice Interface" as VI
+participant "User Profile" as UP
+participant "Exercise Recommendation\nSystem" as ERS
+participant "Health Monitoring\nSystem" as HMS
+participant "Exercise Content\nDelivery" as ECD
+database "ALFRED Database" as DB
+
+user -> VI: "I want to train my arm muscles."
+VI -> UP: Retrieve user preferences and physical health status
+UP -> DB: Query user data
+DB --> UP: User data
+UP -> ERS: Generate training plan for arm muscles
+ERS -> HMS: Assess current health status for exercise suitability
+HMS -> DB: Query latest health data
+DB --> HMS: Latest health parameters
+HMS --> ERS: Health status OK for arm exercises
+ERS -> ECD: Customize arm training content
+ECD -> VI: "Here's your personalized arm training session."
+VI -> user: Provides exercise instructions and visual aids
+user -> VI: Starts exercise session
+VI -> HMS: Monitor exercise performance
+user -> VI: Completes exercise
+VI -> UP: Log exercise data
+UP -> DB: Update user profile with completed exercise
+VI -> user: "Well done! Session complete."
+
+@enduml

@@ -1,0 +1,65 @@
+Creating a detailed sequence diagram for the specified user story "As a staff, I want to keep track of books" involves visualizing the interactions between system components and actors when performing tasks such as adding, updating, and removing books from the library's inventory. Below is a PlantUML code snippet that represents these interactions in a sequence diagram. 
+
+Please, note that this diagram is a basic representation and can be expanded based on additional requirements or functionalities of the Comprehensive Library Management System (CLMS).
+
+```plantuml
+@startuml
+actor Staff as staff
+participant "UI: Library Management" as ui
+participant "Controller: Book Management" as controller
+database "Database: LibraryDB" as db
+
+== Add New Book ==
+staff -> ui : Select "Add New Book"
+activate ui
+ui -> controller : Trigger addBook(details)
+activate controller
+controller -> db : INSERT book details
+activate db
+db --> controller : Confirm book added
+deactivate db
+controller --> ui : Display "Book Added Successfully"
+deactivate controller
+ui --> staff : Show confirmation message
+deactivate ui
+
+== Update Book Details ==
+staff -> ui : Select "Update Book"
+activate ui
+ui -> controller : Trigger updateBook(bookID, newDetails)
+activate controller
+controller -> db : UPDATE book details WHERE bookID = {bookID}
+activate db
+db --> controller : Confirm book updated
+deactivate db
+controller --> ui : Display "Book Updated Successfully"
+deactivate controller
+ui --> staff : Show updated book details
+deactivate ui
+
+== Remove Book ==
+staff -> ui : Select "Remove Book"
+activate ui
+ui -> controller : Trigger removeBook(bookID)
+activate controller
+controller -> db : DELETE FROM books WHERE bookID = {bookID}
+activate db
+db --> controller : Confirm book removed
+deactivate db
+controller --> ui : Display "Book Removed Successfully"
+deactivate controller
+ui --> staff : Show confirmation message
+deactivate ui
+
+
+@enduml
+```
+
+This sequence diagram starts with the "Staff" actor interacting with the library management system through a user interface (UI). There are three main functionalities depicted:
+1. **Add New Book**: Where the staff selects the option to add a new book, providing the necessary details, which are then processed by the book management controller and inserted into the database. Upon successful addition, a confirmation message is displayed.
+2. **Update Book Details**: Where the staff chooses to update existing book details. The new details are sent to the database to update the specific book's information based on its unique identifier (bookID), with a success message shown to the user upon completion.
+3. **Remove Book**: Where the staff selects a book to be removed, triggering its deletion from the database based on the bookID. A confirmation of the removal is displayed to the user.
+
+This diagram simplifies complex interactions into clear, sequential steps, allowing developers and stakeholders to visualize the process staff members would follow to manage books within the CLMS project.
+
+**Note**: Remember to adjust and expand upon this basic template to cater to the specific business logic, error handling, and additional features your system might require.

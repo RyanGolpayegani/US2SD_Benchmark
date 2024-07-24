@@ -1,0 +1,67 @@
+Creating a detailed sequence diagram for the specified user story involves outlining the interaction between various system components and the user to achieve electronic sharing of papers and notes among researchers on the Neurohub platform. Below is a sample sequence diagram in PlantUML format, illustrating the process from the user's request to the system's response.
+
+```plantuml
+@startuml
+participant User
+participant WebInterface as "Web Interface"
+participant AuthenticationModule as "Authentication Module"
+participant SharingService as "Sharing Service"
+participant DataBase as "Database"
+participant ExternalRepository as "External Repository\n(Mendeley)"
+
+activate User
+User -> WebInterface: Requests to share a paper/note
+activate WebInterface
+
+WebInterface -> AuthenticationModule: Validates user credentials
+activate AuthenticationModule
+AuthenticationModule --> WebInterface: User validated
+deactivate AuthenticationModule
+
+WebInterface -> SharingService: Invoke sharing mechanism
+activate SharingService
+
+SharingService -> DataBase: Check if the document exists
+activate DataBase
+DataBase --> SharingService: Document found
+deactivate DataBase
+
+SharingService -> ExternalRepository: Request sharing permissions
+activate ExternalRepository
+ExternalRepository --> SharingService: Permissions granted
+deactivate ExternalRepository
+
+SharingService -> DataBase: Log sharing activity
+activate DataBase
+DataBase --> SharingService: Log updated
+deactivate DataBase
+
+SharingService --> WebInterface: Sharing successful
+deactivate SharingService
+
+WebInterface --> User: Display sharing confirmation
+deactivate WebInterface
+deactivate User
+
+@enduml
+```
+
+### Explanation:
+
+1. **User initiates a request:** The user requests to share a paper or note with other researchers through the Web Interface of Neurohub.
+
+2. **Authentication:** The Web Interface queries the Authentication Module to validate the user's credentials, ensuring only authorized users can share documents.
+
+3. **Invoke sharing mechanism:** Once validated, the request is forwarded to the Sharing Service, which orchestrates the document sharing process.
+
+4. **Document existence check:** The Sharing Service checks with the Database to ensure the document exists and is available for sharing.
+
+5. **Request sharing permissions:** The Sharing Service communicates with an External Repository (e.g., Mendeley) to obtain the necessary permissions for sharing. This step signifies the integration with external tools, as outlined in the project objectives.
+
+6. **Log sharing activity:** Once permissions are granted, the Sharing Service logs the sharing activity in the Database for record-keeping and audit purposes.
+
+7. **Sharing confirmation:** Finally, the Web Interface displays a confirmation message to the user that the paper or note has been successfully shared.
+
+8. **Deactivation of components:** To keep the sequence diagram clean and easy to follow, each component is deactivated after it completes its role in the process.
+
+This diagram illustrates a simplified sequence of interactions for electronic sharing of papers and notes among researchers, emphasizing the importance of authentication, integration with external repositories, and logging activities for security and accountability.

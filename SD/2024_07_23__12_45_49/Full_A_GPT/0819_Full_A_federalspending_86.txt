@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram in PlantUML format for representing the process of a data user requesting access to two additional fields from the FPDS data pull involves several steps. The sequence will involve interaction between the data user, the Broker platform's interface, the validation service, and possibly a data service that interacts with the FPDS data source.
+
+Below is a simplified PlantUML code that outlines the sequence of events from when the data user requests the additional FPDS data fields to when the data is finally received. This sequence assumes the addition of these fields requires validation and possibly modification of how FPDS data is pulled into the Broker platform.
+
+```plantuml
+@startuml
+participant "Data User" as user
+participant "Broker Interface" as interface
+participant "Validation Service" as validation
+participant "FPDS Data Service" as fpds
+participant "Data Processing Service" as processing
+
+user -> interface : Request additional FPDS fields
+interface -> validation : Validate request format and permissions
+alt validation success
+    validation --> interface : Validation success
+    interface -> fpds : Request updated FPDS pull config
+    fpds -> processing : Update data pull to include new fields
+    processing -> fpds : Confirm update
+    fpds --> interface : Confirmation & Data pull initiated
+    interface -> processing : Process and import data
+    processing -> interface : Processing complete
+    interface --> user : Provide access to updated data
+else validation failure
+    validation --> interface : Validation failure (Error message)
+    interface --> user : Display error message
+end
+@enduml
+```
+
+This PlantUML sequence diagram starts with the "Data User" initiating a request through the "Broker Interface" for two additional fields from the FPDS data pull. The "Broker Interface" then forwards the request to the "Validation Service" to ensure the request is formatted correctly and the user has the necessary permissions.
+
+- If the validation is successful, the process continues with the "Broker Interface" requesting an updated FPDS data pull configuration from the "FPDS Data Service". The "FPDS Data Service" updates the data pull to include the new fields and confirms the update before initiating the data pull. Next, the "Data Processing Service" processes and imports the data, signaling completion back to the "Broker Interface", which in turn provides the data user with access to the updated data.
+- If the validation fails, the "Validation Service" sends an error message back to the "Broker Interface", which then displays this message to the data user.
+
+This sequence emphasizes the importance of validation and error handling in the process of accessing additional fields from FPDS data pulls and highlights the interactions between various services that contribute to fulfilling the data user's request within the Broker platform's enhancement project.

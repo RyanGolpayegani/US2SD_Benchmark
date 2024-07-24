@@ -1,0 +1,31 @@
+@startuml
+participant DataLibrarian as librarian
+participant DMPTool
+participant ExternalMetadataSystem
+participant DataCatalogue
+
+librarian -> DMPTool: Request metadata pointers
+activate DMPTool
+DMPTool -> ExternalMetadataSystem: Fetch metadata pointers
+activate ExternalMetadata(m)
+ExternalMetadataSystem --> DMPTool: Return metadata pointers
+deactivate ExternalMetadataSystem
+
+DMPTool --> librarian: Show metadata pointers
+deactivate DMPTool
+
+librarian -> DataCatalogue: Initiate metadata import
+activate DataCatalogue
+librarian -> DMPTool: Extract metadata using pointers
+activate DMPTool
+DMPTool -> ExternalMetadataSystem: Request metadata using pointers
+activate ExternalMetadataSystem
+ExternalMetadataSystem --> DMPTool: Return metadata
+deactivate ExternalMetadataSystem
+
+DMPTool --> DataCatalogue: Transfer metadata
+DataCatalogue --> librarian: Confirm metadata import
+deactivate DataCatalogue
+deactivate DMPTool
+
+@enduml

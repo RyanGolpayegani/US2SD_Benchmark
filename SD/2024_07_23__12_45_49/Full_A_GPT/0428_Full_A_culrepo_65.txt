@@ -1,0 +1,50 @@
+Below is a detailed Sequence Diagram in PlantUML format for the User Story described. This diagram entails the sequence of events that occur when a database/information retrieval (DB/IR) administrator uploads a document, and the system categorizes it based on its document type (e.g., historical report still published, expired historical report, single topic dataset, broad topic dataset, report with subtopic, computer file). Note, to use this PlantUML code, make sure you have PlantUML installed and configured in your environment or use an online PlantUML editor.
+
+```plantuml
+@startuml
+actor "DB/IR Administrator" as admin
+participant "Upload Interface" as UI
+participant "Document Processor" as DP
+participant "Document Classifier" as DC
+participant "Metadata Manager" as MM
+database "Repository" as Repo
+
+== Document Upload ==
+admin -> UI : Upload document
+UI -> DP : Initiate processing
+DP -> DC : Send document for classification
+DC -> DC : Analyze document content\nand metadata
+DC -> MM : Tag document with\ncategory and attributes
+
+== Document Categorization ==
+alt Historical Report Still Published
+    MM -> Repo : Store as "Historical: Active"
+else Expired Historical Report
+    MM -> Repo : Store as "Historical: Expired"
+else Single Topic Dataset
+    MM -> Repo : Store as "Dataset: Single Topic"
+else Broad Topic Dataset
+    MM -> Repo : Store as "Dataset: Broad Topic"
+else Report with Subtopic
+    MM -> Repo : Store as "Report: Subtopic"
+else Computer File
+    MM -> Repo : Store as "File: Computer File"
+end
+
+== Completion ==
+MM --> DP : Categorization complete
+DP -> UI : Display Success Message
+UI -> admin : Notify upload & categorization success
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram Steps:**
+
+1. **Document Upload:** The DB/IR Administrator starts by uploading a document through the Upload Interface. The document is then processed by the Document Processor, which sends it to the Document Classifier for categorization.
+
+2. **Document Categorization:** The Document Classifier analyzes the document's content and metadata to determine its category. It could be tagged variously, for example, as "Historical: Active", "Historical: Expired", "Dataset: Single Topic", "Dataset: Broad Topic", "Report: Subtopic", or "File: Computer File", among other classifications.
+
+3. **Document Storage and Notification:** Based on the classification, the Metadata Manager tags the document with the appropriate category and attributes, then stores this information in the Repository. On completion, the Metadata Manager notifies the Document Processor of the success, which in turn informs the Upload Interface to display a success message to the DB/IR Administrator.
+
+This sequence ensures that each document uploaded into the system is properly categorized and stored, facilitating easier access, discovery, and management in accordance with the requirements of the Comprehensive Digital Repository System for Cornell University.

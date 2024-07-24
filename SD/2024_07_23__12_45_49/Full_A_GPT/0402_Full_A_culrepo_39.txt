@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram for the given user story in Plant UML format involves outlining the interactions between the system components and the user, focused on the task of finding an author's works and sorting them to see the evolution of their scholarship. Below is an illustrative example. Please note that specifics might vary based on the actual system architecture and design decisions that are not detailed in the project description.
+
+```
+@startuml
+autonumber
+actor AcademicResearcher as researcher
+participant "Search Interface" as search
+participant "Authentication Service" as auth
+participant "Database" as db
+participant "Content Management System" as cms
+participant "Sorting Service" as sort
+
+researcher -> search: Enter search query with author's name
+search -> auth: Validates researcher access
+auth --> search: Access confirmed
+
+search -> db: Fetch author's works
+db --> cms: Retrieve list of works
+cms --> db: List of works
+db --> search: Display initial results
+
+researcher -> search: Request to sort by date
+search -> sort: Sort works by publication date
+sort --> db: Retrieve sorted list
+db --> sort: Sorted data
+sort --> search: Display sorted results
+search -> researcher: Show sorted list of works to view scholarship evolution
+
+@enduml
+```
+
+This sequence diagram simplifies the flow for a user story where an academic researcher wants to find and sort the works of a particular author to observe the evolution of their scholarship. Here are the steps outlined:
+
+1. The researcher enters a search query with the author's name in the search interface.
+2. The search interface requests authentication to validate the researcher's access.
+3. Upon access confirmation, the search query is processed to fetch the author's works from the database.
+4. The database queries the content management system (CMS) to retrieve the list of works associated with the author.
+5. Initially fetched results are shown to the researcher.
+6. The researcher requests the results to be sorted by date.
+7. The search interface hands over the sorting task to a dedicated sorting service.
+8. The sorting service communicates with the database to retrieve and return the sorted list based on publication date.
+9. Finally, the sorted list of the author's works is displayed to the researcher, showing the evolution of the author's scholarship.
+
+Please note, the specifics of this diagram, like the detailed functioning of the sorting service or the interaction between the database and the CMS, might be abstracted for simplicity. Real implementation details could introduce more steps or different component interactions.

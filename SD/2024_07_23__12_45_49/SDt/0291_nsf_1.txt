@@ -1,0 +1,37 @@
+@startuml
+participant TeamMember as TM "Team Member"
+participant ProjectManager as PM "Project Manager"
+participant DevOps as DV "DevOps Engineer"
+participant CloudGov as CG "cloud.gov Platform"
+
+TM -> PM: Request deployment status
+PM -> DV: Initiate deployment process
+activate DV
+
+DV -> CG: Login to cloud.gov
+activate CG
+CG --> DV: Authenticate and provide access
+deactivate CG
+
+DV -> CG: Set up cloud infrastructure\nfor beta.nsf.gov
+activate CG
+CG --> DV: Infrastructure setup complete
+deactivate CG
+
+DV -> CG: Configure subdomain\nbeta.nsf.gov
+activate CG
+CG --> DV: Subdomain configured
+deactivate CG
+
+DV -> CG: Deploy beta site iteration
+activate CG
+CG --> DV: Deployment successful\nURL: beta.nsf.gov
+deactivate CG
+
+DV -> PM: Confirm deployment completion\nand provide URL
+deactivate DV
+
+PM -> TM: Provide URL to beta site\nbeta.nsf.gov
+TM -> beta.nsf.gov: Visit beta site
+
+@enduml

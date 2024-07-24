@@ -1,0 +1,48 @@
+To create a detailed sequence diagram for the user story of a repository administrator (repoadmin) wanting to expose repository contents via the Open Archives Initiative Protocol for Metadata Harvesting (OAI-PMH), you would need to illustrate the interaction between various components of the system involved in this process. Here’s a PlantUML script that outlines these interactions. 
+
+This diagram assumes a basic flow where the repoadmin configures the repository to expose certain collections via OAI-PMH, a metadata harvester requests the exposed metadata, and the system responds with the requested information.
+
+Please note that some simplifications are made for clarity, and depending on the implementation details of the Enhanced Digital Repository Management System (EDRMS), additional steps or components may be involved.
+
+```plantuml
+@startuml
+
+participant Repoadmin as admin
+participant "EDRMS Configuration Interface" as config
+participant "Repository Database" as db
+participant "OAI-PMH Provider" as provider
+participant "Metadata Harvester" as harvester
+
+== Configuration Phase ==
+admin -> config : Access OAI-PMH module settings
+config -> db : Retrieve available collections
+admin <- config : Display collections
+admin -> config : Select collections to expose
+config -> db : Update collection exposure settings
+admin <- config : Confirm exposure settings
+
+== Harvesting Phase ==
+harvester -> provider : Request exposed metadata (ListRecords verb)
+provider -> db : Query exposed collections metadata
+db -> provider : Return metadata
+provider -> harvester : Respond with metadata records
+
+@enduml
+```
+
+### Explanation of the Diagram
+
+- **Configuration Phase:**
+  - The repoadins accesses the OAI-PMH module settings through the EDRMS Configuration Interface.
+  - The configuration interface retrieves and displays the available collections from the Repository Database.
+  - The repoadmin selects which collections should be exposed via OAI-PMH.
+  - The configuration interface updates the repository database with the repoadmin's choices regarding collection exposure.
+  - The repoadmin receives a confirmation of the settings.
+
+- **Harvesting Phase:**
+  - A metadata harvester sends a request to the OAI-PMH Provider (part of the EDRMS) to get the exposed metadata, using the `ListRecords` verb (an OAI-PMH protocol operation).
+  - The OAI-PMH Provider queries the Repository Database to get the metadata of the exposed collections.
+  - The Repository Database returns the requested metadata to the OAI-PMH Provider.
+  - The OAI-PMH Provider responds to the metadata harvester with the metadata records.
+
+This sequence diagram outlines the sequence of actions from the perspective of enabling and using OAI-PMH metadata exposure in a digital repository system, following the initial project description and specific user story provided.

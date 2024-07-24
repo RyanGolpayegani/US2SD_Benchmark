@@ -1,0 +1,46 @@
+@startuml
+actor Developer
+entity "Developer Portal" as Portal
+entity "API Gateway" as API
+database "App Store Database" as Database
+entity "Review System" as Review
+
+Developer -> Portal : Navigate to Developer Portal
+Portal -> Developer : Display Login Page
+Developer -> Portal : Submit Credentials
+Portal -> API : Authenticate Developer
+API -> Database : Validate Credentials
+Database -> API : Return Authentication Status
+API -> Portal : Return Authentication Result
+Portal -> Developer : Display Dashboard
+
+Developer -> Portal : Select "Create New App"
+Portal -> Developer : Display App Creation Form
+Developer -> Portal : Submit New App Details
+Portal -> API : Create New App Request
+API -> Database : Store New App Data
+Database -> API : Confirm App Creation
+API -> Portal : Notify Developer of Success
+Portal -> Developer : Display Success Message
+
+Developer -> Portal : Submit App for Review
+Portal -> Review : Send App for Review
+Review -> Developer : Request Additional Info/Changes
+Developer -> Review : Submit Requested Info
+Review -> Portal : Approve App
+Portal -> API : Update App Status
+API -> Database : Mark App as Approved
+Database -> API : Confirm Status Update
+API -> Portal : Notify Developer of Approval
+Portal -> Developer : Display Approval Notification
+
+Developer -> Portal : Choose to Update App
+Portal -> Developer : Display Update Form
+Developer -> Portal : Submit Updated App Details
+Portal -> API : Update App Request
+API -> Database : Update App Data
+Database -> API : Confirm App Update
+API -> Portal : Notify Developer of Success
+Portal -> Developer : Display Success & Version Info
+
+@enduml

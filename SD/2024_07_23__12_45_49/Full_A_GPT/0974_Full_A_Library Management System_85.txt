@@ -1,0 +1,49 @@
+Creating a detailed sequence diagram for the specific user story "As a librarian, I want to see expired books, so that I can send notifications" involves outlining the steps the Comprehensive Library Management System (CLMS) takes from the moment the librarian initiates the action to view expired books until the system sends notifications to the members who have not returned the books on time. Below is how you could represent this process in PlantUML format:
+
+```plantuml
+@startuml
+actor Librarian as librarian
+participant "LibraryManagementSystem" as LMS
+database "Database" as DB
+participant "NotificationService" as NS
+entity "Member" as member
+
+librarian -> LMS : ViewExpiredBooks()
+LMS -> DB : FetchExpiredBooks()
+DB --> LMS : ExpiredBooksList
+LMS --> librarian : ShowExpiredBooks(ExpiredBooksList)
+librarian -> LMS : SelectBooksForNotification(ExpiredBooksList)
+LMS -> DB : FetchMemberDetails(SelectedBooks)
+DB --> LMS : MemberDetailsList
+LMS -> NS : PrepareNotifications(MemberDetailsList)
+NS -> member : SendNotification(OverdueBooks)
+NS --> LMS : Confirmation(NotificationStatus)
+LMS --> librarian : ShowNotificationStatus(Confirmation)
+@enduml
+```
+
+### Breakdown of the Sequence Diagram:
+
+1. **Librarian initiates the action**: The librarian requests to view expired/overdue books through the Library Management System (LMS).
+   
+2. **LMS fetches data**: The LMS communicates with the database to fetch a list of books that have passed their due date and are not yet returned.
+
+3. **Database responds with data**: The database returns a list of expired books to the LMS.
+
+4. **LMS displays expired books**: The expired books list is shown to the librarian by the LMS.
+
+5. **Librarian selects books for notification**: From this list, the librarian selects which books to send overdue notifications for.
+
+6. **Fetch member details**: The LMS then requests the Database to fetch member details based on the selected books.
+
+7. **Database provides member details**: The database retrieves and sends back the details of members who borrowed the selected expired books.
+
+8. **Prepare notifications**: With the member details, the LMS communicates with the Notification Service to prepare notifications for the members.
+
+9. **Sending notifications**: The Notification Service sends out notifications to the specific members about their overdue books.
+
+10. **Notification status**: The Notification Service informs the LMS about the status of the sent notifications (success or failure).
+
+11. **LMS informs the librarian**: Finally, the librarian is shown the status of the notifications sent, completing the process.
+
+This diagram showcases a simplified view focusing on the core interactions required to implement the described user story using PlantUML.

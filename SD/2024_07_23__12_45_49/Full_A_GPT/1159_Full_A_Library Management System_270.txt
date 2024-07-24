@@ -1,0 +1,46 @@
+Below is a detailed sequence diagram in PlantUML format that represents the user story of placing reservations for publications that are currently unavailable. This sequence diagram outlines the interactions between the member (user), the frontend application (client), and various backend components including the Reservation System, Book Management System, and Notification Service.
+
+```
+@startuml
+participant Member
+participant "Frontend Application" as Client
+participant "Reservation System" as Reservation
+participant "Book Management System" as BookManagement
+participant "Notification Service" as Notification
+
+
+Member -> Client : Search for publication
+Client -> BookManagement : Request availability of publication
+alt Publication Unavailable
+    BookManagement -> Client : Show publication as unavailable
+    Member -> Client : Request to reserve publication
+    Client -> Reservation : Place reservation
+
+    Reservation -> BookManagement : Check Publication Details
+    BookManagement -> Reservation : Provide Publication Details
+
+    Reservation -> Notification: Schedule notification for availability
+    Notification -> Reservation : Confirmation
+
+    Reservation --> Client : Reservation confirmation
+    Client --> Member : Display reservation confirmation
+else Publication Available
+    BookManagement -> Client : Show publication as available
+    Client -> Member : Display availability status
+end
+
+@enduml
+```
+
+### How to Read the Sequence Diagram:
+
+- The diagram starts with the Member (library user) searching for a publication through the Frontend Application (like a web or mobile library app).
+- Then, the Fronteditor Application requests the Book Management System to check the availability of the desired publication.
+- If the publication is unavailable:
+  - The Book Management System informs the Frontend Application, which then displays this status to the Member.
+  - The member requests to reserve the publication through the Frontend Application, which places a reservation in the Reservation System.
+  - The Reservation System checks the publication details with the Book Management System and schedules a notification for when the publication becomes available using the Notification Service.
+  * The Reservation System confirms the placement of the reservation back to the Frontend Application, which then shows a reservation confirmation to the Member.
+- If the publication is available, the Book Management System directly informs the Frontend Application of its availability status, which is then displayed to the Member.
+
+This simplified sequence diagram aims to capture the primary steps involved in placing a reservation for a currently unavailable publication. It can be expanded or modified depending on additional requirements or functionalities of the Comprehensive Library Management System (CLMS).

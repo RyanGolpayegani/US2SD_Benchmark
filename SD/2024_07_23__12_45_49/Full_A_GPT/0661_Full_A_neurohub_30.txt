@@ -1,0 +1,42 @@
+Given the complexity of the Neurohub Enhancement and Automation Project, outlining a detailed sequence diagram for the specific user story—"As a user, I want to revert to an older version of an uploaded int the file"—requires a close look at the interactions between various components within the system. Below is a simplified sequence diagram outlined in PlantUML format, capturing the general sequence of operations when a user wishes to revert to an older version of a file.
+
+This sequence diagram assumes the presence of a web interface through which the user interacts with the system, a backend service responsible for handling file version management, and a database or a file storage system where the files and their versions are stored.
+
+```plantuml
+@startuml
+actor User
+participant "Web Interface" as UI
+participant "Backend Service" as Backend
+database "File Storage" as Storage
+
+User -> UI: Select file version revert option
+UI -> Backend: Request to revert file (fileID, version)
+Backend -> Storage: Fetch older file version (fileID, version)
+Storage --> Backend: Return older file version
+Backend -> Storage: Update current file with older version
+Storage --> Backend: Confirm update
+Backend --> UI: Confirm successful revert to user
+UI --> User: Display revert success message
+
+@enduml
+```
+
+### Explanation of the Steps:
+
+1. **User Interaction**: The sequence begins with the User selecting the option to revert a file to an older version through the Web Interface. This action might involve the user navigating through the file's version history and selecting a specific version they want to revert to.
+
+2. **Request Handling**: The Web Interface forwards this request to the Backend Service, including the unique identifier for the file (`fileID`) and the specific version to which the user wants to revert.
+
+3. **File Fetching**: The Backend Service requests the specific version of the file from the File Storage (or Database). This step involves retrieving the file data of the older version without altering the current state yet.
+
+4. **File Storage Response**: The File Storage returns the requested older file version to the Backend Service.
+
+5. **File Update**: With the older version of the file retrieved, the Backend Service then requests an update in the File Storage to replace the current version of the file with the fetched older version.
+
+6. **Update Confirmation**: The File Storage confirms that the current file has been successfully updated to the older version.
+
+7. **User Notification**: The Backend Service informs the Web Interface about the successful revert operation, which in turn notifies the User.
+
+8. **Success Message**: The User receives a success message, indicating that the file has been successfully reverted to the selected older version.
+
+This diagram simplifies the interactions and omits error handling and security checks for clarity. In a real-world implementation, additional steps such as authentication, authorization, and logging might be included to ensure the system's security and reliability.

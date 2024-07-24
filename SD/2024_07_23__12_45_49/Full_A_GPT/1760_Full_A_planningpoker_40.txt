@@ -1,0 +1,56 @@
+Creating a detailed sequence diagram for the user story mentioned requires illustrating the interaction among various components of the Agile Estimation and Planning Tool (AEPT) when a participant desires to have the cards appear in the same order for easy comparison across multiple estimation rounds. Below is an example sequence diagram in PlantUML format that captures this process, assuming the use of a web application architecture where the participant interacts with a frontend interface, which then communicates with a backend service to ensure consistency in card ordering.
+
+```plantuml
+@startuml
+participant Participant as participant
+participant Frontend as frontend
+participant "Estimation Game Controller" as controller
+participant "Game Session" as session
+participant Database as db
+
+participant->frontend: ViewEstimationCards()
+activate frontend
+
+frontend->controller: GetCardsOrder(participantId, gameId)
+activate controller
+
+controller->session: FetchParticipantGameSession(participantId, gameId)
+activate session
+
+session->db: GetStoredCardsOrder(participantId, gameId)
+activate db
+
+db-->session: ReturnCardsOrder()
+deactivate db
+
+session-->controller: CardsOrderDetails()
+deactivate session
+
+controller-->frontend: DisplayCardsInOrder()
+deactivate controller
+
+frontend-->participant: ShowOrderedCards()
+deactivate frontend
+
+@enduml
+```
+
+This sequence diagram follows these steps:
+
+1. **Participant requests to view estimation cards:** This initiates the process where the participant interacts with the frontend to view the cards for estimation.
+
+2. **Frontend requests ordered cards:** The frontend makes a request to the Estimation Game Controller to retrieve the cards in the specified order for the participant, identified by their participant ID and associated with a specific game ID.
+
+3. **Controller fetches session details:** The Estimation Game Controller requests to fetch the participant's game session details, including the ordering of cards from the Game Session handler.
+
+4. **Game Session queries database:** The Game Session handler queries the database to retrieve the stored order of cards associated with the participant ID and the game ID.
+
+5. **Database returns stored cards order:** The Database returns the stored order of the cards to the Game Session handler.
+
+6. **Game Session returns cards order details:** The Game Session handler returns the details of the cards order to the Estimation Game Controller.
+
+7. **Controller instructs frontend to display cards in order:** The Estimation Game Controller sends instructions along with the ordered list of cards to the frontend for display.
+
+8. **Frontend shows cards to the participant:** Finally, the frontend displays the cards in the specified order to the participant, allowing for easy comparison across multiple draws.
+
+This diagram presumes the existence of a backend process where card orders are stored and managed per game and per participant to ensure consistency across sessions. The technology stack involved in this (HTML, CSS, JavaScript, server-side language, and database) supports these interactions to maintain and display the consistent order of estimation cards.

@@ -1,0 +1,33 @@
+@startuml
+participant Volunteer as vol
+participant "AMIDP Platform" as platform
+participant "Content Analysis System" as analysis
+participant "Admin Notification System" as notify
+participant "Zooniverse Admin" as admin
+
+vol -> platform: Submits comment on a subject
+activate platform
+
+platform -> analysis: Analyze comment for interest level
+activate analysis
+
+analysis --> platform: Comment flagged as interesting
+deactivate analysis
+
+platform -> notify: Trigger notification for admin
+activate notify
+
+notify -> admin: Send interesting comment alert
+activate admin
+
+admin -> platform: Reviews comment
+activate platform
+
+platform --> admin: Provide comment details and options (Acknowledge, Respond, Escalate)
+deactivate platform
+
+admin --> notify: Acknowledge receipt
+deactivate notify
+deactivate admin
+
+@enduml

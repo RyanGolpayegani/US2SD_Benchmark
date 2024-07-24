@@ -1,0 +1,57 @@
+@startuml
+actor "Plan Review Staff" as staff
+participant ":Customer Portal" as portal
+participant ":Application Management\nSystem" as appSystem
+participant ":Payment System" as paymentSystem
+participant ":Notification System" as notifySystem
+
+== Track Plan Review Completion ==
+
+staff -> portal : Log in to Portal
+activate portal
+
+portal -> appSystem : Authenticate &\nAuthorize User
+activate appStateSystem
+
+appSystem --> portal : Access Granted
+deactivate appSystem
+
+portal --> staff : Display Dashboard
+deactivate portal
+
+staff -> appSystem : Select Application to\nTrack Plan Review
+activate appSystem
+
+appSystem -> appSystem : Check Plan Review\nStatus
+note right: All plan reviews must be\ncompleted or approved
+
+appSystem --> staff : Show Plan Review\nCompletion Status
+
+== Initiate Downstream Steps ==
+
+alt If Plan Review Completed Successfully
+  staff -> appSystem : Initiate Final Review/Prepare for Permit Issuance
+  activate appSystem
+  
+  appSystem -> paymentSystem : Prompt Payment for Permit
+  activate paymentSystem
+  
+  paymentSystem --> staff : Display Payment Instruction
+  
+  staff -> notifySystem : Send Review Completion & Payment Instruction to Applicant
+  activate notifySystem
+  
+  notifySystem -> "Applicant" : Notify via Email/SMS
+  deactivate notifySystem
+  
+  deactivate paymentSystem
+  deactivate appSystem
+else If Review Incomplete or Issues Found
+  staff -> notifySystem : Send Feedback/Requests to Applicant
+  activate notifySystem
+  
+  notifySystem -> "Applicant" : Notify via Email/SMS about Review Status
+  deactivate notifySystem
+end
+
+@enduml

@@ -1,0 +1,35 @@
+Creating a sequence diagram for the user story, "As a repository manager, I want to know all events occurring to a collection," involves detailing how different components of the DAMS Integration and Management System (DIMS) interact when a repository manager seeks to review the event history of a specific collection.
+
+Below is an illustrative example of how such a sequence might be represented using PlantUML syntax:
+
+```plantuml
+@startuml
+actor "Repository Manager" as RepoManager
+participant "DIMS Interface" as Interface
+participant "Collection Management Module" as CollectionModule
+database "DAMS Database" as Database
+participant "Event and Integrity Monitor" as EventMonitor
+
+RepoManager -> Interface: Request events for a collection
+Interface -> CollectionModule: Retrieve collection details
+CollectionModule -> Database: Query collection ID
+Database --> CollectionModule: Return collection details
+CollectionModule --> Interface: Provide collection details
+Interface --> EventMonitor: Request event log for collection
+EventMonitor -> Database: Query events for collection ID
+Database --> EventMonitor: Return event log
+EventPull text messages
+EventMonitor --> Interface: Provide event log data
+Interface --> RepoManager: Display event history for collection
+
+@enduml
+```
+
+In this sequence diagram, the interaction begins with the Repository Manager (RepoManager) requesting to view all events occurring to a specified collection. The process flows through various system components, highlighting the steps involved from the initial request to displaying the collection's event history.
+
+- **DIMS Interface:** Serves as the front-end through which the repository manager interacts with the system.
+- **Collection Management Module:** Manages operations related to collections in the DAMS, such as retrieving specific collection details needed to identify the correct event log.
+- **DAMS Database:** Contains all data related to digital assets, including information on collections and events.
+- **Event and Integrity Monitor:** Responsible for tracking and providing access to logs detailing events that have occurred for each collection.
+
+Keep in mind, the diagram is a high-level representation aimed at illustrating the components involved and their interactions. Depending on the specific requirements and architecture of DIMS, additional details and components (such as authentication and error handling mechanisms) might be necessary for a comprehensive system design.

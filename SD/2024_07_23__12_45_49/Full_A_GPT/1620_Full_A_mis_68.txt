@@ -1,0 +1,61 @@
+Creating a comprehensive sequence diagram for the specified user story involves depicting interaction between the faculty member (user), repository dashboard, permission service, and potentially other system components such as a database or a user authentication system. Below is a PlantUML sequence diagram that outlines these interactions.
+
+```plantuml
+@startuml
+actor FacultyMember as FM
+participant "Repository Dashboard" as RD
+participant "Permission Service" as PS
+database "Repository DB" as DB
+
+== Grant Submit Permissions ==
+FM -> RD: Navigate to dashboard
+activate RD
+RD -> PS: Request permission update page
+activate PS
+PS -> RD: Display permission update UI
+RD -> FM: Display UI
+FM -> RD: Paste list of NetIDs
+RD -> PS: Validate and process NetIDs
+activate PS
+PS -> DB: Update permissions for NetIDs
+activate DB
+DB --> PS: Confirmation
+deactivate DB
+PS --> RD: Display confirmation message
+RD --> FM: Show confirmation that DDR recognizes the NetIDs
+deactivate PS
+
+== Manually Remove Permissions ==
+FM -> RD: Request to remove permissions
+RD -> PS: Process removal request
+PS -> DB: Update permissions in DB
+DB --> PS: Confirmation of removal
+PS --> RD: Update UI with confirmation
+RD --> FM: Display updated status
+
+== Set Submission Window ==
+FM -> RD: Request to set begin and end dates
+RD -> PS: Display date setting UI
+FM -> RD: Inputs begin and end dates
+RD -> PS: Update submission window in DB
+PS -> DB: Store new dates
+DB --> PS: Date update confirmation
+PS --> RD: Inform about successful update
+RD --> FM: Show success message
+
+== Check Submission Status ==
+FM -> RD: Request submission status page
+RD -> PS: Query submission status
+PS -> DB: Get submission data
+DB --> PS: Return submission data
+PS --> RD: Process and format submission status
+RD --> FM: Display submission status screen
+
+deactivate RD
+
+@enduml
+```
+
+This sequence diagram starts with the faculty member navigating to the repository dashboard to manage class members' permissions, including granting and removing permissions via NetIDs, setting a submission window, and checking the submission status. The process involves interactions with the Permission Service, which validates inputs, communicates with the repository database for updating permissions, setting date windows, and fetching submission statuses, and finally confirming the actions back to the faculty member through the repository dashboard UI.
+
+Please note, the specifics of how the Permission Service validates and processes NetIDs, interacts with other components (like an authentication system), or how the Repository Dashboard is implemented, may vary depending on the actual system architecture and requirements. This diagram provides a high-level view suitable for initial discussions and planning.

@@ -1,0 +1,42 @@
+Below is a detailed sequence diagram written in PlantUML syntax, mapping out the process for a library manager tracking the new books added to the current collection on a monthly basis within the Comprehensive Library Management System (CLMS). This representation covers the interaction between the manager, the system interface, and the back-end services responsible for fetching and displaying the new book data.
+
+```plantuml
+@startuml
+participant Manager_UI as "Manager Interface"
+participant Authentication_Service as "Auth Service"
+participant Database as "Database"
+participant Report_Generator as "Report Generator"
+
+Manager_UI->Authentication_Service: Login(credentials)
+Authentication_Service->Database: Validate user info
+Database->Authentication_Service: User valid
+Authentication_Service->Manager_UI: Authentication success
+
+Manager_UI->Report_Generator: Request new books report for the month
+Report_Generator->Database: Fetch new books data (monthly)
+Database->Report_Generator: Return new books data
+Report_Generator->Manager_UI: Display report with new books
+
+Manager_UI->Manager_UI: View and analyze report
+
+@enduml
+```
+
+### Explanation:
+
+1. **Manager Interface (Manager_UI):** This represents the system component with which the library manager interacts. It serves as the entry point for requesting reports on new books added to the collection.
+
+2. **Authentication Service:** Before accessing sensitive data such as reports on new book additions, the manager must be authenticated. This component verifies the credentials against the user information stored in the database.
+
+3. **Database:** This is the backend storage system that contains all information about books, users, transactions, and more. It is queried to validate user info for authentication and to fetch the required data for generating reports on newly added books.
+
+4. **Report Generator:** This component is responsible for generating the requested monthly new books report. It queries the database to gather information about newly added books for the specified month and then formats this data into a report for the manager to view.
+
+5. **Process Flow:**
+    - The library manager inputs their login credentials in the Manager Interface, which sends these credentials to the Authentication Service for validation.
+    - Upon successful authentication, the manager requests a report on new books added for the month through the Manager Interface.
+    - The request is processed by the Report Generator, which fetches the relevant data from the Database.
+    - The Database returns the data on new book additions for the month to the Report Generator.
+    - Finally, the Report Generator provides the formatted report to the Manager Interface for display, where the manager can view and analyze the new additions to the library's collection.
+
+This sequence diagram outlines a specific use case tailored to the Comprehensive Library Management System's capability to support library managers in tracking new additions to the book collection on a monthly basis.

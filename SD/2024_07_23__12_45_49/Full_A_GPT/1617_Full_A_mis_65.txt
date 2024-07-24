@@ -1,0 +1,40 @@
+Creating a sequence diagram for the specific user story, "As a repository manager, I want to view available versions of an object and restore a version from the staff interface," involves visualizing the interactions between the user and the system components within the Enhanced Digital Repository Management System (EDRMS).
+
+```plantuml
+@startuml
+
+participant "Repository Manager" as Manager
+participant "Staff Interface" as Interface
+participant "Version Control" as VersionControl
+database "EDRMS Database" as Database
+
+Manager -> Interface : Request object versions
+Interface -> VersionControl : Retrieve versions list
+VersionControl -> Database : Query available versions
+Database --> VersionControl : Return versions data
+VersionControl --> Interface : Show versions to manager
+Interface --> Manager : Display versions
+
+Manager -> Interface : Select version to restore
+Interface -> VersionControl : Initiate version restore
+VersionControl -> Database : Restore selected version
+Database --> VersionControl : Confirm restoration
+VersionControl --> Interface : Notify restoration success
+Interface --> Manager : Display success message
+
+@enduml
+```
+
+In this sequence diagram:
+
+1. **The Repository Manager** initiates the process by requesting to view the available versions of an object through the **Staff Interface**.
+2. The **Staff Interface** then communicates with the **Version Control** system to retrieve a list of available versions for the requested object.
+3. **Version Control** queries the **EDRMS Database** to get the data on available versions.
+4. The **Database** returns the version information back to the **Version Control** system.
+5. **Version Control** sends this information back to the **Staff Interface**, which then displays the versions to the **Repository Manager**.
+6. The **Repository Manager** selects a version of the object to restore and communicates this choice through the **Staff Interface**.
+7. The **Staff Interface** sends a request to **Version Control** to restore the selected version.
+8. **Version Control** executes the restoration command on the **EDRMS Database**.
+9. Once the restoration is confirmed by the **Database**, a success message is routed back through **Version Control** and the **Staff Interface** to the **Repository Manager**.
+
+This sequence diagram assumes a simplified interaction flow and may need adjustments to fit the specific implementation details and technologies used in the EDRMS project.

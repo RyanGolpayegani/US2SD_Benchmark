@@ -1,0 +1,26 @@
+@startuml
+actor Applicant
+participant "County Portal" as Portal
+participant "Authentication Service" as Auth
+participant "Application Service" as AppService
+participant "Payment Service" as Payment
+participant "Database" as DB
+participant "County Staff" as Staff
+
+Applicant -> Portal: Access Portal
+Portal -> Auth: Request Authentication
+Auth --> Applicant: Authenticate Credentials
+Applicant -> Portal: Select Service & Fill Application
+Portal -> AppService: Initiate Application Process
+AppService -> DB: Store Initial Application Data
+AppService --> Applicant: Request Supporting Documents & Payment
+Applicant -> Portal: Upload Documents & Proceed to Payment
+Portal -> Payment: Process Payment
+Payment --> Applicant: Confirm Payment
+Payment -> AppService: Update Application Status (Paid)
+AppService -> DB: Save Final Application + Docs
+DB --> Portal: Confirmation Message
+Portal --> Applicant: Application Submitted Successfully
+AppService -> Staff: Notify New Application
+
+@enduml

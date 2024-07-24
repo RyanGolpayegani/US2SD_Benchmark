@@ -1,0 +1,44 @@
+@startuml
+participant Researcher as res
+participant "Electronic Log Book" as elb
+participant "Data Management System" as dms
+
+res -> elb: Access Experiment Entry
+activate elb
+
+elb -> dms: Retrieve Experiment Data
+activate dms
+dms --> elb: Display Data
+deactivate dms
+
+res -> elb: Select Data to Evaluate
+activate elb
+
+res -> elb: Mark Data as Good/Bad
+activate elb
+
+group Marking Bad Data
+    elb -> dms: Mark Data as Bad
+    activate dms
+    dms -> dms: Hide Data in UI
+    dms --> elb: Confirm Hide Action
+    deactivate dms
+    note right of dms: Data remains in the system\nfor potential future use.
+end
+
+group Marking Good Data
+    elb -> dms: Mark Data as Good
+    activate dms
+    dms --> elb: Keep Data Visible
+    deactivate dms
+end
+
+res -> elb: Submit Evaluation
+elb -> dms: Update Data Metadata
+activate dms
+dms --> elb: Confirmation Message
+deactivate dms
+
+deactivate elb
+
+@enduml

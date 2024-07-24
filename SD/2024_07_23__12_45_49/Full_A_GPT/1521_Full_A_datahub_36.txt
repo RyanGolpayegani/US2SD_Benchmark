@@ -1,0 +1,44 @@
+To create a detailed Sequence Diagram for the described user story "As a Consumer, I want to download a DataPackage’s data one coherent SQLite database, so that I can get it easily in one form" using PlantUML, you'd start by defining all the system components that will interact through this process. These components include the User (Consumer), the User Interface (UI), Server/API, Database, Data Processing Module, and perhaps an External Data Storage if applicable. Here is how you might define this in PlantUML syntax:
+
+```plantuml
+@startuml
+participant Consumer as C
+participant "UI" as UI
+participant "Server/API" as S
+participant "Data Processing Module" as DPM
+participant "Database" as DB
+participant "External Data Storage" as EDS
+
+C -> UI : Request data package in SQLite format
+UI -> S : API call to fetch data package
+S -> DB : Query for data package details/availability
+DB -> S : Return data package metadata
+S -> DPM : Request to package data in SQLite format
+DB -> DPM : Send raw data package
+DPM -> EDS : Store SQLite formatted data temporarily
+EDS -> DPM : Return URL for download
+DPM -> S : Pass URL for download
+S -> UI : Provide download URL to Consumer
+UI -> C : Display download link
+C -> UI : Initiate download
+UI -> EDS : Request download via URL
+EDD -> C : Send SQLite database to Consumer
+
+@enduml
+```
+
+Explanation:
+1. **Consumer to UI**: The consumer initiates the download process by requesting the desired data package in an SQLite database format through the platform's UI.
+2. **UI to Server/API**: This request is translated into an API call by the UI, requesting the specific data package from the server.
+3. **Server/API to Database**: The server queries its database for details and availability of the requested data package.
+4. **Database to Server/API**: The database returns the metadata of the data package to the server.
+5. **Server/API to Data Processing Module**: The server requests the Data Processing Module to package the requested data in SQLite format.
+6. **Database to Data Processing Module**: The raw data package is sent to the Data Processing Module to be processed.
+7. **Data Processing Module to External Data Storage**: Once the data package is formatted into an SQLite file, it's stored temporarily in external data storage for download.
+8. **External Data Storage to Data Processing Module**: The external storage returns a download URL to the Data Processing Module.
+9. **Data Processing Module to Server/API**: The Data Processing Module passes the download URL back to the server.
+10. **Server/API to UI**: The server provides the UI with the download URL.
+11. **UI to Consumer**: The UI displays the download link to the consumer.
+12. **Consumer to UI to External Data Storage to Consumer**: The consumer initiates the download through the UI, which requests the SQLite database from the external data storage, and it's then sent directly to the consumer.
+
+This sequence diagram captures the detailed process a Consumer would follow to download a data package in SQLite format from the Data Registry and Publishing Platform.

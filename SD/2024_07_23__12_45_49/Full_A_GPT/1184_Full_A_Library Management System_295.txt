@@ -1,0 +1,62 @@
+Below is a detailed sequence diagram in PlantUML language, which represents the interaction for a library member who wants to check out new books in order to borrow them. This scenario involves the member browsing through a list of newly added books through the Comprehensive Library Management System (CLMS).
+
+```plantuml
+@startuml
+participant Member
+participant CLMS_Interface as Interface
+participant BookManagementSystem as BMS
+participant Database
+
+Member -> Interface : Requests to view new books
+activate Interface
+
+Interface -> BMS : Fetch new books list
+activate BMS
+
+BMS -> Database : Query new books
+activate Database
+
+Database --> BMS : New books data
+deactivate Database
+
+BMS --> Interface : Display new books list
+deactivate BMS
+
+Interface --> Member : Shows new books
+deactivate Interface
+
+Member -> Interface : Selects a book to borrow
+activate Interface
+
+Interface -> BMS : Request to borrow book
+activate BMS
+
+BMS -> Database : Check book availability
+activate Database
+
+Database --> BMS : Book is available
+deactivate Database
+
+BMS --> Interface : Confirm book can be borrowed
+deactivate BMS
+
+Interface --> Member : Confirm borrowing and due date
+deactivate Interface
+
+@enduml
+```
+
+This diagram illustrates the following steps for the user story:
+
+1. The Member initiates the process by requesting to view new books through the library's digital interface.
+2. The Interface system forwards this request to the Book Management System (BMS) to fetch the list of new books.
+3. The BMS queries the Database for the list of new books that have been added.
+4. The Database returns the data concerning new books back to the BMS.
+5. The BMS passes this information to the Interface, which in turn displays the list of new books to the Member.
+6. The Member selects a book they are interested in borrowing.
+7. The Interface sends a request to borrow the selected book to the BMS.
+8. The BMS checks the book's availability in the Database.
+9. Once availability is confirmed, the BMS informs the Interface that the book can be borrowed.
+10. The Interface then confirms to the Member that the book has been successfully reserved for borrowing, including information on the due date for returning the book.
+
+Please note that for real-world applications, additional steps like authentication for the Member, more detailed interaction for borrowing (e.g., handling of limitations, fines, or confirmations), or integration with notifications systems for alerting about the due dates could be added for a more comprehensive sequence.

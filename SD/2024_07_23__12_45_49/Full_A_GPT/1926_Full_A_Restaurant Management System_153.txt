@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the specified user story involves depicting how different system components interact with each_triggered by the manager wanting to keep track of customer orders. Here's a PlantUML code snippet that outlines these interactions:
+
+```plantuml
+@startuml
+participant Manager
+participant "Management Interface" as MI
+participant "Backend System" as BS
+participant "Order Management Module" as OMM
+participant "Database" as DB
+
+Manager -> MI : Access Order Tracking
+MI -> BS : Request Order Data
+BS -> OMM : Fetch Order Details
+OMM -> DB : Query Order Records
+DB -> OMM : Return Order Details
+OMM -> BS : Aggregate and Process Order Data
+BS -> MI : Send Processed Order Data
+MI -> Manager : Display Order Tracking Information
+
+note over Manager : Reviews order data\nto perform calculations
+note over DB : Includes Customer Orders,\nPayment Info, Timestamps
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Manager**: The restaurant manager initiates the process by accessing the order tracking functionality through the management interface. This is the starting point of the interaction, driven by the manager's need to perform various calculations based on customer orders.
+
+2. **Management Interface (MI)**: Acts as the front end through which the manager interacts with the system. It receives the request to access order data and forwards it to the backend system.
+
+3. **Backend System (BS)**: Serves as the bridge between the front-end interface and the more complex operations handled in the backend. It receives the request from the management interface to fetch order details.
+
+4. **Order Management Module (OMM)**: A specialized component within the backend system responsible for managing everything related to orders. It processes the request to fetch order details by querying the database.
+
+5. **Database (DB)**: Stores all the data related to orders, including customer information, order contents, payment details, and timestamps. It returns the requested order details to the order management module upon query.
+
+6. **Flow of Information**: After the database provides the order details, the information flow reverses — moving back up the chain. The order management module aggregates and processes the order data, sending it to the backend system, which then forwards the processed data to the management interface.
+
+7. **Manager’s Review**: Finally, the management interface displays the order tracking information to the manager, allowing for review and subsequent calculations. This might include performing profitability analysis, understanding customer ordering patterns, or assessing the popularity of certain menu items.
+
+This sequence diagram emphasizes the systematic approach to meeting a manager's need to track customer orders for analysis and decision-making purposes. It showcases the interactions across different system components, highlighting the flow of information and the roles of each part in facilitating the process.

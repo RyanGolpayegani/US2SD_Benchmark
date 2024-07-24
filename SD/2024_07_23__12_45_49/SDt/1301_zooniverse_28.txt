@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+
+participant "Volunteer" as volunteer
+participant "AMIDP System" as system
+participant "Annotation Module" as annotation
+participant "Discussion Forum (Talk)" as talk
+participant "Analysis Engine" as engine
+participant "Notification Service" as notification
+participant "Scientist" as scientist
+
+== New Annotation / Talk Comment ==
+
+volunteer -> system: Submit Annotation
+volunteer -> talk: Post Comment in Talk
+
+alt Annotation meets criteria
+  system -> annotation: Analyse Annotation
+  annotation -> engine: Evaluate Need for Review
+else Comment indicates need
+  talk -> engine: Detect Key Phrases
+  engine -> engine: Evaluate Need for Review
+end
+
+engine -> notification: Determine Notification Need
+notification -> scientist: Send Prompt to Review Subject
+
+@enduml

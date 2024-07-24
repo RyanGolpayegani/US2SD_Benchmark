@@ -1,0 +1,54 @@
+To illustrate the scenario where a collection curator wants to require authentication to access objects unless the request comes from a whitelisted IP address, we will create a sequence diagram in PlantUML syntax. This diagram will detail the interaction between a user (potentially a collection curator), the system (Enhanced Digital Repository Management System - EDRMS), and the authentication component.
+
+```
+@startuml
+participant User
+participant "EDRMS System" as EDRMS
+participant "Authentication Service" as Auth
+participant "IP Whitelist Checker" as IPCheck
+
+User -> EDRMS : Request Object
+EDRMS -> IPCheck : Verify IP Address
+alt IP Not Whitelisted
+    IPCheck -> EDRMS : IP Not Whitelisted
+    EDRMS -> Auth : Request Authentication
+    User -> Auth : Authenticate
+    alt Authentication Success
+        Auth -> EDRMS : Access Granted
+        EDRMS -> User : Provide Access to Object
+    else Authentication Failure
+        Auth -> EDRMS : Access Denied
+        EDRMS -> User : Deny Access
+    end
+else IP Whitelisted
+    IPCheck -> EDRMS : IP Whitelisted
+    EDRMS -> User : Provide Direct Access to Object
+end
+@enduml
+```
+
+### Explanation:
+
+1. **User -> EDRMS : Request Object**: This sequence begins with the user requesting access to an object within the EDRMS. The user could be a curator, a faculty member, or any other stakeholder.
+
+2. **EDRMS -> IPCheck : Verify IP Address**: The EDRMS system then checks the IP address of the request against a whitelist to determine if it should bypass authentication.
+
+3. **IP Not Whitelisted / IP Whitelisted**: Two paths are possible here:
+   
+   - If the IP address is not on the whitelist, the system asks for authentication.
+   - If the IP address is on the whitelist, the system grants direct access to the requested object.
+
+4. **IPCheck -> EDRMS : IP Not Whitelisted / IP Whitelisted**: The IP Whitelist Checker informs the EDRMS system whether the IP is whitelisted or not.
+
+5. **EDRMS -> Auth : Request Authentication (For Non-Whitelisted IPs)**: If the IP is not whitelisted, the system requests authentication from the user.
+
+6. **User -> Auth : Authenticate**: The user attempts to authenticate.
+
+7. **Authentication Success / Authentication Failure**: The system may respond in two ways based on whether the authentication was successful:
+   
+   - **Authentication Success**: The user is granted access to the requested object.
+   - **Authentication Failure**: The user is denied access.
+
+8. **EDRMS -> User : Provide Access to Object / Deny Access**: Finally, the system either provides access to the requested object or denies access based on the outcome of the authentication process and/or IP whitelist check.
+
+This sequence diagram captures the nuanced process of requiring authentication for accessing objects in the EDRMS, contingent upon whether the request originates from a whitelisted IP address or not.

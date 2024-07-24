@@ -1,0 +1,54 @@
+Given the user story, we will create a detailed sequence diagram in PlantUML format for the process where an Inspector conducts inspections to validate customer compliance with codes and regulations and provides the results of the inspection to the customer. This example assumes a digital portal workflow where inspectors interact with a system to manage and report inspection details.
+
+```plantuml
+@startuml
+actor Inspector
+participant "Inspection Portal" as Portal
+database "Inspection Database" as DB
+participant "Customer Account" as Customer
+
+== Inspection Assignment ==
+Inspector -> Portal : Log in
+Portal -> DB : Validate Inspector credentials
+DB -> Portal : Credentials Validated
+Portal -> Inspector : Show Dashboard
+
+Inspector -> Portal : Select Assigned Inspections
+Portal -> DB : Retrieve Assigned Inspections
+DB -> Portal : List of Assigned Inspections
+Portal -> Inspector : Display Assigned Inspections
+
+== Conducting Inspection ==
+Inspector -> Portal : Select Inspection
+Portal -> Inspector : Display Inspection Details & Checklist
+
+loop Inspection Item
+    Inspector -> Portal : Validate Compliance for each item
+    Portal -> Inspector : Record Compliance Status
+end
+
+Inspector -> Portal : Submit Inspection Results
+Portal -> DB : Update Inspection Record
+DB -> Portal : Confirmation of Update
+
+== Providing Results to Customer ==
+Portal -> Customer : Notify of Inspection Completion
+Customer -> Portal : Log in to view results
+Portal -> Customer : Display Inspection Results
+
+Customer -> Portal : Acknowledge Receipt
+Portal -> DB : Update Acknowledgement Status
+DB -> Portal : Acknowledgement Recorded
+
+@enduml
+```
+
+### Explanation:
+
+1. **Inspection Assignment**: The inspector logs into the portal, where the system validates their credentials against the inspection database. Upon successful login, the inspector is shown their dashboard with assigned inspections.
+
+2. **Conducting Inspection**: The inspector selects an inspection to conduct from their list of assigned inspections. The portal displays the details and checklist for the selected inspection. The inspector goes through each item, validating compliance, and the portal records the compliance status for each item checked. Once completed, the inspector submits the inspection results, which the portal then updates in the inspection database.
+
+3. **Providing Results to Customer**: Upon successful update, the portal automatically notifies the customer of the inspection completion. The customer logs into their account to view the results. After the customer acknowledges receipt of the inspection results, the portal updates this status in the database, completing the process.
+
+This sequence diagram describes the workflow from the perspective of the system (portal) interactions with the inspector and indirectly with the customer. It encapsulates the main steps involved in conducting inspections and providing results within a digital portal environment.

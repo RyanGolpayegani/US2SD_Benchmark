@@ -1,0 +1,23 @@
+@startuml
+participant "Management User" as user
+participant "Web Interface" as web
+participant "Server: Inventory Controller" as controller
+database "Database" as db
+
+user -> web : Request Inventory Stock Information
+activate web
+
+web -> controller : GetInventoryStock()
+activate controller
+
+controller -> db : Query Inventory Data
+activate db
+db --> controller : Inventory Data
+deactivate db
+
+controller --> web : Inventory Stock Information
+deactivate controller
+
+web --> user : Display Inventory Stock Information
+deactivate web
+@enduml

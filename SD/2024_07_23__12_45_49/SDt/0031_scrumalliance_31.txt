@@ -1,0 +1,21 @@
+@startuml
+participant Admin as A
+participant "Admin Interface" as AI
+participant "Course/Event Management System" as CEMS
+participant "Database" as DB
+
+A -> AI : Selects course/event to delete
+AI -> CEMS : Request deletion of selected course/event
+activate CEMS
+CEMS -> DB : Verify course/event exists
+activate DB
+DB --> CEMS : Confirmation of existence
+deactivate DB
+CEMS -> DB : Delete course/event from database
+activate DB
+DB --> CEMS : Confirm deletion
+deactivate DB
+CEMS --> AI : Confirm successful deletion
+deactivate CEMS
+AI --> A : Display deletion success message
+@enduml

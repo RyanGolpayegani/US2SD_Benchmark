@@ -1,0 +1,46 @@
+To illustrate the process detailed in the user story as a sequence diagram in PlantUML format, consider the following steps: User authentication, data package submission, validation, storage on the publisher’s server, caching by the registry, and finally publication confirmation. Here's how these steps can be translated into a PlantUML sequence diagram:
+
+```plantuml
+@startuml
+participant Publisher as pub
+participant "Authentication Service" as auth
+participant "Data Publishing Interface" as dpi
+participant "Validation Service" as validate
+participant "Publisher's Server" as server
+participant "Registry Cache" as cache
+participant "Publication Confirmation" as confirm
+
+pub -> auth: Authenticate\n(GitHub, Google)
+auth --> pub: Authentication Success
+
+pub -> dpi: Submit Data Package
+dpi -> validate: Validate Data Package
+validate --> dpi: Validation Success
+
+dpi -> server: Store Data on Publisher's Server
+server --> dpi: Data Stored Successfully
+
+dpi -> cache: Cache Copy of Data Package
+cache --> dpi: Caching Successful
+
+dpi -> confirm: Publish Data Package
+confirm --> pub: Publication Success Notification
+
+@enduml
+```
+
+### Explanation of the Diagram:
+
+1. **Authentication**: The Publisher logs in through an authentication service, which could be via GitHub or Google integration, ensuring the user is authenticated before any data package submission.
+
+2. **Submit Data Package**: Once authenticated, the Publisher submits the data package to the Data Publishing Interface (DPI).
+
+3. **Validation**: The DPI forwards the data package to a Validation Service to ensure its accuracy and integrity. On success, it moves to the next step.
+
+4. **Storage on Publisher’s Server**: The DPI instructs to store the data on the Publisher's own server, ensuring that the original data source is controlled by the Publisher.
+
+5. **Caching by the Registry**: Once the data is confirmed stored on the Publisher's server, the DPI requests the Registry Cache to store a copy of the data package. This ensures availability even if the original data gets lost or broken.
+
+6. **Publication Confirmation**: Finally, the DPI confirms the successful publication of the data package to the Publisher, which includes the successful caching of the data by the registry.
+
+This sequence diagram represents a high-level overview of the interactions and steps involved from the perspective of a Publisher intending to publish a data package with resources stored on their servers while ensuring the registry caches a copy.

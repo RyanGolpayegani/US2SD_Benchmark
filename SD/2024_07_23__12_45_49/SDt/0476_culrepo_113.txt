@@ -1,0 +1,25 @@
+@startuml
+participant Patron
+participant "Contact Page" as CP
+participant "Email System" as ES
+participant "Support Team" as ST
+
+Patron -> CP: Access Contact Page
+note right of Patron: Patron searches for\ncontact options
+CP --> Patron: Display Contact Options\n(Email form/link)
+Patron -> CP: Selects Email Option
+note over Patron,CP: If a direct email interface is used:\n
+Patron -> CP: Fill in and submit email form
+CP -> ES: Forward Email Content
+else If a mailto link is provided:
+Patron -> ES: Open default email client
+Patron -> ES: Compose and send email
+end
+ES -> ST: Deliver Email
+note right of ST: Email is received by\nSystem Provider's Support Team
+ST --> ES: Acknowledgment Email to Patron\n(optional, if automated)
+ES -> Patron: Deliver Acknowledgment Email\n(optional, if automated)
+ST -> Patron: Respond to Query/Report
+note over ST, Patron: Response time may vary
+
+@enduml

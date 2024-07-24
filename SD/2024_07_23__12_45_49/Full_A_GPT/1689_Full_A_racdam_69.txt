@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for the mentioned user story: "As a researcher, I want to access tagged working through the Digital Archive Management Enhancement Project", involves capturing the interaction between the researcher, the system's user interface (UI), server, database, and potentially other systems involved in delivering the tagged working papers. Below is a PlantUML script that outlines these interactions.
+
+```plantuml
+@startuml
+actor Researcher as researcher
+participant "UI: Web Interface" as UI
+participant "Server: Application Logic" as server
+participant "Database" as db
+
+researcher -> UI : Enter search criteria with specific tags
+UI -> server : Request working papers with tags
+server -> db : Query for tagged working papers
+db --> server : Return search results
+server --> UI : Display working papers
+UI --> researcher : Show list of working papers with tags
+
+alt Download Request
+    researcher -> UI : Request to download selected working paper
+    UI -> server : Verify access rights and request download
+    server -> db : Check for restrictions
+    db --> server : Restrictions status
+    alt No Restrictions
+        server -> db : Log download action
+        db --> server : Log confirmed
+        server -> UI : Initiate download
+        UI --> researcher : Provide download link
+    else Restrictions Found
+        server --> UI : Display restriction message
+        UI --> researcher : Show restriction message
+    end
+end
+
+@enduml
+```
+
+This PlantUML diagram describes the following process for a researcher wanting to access tagged working papers:
+
+1. **Researcher Interaction**: The researcher interacts with the web interface to input search criteria including specific tags related to the working papers they are interested in.
+2. **System Processing Request**: The server receives the request to find tagged working papers, queries the database, and retrieved papers are sent back to the web interface.
+3. **Display Results**: The server sends the results to the UI, which then displays the list of working papers to the researcher.
+4. **Downloading Process**: If the researcher decides to download a paper, the process checks for any access restrictions on the paper. If no restrictions are found, the download is logged, and the researcher is provided with a download link. If there are restrictions, a message is displayed to the researcher.
+
+This script represents a basic interaction flow and can be expanded based on additional rules or functionalities related to the system's user access levels, specific database interaction details, or more complex operations related to downloading and accessing digital archival materials.

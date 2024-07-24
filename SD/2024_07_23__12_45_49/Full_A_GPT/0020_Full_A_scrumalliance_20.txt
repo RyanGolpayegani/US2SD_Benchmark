@@ -1,0 +1,44 @@
+To represent the user story "As a site editor, I want to assign priority numbers to news items, so that I can indicate which articles I want featured most prominently on the site" as a sequence diagram in PlantUML format, we'll outline the interactions between the Site Editor and the different components of the Scrum Alliance Community Platform, focusing especially on the process involving news items' priority setting.
+
+Below is a PlantUML sequence diagram code representing this process:
+
+```plantuml
+@startuml
+actor "Site Editor" as editor
+participant "UI: News Management" as UINews
+participant "News Controller" as Controller
+database "News Database" as DB
+
+== Assign Priority to News Item ==
+editor -> UINews : Selects "Edit News"
+UINews -> Controller : Request edit form for news item(id)
+Controller -> DB : Fetch news item details(id)
+DB -> Controller : Return news item details
+Controller -> UINews : Show news item details
+editor -> UINews : Assign priority number to news item
+UINews -> Controller : Update news item with new priority(id, priority)
+Controller -> DB : Save updated news item
+DB -> Controller : Confirm news item updated
+Controller -> UINews : Display success message
+UINews -> editor : Confirmation of priority update
+
+@enduml
+```
+
+Explanation of the Sequence Diagram steps:
+
+1. **Site Editor Interaction:** The Site Editor initiates the process by selecting the option to edit news within the News Management interface of the UI (User Interface).
+
+2. **Fetching News Item Details:**
+   - The request for the edit form along with the specified news item ID is sent to the News Controller.
+   - The News Controller asks the News Database for the details of the news item by its ID.
+   - The News Database returns the news item details to the News Controller.
+   - The News Controller then sends the details to the UI to display the news item information to the Site Editor.
+
+3. **Assigning Priority:**
+   - The Site Editor assigns a new priority number through the News Management UI.
+   - This updated priority, along with the news item ID, is sent to the News Controller.
+   - The News Controller updates the news item with the new priority in the News Database.
+   - Once the update is confirmed by the Database, the News Controller instructs the UI to show a success message to the Site Editor.
+
+This sequence diagram focuses on the interactions required for a Site Editor to successfully assign priority numbers to news items, portraying a simplified view of the process for clarity and comprehensibility.

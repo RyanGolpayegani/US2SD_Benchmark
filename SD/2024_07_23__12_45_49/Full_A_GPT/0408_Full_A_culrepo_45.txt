@@ -1,0 +1,41 @@
+To create a detailed sequence diagram for the described user story using PlantUML, follow this structured approach. The process involves several components: the Faculty Member (user), a Web Interface (UI), Authorization Service, Search Service, and the Repository Database.
+
+This sequence diagram represents the steps a Cornell faculty member might take to search for dissertations in the repository for which they have been a thesis committee member.
+
+```plantuml
+@startuml
+participant "Faculty Member" as faculty
+participant "Web Interface" as UI
+participant "Authorization Service" as Auth
+participant "Search Service" as Search
+database "Repository Database" as Repo
+
+faculty -> UI : Enter search criteria\n(for dissertations and committee member info)
+UI -> Auth : Request access authentication
+Auth -> UI : Confirm authentication
+UI -> Search : Search request with criteria
+Search -> Repo : Query dissertations by committee member
+Repo -> Search : Return search results
+Search -> UI : Display search results
+UI -> faculty : Show dissertations linked to faculty member
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **Faculty Member initiates the search**: The process starts with the faculty member entering their search criteria related to dissertations and their role as a thesis committee member into the Web Interface (UI).
+
+2. **Authentication Request**: The Web Interface then sends a request to the Authorization Service to authenticate the faculty member's access.
+
+3. **Confirmation of Authentication**: The Authorization Service confirms the user's identity and permissions, then notifies the Web Interface.
+
+4. **Search Service Engagement**: After authentication, the Web Interface forwards the search query, including the criteria provided by the faculty member, to the Search Service.
+
+5. **Repository Database Query**: The Search Service processes the request and queries the Repository Database for dissertations that match the faculty member's role as a committee member.
+
+6. **Results Return to Search Service**: The Repository Database returns the list of dissertations that meet the search criteria to the Search Service.
+
+7. **Display of Search Results**: The Search Service sends these results back to the Web Interface, which then displays them to the faculty member.
+
+This sequence diagram outlines the interactions between the faculty member, web interface, authentication service, search service, and repository database to facilitate the search for specific dissertations in Cornell's digital repository system.

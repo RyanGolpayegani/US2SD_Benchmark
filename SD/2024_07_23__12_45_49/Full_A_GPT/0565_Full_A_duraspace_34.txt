@@ -1,0 +1,46 @@
+Certainly! Below is a PlantUML sequence diagram that details the sequence of events involved in a user requesting and receiving the rights status of an object within the DAMS Integration and Management System (DIMS).
+
+```plantuml
+@startuml
+participant User
+participant DIMS_UI as "DIMS User Interface"
+participant DIMS_Controller as "DIMS Controller"
+participant DIMS_DB as "DIMS Database"
+participant RightsManagementModule as "Rights Management \nModule"
+
+User -> DIMS_UI : Request rights status of object
+DIMS_UI -> DIMS_Controller : Forward rights status request \n(Object ID)
+DIMS_Controller -> DIMS_DB : Query object information \n(Object ID)
+DIMS_DB --> DIMS_Controller : Object metadata
+DIMS_Controller -> RightsManagementModule : Check rights status \n(Object metadata)
+RightsManagementModule -> DIMS_DB : Query rights information \n(Object metadata)
+DIMS_DB --> RightsManagementModule : Rights details
+RightsManagementModule --> DIMS_Controller : Compiled rights status
+DIMS_Controller --> DIMS_UI : Rights status information
+DIMS_UI --> User : Display rights status
+
+@enduml
+```
+This sequence diagram outlines the process from the user's initial request up to the presentation of the rights status information:
+
+1. The **User** initiates a request to know the rights status of a specific object within the DAMS Integration and Management System through the user interface (DIMS UI).
+   
+2. The **DIMS User Interface (DIMS_UI)** receives this request and forwards it to the **DIMS Controller**, including the object's ID for which the rights status is requested.
+   
+3. The **DIMS Controller** queries the **DIMS Database (DIMS_DB)** to retrieve the metadata associated with the specified object ID.
+   
+4. The **DIMS Database** returns the object's metadata to the **DIMS Controller**.
+   
+5. The **DIMS Controller** then requests the **Rights Management Module** to determine the rights status using the object's metadata provided.
+   
+6. The **Rights Management Module** queries the **DIMS Database** for detailed rights information based on the object metadata.
+   
+7. The **DIMS Database** sends the requested rights details back to the **Rights Management Module**.
+   
+8. The **Rights Management Module** compiles the rights status information and returns it to the **DIMS Controller**.
+   
+9. The **DIMS Controller** forwards this rights status information to the **DIMS User Interface**.
+   
+10. Finally, the **DIMS User Interface** displays the rights status to the **User**.
+
+This process ensures that users can seamlessly access the rights status of objects within the DIMS, adhering to the platform's goals of enhancing security, access controls, and user experience in managing and using digital assets.

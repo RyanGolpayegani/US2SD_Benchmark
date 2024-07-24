@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the user story "As a user, I want to download files directly from the search results page" involves depicting the interaction between the user, the system interface, and the backend services that facilitate the file download process. This sequence diagram will utilize PlantUML syntax, which can be executed in a PlantUML environment to visualize the sequence diagram.
+
+```plantuml
+@startuml
+participant User
+participant "Search UI" as UI
+participant "Search Controller" as Controller
+participant "File Service" as FileService
+participant "Data Repository" as Repository
+
+User -> UI: Enter search criteria
+UI -> Controller: Send search request
+Controller -> Repository: Query data
+Repository --> Controller: Return search results
+Controller --> UI: Display search results
+
+User -> UI: Select file(s) for download
+UI -> Controller: Request file download
+Controller -> FileState: Validate download request
+
+alt If file is available and user has permission
+    FileState -> Repository: Request file location
+    Repository --> FileState: Return file location
+    FileState --> Controller: Confirm file ready for download
+    Controller -> FileService: Initiate file download
+    FileService -> Repository: Access file
+    Repository --> FileService: Transfer file data
+    FileService --> User: Download file(s)
+else If file is unavailable or user lacks permission
+    Controller --> UI: Show error message
+end
+
+@enduml
+```
+
+This sequence diagram illustrates the step-by-step process when a user wants to download files directly from the search results page. The process starts with the user entering a search query, which is processed by the system to display the pertinent files. Upon selecting the file(s) for download, the system checks for file availability and user permissions. If the file is available and the user has the necessary permissions, the download process is initiated; otherwise, an error message is displayed.
+
+To visualize this diagram, you would need to input the PlantUML code into a PlantUML-compatible viewer or tool.
+
+Note: The participant "FileState" in the diagram is an intermediary representation and not an actual component; it symbolizes the process checking for file availability and user permissions which might involve complex interactions within the "Search Controller" or separate authorization services, depending on the precise architecture of the Neurohub platform. Adjust the participant name and interactions as per your specific implementation details or architectural design.

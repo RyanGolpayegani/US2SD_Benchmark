@@ -1,0 +1,33 @@
+To translate this user story into a PlantUML sequence diagram format, we'll outline the interactions between different components of the Comprehensive Library Management System (CLMS) as a member tracks their book reservations.
+
+Below is the PlantUML code that represents the specific scenario where a member wants to track the reservations they've made to see the availability status of the books:
+
+```plantuml
+@startuml
+actor Member
+participant "Web Interface" as Web
+database "CLMS Database" as DB
+participant "Reservation System" as RS
+
+Member -> Web: Access Reservation Tracking
+activate Web
+
+Web -> RS: Request Reservation Status(MemberID)
+activate RS
+
+RS -> DB: Query Reservation Details(MemberID)
+activate DB
+DB --> RS: Return Reservation Details
+deactivate DB
+
+RS --> Web: Display Reservation Status
+deactivate RS
+
+Web --> Member: Show Reservation Status
+deactivate Web
+@enduml
+```
+
+This sequence diagram starts with the Member initiating a request to track their reservations through the "Web Interface". The Web Interface then communicates with the "Reservation System" to request the status of reservations linked to the member's ID. The Reservation System queries the CLMS Database for reservation details associated with that MemberID. Upon receiving the request, the database processes it and returns the reservation details (such as book title, reservation status, expected availability date, etc.) back to the Reservation System. The Reservation System then passes this information to the Web Interface, which in turn, presents it to the Member.
+
+This diagram represents a straightforward sequence of interactions facilitating a member in tracking their book reservations, highlighting the cooperative functionality between different components of the Comprehensive Library Management System designed to enhance the library experience for its users.

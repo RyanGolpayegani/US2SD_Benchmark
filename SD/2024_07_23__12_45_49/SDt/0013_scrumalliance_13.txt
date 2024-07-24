@@ -1,0 +1,56 @@
+@startuml
+actor Admin as "Site Administrator"
+entity "Certification System" as CertificationSys
+database "Application DB" as AppDB
+
+Admin -> CertificationSys : Log in to Admin Panel
+activate CertificationSys
+
+CertificationSys -> AppDB : Retrieve Pending Applications
+activate AppDB
+
+AppDB --> CertificationSys : List of Pending Applications
+deactivate AppDB
+
+CertificationSys --> Admin : Display Pending Applications
+deactivate CertificationSys
+
+Admin -> CertificationSys : Select Application to Review
+activate CertificationSys
+
+CertificationSys -> AppDB : Fetch Application Details
+activate AppDB
+
+AppDB --> CertificationSys : Application Data
+deactivate AppDB
+
+CertificationSys --> Admin : Show Application Details
+deactivate CertificationSys
+
+Admin -> CertificationSys : Evaluate Application Details
+activate CertificationSys
+
+Admin -> CertificationSys : Approve/Reject Application
+activate CertificationSys
+
+CertificationSys -> AppDB : Update Application Status
+activate AppDB
+
+AppDB --> CertificationSys : Confirmation
+deactivate AppDB
+
+CertificationSys --> Admin : Display Status Update
+deactivate CertificationSys
+
+group Approval Process
+    Admin -> CertificationSys : Notify Applicant by Email
+    CertificationSys -> "Email System" : Send Approval/Rejection Email
+    activate "Email System"
+    "Email System" --> Admin : Email Sent Confirmation
+    deactivate "Email System"
+end
+
+Admin -> CertificationSys : Log out
+deactivate CertificationSys
+
+@enduml

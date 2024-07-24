@@ -1,0 +1,68 @@
+@startuml
+participant Depositor
+participant WebClient as "Web Client"
+participant WebInterface as "Web Interface"
+participant DataManager as "Data Manager"
+participant ArchiveSystem as "Archive System"
+participant VRE as "Virtual Research Environment"
+participant ExternalSystems as "External Systems\n(Pure/Opus)"
+participant DOIService as "DOI Service"
+participant MetadataService as "Metadata Service"
+participant AccessControl as "Access Control"
+participant CollaborationTools as "Collaboration Tools"
+
+Depositor -> WebClient : Access platform
+WebClient -> WebInterface : Request data management page
+activate WebInterface
+
+WebInterface -> DataManager : Verify depositor access
+activate DataManager
+DataManager -> AccessControl : Check access rights
+activate AccessControl
+AccessControl --> DataManager : Access Granted
+deactivate AccessControl
+DataManager --> WebInterface : Access confirmed
+
+WebInterface --> WebClient : Display data management options
+deactivate WebInterface
+
+WebClient -> WebInterface : Upload "live" data
+activate WebInterface
+
+WebInterface -> DataManager : Initiate data upload
+DataManager -> ArchiveSystem : Deposit data
+activate ArchiveSystem
+ArchiveSystem -> VRE : Link data to project
+activate VRE
+VRE --> ArchiveSystem : Data linked
+deactivate VRE
+
+ArchiveSystem -> DOIService : Request DOI
+activate DOIService
+DOIService --> ArchiveSystem : DOI minted
+deactivate DOIService
+
+ArchiveSystem -> MetadataService : Generate metadata
+activate MetadataService
+MetadataService --> ArchiveSystem : Metadata attached
+deactivate MetadataService
+
+ArchiveSystem -> ExternalSystems : Sync with University systems
+activate ExternalSystems
+ExternalSystems --> ArchiveSystem : Data synced
+deactivate ExternalSystems
+
+ArchiveSystem --> DataManager : Data deposit successful
+DataManager -> AccessControl : Set embargoes and permissions
+AccessControl --> DataManager : Embargoes and permissions set
+
+DataManager -> CollaborationTools : Share data with collaborators
+activate CollaborationTools
+CollaborationTools --> DataManager : Data shared
+deactivate CollaborationTools
+
+DataManager --> WebInterface : Confirm "live" data shared
+WebInterface --> WebClient : Display confirmation message
+deactivate WebInterface
+
+@enduml

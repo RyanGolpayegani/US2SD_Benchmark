@@ -1,0 +1,19 @@
+@startuml
+!theme amiga
+participant LibraryMember as LM
+participant CLMS_Interface as CI
+participant ReservationSystem as RS
+participant Database as DB
+
+LM -> CI : Enter search criteria for book
+CI -> RS : Request availability for book
+RS -> DB : Query book details
+DB --> RS : Return book details including availability status
+RS --> CI : Inform book is unavailable, but reserved
+CI -> RS : Request due date for reserved book
+RS -> DB : Query reservation details
+DB --> RS : Provide due date for the reserved book
+RS --> CI : Return due date to interface
+CI --> LM : Display due date to library member
+LM -> CI : Decide to wait or buy from external source
+@enduml

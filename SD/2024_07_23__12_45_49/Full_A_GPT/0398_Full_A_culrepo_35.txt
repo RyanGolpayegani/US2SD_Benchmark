@@ -1,0 +1,69 @@
+Creating a sequence diagram for the user story provided involves detailing the interaction between the researcher, the digital repository system, and the underlying components when the researcher accesses an item's descriptive metadata, regardless of whether they access it through the repository interface or directly through a PDF link. Below is a PlantUML code representation of the sequence diagram for this process.
+
+```plantuml
+@startuml
+actor Researcher
+participant "Repository Interface" as Interface
+participant "Authentication System" as Auth
+participant "Content Management System" as CMS
+participant "Metadata Service" as Metadata
+participant "PDF Server" as PDF
+database "Repository Database" as DB
+
+
+Researcher -> Interface: Access item via repository
+activate Interface
+Interface -> Auth: Request authentication
+activate Auth
+Auth -> Interface: Authentication confirmed
+deactivate Auth
+Interface -> CMS: Request item details
+activate CMS
+CMS -> DB: Query item metadata
+activate DB
+DB -> CMS: Return metadata
+deactivate DB
+CMS -> Metadata: Retrieve descriptive metadata
+activate Metadata
+Metadata -> CMS: Descriptive metadata
+deactivate Metadata
+CMS -> Interface: Display item and metadata
+Interface -> Researcher: Show item content and metadata
+deactivate Interface
+
+Researcher -> PDF: Access item directly via PDF URL
+activate PDF
+PDF -> Auth: Validate access
+activate Auth
+Auth -> PDF: Access granted
+deactivate Auth
+PDF -> DB: Fetch item ID from PDF URL
+activate DB
+DB -> PDF: Return item ID
+deactivate DB
+PDF -> Metadata: Request descriptive metadata by ID
+activate Metadata
+Metadata -> PDF: Descriptive metadata
+deactivate Metadata
+PDF -> Researcher: Show PDF with metadata overlay/link
+deactivate PDF
+
+@enduml
+```
+
+Explanation of the Diagram:
+
+1. **Researcher Accesses via Repository**: When the researcher accesses the item through the repository interface:
+    - The system authenticates the researcher.
+    - Once authenticated, the researcher requests the details of an item.
+    - The Content Management System (CMS) queries the Repository Database for the item's metadata.
+    - The Metadata Service provides the descriptive metadata for that item.
+    - The Repository Interface then presents the item content along with the descriptive metadata to the researcher.
+
+2. **Researcher Accesses Directly via PDF URL**: When accessing the item directly via a PDF link:
+    - The system authenticates access to the PDF.
+    - The PDF Server retrieves the item ID associated with the PDF from the Repository Database.
+    - The Metadata Service is then queried for the descriptive metadata based on the item ID.
+    - The researcher is presented with the PDF and a metadata overlay or a link to the metadata.
+
+This sequence diagram outlines the interaction between system components and the researcher to ensure descriptive metadata is available, enhancing item identification and source credibility, regardless of access path. This setup lays a strong foundation for a robust and responsive digital repository system.

@@ -1,0 +1,59 @@
+To generate a detailed sequence diagram for the user story "As a staff, I want to update subscriber's subscription types," we will use PlantUML code to outline the sequence of events between different entities in the system such as the Staff, Frontend Interface, Backend Server, Subscription Management Service, and Database. This diagram will focus on the specific interactions required to update a subscriber's subscription type.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Staff as staff
+participant "Frontend Interface" as frontend
+participant "Backend Server" as backend
+participant "Subscription Management\nService" as subscriptionService
+participant Database as db
+
+title Update Subscriber's Subscription Type Sequence
+
+staff -> frontend: Select 'Manage Subscriptions'
+frontend -> backend: Request subscription details
+activate backend
+backend -> subscriptionService: Get subscription details
+activate subscriptionService
+subscriptionService -> db: Query subscription info
+activate db
+db --> subscriptionService: Return subscription info
+deactivate db
+subscriptionService --> backend: Subscription details
+deactivate subscriptionService
+backend --> frontend: Show subscription details
+deactivate backend
+frontend --> staff: Display subscription types
+staff -> frontend: Select new subscription type
+frontend -> backend: Send update request with\nnew subscription type
+activate backend
+backend -> subscriptionService: Update subscription type
+activate subscriptionService
+subscriptionService -> db: Update subscription type in DB
+db --> subscriptionService: Confirm update
+deactivate db
+subscriptionService --> backend: Subscription update confirmation
+deactivate subscriptionService
+backend --> frontend: Update successful
+deactivate backend
+frontend --> staff: Display success message
+
+@enduml
+```
+
+This sequence diagram illustrates the step-by-step process initiated by a staff member who wishes to update a subscriber's subscription type. The interactions unfold as follows:
+1. The staff member initiates the process by selecting the 'Manage Subscriptions' option in the frontend interface.
+2. The frontend requests current subscription details from the backend server.
+3. The backend queries the Subscription Management Service for the subscription details.
+4. The Subscription Management Service fetches the subscriber's current subscription info from the database.
+5. The fetched subscription information is passed back up to the frontend where it's displayed to the staff.
+6. The staff selects the new desired subscription type through the frontend.
+7. The frontend sends this updated subscription type back to the backend.
+8. The backend processes this update through the Subscription Management Service.
+9. The Subscription Management Service updates the subscription type in the database and confirms the update to the backend.
+10. The backend confirms to the frontend that the update was successful.
+11. Finally, the frontend displays a success message to the staff member, confirming the completion of the update process.
+
+This UML sequence diagram demonstrates a clear flow of actions and interactions across different components, outlining precisely how a staff member updates a subscriber's subscription type within the Comprehensive Library Management System (CLMS).

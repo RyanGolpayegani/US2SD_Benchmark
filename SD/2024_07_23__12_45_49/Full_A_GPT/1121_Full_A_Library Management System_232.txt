@@ -1,0 +1,49 @@
+Creating a detailed sequence diagram for the user story that involves looking up books by various criteria like title, author, subject category, and publication date can be quite intricate due to the multiple systems and processes involved. Below, I provide a PlantUML code representation that visualizes this flow within the Comprehensive Library Management System (CLMS).
+
+This diagram assumes the system has a front-end interface (likely a web application) that interacts with a backend server, which then queries a database.
+
+```plantuml
+@startuml
+!theme plain
+
+participant User
+participant WebApplication as WA
+participant BackendServer as BS
+participant Database as DB
+
+User -> WA: Enter search criteria\n(title, author, category, publication date)
+WA -> BS: Request book search\n(criteria)
+alt If search criteria is valid
+    BS -> DB: Query books\n(criteria)
+    DB --> BS: Return results
+    BS --> WA: Display search results
+    WA --> User: Show books list
+else If no results found
+    BS --> WA: Display no results message
+    WA --> User: Show no results found
+else If invalid criteria
+    BS --> WA: Show error message
+    WA --> User: Prompt to correct criteria
+end
+@enduml
+```
+
+### Explanation:
+
+- **User**: The individual using the system to find books.
+- **WebApplication (WA)**: Represents the front-end interface of the CLMS. This is what the user interacts with.
+- **BackendServer (BS)**: The server-side component that processes requests, fetches data, and performs business logic.
+- **Database (DB)**: Contains all the data of the library system, including books, authors, categories, etc.
+
+1. The **User** starts by entering search criteria (title, author, subject category, and publication date) through the Web Application.
+2. The **Web Application** sends these criteria to the **Backend Server**.
+3. The **Backend Server** checks if the criteria are valid:
+    - If they are, it queries the **Database** using the criteria.
+    - The **Database** returns the search results to the Backend Server.
+    - The Backend Server then sends these results back to the Web Application.
+    - The Web Application displays the list of books matching the criteria to the User.
+    
+    - If no results are found, the process informs the User that no books match the search.
+    - If the criteria are invalid (e.g., using disallowed characters or formats), the system prompts the User to correct the input.
+
+This sequence diagram focuses on the flow of operations when a library member wants to look up books by specific criteria, showcasing the interactions between the user, the web application, the server, and the database.

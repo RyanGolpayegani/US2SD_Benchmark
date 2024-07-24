@@ -1,0 +1,37 @@
+Creating a detailed sequence diagram for the specific user story "As a cook, I want to specify estimated cook prompt time for items, so that customers are informed before they order" involves illustrating how different components of the system interact to achieve this functionality. This sequence will involve the cook, the system's backend, and possibly the frontend where the customer makes an order.
+
+```plantuml
+@startuml
+participant CustomerUI
+participant SystemAPI
+participant BackendServer
+participant Database
+
+== Cook Updates Estimated Cook Time ==
+Cook -> BackendServer: Login
+BackendServer --> Cook: Authentication success
+
+Cook -> BackendServer: Request to update dish with new cook time
+BackendServer -> Database: Process update request
+Database --> BackendServer: Update confirmed
+
+BackendServer --> Cook: Update successful
+
+== Customer Places Order ==
+CustomerUI -> SystemAPI: Request menu
+SystemAPI -> BackendServer: Fetch menu with cook times
+BackendServer -> Database: Get menu items and cook times
+Database --> BackendServer: Return menu data
+BackendServer --> SystemAPI: Menu data with cook times
+SystemAPI --> CustomerUI: Display menu with estimated times
+
+CustomerUI -> SystemAPI: Place order with selected items
+SystemAPI -> BackendServer: Process order
+BackendServer -> Database: Record new order
+Database --> BackendServer: Order confirmation
+BackendServer --> SystemAPI: Order placed successfully
+SystemAPI --> CustomerUI: Display order confirmation and wait times
+@enduml
+```
+
+This sequence starts with the cook logging into the system and updating the cook time for an item, which then shows how this updated information is processed and stored in the database. The sequence continues with a customer accessing the menu, which now includes the updated cook times, and placing an order. The communication between each component is aimed to clarify the flow and ensure the customer is informed of the cook time before finalizing their order. This setup assumes a web or app-based platform where cooks have administrative privileges to update menu items and customers interact through a separate UI layer.

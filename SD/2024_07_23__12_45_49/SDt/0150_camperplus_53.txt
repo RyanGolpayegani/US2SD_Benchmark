@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+participant CampWorker as worker
+participant "Camp Management\nPlatform" as platform
+participant Database as db
+participant Manager as manager
+
+== Report Repair Needed ==
+worker -> platform : Reports repair via form
+activate platform
+
+platform -> db : Log repair request
+activate db
+db --> platform : Acknowledge receipt
+deactivate db
+
+platform -> manager : Notify of repair request
+activate manager
+manager --> platform : Acknowledge notification
+deactivate manager
+
+platform --> worker : Confirm submission and\nnotify of manager acknowledgment
+deactivate platform
+
+@enduml

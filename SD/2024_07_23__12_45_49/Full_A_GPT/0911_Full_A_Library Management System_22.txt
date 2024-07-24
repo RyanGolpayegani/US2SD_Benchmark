@@ -1,0 +1,37 @@
+To create a detailed sequence diagram for the user story "As a librarian, I want to add new books to book list" using PlantUML, follow the steps outlined below. This example assumes a simple process where a librarian interacts with a web interface, which then communicates with a backend system to add a new book to the database.
+
+```plantuml
+@startuml
+!theme spacelab
+
+actor Librarian as librarian
+participant "Web Interface" as web
+participant "Backend System" as backend
+database "Database" as db
+
+== Add New Book to Book List ==
+
+librarian -> web : Selects "Add New Book"
+web -> librarian : Displays Add Book Form
+
+librarian -> web : Submits book details\n (Title, Author, ISBN, etc.)
+web -> backend : Validates book details
+
+alt Book details valid
+    backend -> db : Inserts new book into database
+    db --> backend : Returns success message
+    backend -> web : Book successfully added
+    web -> librarian : Display success message
+else Book details invalid
+    backend -> web : Returns error message
+    web -> librarian : Display error message
+end
+
+@enduml
+```
+
+This sequence diagram starts with the librarian selecting the "Add New Book" option through the web interface. The system then displays a form for the librarian to fill in, including essential details about the book like Title, Author, and ISBN. Once the librarian submits this form, the web interface sends the book details to the backend system to validate them.
+
+If the book details are valid, the backend system inserts the new book information into the database and returns a success message to the web interface, which, in turn, displays this message to the librarian. If any details are invalid, the backend system sends an error message to the web interface, and the librarian is informed about the issue through an error message displayed on the web interface.
+
+This diagram can be customized based on the actual complexity of the operation, like adding steps for checking if the book already exists in the database or incorporating more intricate validation rules in the backend system.

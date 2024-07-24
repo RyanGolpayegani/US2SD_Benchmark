@@ -1,0 +1,45 @@
+@startuml
+participant User
+participant "Web Interface" as Web
+participant "File Management Module" as FMM
+participant "Metadata Management Module" as MMM
+participant "Database" as DB
+
+User -> Web: Move file request
+activate Web
+
+Web -> FMM: Initiate file move
+activate FMM
+
+FMM -> MMM: Retrieve metadata for file
+activate MMM
+
+MMM -> DB: Get metadata
+activate DB
+DB --> MMM: Return metadata
+deactivate DB
+
+MMM --> FMM: Metadata retrieved
+deactivate MMM
+
+FMM -> FMM: Move file to new location
+FMM -> DB: Update file path
+activate DB
+DB --> FMM: Update successful
+deactivate DB
+
+FMM -> MMM: Update metadata with new file path
+activate MMM
+MMM -> DB: Update metadata record
+activate DB
+DB --> MMM: Metadata updated
+deactivate DB
+MMM --> FMM: Update successful
+deactivate MMM
+
+FMM --> Web: Move successful
+deactivate FMM
+
+Web -> User: Confirm move and metadata preservation
+deactivate Web
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+actor FacultyMember as Faculty
+participant "Upload Interface" as Upload
+participant "Authentication System" as Auth
+participant "Content Management" as Content
+participant "Metadata Input Form" as Metadata
+participant "Repository Database" as Database
+participant "Notification System" as Notification
+
+== Authentication ==
+Faculty -> Auth: Request access to upload
+Auth -> Faculty: Provide authentication interface
+Faculty -> Auth: Submit credentials
+Auth -> Faculty: Authentication successful
+
+== Upload Process ==
+Faculty -> Upload: Access upload page
+Upload -> Faculty: Display upload form
+
+Faculty -> Metadata: Fill in metadata form  
+Metadata -> Content: Validate metadata
+Content -> Faculty: Metadata validated
+
+Faculty -> Content: Upload scholarly work
+Content -> Database: Store file and metadata
+Database --> Content: Confirm storage
+
+Content -> Notification: Trigger content added notification
+Notification -> Faculty: Confirm upload successful
+
+== Completion ==
+Content -> Faculty: Display success message and options
+Faculty -> Content: Choose to share with non-academic audience
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+participant PatronBrowser as Browser
+participant AuthSystem as Auth
+participant RepositoryServer as Server
+participant SearchEngine as Search
+participant Database as DB
+
+Browser -> Server: Request report/dataset details
+Server -> Auth: Validate request
+Auth -> Server: Validation response
+note right of Server: Authentication may involve checking\nsession tokens or API keys
+Server -> DB: Retrieve report/dataset metadata
+DB -> Server: Return metadata
+Server -> Browser: Display report/dataset details
+note over Browser: Details page includes "Related Items" section
+
+Browser -> Server: Request related reports/datasets
+Server -> Search: Query for related items based on metadata
+note right of Search: Algorithms to find related items can\nuse keywords, authors, subjects, etc.
+Search -> DB: Fetch related items
+DB -> Search: Return related items metadata
+Search -> Server: Related items metadata
+Server -> Browser: Display related reports/datasets
+
+note over Browser: Patron can click on related item\nto view its details
+@enduml

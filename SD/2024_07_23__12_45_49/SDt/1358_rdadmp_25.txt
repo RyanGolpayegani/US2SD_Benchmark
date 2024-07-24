@@ -1,0 +1,22 @@
+@startuml
+participant Researcher as res
+participant "DMPTool" as dmp
+participant "Institutional Systems" as ins
+participant "Metadata Import Tool" as meta
+
+res -> dmp: Request to create new DMP
+dmp -> ins: Query for researcher's data
+activate ins
+ins --> dmp: Return researcher's data
+deactivate ins
+dmp -> meta: Send researcher's data for processing
+activate meta
+meta -> ins: Fetch additional data
+activate ins
+ins --> meta: Return additional data
+deactivate ins
+meta --> dmp: Processed metadata
+deactivate meta
+dmp -> dmp: Integrate metadata into DMP
+dmp -> res: Display DMP with prepopulated information
+@enduml

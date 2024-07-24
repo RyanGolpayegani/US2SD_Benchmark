@@ -1,0 +1,44 @@
+@startuml
+actor Patron as P
+participant "Search Interface" as SI
+participant "Authentication System" as AS
+participant "Content Management System" as CMS
+participant "Version Control" as VC
+participant "Database" as DB
+
+P -> SI: Enter search query for report/dataset
+activate SI
+SI -> DB: Retrieve relevant items
+activate DB
+DB --> SI: List of items
+deactivate DB
+SI --> P: Display results
+P -> SI: Select specific report/dataset
+deactivate SI
+SI -> AS: Request access verification
+activate AS
+P -> AS: Provide authentication details
+AS --> SI: Access granted
+deactivate AS
+SI -> CMS: Request selected report/dataset
+activate CMS
+CMS -> VC: Fetch all versions
+activate VC
+VC -> DB: Retrieve versions metadata
+activate DB
+DB --> VC: Versions metadata
+deactivate DB
+VC --> CMS: List of versions
+deactivate VC
+CMS --> SI: Display all versions to patron
+SI --> P: Present versions for selection
+P -> SI: Choose version to view
+SI -> CMS: Retrieve selected version
+CMS -> DB: Get selected version data
+activate DB
+DB --> CMS: Report/dataset version data
+deactivate DB
+CMS --> SI: Display selected version
+SI --> P: Show report/dataset version
+deactivate CMS
+@enduml

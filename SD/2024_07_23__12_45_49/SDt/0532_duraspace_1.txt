@@ -1,0 +1,23 @@
+@startuml
+actor "Repository Manager" as repoManager
+participant "DIMS Interface" as dimsInterface
+participant "Access Control" as accessControl
+database "Collections Database" as collectionsDB
+
+== Get Collections and Objects with Custodial Responsibility ==
+
+repoManager -> dimsInterface : Request Collections and Objects
+dimsInterface -> accessControl : Validate Access Rights(repoManagerID)
+activate accessControl
+accessControl --> dimsInterface : Access Granted
+deactivate accessControl
+dimsInterface -> collectionsDB : Fetch Collections(repoManagerID)
+activate collectionsDB
+collectionsDB --> dimsInterface : Collections Data
+deactivate collectionsDB
+dimsInterface -> collectionsDB : Fetch Objects(repoManagerID)
+activate collectionsDB
+collectionsDB --> dimsInterface : Objects Data
+deactivate collectionsDB
+dimsInterface -> repoManager : Display Collections and Objects
+@enduml

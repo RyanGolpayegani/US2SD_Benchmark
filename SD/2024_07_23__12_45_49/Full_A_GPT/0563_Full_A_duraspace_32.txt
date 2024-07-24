@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the user story "As a user, I want to see all the component parts of an object" involves representing the interactions between the system's components from the point when the user makes the request to the final display of the object's components. Below is a sequence diagram written in PlantUML format that outlines these interactions.
+
+```plantuml
+@startuml
+participant User
+participant "UI Layer" as UI
+participant "Control Layer" as Control
+participant "Data Access Layer" as DataAccess
+participant "Database" as DB
+
+User -> UI: Request object details
+activate UI
+
+UI -> Control: GetObjectDetails(objectId)
+activate Control
+
+Control -> DataAccess: FetchObjectDetails(objectId)
+activate DataAccess
+
+DataAccess -> DB: Query object components
+activate DB
+
+DB --> DataAccess: Object components data
+deactivate DB
+
+DataAccess --> Control: Object details with components
+deactivate DataAccess
+
+Control --> UI: Object details and components
+deactivate Control
+
+UI --> User: Display object components
+deactivate UI
+
+@enduml
+```
+
+This sequence diagram follows these steps:
+
+1. **User Request**: The user starts the process by requesting the details of an object, including its components, through the user interface (UI).
+2. **UI Processing**: The UI layer receives the request and forwards it to the control layer to fetch the required object details.
+3. **Control Layer Processing**: The control layer processes the request and calls the data access layer to retrieve the object details from the storage system.
+4. **Data Access and Retrieval**: The data access layer queries the database to fetch the components of the requested object.
+5. **Data Transfer Back to User**: Once the desired data is retrieved and aggregated in the control layer, it's sent back to the UI and finally displayed to the user.
+
+This diagram illustrates a simplified flow of data and control through the system's layers from the initial user request to the final presentation of the object's components.

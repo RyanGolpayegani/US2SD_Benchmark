@@ -1,0 +1,56 @@
+Below is a PlantUML code sketching out a sequence diagram to illustrate the process described in the user story. This scenario involves an archivist managing scans of archival material created for educational visits, with the goal of easily finding and referring to them for future visits. This process could include uploading scans, tagging them with metadata (such as keywords related to the educational visit), and retrieving them later.
+
+```plantuml
+@startuml
+actor Archivist
+participant "Digital Archive\nManagement System" as DMS
+database "Archive Repository" as Archive
+
+== Uploading and Tagging Process ==
+Archivist->DMS : Log in
+activate DMS
+DMS->Archive : Authenticate Archivist
+activate Archive
+Archive->DMS : Authentication Success
+deactivate Archive
+DMS->Archivist : Display Upload Interface
+Archivist->DMS : Upload Scans of Archival Material\n(Set of files)
+activate DMS
+DMS->Archive : Store Files
+activate Archive
+Archive->DMS : Confirm Files Stored
+DMS->Archivist : Request Metadata (e.g., educational visit details)
+Archivist->DMS : Provide Metadata & Tags (e.g., Date, Topic)
+DMS->Archive : Apply Metadata & Tags to Files
+deactivate DMS
+Archive-->DMS : Confirmation of Tagging
+DMS-->Archivist : Confirm Successful Upload & Tagging
+deactivate Archive
+
+== Retrieval Process ==
+Archivist->DMS : Search for Archival Material\n(by tags or metadata)
+activate DMS
+DMS->Archive : Retrieve Matching Files
+activate Archive
+Archive->DMS : Return Results
+deactivate Archive
+DMS->Archivist : Display Results
+Archivist->DMS : Select Desired Files
+DMS->Archive : Fetch Selected Files
+activate Archive
+Archive->DMS : Provide Files
+DMS->Archivist : Download/View Files
+deactivate DMS
+deactivate Archive
+
+@enduml
+```
+
+This diagram represents the action sequences an archivist might follow when working with the Digital Archive Management System to manage and utilize scans of archival materials for educational purposes. The process involves two main activities: the uploading and tagging of scanned archival material and the retrieval of these materials at a later date based on the metadata or tags applied.
+
+**Key Points:**
+- The archivist authenticates with the system and uploads new scans, tagging them with custom metadata pertinent to educational visits (e.g., date, visit theme, school name).
+- When the need arises to find these materials for another visit, the archivist uses the search functionality within the system, specifying criteria that match the tags or metadata previously input.
+- The sequence diagram assumes an underlying database or repository ("Archive Repository") where the scanned files along with their metadata are stored and from which they can be retrieved as needed.
+
+Please adjust and expand upon this basic outline to better fit any additional requirements or specific technologies your project involves.

@@ -1,0 +1,34 @@
+@startuml
+participant Moderator
+participant "AEPT System" as System
+database "AEPT Database" as Database
+participant "Estimators" as Estimators
+
+Moderator -> System : selectItemToEstimate()
+activate System
+
+System -> Database : fetchItemDetails()
+activate Database
+Database --> System : returnItemDetails()
+deactivate Database
+
+System -> Estimators : requestEstimates()
+activate Estimators
+Estimators -> System : submitEstimates(estimates[])
+deactivate Estimators
+
+System -> System : calculateAverageEstimate(estimates[])
+System --> Moderator : displayAverageEstimate(average)
+
+Moderator -> System : acceptAverageEstimate()
+activate System
+System -> Database : updateItemWithAverage(average)
+activate Database
+Database --> System : confirmUpdate()
+deactivate Database
+
+System -> System : moveToNextItem()
+System -> Moderator : confirmMoveToNext()
+deactivate System
+
+@enduml

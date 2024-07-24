@@ -1,0 +1,63 @@
+Below is a detailed PlantUML sequence diagram for the user story scenario where a MedicalCaregiver wants ALFRED to suggest games that combine mental and physical exercise, highlighting the communication between the system components involved in this process.
+
+```plantuml
+@startuml
+participant MedicalCaregiver as MC
+participant ALFRED as A
+participant "HealthMonitor" as HM
+participant "ExerciseModule" as EM
+participant "GameSuggestionEngine" as GSE
+participant "PrivacySettings" as PS
+participant Database as DB
+
+MC -> A : Request for mental & physical games
+A -> PS : Check privacy & data control settings
+PS -> A : Confirm access granted
+A -> GSE : Request game suggestions
+GSE -> DB : Retrieve game options
+DB -> GSE : Return options
+GSE -> EM : Request exercise suitability
+EM -> HM : Check user health status
+HM -> EM : Provide health parameters
+EM -> GSE : Confirm suitability based on health
+GSE -> A : Suggest suitable games
+A -> MC : Display games with mental & physical exercises
+MC -> A : Select game for older adult
+A -> EM : Initiate game with exercise guidelines
+EM -> MC : Display start instructions & safety guidelines
+@enduml
+```
+
+Explanation:
+
+1. **MedicalCaregiver to ALFRED:** The MedicalCaregiver (MC) initiates the process by requesting ALFRED to provide game suggestions that involve both mental and physical activities.
+
+2. **ALFRED to PrivacySettings:** ALFRED checks the user's privacy and data control settings to ensure that providing this service is within the privacy boundaries set by the user.
+
+3. **PrivacySettings to ALFRED:** The privacy settings section confirms that access to the necessary data is granted, allowing the process to continue.
+
+4. **ALFRED to GameSuggestionEngine:** ALFRED forwards the request to the Game Suggestion Engine (GSE) to find suitable games based on the criteria.
+
+5. **GameSuggestionEngine to Database:** The GSE queries the database to retrieve potential game options.
+
+6. **Database to GameSuggestionEngine:** The database returns a set of game options to the GSE.
+
+7. **GameSuggestionEngine to ExerciseModule:** The GSE consults with the Exercise Module (EM) to assess the exercise suitability of the games, ensuring they are appropriate for the user's physical condition.
+
+8. **ExerciseModule to HealthMonitor:** The EM checks with the Health Monitor (HM) to get the current health status and parameters of the user.
+
+9. **HealthMonitor to ExerciseModule:** The HM provides the health data required to assess exercise suitability.
+
+10. **ExerciseModule to GameSuggestionEngine:** Based on the health status, the EM informs the GSE which games are suitable.
+
+11. **GameSuggestionEngine to ALFRED:** The GSE returns a list of suitable games to ALFRED.
+
+12. **ALFRED to MedicalCaregiver:** ALFRED displays the suggested games involving both mental and physical exercise to the MedicalCaregiver.
+
+13. **MedicalCaregiver to ALFRED:** The MedicalCaregiver selects a game for the older adult.
+
+14. **ALFRED to ExerciseModule:** ALFRED initiates the chosen game with instructions and guidelines from the Exercise Module.
+
+15. **ExerciseModule to MedicalCaregiver:** Finally, the Exercise Module provides start instructions and safety guidelines for conducting the game, ensuring the older adult can start engaging in the healthy activity safely.
+
+This sequence diagram illustrates the internal processes and interactions within the ALFRED system to fulfill the request of suggesting games that combine mental and physical exercise.

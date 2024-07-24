@@ -1,0 +1,47 @@
+@startuml
+!theme plain
+
+participant Publisher as pub
+participant "Publishing Interface" as ui
+participant "CLI Tool" as cli
+participant "Validation Service" as validator
+participant "Data Registry" as registry
+
+== Data Validation Process Before Publishing ==
+
+pub -> ui: Initiate data publishing
+ui -> cli: Request data package details
+pub -> cli: Provide data package details
+
+cli -> validator: Send data for validation
+alt Data package is valid
+    validator -> cli: Return validation success
+    cli -> pub: Show validation success message
+    pub -> cli: Confirm publishing
+    cli -> registry: Publish data package
+    registry -> cli: Acknowledge publishing
+    cli -> pub: Show publishing success message
+else Data package is not valid
+    validator -> cli: Return validation errors
+    cli -> pub: Show validation errors
+    pub -> cli: Abort publishing OR Provide corrected data
+    alt Data corrected
+        cli -> validator: Send corrected data for validation
+        repeat
+            alt Data still invalid
+                validator -> cli: Return validation errors
+                cli -> pub: Show validation errors
+                pub -> cli: Provide corrected data again
+            else Data package is valid after corrections
+                validator -> cli: Return validation success
+                cli -> pub: Show validation success message
+                pub -> cli: Confirm publishing
+                cli -> registry: Publish corrected data package
+                registry -> cli: Acknowledge publishing
+                cli -> pub: Show publishing success message
+            end
+        end
+    end
+end
+
+@enduml

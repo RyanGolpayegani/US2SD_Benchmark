@@ -1,0 +1,48 @@
+Creating a detailed sequence diagram to represent the user story of a Cornell faculty member uploading data and associating it with a publication involves multiple systems and interactions. Below is a PlantUML code snippet that outlines this process. Note that in a real-world scenario, you might have more or different actors and systems involved depending on the architecture of the digital repository system developed for Cornell University.
+
+```plantuml
+@startuml
+actor FacultyMember as Faculty
+entity "Upload Interface" as UploadUI
+database "Repository System" as Repo
+entity "Metadata Service" as Metadata
+entity "Publication Management" as PubManage
+database "Database" as DB
+
+== Upload Data and Associate with Publication ==
+
+Faculty -> UploadUI : Select data to upload
+UploadUI -> Repo : Upload data file
+activate Repo
+Repo -> DB : Store data file
+DB --> Repo : Confirm storage
+deactivate Repo
+
+Repo -> Metadata : Request metadata entry form
+Metadata --> Faculty : Display form
+Faculty -> Metadata : Enter metadata, including publication details
+Metadata -> Repo : Update metadata in DB
+Repo --> Faculty : Confirm data and publication association
+
+== Process Publication Details ==
+
+Faculty -> PubManage : Enter publication details
+activate PubManage
+PubManage -> Repo : Verify data association
+Repo --> PubManage : Confirm association
+PubManage -> DB : Store publication details
+DB --> PubManage : Confirm storage
+deactivate PubManage
+PubManage --> Faculty : Acknowledge data and publication linkage
+
+== Attribution Process ==
+
+Repo -> Metadata : Generate citation
+Metadata --> Faculty : Display citation with data and publication
+
+@enduml
+```
+
+This sequence diagram illustrates the steps a faculty member goes through to upload data and associate it with a publication in the Cornell University's digital repository system, including the interactions between the faculty member, the upload interface, the repository system, metadata services, and publication management.
+
+This is a simplified diagram and does not cover potential error handling, authentication, authorization checks, or the internal workings of the repository system, such as security and preservation processes. Depending on the actual complexity and requirements of the system, you may need to incorporate additional components like access control, data validation, and integration with external systems (e.g., Shibboleth for authentication or external data sources for enriching metadata).

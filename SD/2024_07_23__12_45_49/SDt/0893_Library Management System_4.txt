@@ -1,0 +1,33 @@
+@startuml
+actor Customer
+participant "Frontend Interface" as Frontend
+participant "Backend Server" as Backend
+database "Database" as DB
+
+Customer -> Frontend: Selects book(s) to borrow
+Frontend -> Backend: Requests to create borrow transaction(s)
+activate Backend
+Backend -> DB: Checks availability of book(s)
+activate DB
+DB --> Backend: Returns availability status
+deactivate DB
+
+alt If book(s) available
+    Backend -> DB: Create borrow record(s) with due date
+    activate DB
+    DB --> Backend: Confirm borrow record(s) creation
+    deactivate DB
+    
+    Backend -> DB: Update book(s) status to borrowed
+    activate DB
+    DB --> Backend: Confirm book(s) status updated
+    deactivate DB
+    
+    Backend --> Frontend: Borrow transaction success
+    Frontend -> Customer: Display success message & borrow details
+else If book(s) not available
+    Backend --> Frontend: Borrow transaction failed - Book(s) not available
+    Frontend -> Customer: Display error message
+end
+
+@enduml

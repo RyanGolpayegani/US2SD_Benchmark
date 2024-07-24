@@ -1,0 +1,25 @@
+@startuml
+
+participant User
+participant "DIMS Interface" as Interface
+participant "Authentication Service" as Auth
+participant "Collection Management" as CollectionMng
+database "DAMS Database" as DAMSDB
+
+== List Collections and Objects in a Library Unit ==
+
+User -> Interface : Request to list collections/objects
+Interface -> Auth : Validate User
+Auth --> Interface : User Validated
+
+alt If User is Validated Successfully
+    Interface -> CollectionMng : Retrieve collections/objects (LibraryUnitId)
+    CollectionMng -> DAMSDB : Query collections/objects (LibraryUnitId)
+    DAMSDB --> CollectionMng : Return list of collections/objects
+    CollectionMng --> Interface : Collections/Objects details
+    Interface --> User : Display Collections/Objects
+else If User Validation Fails
+    Interface --> User : Display Error (Not Authenticated)
+end
+
+@enduml

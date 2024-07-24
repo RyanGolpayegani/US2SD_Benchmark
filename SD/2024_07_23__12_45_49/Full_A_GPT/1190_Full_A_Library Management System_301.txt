@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the user story "As a member, I want to see the list of books I have borrowed" involves illustrating how different parts of the system interact with each other to fulfill this request. In PlantUML, sequence diagrams follow a specific syntax to represent these interactions.
+
+Given below is a PlantUML description for the stated user story. This sequence diagram outlines the interactions from the user's perspective of requesting to see their borrowed books list, down through the system's backend handling of the request and database query, to finally presenting the data back to the user.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Member as member
+participant "Web Interface" as web
+participant "Server" as server
+participant "Database" as db
+
+member -> web : Select "My Borrowed Books"
+web -> server : Request borrowed books list
+alt Authentication Check
+    server -> db : Validate member session
+    db -> server : Session valid
+else Unauthorized
+    server -> web : Redirect to login
+    web -> member : Display login screen
+    deactivate db
+    deactivate server
+    deactivate web
+    stop
+end
+
+server -> db : Query borrowed books for member
+db -> server : Return borrowed books list
+server -> web : Display borrowed books
+web ->\\\\ member : Show list of borrowed books
+
+@enduml
+```
+
+This diagram covers the following steps:
+1. The member selects the option to view their borrowed books on the web interface.
+2. The web interface makes a request to the server to retrieve the list of borrowed books.
+3. Before proceeding, an authentication check is performed. If the member is not authenticated (i.e., not logged in or session is invalid):
+    - The server instructs the web interface to redirect the user to the login screen.
+    - The diagram ends for this alternative path.
+4. Assuming the member is authenticated, the server then queries the database for the list of books borrowed by the member.
+5. The database returns the list of borrowed books to the server.
+6. The server then sends this information to the web interface.
+7. Finally, the web interface displays the list of borrowed books to the member.
+
+Remember, this is a simplified representation focusing on the main components related to the user story. Depending on the complexity of your system and specific requirements, additional details or steps might be necessary.

@@ -1,0 +1,37 @@
+@startuml
+participant Parent as parent
+participant "Authentication Service" as Auth
+participant "Camp Management \n& Communication Platform" as CMCP
+participant "Photo Storage" as PhotoStore
+participant "Sharing Service" as ShareService
+
+parent -> CMCP : Access platform
+activate CMCP
+
+CMCP -> Auth : Validate parent credentials
+activate Auth
+Auth --> CMCP : Authentication Success
+deactivate Auth
+
+CMCP --> parent : Show dashboard
+parent -> CMCP : Select "View Photos"
+activate PhotoStore
+
+CMCP -> PhotoStore : Request photos of parent's child
+PhotoStore --> CMCP : Return photos
+deactivate PhotoStore
+
+CMCP --> parent : Display child's photos
+parent -> CMCP : Select photos to share
+parent -> CMCP : Select "Share Photos"
+activate ShareService
+
+CMCP -> ShareService : Invoke sharing service with selected photos
+ShareService --> CMCP : Generate share link
+deactivate ShareService
+
+CMCP --> parent : Provide share link
+parent -> CMCP : Copy & share link externally
+
+deactivate CMCP
+@enduml

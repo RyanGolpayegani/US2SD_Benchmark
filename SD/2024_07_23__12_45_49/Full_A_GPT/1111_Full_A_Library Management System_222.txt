@@ -1,0 +1,41 @@
+Creating a detailed sequence diagram for the given user story requires defining the actors, systems, and processes involved in viewing overdue book members and determining their penalties. Here’s a structured approach to generate a sequence diagram in PlantUML format for the scenario of a library manager wanting to see members who have passed their book return due dates to determine their penalties.
+
+```plantuml
+@startuml
+actor Manager as manager
+participant "Web Interface" as web
+participant "Server Controller" as controller
+participant "Database" as db
+participant "Penalty Calculation System" as penaltySys
+
+== View Overdue Members and Determine Penalties ==
+
+manager -> web : Log in and select "View Overdue Books"
+web -> controller : Request overdue books list
+controller -> db : Query overdue books and members
+db --> controller : Return overdue books and member details
+controller -> penaltySys : Request penalty calculation for each overdue member
+penaltySys -> db : Fetch penalty rules
+db --> penaltySys : Return penalty rules
+penaltySys -> penaltySys : Calculate penalties based on rules
+penaltySys --> controller : Return calculated penalties
+controller --> web : Display overdue members with penalties
+web --> manager : Show overdue members and their penalties
+
+@enduml
+```
+This diagram illustrates the process flow from the moment the library manager decides to view members with overdue books until the penalties for these delays are displayed. Here's a breakdown of the steps:
+
+1. **Log in and Request**: The library manager logs in to the system and selects the option to view members with overdue books. This interaction initiates the process.
+
+2. **Request Handling**: The web interface communicates the manager's request to the server controller to fetch the list of overdue books along with member details.
+
+3. **Database Query**: The server controller queries the database for members who have not returned books by their due date. The database returns the list of these books along with the details of the corresponding members.
+
+4. **Penalty Calculation**: The server controller then requests the Penalty Calculation System to calculate the late penalties for each overdue member.
+
+5. **Fetch Penalty Rules and Calculate**: The Penalty Calculation System fetches the rules for penalty calculation from the database (e.g., the fine per day for late returns) and calculates the penalties based on how overdue the books are.
+
+6. **Display Results**: Finally, the calculated penalties along with the details of the overdue members are displayed to the library manager through the web interface.
+
+This PlantUML sequence diagram outlines a clear interaction between the library manager, the web interface of the Comprehensive Library Management System (CLMS), the server controller, the database, and the Penalty Calculation System to accomplish the task of viewing overdue books and determining penalties.

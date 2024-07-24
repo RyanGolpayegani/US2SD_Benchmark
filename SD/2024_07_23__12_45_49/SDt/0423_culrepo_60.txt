@@ -1,0 +1,44 @@
+@startuml
+participant Administrator as admin
+participant "Digital Repository System" as system
+participant "Content Management Module" as content
+participant "Format Support Check" as formatCheck
+participant Database as db
+
+== Check Format Support ==
+admin -> system: Request format support info
+activate system
+system -> formatCheck: Retrieve supported formats
+activate formatCheck
+formatCheckout -> system: Return supported formats list
+deactivate formatCheck
+system -> admin: Display supported formats
+deactivate system
+
+== Upload Process ==
+admin -> system: Initiate file upload
+activate system
+system -> content: Upload requested
+activate content
+admin -> content: Select files for upload
+loop for each file
+    content -> formatCheck: Verify format
+    activate formatCheck
+    alt If file format is supported
+        formatCheck --> content: Format verified
+        deactivate formatCheck
+        content -> db: Save file metadata
+        activate db
+        db --> content: File metadata saved
+        deactivate db
+        content --> admin: File upload successful
+    else File format not supported
+        formatCheck --> content: Format unsupported
+        deactivate formatCheck
+        content --> admin: File format error
+    end
+end
+deactivate content
+deactivate system
+
+@enduml

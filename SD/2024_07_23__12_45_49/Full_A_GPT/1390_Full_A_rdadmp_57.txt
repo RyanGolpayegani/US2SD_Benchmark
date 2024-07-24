@@ -1,0 +1,47 @@
+Given the user story and project description, below is a sequence diagram in PlantUML format, illustrating the interaction of an archive manager intending to ensure that detailed metadata are associated with data for future understandability.
+
+```plantuml
+@startuml
+
+participant ArchiveManager as AM
+participant DMPTool as DMPT
+participant MetadataTool as MDT
+participant Repository as Repo
+
+AM -> DMPT : Requests metadata association
+DMPT -> MDT : Fetch existing metadata
+MDT --> DMPT : Return metadata
+DMPT -> DMPT : Validate completeness \n& detail of metadata
+alt Metadata is complete and detailed
+    DMPT --> AM : Confirm metadata adequacy
+    AM -> DMPT : Initiate metadata association
+    DMPT -> Repo : Submit metadata with data
+    Repo --> DMPT : Confirm data and metadata submission
+    DMPT --> AM : Confirm successful \nmetadata association
+else Metadata is incomplete or vague
+    DMPT --> AM : Request additional metadata details
+    AM -> MDT : Provide/Update additional metadata
+    MDT --> DMPT : Updated metadata provided
+    DMPT -> Repo : Submit updated metadata with data
+    Repo --> DMPT : Confirm updated submission
+    DMPT --> AM : Confirm successful \nmetadata association
+end
+
+@enduml
+```
+
+Explanation of the Sequence Diagram Steps:
+
+1. **Archive Manager Requests Metadata Association:** The archive manager initiates the process by requesting that detailed metadata be associated with the data within the DMPTool.
+
+2. **DMPTool Fetches Existing Metadata:** The DMPTool communicates with an external or integrated Metadata Tool (MDT) to fetch existing metadata related to the data.
+
+3. **Validation of Metadata:** The DMPTool validates the completeness and detail of the fetched metadata to ensure it meets the necessary standards for future understandability.
+
+4. **Decision Point (Alt):** Two paths are envisioned based on the condition of the metadata:
+   - If the metadata is deemed complete and detailed, the DMPTool confirms the adequacy of the metadata to the archive manager, who then initiates its association with the data. The DMPTool handles the submission to the repository, which confirms the successful submission of data and metadata.
+   - If the metadata is found to be incomplete or vague, the DMPTool requests additional details from the archive manager. The archive manager updates or provides the additional metadata via the Metadata Tool, which then returns the updated metadata to the DMPTool for submission to the repository. The repository confirms the updated submission, and the DMPTable confirms the successful metadata association to the archive manager.
+
+5. **Final Confirmation:** Upon successful association and submission of data and metadata, the DMPTool provides a final confirmation to the archive pile manager, ensuring the initial user story's goal is met.
+
+This sequence diagram provides a detailed overview of the interactions and processes involved in ensuring that data are associated with detailed metadata for future understandability, as per the archive manager’s request within the context of the DMPTool project.

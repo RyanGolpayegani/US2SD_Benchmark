@@ -1,0 +1,38 @@
+@startuml
+participant User
+participant "UI Interface" as UI
+participant "Video Processing Module" as VPM
+participant "AI/ML Model" as AI
+participant "Database" as DB
+participant "Information Retrieval System" as IRS
+
+User -> UI : Uploads video for identification
+UI -> VPM : Sends video for processing
+activate VPM
+
+VPM -> AI : Extracts faces/figures
+activate AI
+AI -> AI : Identifies persons
+deactivate AI
+
+AI -> DB : Queries metadata for identified persons
+activate DB
+DB --> AI : Returns metadata
+deactivate DB
+
+AI --> VPM : Sends identified persons and metadata
+deactivate VPM
+VPM --> UI : Displays identified persons and related information
+UI --> User : Shows results and related information
+
+User -> UI : Requests more information on a person
+UI -> IRS : Fetches additional data
+activate IRS
+IRS -> DB : Queries for more detailed information and related content
+activate DB
+DB --> IRS : Returns detailed information and related content
+deactivate DB
+IRS --> UI : Sends detailed information and content to UI
+UI --> User : Displays detailed information and related content
+
+@enduml

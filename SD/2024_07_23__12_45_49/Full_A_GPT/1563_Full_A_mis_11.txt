@@ -1,0 +1,60 @@
+Creating a detailed sequence diagram for the described user story in PlantUML format involves illustrating the interaction between various components of the Enhanced Digital Repository Management System (EDRMS) when a collection curator wishes to queue their collection for replication upon ingest to a remote storage site, and to then display the remote replication status in each item and component page in the staff interface.
+
+Given the complexity and the assumed architectures within the system, the following sequence diagram is a simplification that focuses on the key actors and systems involved in this process:
+
+```plantuml
+@startuml
+participant Curator as curator
+participant "Staff Interface" as UI
+participant "Ingest Service" as ingest
+participant "Replication Queue" as queue
+participant "Remote Storage" as remoteStorage
+participant "Replication Service" as replicationService
+participant "Database" as DB
+
+curator -> UI: Select collection for ingestion
+UI -> ingest: Initiate ingest with replication request
+activate ingest
+
+ingest -> queue: Queue collection for replication
+activate queue
+queue --> ingest: Acknowledge queueing
+
+ingest -> DB: Update collection status to "Queued for Replication"
+DB --> ingest: Status updated
+
+deactivate ingest
+ingest -> UI: Ingest initiated and queued for replication
+UI --> curator: Display ingest and queue status
+
+...
+
+queue -> replicationService: Start replication process
+activate replicationService
+
+replicationService -> remoteStorage: Replicate collection data
+activate remoteSteel
+remoteSteel --> replicationService: Replication success
+
+replicationService -> DB: Update replication status
+DB --> replicationService: Status updated
+
+deactivate replicationService
+
+replicationService -> UI: Update replication status display
+UI -> curator: Show updated replication status on item/component page
+
+@enduml
+```
+
+This sequence diagram outlines the general flow from when a curator decides to ingest a collection with the replication to a remote storage site, through to the display of the replication status in the staff interface:
+
+1. **Initiation**: The curator selects a collection for ingestion through the staff interface and opts for it to be replicated to remote storage.
+
+2. **Ingest and Queue**: The staff interface communicates with the ingest service to both ingest the collection and queue it for replication. The ingest service updates the database with the collection's status.
+
+3. **Replication Process**: The queued collection is picked up by the replication service, which handles the replication to the designated remote storage site. Upon success, the replication service updates the database with the replication status.
+
+4. **Status Update and Display**: Finally, the updated replication status is relayed back to the staff interface, where it is displayed to the curator on the appropriate item and component pages.
+
+Keep in mind that this diagram is a high-level representation. Depending on the specific technologies, protocols, and existing infrastructure of the EDRMS project, additional details and steps may be necessary to fully encapsulate the user story's requirements.

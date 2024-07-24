@@ -1,0 +1,57 @@
+Generating a detailed sequence diagram for the specified user story involves mapping out the interaction between objects (library staff, system interface, database, etc.) over time. In this scenario, the sequence diagram will illustrate the process that a librarian follows to view books that are currently unavailable and how they handle reservations from library members in the Comprehensive Library Management System (CLMS).
+
+Here's how the sequence might look in PlantUML syntax:
+
+```plantuml
+@startuml
+
+participant Librarian
+participant "System Interface" as Interface
+participant "Database" as DB
+participant "Reservation System" as Reservation
+
+activate Librarian
+Librarian -> Interface : Request Unavailable Books
+activate Interface
+
+Interface -> DB : Query Unavailable Books
+activate DB
+
+DB --> Interface : Return List of Unavailable Books
+deactivate DB
+
+Interface --> Librarian : Display Unavailable Books
+deactivate Interface
+
+Librarian -> Interface : Select Book for Reservation Details
+activate Interface
+
+Interface -> DB : Query Reservation Details for Selected Book
+activate DB
+
+DB --> Interface : Return Reservation Details
+deactivate DB
+
+Interface --> Librarian : Display Reservation Details
+deactivate Interface
+
+Librarian -> Reservation : Add/Update Reservation Request
+activate Reservation
+
+Reservation --> DB : Update Reservation Info
+activate DB
+
+DB --> Reservation : Confirmation of Reservation Update
+deactivate DB
+
+Reservation --> Librarian : Display Reservation Update Confirmation
+deactivate Reservation
+
+deactivate Librarian
+
+@enduml
+```
+
+This diagram starts with the librarian requesting the list of unavailable books through the system interface. The system then queries the database for this list and returns the results to the interface, which displays them to the librarian. When the librarian selects a book to see reservation details, the sequence repeats a similar interaction model to query and display those details. Finally, if the librarian decides to add or update a reservation based on a library member's request, the system interacts with the reservation system component, which in turn updates the database and confirms the update to the librarian.
+
+This sequence diagram is a simplified view that focuses on the backend processes triggered by a librarian's actions regarding unavailable books and their reservations in the CLMS project. It assumes that the librarian is authenticated and authorized to perform these actions.

@@ -1,0 +1,34 @@
+Given your request, I will provide a detailed sequence diagram in PlantUML format that outlines the process described in your user story. This User Story involves several steps: the encryption of a collection with a key, the generation and storage of a checksum for the encrypted file, and the replication of the encrypted file to a remote storage site. 
+
+Please note, this diagram assumes an interaction among several components: the Collection Curator, the EDRMS System (which encompasses encryption, checksum generation, and file replication functionalities), and the Remote Storage Site. 
+
+```plantuml
+@startuml
+participant "Collection Curator" as curator
+participant "EDRMS System" as system
+participant "Remote Storage Site" as storage
+
+curator -> system : Request file encryption
+activate system
+
+system -> system : Encrypt file with maintained key
+system -> system : Generate checksum of encrypted file
+system --> curator : Confirm file encryption and checksum
+
+curator -> system : Request file replication to remote storage
+system -> storage : Replicate encrypted file
+activate storage
+
+storage -> storage : Store encrypted file
+storage --> system : Confirm file storage
+
+system --> curator : Confirm file replicated and stored
+deactivate system
+deactivate storage
+
+@enduml
+```
+
+This PlantUML sequence diagram represents the process starting from the collection curator requesting file encryption, through the EDRMS system processing this request—encrypting the file, generating a checksum, confirming these actions with the curator—then replicating the encrypted file to the remote storage site, and finally confirming the successful replication and storage back to the curator.
+
+Please ensure your PlantUML environment or online PlantUML editor is set up to render this code into a visual sequence diagram.

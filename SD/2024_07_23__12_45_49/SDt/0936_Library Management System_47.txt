@@ -1,0 +1,48 @@
+@startuml
+participant Librarian
+participant WebInterface
+participant BackendSystem
+participant Database
+
+Librarian -> WebInterface: Accesses analysis tool for book stats
+activate WebInterface
+
+WebInterface -> BackendSystem: Request book usage data
+activate BackendSystem
+
+BackendSystem -> Database: Query for book borrowing statistics
+activate Database
+
+Database --> BackendSystem: Return statistics data
+deactivate Database
+
+Backend"yes" then
+BackendSystem -> Backend":Using stats data"
+System: Analyze data to identify long tail books
+activate BackendSystem
+
+BackendSystem --> WebInterface: Display list of long tail books
+deactivate BackendSystem
+
+WebInterface --> Librarian: Show long tail books analysis
+deactivate WebInterface
+
+Librarian -> WebInterface: Select books to decommission
+activate WebInterface
+
+WebInterface -> BackendSystem: Mark selected books for removal
+activate BackendSystem
+
+BackendSystem -> Database: Update book status to 'Decommissioned'
+activate Database
+
+Database --> BackendSystem: Confirm update
+deactivate Database
+
+BackendSystem --> WebInterface: Confirm books are marked for removal
+deactivate BackendSystem
+
+WebInterface --> Librarian: Display confirmation of decommissioned books
+deactivate WebInterface
+
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+actor Member
+participant "Search Interface" as SI
+participant "Library System" as LS
+database "Database" as DB
+participant "Book Information" as BI
+
+== Member Checks Due Date of Borrowed Book ==
+
+Member -> SI: Search for book
+activate SI
+SI -> LS: Request book details
+activate LS
+
+LS -> DB: Query book status
+activate DB
+DB --> LS: Book details (Borrowed)
+deactivate DB
+
+LS --> SI: Display status (Borrowed)
+deactivate LS
+SI --> Member: Show book is borrowed
+deactivate SI
+
+Member -> SI: Request due date
+activate SI
+SI -> LS: Query for due date
+activate LS
+
+LS -> DB: Request due date of book
+activate DB
+DB --> LS: Due date information
+deactivate DB
+
+LS --> SI: Provide due date
+deactivate LS
+SI --> Member: Display due date
+deactivate SI
+
+@enduml

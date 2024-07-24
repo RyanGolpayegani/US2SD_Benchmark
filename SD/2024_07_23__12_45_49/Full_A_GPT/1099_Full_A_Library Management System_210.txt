@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram for the specific user story, "As a manager, I want to give books unique IDs, so that they can be easily tracked", involves illustrating the interaction between different system components such as the User Interface (UI) for the library manager, the backend server, and the database management system. Below is an example of how one might represent this process in PlantUML syntax:
+
+```plantuml
+@startuml
+participant Manager_UI as "Manager UI"
+participant Backend_Server as "Backend Server"
+participant Database as "Database"
+
+Manager_UI->Backend_Server: Request to access book addition page
+activate Backend_Server
+Backend_Server->Database: Fetch categories and details form
+activate Database
+Database-->Backend_Server: Categories and details form
+deactivate Database
+Backend_Server-->Manager_UI: Display book addition form
+deactivate Backend_Server
+
+Manager_UI->Backend_Server: Submit book details with request for unique ID
+activate Backend_Server
+Backend_Server->Backend_Server: GenerateUniqueID()
+Backend_Server->Database: Check existing IDs
+activate Database
+Database-->Backend_Server: ID availability confirmation
+Backend_Server->Database: Save new book details with ID
+Database-->Backend_Server: Confirmation of book save
+deactivate Database
+Backend_Server-->Manager_UI: Display success message with unique ID
+deactivate Backend_Server
+@enduml
+```
+
+In this diagram:
+- The Manager UI is the interface through which the library manager interacts with the system.
+- The Backend Server represents the server-side application logic layer that processes requests, handles business logic, generates unique IDs, and interacts with the database.
+- The Database is where all data related to books, including their unique IDs, are stored and managed.
+
+**Process Flow:**
+1. The library manager accesses the book addition page through the Manager UI, triggering a request to the Backend Server.
+2. The Backend Server fetches necessary forms or categories from the Database and returns them to the Manager UI to display the book addition form.
+3. The manager submits the book details, including a request for generating a unique ID, through the Manager UI to the Backend Server.
+4. The Backend Server handles the ID generation logic. It may check the Database to ensure the uniqueness of the generated ID.
+5.These checks ensure no two books have the same ID, maintaining the integrity and traceability of the library’s inventory.
+6. Upon successful saving of the book with the unique ID, the Backend Server sends a success message back to the Manager UI to inform the manager of the successfully added book.
+
+This sequence diagram outlines the essential steps and interactions involved in assigning unique IDs to books for easy tracking, as required by the manager in the context of the Comprehensive Library Management System (CLMS).

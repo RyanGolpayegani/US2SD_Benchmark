@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the described user story — "As a Medical Caregiver, I want to have videophone capabilities to communicate with and monitor my patients" — requires illustrating the interaction process between the components involved in initiating and conducting a videophone call using the ALFRED system. Below is a simplified representation in PlantUML format to visualize these interactions:
+
+```plantuml
+@startuml
+participant "Medical Caregiver" as Caregiver
+participant "ALFRED Interface" as Interface
+participant "Authorization Service" as Auth
+participant "Videophone Service" as Videophone
+participant "Patient's ALFRED Device" as PatientDevice
+
+Caregiver -> Interface : Request Videophone Access
+Interface -> Auth : Validate Caregiver
+Auth -> Interface : Access Granted
+
+alt Videophone Call Setup Successful
+    Interface -> Videophone : Initiate Call
+    Videophone -> PatientDevice : Ringing...
+    PatientDevice -> Videophone : Accept Call
+    Videophone -> Interface : Call Established
+    Interface -> Caregiver : Display Video Feed
+else Videophone Call Setup Failed
+    Videophone -> Interface : Call Failed/Error
+    Interface -> Caregiver : Show Error Message
+end
+
+Caregiver -> Interface : End Call
+Interface -> Videophone : Terminate Call
+Videophone -> PatientDevice : End Call Signal
+PatientDevice -> Videophone : Acknowledge End Call
+Videophone -> Interface : Call Ended
+Interface -> Caregiver : Confirmation Call Ended
+
+@enduml
+```
+
+This sequence diagram begins with the Medical Caregiver's request to access the videophone feature through the ALFRED Interface. The system then validates the caregiver's credentials with an Authorization Service. Upon successful validation, the system proceeds to initiate a videophone call through the Videophone Service to the patient's ALFRED device. If the call is successfully established, the video feed is displayed to the caregiver. In case of any failures during call setup, an error message is displayed to the caregiver.
+
+The interaction also includes the process of ending the call, initiated by the caregiver, which goes through the system to properly terminate the call and confirm the end of the call to the caregiver.
+
+This simplified sequence diagram aims to capture the essential steps involved in utilizing videophone capabilities within the ALFRED system for communication between medical caregivers and patients. It encompasses initial access and authentication, initiating and establishing the videophone call, handling call setup failures, and properly terminating the call upon completion.

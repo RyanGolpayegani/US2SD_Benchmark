@@ -1,0 +1,39 @@
+Given the user story and project description, let's draft a sequence diagram in PlantUML format. The sequence will represent the typical flow from an administrator attempting to assign RAC (Research Archive Center) staff to different user groups, focusing on controlling read/write access based on those groups.
+
+This diagram assumes a basic web application architecture where the administrator interacts with a web interface, which then communicates with a backend application server. The server handles the logic, interacts with an Active Directory (or similar user management service), and updates a database that stores user group information and permissions.
+
+```plantuml
+@startuml
+actor Administrator as admin
+participant "Web Interface" as web
+participant "Application Server" as app
+database "Active Directory" as ad
+database "Permissions Database" as db
+
+== Assign Staff to User Groups ==
+admin -> web: Access User Management Interface
+web -> app: Request User Management Page
+app -> web: Return User Management Page
+web -> admin: Display User Management Page
+
+admin -> web: Submit Staff & Group Assignment
+web -> app: Process Assignment Request
+app -> ad: Update User Group
+ad -> app: Acknowledge Update
+app -> db: Update Read/Write Permissions
+db -> app: Acknowledge Permissions Update
+app -> web: Confirm Assignment Success
+web -> admin: Display Success Message
+
+@enduml
+```
+
+This basic sequence diagram follows these steps:
+1. The **Administrator** accesses the user management interface through the **Web Interface**.
+2. The **Web Interface** requests this page from the **Application Server**.
+3. The **Application Server** retrieves and sends this page back to the **Web Interface**, which displays it to the **Administrator**.
+4. The **Administrator** fills out and submits the form to assign staff members to specific user groups with predefined read/write access permissions.
+5. The **Application Server** processes this request and updates the user group information in the **Active Directory** (or any similar user management service). It then updates the specific read/write permissions for those user groups in the **Permissions Database**.
+6. Once the updates are acknowledged by both the **Active Directory** and the **Permissions Database**, the **Application Server** sends a success message back to the **Web Interface**, which then informs the **Administrator** of the successful assignment.
+
+This representation aims to provide a clear, step-by-step visualization of the process an administrator would follow to assign RAC staff to different user groups to control read/write access, following the requirements of the Digital Archive Management Enhancement Project.

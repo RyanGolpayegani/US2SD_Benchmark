@@ -1,0 +1,36 @@
+@startuml
+participant Applicant as A
+participant "Customer Portal\nUser Account" as CPUA
+participant "Pre-Application\nAssistance Module" as PAAM
+participant "Staff Administrative\nTools" as SAT
+participant "Plan Review\nStaff" as PRS
+
+A -> CPUA : Log In
+activate CPUA
+CPUA --> A : Display Dashboard
+
+A -> PAAM : Select "Request Plan Review Meeting"
+activate PAAM
+PAAM --> A : Display Request Form
+
+A -> PAAM : Submit Request Form\n[Details, Preferred Dates]
+PAAM --> SAT : Forward Meeting Request to Staff
+activate SAT
+
+SAT -> PRS : Assign Plan Review Meeting Request
+deactivate PAAM
+activate PRS
+PRS --> SAT : Review Request & Schedule Meeting
+
+SAT -> A : Notify of Scheduled Meeting\n[Date, Time, Platform Instructions]
+deactivate SAT
+A <-- PRS : Receive Meeting Details & Instructions
+deactivate PRS
+
+note right of A
+  Applicant prepares for the meeting by
+  gathering necessary documents and
+  drafting questions or points for discussion.
+end note
+
+@enduml

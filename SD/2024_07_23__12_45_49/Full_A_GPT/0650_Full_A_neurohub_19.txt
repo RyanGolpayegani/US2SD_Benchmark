@@ -1,0 +1,58 @@
+Given the specifics of your request, below is a detailed sequence diagram in PlantUML format for the user story provided. This PlantUML code represents the automated process a release engineer might initiate for configuring nightly builds, which automatically perform the installation of Neurohub on a fresh operating system, execute various tests, and then report back the results without manual intervention.
+
+```plantuml
+@startuml
+participant "Release Engineer" as RE
+participant "Continuous Integration\nServer" as CIS
+participant "Version Control\nSystem" as VCS
+participant "Test Automation\nSystem" as TAS
+participant "Notification\nSystem" as NS
+participant "Test Report" as TR
+
+RE -> CIS : Schedule nightly build
+activate CIS
+
+CIS -> VCS : Fetch latest Neurohub version
+activate VCS
+VCS --> CIS : Latest codebase
+deactivate VCS
+
+CIS -> CIS : Prepare virgin OS image
+
+CIS -> CIS : Install Neurohub\non virtual machine
+activate TAS
+
+CIS -> TAS : Execute automated\ntests (functional, acceptance)
+TAS --> CIS : Test results
+deactivate TAS
+
+CIS -> TR : Generate test report
+activate TR
+TR --> CIS : Report ready
+deactivate TR
+
+CIS -> NS : Send test report and\nnotification to Release Engineer
+activate NS
+NS --> RE : Notification and test report
+deactivate NS
+
+deactivate CIS
+@enduml
+```
+
+### Explanation:
+1. **Release Engineer schedules a nightly build:** The sequence starts with the Release Engineer scheduling the nightly build process on the Continuous Integration Server.
+
+2. **Continuous Integration Server fetches the latest Neurohub version:** The server then retrieves the latest version of the Neurohub application from the Version Control System.
+
+3. **Preparation of a virgin OS image:** The Continuous Integration Server prepares a fresh (virgin) operating system image to ensure a clean environment for each nightly build.
+
+4. **Installation of Neurohub on a virtual machine:** Within the prepared OS environment, the server installs Neurohub.
+
+5. **Execution of automated tests:** The Test Automation System is engaged to execute all planned tests, which include functional and acceptance tests, ensuring the new build meets all specified requirements.
+
+6. **Generation of a test report:** After testing is completed, a detailed test report is generated.
+
+7. **Sending notification and the test report:** Finally, the Notification System sends a notification along with the detailed test report back to the Release Engineer, concluding the automated process.
+
+This sequence diagram showcases an automated pipeline from the initiation of nightly builds to the feedback loop to the Release Engineer, ensuring minimal manual input and maximizing efficiency in maintaining high standards for Neurohub development.

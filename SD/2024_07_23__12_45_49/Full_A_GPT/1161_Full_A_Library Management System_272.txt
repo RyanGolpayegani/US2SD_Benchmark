@@ -1,0 +1,47 @@
+Creating a detailed Sequence Diagram for the given user story "As a member, I want to read online reservations for books" involves visualizing the interaction between different objects over time in the Comprehensive Library Management System (CLMS). Below is a sequence diagram in PlantUML format that illustrates this process, focusing on interactions involving the Member (user), User Interface (UI), Reservation System, Database, and Email Notification Service.
+
+Please note that for simplicity, the diagram will focus on reading (viewing) reservations. It demonstrates the steps from the user logging in, querying their reservations, to displaying the results.
+
+```plantuml
+@startuml
+participant Member as M
+actor "UI (Web Interface)" as UI
+entity "Reservation System" as RS
+database "Database" as DB
+entity "Email Notification Service" as ENS
+
+M -> UI : Request to log in
+UI -> M : Displays login form
+M -> UI : Submits login credentials
+UI -> RS : Validate credentials
+RS -> DB : Query credentials in DB
+DB -> RS : Returns user details
+RS -> UI : User authenticated
+UI -> M : Display Dashboard
+
+M -> UI : Selects "View Reservations"
+UI -> RS : Fetch reservations request
+RS -> DB : Query reservations for user
+DB -> RS : Return reservation details
+RS -> UI : Process and format reservations
+UI -> M : Display reservations
+
+@enduml
+```
+
+This sequence diagram narrates the following interaction flow:
+1. The member (library user) requests to log in through the UI (Web Interface).
+2. The UI presents a login form to the Member, who submits their login credentials.
+3. The UI sends these credentials to the Reservation System for validation.
+4. The Reservation System queries the Database with these credentials.
+5. The Database returns the user details to the Reservation System.
+6. The Reservation System confirms the authentication to the UI.
+7. The UI then displays the User Dashboard to the Member.
+8. The Member selects the option to "View Reservations" in the UI.
+9. The UI makes a request to the Reservation System to fetch the reservations associated with the Member.
+10. The Reservation System queries this information from the Database.
+11. The Database returns the reservation details to the Reservation System.
+12. The Reservation System processes and formats these details.
+13. Finally, the UI displays the Member's reservations.
+
+This sequence is a basic representation meant to address the core interactions of reading online reservations from a library management system perspective. Depending on the specifics of CLMS's implementation, additional interactions, such as handling errors or notifying users of changes to their reservations through the Email Notification Service, could also be included for a more comprehensive diagram.

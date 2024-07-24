@@ -1,0 +1,53 @@
+Creating a detailed sequence diagram for the specified user story in the context of the Digital Archive Management Enhancement Project involves outlining the interactions between different system components and the archivist user to perform manual contrast, level, and other image manipulations. Given the complexity and the detailed nature of such an operation, the sequence diagram below sketches out the essential steps and interactions.
+
+The PlantUML code below represents these interactions:
+
+```plantuml
+@startuml
+participant Archivist as archivist
+participant "Web Interface" as webInterface
+participant "Image Manipulation Module" as imgManipModule
+participant "Image Storage" as imgStorage
+participant "Metadata Database" as metadataDB
+
+archivist -> webInterface : Select image for manipulation
+webInterface -> imgManipModule : Fetch image
+imgManipModule -> imgStorage : Retrieve image
+imgStorage -> imgManipModule : Return image
+
+imgManipModule -> imgManipModule : Display image manipulation tools
+archivist -> webInterface : Apply manual manipulations (contrast, levels, etc.)
+webInterface -> imgManipModule : Process manipulations
+imgManipModule -> imgManipModule : Apply contrast, levels, etc.
+
+alt Successful Manipulation
+    imgManipModule -> imgStorage : Save manipulated image
+    imgStorage -> imgManipModule : Confirm save
+    imgManipModule -> metadataDB : Update metadata with manipulation details
+    metadataDB -> imgManipModule : Confirmation
+
+    imgManipModule -> webInterface : Display success message
+    webInterface -> archivist : Show success & updated image preview
+
+else Manipulation Error
+    imgManipModule -> webInterface : Display error message
+    webInterface -> archivist : Show error & suggest retry
+end
+@enduml
+```
+
+This sequence diagram starts with the archivist selecting an image to manually manipulate via a web interface. The selected image is fetched from the image storage by the Image Manipulation Module.
+
+1. **Select image for manipulation**: The archivist initiates the process by selecting an image needing manual adjustments beyond what automated tools have provided.
+
+2. **Fetch and retrieve image**: The Web Interface instructs the Image Manipulation Module to fetch the specific image, which retrieves it from the Image Storage.
+
+3. **Display image manipulation tools**: Once the image is selected, the interface provides the archivist with a set of tools for manual adjustments, such as contrast and levels.
+
+4. **Apply manual manipulations**: The archivist applies the needed manipulations through the Web Interface, which processes these requests in the Image Manipulation Module.
+
+5. **Process manipulations and save**: The manipulated image is then saved back to the Image Storage, with an update to the Metadata Database to reflect the changes made during manipulation.
+
+6. **Success or error handling**: Depending on the outcome of the manipulation and save process, a success or error message is displayed to the archivist. On success, updated image and metadata confirmation are returned. In case of an error, a suggestion to retry is provided.
+
+This diagram provides an overview of the necessary interactions within the system to enable an archivist to manually manipulate images, improving upon automated tool results.

@@ -1,0 +1,42 @@
+Creating a detailed UML sequence diagram for the given user story requires breaking down the interaction between the system components when a researcher tries to search using structured data. Since we're showing the interaction for a specific scenario, we focus on the user (researcher) initiating a search and how the system processes this request through to returning results.
+
+This example assumes the existence of a web-based archival management interface through which the researcher conducts the search, a search controller that processes search queries, a database that stores all the archival information, and possibly an access control system that checks if the researcher has the permissions to access certain records. 
+
+```plantuml
+@startuml
+participant Researcher as res
+participant WebInterface as web
+participant SearchController as sc
+participant Database as db
+participant AccessControl as ac
+
+res -> web : Enter search query using structured data
+web -> sc : Parse query for structured search
+sc -> db : Request relevant records based on query
+db -> sc : Return found records
+sc -> ac : Check access permissions for records
+ac -> sc : Return records researcher can access
+sc -> web : Format search results
+web -> res : Display search results
+@enduml
+```
+
+### Explanation:
+
+1. **Researcher -> WebInterface:** The process begins with the researcher entering their search query using structured data (e.g., metadata fields such as date, type, subject) into the web-based archival management interface.
+
+2. **WebInterface -> SearchController:** The web interface sends the structured query to the search controller, where the search is parsed to match the database schema for accurate retrieval.
+
+3. **SearchController -> Database:** The search controller requests the database to return records that match the structured query.
+
+4. **Database -> SearchController:** The database processes the request and sends back the found records to the search controller.
+
+5. **SearchController -> AccessControl:** To ensure that access restrictions are maintained, the search controller checks with the access control system which returned records the researcher has permission to access.
+
+6. **AccessControl -> SearchCcontroller:** The access control system sends back information on which records are accessible by the researcher, filtering out any the researcher is not permitted to see.
+
+7. **SearchController -> WebInterface:** After checking for permissions, the search controller formats the search results and sends them back to the web interface.
+
+8. **WebInterface -> Researcher:** Finally, the web interface displays the accessible and relevant search results to the researcher.
+
+This sequence diagram provides a high-level overview and might need adjustments based on actual system architecture, such as adding error handling, considering performance optimizations like caching, or detailing out the structured data search functionality within the SearchController.

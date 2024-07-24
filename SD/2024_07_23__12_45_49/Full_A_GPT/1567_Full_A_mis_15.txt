@@ -1,0 +1,48 @@
+Given your request, we're going to create a detailed PlantUML sequence diagram that outlines the scenario of bidirectional communication between Symplectic Elements and a Digital Repository (DR), focusing on a Fedora Connector, considering that Emory is using a hidden Fedora instance that Hydra collects objects for. Keep in mind, for a complete implementation, you'll need to adjust and expand upon this example based on the complete system design and requirements.
+
+```plantuml
+@startuml
+actor repoadmin as "RepoAdmin"
+participant SymplecticElements as "Symplectic \nElements"
+participant FedoraConnector as "Fedora \nConnector"
+database FedoraInstance as "Fedora \nInstance (Hidden)"
+participant Hydra as "Hydra"
+
+== Initialization ==
+repoadmin -> SymplecticElements : request data sync
+activate SymplecticElements
+
+== Symplectic Elements to Fedora Connector ==
+SymplecticElements -> FedoraConnector : initiate bidirectional \ncommunication
+activate FedoraConnector
+
+FedoraConnector -> FedoraInstance : verify access to \nhidden Fedora instance
+activate FedoraInstance
+FedoraInstance --> FedoraConnector : confirmation & \ndata provision
+deactivate FedoraInstance
+
+== Fedora Connector to Hydra ==
+FedoraConnector -> Hydra : request object \ncollection from Fedora
+activate Hydra
+
+Hydra -> FedoraInstance : collect objects
+activate FedoraInstance
+FedoraInstance --> Hydra : provide objects
+deactivate FedoraInstance
+
+Hydra --> FedoraConnector : objects collected
+deactivate Hydra
+
+== Completing Sync ==
+FedoraConnector --> SymplecticElements : update with \nnew and modified objects
+deactivate FedoraConnector
+
+SymplecticElements --> repoadmin : sync complete
+deactivate SymplecticElements
+
+@enduml
+```
+
+This sequence diagram starts with the `Repoadmin` initiating a request for data synchronization between Symplectic Elements and the digital repository through the Fedora Connector. Symplectic Elements then communicates bidirectionally with the Fedora Connector to verify access and interact with the hidden Fedora instance. The Hydra layer is involved in collecting objects from the Fedora instance as part of this process. Finally, updates and modifications are sent back to Symplectic Elements, concluding the synchronization process.
+
+Please note, to render this PlantUML diagram, you need to use a PlantUML environment (such as an online editor, or a tool that supports PlantUML diagrams). Also, the diagram is illustrative and focuses on the interactions described. Depending on the specifics of your implementation (like security protocols, error handling, and other integration layers), you might need to introduce additional components and interactions.

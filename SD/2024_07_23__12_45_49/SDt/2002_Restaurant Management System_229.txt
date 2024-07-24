@@ -1,0 +1,28 @@
+@startuml
+actor Employee as emp
+participant "UI Interface" as ui
+participant "Server" as srv
+database "Database" as db
+
+== Edit Item Process ==
+emp -> ui : Select item to edit
+ui -> srv : Request item details
+srv -> db : Query item details
+db -> srv : Return item details
+srv -> ui : Display item details
+ui -> emp : Show item details
+
+emp -> ui : Edit item information
+ui -> srv : Submit updated item details
+srv -> db : Update item details in database
+db -> srv : Confirm item update
+
+alt Successful Update
+  srv -> ui : Show success message
+  ui -> emp : Display success confirmation
+else Update Failed
+  srv -> ui : Show error message
+  ui -> emp : Display error message
+end
+
+@enduml

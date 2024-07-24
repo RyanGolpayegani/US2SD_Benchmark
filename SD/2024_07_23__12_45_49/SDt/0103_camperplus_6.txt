@@ -1,0 +1,34 @@
+@startuml
+participant "Camp Administrator" as admin
+participant "CMCP" as platform
+database "Database" as db
+participant "Camp Workers" as workers
+
+admin -> platform : Log in to platform
+activate platform
+
+platform -> db : Validate login
+activate db
+db -> db : Check credentials
+db -> platform : Login successful
+deactivate db
+
+platform -> admin : Display Dashboard
+admin -> platform : Navigate to Schedule Activities
+platform -> admin : Display Schedule Activities Form
+
+admin -> platform : Fill in Activity Details
+platform -> db : Save Activity Details
+activate db
+db -> db : Create/Update Activity Record
+db -> platform : Confirm Activity Saved
+deactivate db
+
+platform -> workers : Notify of New Activity
+activate workers
+workers -> platform : Acknowledge Notification
+deactivate workers
+
+platform -> admin : Display Confirmation
+deactivate platform
+@enduml

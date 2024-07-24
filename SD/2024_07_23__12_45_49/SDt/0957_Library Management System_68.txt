@@ -1,0 +1,52 @@
+@startuml
+participant Librarian
+participant "CLMS Interface" as Interface
+participant "Business Logic" as Logic
+participant "Database" as DB
+participant "Notification Service" as Notify
+
+Librarian -> Interface: Check availability (Book ID)
+activate Interface
+Interface -> Logic: Query availability (Book ID)
+activate Logic
+Logic -> DB: Request book status (Book ID)
+activate DB
+DB --> Logic: Book unavailable
+deactivate DB
+
+Logic --> Interface: Book unavailable, set alert?
+deactivate Logic
+Interface --> Librarian: Book unavailable, set alert?
+deactivate Interface
+Librarian -> Interface: Set availability alert
+activate Interface
+Interface -> Logic: Create alert for (Book ID)
+activate Logic
+Logic -> DB: Register alert (Book ID, Librarian ID)
+activate DB
+DB --> Logic: Alert registered
+deactivate DB
+Logic --> Interface: Alert set successfully
+deactivate Logic
+Interface --> Librarian: Alert confirmation
+deactivate Interface
+
+... Time passes, book becomes available ...
+
+DB -> Notify: Trigger alert (Book ID is available)
+activate Notify
+Notify -> Interface: Notify librarian (Book ID is available)
+activate Interface
+Interface -> Logic: Process notification (Book ID, Librarian ID)
+activate Logic
+Logic -> DB: Update book status (Book ID, Available)
+activate DB
+DB --> Logic: Status updated
+deactivate DB
+Logic --> Interface: Prepare notification message
+deactivate Logic
+Interface --> Librarian: Book (Book ID) is now available
+deactivate Interface
+deactivate Notify
+
+@enduml

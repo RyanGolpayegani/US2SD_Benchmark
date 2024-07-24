@@ -1,0 +1,45 @@
+To create a detailed sequence diagram in Plant UML format for the user story "As a manager, I want to register a new employee so that I can track my staff from the system," follow this diagram script:
+
+```
+@startuml
+!theme plain
+
+participant Manager as mgr
+participant "Management Interface" as mngInt
+participant "Server: Employee Management Service" as empServ
+participant "Database" as db
+
+mgr -> mngInt : Accesses employee registration form
+mngInt -> empServ : Request to open registration form
+empServ -> mngInt : Display registration form
+mngInt --> mgr : Present registration form
+
+mgr -> mngInt : Submits filled registration form
+mngInt -> empServ : Validate submitted information
+alt Valid Information
+    empServ -> db : Create new employee record
+    db --> empServ : Confirm employee creation
+    empServ -> mngInt : Display confirmation message
+    mngInt --> mgr : Show success notification
+else Invalid Information
+    empServ -> mngInt : Show error message(s)
+    mngInt --> mgr : Display error notification(s)
+end
+
+@enduml
+```
+
+### Explanation:
+
+- **Manager (mgr)**: Represents the user role of a restaurant manager seeking to register a new employee.
+- **Management Interface (mngInt)**: The UI component through which the manager interacts. It could be part of a web app or a standalone application.
+- **Server: Employee Management Service (empServ)**: Handles the business logic for managing employee data. It processes the registration forms, performs validations, and communicates with the database.
+- **Database (db)**: The persistent storage where employee records are kept. 
+
+### Sequence:
+1. **Access Registration Form**: The manager initiates the process by accessing the employee registration form through the Management Interface.
+2. **Display Form**: The request for the form is forwarded to the Employee Management Service, which returns the form to be displayed to the manager.
+3. **Submit Form**: After filling out the form, the manager submits it. The information is validated by the Employee Management Service.
+4. **Validation and Record Creation**: If the information is valid, a new employee record is created in the database, and a success message is shown to the manager. If the information is invalid, error messages are displayed, prompting the manager to correct the details.
+
+This sequence diagram outlines the basic flow from accessing the form to receiving feedback on the submission (success or error). Additional details and exceptions can be added based on specific project requirements or to handle more complex scenarios.

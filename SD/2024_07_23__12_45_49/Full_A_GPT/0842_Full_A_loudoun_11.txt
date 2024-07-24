@@ -1,0 +1,55 @@
+Creating a detailed sequence diagram using PlantUML for the user story provided involves illustrating the communication between different entities in the application process when a staff member wishes to record an internal note on a record. 
+
+Given the overview of your project, let's outline the key entities involved in this process:
+
+1. **Staff Member (User)**: The person initiating the action to record an internal note.
+2. **Frontend Interface**: The user interface where the staff member interacts with the portal.
+3. **Authentication Service**: To verify the identity of the staff member.
+4. **Application Server**: Backend service that processes the request to add a note.
+5. **Database**: Where the record and the new note are stored.
+
+Below is the PlantUML code representing the sequence diagram for the given user story:
+
+```plantuml
+@startuml
+actor StaffMember as staff
+participant "Frontend Interface" as frontend
+participant "Authentication Service" as auth
+participant "Application Server" as server
+database Database as db
+
+== Recording an Internal Note Process ==
+
+staff -> frontend : Attempts to Add Note to Record
+frontend -> auth : Validate Staff Session
+auth --> frontend : Session Validation Response
+alt Session Valid
+    frontend -> server : Request to Add Note (Record ID, Note Content)
+    server -> db : Insert Note into Record
+    db --> server : Confirm Note Insertion
+    server --> frontend : Display Success Message
+    frontend --> staff : Show Confirmation of Note Added
+else Session Invalid
+    frontend --> staff : Prompt Re-login
+end
+@endumd
+```
+
+### Explanation:
+
+1. **Staff Member (User) Initiates**: The process starts when a staff member attempts to add an internal note to a record via the Frontend Interface.
+
+2. **Validate Staff Session**: Before processing the request, the system checks if the staff member's session is valid through the Authentication Service.
+
+3. **Adding the Note**: 
+    - If the session is valid, the Frontend Interface sends the request to the Application Server, including the Record ID and the content of the note.
+    - The Application Server processes the request and interacts with the Database to insert the note into the specified record.
+    - Upon successful insertion, the Database confirms back to the Application Server.
+    - The Application Server then signals the Frontend Interface to display a success message.
+    - The Frontend Interface shows the staff member a confirmation that the note has been successfully added.
+
+4. **Session Invalid Path**: If the session is invalid, the Frontend Interface prompts the staff member to log in again.
+
+This diagram aims to capture the flow of adding an internal note by a staff member, assuming proper authentication and successful operation.
+
+These interactions provide a clear, step-by-step visualization of the process involved in the user story, highlighting both the success path and handling session validation.

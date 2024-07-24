@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+
+participant Publisher
+participant "UI/CLI" as Interface
+participant "Version Control" as VersionControl
+participant "Data Storage" as DataStorage
+participant "Validation Service" as Validation
+database "Data Registry DB" as RegistryDB
+
+== Versioning a Data Package ==
+Publisher -> Interface: Select Data Package to Version
+Interface -> VersionControl: Initialize Versioning
+VersionControl -> DataStorage: Retrieve latest Data Package
+DataStorage -> VersionControl: Return Data Package
+VersionControl -> Validation: Validate Data Package for new Version
+Validation -> VersionControl: Validation Success
+
+alt If Publisher updates Data Package
+    Publisher -> Interface: Upload Updated Data Package
+    Interface -> Validation: Validate Updated Data Package
+    Validation -> Interface: Validation Success
+    Interface -> VersionControl: Create New Version
+    VersionControl -> DataStorage: Store Updated Data Package
+    DataStorage -> VersionControl: Confirm Storage
+    VersionControl -> RegistryDB: Update Version Metadata
+    RegistryDB -> VersionControl: Confirm Update
+    VersionControl -> Interface: Version Update Success
+    Interface -> Publisher: Notify Versioning Success
+else No updates, only versioning request
+    VersionControl -> DataStorage: Copy Data Package for new Version
+    DataStorage -> VersionControl: Confirm Copy
+    VersionControl -> RegistryDB: Update Version Metadata for Copy
+    RegistryDB -> VersionSaleontrol: Confirm Update
+    VersionControl -> Interface: Version Creation Success
+    Interface -> Publisher: Notify Versioning Success
+end
+
+@enduml

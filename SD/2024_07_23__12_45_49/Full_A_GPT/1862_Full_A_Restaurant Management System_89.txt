@@ -1,0 +1,32 @@
+Below, you will find a detailed PlantUML code for a sequence diagram illustrating the process of a management user attempting to view the available table count to arrange reservations. This diagram includes interactions between the user, the system's web interface, the backend server, and the database.
+
+```plantuml
+@startuml
+actor ManagementUser as "Management User"
+participant WebInterface as "Web Interface"
+participant Server as "Backend Server"
+participant Database as "Database"
+
+ManagementUser -> WebInterface: Request to view available table count
+Webinterface -> Server: GET /api/tables/available
+activate Server
+
+Server -> Database: SELECT COUNT(*) FROM tables WHERE status = 'available'
+activate Database
+Database --> Server: Count of available tables
+deactivate Database
+
+Server --> WebInterface: Response with available table count
+deactivate Server
+
+WebInterface -> ManagementUser: Display available table count
+@enduml
+```
+
+### Understanding the Diagram
+- **Management User**: Begins the process by asking to view the available table count through the web interface.
+- **Web Interface**: This represents the system's frontend, which captures the user's request and forwards it to the backend server via a specific API endpoint (e.g., GET /api/tables/available).
+- **Backend Server**: Processes the request by querying the database for the count of tables that are currently marked as available.
+- **Database**: Stores all data related to the restaurant's operations, including tables and their statuses. It executes the received query and returns the count of available tables back to the server.
+
+This sequence diagram abstracts the flow and interactions without getting into the specifics of the technological stack's implementation details (such as React.js, Node.js, and MongoDB, or PostgreSQL as mentioned in your project description). However, understanding that this interaction is initiated by a management user and flows through the system to retrieve and display the needed information can help in designing and implementing the feature set related to table management and reservations in your Restaurant Management and Operations System.

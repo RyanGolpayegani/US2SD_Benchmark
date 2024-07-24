@@ -1,0 +1,56 @@
+@startuml
+actor Applicant
+participant "Customer Portal" as CP
+participant "Application System" as AS
+database "County Database" as DB
+participant "Hearing Coordinator" as HC
+
+== Check Pre-Hearing Requirements ==
+Applicant -> CP : Log in to user account
+CP -> AS : Verify user and fetch application status
+AS -> DB : Query pre-hearing requirements
+DB --> AS : Return requirements status
+AS --> CP : Display pre-hearing requirements and status
+CP --> Applicant : Show current status and pending actions
+
+== Submit Required Documents ==
+Applicant -> CP : Upload required documents
+CP -> AS : Process document submission
+AS -> DB : Store documents
+DB --> AS : Confirm storage
+AS --> CP : Update status to "Documents Submitted"
+CP --> Applicant : Confirm document submission
+
+== Request Pre-Hearing Meeting ==
+Applicant -> CP : Request pre-hearing meeting
+CP -> AS : Log meeting request
+AS -> DB : Schedule pre-hearing meeting
+DB --> AS : Confirm meeting scheduled
+AS --> CP : Update application status and notify HC
+CP --> Applicant : Confirm meeting request and provide details
+AS -> HC : Notify of pre-hearing meeting request
+HC --> AS : Acknowledge notification
+
+== Meeting Confirmation ==
+HC -> DB : Log meeting confirmation
+DB --> HC : Confirm meeting
+HC -> AS : Update meeting status
+AS -> CP : Notify applicant of meeting confirmation
+CP --> Applicant : Provide meeting confirmation and details
+
+== Compliance Check ==
+HC -> DB : Check document compliance
+DB --> HC : Return compliance status
+HC -> AS : Update compliance status in system
+AS -> CP : Update compliance status for applicant
+CP --> Applicant : Notify of compliance status
+
+== Pre-Hearing Completion ==
+Applicant -> CP : View final pre-hearing status
+CP -> AS : Verify all requirements satisfied
+AS -> DB : Check all pre-hearing steps completed
+DB --> AS : Confirm completion
+AS --> CP : Update hearing status to "Ready"
+CP --> Applicant : Notify that pre-hearing requirements are satisfied
+
+@enduml

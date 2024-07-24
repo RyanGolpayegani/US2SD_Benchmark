@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for a library member looking up books by title involves outlining the interactions between the user and the system components. Here is a sequence diagram expressed in PlantUML syntax, which showcases the processes from the user initiating a search to receiving the search results.
+
+```plantuml
+@startuml
+actor "Library Member" as member
+participant "Web Interface" as web
+participant "Controller" as controller
+participant "Search Service" as searchService
+database "Database" as db
+
+== Search Process ==
+member -> web : Enter search query\n(title)
+web -> controller : searchRequest(title)
+controller -> searchDidYouMeanService : searchBooksByTitle(title)
+activate searchService
+searchService -> db : queryBooksByTitle(title)
+activate db
+db --> searchService : return results
+deactivate db
+searchService --> controller : searchResults
+deactivate searchService
+controller --> web : displayResults(searchResults)
+web --> member : Show books by title
+@enduml
+```
+
+### Explanation:
+
+1. **Library Member starts the search**: The library member initiates a search for a book by its title using the web interface. This action triggers the system to respond.
+
+2. **Request Routing Through Web Interface**: The web interface receives the input query and routes the request to the controller designed to handle such requests.
+
+3. **Controller invokes Search Service**: The controller sends the query for processing by the Search Service, which is responsible for executing search operations within the system.
+
+4. **Search Service interacts with Database**: The Search Service then queries the database to retrieve Books that match the title specified in the search criteria. The process of querying can involve complex logic to handle partial matches, case sensitivity, and other search-related nuances.
+
+5. **Database returns results**: The database sends back the results of the query to the Search Service, which could be a list of book titles that match the search criteria.
+
+6. **Results processed back to the user**: The Search Service processes these results and sends them back to the controller, which then forwards them to the Web Interface for display.
+
+7. **Library Member receives the search results**: Finally, the web interface presents the search results to the library member, showing books that match or closely match the search query.
+
+This sequence diagram demonstrates a simplified view focusing on the interactions involving looking up books by title. Depending on the system's complexity, additional steps or services (like caching, error handling, and logging) might be involved but are not displayed here to maintain focus on the core user story.

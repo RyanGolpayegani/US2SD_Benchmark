@@ -1,0 +1,46 @@
+@startuml
+actor Administrator as admin
+participant "Web Interface" as web
+participant "Deposit Module" as deposit
+database "Metadata Repository" as metadata
+participant "Compliance Checker" as compliance
+participant "Licensing System" as licensing
+participant "Publication Module" as publish
+
+== Dataset Deposit ==
+admin -> web : Log in to Admin Interface
+web -> deposit : Navigate to Deposit Queue
+deposit -> metadata : Fetch Deposited Dataset Info
+metadata -> deposit : Dataset Metadata
+deposit --> admin : Display Deposited Datasets List
+
+== Metadata Check ==
+admin -> deposit : Select Dataset for Review
+deposit -> metadata : Retrieve Detailed Metadata
+metadata -> deposit : Detailed Metadata
+deposit -> compliance : Initiate Metadata Quality Check
+compliance -> compliance : Assess Metadata Quality
+compliance --> deposit : Metadata Quality Report
+deposit --> admin : Display Metadata Quality Report
+
+== Compliance Check ==
+admin -> compliance : Initiate Compliance Check
+compliance -> metadata : Verify Policy Compliance
+metadata --> compliance : Compliance Status
+compliance --> admin : Display Compliance Status
+
+== Licensing Check ==
+admin -> licensing : Request Licensing Details
+licensing -> metadata : Retrieve Dataset Licensing Info
+metadata --> licensing : Licensing Information
+licensing --> admin : Display Licensing Information
+
+== Approval for Publication ==
+admin -> publish : Approve Dataset for Publication
+publish -> metadata : Update Publication Status
+metadata --> publish : Confirmation
+publish -> licensing : Update Licensing Status
+licensing --> publish : Confirmation
+publish --> admin : Notify Publication Success
+
+@enduml

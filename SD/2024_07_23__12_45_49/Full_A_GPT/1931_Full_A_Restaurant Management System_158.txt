@@ -1,0 +1,70 @@
+Creating a detailed sequence diagram for the user story "As a manager, I want to know employee information so that I can determine which employees will work on which days" involves illustrating how system components interact with each other to fulfill this requirement. Given the complexity of interactions, a focused scenario where the manager accesses the system to view employee information and their availability is considered. 
+
+Note: PlantUML code is structured and requires its syntax to be correctly adhered to for the diagram generation. 
+
+```plantuml
+@startuml
+actor Manager as mgr
+participant "UI Interface" as UI
+participant "Backend System" as Backend
+participant "Database" as DB
+
+mgr -> UI : Access employee schedule page
+activate UI
+
+UI -> Backend : Request employee schedules
+activate Backend
+
+Backend -> DB : Query employee information\nand schedules
+activate DB
+
+DB --> Backend : Return employee data
+deactivate DB
+
+Backend --> UI : Display employee schedules
+deactivate Backend
+
+UI --> mgr : Show employee information\nand availability
+deactivate UI
+
+mgr -> UI : Select employees\nand assign shifts
+activate UI
+
+UI -> Backend : Update employee shifts
+activate Backend
+
+Backend -> DB : Save shift updates
+activate DB
+
+DB --> Backend : Confirm shift update
+deactivate DB
+
+Backend --> UI : Shift update success
+deactivate Backend
+
+UI --> mgr : Confirm shift assignments
+deactivate UI
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+- **Manager (mgr)**: Initiates the process by accessing the employee schedule page through the UI Interface.
+- **UI Interface (UI)**: Acts as the medium through which the manager interacts with the system. It receives the manager's request and communicates with the Backend System to fetch or update the required employee information.
+- **Backend System (Backend)**: Processes the request from the UI. It queries the Database for employee schedules and information, or updates the database with new shift assignments as per the manager's instructions.
+- **Database (DB)**: Stores all data related to employee schedules, availability, and other pertinent information. It performs operations like querying or updating data as requested by the Backend System.
+
+### Steps Illustrated in the Diagram:
+1. The manager requests to view employee schedules via the UI Interface.
+2. The UI Interface forwards this request to the Backend System.
+3. The Backend System queries the Database for employee information and schedules.
+4. The Database returns the requested information to the Backend System.
+5. The Backend System sends the employee schedules to the UI Interface, which then displays them to the manager.
+6. The manager selects employees and assigns shifts, communicating these updates through the UI Interface.
+7. The UI Interface forwards the shift updates to the Backend System.
+8. The Backend System updates the Database with the new shift assignments.
+9. The Database confirms the shift updates to the Backend System.
+10. The Backend System confirms the successful shift update to the UI Interface.
+11. The UI Interface displays a confirmation of the shift assignments to the manager.
+
+This sequence diagram provides a high-level view of the interactions required for a manager to view and manage employee schedules within the Restaurant Management and Operations System.

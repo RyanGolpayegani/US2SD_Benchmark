@@ -1,0 +1,53 @@
+To create a sequence diagram for the user story where a manager wants to create employee information in the Comprehensive Library Management System (CLMS), we will outline the steps and interactions between objects in the system. Given the complexity of the system described, it's important to identify key actors and components involved in this process:
+
+- **Manager (User Interface)**: The actor initiating the process.
+- **Web Application**: The frontend interface the manager interacts with.
+- **Controller**: Processes requests and communicates with the model.
+- **Model (Employee Management Service)**: Handles data manipulation and business logic for employee data.
+- **Database**: Stores the employee information persistently.
+
+Below is a simplified PlantUML code that represents the sequence diagram for creating new employee information. This code assumes a typical web application architecture with a backend service handling the logic and the database interactions.
+
+```plantuml
+@startuml
+
+
+participant "Manager (UI)" as Manager
+participant "Web Application" as WebApp
+participant "Controller" as Controller
+participant "Employee Management\nService (Model)" as Model
+database "Database" as DB
+
+
+Manager -> WebApp : Access Employee Creation Form
+WebApp -> Manager : Display Form
+
+Manager -> WebApp : Submit Employee Information\n(Name, Role, Contact, etc.)
+WebApp -> Controller : CreateEmployeeRequest(Info)
+Controller -> Model : CreateEmployee(Info)
+activate Model
+
+Model -> DB : Insert New Employee Record
+activate DB
+DB --> Model : Confirm Insertion
+deactivate DB
+
+Model --> Controller : EmployeeCreationSuccess
+deactivate Model
+
+Controller --> WebApp : Display Success Message
+WebApp --> Manager : Confirm Employee Created
+
+@enduml
+```
+
+This diagram starts with the manager accessing an employee creation form on the web application and ends with the confirmation that the employee has been successfully created. The sequence shows the flow from the manager's initial request to the system's response indicating the result.
+
+### Explanation of Steps:
+1. **Manager (UI) Accesses Form**: The manager initiates the process by accessing the employee creation form on the web application.
+2. **Submission of Employee Information**: After filling out the form with the necessary employee details, the manager submits it.
+3. **Request Processing**: The web application sends this information to the controller, which in turn calls the employee management service (model) to process the creation of the new employee.
+4. **Data Persistence**: The employee management model interacts with the database to insert the new employee record.
+5. **Confirmation**: Once the data is persistently stored, the model signals a success status back up the chain to the controller and then to the web application, which finally notifies the manager.
+
+This sequence diagram provides a high-level overview of the process of creating new employee information in the CLMS system from the perspective of a manager.

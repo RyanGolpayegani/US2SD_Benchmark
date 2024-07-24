@@ -1,0 +1,37 @@
+Given the complexity of depicting this process as a sequence diagram and the text-based limitation, I'll outline how you might create a PlantUML sequence diagram for the user story "As a researcher, I want to receive an alert of any unattached files that are in my workspace." This scenario presumes a few system components based on common functionalities within a platform like Neurohub.
+
+Components that might be involved in this process include:
+- **User (Researcher)**
+- **WorkspaceService**: To manage operations within a researcher's workspace.
+- **FileManagementSystem**: To handle file operations.
+- **AlertSystem**: To manage and send alerts to users.
+
+Here's a simplified version of how these components might interact in PlantUML syntax to achieve the stated user story:
+
+```plantuml
+@startuml
+
+participant Researcher as R
+participant WorkspaceService as WS
+participant FileManagementSystem as FMS
+participant AlertSystem as AS
+
+R -> WS : Check for unattached files
+WS -> FMS : Request list of files in workspace
+FMS -> FMS : Identify unattached files
+FMS -> WS : Return list of unattached files
+WS -> AS : Trigger alert for unattached files
+AS -> R : Send alert notification
+
+@enduml
+```
+
+### Explanation:
+- **Researcher to WorkspaceService**: This interaction initiates the process, where the researcher (either through a scheduled job or manual request) triggers a check for any unattached files within their workspace.
+- **WorkspaceService to FileManagementSystem**: The WorkspaceService requests a list of all files currently stored in the researcher's workspace from the FileManagementSystem.
+- **FileManagementSystem internal**: The FileManagementSystem identifies which of these files are unattached based on predefined criteria (e.g., files not linked to any projects, datasets, or other users).
+- **FileManagementSystem to WorkspaceService**: It then returns this list of unattached files back to the WorkspaceService.
+- **WorkspaceService to AlertSystem**: The WorkspaceService communicates with the AlertSystem to trigger an alert for these unattached files.
+- **AlertSystem to Researcher**: Finally, the AlertSystem sends an alert notification to the researcher, informing them of the unattached files in their workspace.
+
+This diagram and corresponding sequence provide a high-level overview of the interactions involved in fulfilling the user story. Adjustments might be necessary to align with the specific architecture and functionality of the Neurohub platform.

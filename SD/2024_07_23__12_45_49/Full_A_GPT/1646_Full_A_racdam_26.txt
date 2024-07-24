@@ -1,0 +1,54 @@
+Creating a detailed sequence diagram for the user story described in PlantUML format involves illustrating the interaction between the archivist (user) and the system components for automatically assigning unique identifiers to scanned materials. Note that while the diagram code provided here is conceptual and focuses on illustrating the process described in the user story, actual implementation details might differ based on the specific technologies and database structures used in your project.
+
+This sequence diagram includes the steps an archivist might follow when scanning materials and the system's automatic generation of unique identifiers for those materials.
+
+```plantuml
+@startuml
+actor Archivist
+participant "Scanning Interface" as SI
+participant "Digital Archive Management System" as DAMS
+participant "Unique Identifier Generator" as UIG
+participant "Database" as DB
+
+Archivist -> SI: Scan material
+activate SI
+
+SI -> DAMS: Upload scanned material
+activate DAMS
+
+DAMS -> UIG: Request unique identifier
+activate UIG
+
+UIG -> UIG: Generate unique identifier
+UIG -> DB: Check if exists
+activate DB
+
+DB -> UIG: Unique identifier validated
+DB --> DAMS: Unique identifier assigned
+deactivate DB
+
+UIG --> DAMS: Return unique identifier
+deactivate UIG
+
+DAMS -> DB: Store file with unique identifier
+DB -> DAMS: Confirmation
+DAMS -> SI: Display successful upload & identifier
+SI -> Archivist: Show unique identifier
+deactivate DAMS
+deactivate SI
+
+@enduml
+```
+
+Explanation:
+
+- The **Archivist** starts the process by scanning the material using the **Scanning Interface**.
+- The **Scanning Interface** uploads the scanned material to the **Digital Archive Management System (DAMS)**.
+- **DAMS** requests a unique identifier for the scanned item from the **Unique Identifier Generator (UIG)**.
+- **UIG** generates a potential unique identifier and checks with the **Database (DB)** to ensure it's unique and hasn't been assigned before.
+- Once validated, the **Database** updates the DAMS that the unique identifier has been successfully assigned.
+- **DAMS** stores the file along with its unique identifier in the **Database**.
+- The **Database** sends a confirmation back to **DAMS**, which in turn informs the **Scanning Interface**.
+- Finally, the **Scanning Interface** shows the unique identifier to the **Archivist**, indicating successful completion of the process.
+
+This sequence ensures that every material scanned by the archivist is automatically assigned a unique identifier, thereby minimizing the chances of human error and ensuring easier management and retrieval of digital archives.

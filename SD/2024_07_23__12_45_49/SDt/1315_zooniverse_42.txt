@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+
+actor ZooniverseAdmin as admin
+participant "Web Interface" as web
+participant "API Gateway" as api
+participant "Image Analysis Service" as analysis
+participant "AI/ML Model" as aiModel
+participant "Database" as db
+
+== Detect Features in Satellite Images ==
+admin -> web: Accesses platform
+web -> api: Requests feature detection
+api -> analysis: Sends satellite images
+analysis -> aiModel: Initiates feature analysis
+note right of aiModel: Floods,\nDamages,\nShelters,\nBlocked Roads
+aiModel -> analysis: Returns analysis results
+analysis -> db: Stores analysis results
+db -> analysis: Confirms storage
+analysis -> api: Sends results
+api -> web: Displays feature details
+web -> admin: Shows analysis results
+
+@enduml

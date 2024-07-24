@@ -1,0 +1,26 @@
+@startuml
+actor Cook
+
+participant "UI Dashboard" as Dashboard
+participant "Authentication Service" as Auth
+participant "Employee Module" as Employee
+database "Database" as DB
+
+== Clock In ==
+Cook -> Dashboard : Select "Employee Section"
+Dashboard -> Auth : Verify Cook's authentication
+Auth --> Dashboard : Authentication Successful
+Dashboard --> Cook : Display Employee Dashboard
+
+Cook -> Employee : Select "Clock In"
+Employee -> DB : Record Clock In Time
+DB --> Employee : Clock In Recorded
+Employee --> Cook : Display Clock In Success Message
+
+== Clock Out ==
+Cook -> Employee : Select "Clock Out"
+Employee -> DB : Record Clock Out Time
+DB --> Employee : Clock Out Recorded
+Employee --> Cook : Display Clock Out Success Message
+
+@enduml

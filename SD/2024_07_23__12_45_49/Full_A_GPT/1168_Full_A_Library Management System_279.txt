@@ -1,0 +1,33 @@
+Creating a comprehensive PlantUML sequence diagram for the user story "As a Member, I want to search a book by name, so that I can quickly search for a book" involves illustrating the interactions between the Member (user), the UI (User Interface), the Controller (which processes the request), the Service (which handles the business logic), and the Database (where book data is stored). Here's an example of how this sequence might be depicted using PlantUML syntax:
+
+```plantuml
+@startuml
+participant Member
+participant UI
+participant Controller
+participant Service
+participant Database
+
+Member -> UI : enters Book Name
+UI -> Controller : searchBookByName(BookName)
+Controller -> Service : getBookDetailsByName(BookName)
+Service -> Database : queryBookDetails(BookName)
+Database --> Service : return BookDetails
+Service --> Controller : BookDetails
+Controller --> UI : display BookResults
+UI --> Member : show BookResults
+@enduml
+```
+
+This sequence diagram starts with the Member (library user) entering the book name they want to search for in the UI. The sequence proceeds as follows:
+
+1. The Member inputs the book's name into the search functionality of the UI.
+2. The UI captures this input and calls the `searchBookByName` function of the Controller, passing the book name as a parameter.
+3. The Controller receives the book's name and invokes the `getBookDetailsByName` function of the Service layer, forwarding the book's name for processing.
+4. The Service, responsible for the business logic, queries the Database by calling `queryBookDetails` with the book's name to fetch the relevant book details.
+5. The Database executes the query to find the book details based on the provided name and returns the results (BookDetails) back to the Service.
+6. The Service then sends the retrieved BookDetails back to the Controller.
+7. The Controller forwards these book details to the UI.
+8. Finally, the UI displays the search results (BookResults) to the Member.
+
+This diagram outlines the collaboration between different components of the Comprehensive Library Management System (CLMS) for the specific use case of searching for a book by name. It's a high-level representation, and the actual implementation can include additional details such as error handling, authentication checks (if required for searching books), and more nuanced interactions with the database.

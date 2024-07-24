@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram for the user story provided involves showing the interaction between the Inspection Staff member and the County Services & Property Information Portal with the focus on creating, scheduling, and assigning an inspection. Below is a PlantUML representation of this process.
+
+Please note, to render this PlantUML code, you will need to use a PlantUML environment or integrator. This could be an online editor like PlantText.com, or an integration within a documentation tool that supports PlantUML.
+
+```plantuml
+@startuml
+actor "Inspection Staff" as staff
+participant "Customer Portal" as portal
+participant "Inspection Management System" as ims
+database "Inspection Database" as db
+
+== Authentication ==
+staff -> portal : Login
+portal -> staff : Authentication Successful
+
+== Create Inspection ==
+staff -> portal : Select "Create Inspection"
+portal -> ims : Initiate Inspection Creation
+ims -> db : Retrieve Required Info(template, areas, inspectors)
+db --> ims : Return Info
+ims --> portal : Display Inspection Form(with Info)
+portal -> staff : Display Form
+staff -> portal : Fill Form and Submit
+portal -> ims : Process Inspection Submission
+ims -> db : Save New Inspection Details
+db --> ims : Confirmation
+ims --> portal : Acknowledge Creation
+portal -> staff : Display "Inspection Scheduled"
+
+== Assign Inspection ==
+staff -> portal : Access Pending Inspections
+portal -> ims : Request Pending Inspections
+ims -> db : Query Pending Inspections
+db --> ims : Return Pending Inspections
+ims --> portal : Display Pending Inspections
+portal -> staff : Show Pending Inspections
+staff -> portal : Select Inspection to Assign
+portal -> ims : Initiate Assignment Process
+staff -> portal : Select Inspector and Assign
+portal -> ims : Update Inspection with Assignee
+ims -> db : Save Inspector Assignment
+db --> ims : Confirmation
+ims --> portal : Acknowledge Assignment
+portal -> staff : Display "Inspection Assigned"
+
+@enduml
+```
+
+This sequence diagram begins with the Inspection Staff member logging into the Customer Portal. Once authenticated, the staff member selects the option to create an inspection, filling out the necessary form that gets displayed after the portal communicates with the Inspection Management System (IMS). The IMS, in turn, interacts with the Inspection Database to retrieve and store information related to the inspection. Following the creation of the inspection, the diagram depicts the process of assigning this newly created inspection to an inspector, which also involves interactions between the portal, the IMS, and the database to update and confirm the assignment.
+
+Please adjust the specific names of the systems, databases, or interfaces (`Customer Portal`, `Inspection Management System`, `Inspection Database`) as required for your actual project setup.

@@ -1,0 +1,33 @@
+@startuml
+actor SiteVisitor as Visitor
+participant "UI Interface" as UI
+participant "Course Controller" as Controller
+participant "Course Service" as Service
+participant "Course Repository" as Repository
+database "Course Database" as Database
+
+Visitor -> UI: Access upcoming courses page
+UI -> Controller: Request to view courses
+Controller -> Service: Get upcoming courses(list, pagination)
+Service -> Repository: Fetch paginated courses
+Repository -> Database: Query for courses\nwith future dates
+Database -> Repository: Return courses data
+Repository -> Service: Process courses data
+Service -> Controller: Return paginated result
+Controller -> UI: Display courses list with pagination options
+UI -> Visitor: Show list of courses\nand paging controls
+
+alt Page Through Courses
+    Visitor -> UI: Select page (next/previous)
+    UI -> Controller: Request page change
+    Controller -> Service: Get next/previous page of courses
+    Service -> Repository: Fetch courses for requested page
+    Repository -> Database: Query for next/previous\nbatch of courses
+    Database -> Repository: Return next/previous courses data
+    Repository -> Service: Process next/previous courses data
+    Service -> Controller: Return paginated courses for requested page
+    Controller -> UI: Update courses list to new page
+    UI -> Visitor: Show updated list of courses\nand paging controls
+end
+
+@enduml

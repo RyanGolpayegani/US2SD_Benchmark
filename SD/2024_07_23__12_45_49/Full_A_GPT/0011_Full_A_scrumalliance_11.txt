@@ -1,0 +1,41 @@
+To create a detailed Sequence Diagram in PlantUML format based on the provided user story: "As a site member, I want to mark my Teas address as private even if the rest of my profile is not, so that no one can contact me," you'll need to envision the interactions between different components of the system.
+
+Here is how you might write the PlantUML code to represent the sequence diagram for this functionality:
+
+
+```plantuml
+@startuml
+actor Member as member
+participant "MemberProfileUI" as ui
+participant "ProfileController" as controller
+participant "ProfileService" as service
+participant "ProfileRepository" as repo
+
+member -> ui : Chooses to edit profile
+ui -> controller : Request edit profile form
+controller -> service : Get profile details(memberId)
+service-> repo : Fetch profile(memberId)
+repo -> service : Return profile details
+service -> controller : Return profile details
+controller -> ui : Display profile edit form
+
+ui -> controller : Submit(emailPrivacy:private)
+controller -> service : Update email privacy settings(memberId, emailPrivacy)
+service -> repo : Save updated profile
+repo -> service : Confirm save
+service -> controller : Confirm update
+controller -> ui : Display success message
+
+member -> ui : Views profile
+ui -> controller : Request profile view
+controller -> service : Get profile details for view(memberId)
+service -> repo : Fetch profile view details(memberId)
+repo -> service : Return view details
+service -> controller : Return masked email(if applicable)
+controller -> ui : Display profile(with private email masked)
+@enduml
+```
+
+This sequence diagram starts with the Member deciding to edit their profile and progresses through the system's back-end to update the privacy setting for the email address. After the update, when the profile is viewed, the email is masked due to the privacy setting.
+
+Remember, the actual implementation details can vary greatly depending on the specific architectures, frameworks, and technologies used. This diagram assumes a typical web application architecture with separation between the UI (User Interface), controller, service layer, and a repository pattern for data access.

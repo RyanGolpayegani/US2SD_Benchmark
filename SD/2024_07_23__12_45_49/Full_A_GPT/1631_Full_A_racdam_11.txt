@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the specified user story involves illustrating the interactions between the archivist, the system (Digital Archive Management System), and possibly external systems or databases in a sequential order. Given the complexity of such systems, the diagram will simplify interactions focusing on the key steps involved in determining if a photo has already been scanned and then licensing it to a researcher.
+
+Below is a simplified PlantUML code that represents these interactions in a sequence diagram:
+
+```plantuml
+@startuml
+participant Archivist as A
+participant "Digital Archive\nManagement System" as DAMS
+database "Archival Collection\nDatabase" as DB
+participant "Licensing Module" as LM
+
+A -> DAMS : Searches for photo
+DAMS -> DB : Query photo records
+DB --> DAMS : Return photo records
+DAMS --> A : Display search results
+
+alt Photo has been scanned
+    A -> DAMS : Select photo
+    DAMS -> DB : Retrieve photo details
+    DB --> DAMS : Photo details
+    DAMS --> A : Display photo details\n(Scanned status: Yes)
+    
+    A -> LM : Request to license photo
+    LM -> DB : Check licensing conditions
+    DB --> LM : Licensing conditions met
+    LM --> A : Generate license agreement
+    
+    A -> DAMS : License photo to researcher
+    DAMS -> DB : Update photo record\n(Add license details)
+    DB --> DAMS : Confirm update
+    DAMS --> A : Confirm photo licensed
+    
+else Photo not scanned
+    DAMS --> A : Display message\n(Photo not scanned)
+end
+
+@enduml
+```
+
+This code outlines the following process:
+1. **Photo Search**: The archivist searches for a photo in the Digital Archive Management System.
+2. **Query Database**: The system queries the Archival Collection Database for photo records.
+3. **Display Results**: Search results are displayed to the archivist.
+4. **Photo Scanned?**: If the photo has already been scanned, its details are retrieved and displayed. If not, a message indicating the photo hasn't been scanned is shown.
+5. **Licensing Request**: The archivist requests to license the scanned photo.
+6. **Check Licensing Conditions**: The system checks if licensing conditions are met.
+7. **Generate License**: A license agreement is generated and displayed to the archivist.
+8. **License Photo**: The archivist licenses the photo to the researcher, and the system updates the photo record with license details.
+
+Remember, this is a high-level representation. Real-world scenarios might involve additional steps or systems, such as digital rights management, user authentication, detailed metadata management, or integration with external content management systems.

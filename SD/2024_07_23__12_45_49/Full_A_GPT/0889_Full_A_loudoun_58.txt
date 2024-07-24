@@ -1,0 +1,48 @@
+To illustrate the sequence of actions involved in a staff member sending or posting citations and fines through the County Services & Property Information Portal, as described in the given user story, let’s break down the process and represent it as a sequence diagram in PlantUML syntax. 
+
+Note that this sequence diagram focuses on the backend logic following a staff member's decision to send or post a citation and fines, leading to the generation and logging of a Notice of Violation document to a property owner.
+
+```plantuml
+@startuml
+actor StaffMember
+participant "Authentication" as Auth
+participant "Dashboard" as Dashboard
+participant "CitationManagement" as Citation
+participant "DocumentGeneration" as DocGen
+participant "NotificationService" as Notify
+participant "Database" as DB
+
+== Authentication ==
+StaffMember -> Auth: Login()
+Auth --> StaffMember: Authentication Success
+
+== Send or Post Citations ==
+StaffMember -> Dashboard: Select 'Send/Post Citations'
+Dashboard -> Citation: Access Citation Management()
+
+== Generate Notice of Violation ==
+Citation -> DocGen: Initiate Notice of Violation Document Generation(PropertyID, Details)
+DocGen -> DB: Fetch Property Owner Details(PropertyID)
+DB --> DocGen: Return Owner Details
+DocGen --> Citation: Document Generated(Success, DocumentID)
+
+== Log Notice of Violation ==
+Citation -> DB: Log Notice of Violation(DocumentID, Timestamp, StaffID)
+DB --> Citation: Log Success
+
+== Notify Property Owner ==
+Citation -> Notify: Send Notification to Property Owner(OwnerID, DocumentID)
+Notify --> StaffMember: Notification Sent
+
+@enduml
+```
+
+Explanation of the Sequence Diagram Steps:
+
+1. **Authentication**: The staff member logs into the system, and authentication is verified.
+2. **Send or Post Citations**: Once authenticated and accessing the dashboard, the staff member selects the option to send or post citations, which navigates to the Citation Management area.
+3. **Generate Notice of Violation**: The Citation Management module initiates the generation of a Notice of Violation document, which involves fetching the relevant property owner's details from the database based on a property ID, and generating the document.
+4. **Log Notice of Violation**: The newly generated Notice of Violation Document ID, along with a timestamp and the staff member's ID, are logged in the database for record-keeping.
+5. **Notify Property Owner**: The system utilizes a notification service to send or post a notification to the property owner, indicating the issuance of the Notice of Violation. This notification process might encompass sending digital communications (e.g., email) or preparing a physical mailer, depending on the system capabilities and legal requirements.
+
+This diagram provides a systematic representation of how a staff member in the county services portal can send or post citations and fines, specifically focusing on generating and logging a Notice of Violification document, which is central to enforcing county ordinances.

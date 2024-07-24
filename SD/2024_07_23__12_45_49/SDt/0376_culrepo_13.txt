@@ -1,0 +1,30 @@
+@startuml
+participant FacultyMember as FM
+participant AuthenticationSystem as AS
+participant UploadModule as UM
+participant Database as DB
+participant CitationGenerator as CG
+
+title Faculty Member Upload Data and Provide Formatted Citation
+
+FM -> AS: Authenticate
+AS --> FM: Authentication Success
+
+FM -> UM: Navigate to Upload Interface
+UM --> FM: Display Upload Interface
+
+FM -> UM: Submit Data and Metadata
+UM -> DB: Validate and Store Data
+DB --> UM: Confirm Data Stored
+
+UM -> CG: Request Formatted Citation
+CG -> DB: Retrieve Data and Metadata
+DB --> CG: Data and Metadata
+CG --> UM: Formatted Citation
+
+UM --> FM: Display Formatted Citation
+FM -> UM: Copy Formatted Citation
+
+note right of FM: Faculty Member shares \nthe citation for their work.
+
+@enduml

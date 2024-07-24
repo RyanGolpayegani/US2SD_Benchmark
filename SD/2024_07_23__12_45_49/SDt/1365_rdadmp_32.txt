@@ -1,0 +1,22 @@
+@startuml
+participant DataLibrarian as DL
+participant "DMPTool Interface" as UI
+participant "Authentication Module" as Auth
+participant "Administrative Info Importer" as Importer
+participant "Project Database" as DB
+participant "DMP Repository" as DMPR
+
+== Import Process ==
+DL -> UI : Select "Import Admin Info"
+UI -> Auth : Request Authentication
+Auth --> UI : Authentication Success
+UI --> DL : Display Import Form
+DL -> UI : Enter Project ID\nand Confirm
+UI -> Importer : Initiate Import Process\n(Project ID)
+Importer -> DB : Query Administrative Info\n(Project ID)
+DB --> Importer : Return Admin Info
+Importer -> DMPR : Update DMP\nwith Admin Info
+DMPR --> Importer : Confirmation of Update
+Importer --> UI : Display Success\nMessage to Data Librarian
+UI --> DL : Confirm Successful\nImport & Prepopulation
+@enduml

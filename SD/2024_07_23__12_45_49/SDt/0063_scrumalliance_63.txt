@@ -1,0 +1,33 @@
+@startuml
+actor Visitor as "Site Visitor"
+participant "Front-end Interface" as Frontend
+participant "Subscription Service" as Subscription
+participant "RSS Feed Generator" as RSSGen
+participant "Database" as DB
+
+Visitor -> Frontend : Request RSS Feed Subscription page
+Frontend -> Visitor : Display RSS Feed Subscription options
+
+Visitor -> Frontend : Submit RSS Subscription request
+Frontend -> Subscription : Validate request
+alt Valid Request
+    Subscription -> DB : Check if email exists
+    alt Email not Registered
+        DB -> Subscription : Email not found
+        Subscription -> RSSGen : Generate new RSS subscription
+        RSSGen -> DB : Store new RSS subscription details
+        DB -> RSSGen : Confirmation of subscription details storage
+        RSSGen -> Subscription : RSS Subscription link generated
+        Subscription -> Frontend : RSS Subscription link
+        Frontend -> Visitor : Display RSS Subscription successful + Link
+    else Email Registered
+        DB -> Subscription : Email found
+        Subscription -> Frontend : Error - Email already subscribed
+        Frontend -> Visitor : Display Error message
+    end
+else Invalid Request
+    Subscription -> Frontend : Error - Invalid subscription request
+    Frontend -> Visitor : Display Error message
+end
+
+@enduml

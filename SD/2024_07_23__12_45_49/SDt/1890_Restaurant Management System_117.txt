@@ -1,0 +1,47 @@
+@startuml
+participant Manager as M
+participant WebInterface as W
+participant Server as S
+participant Database as DB
+
+title Creating and Adding New Inventory Items
+
+M -> W : Access Inventory Module
+activate W
+W -> S : Request Inventory Management Page
+activate S
+
+S -> DB : Fetch Existing Inventory List
+activate DB
+DB --> S : Return Inventory List
+deactivate DB
+S --> W : Display Inventory Management Interface with List
+deactivate S
+W --> M : Shows Inventory List
+deactivate W
+
+M -> W : Select "Add New Item"
+activate W
+W -> S : Initiate Add Item Process
+activate S
+
+S --> W : Display Add Item Form
+W --> M : Show Form to Add New Item
+deactivate W
+
+M -> W : Fill in Item Details and Submit
+activate W
+W -> S : Transmit New Item Details
+activate S
+
+S -> DB : Save New Inventory Item
+activate DB
+DB --> S : Confirm Item Added
+deactivate DB
+
+S --> W : Confirm Addition to Inventory
+W --> M : Show Success Message
+deactivate S
+deactivate W
+
+@enduml

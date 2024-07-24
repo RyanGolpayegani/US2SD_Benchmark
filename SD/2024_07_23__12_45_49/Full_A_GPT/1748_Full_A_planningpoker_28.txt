@@ -1,0 +1,53 @@
+Creating a detailed sequence diagram for the described user story involves understanding the interactions among different system components during the process of inviting estimators to a game. Given the lack of explicit detail on all system components in the project description, we will assume a typical web application architecture for AEPT (Agile Estimation and Planning Tool) with a frontend, backend, and a database.
+
+Below is the PlantUML code to generate the sequence diagram for the user story. This diagram represents the interactions starting from the moderator's action to invite estimators, proceeding through the web application's frontend and backend, and down to the database where the game and invitations are managed.
+
+```plantuml
+@startuml
+actor Moderator
+participant "Frontend" as FE
+participant "Backend" as BE
+database DB
+
+== Invitation Process ==
+Moderator -> FE : Accesses "Create Game" page
+activate FE
+FE --> Moderator : Presents "Create Game" form
+
+Moderator -> FE : Fills form and submits request to invite estimators
+activate FE
+FE -> BE : POST /games/create with game details and estimators' emails
+activate BE
+
+BE -> DB : Save game details
+activate DB
+DB --> BE : Confirm game saved
+deactivate DB
+
+BE -> DB : Create invitations for each estimator (up to 15)
+loop for each estimator
+    BE -> DB : Save invitation
+    DB --> BE : Confirm invitation saved
+end
+
+DB --> BE : Invitations created
+deactivate DB
+
+BE -> BE : Generate and send invitation emails
+BE --> FE : Confirmation game and invitations are created
+deactivate BE
+FE --> Moderator : Display success message and game details
+deactivate FE
+
+@enduml
+```
+This sequence diagram illustrates the basic steps involved in inviting estimators to a game within AEPT, following these main phases:
+1. **Moderator Interaction**: The moderator accesses the interface to create a new game and fill in the necessary details, including the list of up to 15 estimators' emails.
+2. **Frontend to Backend Communication**: The frontend collects and sends these details to the backend upon form submission.
+3. **Backend Processing**:
+   - The backend saves game details to the database.
+   - It then iterates through the list of estimators, creating and saving an invitation for each in the database.
+4. **Invitations**: The backend generates and sends email invitations to each estimator.
+5. **Confirmation**: Upon successful creation of the game and invitations, a success message and game details are displayed to the moderator.
+
+Please adjust the specifics based on your actual system architecture and components. The names and endpoints (`POST /games/create`) used here are for illustrative purposes and should align with your application's API design.

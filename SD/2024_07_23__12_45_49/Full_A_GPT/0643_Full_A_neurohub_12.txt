@@ -1,0 +1,58 @@
+Creating a detailed sequence diagram for the described user story "As a researcher, I want to upload files prior to having them attached to a log book page using the web interface" involves illustrating the interactions between the researcher (user), the web interface, and the backend systems, including data storage and management services. 
+
+While PlantUML code can't be executed here directly, I can provide you with an outline and the corresponding PlantUML code that you can run in a PlantUML environment or editor to visualize the sequence diagram.
+
+```plantuml
+@startuml
+
+participant Researcher as R
+participant "Web Interface" as WI
+participant "Backend System" as BS
+participant "Data Storage" as DS
+
+R->WI: Accesses Neurohub web interface
+activate WI
+
+WI->WI: Authenticate researcher
+note right of WI: Authentication process involved
+
+WI->BS: Request upload form
+activate BS
+BS->WI: Provide upload form
+deactivate BS
+
+R->WI: Submits files for upload
+WI->BS: Initiate file upload
+activate BS
+
+BS->DS: Store files temporarily
+activate DS
+DS->BS: Confirm files stored
+deactivate DS
+
+BS->WI: Generate upload confirmation
+deactivate BS
+WI->R: Display confirmation message
+deactivate WI
+
+R->WI: Requests to attach files to a logbook page
+activate WI
+WI->BS: Request file attachment process
+activate BS
+BS->DS: Attach files to logbook page
+activate DS
+DS->DS: Update metadata with logbook reference
+DS->BS: Confirm attachment successful
+deactivate DS
+
+BS->WI: Confirm attachment to R
+deactivate BS
+WI->R: Show success message
+deactivate WI
+
+@enduml
+```
+
+This PlantUML sequence diagram starts with the Researcher accessing the Neurohub web interface and proceeds through the steps of authenticating, requesting an upload form, submitting files, storing these files temporarily in the Data Storage, and finally attaching these files to a specified logbook page with a confirmation of successful attachment displayed to the researcher.
+
+Please ensure you have a PlantUML environment or use an online PlantUML editor to visualize this diagram. The diagram illustrates the sequence of interactions that fulfill the user story of uploading and attaching files to a logbook page via the web interface.

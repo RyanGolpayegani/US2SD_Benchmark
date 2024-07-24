@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram in PlantUML format for the specific user story "As a user, I want to have nice error pages when something goes that I can trust the system and its developers" involves illustrating the interactions between the user, the system (web application), and potentially other systems that manage error handling and presentation. This scenario captures the flow from the moment an error occurs to the presentation of a custom error page to the user. 
+
+Note: To recreate the diagram, ensure you have PlantUML installed or use an online PlantUML editor.
+
+```plantuml
+@startuml
+participant User
+participant "Web Application" as WebApp
+participant "Error Handling System" as ErrorHandler
+participant "Error Page" as ErrorPage
+
+User -> WebApp: Performs action (e.g., page request)
+activate WebApp
+
+alt success scenario
+    WebApp -> User: Desired Page Content
+else error scenario
+    WebApp -> ErrorHandler: Error Detected
+    activate ErrorHandler
+    ErrorHandler -> ErrorPage: Fetch Custom Error Page
+    activate ErrorPage
+    ErrorPage --> ErrorHandler: Custom Error Page Content
+    deactivate ErrorPage
+    ErrorHandler -> User: Custom Error Page Content
+    deactivate ErrorHandler
+end
+
+deactivate WebApp
+@enduml
+```
+This sequence diagram encapsulates the basic flow for handling errors gracefully in an application:
+
+1. The **User** initiates an action, such as requesting a page from the **Web Application**.
+2. The **Web Application** attempts to process this action.
+3. If the action is successful, the desired page content is returned to the user.
+4. If an error occurs, the application contacts the **Error Handling System** instead of directly responding with a generic error message.
+5. The **Error Handling System** then fetches a **Custom Error Page**, which is designed to inform the user about the error pleasantly and helpfully.
+6. This custom error page content is sent back to the user, providing a nicer user experience even in the event of an error.
+
+The sequence diagram aims to provide clarity on how a system can handle errors more gracefully, improving users' trust and overall experience with the application.

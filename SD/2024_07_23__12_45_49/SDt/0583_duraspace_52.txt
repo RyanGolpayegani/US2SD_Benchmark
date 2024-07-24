@@ -1,0 +1,23 @@
+@startuml
+participant DAMSManager as "DAMS Manager"
+participant DIMSSystem as "DIMS System"
+participant PreservationSystem as "Preservation Subsystem"
+participant FileStorage as "File Storage"
+
+DAMSManager -> DIMSSystem : Indicate master file details
+activate DIMSSystem
+
+DIMSSystem -> FileStorage : Retrieve file metadata\n(file size, creation date)
+activate FileStorage
+FileStorage --> DIMSSystem : File metadata
+deactivate FileStorage
+
+DIMSSystem -> DIMSSystem : Validate format and version
+DIMSSystem -> PreservationSystem : Send file metadata\n+ format and version for monitoring
+activate PreservationSystem
+PreservationSystem --> DIMSSystem : Acknowledge receipt
+deactivate PreservationSystem
+
+DIMSSystem --> DAMSManager : Confirmation of update
+deactivate DIMSSystem
+@enduml

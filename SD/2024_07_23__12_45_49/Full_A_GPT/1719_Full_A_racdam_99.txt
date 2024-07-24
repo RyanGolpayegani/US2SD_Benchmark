@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram in PlantUML format for the mentioned user story involves depicting the interactions between the administrator, the researcher (user), and the system components such as the User Interface (UI), Authentication System, and Email System. The goal is to illustrate how a researcher can reset their own password without the administrator having to send a new password in cleartext.
+
+Here is a sequence diagram in PlantUML syntax that demonstrates this process:
+
+```plantuml
+@startuml
+
+actor "Researcher" as researcher
+participant "UI: Reset Password Page" as ui
+participant "Authentication System" as auth
+participant "Email System" as email
+database "User Database" as db
+
+== Password Reset Initialization ==
+researcher -> ui: Requests password reset
+ui -> auth: Validates request
+auth -> email: Sends password reset link
+email -> researcher: Password reset email
+
+== Password Reset Process ==
+researcher -> ui: Clicks on reset link
+ui -> auth: Verify link
+auth -> ui: Prompt to enter new password
+researcher -> ui: Submits new password
+ui -> auth: Updates password in User Database
+auth -> db: Save new password
+auth -> email: Sends confirmation email
+email -> researcher: Password reset confirmation
+
+@enduml
+```
+
+### Explanation:
+
+1. **Password Reset Initialization:**
+    - The researcher requests to reset their password through the user interface (UI) provided by the digital archive management system.
+    - The UI forwards this request to the Authentication System to validate the request. This could involve checking the researcher's email or username against records in the User Database.
+    - Upon validation, the Authentication System sends a password reset link to the researcher’s email through the Email System.
+    - The researcher receives this email, which includes a link to reset their password securely.
+
+2. **Password Reset Process:**
+    - The researcher clicks on the reset link, which takes them back to the UI of the digital archive management system, specifically to a page where they can set a new password.
+    - The UI sends the request to verify the reset link to the Authentication System.
+    - Upon verifying the authenticity of the link and that it has not expired, the Authentication System prompts the researcher through the UI to enter a new password.
+    - The researcher submits their new password to the UI, which then passes it back to the Authentication System.
+    - The Authentication System updates the password in the User Database with the new one provided by the researcher.
+    - Following a successful password update, the Authentication System sends an email through the Email System to confirm the password reset to the researcher.
+    - The researcher receives a confirmation email, completing the password reset process.
+
+This sequence diagram encapsulates the flow from the request initiation by the researcher to reset their password, through the actual password update and confirmation, without the administrator sending a new password in cleartext.

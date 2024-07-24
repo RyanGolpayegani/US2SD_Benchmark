@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+
+actor User
+participant "User Interface" as UI
+participant "Access Control" as AC
+database "DAMS Repository" as DAMS
+participant "File Information" as FI
+
+== Access Content Files ==
+User -> UI : Request to view object's files
+UI -> AC : Verify user access level
+AC -> UI : Access Granted/Denied
+alt Access Granted
+    UI -> DAMS : Request file list for object
+    DAMS -> UI : Return file list
+    UI -> User : Display file list with sizes
+    User -> UI : Select file to inspect size
+    UI -> FI : Request file size
+    FI -> DAMS : Locate file
+    DAMS -> FI : Return file metadata (size)
+    FI -> UI : Return file size to UI
+    UI -> User : Show file size
+else Access Denied
+    UI -> User : Display access denied message
+end
+
+@enduml

@@ -1,0 +1,42 @@
+To fulfill your request for a sequence diagram for the user story "As a manager, I want to make book discount to customers" using Plant UML syntax, we'll assume a simple workflow where the manager logs into the system, selects a book or group of books for discounting, sets the discount amount or percentage, and then the system updates the book prices and notifies customers eligible for the discount. Here's how the sequence diagram can be outlined:
+
+```plantuml
+@startuml
+participant Manager as M
+participant "Authentication System" as Auth
+participant "Discount Management Module" as DMM
+participant Database as DB
+participant "Notification System" as NS
+
+M -> Auth: Authenticate
+Auth --> M: Authentication Success
+
+M -> DMM: Select Books for Discount
+note right of M: Chooses books and\nspecifies discount
+
+DMM -> DB: Fetch Selected Books
+DB --> DMM: Book Details
+
+M -> DMM: Set Discount Parameters
+DMM -> DB: Update Book Prices with Discount
+DB --> DMM: Update Confirmation
+
+DMM -> NS: Trigger Discount Notifications
+NS -> DB: Fetch Eligible Customers
+DB --> NS: Customer Details
+
+NS -> NS: Send Discount Notifications
+
+@enduml
+```
+
+This sequence diagram outlines the following steps:
+1. The manager attempts to authenticate with the system.
+2. Upon successful authentication, the manager accesses the Discount Management Module.
+3. The manager selects the books to apply the discount to and sets the discount parameters (e.g., 20% off, $5 off, etc.).
+4. The Discount Management Module communicates with the database to fetch the selected books and updates their prices according to the discount parameters set by the manager.
+5. After updating the book prices, the Discount Management Module instructs the Notification System to alert eligible customers about the new discounts.
+6. The Notification System fetches the details of eligible customers from the database.
+7. Finally, the Notification System sends out discount notifications to those customers, completing the process.
+
+Remember, this is a basic outline. The actual implementation could include more details and steps depending on specific requirements, such as error handling, logging, and more intricate authorization checks for the manager.

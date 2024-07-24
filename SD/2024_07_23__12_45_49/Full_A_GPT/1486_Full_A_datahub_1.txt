@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram covering the specific user story of a Publisher wanting to publish a dataset to be viewed by a few people involves highlighting interactions between the system components, the Publisher, and potentially a subset of the team or group with whom the Publisher intends to share the dataset. Here’s how you can structure this sequence diagram in PlantUML format:
+
+```plantuml
+@startuml
+participant Publisher as pub
+participant "Authentication Service" as auth
+participant "UI Interface" as ui
+participant "Dataset Management Service" as dms
+participant "Access Control" as ac
+participant "Storage Service" as store
+participant "Team Members" as team
+
+== Authentication ==
+pub -> auth: Sign in via OAuth
+auth -> pub: Authentication Success
+
+== Publish a Dataset ==
+pub -> ui: Navigate to Publish Dataset
+ui -> pub: Display Publish Form
+
+pub -> ui: Submit Dataset Details\n(Private Visibility)
+ui -> dms: Request to Publish Dataset
+dms -> ac: Set Access Permissions
+ac -> dms: Permissions Set
+dms -> store: Save Dataset Info
+store -> dms: Dataset Stored
+dms -> pub: Dataset Published Successfully
+
+== Share Dataset with Team ==
+pub -> ui: Navigate to Dataset Settings
+ui -> pub: Display Settings
+pub -> ui: Select Team Members to Share With
+ui -> ac: Update Access Permissions for Selected Users
+ac -> ui: Access Updated
+ui -> pub: Dataset Shared Successfully with Selected Team Members
+
+team -> ui: Access Shared Dataset
+ui -> ac: Verify Access Permissions
+ac -> store: Access Granted
+store -> team: Display Dataset
+
+@enduml
+```
+
+This sequence diagram starts with the Publisher signing in through an OAuth mechanism provided by an authentication service. After a successful sign-in, the Publisher decides to publish a new dataset and navigates to the publishing interface. Upon submitting the dataset details with the desired visibility set to private, the dataset management service takes over by setting the necessary access permissions and saving the dataset information to storage. Once the dataset is successfully published, the Publisher proceeds to share the dataset with a specified set of team members by updating the access permissions through the UI interface. The team members can then access the shared dataset, with the system verifying their access rights before granting them visualization of the dataset. This sequence diagram encapsulates the main interactions involved in publishing and privately sharing a dataset as per the given user story.

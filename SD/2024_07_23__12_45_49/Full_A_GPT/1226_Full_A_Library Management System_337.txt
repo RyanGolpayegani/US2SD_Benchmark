@@ -1,0 +1,47 @@
+Given your request, here's a detailed PlantUML sequence diagram that represents the user story: "As a staff, I want to delete book checkouts if the book is returned." This diagram assumes a scenario where the staff member interacts with the Comprehensive Library Management System (CLMS) to remove a checkout record after verifying a book's return.
+
+Please note, to convert this script into a visual sequence diagram, you'd need to use a PlantUML environment (like an online editor or a tool that supports PlantUML).
+
+```plantuml
+@startuml
+actor Staff
+participant "Web Interface" as Web
+participant "System Backend" as Backend
+participant "Database" as DB
+
+== Delete Book Checkout ==
+
+Staff -> Web : Selects returned book
+activate Web
+
+Web -> Backend : Request to delete checkout (bookId, staffId)
+activate Backend
+
+Backend -> DB : Verify book return status (bookId)
+activate DB
+DB --> Backend : Return status: Returned
+deactivate DB
+
+Backend -> DB : Delete checkout record (bookId)
+activate DB
+DB --> Backend : Record deleted
+deactivate DB
+
+Backend --> Web : Checkout deletion success
+deactivate Backend
+
+Web --> Staff : Display success message
+deactivate Web
+
+@enduml
+```
+
+This sequence diagram illustrates the following steps:
+1. The staff member selects the returned book through the web interface to initiate the process of deleting a checkout record.
+2. The web interface sends a request to the system backend with the required details (e.g., book ID and staff ID).
+3. The system backend then verifies if the book's return status is marked as "Returned" by querying the database.
+4. Upon confirming the book has indeed been returned, the backend sends another request to the database to delete the checkout record associated with the specified book ID.
+5. The database confirms the deletion of the checkout record.
+6. Finally, the system backend sends a confirmation of the checkout record deletion to the web interface, which then displays a success message to the staff member.
+
+This scenario focuses on the specific user story of deleting book checkout records upon return and assumes that the book return status is accurately updated in the system when books are returned.

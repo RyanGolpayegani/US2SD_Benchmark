@@ -1,0 +1,36 @@
+To create a detailed sequence diagram for the user story "As an asset manager, I want to be assured that there is a formal plan for the put of assets if the IR (Institutional Repository) should cease," we need to outline the key interactions between the asset manager, the digital repository system, and other components involved in the disposition of assets. The diagram will cover steps like initiating a disposition request, verifying policies, executing the disposition plan, and notifying the asset manager.
+
+Here is a basic representation in PlantUML format:
+
+```plantuml
+@startuml
+!theme plain
+participant AssetManager as AM
+participant "Digital Repository System" as DRS
+participant "Policy Verification Module" as PVM
+participant "Disposition Execution Module" as DEM
+participant "Notification Service" as NS
+
+== Assurance of Disposition Plan ==
+AM -> DRS : RequestDispositionPlanAssurance()
+DRS -> PVM : VerifyDispositionPolicy()
+activate PVM
+PVM --> DRS : PolicyVerified()
+deactivate PVM
+
+DRS -> DEM : ExecuteDispositionPlan()
+activate DEM
+DEM -> DEM : ValidateAssets()
+DEM -> DEM : PrepareDisposition()
+DEM --> DRS : DispositionReady()
+deactivate DEM
+
+DRS -> NS : NotifyAssetManager(DispositionPlanReady)
+NS --> AM : ReceiveNotification(DispositionPlanAssurance)
+
+@enduml
+```
+
+This diagram starts with the "Asset Manager" (AM) sending a request to the "Digital Repository System" (DRS) to assure that there is a formal plan for the disposition of assets if the Institutional Repository should cease. The DRS then interacts with the "Policy Verification Module" (PVM) to verify that the disposition plan complies with preset policies. Upon verification, the system prepares for the execution of the disposition plan through the "Disposition Execution Module" (DEM), which includes validating assets and preparing them for disposition. Once ready, the DRS notifies the Asset Manager via the "Notification Service" that the disposition plan is in place and can be activated when needed.
+
+Note: This diagram is a simplified representation focusing on the main interactions for the given user story. Depending on the actual system architecture, additional details such as authentication, logging, and error handling can be integrated into the sequence.

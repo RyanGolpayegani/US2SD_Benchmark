@@ -1,0 +1,32 @@
+@startuml
+participant Participant as participant
+participant Frontend as frontend
+participant "Estimation Game Controller" as controller
+participant "Game Session" as session
+participant Database as db
+
+participant->frontend: ViewEstimationCards()
+activate frontend
+
+frontend->controller: GetCardsOrder(participantId, gameId)
+activate controller
+
+controller->session: FetchParticipantGameSession(participantId, gameId)
+activate session
+
+session->db: GetStoredCardsOrder(participantId, gameId)
+activate db
+
+db-->session: ReturnCardsOrder()
+deactivate db
+
+session-->controller: CardsOrderDetails()
+deactivate session
+
+controller-->frontend: DisplayCardsInOrder()
+deactivate controller
+
+frontend-->participant: ShowOrderedCards()
+deactivate frontend
+
+@enduml

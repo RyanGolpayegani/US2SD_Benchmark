@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+
+actor Developer
+participant "ALFRED API Gateway" as Gateway
+participant "Health Data Service" as HealthData
+
+Developer -> Gateway : Request Health Data\n(GET /user/healthData)
+activate Gateway
+
+Gateway -> HealthData : Fetch Health Data
+activate HealthData
+
+HealthData -> HealthData : Process Request
+HealthData --> Gateway : Health Data Response
+deactivate HealthData
+
+Gateway -> Gateway : Process Response
+Gateway --> Developer : Response with Health Data
+deactivate Gateway
+
+@enduml

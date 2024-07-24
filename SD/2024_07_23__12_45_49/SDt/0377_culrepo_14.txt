@@ -1,0 +1,38 @@
+@startuml
+!theme plain
+
+actor Patron
+participant "Web Interface" as Web
+database "Digital Repository" as Repo
+participant "Content Management System" as CMS
+participant "Format Compatibility Layer" as FCL
+
+== View Content ==
+Patron -> Web: Search for content
+Web -> Repo: Query content
+Repo -> Web: Return search results
+Web -> Patron: Display content links
+
+Patron -> Web: Select content to view
+Web -> CMS: Request content item
+CMS -> Repo: Retrieve content metadata
+Repo -> CMS: Provide metadata and location
+CMS -> FCL: Request format check/conversion
+FCL -> CMS: Provide content in viewable format
+CMS -> Web: Deliver content
+Web -> Patron: Display content
+
+== Upload Content ==
+Patron -> Web: Access upload interface
+Web -> Patron: Provide upload form
+
+Patron -> Web: Submit content (incl. Lotus Works files)
+Web -> CMS: Send content data
+CMS -> FCL: Check/Convert format to compatible type
+FCL -> CMS: Return converted content
+CMS -> Repo: Store converted content
+Repo -> CMS: Confirm storage
+CMS -> Web: Confirm upload to user
+Web -> Patron: Display success message
+
+@enduml

@@ -1,0 +1,34 @@
+Creating a sequence diagram for the outlined user story involves detailing the interaction between the system components in the process of viewing different versions of a dataset. Please note, sequence diagrams are textual and visual, but I will provide you the PlantUML code to generate the visual representation. 
+
+This scenario assumes the system has a web interface that interacts with a back-end service, which in turn communicates with a database storing dataset versions and metadata.
+
+```plantuml
+@startuml
+actor "Data Reuser" as reuser
+participant "Web Interface" as web
+participant "API Gateway" as api
+participant "Dataset Management Service" as service
+database "Data Storage" as db
+
+== Viewing Dataset Versions ==
+reuser -> web : Request dataset details
+web -> api : Fetch details for dataset X
+api -> service : Get versions for dataset X
+service -> db : Query versions of dataset X
+db -> service : Return versions
+service -> api : Respond with dataset versions
+api -> web : Display dataset versions
+web -> reuser : Show dataset versions and metadata
+@enduml
+```
+
+**Explanation:**
+
+1. **Data Reuser initiates a request:** The process begins when the data reuser requests details (including various versions) of a specific dataset through the web interface.
+2. **Web Interface to API Gateway:** The request is forwarded to the API Gateway, which acts as an intermediary that routes the request to the appropriate service backend.
+3. **API Gateway to Dataset Management Service:** The request for dataset versions is passed on to the Dataset Management Service, specifying the dataset in question.
+4. **Query Data Storage:** The Dataset Management Service queries the Data Storage (a database) for all available versions of the specified dataset.
+5. **Data Storage responds with versions:** The Data Storage finds and returns information on all versions of the dataset.
+6. **Response back to the Data Reuser:** The service sends this information back through the API Gateway, which then reaches the Web Interface, ultimately displaying the dataset versions to the data reuser.
+
+This sequence allows the data reuser to view all versions of the dataset at a glance, ensuring they can select the most appropriate version for their needs. The details like dataset names, identifiers, or version numbers aren't specified here, as this represents a generic interaction flow applicable to a variety of datasets and configurations within the Enhanced Research Data Management Platform.

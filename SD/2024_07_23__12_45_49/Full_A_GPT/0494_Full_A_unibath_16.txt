@@ -1,0 +1,49 @@
+Given the complexity and breadth of the Enhanced Research Data Management Platform project, capturing all the nuances of a specific user story—like tracking citations—in a sequence diagram requires focusing on key interactions among systems and actors. Below is a detailed PlantUML code representation of this process.
+
+The sequence diagram outlines the interactions between the depositor (user) and the platform, including internal components like the Data Management System, DOI Service, Citation Tracking Service, and User Interface (UI) components.
+
+```plantuml
+@startuml
+participant Depositor as user
+participant "Web Interface" as UI
+participant "Data Management System" as DMS
+participant "DOI Service" as DOI
+participant "Citation Tracking Service" as CTS
+
+user -> UI: Request to track citations for dataset
+UI -> DMS: Retrieve dataset details (incl. DOI)
+DMS -> UI: Return dataset details
+UI -> user: Display dataset details and "Track Citations" option
+user -> UI: Initiate "Track Cititations" for dataset
+UI -> CTS: Request citation count for DOI
+activate CTS
+CTS -> DOI: Query citations by DOI
+activate DOI
+DOI -> CTS: Return list of citations
+deactivate DOI
+CTS -> UI: Display citation data
+UI -> user: Show citation count and details
+deactivate CTS
+
+@enduml
+```
+
+**Explanation of the Sequence:**
+
+1. **Depositor Requests to Track Citations:** The depositor initiates the process through the web interface, expressing the desire to track citations for a specific dataset.
+
+2. **Retrieve Dataset Details:** The web interface communicates with the Data Management System to fetch details of the dataset, including its DOI (Digital Object Identifier), which is crucial for tracking citations.
+
+3. **Display Dataset Details and Options:** The depositor is shown details about the dataset along with an option to track citations.
+
+4. **Initiate Citation Tracking:** Upon selecting the option to track citations, the depositor's request is conveyed back through the interface to initiate the citation tracking process.
+
+5. **Request Citation Count:** The Citation Tracking Service is engaged to determine the current citation count and citation details associated with the dataset's DOI.
+
+6. **Query Citations by DOI:** The Citation Tracking Service interacts with the DOI Service, leveraging the dataset's DOI to query for citations across various databases and citation indexes.
+
+7. **Return Citation Data:** The DOI Service returns a list of citations to the Citation Tracking Service, which processes and compiles this information.
+
+8. **Display Citations to the Depositor:** Finally, the depositor is presented with the current citation count and details about who and where their dataset has been cited, fulfilling their request to track the impact of their work.
+
+This sequence diagram aims to encapsulate the flow of interactions initiated by a depositor's request to track dataset citations within the Enhanced Research Data Management Platform. Adjustments may be necessary to align with specific system designs or additional functionalities not covered in the brief project description.

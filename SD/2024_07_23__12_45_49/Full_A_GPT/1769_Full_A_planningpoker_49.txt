@@ -1,0 +1,46 @@
+Below is a sample PlantUML sequence diagram that depicts the interaction flow for the use case where a user wishes to utilize Unicode in order to use any language they like within the Agile Estimation and Planning Tool (AEPT). This includes the interactions between the user, the web interface of AEPT, the backend server, and the database system. This example assumes the user is inputting text in a specific language that requires Unicode support for proper display and storage.
+
+Please note, to render this PlantUML code, you'll need to use a PlantUML environment or tool that supports PlantUML syntax.
+
+```plantuml
+@startuml
+participant User
+participant "Web Interface" as Web
+participant "Backend Server" as Backend
+participant "Database" as DB
+
+User -> Web : Enters text in preferred language
+activate Web
+
+Web -> Backend : Validates input and converts to Unicode
+activate Backend
+
+alt Valid Unicode
+    Backend -> DB : Stores text in Unicode format
+    activate DB
+    DB --> Backend : Confirm text stored
+    deactivate DB
+    
+    Backend -> Backend : Prepare confirmation message
+    Backend --> Web : Confirmation (Text in preferred language is saved)
+else Invalid Unicode
+    Backend -> Backend : Prepare error message
+    Backend --> Web : Error (Unsupported text)
+end
+deactivate Backend
+
+alt Confirmation Received
+    Web --> User : Display confirmation message
+else Error Received
+    Web --> User : Display error message
+end
+
+deactivate Web
+@enduml
+```
+
+This diagram starts with the user entering some text in their preferred language through the web interface. The web interface then sends this text to the backend server. At the server, the text is validated and, if necessary, converted to Unicode (this step assumes that there might be a conversion or simply a validation check to ensure that the text is properly encoded in Unicode). 
+
+If the text is valid and successfully stored in the database in Unicode format, the database confirms this back to the backend, which in turn prepares a confirmation message that is sent back to the user through the web interface. If, however, the text can’t be stored (e.g., duechoosing to unsupported characters or any other issue), the backend prepares and sends an error message instead.
+
+Please adjust and expand upon this diagram based on your specific needs and the detailed functionalities of your application. Remember, sequence diagrams can be highly customized. The level of detail, choice of what elements to include or exclude, and how deeply you dive into the interactions can all be tailored to meet the requirements of your documentation or analysis.

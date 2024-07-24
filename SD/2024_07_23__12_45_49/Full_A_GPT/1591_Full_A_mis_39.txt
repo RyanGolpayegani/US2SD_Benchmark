@@ -1,0 +1,48 @@
+Creating a sequence diagram for the provided user story involves illustrating how different system components and actors interact over time to achieve the goal of scheduling a message to be displayed on each repository page during select times. Below is a PlantUML code that represents a high-level sequence diagram for this user story.
+
+Please note, to turn this code into a diagram, you will need to use a PlantUML compiler or an environment that supports PlantUML (e.g., many markdown editors, online PlantUML editors, or integrated development environments with PlantUML plugins).
+
+```plantuml
+@startuml
+actor "Repository Manager" as manager
+participant "UI Dashboard" as ui
+participant "Messaging System" as msgSystem
+participant "Schedule Manager" as scheduler
+database "Repository Database" as db
+
+manager -> ui : Access Message Schedule Option
+ui -> msgSystem : Request Message Input Form
+msgSystem --> ui : Display Form
+activate msgSystem
+
+manager -> ui : Submit Message Details\n(Timeframe & Content)
+ui -> scheduler : Schedule Message Display
+activate scheduler
+
+scheduler -> db : Save Scheduled Message
+db --> scheduler : Acknowledge Save
+scheduler -> msgSystem : Confirm Message Scheduled
+deactivate scheduler
+msgSystem --> ui : Show Confirmation to Manager
+deactivate msgSystem
+
+ui --> manager : Display Success Confirmation
+
+alt Display Message at Scheduled Times
+    scheduler -> msgSystem : Trigger Message Display
+    activate msgSystem
+    msgSystem -> ui : Display Message on Pages
+    ui -> db : Log Display Event
+    deactivate msgSystem
+end
+
+@enduml
+```
+### Explanation:
+- **Repository Manager accesses the UI Dashboard:** This is the starting point, where the manager decides to schedule a downtime notification or any other message.
+- **Messaging System displays the input form on the UI Dashboard:** The manager fills out this form with the message content and the timeframe for the message to be displayed.
+- **Schedule Manager schedules the message display:** It involves processing the timeframe and content details and saving this schedule in the Repository Database.
+- **Confirmation is shown to the Repository Manager:** Once the details are successfully saved and the message is scheduled, a success confirmation is displayed.
+- **Display Message at Scheduled Times:** This alternative path illustrates the process of displaying the scheduled message on all repository pages when the scheduled time arrives. It involves the Schedule Manager triggering the message display and logging the display event in the database.
+
+This sequence diagram is a simplified overview and does not cover every possible detail or component interaction in complex systems. However, it provides a base framework which can be expanded upon based on specific project requirements and system architecture.

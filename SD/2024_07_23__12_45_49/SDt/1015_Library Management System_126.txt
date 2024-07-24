@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+participant LibraryManager as LM
+participant CLMS_Interface as UI
+participant Database as DB
+participant NotificationSystem as NS
+participant Member
+
+== Identify Reserved Books ==
+LM -> UI: Request reserved books list
+UI -> DB: Query reserved books information
+DB --> UI: Return reserved books list
+UI --> LM: Display reserved books
+
+== Send Reminder for Books Due ==
+loop for each reserved book with due date over
+    LM -> DB: Query member details for book {X}
+    DB --> LM: Return member details
+    LM -> NS: Prepare reminder message
+    activate NS
+    NS -> Member: Send Email/SMS reminder
+    deactivate NS
+end
+
+@enduml

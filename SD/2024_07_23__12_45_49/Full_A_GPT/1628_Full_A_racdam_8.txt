@@ -1,0 +1,57 @@
+Creating a detailed sequence diagram for the specified user story requires illustrating the interactions between different system components for adding detailed restrictions to groups of files from the perspective of an archivist. Below is a basic approach to how these interactions could be modeled in PlantUML format. This example assumes the existence of a web interface for the archivist, a backend server (which includes API endpoints for processing requests), and a database for storing information about the files and their restrictions.
+
+Please note that this is a simplified example, and the actual system might have more complex interactions depending on specific requirements, such as user authentication, error handling, and additional functionalities.
+
+```plantuml
+@startuml
+participant "Archivist" as A
+participant "Web Interface" as WI
+participant "Backend Server" as BS
+participant "Database" as DB
+
+A -> WI : Selects files for restriction
+activate WI
+
+WI -> BS : Sends restriction details request ([FileIDs], [RestrictionParams])
+activate BS
+
+BS -> DB : Queries to check files status ([FileIDs])
+activate DB
+
+DB --> BS : Returns files status
+deactivate DB
+
+BS -> DB : Updates files with new restrictions ([FileIDs], [RestrictionParams])
+activate DB
+
+DB --> BS : Confirmation of update
+deactivate DB
+
+BS --> WI : Returns success message
+deactivate BS
+
+WI --> A : Displays success confirmation
+deactivate WI
+
+@enduml
+```
+
+Explanation of the sequence:
+
+1. **Archivist to Web Interface**: The archivist starts the process by selecting groups of files on the web interface and specifying the detailed restrictions they wish to apply. This could include actions within a GUI like ticking checkboxes next to file names and filling out a form with restriction details.
+
+2. **Web Interface to Backend Server**: The web interface sends the restriction details (which includes the list of file IDs and parameters describing the restrictions) to the backend server.
+
+3. **Backend Server to Database (Query)**: Before applying the new restrictions, the backend server checks the current status of the selected files by querying the database with their IDs.
+
+4. **Database to Backend Server (Return Status)**: The database returns the status of the queried files, ensuring they are eligible for restriction updates.
+
+5. **Backend Server to Database (Update)**: With validation complete, the backend server requests the database to update the specified files with the new restrictions.
+
+6. **Database to Backend Server (Confirmation)**: The database confirms the successful update of file restrictions.
+
+7. **Backend Server to Web Interface**: The backend server sends a success message back to the web interface.
+
+8. **Web Interface to Archivist**: Finally, the web interface displays a confirmation to the archivist that the restrictions have been successfully applied.
+
+This diagram outlines a high-level view of the operation from the archivist's point of action through to the system's backend. Depending on the project's scale and complexity, each step could be broken down into further interactions or encompass additional security and validation checks.

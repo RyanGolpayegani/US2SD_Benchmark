@@ -1,0 +1,38 @@
+@startuml
+participant Staff as S
+participant "Library Web Interface" as LWI
+participant "Book Management System" as BMS
+participant Database as DB
+
+== Update Book Checkout ==
+
+S -> LWI: Access Checkout Panel
+note right of LWI: Staff selects the\n"Update Checkout" option
+LWI -> BMS: Request checkout details
+activate BMS
+
+BMS -> DB: Query checkout information
+activate DB
+DB --> BMS: Checkout details
+deactivate DB
+
+BMS --> LWI: Display checkout details
+LWI --> S: Shows information on UI
+deactivate BMS
+
+S -> LWI: Enter updated checkout information
+activate LWI
+LWI -> BMS: Update checkout command
+activate BMS
+
+BMS -> DB: Update checkout record
+activate DB
+DB --> BMS: Confirmation
+deactivate DB
+
+BMS --> LWI: Update success message
+deactivate BMS
+LWI --> S: Display confirmation
+deactivate LWI
+
+@enduml

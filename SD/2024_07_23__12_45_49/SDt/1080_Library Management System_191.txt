@@ -1,0 +1,29 @@
+@startuml
+participant Manager
+participant CLMS_UI as UI
+participant CLMS_Controller as Controller
+participant Database
+
+Manager -> UI: Access category management
+activate UI
+UI -> Controller: Request to create category
+activate Controller
+Controller -> Database: Check if category exists
+activate Database
+
+alt Category Exists
+    Database --> Controller: Category exists error
+    Controller --> UI: Show error message
+    UI --> Manager: Unable to create category
+else Category Does Not Exist
+    Database --> \nController: OK to create
+    Controller -> Database: Create new category
+    Database --> Controller: Confirmation
+    Controller --> UI: Show success message
+    UI --> Manager: Category created successfully
+end
+
+deactivate Database
+deactivate Controller
+deactivate UI
+@enduml

@@ -1,0 +1,62 @@
+Given the requirements in your project description for the Enhanced Digital Repository Management System (EDRMS) and focusing on the user story related to a Digital Records Archivist wanting a batch ingestion method for Electronic Theses and Dissertations (ETDs) received from ProQuest, below is a PlantUML sequence diagram illustrating the process. This sequence diagram demonstrates the interactions between the archivist, the EDRMS, and external systems like ProQuest, highlighting the major steps involved in the batch ingestion process.
+
+```plantuml
+@startuml
+participant Archivist
+participant "EDRMS Interface" as UI
+participant "Ingestion Module" as Ingest
+participant "ProQuest API" as PQAPI
+participant "Repository DB" as RepoDB
+participant "Audit & Logging" as Audit
+
+== Batch Ingestion Process for ETDs ==
+
+Archivist -> UI: Initiate batch ingest request
+UI -> Ingest: Validate request
+activate Ingest
+
+Ingest -> PQAPI: Request ETDs
+activate PQAPI
+PQAPI -> Ingest: Return ETD batch
+deactivate PQAPI
+
+Ingest -> Ingest: Process ETDs
+activate Ingest
+Ingest -> RepoDB: Store ETDs metadata & files
+activate RepoDB
+
+RepoDB -> Ingest: Confirm storage
+deactivate RepoDB
+Ingest -> Audit: Log ingest activity
+activate Audit
+Audit -> Ingest: Confirm logging
+deactivate Audit
+
+deactivate Ingest
+Ingest -> UI: Display ingest confirmation
+UI -> Archivist: Show confirmation & summary
+
+@enduml
+```
+
+To implement this diagram:
+
+1. **Initiate Batch Ingest**: The process starts with the Archivist initiating a batch ingestion request through the EDRMS user interface.
+
+2. **Validate Request**: The EDRMS checks the request for completeness and authenticity.
+
+3. **Request ETDs from ProQuest**: The system, through its ingestion module, interacts with the ProQuest API to request the batch of ETDs.
+
+4. **ProQuest Response**: ProQuest returns the batch of ETDs including metadata and files to the EDRMS.
+
+5. **Process ETDs**: The EDRMS processes each ETD, which involves parsing, validation, and preparation for storage.
+
+6. **Store ETDs**: The processed ETDs are stored in the repository's database, including both metadata and files.
+
+7. **Confirmation of Storage**: The repository database confirms the successful storage of ETDs.
+
+8. **Log Activity**: The ingestion module logs the activity in an audit and logging service, capturing details of the batch ingest process.
+
+9. **Ingest Confirmation**: Upon successful ingestion and logging, the EDRMS interface communicates back to the Archivist, displaying confirmation and a summary of the ingested ETDs.
+
+This sequence diagram outlines a clear process flow for batch ingesting ETDs from ProQuest, ensuring that each step from initiation to confirmation is accounted for and systematic, enhancing the EDRMS's functionality and reliability in managing digital records efficiently.

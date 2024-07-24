@@ -1,0 +1,53 @@
+Creating a detailed Sequence Diagram in PlantUML format for the specified user story involves illustrating the interaction between system components to achieve the goal of identifying subscribers who have passed their due date and initiating a call to warn them. Here's a simplified representation:
+
+```plantuml
+@startuml
+participant "Librarian" as librarian
+participant "CLMS Interface" as interface
+participant "Database" as db
+participant "Notification Service" as notifier
+
+librarian -> interface : Log in to CLMS
+activate interface
+
+librarian -> interface : Request overdue subscribers list
+activate db
+
+db -> db : Retrieve overdue subscribers
+db --> interface : Return overdue list
+deactivate db
+
+interface --> librarian : Display overdue subscribers
+deactivate interface
+
+loop for each overdue subscriber
+    librarian -> notifier : Initiate warning call to subscriber
+    activate notifier
+
+    notifier -> subscriber : Automated Warning Call
+    deactivate notifier
+end
+
+librarian -> interface : Log overdue call actions
+activate interface
+interface -> db : Update subscriber record with call log
+activate db
+db --> interface : Confirm update
+deactivate db
+interface --> librarian : Display update confirmation
+deactivate interface
+
+@enduml
+```
+
+This diagram follows these steps:
+1. The librarian logs into the Comprehensive Library Management System (CLMS) interface.
+2. The librarian requests a list of subscribers who have passed their due dates.
+3. The CLMS interface queries the database to retrieve the overdue subscribers list.
+4. The database returns the list to the CLMS interface, which then displays it to the librarian.
+5. For each subscriber in the overdue list, the librarian initiates an automated warning call (this could be through a connected system or manual process, depicted as a "Notification Service" here for simplicity).
+6. After making the calls, the librarian logs these actions in the CLMS.
+7. The interface updates the subscriber records with the call log in the database.
+8. The database confirms the update, and the interface displays the confirmation to the librarian.
+
+Note: This is a basic flow and might need adjustments based on the specific implementation details of the Comprehensive Library Management System, such as the exact processes for logging in, the method for initiating calls (automated or manual), and how call logs are recorded in the system.

@@ -1,0 +1,29 @@
+@startuml
+participant Librarian as L
+participant "Frontend Interface" as UI
+participant "Authentication Service" as Auth
+participant "Book Management Service" as BMS
+database "Database" as DB
+
+L -> UI: Selects 'Edit Borrowed Books'
+UI -> Auth: Authenticate Librarian
+Auth -> UI: Authentication Success
+UI -> UI: Display Borrowed Books List
+L -> UI: Chooses a book to edit
+UI -> BMS: Request Edit Book [Book ID]
+alt Book Found in Borrowed List
+    BMS -> DB: Fetch Borrowed Book Details [Book ID]
+    DB -> BMS: Book Details
+    BMS -> UI: Display Book Details
+    L -> UI: Edits Book Details (Return date, borrower, etc.)
+    UI -> BMS: Update Book Details [Book ID]
+    BMS -> DB: Update Book in Database
+    DB -> BMS: Confirmation of Update
+    BMS -> UI: Update Success Message
+    UI -> L: Display Success Message
+else Book Not Found
+    BMS -> UI: Error Message - Book Not Found
+    UI -> L: Display Error Message
+end
+
+@enduml

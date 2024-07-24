@@ -1,0 +1,39 @@
+@startuml
+autonumber
+actor "Enforcement Staff" as staff
+participant "User Authentication Module" as auth
+participant "Violation Management System" as vms
+participant "Notice of Violation Generator" as novGen
+participant "Database" as db
+participant "Communication Module" as comm
+
+== Authentication ==
+staff -> auth: Request to Issue Notice of Violation
+auth -> auth: Verify Identity
+auth --> staff: Authentication Successful
+
+== Record Violation Details ==
+staff -> vms: Access Violation Entry Form
+vms -> staff: Display Form
+staff -> vms: Submit Violation Details
+vms -> db: Save Violation Record
+db --> vms: Confirmation
+vms --> staff: Violation Recorded Successfully
+
+== Generate Notice of Violation ==
+staff -> novGen: Initiate Notice Generation
+novGen -> novGen: Retrieve Template
+novGen -> db: Query Violation Details
+db -> novGen: Provide Violation Details
+novGen -> novGen: Populate Template with Details
+novGen -> novGen: Generate Final Notice PDF
+novGen --> staff: Notice of Violation Ready
+
+== Send Notice of Violation ==
+staff -> comm: Send Notice to Responsible Party
+comm -> db: Query Contact Information
+db -> comm: Provide Contact Information
+comm -> comm: Email Notice
+comm --> staff: Notice Sent Confirmation
+
+@enduml

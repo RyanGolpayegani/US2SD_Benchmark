@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+
+actor Researcher as user
+participant "Web Interface" as web
+participant "Authentication Service" as auth
+database "Data Repository" as repo
+participant "Data Management \nSystem" as dms
+participant "Collaboration \nModule" as collab
+
+user -> web: Request Shared Data
+activate web
+
+web -> auth: Validate User Session
+activate auth
+auth -> web: Session Valid
+deactivate auth
+
+web -> djs: Fetch Shared Data Info
+activate dms
+dms -> repo: Query Shared Records
+activate repo
+repo -> dms: Return Records Metadata
+deactivate repo
+
+dms -> collab: Get Sharing Permissions
+activate collab
+collab -> dms: Permissions Details
+deactivate collab
+
+dms -> web: Return Shared Data Metadata & Access
+deactivate dms
+
+web -> user: Display Shared Data & Access Options
+deactivate web
+
+@enduml

@@ -1,0 +1,62 @@
+@startuml
+actor Admin
+participant "Admin Dashboard" as Dashboard
+participant "Pricing Plan Database" as PricingDB
+participant "Billing System" as Billing
+participant "User Account" as User
+
+== Create Pricing Plan ==
+Admin -> Dashboard: Access pricing plan module
+Dashboard -> PricingDB: Fetch existing plans
+Dashboard <- PricingDB: Show existing plans
+Admin -> Dashboard: Define new pricing plan details
+Dashboard -> PricingDB: Save new pricing plan
+PricingDB --> Dashboard: Confirm plan saved
+Dashboard --> Admin: Show confirmation message
+
+== Update Pricing Plan ==
+Admin -> Dashboard: Select existing pricing plan
+Dashboard -> PricingDB: Fetch plan details
+Dashboard <- PricingDB: Show plan details
+Admin -> Dashboard: Update plan details
+Dashboard -> PricingDB: Save updated plan
+PricingDB --> Dashboard: Confirm plan updated
+Dashboard --> Admin: Show confirmation message
+
+== Delete Pricing Plan ==
+Admin -> Dashboard: Select plan to delete
+Dashboard -> PricingDB: Delete selected plan
+PricingDB --> Dashboard: Confirm plan deleted
+Dashboard --> Admin: Show confirmation message
+
+== View Billing System ==
+Admin -> Dashboard: Access billing system module
+Dashboard -> Billing: Request billing information
+Billing --> Dashboard: Show billing details and statistics
+Dashboard --> Admin: Display billing information
+
+== Invoice Generation ==
+loop Monthly Billing Cycle
+    Billing -> User: Generate and send invoice
+    User -> Billing: Process payment
+    Billing -> User: Confirm payment and update account status
+end
+
+== Manual Invoice Adjustment ==
+Admin -> Dashboard: Access user account for adjustment
+Dashboard -> User: Request specific user details
+User --> Dashboard: Show user details and current invoice
+Admin -> Dashboard: Apply adjustment (e.g., discount, correction)
+Dashboard -> Billing: Update user's invoice
+Billing --> Dashboard: Confirm invoice updated
+Dashboard --> Admin: Show confirmation message
+
+== Pricing Plan Analysis ==
+Admin -> Dashboard: Request pricing plan performance report
+Dashboard -> PricingDB: Fetch pricing plan usage data
+Dashboard -> Billing: Fetch revenue data
+PricingDB --> Dashboard: Provide usage statistics
+Billing --> Dashboard: Provide revenue statistics
+Dashboard --> Admin: Show combined report for analysis
+
+@enduml

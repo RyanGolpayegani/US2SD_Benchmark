@@ -1,0 +1,39 @@
+Creating a detailed sequence diagram for the specific user story where a library manager updates the shelf number of a book involves several actors and systems interfacing with each other. Below is a sequence diagram described in PlantUML format that illustrates this process.
+
+```plantuml
+@startuml
+
+participant LibraryManager as LM
+participant LibraryManagementSystem as LMS
+participant Database as DB
+
+LM -> LMS: Login()
+activate LMS
+LMS -> DB: ValidateCredentials()
+activate DB
+DB --> LMS: CredentialsValid()
+deactivate DB
+
+LMS --> LM: DisplayDashboard()
+deactivate LMS
+LM -> LMS: SelectBookToUpdateShelfNo(bookId)
+activate LMS
+
+LMS -> DB: GetBookDetails(bookId)
+activate DB
+DB --> LMS: ReturnBookDetails()
+deactivate DB
+
+LMS --> LM: DisplayBookDetails()
+LM -> LMS: EnterNewShelfNo(shelfNo)
+LMS -> DB: UpdateShelfNumber(bookId, shelfNo)
+activate DB
+DB --> LMS: ShelfNumberUpdated()
+deactivate DB
+
+LMS --> LM: DisplayUpdateConfirmation()
+deactivate LMS
+
+@enduml
+```
+This sequence diagram begins with the library manager logging into the Library Management System. Upon successful login, they navigate to update a book's shelf number. The system first retrieves and displays the book's current details. The library manager then enters the new shelf number, and the system updates this information in the database and confirms the update to the library manager.

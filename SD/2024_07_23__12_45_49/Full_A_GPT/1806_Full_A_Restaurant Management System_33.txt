@@ -1,0 +1,52 @@
+To generate a detailed Sequence Diagram for the specified User Story ("As a chef, I want to update the allergy warnings of menu items.") using PlantUML, you'll need to envision the steps that occur from the moment the chef decides to update a menu item's allergy warning to the system processing this update. Here's how the sequence might unfold:
+
+```plantuml
+@startuml
+
+participant ChefInterface as Chef
+participant MenuManagementSystem as MenuSystem
+participant Database as DB
+
+Chef -> MenuSystem : SelectItem(ItemID)
+activate MenuSystem
+
+MenuSystem -> DB : FetchItem(ItemID)
+activate DB
+DB --> MenuSystem : ReturnItemDetails
+deactivate DB
+
+MenuSystem --> Chef : ShowItemDetails
+Chef -> MenuSystem : UpdateAllergyWarnings(NewAllergenInfo)
+activate MenuSystem
+
+MenuSystem -> DB : UpdateItemAllergenInfo(ItemID, NewAllergenMsg)
+activate DB
+DB --> MenuSystem : ConfirmUpdate
+decativate DB
+
+MenuSystem --> Chef : DisplayUpdateConfirmation
+deactivate MenuSystem
+
+@enduml
+```
+
+### Explanation of the Sequence:
+
+1. **Chef Interface (Chef)**: This represents the user interface through which the chef interacts with the system. It's the starting point of the update process.
+
+2. **Menu Management System (MenuSystem)**: This component is responsible for handling requests related to menu management, such as adding or updating items, which includes the allergy warnings.
+
+3. **Database (DB)**: The persistent storage where all menu items and their respective details, including allergy warnings, are stored.
+
+### Process Steps:
+
+- The chef initiates the process by selecting the specific menu item (`ItemID`) they want to update through the `Chef Interface`.
+- This request is passed to the `Menu Management System`, which then queries the `Database` to fetch the current details of the item.
+- The `Database` returns the details of the item to the `Menu Management System`.
+- The `Menu Management System` displays the item details to the chef, including the current allergy warnings.
+- The chef inputs the updated allergy information (`NewAllergenInfo`) via the `Chef Interface`, which is then sent to the `Menu Management System`.
+- The `Menu Management System` updates the item's allergy information in the `Database` with the new warnings.
+- Upon successful update, the `Database` sends a confirmation back to the `Menu Management System`.
+- Finally, the `Menu Management System` displays a confirmation of the update to the chef.
+
+This sequence diagram is a high-level overview and can be expanded with more details depending on the system's complexity and the specific requirements for interaction between system components.

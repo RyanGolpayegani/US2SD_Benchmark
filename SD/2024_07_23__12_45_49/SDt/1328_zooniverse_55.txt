@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+participant ZooniverseAdmin as admin
+participant AMIDPSystem as system
+participant AnalysisModule
+participant Zoonibot
+participant Subject
+
+== Trigger Analysis for Commenting ==
+admin -> system : Request subject analysis
+system -> AnalysisModule : Analyze subject
+AnalysisModule -> Subject : Identify classification/tags
+Subject --> AnalysisModule : Classification/Tag data
+AnalysisModule --> system : Analysis completed
+
+== Decide on Zoonibot Intervention ==
+system -> Zoonibot : Evaluate conditions for comment
+alt Interesting feature identified
+    Zoonibot -> Subject : Prepare comment on feature
+    note right of Zoonibot : Zoonibot generates \ncomment based on \nidentified feature
+elseif Classification threshold reached
+    Zoonibot -> Subject : Prepare comment on threshold
+    note right of Zoonibot : Zoonibot generates \ncomment for classification \nmilestone
+else Admin directive
+    admin -> Zoonibot : Direct comment on subject
+    note right of admin : Admin instructs \nZoonibot directly
+    Zoonibot -> Subject : Prepare admin directed comment
+end
+
+== Post Comment ==
+Zoonibot -> Subject : Post comment
+Subject --> system : Comment registered
+system -> admin : Notify comment completion
+note over admin, Subject : Zoonibot comment is \nnow visible on the subject
+
+@enduml

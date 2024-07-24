@@ -1,0 +1,40 @@
+Creating a detailed Sequence Diagram for the user story provided involves illustrating the interaction between various entities such as the Archivist (user), the Digital Archive Management System, and possibly third-party services or subsystems involved in redaction and managing access controls. Given the nature of this project, let's sketch a simple sequence diagram focusing on redacting sensitive information for a set period.
+
+Here's a basic PlantUML code snippet to reflect these operations:
+
+```plantuml
+@startuml
+participant Archivist as archivist
+participant "Digital Archive\nManagement System" as system
+participant "Access Control" as accessControl
+participant "Redaction Tool" as redactTool
+database "Archive Database" as db
+
+archivist -> system : Selects file for redaction
+activate system
+
+system -> redactTool : Initiate redaction process
+activate redactTool
+
+redactTool --> system : Display redaction interface
+system -> archivist : Provide redaction interface
+archivist -> redactTool : Apply redactions & set timeframe
+redactTool -> db : Store redacted file and metadata
+db --> redactTool : Confirm storage
+deactivate redactTool
+
+redactTool -> accessControl : Update access rules with timeframe
+activate accessControl
+accessProject -> db : Store updated access rules
+db --> accessControl : Confirm rules updated
+deactivate accessControl
+
+accessControl --> system : Confirm file and access updated
+system -> archivist : Confirm redaction and access settings
+deactivate system
+@enduml
+```
+
+This PlantUML sequence diagram starts with the Archivist selecting a digital file for redaction through the Digital Archive Management System. The system then interacts with a Redaction Tool, providing an interface for the archivist to apply necessary redactions and specify the timeframe for these redactions to be in place. Once redactions are applied, the Redaction Tool updates the file and its metadata within the Archive Database and communicates with the Access Control system to update access rules based on the specified timeframe. Finally, the system confirms the successful application of redactions and updated access rules to the archivist.
+
+Note: This is a simplified version focusing primarily on the interactions between the archivist, the digital archive management system, its components, and the archival database. Depending on the complexity of the actual system and specific project requirements, additional steps, interactions, or components (such as authentication, error handling, notifications, etc.) may need to be included in a comprehensive sequence diagram.

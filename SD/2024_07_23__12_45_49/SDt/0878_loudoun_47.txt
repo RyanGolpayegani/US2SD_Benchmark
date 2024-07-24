@@ -1,0 +1,23 @@
+@startuml
+actor Customer
+participant "Portal Interface" as Portal
+database "Portal Backend" as Backend
+participant "Inspection System"  as InspectionSys
+participant "Notification System" as Notification
+actor "County Inspector" as Inspector
+
+== Customer Requests Inspection ==
+Customer -> Portal : Request Inspection
+Portal -> Backend : Validate Request
+alt Successful Validation
+    Backend -> InspectionSys : Schedule Inspection
+    InspectionSys -> Backend : Confirm Inspection Date & Inspector Assignment
+    Backend -> Notification : Send Confirmation to Customer & Inspector
+    Notification -> Customer : Display Confirmation & Inspection Details
+    Notification -> Inspector : Send Inspection Assignment
+else Validation Failed
+    Backend -> Portal : Show Error Message
+    Portal -> Customer : Display Error\n(Request not valid)
+end
+
+@enduml

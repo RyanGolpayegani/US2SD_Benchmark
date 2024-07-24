@@ -1,0 +1,51 @@
+@startuml
+actor Researcher as R
+participant "Authentication System" as Auth
+participant "User Interface" as UI
+participant "Search System" as Search
+participant "File Management\nSystem" as FileManage
+participant "Download Management\nSystem" as Download
+
+activate R
+
+R -> Auth : Authenticate
+activate Auth
+Auth -> R : Authentication Successful
+deactivate Auth
+
+R -> UI : Access Search Interface
+activate UI
+R -> Search : Submit Search Query
+activate Search
+Search -> FileManage : Request Matching Files
+activate FileManage
+FileManage -> Search : Return Search Results
+deactivate FileManage
+Search -> R : Display Search Results
+deactivate Search
+
+R -> UI : Select Desired Report
+UI -> FileManage : Request File Details
+activate FileManage
+FileManage -> UI : Return File Details
+deactivate FileManage
+UI -> R : Display File Details
+
+R -> Download : Download Request
+activate Download
+Download -> FileManage : Verify File Access Permissions
+activate FileManage
+FileManage -> Download : Access Granted
+deactivate FileManage
+
+Download -> R : Prepare Download Link
+Download -> FileManage : Log Download Activity
+FileManage -> Download : Log Recorded
+deactivate FileManage
+
+Download -> R : Provide Download
+deactivate Download
+deactivate UI
+deactivate R
+
+@enduml

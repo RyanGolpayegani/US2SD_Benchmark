@@ -1,0 +1,52 @@
+Creating a detailed Sequence Diagram for the specified user story: "As a restaurant employee, I want to see my monthly performance, so that I can request a bonus," entails illustrating the interactions between the restaurant employee and various system components. Below is a PlantUML code snippet that represents these interactions in a sequence diagram format. This diagram focuses on the flow from the employee's request through the system to retrieve the performance metrics and potentially request a bonus based on their monthly performance.
+
+```plantuml
+@startuml
+participant Employee as emp
+participant "Employee UI" as ui
+participant "Backend Server" as server
+participant "Performance Management Module" as perf
+participant "Database" as db
+
+emp -> ui: Request monthly performance
+ui -> server: GetPerformance(employeeId, month, year)
+server -> perf: FetchPerformanceMetrics(employeeId, month, year)
+perf -> db: QueryPerformanceData(employeeId, month, year)
+db -> perf: ReturnPerformanceData
+perf -> server: Process and Evaluate Metrics
+server -> ui: Display Performance Metrics
+ui -> emp: Show Performance Results
+
+alt Performance Meeting Bonus Criteria
+    emp -> ui: Request Bonus Based on Performance
+    ui -> server: RequestBonus(employeeId)
+    server -> db: LogBonusRequest(employeeId)
+    db -> server: ConfirmRequestLogged
+    server -> ui: Display Bonus Request Status
+    ui -> emp: Show Request Confirmation
+else Performance Not Meeting Bonus Criteria
+    emp -> ui: Display "Try harder next month!"
+end
+
+@enduml
+```
+
+### How to Interpret the Diagram:
+
+1. **Employee initiates a request**: The sequence starts with the restaurant employee requesting to see their monthly performance via the Employee UI interface.
+
+2. **UI processes the request**: The Employee UI forwards this request to the Backend Server, asking for the performance data of the employee for the specified month and year.
+
+3. **Server communicates with Performance Management Module**: The Backend Server passes the request to the Performance Management Module, which is responsible for fetching and processing performance metrics.
+
+4. **Fetching data from the Database**: The Performance Management Module queries the Database for the performance data of the employee for the given period.
+
+5. **Data processing and evaluation**: Once the Database returns the performance data, the Performance Management Module processes and evaluates these metrics to ascertain the employee's performance levels.
+
+6. **Displaying the results**: The processed performance metrics are sent back to the Employee UI via the Backend Server, and the Employee UI then displays these results to the employee.
+
+7. **Conditional Bonus Request Process**: Depending on whether the displayed performance meets the criteria for a bonus, the employee can either request a bonus through the UI or be prompted to improve their performance for the next evaluation period.
+
+8. **Logging and confirmation of bonus request**: If a bonus request is made, the system logs this request in the Database and confirms the action was successful back to the employee through the UI.
+
+This sequence diagram visualizes the flow of actions triggered by an employee's desire to view their monthly performance and, depending on the outcome, possibly request a bonus. It encapsulates interactions between the user interface, the backend logic, the performance management system, and the database within the context of the Restaurant Management and Operations System.

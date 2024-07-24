@@ -1,0 +1,36 @@
+To represent the process described in the user story "As a restaurant employee user, I want to see all active orders in order by order start has date so that I can prioritize long-awaited orders." with a sequence diagram using PlantUML, we'll envision how different components of the system interact to fulfill this functionality. The components involved might include the User Interface (UI), Frontend Logic (perhaps in React.js or Angular as suggested), Backend Logic (Node.js with Express), and the Database (MongoDB or PostgreSQL).
+
+Note: Sequence diagrams are better represented visually, but here's a text-based PlantUML representation to illustrate how the Components of the system might interact to achieve the described functionality.
+
+```plantuml
+@startuml
+
+actor Employee as E
+participant "UI" as UI
+participant "Frontend Logic" as FL
+participant "Backend Logic\n(Node.js + Express)" as BL
+participant "Database\n(MongoDB/PostgreSQL)" as DB
+
+E -> UI: Selects "View Active Orders"
+UI -> FL: Request to fetch active orders
+FL -> BL: GET /orders?status=active&sortBy=dateStarted&order=asc
+BL -> DB: Find({status:"active"}).sort({dateStarted: 1})
+DB --> BL: Return active orders sorted
+BL --> FL: Orders data
+FL --> UI: Display orders in UI
+UI --> E: Shows ordered list by start date
+
+@enduml
+```
+
+Explanation of the Sequence Diagram Steps:
+1. **Employee Interaction**: The process begins with the employee (could be a waiter, chef, or any other staff member allowed this access) selecting the option to "View Active Orders" in the User Interface (UI).
+2. **UI to Frontend Logic**: This action triggers a request from the UI to the Frontend Logic to fetch the list of active orders.
+3. **Frontend to Backend Logic Request**: The frontend logic formulates a GET request based on predefined API endpoints and routes this request to the Backend Logic. The request asks for orders that are currently active, intending to sort them by their start date in ascending order (longest waiting times first).
+4. **Backend Logic to Database**: The Backend Logic translates this request into a database query that searches for orders with a status of "active" and sorts them by the `dateStarted` field in ascending order.
+5. **Database Response**: The Database executes the query, fetching and sorting the records as requested, and returns this sorted list to the Backend Logic.
+6. **Backend to Frontend Response**: The Backend Logic receives the sorted list of active orders and sends this data back to the Frontend Logic.
+7. **Frontend Logic to UI**: Upon receiving the order data, the Frontend Logic processes this information to be suitably displayed and then passes it to the UI.
+8. **UI Presentation**: Finally, the UI presents the active orders sorted by order start date to the employee, completing the process.
+
+This diagram only provides a generic view of the process. Implementations may vary based on the actual technical architecture, the specific requirements of the project, and how interactions between client-side and server-side are designed. Depending on the exact needs, steps may be added, removed, or altered.

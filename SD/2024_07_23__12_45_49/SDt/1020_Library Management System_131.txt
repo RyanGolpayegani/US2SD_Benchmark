@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+
+participant LibraryManager as LM
+participant WebInterface as WI
+participant CLMSServer as CS
+participant Database as DB
+
+LM -> WI : Enter author's name and request books list
+activate WI
+WI -> CS : Request books by author
+activate CS
+CS -> DB : Query books by author name
+activate DB
+DB --> CS : Return book list
+destroy DB
+CS --> WI : Display books by author
+deactivate CS
+WI --> LM : Show list of books by author
+deactivate WI
+LM -> WI : Request missing books check
+activate WI
+WI -> CS : Initiate missing books check for author
+activate CS
+CS -> DB : Query for author's complete bibliography
+activate DB
+DB --> CS : Return complete bibliography
+deactivate DB
+CS -> CS : Compare author's bibliography with library collection
+CS --> WI : Display missing books
+deactivate CS
+WI --> LM : Show missing books by author
+deactivate WI
+
+@enduml

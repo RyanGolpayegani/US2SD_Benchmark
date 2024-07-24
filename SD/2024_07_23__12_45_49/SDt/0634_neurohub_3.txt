@@ -1,0 +1,33 @@
+@startuml
+actor ReleaseEngineer as engineer
+participant "Installation Script" as script
+participant "Neurohub Server" as server
+participant "Testing Framework" as testing
+participant "Results Reporting Module" as report
+
+engineer -> script: Execute acceptance tests
+activate script
+
+script -> server: Validate installation
+activate server
+server --> script: Confirmation
+deactivate server
+
+script -> testing: Run tests
+activate testing
+testing -> server: Perform system checks
+activate server
+server --> testing: System status
+deactivate server
+
+testing --> script: Test results
+deactivate testing
+
+script -> report: Generate report
+activate report
+
+report --> engineer: Display results
+deactivate report
+deactivate script
+
+@enduml

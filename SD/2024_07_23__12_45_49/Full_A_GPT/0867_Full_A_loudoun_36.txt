@@ -1,0 +1,54 @@
+Creating a detailed sequence diagram for managing plan reviewer workload involves considering the interactions between the Plan Review Staff Supervisor, the County Services & Property Information Portal system, and possibly other entities involved in managing workloads and assignments. Below is a PlantUML code snippet that outlines a sequence diagram for this specific user story.
+
+```plantuml
+@startuml
+participant "Plan Review Staff Supervisor" as Supervisor
+participant "Portal Backend System" as System
+participant "Database" as DB
+participant "Plan Reviewer" as Reviewer
+
+== Check Current Workloads ==
+Supervisor -> System: Request current workload overview
+activate System
+
+System -> DB: Fetch workload data
+activate DB
+DB --> System: Return workload data
+deactivate DB
+
+System --> Supervisor: Display workload overview
+deactivate System
+
+== Adjust Plan Reviewer Workload ==
+Supervisor -> System: Identify workload adjustments
+activate System
+
+System -> Reviewer: Notify of workload change
+activate Reviewer
+Reviewer --> System: Acknowledge
+deactivate Reviewer
+
+Supervisor -> System: Confirm adjustments
+System -> DB: Update workload assignments
+activate DB
+DB --> System: Confirm update
+deactivate DB
+
+System --> Supervisor: Display updated workload overview
+deactivate System
+
+@enduml
+```
+
+Let's break down the sequence:
+
+1. **Check Current Workloads**: The Plan Review Staff Supervisor starts by requesting an overview of the current workload from the portal's backend system. The system fetches and returns this data from the database, providing a visual or data-driven overview to the supervisor.
+
+2. **Adjust Plan Reviewer Workload**: Based on the workload overview, the Plan Review Staff Supervisor identifies necessary adjustments to balance the workload more effectively. 
+   
+   - The supervisor communicates these adjustments to the system. 
+   - The system then notifies the affected Plan Reviewer(s) of the workload change. Reviewers acknowledge this change.
+   - Once adjustment instructions are confirmed by the supervisor, the system updates the workload assignments in the database. 
+   - The database confirms the updates to the system, which in turn shows an updated workload overview to the supervisor, completing the process.
+
+This diagram encapsulates the key interactions required for a Plan Review Staff Supervisor to manage plan reviewer workloads effectively within the context of the County Services & Property Information Portal. You can further tailor this diagram to match specific system capabilities or additional steps in your workload management process.

@@ -1,0 +1,48 @@
+To visualize the process described in your user story about a manager wanting to track which employees sell the most number of products for rewarding purposes, we'll develop a simplified sequence diagram. This exercise assumes familiarity with basic UML notation and the sequence diagram syntax used by PlantUML. 
+
+Please note, this diagram focuses on the interaction between components (like the Manager, System Interface, Database, and Employee Record) to achieve this functionality. For brevity and clarity, error handling and alternative paths aren't elaborated on in detail.
+
+```plantuml
+@startuml
+
+participant Manager as mgr
+participant "System Interface" as ui
+participant "Backend Server" as server
+database "Database" as db
+participant "Employee Record" as empRecord
+
+mgr -> ui : Access sales tracking feature
+ui -> server : Request employee sales data
+server -> db : Query sales data by employee
+db --> server : Return aggregated sales data
+server -> empRecord : Identify top sales employees
+empRecord --> server : Return employee ranking
+server --> ui : Display sales ranking to manager
+ui --> mgr : Show top selling employees and options
+
+mgr -> ui : Select top performers
+ui -> server : Send instruction to update salaries
+server -> db : Update employee salary records
+db --> server : Confirm salary updates
+server --> ui : Confirm success to manager
+ui --> mgr : Display success message
+
+@enduml
+```
+
+### Key Components in the Diagram:
+- **Manager (mgr):** Represents the restaurant manager using the system.
+- **System Interface (ui):** The front-end interface through which the manager interacts with the system.
+- **Backend Server (server):** Handles business logic, such as processing requests from the UI and communicating with the database.
+- **Database (db):** Stores all the relevant data, including employee sales figures and salary information.
+- **Employee Record (empRecord):** A conceptual representation of the handling of employee data within the system. This could be part of the server or a separate service, depending on the system's architecture.
+
+### How to Decode the Diagram:
+- The manager initiates the process by accessing the sales tracking feature through the system interface (UI).
+- The UI requests employee sales data from the backend server, which then queries the database for sales data organized by employee.
+- The database returns the aggregated sales data to the server, which identifies the top sales employees and returns this ranking to the UI.
+- The manager, upon viewing the top-selling employees, selects those who should receive a salary increase.
+- The UI sends this instruction back to the server, which updates the relevant employee salary records in the database.
+- Upon successful update, the server communicates this back to the UI, which then informs the manager of the successful operation.
+
+This sequence diagram simplifies complex system interactions into a clear, step-by-step process that reflects the user story's requirements. Remember, actual implementation may introduce additional complexity, including error handling, authentication, and authorization steps.

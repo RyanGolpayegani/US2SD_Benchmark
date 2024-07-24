@@ -1,0 +1,36 @@
+Generating a detailed sequence diagram for the specified user story in PlantUML format would involve illustrating the interaction between the repository manager and the system to view authenticated, active users and anonymous users. Given the user story's focus, I'll keep the interaction simple, involving user authentication, querying the user database, and presenting the results. Here's how the sequence diagram in PlantUML syntax might look:
+
+```plantuml
+@startuml
+actor RepositoryManager as RM "Repository Manager"
+participant AuthenticationModule as AM "Authentication Module"
+participant UserDatabase as UD "User Database"
+participant SystemInterface as SI "System Interface"
+
+RM -> AM: Request user data view
+activate AM
+AM -> UD: Query active users
+activate UD
+UD -> UD: Fetch authenticated users
+UD -> UD: Fetch anonymous users
+UD --> AM: Return user data
+deactivate UD
+AM --> SI: Display user data
+activate SI
+SI --> RM: Show authenticated & anonymous users
+deactivate AM
+deactivate SI
+
+@enduml
+```
+
+In this sequence diagram:
+
+1. **Repository Manager (RM)** initiates the process by requesting to view user data, particularly interested in distinguishing between authenticated (active users) and anonymous users.
+2. **Authentication Module (AM)** handles the initial request. This could involve ensuring the repository manager is authorized to view the requested information.
+3. **User Database (UD)** is queried by the Authentication Module for active users. Here, the distinction between authenticated and anonymous users is made, with the User Database fetching and separating the two types based on their authentication status.
+4. The **User Database** then returns this information (data on authenticated and anonymous users) to the Authentication Module.
+5. The **Authentication Module** forwards this data to the **System Interface (SI)**, which is responsible for formatting and displaying the information.
+6. Finally, the **Repository Manager** is presented with the information about authenticated and anonymous users via the System Interface.
+
+This sequence diagram simplifies the process to focus on the high-level interaction based on the details provided in your user story. Depending on the system's complexity and the specific implementation details of the EDRMS, additional steps or components may be involved in this process.

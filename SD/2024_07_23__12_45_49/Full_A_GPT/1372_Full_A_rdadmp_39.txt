@@ -1,0 +1,59 @@
+Creating a detailed sequence diagram for the given user story in PlantUML format involves illustrating the interactions between the researcher, the DMPTool, and other components involved in the process of storing agreements related to third-party data. Below is an example of how this sequence might look. Note that for brevity and clarity, some steps might be simplified.
+
+```plantuml
+@startuml
+actor Researcher
+participant "DMPTool Interface" as DMP
+database "Metadata Repository" as MetaRepo
+participant "External Metadata Tool" as ExtMeta
+participant "Legal Compliance Module" as LegalModule
+
+Researcher -> DMP: Access DMPTool
+activate DMP
+
+DMP -> DMP: Authenticate Researcher
+DMP -> Researcher: Display Dashboard
+
+Researcher -> DMP: Select Project
+DMP -> Researcher: Request Agreement Details
+Researcher -> DMP: Inputs Agreement Information\n(Including Third-Party Data References)
+
+DMP -> ExtMeta: Fetch External Metadata
+activate ExtMeta
+ExtMeta -> MetaRepo: Query Metadata
+activate MetaRepo
+MetaRepo -> ExtMeta: Return Metadata
+deactivate MetaRepo
+ExtMeta -> DMP: Return Metadata
+deactivate ExtMeta
+
+DMP -> LegalModule: Validate Agreement Compliance
+activate LegalModule
+LegalModule -> LegalModule: Check Legal Requirements\n and Data Usage Policies
+LegalModule -> DMP: Compliance Status
+deactivate LegalModule
+
+alt If Agreement is Compliant
+    DMP -> MetaRepo: Store Agreement Metadata
+    activate MetaRepo
+    MetaRepo -> DMP: Confirmation
+    deactivate MetaRepo
+    DMP -> Researcher: Display Success Message\n(Agreement Stored & Compliant)
+else If Agreement not Compliant
+    DMP -> Researcher: Display Error Message\n(Non-Compliance Issues)
+end
+
+deactivate DMP
+@enduml
+```
+
+### Explanation of the Sequence Diagram
+
+1. **Researcher Accesses DMPTool:** The researcher logs into the DMPTool to initiate the process.
+2. **Authentication and Dashboard Display:** The DMPTool authenticates the researcher and displays the project dashboard.
+3. **Select Project and Input Agreement Details:** The researcher selects the relevant project and inputs details related to the agreement for third-party data, including references to the data.
+4. **Fetch and Return External Metadata:** The DMPTool communicates with an external metadata tool to fetch metadata related to the third-party data. This information is retrieved and used to enrich the agreement details.
+5. **Validate Agreement Compliance:** The legal compliance module checks the agreement against legal requirements and data usage policies to ensure compliance.
+6. **Store Agreement Metadata:** If the agreement meets all compliance standards, its details are stored in the metadata repository, and the researcher is notified of the successful storage and compliance. If not compliant, the researcher is informed of the issues to address.
+
+This sequence diagram outlines the key steps involved when a researcher wants to store agreements relating to third party data in a project using the DMPTool, highlighting the system's interactions and the flow of information.

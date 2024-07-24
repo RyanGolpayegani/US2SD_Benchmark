@@ -1,0 +1,51 @@
+Below is a detailed sequence diagram in PlantUML format for the user story you provided. This diagram assumes the presence of a web-based interface for the researcher to interact with, a backend server to process requests, and a database system for storing experiment metadata and inputs. It illustrates the process of a researcher logging into Neurohub, navigating to the experiment section, and uploading inputs for an experiment, thereby ensuring the provenance of the results.
+
+```plantuml
+@startuml
+!theme cerulean
+
+actor Researcher as researcher
+participant "Web Interface" as webInterface
+participant "Backend Server" as backend
+database "Experiment Database" as database
+
+== Authentication ==
+researcher -> webInterface : Access Neurohub
+webInterface -> backend : Request authentication
+backend -> database : Validate user credentials
+database -> backend : Credentials valid
+backend -> webSecret Window: Access granted
+webInterface -> researcher : Display dashboard
+
+== Navigating to Experiment Section ==
+researcher -> webInterface : Navigate to 'My Experiments'
+webInterface -> backend : Request user's experiments
+backend -> database : Fetch experiments list
+database -> backend : Return experiments
+backend -> webInterface : Display experiments list
+webInterface -> researcher : Show 'My Experiments' section
+
+== Uploading Experiment Inputs ==
+researcher -> webInterface : Select 'Upload Inputs'
+webInterface -> researcher : Show upload form
+researcher -> webInterface : Submit input files and metadata
+webInterface -> backend : Submit input files and experiment metadata
+backend -> database : Store input files and metadata
+database -> backend : Confirm storage
+backend -> webInterface : Upload successful
+webInterface -> researcher : Display success message
+
+== Verifying Upload and Provenance ==
+researcher -> webInterface : Request input files list
+webInterface -> backend : Fetch uploaded inputs for experiment
+backend -> database : Retrieve input details
+database -> backend : Return input details
+backend -> webInterface : Display inputs list
+webInterface -> researcher : Show experiment inputs with metadata
+
+@enduml
+```
+
+This sequence diagram outlines the vital steps a researcher would take to store all inputs for an experiment via the Neurohub platform. Starting from authentication, navigating through the interface to the experiment section, uploading the input files along with their metadata, and finally verifying the upload to ensure the provenance of the results can be confirmed at any later point.
+
+To visualize this PlantUML diagram, you'll need to use a PlantUML environment or an online tool that supports PlantUML syntax. This provides a visual representation of the interactions and can be a valuable part of the project documentation, offering insight into the specific use case of storing experiment inputs within the Neurohub platform.

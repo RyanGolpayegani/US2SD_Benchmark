@@ -1,0 +1,31 @@
+@startuml
+participant OlderPerson as O
+participant "ALFRED" as A
+participant "Health Monitoring System" as H
+database "User Preferences" as UP
+participant "Nutrition Advice API" as N
+
+O -> A: "I want to control my body weight."
+A -> UP: Retrieve user health goals
+UP --> A: Body weight goal
+A -> H: Request current body weight
+H -> H: Measure body weight
+H --> A: Current body weight data
+A -> A: Compare current body weight with goal
+alt Current weight > Goal
+    A -> N: Request diet plan to reduce weight
+    N --> A: Healthy diet plan
+    A -> O: Display diet plan and suggest workouts
+else Current weight <= Goal
+    A -> A: Check for maintenance advice
+    A -> N: Request diet plan for weight maintenance
+    N --> A: Weight maintenance diet plan
+    A -> O: Display maintenance diet plan and encourage
+end
+A -> UP: Update health monitoring schedule
+A -> O: Schedule weekly weight check-ins
+O -> A: "Acknowledge"
+A -> H: Set reminders for weekly weight measurements
+H --> O: Reminder settings confirmed
+
+@enduml

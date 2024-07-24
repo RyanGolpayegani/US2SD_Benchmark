@@ -1,0 +1,48 @@
+Below is a detailed sequence diagram in PlantUML format for the user story specified. This diagram illustrates the interactions between a DAMS Manager and the DAMS Integration and Management System (DIMS) as the manager seeks to understand the permissible uses or restrictions of an object or object component based on its rights status.
+
+```plantuml
+@startuml
+actor DAMSManager as "DAMS Manager"
+participant DIMS as "DIMS Interface"
+participant DBAccess as "Database Access"
+participant RightsManagementModule as "Rights Management"
+
+== Determine Permitted or Restricted Uses based on Rights Status ==
+
+DAMSManager -> DIMS : Request object/component rights info
+activate DIMS
+
+DIMS -> DBAccess : Query object/component details
+activate DBAccess
+
+DBAccess -> RightsManagementModule : Fetch rights status
+activate RightsManagementModule
+
+RightsManagementModule --> DBAccess : Return rights status
+deactivate RightsHEEE_managmentRight HEkzsManagementModule
+
+DBAccess --> DIMS : Object/component details & rights status
+deactivate DBAccess
+
+DIMS --> DAMSManager : Display uses permitted/restricted
+deactivate DIMS
+@enduml
+```
+
+### Explanation of the Sequence Diagram
+
+1. **DAMS Manager Initiates Request**: The sequence begins with the DAMS Manager requesting information about the uses that are permitted or restricted for a specific object or its components based on the rights status.
+
+2. **DIMS Processes the Request**: The request is processed by the DIMS interface, which acts as the primary interaction point for the user.
+
+3. **Query Database for Object/Component Details**: DIMS then interacts with a Database Access layer (which abstracts the query mechanisms) to fetch the necessary details about the object or component in question.
+
+4. **Fetch Rights Status**: The Database Access component requests the rights status from the Rights Management module, which is responsible for managing and providing all details related to copyrights, licenses, and other legal aspects of objects/components within the system.
+
+5. **Return Rights Status to Database Access**: The Rights Management module processes the request and returns the rights status related to the object/component to the Database Access layer.
+
+6. **Database Access Returns Information to DIMS**: With the rights status available, the Database Access layer compiles the needed information and returns it to the DIMS interface.
+
+7. **Display Permitted/Restricted Uses to DAMS Manager**: Finally, the DIMS interface presents the information about the uses that are permitted or restricted for the objected or component in question back to the DAMs Manager.
+
+This sequence diagram fulfills the user story by demonstrating the process through which a DAMS Manager can determine the rights status and thus understand all permissible or restricted uses for an object or component within the DAMS.

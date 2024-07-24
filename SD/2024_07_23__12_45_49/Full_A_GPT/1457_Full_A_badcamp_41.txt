@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the specific user story of a summit coordinator wanting to see a list of attendees signed up for their summit involves outlining the interaction between different system components and actors to fulfill this requirement. Below is a representation of this workflow in PlantUml format:
+
+```plantuml
+@startuml
+actor SummitCoordinator as SC
+participant "Authentication System" as Auth
+participant "Summit Management Module" as SMM
+participant "Database" as DB
+participant "Email System" as Email
+
+SC -> Auth : Authenticate
+Auth --> SC : Authentication Success
+
+SC -> SMM : Request list of attendees for summit
+SMM -> DB : Query attendee details for summit
+DB --> SMM : Return attendee list
+
+SMM --> SC : Display attendee list
+
+SC -> SMM : Select attendees to email
+SC -> Email : Compose email
+SC -> SMM : Request to send email to selected attendees
+SMM -> Email : Send email request with attendee emails
+Email -> DB : Log email activity
+DB --> Email : Confirm logging
+Email --> SMM : Confirm email sent
+SMM --> SC : Confirm email sent to attendees
+
+@enduml
+```
+
+Here’s a step-by-step breakdown of the interactions represented in this sequence diagram:
+
+1. **Summit Coordinator Authentication:** The summit coordinator (SC) starts by authenticiating themselves through the system's authentication mechanism, ensuring that only authorized users can access attendee information and communicate with them.
+
+2. **Request Attendee List:** Once authenticated, the SC requests a list of attendees for their summit from the summit management module (SMM). The SMM queries the database to retrieve the details of the attendees who have signed up for the summit.
+
+3. **Display Attendee List:** The SMM returns the list of attendees to the SC, allowing them to view who has signed up.
+
+4. **Compose and Send Email:** The SC selects which attendees to email and composes the email through the system's email interface. They submit a request to send the email to the selected attendees through the SMM.
+
+5. **Email System Interaction:** The SMM forwards the email request, including the attendees' email addresses, to the email system. The email system may log this activity in the database for record-keeping and compliance purposes.
+
+6. **Confirmation of Email Sent:** Once the email system sends the email to the selected attendees and logs the activity, it confirms the action back to the SMM, which in turn confirms to the SC that the email has been successfully sent.
+
+This diagram provides a clear, sequential view of the interactions involved in enabling summit coordinators to communicate with their summit attendees via email, taking into account the necessary system components and steps for a secure, efficient process.

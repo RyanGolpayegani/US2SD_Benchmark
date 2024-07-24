@@ -1,0 +1,30 @@
+@startuml
+
+actor "Library Staff" as staff
+actor "Item Author" as author
+boundary "Digital Repository System" as system
+database "Repository Database" as db
+
+== Request for Embargo Application/Removal ==
+author -> staff: Request embargo application/removal
+staff -> system: Authenticate login
+
+alt Applying Embargo
+    staff -> system: Select item for embargo
+    system -> db: Query item details
+    db --> system: Return item details
+    staff -> system: Apply embargo with specified parameters (e.g., duration)
+    system -> db: Update item with embargo details
+    db --> system: Confirm embargo applied
+    system --> staff: Display confirmation message
+else Removing Embargo
+    staff -> system: Select item for embargo removal
+    system -> db: Query item with embargo details
+    db --> system: Return item details
+    staff -> system: Request embargo removal
+    system -> db: Update item to remove embargo
+    db --> system: Confirm embargo removed
+    system --> staff: Display confirmation message
+end
+
+@enduml

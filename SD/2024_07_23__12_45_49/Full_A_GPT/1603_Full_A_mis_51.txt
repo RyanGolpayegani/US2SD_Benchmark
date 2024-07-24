@@ -1,0 +1,48 @@
+To visualize the user story of a collection curator wanting to canonically identify authors and creators of items in the Enhanced Digital Repository Management System (EDRMS) by unique identifier, let's map out the sequence of interactions. The primary goal here is to show how the curator can associate a unique identifier (such as an ORCID iD) with authors and creators for easier aggregation of their works.
+
+Below is a PlantUML code to depict this sequence diagram:
+
+```plantuml
+@startuml
+actor Curator as curator
+participant "UI Interface" as UI
+participant "Author Management\nModule" as authorModule
+participant "Database" as DB
+
+== Author Identification Process ==
+
+curator -> UI : Select item to update author details
+UI -> authorModule : Trigger author update process
+activate authorModule
+
+authorModule -> DB : Retrieve item details
+activate DB
+DB --> authorModule : Item details
+deactivate DB
+
+authorModule --> UI : Display current author(s)
+curator -> UI : Input unique identifier (e.g. ORCID) for author(s)
+UI -> authorModule : Provide unique identifier(s)
+activate DB
+authorModule -> DB : Update author details with identifier
+DB --> authorModule : Confirmation of update
+deactivate DB
+authorModule --> UI : Display update success message
+deactivate authorModule
+UI --> curator : Show success message
+
+== End ==
+@enduml
+```
+
+### Explanation:
+
+1. **Curator** initiates the process by selecting the item(s) they want to update with author details through the **UI Interface**.
+2. The **UI Interface** communicates the curator's action to the **Author Management Module**, triggering the author update process.
+3. The **Author Management Module** requests the item details from the **Database** to present the current author(s) associated with the item.
+4. After receiving the item details, the Author Management Module conveys this information back to the **UI Interface**, which then displays the current author(s) to the curator.
+5. The **Curator** inputs the unique identifiers (such as ORCID iDs) for the author(s) through the **UI Interface**.
+6. The **UI Interface** sends these identifiers to the **Author Management Module**, which then updates the author details within the **Database**.
+7. Upon successful update, the Database sends a confirmation back to the Author Management Module, which then informs the **UI Interface** to display a success message to the **Curator**.
+
+This sequence encapsulates how a curator could easily add unique identifiers to authors and creators within the EDRMS, facilitating an efficient means to view all works associated with a specific individual.

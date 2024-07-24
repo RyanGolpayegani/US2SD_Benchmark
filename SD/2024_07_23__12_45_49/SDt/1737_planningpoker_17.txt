@@ -1,0 +1,15 @@
+@startuml
+actor Moderator
+participant "Web Interface" as Web
+participant "Game Controller" as Controller
+database "Game Database" as DB
+participant "Export Service" as Export
+
+Moderator -> Web : Request to view game transcript
+Web -> Controller : Fetch game details (ID)
+Controller -> DB : Query game & estimates by ID
+DB -> Controller : Return game data
+Controller -> Export : Prepare transcript (stories, estimates)
+Export -> Web : Generate transcript file (HTML/CSV)
+Web -> Moderator : Display/download transcript
+@enduml

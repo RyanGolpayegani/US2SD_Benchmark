@@ -1,0 +1,48 @@
+Creating a detailed PlantUML sequence diagram for the user story "As a Broker user, I want to submit records for individual recipients without receiving a DUNS error" involves depicting the interactions between the Broker user, the Broker system, and any other involved subsystem or service that contributes to handling and validating submissions without triggering an erroneous DUNS (Data Universal Numbering System) error. The following represents a basic sequence diagram in PlantUML format tailored to this user story:
+
+```plantuml
+@startuml
+actor BrokerUser as "Broker User"
+participant "Broker UI" as UI
+participant "Submission Processing" as Processing
+participant "Validation Service" as Validation
+database "DUNS Service" as DUNSDB
+participant "Error Handling" as ErrorHandling
+
+BrokerUser -> UI : Submit records
+activate UI
+
+UI -> Processing : Process submission
+activate Processing
+
+Processing -> Validation : Validate records
+activate Validation
+
+Validation -> DUNSDB : Check DUNS
+activate DUNSDB
+DUNSDB --> Validation : No error found
+deactivate DUNSDB
+
+Validation --> Processing : Validation Passed
+deactivate Validation
+
+Processing --> UI : Submission Successful
+deactivate Processing
+
+UI --> BrokerUser : Display Success Message
+deactivate UI
+
+alt If validation fails
+    Validation -> ErrorHandling : Handle DUNS Error
+    activate Error cine
+    ErrorHandling -> UI : Show DUNS error message
+    deactivate ErrorHandling
+    UI -> BrokerUser : Display DUNS Error
+    deactivate UI
+end
+@enduml
+```
+
+This sequence diagram starts with the Broker user submitting records through the Broker UI. The records are then processed, and part of the processing involves validating the records, which includes checking the DUNS numbers through a DUNS Service. If the DUNS Service finds no error, the process continues smoothly towards a successful submission notification to the Broker user. In the case where a DUNS error is detected, the-error is handled accordingly, and an appropriate message is displayed to the Broker user. This scenario ensures that the Broker user can submit records for individual recipients without running into a DUNS error, in line with the stated user story.
+
+Please note that this is a simplified overview. Depending on the complexity and specific implementation details of your Broker system, additional components like a logging service for developers (to log the submission process and any issues encountered) or specific subsystems for handling different types of data submissions (e.g., FABS submissions) might also be involved and could be added to the diagram accordingly.

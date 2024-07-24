@@ -1,0 +1,38 @@
+Creating a detailed sequence diagram for the given user story in PlantUML format involves illustrating the interactions between different system components from the perspective of a user wanting to access the raw agency published files from FABS via USAspending. Below is a conceptual representation. This diagram assumes that the user is authenticated, and the system is set up with necessary components like a web interface, a controller to manage requests, the Broker system to interact with FABS data, and USAspending as the final data dissemination point.
+
+```
+@startuml
+
+participant User
+participant "USAspending Web Interface" as WebInterface
+participant "USAspending Controller" as Controller
+participant "Broker System" as Broker
+participant "FABS Data" as FABS
+
+User -> WebInterface : Request raw agency published files
+WebInterface -> Controller : Forward user request
+Controller -> Broker : Query for raw agency files
+Broker -> FABS : Fetch requested data
+FABS -> Broker : Return raw agency files
+Broker -> Controller : Send raw files data
+Controller -> WebInterface : Provide link to raw files
+WebInterface -> User : Display link to access/download files
+
+@enduml
+```
+
+### Explanation of the Diagram:
+
+1. **User**: The starting point, representing the person who wants to access raw agency published files from FABS via USAspending.
+
+2. **USAspending Web Interface (WebInterface)**: The front-end interface where the user interacts with the USAspending website. It receives the initial request to access the raw files.
+
+3. **USAspending Controller (Controller)**: Acts as an intermediary that processes and forwards requests from the web interface to the appropriate backend services. It's responsible for querying the Broker System for the requested data.
+
+4. **Broker System (Broker)**: The system that interfaces directly with FABS (Financial Assistance Broker Submission) data. It handles the request to fetch the raw agency published files.
+
+5. **FABS Data (FABS)**: Represents the database or data store containing the Financial Assistance Broker Submission (FABS) data, including the raw agency published files that the user wants to access.
+
+6. **Process Flow**: The arrows represent the sequence of interactions between different entities from the initiation of the user request to the provision of access or a download link to the raw files. This flow ensures that the user's request is processed through various system components to fetch and present the desired data from FABS via the Broker system and USAspending platform.
+
+This diagram simplifies the complex relationships and interactions between different system components to fulfill a specific user need, following the principles of sequence diagrams to model system behavior and interactions over time.

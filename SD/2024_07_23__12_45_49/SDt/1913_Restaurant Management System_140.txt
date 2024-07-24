@@ -1,0 +1,20 @@
+@startuml
+actor Manager as manager
+participant "UI: Management Dashboard" as UI
+participant "Backend: Menu Management Service" as Backend
+database "DB: Menu Database" as Database
+
+manager -> UI : Selects "Edit Menu"
+UI -> Backend : Request to fetch current menu
+Backend -> Database : Query existing menu items
+Database -> Backend : Return menu items
+Backend -> UI : Menu items data
+UI -> manager : Display menu items
+manager -> UI : Selects products to delete
+UI --> Backend : Sends delete request for selected products
+Backend -> Database : Deletes specified products from the menu
+Database --> Backend : Confirm deletion
+Backend --> UI : Confirm successful deletion
+UI --> manager : Display success message
+
+@enduml

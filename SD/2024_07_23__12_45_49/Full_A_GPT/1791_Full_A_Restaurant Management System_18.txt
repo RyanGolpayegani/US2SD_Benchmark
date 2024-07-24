@@ -1,0 +1,39 @@
+Creating a detailed sequence diagram for the user story "As a chef, I want to mark the used ingredient amounts" requires us to visualize the interactions between the chef, the Restaurant Management and Operations System, and the database. Below, I've outlined a Plant UML code that represents these interactions:
+
+```plantuml
+@startuml
+actor Chef as chef
+participant "UI: Menu Management" as ui
+participant "Backend: Ingredient Management Module" as backend
+database "DB: Ingredients" as db
+
+== Marking Used Ingredient Amounts ==
+
+chef -> ui: Selects dish prepared
+activate ui
+
+ui -> backend: Requests to update ingredient amounts
+activate backend
+
+backend -> db: Retrieves current ingredient amounts
+activate db
+db --> backend: Current ingredient amounts
+deactivate db
+
+backend -> db: Updates ingredient amounts with used portions
+activate db
+db --> backend: Confirmation of updated amounts
+deactivate db
+
+backend --> ui: Update success message
+deactivate backend
+
+ui --> chef: Displays success confirmation
+deactivate ui
+
+@enduml
+```
+
+This sequence diagram starts with the chef selecting a dish that has been prepared from the Menu Management UI. The system, through the Backend: Ingredient Management Module, processes this action by first retrieving current amounts from the database, then updating those amounts with the used portions for the selected dish. The database confirms the update, and the backend communicates this success back to the UI, which in turn, notifies the chef.
+
+Remember, PlantUML diagrams like this one serve as a blueprint for understanding and designing the system process flow. Depending on your specific needs or project requirements, the names and operations might need adjustments.

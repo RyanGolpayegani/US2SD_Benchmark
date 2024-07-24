@@ -1,0 +1,25 @@
+@startuml
+actor Publisher as publisher
+participant "CLI Tool/UI" as cli
+participant "Publishing Service" as publishService
+participant "Validation Service" as validationService
+database "Data Registry DB" as dataRegistry
+
+== Publish Command Sequence ==
+
+publisher -> cli : execute publish command
+cli -> publishService : request data package update
+publishService -> validationService : validate data package
+alt Validation Success
+    validationService --> publishService : validation passed
+    publishService -> dataRegistry : update data package record
+    dataRegistry --> publishService : confirm update
+    publishService --> cli : update success message
+    cli --> publisher : display success message
+else Validation Fail
+    validationService --> publishService : validation errors
+    publishService --> cli : display validation errors
+    cli --> publisher : show errors, update aborted
+end
+
+@enduml

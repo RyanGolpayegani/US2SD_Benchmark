@@ -1,0 +1,51 @@
+Given the project description and focusing on the specific user story about denoting an application with a Final Action status, below is a Sequence Diagram in PlantUML format. This diagram outlines the interactions involved in a staff member setting an application's status to Final Action to mark it as finished. 
+
+Please note: Sequence diagrams are visual representations, and PlantUML code allows for these diagrams to be generated but cannot be visually rendered in this text format. To visualize the sequence diagram, you will need to use PlantUML software or an online PlantUML editor.
+
+```plantuml
+@startuml
+actor StaffMember as "Staff Member"
+entity "Customer Portal" as Portal
+database "Application Database" as DB
+entity "Administrative Tools" as Tools
+
+== Denote Application with Final Action Status ==
+
+StaffMember -> Portal : Login
+activate StaffMember
+activate Portal
+Portal --> StaffMember : Show Dashboard
+
+note over StaffMember, Portal : Staff Accesses Administrative Tools
+
+StaffMember -> Portal : Select Application to Finalize
+Portal -> Tools : Open Administrative Tools
+activate Tools
+Tools --> StaffMember : Display Application Details
+
+StaffMember -> Tools : Request Change Status to Final Action
+activate Tools
+
+Tools -> DB : Update Application Status to Final Action
+activate DB
+DB --> Tools : Confirm Status Updated
+deactivate DB
+
+Tools --> StaffMember : Show Final Action Confirmation
+deactivate Tools
+StaffMember -> Portal : Logout
+deactivate Portal
+deactivate StaffMember
+
+@enduml
+```
+
+### Explanation of the Steps:
+1. **Staff Member Logs In**: The staff member begins by logging into the Customer Portal. Security is ensured through user authentication.
+2. **Access Dashboard**: Once authenticated, the staff member accesses their dashboard within the portal.
+3. **Select Application**: The staff member selects the application they wish to finalize from their dashboard or an administrative section where applications are listed.
+4. **Request Change Status**: Within the administrative tools, the staff member selects the option to change the status of the application to "Final Action".
+5. **Update in Database**: The administrative tool communicates with the application database to update the status of the selected application.
+6. **Confirmation**: Upon successful update, a confirmation of the new status (Final Action) is displayed to the staff member.
+
+This sequence ensures that the process of marking an application with a Final Action status is handled efficiently, with clear communications between the staff member, the customer portal, the administrative tools, and the application database.

@@ -1,0 +1,19 @@
+@startuml
+participant "Repository Manager" as manager
+participant "Web Interface" as web
+participant "Controller" as controller
+participant "Error Processing Module" as processor
+participant "Database" as db
+participant "External System\n(Symplectic Elements)" as external
+
+manager -> web : Request recent errors view
+web -> controller : Invoke view errors method
+controller -> processor : Fetch deduplicated errors
+processor -> db : Query recent errors
+db -> processor : Return errors list
+processor -> external : Request deduplication method
+external -> processor : Return deduplicated errors
+processor -> controller : Processed errors list
+controller -> web : Display errors to manager
+web -> manager : Show deduplicated recent errors
+@enduml

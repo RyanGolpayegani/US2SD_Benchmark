@@ -1,0 +1,30 @@
+@startuml
+
+actor Developer
+participant "FPDS API" as FPDS
+participant "Data Processing\nModule" as DataProc
+participant "Database" as DB
+participant "Logging System" as Log
+
+Developer -> FPDS : Request historical data\n(since 2007)
+note right: Developer initiates\na data pull request\nfor historical records
+FPDS --> Developer : Return historical data
+note left: FPDS returns\nthe requested data
+
+Developer -> DataProc : Send historical data for processing
+note right: Data requires\nvalidation and formatting
+
+DataProc -> DataProc : Validate data integrity
+DataProc -> DataProc : Format according to\nBroker platform schema
+DataProc --> Developer : Return processed data
+note left: Data is now ready\nto be loaded into Broker
+
+Developer -> DB : Load processed data
+note right: Developer initiates\nthe loading procedure
+
+DB -> Log : Log loading activity
+note over Log : Capture details of\nthe data load for audit\nand debugging purposes
+DB --> Developer : Confirm successful loading
+note left: Developer receives\nconfirmation of data\nbeing successfully loaded
+
+@enduml

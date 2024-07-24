@@ -1,0 +1,41 @@
+@startuml
+participant Participant as p
+participant "Game Session" as gs
+participant "Estimation Round" as er
+participant Timer as tm
+
+== Estimation ==
+p -> gs : Join session
+activate gs
+gs -> er : Initiate round
+activate er
+er -> tm : Start two-minute timer
+activate tm
+tm --> er : Notify expiry
+deactivate tm
+
+== Submitting Estimates ==
+loop For each Participant
+    p -> er : Submit estimate
+    activate p
+    er -> er : Check if all estimates are in
+    deactivate p
+end
+
+== All Estimates Submitted ==
+er -> tm : All estimates submitted
+tm -> tm : Reset timer for next round
+activate tm
+tm --> er : Timer reset
+deactivate tm
+
+er --> gs : Round complete
+deactivate er
+
+== Next Round ==
+gs -> er : Initiate new round
+activate er
+er -> tm : Start two-minute timer for new round
+activate tm
+
+@enduml

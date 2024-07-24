@@ -1,0 +1,30 @@
+@startuml
+participant User
+participant "AMIDP Frontend" as Frontend
+participant "AMIDP Backend" as Backend
+participant "Content Identification Service" as ContentID
+participant "Product Information Database" as ProductDB
+
+User -> Frontend: Selects video and requests product identification
+activate Frontend
+Frontend -> Backend: Request to identify products in the video
+activate Backend
+
+Backend -> ContentID: Send video for product identification
+activate ContentID
+ContentID -> ContentID: Analyze video and identify products
+ContentID --> Backend: Return identified products' identifiers
+deactivate ContentID
+
+Backend -> ProductDB: Request information for identified products
+activate ProductDB
+ProductDB -> ProductDB: Fetch information based on identifiers
+ProductDB --> Backend: Return product information
+deactivate ProductDB
+
+Backend --> Frontend: Send product information to Frontend
+deactivate Backend
+Frontend --> User: Display product information
+deactivate Frontend
+
+@enduml

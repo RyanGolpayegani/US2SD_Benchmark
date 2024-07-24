@@ -1,0 +1,41 @@
+Given your request, I'm providing a PlantUML sequence diagram to model the interaction for the user story: "As a site admin, I want to be emailed whenever a job is submitted, so that I am aware of it and can decide if I want to post it." This sequence will cover the process from the moment a job is submitted by a recruiter, through the system notifying the site admin via email.
+
+Please note that for real application, additional details and error handling would be necessary. This diagram is a simplified representation to capture the essence of the process.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Recruiter
+participant "Job Submission Form" as Form
+participant "Server: Job Management" as Server
+participant "Email System" as Email
+actor Admin
+
+== Job Submission ==
+Recruiter -> Form : Submit job
+Form -> Server : Validate job details
+alt Job Details Valid
+    Server -> Server : Store Job details
+    Server -> Email : Send notification email to Admin
+    Email -> Admin : Email received
+else Job Details Invalid
+    Server -> Form : Display error to Recruiter
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram Steps:
+
+1. **Job Submission:** The sequence begins with a Recruiter submitting a job via a Job Submission Form.
+
+2. **Validate Job Details:** The Job Submission Form forwards the job details to the Server where the Job Management system resides. The system validates the details of the job submission.
+
+3. **Conditional Path ("alt" in PlantUML):** 
+
+    - **Job Details Valid:** If the job details are valid, the Server then stores the job details in the database (or another form of storage) and instructs the Email System to send a notification email to the Admin. The Email System sends the email, and the Admin receives a notification about the job submission.
+  
+    - **Job Details Invalid:** If the job details are found to be invalid during the validation process, the Server sends an error message back to the Job Submission Form, which displays the error to the Recruiter for correction.
+
+This sequence diagram is a basic representation. Depending on your specific requirements and system architecture, you might need to add more details or handle additional scenarios such as authentication, authorization, and error handling for email failures.

@@ -1,0 +1,54 @@
+Creating a detailed sequence diagram for the given user story in PlantUML format involves outlining the interactions between the authenticated user, the website front-end, and the back-end systems, including the database and payment gateway.
+
+Given your user story, "As an authenticated user, I want to find a link on the sponsorships page to become a $350 level sponsor, so that I can pay for and become a sponsor role," here's a basic PlantUML sequence diagram to represent the process:
+
+```plantuml
+@startuml
+
+actor AuthenticatedUser as "Authenticated User"
+participant SponsorshipsPage as "Sponsorships Page"
+participant BackendAPI as "Backend API"
+database DB as "Database"
+participant PaymentGateway as "Payment Gateway"
+
+== Find Sponsorship Link ==
+AuthenticatedUser -> SponsorshipsPage: Visit Sponsorships Page
+SponsorshipsPage -> BackendAPI: Request Sponsorship Levels
+BackendAPI -> DB: Query Sponsorship Options
+DB -> BackendAPI: Sponsorship Details
+BackendAPI -> SponsorshipsPage: $350 Sponsorship Link
+SponsorshipsPage -> AuthenticatedUser: Display Sponsorship Options
+
+== Initiate Sponsorship ==
+AuthenticatedUser -> SponsorshipsPage: Select $350 Sponsorship
+SponsorshipsPage -> BackendAPI: Select $350 Level
+BackendAPI -> PaymentGateway: Initiate Payment Process
+PaymentGateway -> BackendAPI: Payment Page URL
+BackendAPI -> SponsorshipsPage: Redirect to Payment
+SponsorshipsStart -> AuthenticatedUser: Redirect to Payment Gateway
+
+== Complete Payment ==
+AuthenticatedUser -> PaymentGateway: Complete Payment
+PaymentGateway -> AuthenticatedUser: Payment Confirmation
+PaymentGateway -> BackendAPI: Notify Payment Success
+BackendAPI -> DB: Update Sponsorship Status
+DB -> BackendAPI: Confirmation
+BackendAPI -> SponsorshipsPage: Update User Role to Sponsor
+SponsorshipsPage -> AuthenticatedUser: Display Sponsor Confirmation
+
+@enduml
+```
+
+This sequence diagram outlines the following steps:
+1. The authenticated user visits the sponsorships page.
+2. The sponsorships page requests sponsorship levels from the backend API.
+3. The backend fetches sponsorship options from the database and returns them to the sponsorships page.
+4. The sponsorships page displays sponsorship options to the user.
+5. The authenticated user selects the $350 sponsorship level.
+6. The backend initiates the payment process with the payment gateway, which provides a URL for the payment page.
+7. The user is redirected to the payment gateway to complete the payment.
+8. Once payment is confirmed, the payment gateway notifies the backend.
+9. The backend updates the sponsorship status and the user’s role to sponsor in the database.
+10. The user is shown a confirmation of their sponsor status.
+
+This sequence diagram can be expanded or modified to include error handling, timeframes, or specific interactions with other website features as needed.

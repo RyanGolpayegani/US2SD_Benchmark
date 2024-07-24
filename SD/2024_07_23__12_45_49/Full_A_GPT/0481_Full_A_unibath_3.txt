@@ -1,0 +1,54 @@
+Creating a detailed sequence diagram for the mentioned user story - "As a depositor, I want to deposit and maintain datasets through Pure, so that I have a single one-stop shop for managing my research outputs." - involves mapping interactions between the depositor and various system components of the Enhanced Research Data Management Platform, particularly focusing on the integration with Pure. Here is a PlantUML script that illustrates these interactions:
+
+```plantuml
+@startuml
+actor Depositor
+participant "Web Interface" as WebUI
+participant "Pure Integration Module" as Pure
+participant "Dataset Management System" as DMS
+database "Bath Data Archive" as Archive
+
+Depositor -> WebUI: Access deposit interface
+activate WebUI
+
+WebUI -> Pure: Request authentication
+activate Pure
+Pure --> WebUI: Authenticate depositor
+deactivate Pure
+
+WebUI -> Depositor: Show dataset deposit form
+Depositor -> WebUI: Fill in form \n(Include metadata, files)
+WebUI -> DMS: Process deposit form
+activate DMS
+DMS -> Pure: Check if dataset metadata aligns \nwith Pure requirements
+activate Pure
+Pure --> DMS: Confirm metadata alignment
+deactivate Pure
+
+DMS -> Archive: Deposit dataset and metadata
+activate Archive
+Archive --> DMS: Confirm deposit \nGenerate DOI
+DMS -> Pure: Link dataset DOI with Pure records
+activate Pure
+Pure --> DMS: Update Pure records
+deactivate Pure
+
+DMS --> WebUI: Confirm dataset deposit \nProvide DOI to depositor
+deactivate DMS
+WebUI -> Depositor: Display confirmation \n(Include DOI link)
+
+deactivate WebUI
+@enduml
+```
+
+This diagram visualizes the flow from when a depositor decides to submit a dataset to when the dataset is successfully deposited in the Bath Data Archive and linked with Pure. Key interactions include:
+
+1. The depositor accesses the web interface to start the submission process.
+2. The web interface communicates with Pure for authentication purposes.
+3. Once authenticated, the depositor is presented with a dataset deposit form.
+4. After the depositor submits the filled form, the Dataset Management System processes this information, checking metadata alignment with Pure's requirements.
+5. The dataset and its metadata are then deposited in the Bath Data Archive, which generates a DOI for the dataset.
+6. The Dataset Management System updates Pure records with the new dataset DOI.
+7. Finally, the depositor receives confirmation of the successful deposit, including the DOI link.
+
+This sequence diagram aims to simplify complex interactions into understandable steps for developers and stakeholders involved in the Enhanced Research Data Management Platform project.

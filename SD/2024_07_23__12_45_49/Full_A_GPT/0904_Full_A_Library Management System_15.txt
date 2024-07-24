@@ -1,0 +1,48 @@
+To create a detailed sequence diagram in PlantUML language for the user story "As a customer, I want to update my borrows", we need to consider all entities involved and their interactions. This process typically involves checking out or returning books, updating the system records accordingly, including potentially recalculating fees for late returns.
+
+We'll break down the sequence into these steps: the customer initiates a book return request, the system checks the book status, calculates any overdue fees, updates the borrow record, and finally confirms the update to the customer.
+
+```plantuml
+@startuml
+!theme cerulean
+
+participant Customer
+participant CLMS_UI as UI
+participant BorrowManagementSystem as BMS
+participant Database as DB
+participant NotificationService as NS
+
+== Book Return Process Start ==
+Customer -> UI: Request to update borrow (return book)
+UI -> BMS: Validate customer ID and book ID
+BMS -> DB: Check book status
+DB --> BMS: Book status (e.g., overdue)
+BMS -> DB: Calculate overdue fees (if any)
+DB --> BMS: Fee details
+BMS -> DB: Update borrow record (mark as returned)
+DB --> BMS: Record updated
+BMS -> NS: Send confirmation to customer
+NS -> Customer: Confirmation message (SMS/Email)
+== Book Return Process End ==
+
+@enduml
+```
+
+### Explanation:
+1. **Customer initiates a request** to update his/her borrow record, which might be returning a book. This request is received through the UI (User Interface) of the Comprehensive Library Management System (CLMS).
+
+2. **UI forwards this request** to the Borrow Management System (BMS), including validating the customer's id and book id to ensure the request is legitimate.
+
+3. **BMS checks the book status** by querying the Database (DB) to see whether the book is overdue or not.
+
+4. **Database returns the book's status**, and if the book is overdue, BMS requests the calculation of overdue fees from the Database.
+
+5. **Database calculates and returns the overdue fees** to the BMS, based on the duration of the delay and any associated policies.
+
+6. **BMS updates the borrow record** in the Database, marking the book as returned, and records any fees.
+
+7. **Database confirms the update** back to BMS, which then triggers a notification to the customer about the successful update.
+
+8. **Notification Service sends out a confirmation** message to the customer, which might be through SMS, Email, or any other configured method.
+
+This sequence diagram represents a simplified view of the interactions involved in updating a customer's borrow record as part of the Comprehensive Library Management System (CLMS). Depending on the specific requirements and implementation details, additional steps or services could be involved.

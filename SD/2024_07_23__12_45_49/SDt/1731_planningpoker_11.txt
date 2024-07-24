@@ -1,0 +1,39 @@
+@startuml
+participant Moderator
+participant "AEPT System" as System
+participant Estimator1
+participant Estimator2
+participant EstimatorN
+database DB
+
+== Estimation Round Starts ==
+Moderator -> System: StartEstimationRound()
+System -> Estimator1: RequestEstimate()
+System -> Estimator2: RequestEstimate()
+System -> EstimatorN: RequestEstimate()
+
+== Estimators Submit Estimates ==
+Estimator1 -> System: SubmitEstimate(5)
+Estimator2 -> System: SubmitEstimate(5)
+EstimatorN -> System: SubmitEstimate(5)
+
+== Check if All Estimates Match ==
+System -> System: CheckEstimates()
+
+alt All Estimates Match
+    System -> System: AutomaticallyFillEstimateField(5)
+    System --> Moderator: NotifyAutoFilledEstimate(5)
+    Moderator -> System: AcceptEstimate()
+    System -> DB: SaveFinalEstimate(5)
+else Estimates Do Not Match
+    System --> Moderator: RequestManualAcceptance()
+    Moderator -> System: AcceptEstimateManually()
+    System -> DB: SaveFinalEstimate()
+end
+
+== Notification of Accepted Estimate ==
+System -> Estimator1: NotifyEstimateAccepted(5)
+System -> Estimator2: NotifyEstimateAccepted(5)
+System -> EstimatorN: NotifyEstimateAccepted(5)
+
+@enduml

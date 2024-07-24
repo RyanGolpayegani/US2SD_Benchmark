@@ -1,0 +1,39 @@
+@startuml
+actor SupportTeamMember as STM
+participant "Export Service" as Export
+database "Digital Repository" as Repo
+participant "Manipulation Tool" as Manipulate
+participant "Import Service" as Import
+
+STM -> Export: Request export of dataset
+activate Export
+
+Export -> Repo: Extract records & files
+activate Repo
+Repo -->> Export: Dataset
+deactivate Repo
+
+Export -->> STM: Dataset
+deactivate Export
+
+STM -> Manipulate: Load dataset
+activate Manipulate
+STM -> Manipulate: Correct uniform error
+Manipulate -->> STM: Corrected dataset
+deactivate Manipulate
+
+STM -> Import: Request import of dataset
+activate Import
+Import -> Repo: Validate dataset format
+activate Repo
+Repo -->> Import: Validation success
+deactivate Repo
+
+Import -> Repo: Update records & files
+activate Repo
+Repo -->> Import: Update success
+deactivate Repo
+
+Import -->> STM: Import success confirmation
+deactivate Import
+@enduml

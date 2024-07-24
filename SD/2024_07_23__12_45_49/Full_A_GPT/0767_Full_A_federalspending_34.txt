@@ -1,0 +1,45 @@
+To fulfill your request for creating a detailed sequence diagram for the specified user story in PlantUML format, I've outlined a sequence diagram below. This PlantUML code illustrates the interactions between a user and the system when the user wants to publish a submission in FABS and ensure the publish button is deactivated to prevent multiple clicks during the derivation process. 
+
+```plantuml
+@startuml
+participant User
+participant "FABS UI" as UI
+participant "Submission Controller" as Controller
+participant "Database" as DB
+
+User -> UI : Clicks publish
+activate UI
+
+UI -> Controller : Request to publish
+activate Controller
+
+Controller -> DB : Initiate Submission
+activate DB
+DB --> Controller : Submission ID & Status (In progress)
+deactivate DB
+
+Controller -> UI : Disable publish button
+deactivate Controller
+UI -> User : Display "Submission in progress"
+deactivate UI
+
+... Derivation Process ...
+
+DB -> Controller : Update Submission Status (Complete)
+activate Controller
+
+Controller -> UI : Enable publish button
+activate UI
+UI -> UI : Update Submission Status Display
+
+UI -> User : Display "Submission complete"
+deactivate UI
+deactivate Controller
+
+@enduml
+```
+This sequence starts with the user interacting with the FABS UI by clicking the publish button for a submission. The UI then sends a request to the Submission Controller to initiate the publishing process. The controller interacts with the database to create a new submission entry, which returns a submission ID and initiates the derivation process, marking the submission status as "In progress".
+
+The Submission Controller then instructs the UI to disable the publish button to prevent the user from clicking it multiple times during the derivation process. While the derivation process is ongoing (represented by "… Derivation Process …" in the diagram for simplification), the system's backend updates the submission status upon completion.
+
+Once the database updates the submission status to "Complete", it informs the Submission Controller, which then notifies the UI to re-enable the publish button and update the display to show the submission's completion status. The sequence ensures that the user cannot make multiple submissions of the same content, thereby maintaining data integrity and system efficiency.

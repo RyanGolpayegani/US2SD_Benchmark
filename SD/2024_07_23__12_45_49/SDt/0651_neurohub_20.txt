@@ -1,0 +1,30 @@
+@startuml
+
+actor Supervisor
+boundary WebUI
+control SystemController
+entity Database
+control Authentication
+boundary ReportModule
+database DataRepository
+
+Supervisor -> WebUI : Navigate to Activity Monitoring
+WebUI -> SystemController : Request Login
+System a: Supervisor is Logged in
+SystemController -> Authentication : Verify Supervisor Identification
+Authentication -> SystemController : Confirmation of Supervisor Role
+
+Supervisor -> WebUI : Selects View Researchers' Activity
+WebUI -> SystemController : Request for Date/Period
+SystemController -> Database : Fetch Activity Data
+Database -> DataRepository : Query by Date/Period
+DataRepository -> Database : Return Results
+
+Database -> SystemController : Activity Data
+SystemController -> ReportModule : Prepare Activity Report
+ReportModule -> SystemController : Activity Report
+
+SystemController -> WebUI : Display Activity Report
+WebUI -> Supervisor : Show Activity for Given Date/Period
+
+@enduml

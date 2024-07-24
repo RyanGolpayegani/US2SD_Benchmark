@@ -1,0 +1,45 @@
+To create a sequence diagram for the user story stated, we'll use PlantUML, a tool that allows for the quick creation of UML diagrams from plain text. The below script illustrates the interactions between the system components involved in performing a full-text search of FAQs by a site visitor on the Scrum Alliance Community Platform. This example assumes a basic search functionality where the user inputs their query, which is processed by the system to return relevant FAQ answers.
+
+```plantuml
+@startuml
+participant UserInterface as UI
+participant SearchController as Controller
+database FAQDatabase as DB
+
+UI -> Controller : search(query)
+activate Controller
+
+Controller -> DB : fetchFAQsContaining(query)
+activate DB
+DB --> Controller : List<FAQs>
+deactivate DB
+
+Controller -> UI : displayResults(List<FAQs>)
+deactivate Controller
+
+UI -> User : showResultsOnPage()
+activate User
+deactivate User
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **UserInterface (UI):** Acts as the interface where the site visitor inputs their full-text search query for FAQs.
+
+2. **SearchController (Controller):** Receives the search request from the UI and handles the logic to process the search query. This could be a part of the server's backend logic.
+
+3. **FAQDatabase (DB):** Represents the database or data source where FAQs are stored. This could be a relational database, a document store, or any other storage system suitable for full-text search.
+
+4. The user inputs a query into the UI, which then sends this query to the Controller.
+
+5. The Controller takes the query and asks the DB to fetch FAQs containing the text from the query.
+
+6. The DB searches through the stored FAQs and returns a list of FAQs that match the query criteria back to the Controller.
+
+7. The Controller then sends these results back to the UI.
+
+8. Finally, the UI displays the search results to the user, completing the search operation.
+
+This sequence assumes a straightforward search operation without considering advanced features like search indexing, caching of results, or complex query parsing, which could be part of a more detailed implementation in a real-world project.

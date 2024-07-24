@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the user story "As a librarian, I want to create pages for book information" involves illustrating the interactions between different system components in creating a book record. Here's a PlantUML code snippet that demonstrates these interactions.
+
+Please note, for the sake of this sequence, it's assumed that the librarian is already authenticated and authorized to add books to the system.
+
+```plantuml
+@startuml
+actor Librarian as librarian
+participant "UI Interface" as ui
+participant "Backend System" as backend
+database "Database" as db
+
+librarian -> ui : Select "Add Book"
+ui -> backend : Request book info form
+backend -> ui : Display book info form
+librarian -> ui : Fill book info and submit
+ui -> backend : Validate data\nand create book record
+activate backend
+backend -> db : Insert book data
+activate db
+db --> backend : Confirm insertion
+deactivate db
+backend --> ui : Confirm book creation
+deactivate backend
+ui --> librarian : Display confirmation message
+@enduml
+```
+
+### Explanation:
+
+1. **Librarian selects "Add Book"**: The sequence starts with the librarian deciding to add a new book to the system, which initiates an interaction with the UI Interface.
+
+2. **Request book info form**: The UI Interface requests the backend system to provide a form for entering the book information.
+
+3. **Display book info form**: The backend system processes the request and returns the necessary form to the UI Interface, which then displays it to the librarian.
+
+4. **Fill book info and submit**: The librarian fills in the book details in the provided form fields and submits it for processing.
+
+5. **Validate data and create book record**: The UI Interface sends the filled form to the backend system, where the data is validated. If the data passes validation, the backend system proceeds to create a new book record.
+
+6. **Insert book data into the database**: The backend system interacts with the database to insert the new book's data. Upon successful insertion, the database confirms back to the backend system.
+
+7. **Confirm book creation**: The backend system, after receiving confirmation from the database, sends a success message to the UI Interface.
+
+8, **Display confirmation message**: Finally, the UI Interface displays a confirmation message to the librarian, indicating that the book has been successfully added to the library's collection.
+
+This sequence diagram outlines the process of a librarian adding a book to the Comprehensive Library Management System (CLMS), showing the interaction between the librarian, UI Interface, backend system, and database.

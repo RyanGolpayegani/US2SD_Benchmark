@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for the user story where a participant wants to see who gave what estimates during the current round requires portraying the interactions among various system components and actors involved in displaying the estimates. Below is a PlantUML code snippet that illustrates these interactions:
+
+```plantuml
+@startuml
+participant User as participant
+participant Browser_GUI as gui
+participant Server as server
+participant "Estimation Game Engine" as game_engine
+database "Estimation Data" as data
+
+participant->gui: Request to view estimates
+gui->server: Fetch current round estimates
+server->game_engine: Retrieve estimates\nfor current round
+activate game_engine
+game_engine->data: Query estimates and\nparticipant details
+activate data
+data-->game_engine: Return estimates and\nparticipant details
+deactivate data
+game_engine-->server: Estimates and\nparticipant info
+deactivate game_engine
+server-->gui: Display estimates with\nparticipant names
+gui-->participant: Show estimates and\nnames on screen
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+- **User (participant)**: The agile team member who acts as an estimator and wants to see the estimates provided by all participants during the current round.
+- **Browser_GUI (gui)**: Represents the user interface of the Agile Estimating and Planning Tool (AEPT) through which the participant interacts.
+- **Server**: The backend server that processes requests from the GUI and fetches data from the Estimation Game Engine.
+- **Estimation Game Engine (game_engine)**: The core logic component that handles the management of games, rounds, and estimates.
+- **Estimation Data (data)**: The database where estimation details, participant information, and game statuses are stored.
+
+Sequence of Actions:
+1. The participant requests to view estimates of the current round via the user interface.
+2. The GUI sends this request to the server to fetch the current round's estimates.
+3. The server requests the estimation details for the current round from the Estimation Game Engine.
+4. The Estimation Game Engine queries the Estimation Data database for the estimates made by participants for the current round, as well as the names of the participants who made those estimates.
+5. The database returns the requested information to the Estimation Game Engine.
+6. The Estimation Game Engine sends this information back to the server.
+7. The server then sends the information to the GUI.
+8. Finally, the GUI displays the estimates along with the names of the participants who made those estimates to the user, fulfilling the user's request.
+
+This sequence diagram outlines the basic flow and interactions needed to accomplish the user story of allowing a participant to see who gave what estimates during a current estimation round for discussion purposes.

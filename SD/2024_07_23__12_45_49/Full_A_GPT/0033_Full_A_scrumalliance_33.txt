@@ -1,0 +1,41 @@
+Creating a detailed Sequence Diagram for the specified user story in PlantUML format involves detailing the interactions between various components of the system such as the Trainer (user), User Interface, Course and Event Management System, and possibly a Database for persisting changes. The scenario involves turning a course into an event or vice versa, which might require interactions for fetching the course/event details, deciding on the type change, and updating the system accordingly.
+
+Below is an example PlantUML code that outlines these interactions:
+
+```plantuml
+@startuml
+actor Trainer
+participant "User Interface" as UI
+participant "Course and Event\nManagement System" as CEMS
+database "Database" as DB
+
+Trainer -> UI : Select course/event to change
+UI -> CEMS: Fetch course/event details
+CEMS -> DB: Query course/event details
+DB -> CEMS: Return details
+CEMS -> UI: Display details
+UI -> Trainer: Show details
+Trainer -> UI : Choose to convert to event/course
+UI -> CEMS: Request conversion
+activate CEMS
+
+alt is Course
+    CEMS -> DB: Update as Event
+    DB -> CEMS: Confirmation
+    CEMS -> UI: Conversion to event successful
+    UI -> Trainer: Show success message
+else is Event
+    CEMS -> DB: Update as Course
+    DB -> CEMS: Confirmation
+    CEMS -> UI: Conversion to course successful
+    UI -> Trainer: Show success message
+end
+
+deactivate CEMS
+
+@enduml
+```
+
+This sequence diagram starts with the Trainer choosing a course or event for conversion. Through the User Interface, this selection is communicated to the Course and Event Management System, which then interacts with the Database to fetch and later update the details of the selected item based on the Trainer's decision to convert it. The Database confirms the update, and the Course and Event Management System informs the UI, which finally shows a success message to the Trainer.
+
+Please note, to use this code, you must have access to PlantUML or a compatible tool that can interpret and render PlantUML diagrams. This diagram is a high-level representation that can be further detailed based on the specific implementations, methodologies, and technologies used in the project.

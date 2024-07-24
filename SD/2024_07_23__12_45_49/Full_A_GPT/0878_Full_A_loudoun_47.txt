@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram for the user story mentioned requires identifying the actors, systems, and flows involved in requesting an inspection through the County Services & Property Information Portal. Here's a basic template in PlantUML format that outlines how a customer can request an inspection, triggering the system to assign a county inspector to their project.
+
+```plantuml
+@startuml
+actor Customer
+participant "Portal Interface" as Portal
+database "Portal Backend" as Backend
+participant "Inspection System"  as InspectionSys
+participant "Notification System" as Notification
+actor "County Inspector" as Inspector
+
+== Customer Requests Inspection ==
+Customer -> Portal : Request Inspection
+Portal -> Backend : Validate Request
+alt Successful Validation
+    Backend -> InspectionSys : Schedule Inspection
+    InspectionSys -> Backend : Confirm Inspection Date & Inspector Assignment
+    Backend -> Notification : Send Confirmation to Customer & Inspector
+    Notification -> Customer : Display Confirmation & Inspection Details
+    Notification -> Inspector : Send Inspection Assignment
+else Validation Failed
+    Backend -> Portal : Show Error Message
+    Portal -> Customer : Display Error\n(Request not valid)
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Customer Requests Inspection:** This is the initial action where the customer interacts with the portal interface to request an inspection.
+
+2. **Portal Interface to Portal Backend:** The request is validated by the backend systems of the portal to ensure that it meets all the necessary criteria for initiating an inspection request.
+
+3. **Conditional Flow (Validation):** There are two potential paths here:
+   - If the validation is successful, the flow proceeds to schedule the inspection.
+   - If validation fails (because of inaccurate data, missing information, etc.), an error message is displayed to the customer.
+
+4. **Scheduling the Inspection:** Upon successful validation, the backend system communicates with the inspection system to schedule an inspection. The inspection system then assigns an inspector and confirms the date back to the portal's backend.
+
+5. **Notification System:** The portal backend uses a notification system to send a confirmation to both the customer and the county inspector. The customer receives details about the inspection date and the assigned inspector. Meanwhile, the assigned inspector gets a notification regarding the new assignment.
+
+6. **Outcome:** The customer is informed about the scheduled inspection and knows who the assigned inspector is. The county inspector is aware of their new assignment.
+
+This sequence diagram simplifies the inspection request process for better clarity and focuses on the key interactions between the customer, the portal, and the inspection assignment process. Actual implementations might involve more detailed steps or interactions, particularly regarding the handling of data, security measures for user authentication, and more intricate logic for inspector assignments based on availability, specialization, and geographic considerations.

@@ -1,0 +1,38 @@
+Creating a detailed sequence diagram in PlantUML requires defining the sequence of interactions between actors and system components when a Publisher wants to permanently delete a data package. Below is a PlantUML code representing this process:
+
+```plantuml
+@startuml
+actor Publisher
+participant "UI Dashboard" as Dashboard
+participant "API Gateway" as API
+participant "Authentication Service" as AuthService
+participant "Data Management Service" as DataService
+participant "Storage" as Storage
+participant "Cache" as Cache
+
+Publisher -> Dashboard: Selects data package for deletion
+Dashboard -> API: Request to delete data package (auth token, package_id)
+API -> AuthService: Validate auth token
+AuthService --> API: Token validity confirmed
+API -> DataService: Delete data package request (package_id)
+DataService -> Storage: Request permanent deletion (package_id)
+Storage --> DataService: Confirm deletion
+DataService -> Cache: Invalidate cache for deleted package
+Cache --> DataService: Cache updated
+DataService --> API: Deletion successful
+API --> Dashboard: Display success message
+Dashboard --> Publisher: Notify of successful deletion
+@enduml
+```
+
+This sequence diagram outlines the following steps in the data package deletion process by a Publisher:
+
+1. **Publisher Selection**: The Publisher selects the data package they wish to delete through the UI Dashboard.
+2. **Deletion Request**: The Dashboard sends a request to the back-end API to delete the selected data package, including the authentication token and the ID of the package to be deleted.
+3. **Authentication**: The API Gateway forwards the token to the Authentication Service to validate the Publisher's identity and permissions.
+4. **Permission Confirmation**: Upon confirmation of token validity, the API Gateway proceeds with the request and forwards it to the Data Management Service.
+5. **Permanent Deletion Request**: The Data Management Service requests the permanent deletion of the data package from the Storage system.
+6. **Cache Invalidation**: Following successful deletion in the Storage, the Data Management Service instructs the Cache system to invalidate any cached entries related to the deleted data package to ensure consistency.
+7. **Success Notification**: The API Gateway receives confirmation of the deletion process and notifies the UI Dashboard, which in turn informs the Publisher that the data package has been successfully deleted.
+
+This diagram assumes a microservices architecture where the Data Registry and Publishing Platform is comprised of separate components for handling user authentication, data management, and storage, reflecting a scalable and modular design.

@@ -1,0 +1,34 @@
+Given the complexity and the various subsystems involved in your project, the sequence diagram for the user story **"As a customer, I want to delete which book has the month’s most reads"** will focus on interactions between the customer, web interface, controller, recommendation engine, and the database. However, it's important to note that typical library management systems may not allow customers to directly delete records related to book statistics, as this might be an administrative task. For the sake of this exercise, let's assume this feature is implemented with certain restrictions.
+
+Below is the PlantUML code to create the sequence diagram, which assumes that the customer is allowed to request the deletion but an administrator or system check might be ultimately responsible for the action performed.
+
+```plantuml
+@startuml
+participant Customer as cust
+participant WebInterface as web
+participant Controller as cont
+participant RecommendationEngine as rec
+participant Database as db
+
+cust -> web: Request to view most read book this month
+web -> cont: Fetch most read book
+cont -> rec: Query most read book this month
+rec -> db: Retrieve book data
+db -> rec: Book data
+rec -> cont: Most read book details
+cont -> web: Display book details
+web -> cust: Show most read book details
+
+cust -> web: Request to delete most read book record
+web -> cont: Delete request for most read book
+cont -> rec: Check if deletion criteria met
+rec -> cont: Criteria not met (or met, for admins)
+cont -> web: Deletion denied (or approved for admins)
+web -> cust: Show deletion status
+
+@enduml
+```
+
+In this sequence diagram, the process starts with the customer requesting to view which book has been read the most this month. After the initial request and display process, the customer then requests to delete the record for the most read book. The system checks if the deletion criteria are met, which typically might involve administrative permissions. Hence, for a standard customer, the request to delete such a record would likely be denied, with the system returning a message indicating the status of the deletion request.
+
+Remember, this is an idealized scenario that assumes certain functionalities which may not be typical of all library management systems, especially regarding data deletion by a customer. For actual implementation, adjustments should be made to reflect correct permissions and roles within the system.

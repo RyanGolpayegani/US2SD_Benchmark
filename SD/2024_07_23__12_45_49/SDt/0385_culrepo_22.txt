@@ -1,0 +1,22 @@
+@startuml
+actor DBIRAdmin as "DB/IR Administrator"
+participant AuthenticationSystem as "Authentication System"
+participant ReportDB as "Report Database"
+participant SubscriberDB as "Subscriber Database"
+database SystemDB as "System Database"
+
+== Authentication ==
+DBIRAdmin -> AuthenticationSystem: Authenticate()
+AuthenticationSystem --> DBIRAdmin: AuthenticationSuccess()
+
+== Identify Report ==
+DBIRAdmin -> ReportDB: RequestReportID("Specified Report")
+ReportDB --> DBIRAdmin: ReportID
+
+== List Subscribers ==
+DBIRAdmin -> SubscriberDB: RequestSubscribersList(ReportID)
+SubscriberDB -> SystemDB: LookupSubscribers(ReportID)
+SystemDB --> SubscriberDB: SubscribersList
+SubscriberDB --> DBIRAdmin: DisplaySubscribersList(SubscribersList)
+
+@enduml

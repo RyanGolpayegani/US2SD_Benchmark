@@ -1,0 +1,51 @@
+Given the complexity and multi-step process involved in capturing a Hearing Decision within the County Services & Property Information Portal, the following PlantUML code outlines a detailed sequence diagram for this specific user story. This sequence diagram demonstrates the interactions between the Staff Member, Portal Backend, Hearing Management System, and the Database, focusing on capturing a hearing decision to enforce compliance.
+
+```plantuml
+@startuml
+
+actor StaffMember as "Staff Member"
+participant PortalBackend as "Portal Backend"
+participant HearingSystem as "Hearing Management\nSystem"
+database Database as "Database"
+
+== Capture Hearing Decision ==
+
+StaffMember -> PortalBackend : Selects "Record Hearing Decision"
+PortalBackend -> HearingSystem : Request to\nopen hearing record
+HearingSystem -> Database : Retrieve hearing details
+Database -> HearingSystem : Return hearing details
+
+HearingSystem --> PortalBackend : Display hearing details\n(Form/Input Screen)
+PortalBackend --> StaffMember : Show hearing details\nand decision form
+
+StaffMember -> PortalBackend : Submits decision\nand corresponding details
+PortalBackend -> HearingSystem : Save hearing decision
+HearingSystem -> Database : Update hearing record\nwith decision
+
+activate HearingSystem
+Database --> HearingSystem : Confirm update
+deactivate HearingSystem
+
+HearingSystem --> PortalBackend : Confirmation of\nrecord update
+PortalBackend --> StaffMember : Display success message\nand next steps
+
+@enduml
+```
+
+### Explanation of the Sequence:
+
+1. **Staff Member Initiates**: The process begins with the staff member initiating the action to capture a hearing decision through the portal backend. This is where they select the option to record the hearing decision.
+
+2. **Request to Open Hearing Record**: The portal backend sends a request to the Hearing Management System to open the record of the specific hearing.
+
+3. **Retrieve Hearing Details**: The Hearing Management System queries the Database to retrieve all relevant details about the hearing.
+
+4. **Display Hearing Details to Staff Member**: The retrieved hearing details are sent back to the portal backend, which then displays them to the staff member, including a form or input screen for capturing the decision.
+
+5. **Submits Decision**: The staff member submits the decision and any corresponding details back through the portal.
+
+6. **Save Hearing Decision**: Portal backend forwards the decision to the Hearing Management System, which then updates the hearing record in the database.
+
+7. **Confirmation of Record Update**: Once the database successfully updates the hearing record, a confirmation is sent back up the chain to the portal backend, which then notifies the staff member of the successful capture and next steps.
+
+This diagram aligns with the user story goal by detailing the steps a staff member would take to capture a hearing decision within the County Services & Property Information Portal, emphasizing backend processes and data flow.

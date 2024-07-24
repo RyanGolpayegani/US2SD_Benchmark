@@ -1,0 +1,25 @@
+@startuml
+
+participant OlderPerson as user
+participant "ALFRED Device" as alfred
+participant "Speech Recognition" as speech
+database "News Service" as news
+participant "Text-to-Speech\nEngine" as tts
+
+user -> alfred : "I want to hear today's news"
+alfred -> speech : interpretVoiceCommand()
+speech -> alfred : commandRecognized("hear news")
+
+alt command is "hear news"
+    alfred -> news : fetchNews()
+    news --> alfred : returnNewsContent("news data")
+    alfred -> tts : convertTextToSpeech("news data")
+    tts --> alfred : audioStream("news audio")
+    alfred -> user : playAudio("news audio")
+else unrecognized command
+    alfred -> tts : convertTextToSpeech("Sorry, I didn't catch that.")
+    tts --> alfred : audioStream("error message audio")
+    alfred -> user : playAudio("error message audio")
+end
+
+@enduml

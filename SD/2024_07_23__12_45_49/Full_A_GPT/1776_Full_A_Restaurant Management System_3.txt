@@ -1,0 +1,46 @@
+Creating a detailed Sequence Diagram for the user story “As a cashier, I want to divide the tab into specified amounts, so that I can help customers who pay by going Dutch” in PlantUML format involves illustrating the interactions between the cashier, the restaurant management system, and potentially a payments API or service. This example focuses on a simplified scenario where the cashier inputs the total bill and the system divides the amount accordingly among the customers opting to pay separately.
+
+```plantuml
+@startuml
+participant Cashier as cashier
+participant "Restaurant Management\nSystem" as system
+participant "Payments API" as paymentsAPI
+
+cashier -> system : Enter total bill amount
+cashier -> system : Specify number of customers\npaying separately
+
+alt calculating bill split
+    system -> system : Calculate each portion
+else bill split manually
+    cashier -> system : Enter specified amounts
+end
+
+system -> cashier : Display bill portions
+cashier -> system : Confirm bill split
+system -> paymentsAPI : Initiate payment requests
+
+loop For each customer
+    paymentsAPI -> paymentsAPI : Generate payment link
+    paymentsAPI -> cashier : Provide payment link for customer
+    cashier -> system : Log payment initiation
+end
+
+loop For each payment confirmation
+    paymentsAPI -> system : Confirm payment
+    system -> system : Update payment status
+end
+
+system -> cashier : Display all payments completed
+
+@enduml
+```
+
+### Explanation:
+- **Cashier and System Interaction**: Begins with the cashier entering the total bill amount into the Restaurant Management System and specifying how many customers want to pay separately. There's an optional path here for calculating the bill split automatically or entering manual amounts if the splits are different.
+- **System Calculations and Feedback**: The system calculates each portion of the bill or accepts the cashier's manual inputs, then displays these amounts back to the cashier for confirmation.
+- **Initiating Payment Requests**: Upon confirmation, the system reaches out to a Payments API to initiate separate payment requests for each customer.
+- **Payment Links Generation**: For each customer, the Payments API generates a unique payment link, which is then provided to the cashier to share with the customers.
+- **Logging and Confirmation**: The cashier logs the initiation of these payments in the system. As each customer completes their payment, the Payments API confirms this back to the system, which updates the payment status accordingly.
+- **Completion Notification**: Once all payments have been confirmed by the Payments API, the restaurant management system notifies the cashier that all payments are complete.
+
+This sequence diagram is a high-level representation and could be expanded further based on more detailed requirements or system complexities. For instance, handling payment failures, customer cancellations, or splitting items individually rather than by bill total might add additional steps.

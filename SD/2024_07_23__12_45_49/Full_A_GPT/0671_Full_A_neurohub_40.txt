@@ -1,0 +1,39 @@
+To create a detailed sequence diagram for the user story you provided in PlantUML format, we would consider the main components and interactions involved in searching for and downloading human-readable experimental protocols within the Neurohub platform. Please note the following diagram represents a high-level interaction flow and might need adjustments based on the specific implementation details of the Neurohub Enhancement and Automation Project.
+
+```plantuml
+@startuml
+participant User
+participant WebInterface
+participant SearchService
+participant Database
+participant FileManager
+participant FileStorage
+
+User -> WebInterface : Enter search criteria for protocols
+WebInterface -> SearchService : Query protocols based on criteria
+SearchSpringService -> Database: Fetch metadata matching criteria
+Database -> SearchService : Return results metadata
+SearchService -> WebInterface : Display search results
+User -> WebInterface : Selects protocol to download
+WebInterface -> FileManager : Request file download URL (protocol ID)
+FileManager -> Database : Validate file access permissions
+Database -> FileManager : Permissions validated
+FileManager -> FileStorage : Request download URL
+FileStorage -> FileManager : Provide download URL for the protocol
+FileManager -> WebInterface : Provide download link to user
+WebInterface -> User : Offer download link
+User -> WebInterface : Clicks download link
+WebInterface -> FileStorage : Initiate download through URL
+FileStorage -> User : Starts file download
+
+@enduml
+```
+
+This sequence diagram outlines the process from the user's perspective when they want to search for and download human-readable experimental protocols within Neurohub. The flow begins with the user entering their search criteria into the Web Interface and ends with the file download:
+
+1. **User Interaction**: The user interacts with the Web Interface to input their search criteria for experimental protocols.
+2. **Search Processing**: The Web Interface communicates with the Search Service to process and execute the query against the Database, which holds metadata about available protocols.
+3. **Result Display and Selection**: The search results are displayed back to the user through the Web Interface, where they can select the desired protocol for download.
+4. **File Download**: Upon selection, the Web Interface requests the download URL from the FileManager, which in turn verifies access permissions with the Database, retrieves the file from FileStorage, and finally, provides the download link to the user for the selected protocol.
+
+Remember, the actual implementation might involve additional steps or components based on the specifics of the Neurohub platform's architecture, such as authentication, logging, and error handling mechanisms not depicted in this simplified flow.

@@ -1,0 +1,30 @@
+@startuml
+
+actor RepoManager as "Repository Manager"
+participant DAMSInterface as "DAMS Interface"
+participant EventTracker as "Event Tracking System"
+participant ObjectDatabase as "Object Database"
+participant NotificationSystem as "Notification System"
+
+== Event Inquiry for a Content File ==
+
+RepoManager -> DAMSInterface : Request events for Content File X
+DAMSInterface -> ObjectDatabase : Query object related to Content File X
+ObjectDatabase -> ObjectDatabase : Retrieve Object ID
+ObjectDatabase -> DAMSInterface : Return Object ID
+DAMSInterface -> EventTracker : Query events for Object ID
+EventTracker -> EventTracker : Retrieve events related to Object ID
+EventTracker -> DAMSInterface : Return list of events
+DAMSInterface -> RepoManager : Display events to Repository Manager
+
+== Subscription to Future Events ==
+
+RepoManager -> DAMSInterface : Subscribe to future events for Content File X
+DAMSInterface -> EventTracker : Subscribe to Object ID events
+EventTracker -> NotificationSystem : Setup notification for RepoManager
+Note right of NotificationSystem : Notifications are configured\nto be sent to the Repository Manager\nfor any future events.
+NotificationSystem -> EventTracker : Subscription confirmed
+EventTracker -> DAMSInterface : Confirm subscription status
+DAMSInterface -> RepoManager : Subscription successful message
+
+@enduml

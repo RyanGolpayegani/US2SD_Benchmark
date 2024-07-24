@@ -1,0 +1,22 @@
+@startuml
+participant Parent as parent
+participant "Web Interface" as web
+database "Camp Database" as db
+participant "Forms Management" as forms
+participant "Camp Administration" as admin
+
+parent -> web : Access platform & logs in
+web -> db : Validate parent credentials
+db -> web : Credentials valid
+web -> parent : Display Dashboard
+parent -> web : Select "Submit Form"
+web -> forms : Display forms menu
+forms --> parent : Shows available forms (Registration, Consent, etc.)
+parent -> forms : Selects specific form
+forms -> parent : Presents chosen form
+parent -> forms : Fills out & submits form
+forms -> db : Save form data
+db --> forms : Confirm form saved
+forms -> admin : Notify about new form submission
+admin --> parent : Acknowledge submission & provide next steps
+@enduml

@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the specified user story requires visualizing the interactions between various system components and actors in the process of indicating source-capture information for a file. Below is a PlantUML code that illustrates these interactions:
+
+```plantuml
+@startuml
+participant "DAMS Manager" as manager
+participant "DIMS Interface" as interface
+participant "Repository Management" as repo_management
+participant "Database" as db
+participant "Event and Integrity\nMonitoring Module" as integrity_monitor
+
+== Indicate Source-Capture Information for a File ==
+
+manager -> interface : Select file to update
+interface -> repo_management : Request file details
+repo_management -> db : Query file by ID
+db -> repo_management : File details
+repo_management -> interface : Display file details
+interface -> manager : Show file details
+
+manager -> interface : Enter source-capture information
+interface -> repo_management : Validate information
+repo_management -> integrity_monitor : Verify integrity and format
+integrity_monitor -> repo_management : Validation results
+repo_management -> db : Update file with source-capture information
+db -> repo_management : Confirmation of update
+repo_management -> interface : Update successful
+interface -> manager : Display success message
+
+@enduml
+```
+
+This PlantUML sequence diagram outlines the process from the DAMS manager's decision to indicate source-capture information for a specific file through to the successful update of the information in the system. The steps include:
+- The DAMS manager selects the file to update via the DIMS Interface.
+- The DIMS Interface requests and displays the file details from the Repository Management system.
+- The DAMS manager enters the source-capture information into the system.
+- The information is validated by the Repository Management system and checked for integrity and correct format by the Event and Integrity Monitoring Module.
+- Upon successful validation, the Repository Management system updates the file with the new source-capture information in the database.
+- A success message is displayed to the DAMS manager.
+
+This sequence diagram emphasizes the system's internal interactions and the flow of information, demonstrating how the DIMS ensures data integrity, validation, and user feedback in the process of updating file metadata.

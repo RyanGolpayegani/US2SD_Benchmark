@@ -1,0 +1,52 @@
+Given the project description and the user story focusing on a staff member's desire to manage ordinances for maintaining accurate ordinance information in the system, the following is a detailed sequence diagram in PlantUML format. This sequence diagram illustrates the interaction between the systems and components involved when a staff member manages ordinances.
+
+```plantuml
+@startuml
+actor StaffMember as Staff
+participant "Authentication\nService" as Auth
+participant "User Dashboard" as Dashboard
+participant "Ordinance Management\nModule" as OrdinanceModule
+participant "Database" as DB
+
+== Authenticate Staff Member ==
+Staff -> Auth: Enter credentials
+Auth -> DB: Validate credentials
+DB -> Auth: Credentials valid
+Auth -> Staff: Authentication success
+
+== Access Ordinance Management ==
+Staff -> Dashboard: Select Manage Ordinances
+Dashboard -> OrdinanceModule: Access request
+OrdinanceModule -> OrdinanceModule: Retrieve ordinance data
+OrdinanceModule -> DB: Query existing ordinances
+DB -> OrdinanceModule: Return ordinance data
+OrdinanceModule -> Staff: Display ordinances
+
+== Add New Ordinance ==
+Staff -> OrdinanceModule: Select Add New Ordinance
+OrdinanceModule -> Staff: Display ordinance form
+Staff -> OrdinanceModule: Enter ordinance details & Submit
+OrdinanceModule -> DB: Save new ordinance
+DB -> OrdinanceModule: Confirmation
+OrdinanceModule -> Staff: Display success message
+
+== Update Existing Ordinance ==
+Staff -> OrdinanceModule: Select Update on an Ordinance
+OrdinanceModule -> Staff: Display ordinance details
+Staff -> OrdinanceModule: Edit details & Submit
+OrdinanceModule -> DB: Update ordinance details
+DB -> OrdinanceModule: Confirmation
+OrdinanceModule -> Staff: Display success message
+
+== Delete Ordinance ==
+Staff -> OrdinanceModule: Select Delete on an Ordinance
+OrdinanceModule -> DB: Delete ordinance record
+DB -> OrdinanceModule: Confirmation
+OrdinanceModule -> Staff: Display success message
+
+@enduml
+```
+
+This sequence diagram encapsulates the workflow from authentication to managing ordinances, including adding, updating, and deleting ordinances. This workflow is representative, focusing on interactions through a digital county service and property information portal that involves components like an authentication service, user dashboard, ordinance management module, and database.
+
+Please note, adjustments or extensions might be necessary to align with specific project requirements or functionalities not covered in the description.

@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram for the user story "As an archist, I want to search images by rights" in PlantUML format is a great way to visualize the interaction between components within the Digital Archive Management Enhancement Project. Below is a PlantUML code example that illustrates this sequence.
+
+This sequence diagram outlines the steps that occur from the moment the archivist initiates a search by image rights until the system displays the results. Remember, PlantUML syntax is quite straightforward: objects are defined at the start, and interactions are denoted with arrows. Comments are preceded by a single quote (`'`) to add clarity to the diagram code.
+
+```plantuml
+@startuml
+' Define participants
+actor Archivist
+participant "SearchInterface" as Search
+participant "RightsManagementSystem" as Rights
+participant "Database" as DB
+database "DigitalArchive" as Archive
+
+' Workflow
+Archivist -> Search : enters search criteria for rights
+Search -> Rights : request validation of search query
+Rights -> DB : retrieve rights information
+DB --> Rights : rights information
+Rights --> Search : validated search parameters
+Search -> Archive : search images by rights
+Archive --> Search : search results
+Search --> Archivist : display results
+
+' Add notes
+note right of Search: Search criteria includes\nspecific rights or licenses
+note right of Archive: Filtering is done based on\nthe rights metadata of images
+
+@enduml
+```
+
+### Explanation:
+
+1. **Start**: An archivist uses a search interface to enter search criteria based on image rights.
+
+2. **Search Interface**: The interface captures search input from the archivist and forwards it for validation.
+
+3. **Rights Management System (Rights)**: This system receives the search query and validates it against the existing rights and licensing guidelines, ensuring that the search request adheres to allowed parameters.
+
+4. **Query Rights Information**: The Rights Management System queries the database for rights information to validate the search parameters.
+
+5. **Database (DB)**: The Digital Archive's database returns the requested rights information to the Rights Management System.
+
+6. **Search Execution**: With validated search parameters, the Search Interface sends a request to the Digital Archive to fetch images that match the specified rights criteria.
+
+7. **Digital Archive (Archive)**: The archive processes the search request, filtering images based on their rights metadata.
+
+8. **Results Display**: The search results are sent back to the Search Interface, which then displays the images that match the search criteria to the archivist.
+
+9. **Notes**: Additional details are provided through notes to clarify the criteria used for search (specific rights or licenses) and the basis of filtering within the Digital Archive (rights metadata).
+
+This sequence diagram provides a clear, step-by-step breakdown of the process involved when an archivist wants to search images by rights within the Digital Archive Management Enhancement Project.

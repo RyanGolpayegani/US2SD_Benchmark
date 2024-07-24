@@ -1,0 +1,34 @@
+Creating a detailed sequence diagram for the user story "As an archivist, I want to search all files by keyword" involves illustrating how different components of the system interact with each other to fulfill this user requirement. Below is a PlantUML code snippet that represents this process:
+
+```plantuml
+@startuml
+actor Archivist as archivist
+participant "UI Interface" as UI
+participant "Search Controller" as controller
+database "Digital Archive Database" as DB
+participant "Indexing Service" as indexer
+participant "Results Formatter" as formatter
+
+archivist -> UI : Inputs keyword
+UI -> controller : Sends search request (keyword)
+controller -> indexer : Queries keyword
+indexer -> DB : Fetches matching files
+DB --> indexer : Returns files
+indexer -> formatter : Formats matching files
+formatter --> controller : Sends formatted results
+controller --> UI : Displays search results
+UI --> archivist : Shows files matching keyword
+
+@enduml
+```
+
+### Explanation:
+- **Archivist (Actor):** This is the user initiating the search request by inputting a keyword.
+- **UI Interface:** The front-end interface where the archivist inputs their search query.
+- **Search Controller:** Acts as the intermediary that takes the input from the UI, processes it, and talks to other services to fulfill the search request.
+- **Digital Archive Database:** The storage where all digital files and their metadata are kept.
+- **Indexing Service:** This service is responsible for indexing files in the database to make search efficient. It receives the query from the controller, retrieves matching results from the database, and returns them.
+- **Results Formatter:** Once the matching files are fetched, they might need to be formatted or transformed to be easily consumable by the UI or to adhere to specific presentation standards. This is the responsibility of the Results Formatter.
+- **Flow:** The sequence starts with the archivist inputting a keyword into the UI. This search request is sent to the Search Controller, which then queries the Indexing Service with the keyword. The Indexing Service fetches matching files from the Digital Archive Database and returns these files, which are then formatted by the Results Formatter. The formatted results are sent back to the controller, which displays these results on the UI for the archivist.
+
+This sequence diagram is a high-level overview and does not cover potential error handling, authentication (beyond the scope of this specific story), or the intricate details of query processing and result formatting. Depending on the complexity and specific requirements of the Digital Archive Management Enhancement Project, additional steps and components might be necessary.

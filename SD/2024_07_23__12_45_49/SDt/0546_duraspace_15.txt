@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+
+participant User
+participant "DIMS Web Interface" as Web
+participant "DIMS Backend" as Backend
+database "DAMS API" as DAMS
+
+User -> Web: Select "Browse Collections"
+Web -> Backend: Request to view collections
+Backend -> DAMS: GET /collections
+note right of DAMS: Fetches collections available
+DAMS --> Backend: Returns list of collections
+Backend --> Web: Displays collections to User
+User --> Web: Selects a collection to explore
+Web -> Backend: Request information for selected collection
+Backend -> DAMS: GET /collections/{collectionId}
+note right of DAMS: Fetches selected collection details
+DAMS --> Backend: Returns collection details
+Backend --> Web: Displays collection objects to User
+
+@enduml

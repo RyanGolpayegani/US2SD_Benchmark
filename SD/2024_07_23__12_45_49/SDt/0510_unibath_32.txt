@@ -1,0 +1,53 @@
+@startuml
+participant "External Coordinator" as EC
+participant "Enhanced RDMP Web Interface" as WebInterface
+participant "IP Rights Management Module" as IPRights
+participant "Data Archive System" as Archive
+participant "Notification Service" as Notify
+
+EC -> WebInterface: Submit IP protection request
+activate WebInterface
+
+WebInterface -> IPRights: Evaluate IP protection requirements
+activate IPRights
+
+IPRights --> WebInterface: IP protection plan
+deactivate IPRights
+
+WebInterface -> Archive: Apply IP protection settings
+activate Archive
+
+Archive --> WebInterface: Confirmation & DOI
+deactivate Archive
+
+WebInterface --> EC: Confirm IP protection & provide DOI
+deactivate WebInterface
+
+EC -> WebInterface: Access data under IP protection
+activate WebInterface
+
+WebInterface -> IPRights: Verify access rights
+activate IPRights
+
+IPRights --> WebInterface: Access granted/denied
+deactivate IPRights
+
+WebInterface -> Archive: Request data access
+activate Archive
+
+Archive --> WebInterface: Data access response
+deactivate Archive
+
+WebInterface --> EC: Deliver data/Access denied message
+deactivate WebInterface
+
+alt If Access Violation Detected
+    Archive -> IPRights: Report violation
+    activate IPRights
+    IPRights -> Notify: Trigger violation notification
+    activate Notify
+    Notify -> EC: Send IP violation alert
+    deactivate Notify
+    deactivate IPRights
+end
+@enduml

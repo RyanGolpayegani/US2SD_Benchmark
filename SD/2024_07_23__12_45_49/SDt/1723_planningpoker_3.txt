@@ -1,0 +1,24 @@
+@startuml
+actor Moderator
+participant "Web Interface" as WebUI
+participant "Backend System" as Backend
+participant "Database" as DB
+
+Moderator -> WebUI : Enter estimation item\nto start a new round
+activate WebUI
+
+WebUI -> Backend : Create new estimation round
+activate Backend
+
+Backend -> DB : Save new estimation round details
+activate DB
+DB --> Backend : Confirmation
+deactivate DB
+
+Backend --> WebUI : New round created\nwith entered item
+deactivate Backend
+
+WebUI --> Moderator : Display new round\nand ready for estimates
+deactivate WebUI
+
+@enduml

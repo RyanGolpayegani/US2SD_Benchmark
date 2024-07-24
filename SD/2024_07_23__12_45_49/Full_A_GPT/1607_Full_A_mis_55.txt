@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram in PlantUML format for the user story mentioned requires a focus on the interaction between the batch submitter and the components of the Enhanced Digital Repository Management System (EDRMS) that relate to accessing documentation for the folder ingest process. Below is a simplified version of how this interaction could be modeled:
+
+```plantuml
+@startuml
+actor "Batch Submitter" as submitter
+participant "EDRMS Website" as website
+participant "Authentication Service" as auth
+participant "Documentation Server" as docs
+participant "Ingest Process Documentation" as ingestDocs
+
+== Accessing Ingest Process Documentation ==
+submitter -> website: Navigate to EDRMS Documentation Section
+website -> auth: Request Authentication
+auth -->> submitter: Authenticate User
+submitter -> auth: Provide Credentials
+auth -->> website: User Authenticated
+website -> docs: Request Ingest Process Docs
+docs -> ingestDocs: Retrieve Documentation
+ingestDocs -->> docs: Return Documentation
+docs -->> website: Send Documentation Link
+website -->> submitter: Display Documentation Link
+submitter -> website: Click Documentation Link
+website -> ingestDocs: Redirect to Documentation
+ingestDocs -->> submitter: Display Ingest Process Documentation
+
+@enduml
+```
+
+Explanation of the Diagram Steps:
+1. **Batch Submitter Navigates**: The batch submitter navigates to the documentation section of the EDRMS website to find information regarding the folder ingest process.
+2. **Request Authentication**: The website, recognizing that documentation access might be restricted, requests authentication from the user.
+3. **Authenticate User**: The submitter is prompted and provides credentials which are validated by the authentication service.
+4. **User Authenticated**: Upon successful authentication, the website communicates with a documentation server to retrieve the relevant ingest process documentation.
+5. **Retrieve Documentation**: The documentation server fetches the requested documentation.
+6. **Display Documentation Link**: The website receives the documentation link and displays it to the batch submitter.
+7. **Click Documentation Link**: The batch submitter clicks on the documentation link.
+8. **Redirect to Documentation**: The website redirects the user to the actual documentation page.
+9. **Display Ingest Process Documentation**: The batch submitter is finally presented with the documentation detailing the folder ingest process.
+
+This sequence diagram is a basic example and can be tailored further based on more specific requirements or steps involved in the process, such as handling errors, more detailed authentication processes, or integrating with additional systems for notification or enhanced user experience.

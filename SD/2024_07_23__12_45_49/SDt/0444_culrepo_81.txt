@@ -1,0 +1,35 @@
+@startuml
+actor LibraryDiscoveryOperator as operator
+entity "OAI-PMH Service" as OAI
+database "Digital Repository System" as Repository
+entity "External Discovery System" as External
+
+operator -> OAI: Request Metadata\n(Initial Harvest)
+activate OAI
+OAI -> Repository: Query for Available Metadata
+activate Repository
+Repository -> OAI: Return Requested Metadata
+deactivate Repository
+OAI -> operator: Respond with Metadata
+deactivate OAI
+operator -> External: Update Discovery System\nwith Metadata
+activate External
+External --> operator: Acknowledge Update
+deactivate External
+
+... Some Time Later ...
+
+operator -> OAI: Request Updated Metadata\n(Incremental Harvest)
+activate OAI
+OAI -> Repository: Query for New/Updated Metadata
+activate Repository
+Repository -> OAI: Return New/Updated Metadata
+deactivate Repository
+OAI -> operator: Respond with Updated Metadata
+deactivate OAI
+operator -> External: Update Discovery System\nwith New Metadata
+activate External
+External --> operator: Acknowledge Update\n(Incremental)
+deactivate External
+
+@enduml

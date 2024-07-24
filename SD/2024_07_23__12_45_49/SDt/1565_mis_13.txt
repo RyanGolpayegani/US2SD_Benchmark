@@ -1,0 +1,24 @@
+@startuml
+participant "Collection Curator" as curator
+participant "EDRMS System" as system
+participant "Remote Storage Site" as storage
+
+curator -> system : Request file encryption
+activate system
+
+system -> system : Encrypt file with maintained key
+system -> system : Generate checksum of encrypted file
+system --> curator : Confirm file encryption and checksum
+
+curator -> system : Request file replication to remote storage
+system -> storage : Replicate encrypted file
+activate storage
+
+storage -> storage : Store encrypted file
+storage --> system : Confirm file storage
+
+system --> curator : Confirm file replicated and stored
+deactivate system
+deactivate storage
+
+@enduml

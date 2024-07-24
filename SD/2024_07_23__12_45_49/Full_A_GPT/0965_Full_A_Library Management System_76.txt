@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the user story "As a librarian, I want to record the returned books' condition so that I can report the last borrower to the law enforcement." involves outlining the interactions between the librarian, the library management system, and potential external interfaces (like email or law enforcement reporting systems) to achieve the stated goal.
+
+This scenario implies several primary steps:
+1. **Book Return:** The borrower returns the book to the library and the librarian initiates the condition check.
+2. **Condition Assessment:** The librarian assesses the condition of the book.
+3. **Condition Recording:** The librarian updates the book's condition status in the system.
+4. **Determination:** The system determines if the condition warrants reporting based on predefined criteria.
+5. **Reporting:** If required, the librarian takes steps to report the last borrower to law enforcement.
+
+Given these steps, here's how a sequence diagram in Plant UML format might look:
+
+```plantuml
+@startuml
+participant "Librarian" as librarian
+participant "Library Management\nSystem" as system
+participant "Email/Notification\nService" as emailService
+participant "Law Enforcement\nReporting System" as lawEnforcementSystem
+
+librarian -> system : ReturnBook(bookID, borrowerID)
+alt book condition assessment
+    librarian -> system : CheckCondition(bookID)
+    loop until condition assessed
+        librarian -> librarian: AssessCondition(book)
+    end
+    librarian -> system : RecordCondition(bookID, condition)
+    system -> system : DetermineReportingNecessity(condition)
+    alt condition requires reporting
+        system -> lawEnforcementSystem : ReportDamage(bookID, borrowerID)
+        lawEnforcementSystem -> lawEnforcementSystem : LogReport(bookID, borrowerID)
+        lawEnforcementSystem --> system : AcknowledgeReport(reportID)
+        system -> emailService : SendNotification(borrowerID, reportID)
+        emailService -> librarian : ConfirmNotificationSent()
+    else no reporting needed
+        system -> librarian : NoActionRequired()
+    end
+else book return without condition issues
+    system -> librarian : MarkAsReturned(bookID)
+end 
+
+@enduml
+```
+
+This sequence diagram focuses on a high-level overview of the process:
+
+- It starts with the librarian indicating the return of a book and assessing its condition.
+- If the condition assessment indicates damage, the system checks if the damage meets the criteria (not detailed here) for reporting to law enforcement.
+- If reporting is needed, the interaction with the law enforcement reporting system is initiated, leading to a logged report and potentially, an automated notification to the borrower about the report through an email or other notification service.
+- If no reporting is needed (either because the damage doesn't meet the criteria or the book was returned in good condition), the librarian is informed accordingly.
+
+Note: The specific sequences involving "DetermineReportingNecessity" and interactions with "Law Enforcement Reporting System" are simplified for brevity. In a real-world scenario, these would involve more complex decision-making and interactions based on local laws, library policies, and the technical capabilities of the involved systems.

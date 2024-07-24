@@ -1,0 +1,44 @@
+To create a detailed Sequence Diagram for the described user story ("As a Planning Staff member, I want to Generate Planning-related at Reports, so that I can access, analyze and/or export the needed information in the format I requested.") in PlantUML format, consider the following sequence of interactions:
+
+1. The Planning Staff member logs into the Customer Portal.
+2. They navigate to the reports section.
+3. They select the report type they wish to generate.
+4. They specify any required parameters for the report (e.g., date range, area, etc.).
+5. They submit the report generation request.
+6. The system processes the request, fetches the data, and generates the report.
+7. The system presents options to view, download, or export the report.
+8. The Planning Staff member chooses the desired option.
+
+Here is how you can represent this flow in PlantUML:
+
+```plantuml
+@startuml
+actor PlanningStaffMember as "Planning Staff Member"
+participant CustomerPortal as "Customer Portal"
+participant ReportModule as "Report Module"
+participant Database as "Database"
+participant FileSystem as "File System"
+
+== Authentication ==
+PlanningStaffManager -> CustomerPortal : Login
+
+== Report Generation ==
+PlanningStaffManager -> ReportModule : Navigate to Reports Section
+PlanningStaffManager -> ReportModule : Select Report Type
+PlanningStaffManager -> ReportModule : Specify Report Parameters
+ReportModule -> Database : Fetch Data
+Database -> ReportModule : Return Data
+ReportModule -> FileSystem : Generate Report
+FileSystem -> ReportModule : Report Generated
+
+== Report Handling ==
+ReportModule -> PlanningStaffManager : Display Report Options
+PlanningOffer -> ReportModule: Select Option(View/Download/Export)
+ReportModule -> PlanningStaffManager : Execute Selected Option
+
+@enduml
+```
+
+This diagram makes a few assumptions about the architecture of the County Services & Property Information Portal, such as the presence of distinct modules for customer interaction (Customer Portal), report generation (Report Module), and the backend systems (Database and File System) for data management and report storage. Depending on the actual architecture, additional steps or systems may be involved, and the names of components might differ.
+
+Remember, the aforementioned sequence diagram is a starting point and might require adjustments to fit the specific technologies and workflow of the County Services & Property Information Portal project.

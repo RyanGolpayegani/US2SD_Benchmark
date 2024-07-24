@@ -1,0 +1,42 @@
+Creating a detailed Sequence Diagram for the user story of a camp administrator wanting to create groups and add campers to these groups requires identifying all entities (participants/objects) involved and the flow of messages between these entities necessary to accomplish the task. Below is a sequence diagram written in PlantUML format to illustrate this process.
+
+Please note, to visualize this diagram, you might need a PlantUML environment or an online PlantUML viewer/editor.
+
+```plantuml
+@startuml
+participant "Camp Administrator" as Admin
+participant "Web Interface" as Web
+participant "Group Management Service" as GroupService
+participant "Database" as DB
+
+== Create Group ==
+Admin -> Web : Select "Create Group"
+Web -> GroupService : Request to create group
+GroupService -> DB : Create new group record
+DB -> GroupService : Confirm group created
+Group  -> Web : Display new group
+GroupService --> Web : Return group creation success
+Web --> Admin : Show confirmation message
+
+== Add Campers to Group ==
+Admin -> Web : Select group and "Add Campers"
+Web -> GroupService : Request list of campers
+GroupService -> DB : Fetch campers
+DB -> GroupService : Return list of campers
+GroupService -> Web : Display list to Admin
+Admin -> Web : Select campers to add
+Web -> GroupService : Add selected campers to group
+GroupService -> DB : Update group with new campers
+DB -> GroupService : Confirm update
+GroupService -> Web : Confirmation of added campers
+Web -> Admin : Show success message
+@enduml
+```
+
+This diagram starts with the "Camp Administrator" interacting with a "Web Interface" to create a new group and add campies to this group. The process involves the "Group Management Service," which handles the logic and interaction with the "Database" to store and manage the information. Here's a breakdown of the flow:
+
+1. **Create Group**: The camp administrator initiates the creation of a group through the web interface. The Group Management Service then interacts with the database to create a new group record, confirming the creation back to the web interface and, subsequently, to the administrator.
+
+2. **Add Campers to Group**: Once a group is created, the administrator can add campers to this group. This involves fetching a list of campers from the database, displaying it to the administrator, who then selects which campers to add to the new group. The Group Management Service updates the group record with the selected campers and confirms the operation.
+
+This sequence realizes the user story of creating groups and adding campers to the groups through a series of interactions among different system components, facilitating the organization of campers into groups for the camp administrator.

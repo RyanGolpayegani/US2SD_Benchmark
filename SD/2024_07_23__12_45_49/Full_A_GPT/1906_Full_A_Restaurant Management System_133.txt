@@ -1,0 +1,55 @@
+Creating a sequence diagram for the user story "As a manager, I want to edit clock in and out information of employees" involves detailing interactions between different system components from the moment the manager decides to edit an employee's clock-in or clock-out information up to the successful update of this information.
+
+Here is a basic sequence diagram in PlantUML format that represents these interactions:
+
+```plantuml
+@startuml
+participant Manager as M
+participant "Management Interface" as MI
+participant "Server" as S
+participant "Employee Database" as DB
+
+M -> MI : Selects Employee timesheet
+activate MI
+
+MI -> S : Request Employee Clock In/Out Info
+activate S
+
+S -> DB : Query Employee Info
+activate DB
+DB --> S : Employee Info Retrieved
+deactivate DB
+
+S --> MI : Display Employee Info
+deactivate S
+
+MI --> M : Show Employee Clock In/Out Info
+M -> MI : Edits Clock In/Out Info
+activate MI
+
+MI -> S : Update Employee Clock In/Out Info
+activate S
+
+S -> DB : Update Employee Info
+activate DB
+DB --> S : Update Confirmation
+deactivate DB
+
+S --> MI : Confirmation Message
+deactivate S
+
+MI --> M : Display Update Success Message
+deactivate MI
+@enduml
+```
+
+This PlantUML sequence diagram illustrates the step-by-step interaction for a manager to edit an employee's clock-in or clock-out information through the system:
+- The **Manager** interacts with the **Management Interface** to select and request the employee's timesheet.
+- The **Management Interface** communicates with the **Server** to fetch the requested information.
+- The **Server**, in turn, queries the **Employee Database** for the employee's clock-in and clock-out information.
+- Upon retrieving the information, the employee's details are sent back to the **Manager** through the **Management Interface**.
+- The **Manager** edits the clock-in or clock-out information via the **Management Interface**.
+- The updated information is sent back through the **Server** to update the **Employee Database**.
+- Upon successful update, a confirmation message is sent to the **Management Interface**, which then informs the **Manager** that the update was successful.
+
+This sequence can be modified or detailed further based on specific project requirements, such as security considerations or additional steps for validation and error handling.

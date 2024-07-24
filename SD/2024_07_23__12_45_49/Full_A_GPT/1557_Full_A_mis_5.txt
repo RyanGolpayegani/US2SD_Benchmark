@@ -1,0 +1,34 @@
+Creating a detailed sequence diagram for the described user story in PlantUML format will involve depicting the interactions between a collection curator and the system components that facilitate the process of mapping an item from one collection to another. Below is a simplified example of how such a sequence might be represented in PlantUML syntax:
+
+```plantuml
+@startuml
+actor Curator as curator
+participant "UI Interface" as UI
+participant "Mapping Controller" as mappingController
+database "Collections Database" as collectionsDB
+
+curator -> UI : Select item(s) for mapping
+UI -> mappingController : Initiate mapping request(itemIDs, sourceCollection, targetCollection)
+mappingController -> collectionsDB : Validate itemIDs and collections
+collectionsDB -> mappingController : Validation response
+alt Validation Success
+    mappingController -> collectionsDB : Map item(s) to target collection
+    collectionsDEBUG -> mappingController : Mapping confirmation
+    mappingController -> UI : Display mapping success message
+    curator -> UI : Confirm & close
+else Validation Failure
+    mappingController -> UI : Display error message (Invalid items/collections)
+    curator -> UI : Review & retry
+end
+@enduml
+```
+
+### Explanation:
+- The sequence starts with the curator interacting with the UI Interface to select one or more items they intend to map from one collection to another.
+- The UI Interface then forwards this request to the Mapping Controller, which is responsible for handling such operations.
+- The Mapping Controller queries the Collections Database to validate the specified item IDs and collections (source and target). This step is crucial to ensure that the items exist and the target collection is available for mapping.
+- If the validation is successful (the items and collections are valid), the Mapping Controller proceeds to request the mapping of the specified item(s) to the target collection in the database.
+- The Collections Database confirms the successful mapping to the Mapping Controller, which in turn notifies the UI Interface to display a success message to the curator.
+- If the initial validation fails (for example, due to invalid item IDs or non-existent collections), the Mapping Controller instructs the UI Interface to display an error message, prompting the curator to review and retry the operation.
+
+This sequence diagram simplifies the process to focus on the core interactions related to the user story. Depending on the system's complexity and requirements, additional steps or components (like authentication, logging, or more intricate validation mechanisms) may be integrated into the sequence.

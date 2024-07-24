@@ -1,0 +1,20 @@
+@startuml
+participant "Zooniverse Admin" as admin
+participant "AMIDP Platform" as platform
+participant "Image Upload Module" as upload
+participant "Image Analysis Engine" as analysis
+participant "Animal Detection AI" as ai
+participant "Data Storage" as storage
+participant "Notification System" as notify
+
+admin -> platform: Upload Snapshot Serengeti images
+platform -> upload: Process upload request
+upload -> analysis: Invoke automatic image analysis
+analysis -> ai: Apply animal detection algorithms
+ai -> analysis: Return detection results
+analysis -> storage: Store analysis results
+analysis -> analysis: Check for images with no classifiable animals
+analysis --> notify: Trigger notification for non-classifiable images
+notify -> admin: Notify about images with no classifiable animals
+
+@enduml

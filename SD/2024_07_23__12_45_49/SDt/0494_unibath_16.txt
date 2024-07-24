@@ -1,0 +1,23 @@
+@startuml
+participant Depositor as user
+participant "Web Interface" as UI
+participant "Data Management System" as DMS
+participant "DOI Service" as DOI
+participant "Citation Tracking Service" as CTS
+
+user -> UI: Request to track citations for dataset
+UI -> DMS: Retrieve dataset details (incl. DOI)
+DMS -> UI: Return dataset details
+UI -> user: Display dataset details and "Track Citations" option
+user -> UI: Initiate "Track Cititations" for dataset
+UI -> CTS: Request citation count for DOI
+activate CTS
+CTS -> DOI: Query citations by DOI
+activate DOI
+DOI -> CTS: Return list of citations
+deactivate DOI
+CTS -> UI: Display citation data
+UI -> user: Show citation count and details
+deactivate CTS
+
+@enduml

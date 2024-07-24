@@ -1,0 +1,57 @@
+Certainly! Below is an example of how to create a detailed sequence diagram for the user story: "**As a member, I want to look up books and place reservations**" using PlantUML.
+
+This example focuses on the interactions involved in searching for books and placing a reservation by a library member:
+
+```plantuml
+@startuml
+actor Member
+participant "Search Interface" as Search
+database "Library Database" as DB
+participant "Reservation System" as Reservation
+
+Member -> Search: Enter search criteria\n(title, author, or category)
+activate Search
+Search -> DB: Query books by criteria
+activate DB
+DB --> Search: Return search results
+deactivate DB
+
+Search --> Member: Display search results
+deactivate Search
+
+Member -> Search: Select book from results
+activate Search
+Search -> DB: Check availability of selected book
+activate DB
+DB --> Search: Book availability status
+deactivate DB
+
+Search --> Member: Show availability status
+deactivate Search
+
+Member -> Reservation: Request to reserve book
+activate Reservation
+Reservation -> DB: Create reservation record
+activate DB
+DB --> Reservation: Confirmation of reservation
+deactivate DB
+
+Reservation --> Member: Reservation confirmed
+deactivate Reservation
+@enduml
+```
+
+This sequence diagram illustrates the process flow as follows:
+
+1. The **Member** initiates the process by entering search criteria such as title, author, or category into the **Search Interface**.
+2. The **Search Interface** queries the **Library Database** for books matching the criteria.
+3. The **Library Database** returns the search results to the **Search Interface**.
+4. The **Search Interface** displays the search results to the **Member**.
+5. The **Member** selects a book from the results and requests its availability status.
+6. The **Search Interface** queries the **Library Database** again to check the selected book's availability.
+7. The **Library Database** returns the book availability status to the **Search Interface**, which then informs the **Member**.
+8. If the book is available, the **Member** requests to reserve the book using the **Reservation System**.
+9. The **Reservation System** creates a reservation record in the **Library Database**.
+10. The **Library Database** sends a confirmation of the reservation to the **Reservation System**, which then confirms the reservation to the **Member**.
+
+This sequence demonstrates how a member can look up books and place reservations within the Comprehensive Library Management System (CLMS).

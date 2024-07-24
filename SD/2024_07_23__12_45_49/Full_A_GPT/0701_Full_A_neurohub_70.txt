@@ -1,0 +1,52 @@
+To create a detailed sequence diagram for the specified user story using PlantUML, you'd need to model the interactions between the various system components and actors involved in tracking data sets for a particular experiment as imagined in the Neurohub Enhancement and Automation Project. This proposed diagram focuses on how a researcher interacts with the system to keep track of datasets.
+
+```plantuml
+@startuml
+actor Researcher as res
+participant "Web Interface" as web
+participant "Experiment Management System" as ems
+participant "Data Management Service" as dms
+participant "Metadata & Data Curation" as mdc
+database "Neurohub Database" as db
+
+== Track Data Sets for an Experiment ==
+
+res -> web: Accesses Neurohub
+web -> ems: Authenticate researcher
+activate ems
+ems -> db: Validate User Credentials
+db --> ems: Authentication Success
+deactivate db
+ems --> web: Display User Dashboard
+web --> res: Shows Dashboard
+
+res -> web: Selects Experiment
+web -> ems: Request Experiment Details
+ems -> db: Fetch Experiment Data
+db --> ems: Experiment Data
+ems --> web: Show Experiment Data
+web --> res: Displays Experiment Details
+
+res -> web: Requests Data Tracking
+web -> ems: Initiate Data Tracking
+ems -> dms: Get Data Set Information
+activate dms
+dms -> db: Query Data Sets Related to Experiment
+db --> dms: Data Set Details
+deactivate db
+dms --> ems: Returns Data Set Information
+ems -> mdc: Request Data Curation
+activate mdc
+mdc -> db: Fetch Metadata for Data Sets
+db --> mdc: Metadata Details
+deactivate db
+mdc --> ems: Provides Curated Data Sets Information
+ems --> web: Data Tracking Information
+web --> res: Shows Data Sets used/output/modified
+
+@enduml
+```
+
+This sequence diagram starts with the Researcher accessing the Neurohub through the Web Interface and requesting to track data sets for a specific experiment. The system authenticates the researcher and fetches the relevant experiment details. Upon the researcher's request to track data sets, the Experiment Management System (EMS) interacts with the Data Management Service (DMS), which queries the data sets related to the experiment. The Metadata & Data Curation (MDC) component is then called upon to fetch and provide metadata for the data sets, ensuring the researcher receives comprehensive information about the datasets used, outputted, or modified as part of the experiment.
+
+This diagram provides an overview of the process and can be expanded or modified to include additional steps, error handling, or system interactions based on further detailed requirements or system architecture specifics.

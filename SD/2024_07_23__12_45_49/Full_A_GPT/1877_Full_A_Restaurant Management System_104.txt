@@ -1,0 +1,64 @@
+To create a detailed sequence diagram for the user story: "As a manager, I want to change the price of items so that I can apply discounts," using PlantUML notation, you will need to depict the interactions between different components of the Restaurant Management and Operations System. Below is a basic example of how these interactions could be organized in a PlantUML sequence diagram.
+
+Remember, this diagram is a simplified representation. The actual sequence and components might vary based on specific system designs and needs.
+
+```plantuml
+@startuml
+participant Manager as M
+participant UIManager as UI
+participant Backend as B
+participant Database as DB
+
+M -> UI : Access Pricing Module
+activate M
+activate UI
+
+UI -> B : Request current item prices
+activate B
+
+B -> DB : Query current item prices
+activate DB
+
+DB --> B : Return item prices
+deactivate DB
+
+B --> UI : Display item prices
+deactivate B
+
+M -> UI : Specify new prices and discounts
+activate UI
+
+UI -> B : Submit updated prices and discounts
+activate B
+
+B -> DB : Update item prices and discounts
+activate DB
+
+DB --> B : Confirm price update
+deactivate DB
+
+B --> UI : Display success message
+deactivate B
+
+UI --> M : Confirm price changes
+deactivate M
+deactivate UI
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Manager to UIManager**: The sequence begins with the manager accessing the pricing module through the UI (User Interface).
+2. **UIManager to Backend**: The UI requests the current prices of items from the backend server.
+3. **Backend to Database**: The backend then queries the database for the current prices.
+4. **Database to Backend**: The database returns the current item prices to the backend.
+5. **Backend to UIManager**: The backend passes this information back to the UI, where it's displayed to the manager.
+6. **Manager to UIManager**: The manager specifies the new prices and any discounts to be applied.
+7. **UIManager to Backend**: The UI submits these updated prices and discounts to the backend.
+8. **Backend to Database**: The backend updates the item prices and discounts in the database.
+9. **Database to Backend**: The database confirms the updates.
+10. **Backend to UIManager**: The backend then sends a success message back to the UI.
+11. **UIManager to Manager**: Finally, the UI confirms the price changes to the manager.
+
+This sequence ensures that the process of changing item prices and applying discounts is handled smoothly and accurately, involving several system components to ensure data consistency and user feedback.

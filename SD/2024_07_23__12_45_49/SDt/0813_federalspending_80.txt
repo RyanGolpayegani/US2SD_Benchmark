@@ -1,0 +1,31 @@
+@startuml
+participant User
+participant UI
+participant ValidationService
+participant DataService
+participant Database
+
+User -> UI : Request to view publishable data
+UI -> ValidationService : Validate data view request
+alt Valid request
+    ValidationService -> DataService : Fetch pre-publishing data summary
+    DataService -> Database : Query publishable rows
+    Database -> DataService : Return row count
+    DataService -> UI : Show number of rows to be published
+    UI -> User : Display row count and ask for confirmation to publish
+else Invalid request
+    ValidationService -> UI : Show error message
+    UI -> User : Display validation error
+end
+
+User -> UI : Confirm publishing decision
+alt Decides to publish
+    UI -> DataService : Initiate data publishing
+    DataService -> Database : Publish rows
+    Database -> DataService : Confirm rows published
+    DataService -> UI : Display success message
+    UI -> User : Show publishing success
+else Decides not to publish
+    UI -> User : Cancel publishing process
+end
+@enduml

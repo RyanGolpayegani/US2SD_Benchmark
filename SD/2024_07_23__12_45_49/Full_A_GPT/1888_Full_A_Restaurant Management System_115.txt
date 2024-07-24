@@ -1,0 +1,36 @@
+Creating a detailed Sequence Diagram in PlantUML for the user story "As a manager, I want to create coupons so that I can deliver them to my customers" involves picturing the interactions between the manager and the Restaurant Management and Operations System, including backend services and database access. Below is a representation of this process in PlantUML format.
+
+```plantuml
+@startuml
+actor Manager
+participant "Management Interface" as Interface
+participant "Backend Server" as Server
+database "Database" as DB
+
+Manager -> Interface : Access Coupon Creation Feature
+activate Interface
+
+Interface -> Server : Request to Create New Coupon
+activate Server
+
+Server -> DB : Check Existing Coupons
+activate DB
+DB --> Server : Provide Existing Coupons Data
+deactivate DB
+
+Server -> Server : Validate and Process Coupon Creation
+Server -> DB : Save New Coupon
+activate DB
+DB --> Server : Confirm Save
+deactivate DB
+
+Server --> Interface : Confirm Coupon Created
+deactivate Server
+
+Interface --> Manager : Show Coupon Creation Success Message
+deactivate Interface
+
+@enduml
+```
+
+This sequence diagram illustrates the basic flow from the manager initiating a request to create new coupons via the management interface, to the backend server processing this request - including checking existing coupons in the database, creating the new coupon, and confirming the creation back to the manager. The interactions are simplified for clarity, focusing on the major steps relevant to the user story.

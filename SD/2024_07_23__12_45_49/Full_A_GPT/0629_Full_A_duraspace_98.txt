@@ -1,0 +1,50 @@
+To fulfill the request for a detailed sequence diagram based on the User Story: "As a DAMS manager, I want to know the agent(s) responsible for carrying out an event," using PlantUML notation, I'll draft a sequence diagram. This diagram will depict the interactions between the DAMS manager and the components of the DAMS Integration and Management System (DIMS) to identify the agents responsible for an event.
+
+```plantuml
+@startuml
+!theme plain
+
+participant DAMSManager as DM "DAMS Manager"
+participant WebInterface as WI "Web Interface"
+participant DIMSServer as DS "DIMS Server"
+participant EventManagement as EM "Event Management Module"
+participant Database as DB "Database"
+
+title DAMS Manager Inquiry for Event Agents
+
+DM -> WI : Request to find agent(s) for event
+activate WI
+
+WI -> DS : Retrieve agent(s) for specified event
+activate DS
+
+DS -> EM : Query event details
+activate EM
+
+EM -> DB : Fetch event agent(s) data
+activate DB
+
+DB --> EM : Return event agent(s) details
+deactivate DB
+
+EM --> DS : Event agent(s) information
+deactivate EM
+
+DS --> WI : Show event agent(s) data
+deactivate DS
+
+WI --> DM : Display event agent(s)
+deactivate WI
+
+@enduml
+```
+
+This sequence diagram narrates the following steps after a DAMS manager initiates a request to find out the agents responsible for a particular event:
+
+1. **DAMS Manager starts the process**: The DAMS Manager accesses the Web Interface of DIMS and requests information about the agent(s) involved in an event.
+2. **Web Interface to DIMS Server**: The request is forwarded to the DIMS Server, which is responsible for processing such inquiries.
+3. **DIMS Server to Event Management Module**: DIMS Server sends the query to the Event Management Module, which handles specifics about events, including their associated agents.
+4. **Event Management Module to Database**: The Event Management Module consults the Database to retrieve detailed data on the agent(s) responsible for the specified event.
+5. **Data retrieval and response back to DAMS Manager**: The information is sent back through the layers: Database to Event Management, Event Management to DIMS Server, DIMS Server to Web Interface, and finally, back to the DAMS Manager, showing the agent(s) involved in the event.
+
+This sequence provides a comprehensive workflow on how a DAMS Manager can identify the agents responsible for specific events within the DAMS Integration and Management System.

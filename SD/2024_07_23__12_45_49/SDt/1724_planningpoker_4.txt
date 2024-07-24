@@ -1,0 +1,17 @@
+@startuml
+actor Moderator
+participant "UI Dashboard" as Dashboard
+participant "Backend Service" as Backend
+participant "Session Management" as SessionManagement
+database "Estimation Database" as Database
+
+Moderator -> Dashboard: Request all estimation items
+Dashboard -> Backend: Get all items for current session
+Backend -> SessionManagement: Fetch session details
+SessionManagement -> Database: Retrieve estimation items
+Database --> SessionManagement: Estimation items data
+SessionManagement --> Backend: Session & items data
+Backend --> Dashboard: Display estimation items
+Dashboard --> Moderator: Show all estimation items
+
+@enduml

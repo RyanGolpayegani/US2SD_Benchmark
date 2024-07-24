@@ -1,0 +1,46 @@
+To visualize the process of linking experimental runs to build an experiment as described in the user story from the Neurohub Enhancement and Automation Project, we'll outline a PlantUML sequence diagram. This sequence diagram will illustrate the interactions between the user and the system components involved in linking these experimental runs.
+
+```plantuml
+@startuml
+actor User as u
+participant "Web Interface" as w
+participant "Experiment Management" as e
+participant "Database" as d
+
+u -> w : Request to link experimental runs
+activate w
+
+w -> e : Initiate link process
+activate e
+
+e -> d : Fetch available experimental runs
+activate d
+d --> e : List of experimental runs
+deactivate d
+
+e --> w : Display experimental runs
+deactivate e
+
+w --> u : Show experimental runs
+u -> w : Selects runs to link & submit
+activate w
+
+w -> e : Link selected experimental runs
+activate e
+
+e -> d : Update experiment data with linked runs
+activate d
+d --> e : Confirmation of link
+deactivate d
+
+e --> w : Confirm successful link
+deactivate e
+
+w --> u : Notify success
+deactivate w
+@enduml
+```
+
+This diagram starts with the user requesting to link experimental runs together to build an experiment, proceeding through the system's response to fetch available runs, displaying these to the user, and updating the database with the newly linked runs following the user's selections. Finally, it concludes with notifying the user of the successful linkage. 
+
+This diagram only provides an overview and the actual implementation could include more detailed steps, especially concerning error handling, security checks, user authentication, and more specific interactions between system components.

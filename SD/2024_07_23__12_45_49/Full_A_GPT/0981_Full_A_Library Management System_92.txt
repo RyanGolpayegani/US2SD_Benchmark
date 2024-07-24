@@ -1,0 +1,53 @@
+To create a detailed sequence diagram for the user story, "As a librarian, I want to see the delayed books by a particular reader, so that I can warn him/her,” we will outline the following participants in the interaction:
+- Librarian: The person who initiates the process by looking up delayed books.
+- Library System: The backend system that processes requests and returns results.
+- Database: Where all the information about books, users, and borrow status is stored.
+
+The sequence diagram in PlantUML language would be structured as following:
+
+```plantuml
+@startuml
+
+participant Librarian
+participant LibrarySystem
+database Database
+
+== Check Delayed Books By Reader ==
+Librarian -> LibrarySystem : Request delayed books for Reader_ID
+activate LibrarySystem
+
+LibrarySystem -> Database : Query delayed books for Reader_ID
+activate Database
+
+Database --> LibrarySystem : Return list of delayed books
+deactivate Database
+
+LibrarySystem --> Librarian : Display delayed books
+deactivate LibrarySystem
+
+Librarian -> LibrarySystem : Select books to send warning
+activate LibrarySystem
+
+LibrarySystem -> Database : Update warning status for selected books
+activate Database
+
+Database --> LibrarySystem : Acknowledge status update
+deactivate Database
+
+LibrarySystem --> Librarian : Show warning sent confirmation
+deactivate LibrarySystem
+
+@enduml
+```
+
+Here’s a breakdown of the steps in this sequence diagram:
+1. The librarian requests to see the delayed books for a particular reader by providing the reader's ID to the library system.
+2. The library system then queries the database for books borrowed by the reader that are overdue.
+3. The database returns the list of delayed books to the library system.
+4. The library system displays the delayed books to the librarian.
+5. The librarian selects which books to send a warning for.
+6. The library system updates the warning status of these selected books in the database.
+7. The database acknowledges the status update.
+8. Finally, the library system shows a confirmation to the librarian that a warning has been sent.
+
+This diagram assumes the library system has features for identifying delayed books, managing warnings, and interacting with a database to update and retrieve data.

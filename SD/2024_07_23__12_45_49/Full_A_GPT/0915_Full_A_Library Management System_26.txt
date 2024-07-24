@@ -1,0 +1,49 @@
+To create a detailed Sequence Diagram in PlantUML format for the user story "As a librarian, I want to be able to add new members," consider the following systems and actors:
+
+- **Librarian**: The user who performs the action.
+- **Web Interface**: The frontend through which the librarian interacts.
+- **Application Server**: The server which processes the request.
+- **Database**: The system that stores user data.
+
+Given the systems and actors, below is a PlantUML sequence diagram illustrating the process of adding a new member by a librarian:
+
+```plantuml
+@startuml
+actor Librarian as librarian
+participant "Web Interface" as web
+participant "Application Server" as server
+database Database as db
+
+librarian -> web : Navigate to "Add New Member" section
+web -> server : Request to add new member
+activate server
+
+server -> db : Check if member already exists
+activate db
+db --> server : Member does not exist
+deactivate db
+
+server -> db : Create new member record
+activate db
+db --> server : Member created successfully
+deactivate db
+
+server --> web : Display success message
+web --> librarian : Show success message
+deactivate server
+
+@enduml
+```
+
+In this sequence:
+
+1. The **Librarian** navigates to the "Add New Member" section through the **Web Interface**.
+2. The **Web Interface** sends a request to the **Application Server** to add a new member.
+3. The **Application Server** checks with the **Database** if the member already exists.
+4. The **Database** responds that the member doesn't exist.
+5. The **Application Server** then requests the creation of a new member record in the **Database**.
+6. The **Database** confirms the member has been created successfully.
+7. The **Application Server** sends a success message back to the **Web Interface**.
+8. The **Web Interface** shows a success message to the Librarian, indicating the process is complete.
+
+This diagram assumes a simplified flow focusing on the key interactions required to add a new library member. Additional error handling, authentication, and other intermediate steps may be included for a fully-featured system.

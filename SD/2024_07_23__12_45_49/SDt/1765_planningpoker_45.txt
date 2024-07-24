@@ -1,0 +1,22 @@
+@startuml
+
+participant Developer
+database DB
+participant IDE
+participant DB_Schema
+participant IndexManager
+
+== Index Creation Process ==
+Developer -> IDE: Identify slow queries\nrequiring optimization
+IDE -> DB: Log slow queries
+DB -> Developer: Provide query logs
+
+Developer -> DB_Schema: Analyze DB schema\nfor table and column usage
+DB_Schema -> Developer: Confirm high-usage\ntables and columns
+
+Developer -> IndexManager: Request creation of\nindexes on specific columns
+IndexManager -> DB: Create indexes
+DB -> IndexManager: Index creation success
+IndexManager -> Developer: Confirm index\ncreation success
+
+@enduml

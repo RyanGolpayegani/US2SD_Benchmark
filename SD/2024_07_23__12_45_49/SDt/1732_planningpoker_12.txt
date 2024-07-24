@@ -1,0 +1,26 @@
+@startuml
+
+actor Moderator
+participant "Frontend UI" as UI
+participant "Backend Service" as Backend
+database "Estimation Database" as Database
+
+Moderator -> UI: Enters agreed estimate
+UI -> Backend: POST /estimates {itemID, estimateValue}
+alt Successful Entry
+    Backend -> Database: Insert estimate record
+    Database -> Backend: Acknowledge save
+    Backend -> UI: Confirm save to moderator
+    UI -> Moderator: Display success message
+else Validation Error
+    Backend -> UI: Error message (Validation)
+    UI -> Moderator: Display error message
+end
+Moderator -> UI: Requests next item
+UI -> Backend: GET /nextItem {currentItemID}
+Backend -> Database: Query next item
+Database -> Backend: Return next item data
+Backend -> UI: Next item details
+UI -> Moderator: Display next item
+
+@enduml

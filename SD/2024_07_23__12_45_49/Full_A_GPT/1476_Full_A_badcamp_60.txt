@@ -1,0 +1,40 @@
+To depict the user story through a sequence diagram in PlantUML format, we'd outline the interaction between the user (in this context, an anonymous user), the BADCamp Enhancement Platform (web system), potentially a notification service, and an email service to ensure the anonymous user receives a confirmation upon submitting a session.
+
+Given the nature of this specific user story focusing on an anonymous user submitting a session and receiving a notification, we make a simple assumption that the platform allows anonymous submissions subject to review, which is slightly atypical but plausible for the context. 
+
+Below is the sequence diagram in PlantUML format illustrating these interactions:
+
+```plantuml
+@startuml
+participant AnonymousUser as AU
+participant WebSystem as WS
+participant NotificationService as NS
+participant EmailService as ES
+
+AU -> WS : Submit Session
+activate WS
+
+WS -> NS : Trigger Notification Process
+activate NS
+
+NS -> ES : Send Email Confirmation
+activate ES
+
+ES -> AU : Email Confirmation "Session Submitted Successfully"
+deactivate ES
+deactivate NS
+
+WS -> AU : Display Confirmation Message
+deactivate WS
+
+@enduml
+```
+
+This diagram outlines the following steps:
+1. The anonymous user submits a session through the web system interface.
+2. The web system processes this submission and triggers the notification process.
+3. The notification service, upon being triggered, instructs the email service to send a confirmation email to the anonymous user.
+4. The email service sends an email confirmation to the anonymous user stating that their session was submitted successfully.
+5. In parallel to the email confirmation, the web system also displays a confirmation message to the user on the web interface.
+
+It's important to note that this diagram simplifies the architecture to focus primarily on the flow related to the user story. In a real-world scenario, additional considerations such as input validation, authentication (even for actions by anonymous users), and error handling would be critical elements to design and implement. Also, assuming the submission by an anonymous user, there might be either a placeholder contact information within the submission form for notifications or a temporary session-based interaction model until the user decides to register or identify themselves.

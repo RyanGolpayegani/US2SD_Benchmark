@@ -1,0 +1,77 @@
+Creating a detailed sequence diagram for the described user story using PlantUML requires breaking down the interactions between different components involved in the process. Given that this process is about allowing a repository manager to add descriptions to different facets of a digital object or collection that aren't covered by the basic metadata fields like title, date, name, and subject, we need to consider components like the User Interface (UI), Database, and possibly a Metadata Management System.
+
+Below is a sequence diagram expressed in PlantUML language that shows how a repository manager might interact with the DAMS Integration and Management System (DIMS) to achieve this:
+
+```plantuml
+@startuml
+participant "Repository Manager" as manager
+participant "DIMS UI" as ui
+participant "Metadata Management" as metadata
+participant "Database" as db
+
+manager -> ui : Access DIMS portal
+activate ui
+
+ui -> manager : Display Metadata Options
+activate manager
+
+manager -> ui : Select to Add New Metadata Descriptions
+deactivate manager
+activate ui
+
+ui -> metadata : Initiate Add Metadata Process
+activate metadata
+deactivate ui
+
+metadata -> db : Retrieve current metadata fields
+activate db
+deactivate metadata
+
+db -> metadata : Return metadata fields
+activate metadata
+deactivate db
+
+metadata -> ui : Display metadata fields with options to add new descriptions
+deactivate metadata
+activate ui
+
+ui -> manager : Show metadata fields and input for new descriptions
+activate manager
+deactivate ui
+
+manager -> ui : Input descriptions for non-standard facets
+activate ui
+deactivate manager
+
+ui -> metadata : Process new descriptions
+activate metadata
+deactivate ui
+
+metadata -> db : Update metadata with new descriptions
+activate db
+deactivate metadata
+
+db -> metadata : Confirm update
+activate metadata
+deactivate db
+
+metadata -> ui : Confirm new descriptions added
+deactivate metadata
+activate ui
+
+ui -> manager : Display success message
+deactivate ui
+activate manager
+
+manager -> ui : Log out/close session
+deactivate manager
+@enduml
+```
+
+### Explanation:
+- The **Repository Manager** interacts with the **DIMS UI** to describe various facets of a collection, object, or object component.
+- The **DIMS UI** serves as the interface for the manager to initiate actions, providing options to add new metadata descriptions.
+- The **Metadata Management** component processes these requests, interacts with the **Database** to retrieve current metadata fields, and updates them based on the repository manager's input.
+- Finally, the repository manager receives a success message, indicating that the process is complete.
+
+This diagram provides a high-level overview of the process. Implementation details might vary based on the specific software architecture of DIMS.

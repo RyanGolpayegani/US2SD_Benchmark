@@ -1,0 +1,42 @@
+Creating a sequence diagram in PlantUML for the user story "As a data user, I want to receive updates to FABS records" involves detailing the interaction between various components of the system such as the Data User, Data Submission Service, Validation Service, Data Processor, and the Database. Below is an example of how such a sequence diagram could be structured in PlantUML syntax:
+
+```plantuml
+@startuml
+
+actor "Data User" as dataUser
+participant "Web Interface" as webInterface
+participant "Data Submission Service" as dataSubmission
+participant "Validation Service" as validationService
+participant "Data Processor" as dataProcessor
+database "Database" as db
+
+== FABS Record Update Request ==
+
+dataUser -> webInterface : Request FABS record updates
+webInterface -> dataSubmission : Initiate FABS update process
+activate dataSubmission
+
+dataSubmission -> validationService : Validate FABS data
+activate validationService
+validationService -> dataProcessor : Process validated FABS data
+deactivate validationService
+
+activate dataProcessor
+dataProcessor -> db : Update FABS records
+activate db
+db -> dataProcessor : Confirm FABS updates
+deactivate db
+
+dataProcessor -> dataSubmission : Confirm FABS data processed
+deactivate dataProcessor
+
+dataSubmission -> webInterface : Confirm update completion
+deactivate dataSubmission
+
+webInterface -> dataUser : Display FABS update confirmation
+
+@enduml
+```
+This diagram illustrates the flow of a FABS record update request initiated by a Data User. The sequence starts with the Data User requesting FABS record updates via the Web Interface. The request is then forwarded to the Data Submission Service, which initiates the update process. The Data Submission Service requests the Validation Service to validate the FABS data. Upon validation, the data is processed by the Data Processor, which updates the FABS records in the Database. Once the Database confirms the update, the Data Processor signals the completion of the process to the Data Submission Service, which, in turn, notifies the Web Interface. Finally, the Web Interface informs the Data User that the FABS update has been successfully completed.
+
+The described sequence encompasses several critical steps: validation of submissions, processing of validated data, updating the database, and confirmation to the user. This ensures data integrity, efficient processing, and clear communication to the user about the status of their request, aligning with the project's objectives of enhancing operational efficiency and user satisfaction.

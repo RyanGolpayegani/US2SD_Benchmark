@@ -1,0 +1,25 @@
+@startuml
+participant Librarian as lib
+participant "Search System" as search
+participant "Database" as db
+participant "Book Details" as book
+participant "Book Management" as manage
+
+lib -> search : searches for book by title/author
+search -> db : query book details
+db -> search : return book results
+search -> lib : display results
+
+lib -> book : select book to read
+book -> db : check book availability
+db -> book : book is available
+book -> lib : confirm availability and location
+
+lib -> manage : mark book as being read in-library
+manage -> db : update book status
+db -> manage : confirm status updated
+manage -> lib : confirm book is ready for reading
+
+note right of lib : Librarian reads the book in-library.
+
+@enduml

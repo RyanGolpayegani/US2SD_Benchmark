@@ -1,0 +1,19 @@
+@startuml
+actor Manager
+participant "Management Interface" as MI
+participant "Library System Backend" as LSB
+database "Library Database" as DB
+
+Manager -> MI: Request missing book numbers
+activate MI
+MI -> LSB: Fetch missing book numbers
+activate LSB
+LSB -> DB: Query missing books
+activate DB
+DB --> LSB: Return list of missing books
+deactivate DB
+LSB --> MI: Compile missing book numbers
+deactivate LSB
+MI --> Manager: Display missing book numbers
+deactivate MI
+@enduml

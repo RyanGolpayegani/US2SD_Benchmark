@@ -1,0 +1,57 @@
+Creating a detailed sequence diagram for the User Story — "As a site visitor, I want to see a list of all upcoming Certification Courses and can page through them if there are a lot, so that I can choose the best course for me" — involves illustrating how different system components interact with each other to fulfill this requirement. Below is a representation of this process in PlantUML format.
+
+```plantuml
+@startuml
+actor SiteVisitor as visitor
+participant "UI Interface" as UI
+participant "Course Controller" as controller
+database "Course Database" as db
+
+== List Upcoming Certification Courses ==
+
+visitor -> UI: Access course listing
+UI -> controller: Request list of upcoming courses
+controller -> db: Query upcoming courses
+db --> controller: Return list of courses
+controller --> UI: Display courses with pagination
+UI --> visitor: Show course list & pagination options
+
+== Page Through Courses ==
+
+visitor -> UI: Select page number
+UI -> controller: Request courses for selected page
+controller -> db: Query courses by page
+db --> controller: Provide courses for page
+controller --> UI: Display courses for selected page
+UI --> visitor: Show courses for page
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Site Visitor (Actor):** The user who seeks to view the list of upcoming certification courses.
+
+2. **UI Interface (Participant):** Represents the frontend user interface through which the site visitor interacts with the system.
+
+3. **Course Controller (Participant):** Acts as the intermediary that handles requests from the UI and interacts with the database. It processes the request for upcoming courses and pagination.
+
+4. **Course Database (Database):** The source of data for the courses. It stores and provides course information upon request.
+
+- The process begins when the site visitor accesses the course listing section of the platform.
+  
+- The UI Interface receives this action and requests a list of upcoming certification courses from the Course Controller.
+  
+- The Course Controller then fetches this list from the Course Database.
+  
+- The database returns the list of upcoming courses to the controller.
+  
+- The Course Controller, upon receiving the data, instructs the UI Interface to display the courses along with pagination options if the number of courses is large enough to require multiple pages.
+  
+- If the site visitor decides to view courses on a different page, they select the desired page number.
+  
+- The UI Interface captures this selection and again requests the specific course listing for the selected page from the Course Controller.
+  
+- This process repeats each time the visitor selects a new page number, allowing them to browse through all available courses systematically.
+
+This sequence diagram emphasizes the system's response to a site visitor's request to view and navigate through a list of upcoming certification courses, ensuring a user-friendly experience that aids in the selection of the best course.

@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram for the described user story in PlantUML format involves illustrating the interaction between the data reuser, the Enhanced Research Data Management Platform, and potentially the Primo system (a product by Ex Libris, commonly used for library searches). Given the requirement, here is a suggested PlantUML code snippet that represents the interaction based on the provided user story context. 
+
+Please note, the actual system designs may differ based on specific integration details, authorization mechanisms, and system architectures which aren't fully detailed in the project description. So, this is a simplified version for illustrative purposes.
+
+```plantuml
+@startuml
+!theme plain
+
+participant User as reuser
+participant "Primo Interface" as primo
+participant "Enhanced Research \nData Management Platform" as erdmp
+database "University of Bath \nData Archive" as archive
+
+reuser -> primo : initiate search for datasets, books, articles
+activate primo
+
+primo -> erdmp : query for datasets matching search criteria
+activate erdmp
+
+erdmp -> archive : fetch matching datasets
+activate archive
+archive --> erdmp : return datasets metadata
+deactivate archive
+
+erdmp --> primo : datasets metadata including DOIs
+deactivate erdmp
+
+primo --> reuser: display search results (datasets, books, articles)
+deactivate primo
+
+@enduml
+```
+
+This sequence starts with the "data reuser" initiating a search through the "Primo Interface." Primo then queries the "Enhanced Research Data Management Platform" for datasets matching the search criteria. The data management platform interacts with the "University of Bath Data Archive" to fetch and return the relevant datasets' metadata, which includes details like DOIs (Digital Object Identifiers). Finally, Primo compiles and displays the search results to the reuser, covering datasets along with books and articles.
+
+Remember, this diagram assumes a level of integration and API-based communication between Primo and the Enhanced Research Data Management Platform, as well as the ability of the platform to provide metadata in a way that Primo can interpret and present to users. Actual implementation details might require more intricate handling of authentication, data translation, and error management, which are not depicted in this basic sequence diagram.

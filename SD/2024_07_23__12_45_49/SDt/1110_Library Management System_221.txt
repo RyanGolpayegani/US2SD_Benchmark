@@ -1,0 +1,25 @@
+@startuml
+actor Manager as manager
+participant "Web Interface" as web
+participant "Server: CLMS Controller" as controller
+database "CLMS Database" as database
+
+manager -> web : Request to see feedbacks
+activate web
+
+web -> controller : GetFeedbackRequest()
+activate controller
+
+controller -> database : QueryFeedbacks()
+activate database
+
+database --> controller : ReturnFeedbackList
+deactivate database
+
+controller --> web : FeedbackDetails()
+deactivate controller
+
+web --> manager : DisplayFeedbacks
+deactivate web
+
+@enduml

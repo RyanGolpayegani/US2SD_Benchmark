@@ -1,0 +1,39 @@
+To generate a sequence diagram for the user story "As a manager, I want to see our top-selling menu items, so that I can focus on offering the right products" using PlantUML, we'll need to outline the interactions between different parts of the system. This diagram will focus on the process when a manager requests to view top-selling menu items and how this data is retrieved and displayed.
+
+Please note, you will need to copy this code into a PlantUML editor or a tool that supports PlantUML diagrams to visualize it.
+
+```plantuml
+@startuml
+participant Manager as M
+participant "Management Dashboard" as MD
+participant BackendServer as BS
+participant Database as DB
+
+M -> MD : Request top-selling menu items
+MD -> BS : GET /top-selling-items
+activate BS
+BS -> DB : Query top-selling menu items
+activate DB
+DB --> BS : Return top-selling items data
+deactivate DB
+BS --> MD : Top-selling items data
+deactivate BS
+MD --> M : Display top-selling menu items
+@enduml
+```
+
+Here's a step-by-step explanation of what each line in the sequence diagram represents:
+
+1. **Manager to Management Dashboard**: The manager (M) starts the process by requesting to see the top-selling menu items through the Management Dashboard (MD).
+
+2. **Management Dashboard to Backend Server**: The MD then sends a request to the Backend Server (BS) to retrieve data for the top-selling menu items. This is shown as a GET request to the `/top-selling-items` endpoint.
+
+3. **Backend Server to Database**: The BS sends a query to the Database (DB) to fetch the top-selling menu items. This involves querying sales data and aggregating the total number of sales per menu item to determine which items are selling the best.
+
+4. **Database to Backend Server**: The DB processes the query and returns the requested data, which includes details on the top-selling items, to the BS.
+
+5. **Backend Server to Management Dashboard**: The BS processes the data and then sends it back to the MD, which will format and prepare the data for display.
+
+6. **Management Dashboard to Manager**: Finally, the MD displays the top-selling menu items to the manager, who can now make informed decisions about which products to focus on.
+
+This sequence diagram lays out the interactions between different components of the system when a manager requests top-selling items data, showcasing how the system supports decision-making processes for restaurant management.

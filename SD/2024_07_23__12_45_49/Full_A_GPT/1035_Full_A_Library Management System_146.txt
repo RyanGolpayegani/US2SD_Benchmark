@@ -1,0 +1,55 @@
+To capture the outlined user story in a sequence diagram using PlantUML syntax, we will consider the interactions among the user (Library Member), the web interface, the server (which handles the request and interacts with the backend systems), and the database (which stores all the information about books, reservations, etc.). For simplicity, let’s assume the library system already has authentication in place, and the user is logged in.
+
+```
+@startuml
+participant LibraryMember as member
+participant WebInterface as web
+participant Server as server
+participant Database as db
+
+member -> web : Request book details
+web -> server : Fetch book availability status
+server -> db : Query book reservation status
+db --> server : Return reservation status
+server --> web : Book reservation status (available/reserved)
+web --> member : Display book status
+
+alt if book is available
+    member -> web : Place a reservation request
+    web -> server : Process reservation request
+    server -> db : Update reservation status
+    db --> server : Confirmation of reservation update
+    server --> web : Display reservation confirmation
+    web --> member : Show confirmation message
+else if book is already reserved
+    web --> member : Show book already reserved message
+end
+
+@enduml
+```
+
+### Explanation:
+
+1. **Library Member to Web Interface**: The library member (user) initiates the interaction by requesting the details of a book via the web interface. This is the user expressing the desire to check if a book can be reserved.
+
+2. **Web Interface to Server**: This request is forwarded to the server, which will then handle the logic of fetching the availability status of the book.
+
+3. **Server to Database**: The server makes a query to the database to check the reservation status of the requested book, whether it's currently reserved or available for reservation.
+
+4. **Database to Server**: The database returns the reservation status to the server.
+
+5. **Server to Web Interface**: Based on the information from the database, the server instructs the web interface to display the status of the book to the user - indicating whether it's available for reservation or already reserved.
+
+6. **Decision Making**:
+   
+   - If the book is available:
+     - The member can request to place a reservation through the web interface.
+     - The web takes this request and forwards it to the server.
+     - The server processes this reservation by updating the book's status in the database.
+     - The database confirms the update.
+     - The server informs the web interface of the successful reservation, and the member receives a confirmation message.
+
+   - If the book is already reserved:
+     - The web interface directly informs the member that the book is already reserved, without proceeding to any reservation actions.
+
+This sequence diagram illustrates the essential interactions required to display a book’s reservation status and allows the user to place a reservation if the book is available.

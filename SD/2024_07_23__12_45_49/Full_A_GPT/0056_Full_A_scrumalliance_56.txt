@@ -1,0 +1,43 @@
+To generate a detailed sequence diagram for the given user story — "As a site editor, I want to be able to designate whether or not an event makes the home page, so that the best content is featured most prominently" — we can illustrate the interaction between a Site Editor and the various system components involved in setting an event to be featured on the home page using PlantUML syntax.
+
+Here is a basic illustration to get you started:
+
+```plantuml
+@startuml
+actor "Site Editor" as editor
+participant "Content Management\nSystem (CMS)" as cms
+participant "Event Management\nModule" as eventModule
+participant "Database" as db
+
+editor -> cms : Access CMS dashboard
+activate cms
+
+cms -> eventModule : Navigate to Event Management
+activate eventModule
+
+eventModule -> eventModule : Select Event
+eventModule -> eventModule : Set 'Feature on Home Page' flag
+
+eventModule -> db : Update Event Details
+activate db
+db --> eventModule : Confirmation
+deactivate db
+
+eventModule --> cms : Event Updated
+deactivate eventModule
+
+cms --> editor : Display Confirmation Message
+deactivate cms
+
+@enduml
+```
+
+This sequence diagram outlines the basic interactions for a site editor to feature an event on the home page through the content management system and event management module. 
+
+- **Starting Point**: The site editor accesses the CMS dashboard.
+- **Interaction With Event Module**: The editor navigates to the event management module within the CMS and selects the event to be featured.
+- **Feature Flag**: Within the event management module, the editor sets a flag or indicator to mark the event to be featured on the home page.
+- **Database Update**: The event management module communicates with the database to update the event's details, including setting it to be featured.
+- **Confirmation**: The database sends a confirmation back through the system, and the editor receives a confirmation message that the event is set to be featured.
+
+It's important to tailor the sequence diagram to the specific functionalities and flow of your system, as this is a generic example. This diagram assumes a fairly straightforward process facilitated by a content management system with an integrated event management module.

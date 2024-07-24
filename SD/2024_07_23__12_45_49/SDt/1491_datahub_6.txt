@@ -1,0 +1,23 @@
+@startuml
+
+actor Admin
+participant "Admin Interface" as AdminUI
+participant "Invitation Service" as InvitationService
+participant "Email Service" as EmailService
+database "User Database" as UserDB
+
+== Invitation Process ==
+Admin -> AdminUI : Access invitation feature
+AdminUI -> InvitationService : Input user email for invitation
+InvitationService -> UserDB : Check if email already exists
+alt Email exists
+    InvitationService -> AdminUI : Show error message
+    AdminUI -> Admin : Display "User already exists"
+else Email does not exist
+    InvitationService -> EmailService : Send invitation email
+    EmailService -> UserDB : Create user with status "Invited"
+    EmailService -> AdminUI : Confirmation of invitation sent
+    AdminUI -> Admin : Display "Invitation sent successfully"
+end
+
+@enduml

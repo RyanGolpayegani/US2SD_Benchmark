@@ -1,0 +1,48 @@
+Here's a detailed sequence diagram in PlantUML format for the user story "As a library member, I want to change the due date of the book that I borrowed by myself so that I can delay the due date." This sequence diagram outlines the interaction between a library member and various components of the Comprehensive Library Management System (CLMS) when the member wants to change the due date of a borrowed book.
+
+```plantuml
+@startuml
+participant LibraryMember as member
+participant "Web Interface" as webUI
+participant "Borrower Service" as borrowerService
+participant "Book Management System" as bookManagement
+participant Database as db
+
+== Change Due Date of a Borrowed Book ==
+
+member -> webUI: Request to modify due date of the borrowed book
+webUI -> borrowerService: Validate member session
+
+alt authentication success
+    borrowerService -> member: Authentication successful
+else authentication failure
+    borrowerService -> member: Authentication failed, request login
+    deactivate borrowerService
+    stop
+end
+
+borrowerService -> borrowerService: Retrieve member's borrowed book details
+borrowerService -> db: Query for the borrowed book details and current due date
+db -> borrowerService: Return borrowed book details and current due date
+
+borrowerService -> member: Display current due date and ask for new due date
+member -> borrowerService: Provides new desired due date
+
+alt if new due date is valid
+    borrowerService -> db: Request to update the due date in the database
+    db -> borrowerService: Confirm due date has been updated
+    borrowerService -> bookManagement: Notify of due date change for book tracking
+    bookManagement -> borrowerService: Acknowledge notification
+    borrowerService -> member: Confirm due date change
+else if new due date is not valid
+    borrowerService -> member: Notify about invalid due date selection and request a valid date
+    deactivate borrowerService
+    stop
+end
+
+@enduml
+```
+
+This diagram shows the flow starting from the library member's request through the web interface, the system's backend services validating the member's request, checking for due date validity, updating the new due date in the database, and finally confirming the change with the member. It depicts the sequential interaction and decision-making process involved in changing a due date for a borrowed book in the CLMS.
+
+Remember, to render this PlantUML diagram, you need to use a tool that supports PlantUML syntax or use an online PlantUML editor.

@@ -1,0 +1,20 @@
+@startuml
+actor "Repository Manager" as RepoManager
+participant "DIMS Interface" as Interface
+participant "Collection Management Module" as CollectionModule
+database "DAMS Database" as Database
+participant "Event and Integrity Monitor" as EventMonitor
+
+RepoManager -> Interface: Request events for a collection
+Interface -> CollectionModule: Retrieve collection details
+CollectionModule -> Database: Query collection ID
+Database --> CollectionModule: Return collection details
+CollectionModule --> Interface: Provide collection details
+Interface --> EventMonitor: Request event log for collection
+EventMonitor -> Database: Query events for collection ID
+Database --> EventMonitor: Return event log
+EventPull text messages
+EventMonitor --> Interface: Provide event log data
+Interface --> RepoManager: Display event history for collection
+
+@enduml

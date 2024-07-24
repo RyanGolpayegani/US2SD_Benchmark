@@ -1,0 +1,48 @@
+To create a detailed sequence diagram for the user story where a staff member wants to create subscriber's subscription types in the context of the Comprehensive Library Management System (CLMS), you would focus on illustrating the interactions between different system components during this process. Here's how you can represent this using PlantUML syntax:
+
+```plantuml
+@startuml
+participant StaffInterface as UI
+participant SubscriptionService as Service
+database CLMSDatabase as Db
+
+activate UI
+UI -> Service : createSubscriptionType(details)
+activate Service
+
+Service -> Db : checkIfTypeExists(details.name)
+activate Db
+Db --> Service : typeExists: bool
+deactivate Db
+
+alt if typeExists is true
+    Service --> UI : Failure("Subscription Type Already Exists")
+else
+    Service -> Db : saveSubscriptionType(details)
+    activate Db
+    Db --> Service : Success("Saved Successfully")
+    deactivate Db
+    
+    Service --> UI : Success("Subscription Type Created")
+end
+
+deactivate Service
+deactivate UI
+@enduml
+```
+
+### Explanation:
+- **StaffInterface (UI):** Represents the user interface through which the library staff interacts with the system. This is where the staff member initiates the action to create a new subscription type by providing its details.
+- **SubscriptionService (Service):** Denotes the backend service responsible for handling subscription-related operations. It processes the request to create a new subscription type.
+- **CLMSDatabase (Db):** This is the database where all data related to the Comprehensive Library Management System is stored, including information about subscription types.
+
+### Process Flow:
+1. **Start:** The staff member enters the subscription type details on the Staff Interface (UI) and requests to create a new subscription type.
+2. **Service Processing:** The request is sent from the UI to the SubscriptionService (Service), which first checks if a subscription type with the given name already exists in the CLMSDatabase (Db).
+3. **Database Check:** The CLMSDatabase (Db) responds with whether the type exists.
+4. **Condition Handling:**
+    - **If the subscription type already exists,** the Service sends a failure message back to the UI, indicating that the subscription type cannot be created.
+    - **If the subscription type does not exist,** the Service proceeds to save the new subscription type details to the CLMSDatabase (Db) and then informs the UI of success.
+5. **End:** The staff interface displays the outcome of the operation to the staff member.
+
+This sequence diagram outlines the interactions and flow for creating a new subscriber's subscription type within the CLMS, emphasizing the checks and balances to prevent duplicate entries and ensure that only valid, unique subscription types are added to the system.

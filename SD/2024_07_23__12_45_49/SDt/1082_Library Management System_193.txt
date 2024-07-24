@@ -1,0 +1,30 @@
+@startuml
+
+
+participant "Manager (UI)" as Manager
+participant "Web Application" as WebApp
+participant "Controller" as Controller
+participant "Employee Management\nService (Model)" as Model
+database "Database" as DB
+
+
+Manager -> WebApp : Access Employee Creation Form
+WebApp -> Manager : Display Form
+
+Manager -> WebApp : Submit Employee Information\n(Name, Role, Contact, etc.)
+WebApp -> Controller : CreateEmployeeRequest(Info)
+Controller -> Model : CreateEmployee(Info)
+activate Model
+
+Model -> DB : Insert New Employee Record
+activate DB
+DB --> Model : Confirm Insertion
+deactivate DB
+
+Model --> Controller : EmployeeCreationSuccess
+deactivate Model
+
+Controller --> WebApp : Display Success Message
+WebApp --> Manager : Confirm Employee Created
+
+@enduml

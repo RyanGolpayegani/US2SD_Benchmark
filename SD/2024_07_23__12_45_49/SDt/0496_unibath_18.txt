@@ -1,0 +1,28 @@
+@startuml
+actor Depositor
+participant "Web Interface" as Web
+participant "Metadata Service" as Meta
+database "Data Archive" as Archive
+
+Depositor -> Web : Navigate to dataset management
+Web -> Depositor : Display dataset list
+
+Depositor -> Web : Select dataset for metadata addition
+Web -> Depositor : Present metadata form
+
+Depositor -> Web : Input subject-specific metadata
+Web -> Meta : Validate metadata format
+
+Meta --> Web : Metadata validation result
+alt Metadata is Valid
+    Web -> Archive : Attach metadata to dataset
+    Archive --> Web : Confirmation of metadata attachment
+    Web -> Depositor : Display success message
+else Metadata is Invalid
+    Web -> Depositor : Display error message
+    Depositor -> Web : Correct metadata input
+    Web -> Meta : Re-validate metadata
+    [-> Archive : Metadata attachment process repeats
+end
+
+@enduml

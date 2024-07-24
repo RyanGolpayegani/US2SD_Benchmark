@@ -1,0 +1,35 @@
+@startuml
+actor Librarian
+participant "Authentication\nService" as Auth
+participant "Suggestion\nModule" as Suggest
+participant Database
+participant "Notification\nService" as Notify
+
+== Authentication Process ==
+Librarian -> Auth: Log in
+Auth -> Database: Validate user credentials
+Database --> Auth: Credentials valid
+Auth --> Librarian: Access granted
+
+== Suggestion Process ==
+Librarian -> Suggest: Access "Make a Suggestion"
+loop Search and Select Book
+    Librarian -> Suggest: Search for book
+    Suggest -> Database: Query book details
+    Database --> Suggest: Return book details
+    Suggest --> Librarian: Show book details
+end
+Librarian -> Suggest: Enter suggestion details
+Suggest -> Database: Record suggestion
+Database --> Suggest: Suggestion recorded
+Suggest --> Librarian: Show success message
+
+== Optional Notification Process ==
+Suggest -> Notify: New suggestion alert
+Notify -> Database: Fetch users for notification
+Database --> Notify: List of users
+loop Each User
+    Notify -> Librarian: Send notification
+end
+
+@enduml

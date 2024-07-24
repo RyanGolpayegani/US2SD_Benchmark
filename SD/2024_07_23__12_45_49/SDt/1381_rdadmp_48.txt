@@ -1,0 +1,46 @@
+@startuml
+!theme plain
+
+actor "Research Support Officer" as officer
+participant "DMPTool Interface" as DMPTool
+database "Funders' Compliance Database" as ComplianceDB
+participant "Cost Calculation Module" as CostModule
+database "Project Costs Database" as CostsDB
+
+== Ensure Compliance with Funders' Rules ==
+
+officer -> DMPTool : Access DMPTool
+activate DMPTool
+
+DMPTool -> ComplianceDB : Retrieve funders' rules
+activate ComplianceDB
+ComplianceDB --> DMPTool : Return rules
+deactivate ComplianceDB
+
+DMPTool --> officer : Display funders' rules
+officer -> DMPTool : Input project data details
+activate officer
+
+DMPTool -> CostModule : Estimate costs based on project data
+activate CostModule
+CostModule -> CostsDB : Query existing costs
+activate CostsEntry
+ 
+CostsDB --> CostModule : Return existing costs
+CostModule -> CostsDB : Calculate additional project costs
+CostsDB --> CostModule : Update costs
+deactivate CostsEntry
+
+CostModule --> DMPTool : Return calculated costs
+deactivate CostModule
+
+DMPTool -> ComplianceDB : Validate costs against funders' rules
+activate ComplianceDB
+ComplianceDB --> DMPTool : Costs compliance result
+deactivate ComplianceDB
+
+DMPTool --> officer : Display compliance status and detailed costs
+deactivate DMPTool
+deactivate officer
+
+@enduml

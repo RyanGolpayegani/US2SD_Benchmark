@@ -1,0 +1,66 @@
+Creating a detailed Sequence Diagram for the user story "As a member, I want to see the due date of the book if the book is already borrowed" involves several actors and components of the Comprehensive Library Management System (CLMS). Let's break down the process into PlantUML code:
+
+```plantuml
+@startuml
+actor Member
+participant "Search Interface" as SI
+participant "Library System" as LS
+database "Database" as DB
+participant "Book Information" as BI
+
+== Member Checks Due Date of Borrowed Book ==
+
+Member -> SI: Search for book
+activate SI
+SI -> LS: Request book details
+activate LS
+
+LS -> DB: Query book status
+activate DB
+DB --> LS: Book details (Borrowed)
+deactivate DB
+
+LS --> SI: Display status (Borrowed)
+deactivate LS
+SI --> Member: Show book is borrowed
+deactivate SI
+
+Member -> SI: Request due date
+activate SI
+SI -> LS: Query for due date
+activate LS
+
+LS -> DB: Request due date of book
+activate DB
+DB --> LS: Due date information
+deactivate DB
+
+LS --> SI: Provide due date
+deactivate LS
+SI --> Member: Display due date
+deactivate SI
+
+@enduml
+```
+
+This sequence diagram illustrates the flow of operations from the perspective of a library member who wants to check the due date for a book that is already borrowed. Here is a step-by-step explanation:
+
+1. **Member Initiates Search**: The member searches for a specific book using the Search Interface (SI).
+
+2. **Search Interface Requests Book Details**: The SI forwards the request to the Library System (LS).
+
+3. **Library System Queries Database**: The LS queries the Database (DB) for the status of the requested book.
+
+4. **Database Provides Book Status**: The DB returns the book details, including its status (e.g., borrowed).
+
+5. **Search Interface Displays Status to Member**: The SI informs the member that the book is currently borrowed.
+
+6. **Member Requests Due Date**: Upon learning the book is borrowed, the member requests its due date.
+
+7. **Library System Queries Database for Due Date**: The LS requests the due date of the book from the DB.
+
+8. **Database Provides Due Date Information**: The DB returns the due date information to the LS.
+
+9. **Search Interface Displays Due Date to Member**: Finally, the SI displays the due date of the book to the member, completing the interaction.
+
+This diagram represents a simplified overview focusing on the requested user story. Adjustments may be needed to align with the unique technical specifications and functionalities of the Comprehensive Library Management System (CLMS).

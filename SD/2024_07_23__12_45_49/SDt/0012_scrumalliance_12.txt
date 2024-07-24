@@ -1,0 +1,23 @@
+@startuml
+actor Member as sender
+participant "Member Profile Page" as profile
+participant "Email Form" as form
+participant "Form Validation" as validation
+participant "Email Service" as emailService
+participant "Member Database" as database
+actor Member as receiver
+
+sender -> profile: Navigate to member's profile
+profile -> form: Click 'Send Email'
+form <-- sender: Enter email details
+form -> validation: Validate input
+alt Validation Success
+    validation -> emailService: Process email sending
+    emailService -> database: Query receiver email
+    database --> emailService: Receiver email details
+    email#ff0000 --> receiver : Deliver email
+    emailService --> form: Show success message
+else Validation Failed
+    validation --> form: Show error message
+end
+@enduml

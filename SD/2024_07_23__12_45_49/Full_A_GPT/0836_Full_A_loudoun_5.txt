@@ -1,0 +1,49 @@
+To accurately represent the sequence diagram for the mentioned user story "As an Applicant, I want to Submit Application, so that I can provide my information, plans and/or documents to initiate a transaction with the County." using PlantUML, let's break down the steps involved in this process. This will include interactions from the Applicant's initiation of the application through the system processing and finally to the county's reception and acknowledgment of the application.
+
+```plantuml
+@startuml
+actor Applicant
+participant "County Portal" as Portal
+participant "Authentication Service" as Auth
+participant "Application Service" as AppService
+participant "Payment Service" as Payment
+participant "Database" as DB
+participant "County Staff" as Staff
+
+Applicant -> Portal: Access Portal
+Portal -> Auth: Request Authentication
+Auth --> Applicant: Authenticate Credentials
+Applicant -> Portal: Select Service & Fill Application
+Portal -> AppService: Initiate Application Process
+AppService -> DB: Store Initial Application Data
+AppService --> Applicant: Request Supporting Documents & Payment
+Applicant -> Portal: Upload Documents & Proceed to Payment
+Portal -> Payment: Process Payment
+Payment --> Applicant: Confirm Payment
+Payment -> AppService: Update Application Status (Paid)
+AppService -> DB: Save Final Application + Docs
+DB --> Portal: Confirmation Message
+Portal --> Applicant: Application Submitted Successfully
+AppService -> Staff: Notify New Application
+
+@enduml
+```
+
+### Explanation:
+
+1. **Access Portal:** The applicant accesses the County Services & Property Information Portal.
+2. **Request Authentication:** The portal requests authentication to ensure secure access.
+3. **Authenticate Credentials:** The Applicant provides credentials, authenticated by the service.
+4. **Select Service & Fill Application:** Applicant selects the desired service and fills out the application form.
+5. **Initiate Application Process:** The portal starts the application process, interfacing with the Application Service.
+6. **Store Initial Application Data:** The Application Service stores initial data in the Database.
+7. **Request Supporting Documents & Payment:** The Applicant is requested to provide supporting documents and payment for processing.
+8. **Upload Documents & Proceed to Payment:** Applicant uploads necessary documents and proceeds to payment.
+9. **Process Payment:** The Payment Service manages transaction and confirms payment to the applicant.
+10. **Update Application Status (Paid):** Payment Service updates the Application Service on the payment status, marking application as paid.
+11. **Save Final Application + Docs:** Application Service saves all final details, including uploaded documents, into the Database.
+12. **Confirmation Message:** The Database sends back a confirmation message to the Portal.
+13. **Application Submitted Successfully:** Portal informs the Applicant of the successful submission.
+14. **Notify New Application:** Application Service notifies the County Staff of the new application submission for further processing.
+
+This sequence diagram outlines the technical flows from the perspective of an Applicant submitting an application, ensuring the process is transparent, secure, and efficient.

@@ -1,0 +1,34 @@
+@startuml
+actor "Camp Administrator" as admin
+participant "Camp Management \n& Communication Platform" as platform
+database "Camp Worker \nRecords" as workerRecords
+participant "Notification \nSystem" as notify
+
+== Warning Notification Flow ==
+
+admin -> platform : Select Camp Worker \n[Identify inappropriate job performance]
+activate platform
+
+platform -> workerRecords : Retrieve Worker Profile
+activate workerRecords
+
+workerRecords --> platform : Worker Profile
+deactivate workerRecords
+
+platform -> platform : Prepare Warning Message
+
+platform -> notify : Send Warning
+activate notify
+
+notify -> workerRecords : Log Warning in Worker History
+activate workerRecords
+workerRecords --> notify : Confirmation
+deactivate workerRecords
+
+notify --> platform : Confirmation
+deactivate notify
+
+platform --> admin : Display Confirmation Message
+deactivate platform
+
+@enduml

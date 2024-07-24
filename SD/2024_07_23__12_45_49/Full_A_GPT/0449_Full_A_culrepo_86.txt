@@ -1,0 +1,61 @@
+Creating a PlantUML sequence diagram based on the provided user story requires breaking down the sequence of interactions involved in changing a password or retrieving a forgotten one into specific actions. Below is an example of how such a sequence diagram can be scripted in PlantUML language, considering a DB/IR administrator's interactions with the digital repository system.
+
+```plantuml
+@startuml
+actor "DB/IR Administrator" as admin
+participant "Authentication System" as auth
+participant "Database" as db
+
+== Change Password ==
+admin -> auth : Request password change
+auth -> admin : Prompt current password
+admin -> auth : Submit current password
+auth -> db : Validate current password
+db -> auth : Password validation result
+alt If password is valid
+  auth -> admin : Prompt new password
+  admin -> auth : Submit new password
+  auth -> db : Update password
+  db -> auth : Confirmation of update
+  auth -> admin : Display confirmation message
+else If password is invalid
+  auth -> admin : Display error message
+end
+
+== Retrieve Forgotten Password ==
+admin -> auth : Select "Forgot Password?"
+auth -> admin : Prompt for recovery email
+admin -> auth : Submit recovery email
+auth -> db : Validate recovery email
+alt If email exists
+  db -> auth : Email validation success
+  auth -> admin : Send recovery link to email
+  admin -> auth : Access link from email
+  auth -> admin : Prompt to set new password
+  admin -> auth : Submit new password
+  auth -> db : Update password in DB
+  db -> auth : Confirmation of password update
+  auth -> admin : Display confirmation message
+else If email does not exist
+  db -> auth : Email validation failure
+  auth -> admin : Display error message
+end
+
+@enduml
+```
+
+### Explanation:
+
+1. **Change Password Flow:**
+   - The DB/IR Administrator initiates a password change request.
+   - The Authentication System asks for the current password and validates it against the Database.
+   - If the current password is correct, the Authentication System prompts for a new password, updates it in the Database, and confirms the change to the Administrator.
+   - If the current password is incorrect, an error message is displayed.
+
+2. **Retrieve Forgotten Password Flow:**
+   - The DB/IR Administrator indicates they forgot their password.
+   - The Authentication System prompts for a recovery email, which it checks against the Database.
+   - If the email is found, a recovery link is sent to the Administrator's email. The link leads to a page where a new password can be set, which is then updated in the Database.
+   - If the recovery email is not found in the Database, an error message is displayed.
+
+This sequence diagram outlines the main interactions without delving into lower-level implementation details, which would depend on the specific technologies and frameworks used in the project.

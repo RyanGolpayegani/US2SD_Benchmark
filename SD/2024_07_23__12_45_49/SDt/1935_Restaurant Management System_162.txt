@@ -1,0 +1,18 @@
+@startuml
+participant Manager as mgr
+participant "Management Interface" as mui
+participant "Backend Server" as backend
+database "Requests Database" as requestsDB
+participant "Other Stores API" as storesAPI
+
+== List Requests from Other Stores ==
+mgr -> mui : Select "List Requests"
+mui -> backend : GET /listRequests
+backend -> requestsDB : Query all requests
+requestsDB --> backend : Return requests
+backend -> storesAPI : GET /externalRequests
+storesAPI --> backend : Return external requests
+backend -> mui : Display all requests
+mui --> mgr : Show requests from other stores
+
+@enduml

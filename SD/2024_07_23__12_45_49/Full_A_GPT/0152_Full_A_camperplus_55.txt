@@ -1,0 +1,51 @@
+Creating a detailed Sequence Diagram for the user story "As a camp counselor, I want to be able to take attendance of my assigned kids, so that I can make sure everybody is accounted for" involves illustrating the flow of interactions between the camp counselor, the Camp Management & Communication Platform, potentially the database where camper information is stored, and any other system components involved in the attendance-taking process. Below is a sample PlantUML code to represent these interactions:
+
+```plantuml
+@startuml
+actor Counselor
+participant "Camp Platform" as Platform
+database "Camp Database" as DB
+
+Counselor -> Platform : Login()
+activate Platform
+
+Platform -> DB : Fetch Counselor's Assigned Campers()
+activate DB
+DB --> Platform : List of Assigned Campers
+deactivate DB
+
+Platform --> Counselor : Display Campers List
+Counselor -> Platform : Select "Take Attendance"
+activate Platform
+
+loop For each Camper
+    Counselor -> Platform : Mark Attendance(CamperID, Status)
+    activate Platform
+    Platform -> DB : Update Attendance(CamperID, Status)
+    activate DB
+    DB --> Platform : Confirmation
+    deactivate DB
+    Platform --> Counselor : Display Confirmation
+    deactivate Platform
+end
+
+Platform -> DB : Save Attendance Records
+activate DB
+DB --> Platform : Confirmation of Saving
+deactivate DB
+
+Platform --> Counselor : Display Final Confirmation
+deactivate Platform
+@enduml
+```
+
+This PlantUML code outlines the following steps in the attendance-taking process:
+1. **Counselor Logs In**: The camp counselor logs into the Camp Management & Communication Platform to start the process.
+2. **Fetch Counselor's Assigned Campers**: The platform retrieves the list of campers assigned to the counselor from the camp database.
+3. **Display Campers List**: The counselor is shown the list of their assigned campers.
+4. **Counselor Selects to Take Attendance**: The counselor indicates they want to take attendance for their group.
+5. **Marking Attendance**: For each camper in the list, the counselor marks them as present or absent. This process involves interaction with the platform for each camper, where the attendance status is updated in the camp database.
+6. **Save Attendance Records**: Once attendance has been marked for all campers, the final records are saved in the database.
+7. **Final Confirmation Displayed**: The platform displays a final confirmation to the counselor that the attendance records have been successfully saved.
+
+Make sure that when you use this code, the setup for PlantUML and any necessary configurations or libraries for rendering sequence diagrams are correctly in place.

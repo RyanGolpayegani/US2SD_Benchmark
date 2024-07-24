@@ -1,0 +1,51 @@
+Here's a detailed example of a PlantUML sequence diagram for the described user story: "As an archivist, I want to automatically create access copies of files, so that I don't have to do this manually."
+
+```plantuml
+@startuml
+actor Archivist as arch
+participant "Web Interface" as web
+participant "File Management System" as fms
+participant "Storage" as storage
+database "Archival Repository" as repo
+
+arch -> web : upload file(s)
+web -> fms : initiate file upload
+fms -> storage : save original file(s)
+storage -> fms : confirm save
+fms -> fms : check file type
+alt is image or text file
+    fms -> fms : initiate OCR if text
+    fms -> storage : save OCR text
+    storage -> fms : confirm OCR save
+    fms -> fms : create access copy (with watermarks if needed)
+else is video or audio file
+    fms -> fms : create compressed access copy
+else other file types
+    fms -> fms : create standard access copy
+end
+fms -> storage : save access copy
+storage -> fms : confirm access copy save
+fms -> repo : update metadata with access copy details
+repo -> fms : confirm metadata update
+fms -> web : show success message to archivist
+web -> arch : display success and file details
+@enduml
+```
+This sequence diagram describes the process an archivist would go through when uploading files to a digital archive management system for the purpose of automatically creating access copies. The process includes:
+
+1. The archivist uploads the file(s) through a web interface.
+2. The web interface requests the file management system (FMS) to initiate the file upload.
+3. The FMS saves the original file(s) in storage.
+4. Storage confirms the save back to the FMS.
+5. The FMS checks the file type to determine the appropriate process for creating an access copy.
+6. Depending on the file type (image, text, video, audio, or other), different procedures are carried out:
+   - For image or text files, OCR might be initiated for text files, and access copies are created with potential watermarks if needed.
+   - For video or audio files, a compressed access copy is created.
+   - For other file types, a standard access copy is made.
+7. The access copy is saved back to storage.
+8. Storage confirms the save of the access copy to the FMS.
+9. The FMS updates the metadata in the archival repository with the details of the access copy.
+10. The archival repository confirms the metadata update.
+11. Finally, a success message and file details are displayed to the archivist through the web interface.
+
+This diagram illustrates a high-level overview of the automation process for creating access copies of files uploaded by an archivist, aiming to minimize manual work and streamline the archival process.

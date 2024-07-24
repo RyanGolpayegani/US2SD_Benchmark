@@ -1,0 +1,48 @@
+Given the complexity of the project and the specific user story you've provided, creating a detailed sequence diagram in PlantUML for the action of an owner viewing all people in their organization along with their roles involves depicting interactions between the user (Owner), the user interface (UI), possibly an authentication service, the database, and possibly other services responsible for managing organization memberships and roles. Below is an illustrative PlantUML sequence diagram reflecting these interactions:
+
+```plantuml
+@startuml
+participant OwnerUI as UI
+participant AuthService as Auth
+participant OrgService as Org
+participant Database as DB
+
+note over UI, DB: As an Owner, viewing organization members and roles
+
+UI -> Auth: authenticateOwner(request)
+activate Auth
+Auth --> UI: isAuthenticated
+deactivate Auth
+
+UI -> Org: getOrganizationMembers(request)
+activate Org
+Org -> DB: queryOrganizationMembers(ownerId)
+activate DB
+DB --> Org: returnMembersList
+deactivate DB
+
+Org -> DB: queryMemberRoles(members)
+activate DB
+DB --> Org: returnMembersRoles
+deactivate DB
+
+Org --> UI: displayMembersAndRoles(members, roles)
+deactivate Org
+
+note over UI: Owner reviews organization members and their roles
+@enduml
+```
+
+### Explaining the Diagram:
+- **OwnerUI/UI:** Represents the user interface or command-line interface through which the owner interacts with the system.
+- **AuthService/Auth:** A service dedicated to authenticating users to ensure that only the owner or authorized users can view sensitive information.
+- **OrgService/Org:** This is the backend service handling requests related to organization management, such as listing organization members and their roles.
+- **Database/DB:** The storage solution where all data about users, their roles, and their association with the organization are kept.
+
+### Key Steps:
+1. **Authentication:** The owner initiates the action (e.g., selecting an option to view organization members and roles) which triggers an authentication request to make sure that the requestor has the rights to view the information.
+2. **Member Listing:** Post-authentication, the OrgService receives a request to list all members of the owner's organization. It queries the Database to retrieve this information.
+3. **Role Retrieval:** For each member listed, the OrgService queries the Database again to fetch associated roles, if the system design requires this as a separate step. In some designs, this might be integrated into the initial member listing query for efficiency.
+4. **Display Information:** The UI finally receives the compiled list of members and their roles, which is then displayed to the owner.
+
+This sequence diagram is a simplification and primarily focuses on the major steps involved in fulfilling the owner's request to review organization members and their roles. Detailed implementations might involve additional steps, such as error handling, logging, or more intricate authorization checks depending on the system's requirements.

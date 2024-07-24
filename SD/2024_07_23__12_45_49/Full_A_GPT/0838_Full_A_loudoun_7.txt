@@ -1,0 +1,74 @@
+Below is a PlantUML sequence diagram representing the user story: "As an Applicant, I want to Pay Fee, so that I can satisfy outstanding charge associated with the service requested or received from the County." This sequence diagram outlines the interactions between the Applicant (user), Customer Portal, Payment System, and County Database involved in the fee payment process.
+
+Please note: PlantUML code needs to be processed by a PlantUML compiler or integrated development environment (IDE) that supports PlantUML to visualize the sequence diagram.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Applicant
+participant "Customer Portal" as Portal
+participant "Payment System" as Payment
+database "County Database" as Database
+
+Applicant -> Portal : Login to User Account
+activate Portal
+
+Portal --> Applicant : Display Dashboard\n(Outstanding Fees)
+Applicant -> Portal : Select Fee to Pay
+activate Portal
+
+Portal -> Payment : Initiate Payment Process
+activate Payment
+
+Payment --> Applicant : Display Payment Form
+Applicant -> Payment : Enter Payment Details\n(Card Info, Amount)
+Payment -> Payment : Validate Payment Information
+
+alt Payment Successful
+
+    Payment --> Applicant : Display Success Message
+    Payment -> Portal : Notify Payment Success
+    activate Portal
+    Portal -> Database : Update Fee Status
+    activate Database
+    Database --> Portal : Confirm Update
+    deactivate Database
+    Portal --> Applicant : Update User Dashboard\n(Fee Paid)
+    deactivate Portal
+
+else Payment Failed
+
+    Payment --> Applicant : Display Failure Message\n(Retry Payment)
+    deactivate Payment
+
+end
+
+@enduml
+```
+
+### Explanation:
+
+1. **Login to User Account**: The sequence begins with the Applicant logging into their User Account on the Customer Portal, which is a critical step for user authentication and personalized service access.
+
+2. **Display Dashboard (Outstanding Fees)**: After login, the Customer Portal displays the user's Dashboard, including any outstanding fees associated with the services they have applied for or received.
+
+3. **Select Fee to Pay**: The Applicant selects the specific fee they wish to pay via the Customer Portal.
+
+4. **Initiate Payment Process**: The Customer Portal then initiates the payment process by communicating with the Payment System.
+
+5. **Display Payment Form**: The Payment System presents the Applicant with a payment form to enter their payment details.
+
+6. **Enter Payment Details (Card Info, Amount)**: The Applicant enters their payment details into the form provided by the Payment System.
+
+7. **Validate Payment Information**: The Payment System validates the payment information provided by the Applicant.
+
+8. **Payment Successful**: If the payment is successful, the Payment System displays a success message to the Applicant and notifies the Customer Portal of the successful payment.
+
+9. **Update Fee Status**: The Customer Portal updates the fee status in the County Database to reflect the payment.
+
+10. **Update User Dashboard (Fee Paid)**: The Customer Portal updates the Applicant's Dashboard, showing that the fee has been paid.
+
+11. **Payment Failed**: If the payment fails, the Payment System displays a failure message and prompts the Applicant to retry the payment.
+
+This sequence diagram provides a high-level overview of the interactions and processes involved in paying a fee via the County Services & Property Information Portal as per the given user story.

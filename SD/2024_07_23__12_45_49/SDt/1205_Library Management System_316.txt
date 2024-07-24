@@ -1,0 +1,18 @@
+@startuml
+
+actor Member
+participant "Web Interface" as UI
+participant "API Controller" as Controller
+participant "Borrowing Service" as Service
+participant "Database" as DB
+
+Member -> UI : Request to view borrowing history
+UI -> Controller : GET /borrowingHistory
+Controller -> Service : getBorrowingHistory(memberId)
+Service -> DB : SELECT history FROM borrowing WHERE memberId = XXX
+DB -> Service : Return history data
+Service -> Controller : Return history data
+Controller -> UI : Display borrowing history
+UI -> Member : Show borrowing history
+
+@enduml

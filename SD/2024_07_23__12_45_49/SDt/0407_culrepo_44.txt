@@ -1,0 +1,55 @@
+@startuml
+participant Administrator as admin
+participant "Digital Repository Interface" as ui
+participant "Relationship Group Management" as rgm
+participant "Database" as db
+
+== Manage Customizable Relationship Groups ==
+
+admin -> ui : Access Relationship Group Management
+activate admin
+activate ui
+
+ui -> rgm : Request Relationship Group Form
+activate rgm
+
+rgm -> ui : Provide Relationship Group Form
+ui -> admin : Display Relationship Group Form
+
+admin -> ui : Submit New Relationship Group Details
+ui -> rgm : Validate Submission
+activate db
+rgm -> db : Check Existing Groups
+db -> rgm : Validation Results
+
+alt If validation passes
+    rgm -> db : Create/Update Relationship Group
+    db -> rgm : Acknowledge Update
+    rgm -> ui : Confirm Creation/Update to Admin
+    ui -> admin : Display Success Message
+else If validation fails
+    rgm -> ui : Inform Failure (Details Exists/Invalid)
+    ui -> admin : Display Error Message
+end
+
+== Patron "See Also" Support ==
+note over db : Ensure related content\nis dynamically linked\nbased on groups
+
+admin -> ui : Request to View Relationship Group Effect
+ui -> db : Retrieve Sample Related Content
+db -> ui : Provide Sample Related Content
+ui -> admin : Display How "See Also" Appears to Patrons
+
+admin -> ui : Confirm/Adjust Relationship Groups
+ui -> rgm : Admin Makes Final Adjustments
+rgm -> db : Update Relationship Settings
+db -> rgm : Confirm Updates
+rgm -> ui : Notify Update Success
+ui -> admin : Display Update Success Confirmation
+
+deactivate admin
+deactivate ui
+deactivate rgm
+deactivate db
+
+@enduml

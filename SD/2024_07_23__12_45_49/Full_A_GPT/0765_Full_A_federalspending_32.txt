@@ -1,0 +1,41 @@
+Given your request, below is a detailed Sequence Diagram in PlantUML code format for the specific User Story: "As an agency user, I want to ensure that deleted FS most. The following diagram outlines the sequence of interactions between different system components and stakeholders to fulfill this requirement.
+
+```plantuml
+@startuml
+participant AgencyUser as AU
+participant BrokerWebInterface as BWI
+participant DataValidationService as DVS
+participant Database as DB
+
+AU -> BWI : Initiate Submission Request
+BWI -> DVS : Start Data Processing
+DVS -> DB : Fetch Data Including FSRS Records
+DB --> DVS : Data with FSRS Records
+DVS -> DVS : Validate FSRS Record Status
+DVS -> DB : Query for Deleted FSRS Records
+DB --> DVS : Deleted FSRS Records List
+DVS -> DVS : Exclude Deleted FSRS Records from Submission
+DVS -> BWI : Return Processed and Validated Data for Submission
+BWI -> AU : Display Submission Results\n(without Deleted FSRS Records)
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **Agency User Initiates Submission Request**: The process begins with the agency user initiating a data submission request through the Broker Web Interface (BWI).
+
+2. **Start Data Processing**: The Broker Web Interface requests the Data Validation Service to start processing the data.
+
+3. **Fetch Data Including FSRS Records**: The Data Validation Service fetches the necessary data from the Database, including FSRS records that are part of the submission.
+
+4. **Validate FSRS Record Status**: The Data Validation Service checks the status of FSRS records to identify any that have been deleted.
+
+5. **Query for Deleted FSRS Records**: The Data Validation Service queries the Database specifically for a list of FSRS records that have been flagged as deleted.
+
+6. **Exclude Deleted FSRS Records from Submission**: With the list of deleted FSRS records, the Data Validation Service excludes these from the submission data, ensuring they are not part of the final submission packet.
+
+7. **Return Processed and Validated Data for Submission**: The processed and validated submission data, now excluding any deleted FSRS records, is sent back to the Broker Web Interface.
+
+8. **Display Submission Results to Agency User**: Finally, the Broker Web Interface displays the results of the submission to the agency user, confirming that deleted FSRS records were not included.
+
+This sequence ensures that agency users can confidently submit their data, knowing that any FSRS records that have been deleted will not be mistakenly included in their submissions.

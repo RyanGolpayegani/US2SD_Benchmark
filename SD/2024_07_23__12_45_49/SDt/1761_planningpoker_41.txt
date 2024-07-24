@@ -1,0 +1,25 @@
+@startuml
+participant Participant as user
+participant "Web Interface" as web
+participant "Game Server" as server
+database "Estimation Database" as db
+
+user -> web : Request to change estimate
+alt if draw not completed
+  web -> server : Verify draw status
+  server -> db : Fetch current draw status
+  db --> server : draw = ongoing
+  server --> web : Allow estimate change
+  web -> user : Display estimate change UI
+
+  user -> web : Submit new estimate
+  web -> server : Update estimate
+  server -> db : Save new estimate
+  db --> server : Estimate updated
+  server --> web : Confirm update
+  web -> user : Display success message
+else if draw completed
+  server --> web : Deny estimate change
+  web -> user : Display error message(draw completed)
+end
+@enduml

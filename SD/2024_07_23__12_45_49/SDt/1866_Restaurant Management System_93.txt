@@ -1,0 +1,27 @@
+@startuml
+actor Manager
+participant "Management\nInterface" as ManagementInterface
+participant "Employee\nManagement\nModule" as EmployeeManagementModule
+participant "Shift\nManagement\nSystem" as ShiftManagementSystem
+participant Database
+participant "Payroll\nModule" as PayrollModule
+
+== Log Shift Timestamps ==
+Manager -> ManagementInterface: Request to log shift
+ManagementInterface -> ShiftManagementSystem: Trigger shift logging
+ShiftManagementSystem -> Database: Store timestamp data
+Database --> ShiftManagementSystem: Confirm data logged
+
+== Utilize Timestamps for Payments and Assessments ==
+ShiftManagementSystem -> EmployeeManagementModule: Process shift data for performance assessment
+EmployeeManagementModule -> Database: Fetch employee performance data
+Database --> EmployeeManagementModule: Return performance data
+EmployeeManagementModule --> Manager: Display performance assessment
+
+ShiftManagementSystem -> PayrollModule: Calculate payment based on shift data
+Payroll/[hidden] --> Database: Fetch hourly rates
+PayrollModule -> Database: Store calculated pay
+Database --> PayrollModule: Confirm pay stored
+PayrollModule --> Manager: Display payroll information based on shifts
+
+@enduml

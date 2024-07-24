@@ -1,0 +1,22 @@
+@startuml
+actor Member as member
+participant "UI Interface" as ui
+participant "Controller" as controller
+participant "Book Service" as service
+database "Library Database" as db
+
+member -> ui : Access CLMS
+ui -> controller : Request to view new books
+activate controller
+controller -> service : Fetch new books
+activate service
+service -> db : Query new books
+activate db
+db -> service : Return new books data
+deactivate db
+service -> controller : New books data
+deactivate service
+controller -> ui : Display new books
+deactivate controller
+ui -> member : Show new books list
+@enduml

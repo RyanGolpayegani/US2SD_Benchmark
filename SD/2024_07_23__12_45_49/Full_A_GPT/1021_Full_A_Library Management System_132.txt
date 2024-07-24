@@ -1,0 +1,37 @@
+To model the described user story as a sequence diagram in PlantUML, it’s necessary to identify the key actors and system components involved in the process of a library manager tracking member checkouts to potentially block them from checking out too many books. 
+
+Actors & Components:
+- Library Manager: Initiates the tracking of member checkouts.
+- System Interface: The front-end interface where the library manager interacts.
+- Server: Facilitates the process, validates the number of checkouts per member.
+- Database: Stores member checkout information, including book details, member details, and current checkout counts.
+
+Assuming the library has set a limit on the number of books a member can have checked out at any one time, the diagram illustrates the steps from the library manager’s wish to track checkouts to the potential action of blocking a member.
+
+```plantuml
+@startuml
+!theme cerulean
+
+actor "Library Manager" as Manager
+participant "System Interface" as Interface
+participant "Server" as Server
+participant "Database" as DB
+
+Manager -> Interface: Request to view member checkout statuses
+Interface -> Server: Validate manager credentials
+Server -> DB: Fetch checkout details per member
+DB --> Server: Return checkout data
+Server --> Interface: Display checkout statuses
+Manager -> Interface: Identify over-limit checkouts
+Interface -> Server: Request to block member(s)
+Server -> DB: Update member status to 'blocked'
+DB --> Server: Confirmation of status update
+Server --> Interface: Display updated member status
+Interface --> Manager: Show confirmation of member(s) blocked
+
+@enduml
+```
+
+This sequence diagram starts with the library manager requesting to view the checkout statuses of library members. After validating the library manager's credentials, the server fetches and returns the relevant data from the database. The manager, upon identifying members who have exceeded the checkout limit, requests to block these members from checking out more books. The server then updates the statuses of these members in the database to 'blocked' and confirms the change back to the manager through the system interface.
+
+Please note, the actual implementation details may vary based on specific project requirements, such as the method of identifying members exceeding limits, the precise definition of "blocking" (e.g., temporary suspension, limit reductions), and the user interface elements involved.

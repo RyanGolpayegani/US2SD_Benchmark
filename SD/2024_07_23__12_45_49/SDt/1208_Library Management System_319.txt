@@ -1,0 +1,30 @@
+@startuml
+actor Reader
+participant "CLMS Interface" as Interface
+participant "Authentication Service" as Auth
+participant "User Preferences" as Preferences
+participant "Books Service" as Books
+
+== User Login ==
+Reader -> Interface : Access CLMS
+Interface -> Auth : Validate credentials
+Auth -> Interface : Display Dashboard
+
+== Navigate to Preferences/Genres ==
+Reader -> Interface : Navigate to Preferences
+Interface -> Preferences : Retrieve Favorite Genres
+Preferences -> Interface : Display Genres
+
+== Select Genre to Explore Books ==
+Reader -> Interface : Select a Genre
+Interface -> Books : Fetch Books by Genre
+Books -> Interface : Return Books List
+Interface -> Reader : Display Books
+
+== Exploration Phase ==
+Reader -> Interface : Browse/Select Book
+Interface -> Books : Fetch Book Details
+Books -> Interface : Return Book Details
+Interface -> Reader : Show Book Details
+
+@enduml

@@ -1,0 +1,65 @@
+Creating a detailed sequence diagram in PlantUML format that reflects the user story of a Development Staff member issuing a Development-related Permit involves outlining the interactions between the system components such as the User Interface (UI), the Application Backend, the Database, and the Applicant. This diagram will demonstrate the flow from the moment a Development Staff member decides to issue a permit based on a valid application, through to the Database updates and the notification sent to the Applicant about the issuance of the permit.
+
+Please note, to execute this PlantUML code, you would need a PlantUML environment set up or use an online PlantUML editor.
+
+```plantuml
+@startuml
+!theme cerulean
+
+actor "Development Staff" as Staff
+participant ":UI/Application\nPortal" as UI
+participant ":Backend\nService" as Backend
+participant ":Database" as DB
+actor "Applicant" as Applicant
+
+== Issue Development-related Permit ==
+
+Staff -> UI: Log in
+UI -> Backend: Auth request
+Backend -> DB: Validate Staff credentials
+DB -> Backend: Credentials valid
+Backend -> UI: Auth successful
+UI -> Staff: Access Granted
+
+activate Staff
+
+Staff -> UI: Select Application to Review
+UI -> Backend: Locate Application
+Backend -> DB: Query Application Details
+DB -> Backend: Return Application Details
+Backend -> UI: Show Application Details
+UI -> Administrator: Display Application
+
+note right of Staff: Review Application Details\nand Compliance
+
+Staff -> UI: Issue Development Permit
+
+UI -> Backend: Process Permit Issuance
+Backend -> DB: Update Permit Status\n+Generate Permit
+DB -> Backend: Confirm Permit Issued
+Backend -> UI: Permit Issuance Successful
+UI -> Staff: Notify Permit Issued
+
+deactivate Staff
+
+Backend -> DB: Log Activity
+DB -> Backend: Log Confirmed
+
+Backend -> UI: Send Notification to Applicant
+UI -> Applicant: Notify Permit Issued
+
+note over Applicant: Applicant Receives\nPermit Issuance Notification
+
+@enduml
+```
+
+Explanation of Sequence Diagram Steps:
+1. The Development Staff logs in through the UI/Application Portal, which sends an authentication request to the Backend Service. The Backend then validates the credentials with the Database.
+2. Once authentication is successful and access is granted, the Staff selects the permit application to review from the UI.
+3. The UI requests the Backend to locate the application, which queries the Database for application details. These details are returned to the Backend, then shown to the Staff through the UI.
+4. The Staff reviews the application details and decides to issue the development permit through the UI.
+5. The UI communicates this decision to the Backend, which proceeds to update the permit status in the Database and generates the permit. The Database confirms that the permit is issued.
+6. The Backend then logs the activity of permit issuance in the Database.
+7. Finally, the Backend instructs the UI to send a notification to the Applicant, informing them that the permit has been issued.
+
+This sequence diagram provides a high-level overview of the interactions involved in issuing a development-related permit within the County Services & Property Information Portal from the perspective of Development Staff.

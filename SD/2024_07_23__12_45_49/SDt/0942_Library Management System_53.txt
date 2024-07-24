@@ -1,0 +1,30 @@
+@startuml
+actor Librarian
+participant "Library System" as System
+database "Database" as DB
+
+== Authentication ==
+Librarian -> System : Log in
+
+== Editing Book Details ==
+Librarian -> System : Search for book by title/ID
+System -> DB : Fetch book list
+DB -> System : Return book list
+System --> Librarian : Display search results
+
+Librarian -> System : Select book to edit
+System -> DB : Fetch book details for selected book
+DB -> System : Return book details
+System --> Librarian : Show book details
+
+Librarian -> System : Edit book details and submit
+System -> System : Validate edited details
+alt Validation Success
+    System -> DB : Update book details in database
+    DB --> System : Confirm update
+    System --> Librarian : Display success message
+else Validation Fail
+    System --> Librarian : Display error message
+end
+
+@enduml

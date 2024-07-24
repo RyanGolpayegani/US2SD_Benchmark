@@ -1,0 +1,45 @@
+Certainly! Below is a sequence diagram in PlantUML format depicting the process flow for automatically making repository items available under their configured permissions once the embargo date has been reached, from the perspective of a collection curator.
+
+```plantuml
+@startuml
+actor Curator as curator
+entity "Embargo Management System" as embargoSystem
+database "Digital Repository" as repository
+entity "Notification System" as notifier
+entity "Access Control" as accessControl
+
+== Embargo Lift Process ==
+curator -> embargoSystem : Schedule Embargo Lift\n(Set embargo date & permissions)
+embargoSystem -> repository : Store embargo details
+loop Every Day
+    embargoSystem -> embargoSystem : Check current date against embargo dates
+end
+embargoSystem -> repository : Identify items where\nembargo date = current date
+repository --> embargoSystem : List of items
+embargoSystem -> accessControl : Update item permissions\naccording to configuration
+accessControl -> repository : Apply new permissions
+repository --> accessControl : Confirmation
+embargoSystem -> notifier : Trigger notification to curator
+notifier -> curator : Notify embargo lift &\npermission update
+@enduml
+```
+
+Explanation of the Sequence Diagram steps:
+
+1. **Schedule Embargo Lift**: The collection curator schedules an embargo lift for repository items, setting both the embargo date and the permissions that should be applied once the embargo is lifted. This request is sent to the Embargo Management System.
+
+2. **Store Embargo Details**: The Embargo Management System instructs the Digital Repository to store these embargo details.
+
+3. **Daily Check**: The Embargo Management System, on a daily loop, checks the current date against embargo dates set on items within the repository.
+
+4. **Identify Due Items**: On identifying that today's date matches the embargo date for one or more items, the system retrieves a list of these items from the Digital Repository.
+
+5. **Update Item Permissions**: The Embargo Management System sends the new permission configurations for these items to the Access Control system.
+
+6. **Apply New Permissions**: The Access Control system applies these configured permissions to the associated items in the repository and confirms the update.
+
+7. **Trigger Notification**: Once the embargo lift process and permission updates are successfully executed, the Embargo Management System triggers a notification to the curator via the Notification System.
+
+8. **Notification to Curator**: The notification system informs the curator that the embargo has been lifted and permissions updated according to the initial configuration.
+
+This sequence ensures that once the embargo date is reached, repository items are made available under the configured permissions automatically, with minimal manual intervention required from the curator or other repository staff.

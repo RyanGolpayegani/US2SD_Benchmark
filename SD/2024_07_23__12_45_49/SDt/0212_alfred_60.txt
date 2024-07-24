@@ -1,0 +1,29 @@
+@startuml
+participant OlderPerson
+participant "User Interface" as UI
+participant "System Core" as Core
+participant "Scheduler" as Scheduler
+participant "Question Module" as QModule
+
+== Program Spontaneous Questions ==
+OlderPerson -> UI : Access Settings
+UI -> Core : Request Programming Mode
+Core -> UI : Display Programming Options
+UI -> OlderPerson : Show Programming Options
+OlderPerson -> UI : Specify Times for Questions
+UI -> Core : Set Times for Questions
+Core -> Scheduler : Program Question Times
+Scheduler -> Core : Confirm Times Set
+Core -> UI : Confirm Programming Success
+UI -> OlderPerson : Show Success Message
+
+== Time for Spontaneous Question ==
+Scheduler -> QModule : Trigger Question at Specified Time
+QModule -> Core : Request Question Content
+Core -> QModule : Provide Question from Pool
+QModule -> UI : Display Question
+UI -> OlderPerson : Ask Spontaneous Question
+OlderPerson -> UI : Respond to Question
+UI -> QModule : Capture Response
+QModule -> Core : Analyze and Store Response
+@enduml

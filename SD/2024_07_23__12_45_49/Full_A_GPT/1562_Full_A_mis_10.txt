@@ -1,0 +1,51 @@
+To create a detailed sequence diagram in PlantUML format for the user story provided, we will focus on the interaction between the repository manager, the digital repository management system (EDRMS), and potential remote storage sites involved in the replication process. Please note, to use this code, you need to have access to PlantUML software or an online PlantUML engine where you can paste this code to visualize the diagram.
+
+```plantuml
+@startuml
+participant RepositoryManager as RM "Repository Manager"
+participant EDRMS
+participant PrimaryRemoteStorage as PRS "Primary Remote Storage"
+participant SecondaryRemoteStorage as SRS "Secondary Remote Storage"
+
+RM -> EDRMS : Request replication options
+
+alt Primary Replication
+  EDRMS -> PRS : Initiate Replication Process
+  PRS -> EDRMS : Acknowledge Replication
+  EDRMS -> RM : Confirm primary replication
+else Secondary Replication
+  RM -> EDRMS : Opt for secondary replication
+  EDRMS -> SRS : Initiate Replication Process
+  SRS -> EDRMS : Acknowledge Replication
+  EDRMS -> RM : Confirm secondary replication
+else No Replication
+  EDRMS -> RM : Confirm no replication action
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+- **Repository Manager (RM)**: This participant interacts with the EDRMS to make decisions about data replication.
+- **EDRMS**: The central system that processes the repository manager's requests and communicates with remote storage solutions.
+- **Primary Remote Storage (PRS)**: The first-level remote storage solution where data is replicated initially.
+- **Secondary Remote Storage (SRS)**: An optional, additional level of remote storage for further replication, based on the repository manager's decision.
+
+### Sequence of Events:
+
+1. **Replication Request**: The repository manager requests replication options from the EDRMS.
+2. **Decision Points for Replication**:
+    - **Primary Replication**:
+        - EDRMS initiates the replication process to the primary remote storage.
+        - Primary remote storage acknowledges the process.
+        - EDRMS confirms primary replication success to the repository manager.
+    - **Secondary Replication**:
+        - The repository manager opts for a secondary level of replication.
+        - EDRMS initiates the replication process to the secondary remote storage.
+        - Secondary remote storage acknowledges the process.
+        - EDRMS confirms secondary replication success to the repository manager.
+    - **No Replication**:
+        - EDRMS confirms to the repository manager that no replication action will be taken.
+
+This sequence diagram outlines the interaction between the repository manager and the Enhanced Digital Repository Management System (EDRMS) for deciding on and executing data replication to either a primary remote site, an optional secondary remote site, or opting not to replicate at all.

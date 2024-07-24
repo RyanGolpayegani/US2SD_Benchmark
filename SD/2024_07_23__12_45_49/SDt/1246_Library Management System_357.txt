@@ -1,0 +1,24 @@
+@startuml
+participant Staff as S
+participant "Library Management\nSystem" as LMS
+database "Database" as DB
+
+== Assign Unique ID to a Book ==
+
+S -> LMS : Request to assign unique ID
+activate LMS
+
+LMS -> DB : Check last assigned ID
+activate DB
+DB --> LMS : Last ID = X
+deactivate DB
+
+LMS -> LMS : Generate unique ID (X+1)
+LMS -> DB : Save new ID with book details
+activate DB
+DB --> LMS : Confirmation
+deactivate DB
+
+LMS --> S : Unique ID (X+1) assigned
+deactivate LMS
+@enduml

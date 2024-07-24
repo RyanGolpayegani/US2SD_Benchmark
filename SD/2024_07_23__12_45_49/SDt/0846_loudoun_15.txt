@@ -1,0 +1,35 @@
+@startuml
+actor StaffMember as "Staff Member"
+participant "Portal" as Portal
+participant "EmailService" as Email
+database "Database" as DB
+
+== Send Formal Response to Applicant ==
+
+StaffMember -> Portal: Access application response form
+activate Portal
+
+Portal -> DB: Retrieve Applicant Details
+activate DB
+DB --> Portal: Applicant Email & Application Info
+deactivate DB
+
+Portal --> StaffMember: Show form with Applicant Info\n(Pre-filled)
+
+StaffMember -> Portal: Submit Formal Response\n(Includes response text and attachments)
+activate Portal
+
+Portal -> DB: Save Response Details
+activate DB
+DB --> Portal: Confirmation
+deactivate DB
+
+Portal -> Email: Send Formal Response to Applicant\n(Email with response & attachments)
+activate Email
+Email --> Portal: Email Sent Confirmation
+deactivate Email
+
+Portal --> StaffMember: Display Confirmation Message\n(Response Sent)
+deactivate Portal
+
+@enduml

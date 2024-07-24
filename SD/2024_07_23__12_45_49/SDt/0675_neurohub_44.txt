@@ -1,0 +1,20 @@
+@startuml
+participant User as U
+participant "Neurohub Interface" as NI
+participant "Neurohub Server" as NS
+participant "Logging System" as LS
+participant "Blockchain/Time Stamping Service" as BTSS
+
+U -> NI : Creates a page
+NI -> NS : Request to create a page
+activate NS
+NS -> LS : Log creation event with user ID & timestamp
+LS -> NS : Log entry confirmation
+NS -> BTSS : Request timestamp certification
+activate BTSS
+BTSS -> NS : Provide timestamp token/certificate
+deactivate BTSS
+NS -> NI : Confirm page creation & timestamp
+deactivate NS
+NI -> U : Display confirmation & timestamp proof
+@enduml

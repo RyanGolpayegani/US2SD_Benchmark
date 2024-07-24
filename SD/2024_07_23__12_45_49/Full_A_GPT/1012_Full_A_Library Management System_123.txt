@@ -1,0 +1,53 @@
+To create a detailed sequence diagram for the user story, "As a library manager, I want to know members' library score, so I can set a threshold to decide whether to lend another book or not," we'll need to illustrate the interactions between different components of the Comprehensive Library Management System (CLMS) using PlantUML. The components involved in this scenario are the Library Manager, the Library Management System Interface, the Score Calculation Module, the Member Database, and the Decision Module for verifying if a member exceeds the threshold score for borrowing.
+
+Below is the example sequence diagram in PlantUML format:
+
+```
+@startuml
+participant LibraryManager as LM
+participant "Library Management\nSystem Interface" as LMSI
+participant "Score Calculation\nModule" as SCM
+participant "Member Database" as MDB
+participant "Decision Module" as DM
+
+LM -> LMSI : Request member's library score
+LMSI -> SCM : Calculate library score
+SCM -> MDB : Retrieve member's borrowing history
+MDB --> SCM : Borrowing history data
+SCM -> SCM : Compute score based on\nborrowing history, returns, and fines
+SCM --> LMSI : Return library score
+LMSI -> DM : Verify if score exceeds\nborrowing threshold
+DM -> MDB : Check threshold value
+MDB --> DM : Threshold value
+DM -> DM : Compare score with threshold
+DM --> LMSI : Decision to lend book or not
+LMSI --> LM : Show decision and\nmember's library score
+
+@enduml
+```
+
+Explanation of the Sequence Diagram steps:
+
+1. **Library Manager requests the member's library score:** The Library Manager initiates the process by requesting the library score of a member through the Library Management System Interface.
+
+2. **Library Management System Interface requests score calculation:** The system interface forwards the request to the Score Calculation Module to calculate the member's library score.
+
+3. **Score Calculation Module retrieves borrowing history:** The Score Calculation Module asks the Member Database for the member's borrowing history, which includes information on books borrowed, return times, and any fines incurred.
+
+4. **Member Database sends borrowing history data:** The Member Database responds with the necessary data back to the Score Calculation Module.
+
+5. **Score Calculation Module computes the score:** Using the received borrowing history data, the Score Calculation Module computes the library score of the member based on predetermined criteria such as timely returns, fines, and the frequency of borrowing.
+
+6. **Score is returned to the Library Management System Interface:** Once the score is calculated, it is sent back to the Library Management System Interface.
+
+7. **Library Management System Interface checks if the score exceeds the borrowing threshold:** The interface makes a request to the Decision Module to verify if the member's score exceeds the set threshold for borrowing.
+
+8. **Decision Module checks threshold value:** The Decision Module requests the threshold value from the Member Database.
+
+9. **Member Database provides the threshold value:** The Member Database responds with the threshold value to the Decision Module.
+
+10. **Decision Module compares score with threshold:** The Decision Module compares the member's library score against the threshold value to make a decision on whether the member is eligible to borrow more books.
+
+11. **Decision and library score are displayed to the Library Manager:** Finally, the decision, along with the member's library score, is communicated back to the Library Manager through the Library Management System Interface.
+
+This sequence diagram visually represents the interactions between various components within the Comprehensive Library Management System, illustrating how a library manager can determine a member's eligibility for borrowing additional books based on their library score.

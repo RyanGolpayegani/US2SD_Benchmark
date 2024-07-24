@@ -1,0 +1,30 @@
+@startuml
+participant Cook
+participant MenuManagement as "Menu Management\nSystem"
+participant InventoryManagement as "Inventory Management\nSystem"
+participant Database as "Database"
+participant SupplierPortal as "Supplier\nPortal"
+
+Cook -> MenuManagement : Check available products
+MenuManagement -> InventoryManagement : Request current stock levels
+InventoryManagement -> Database : Query inventory
+Database --> InventoryManagement : Inventory data
+InventoryManagement --> MenuManagement : Stock levels for products
+MenuManagement -> Cook : Show available products
+Cook -> MenuManagement : Create menu from available products
+MenuManagement -> Database : Update menu items
+Database --> MenuManagement : Confirm menu update
+MenuManagement --> Cook : Menu updated confirmation
+
+alt Low Stock Scenario
+    InventoryManagement -> SupplierPortal : Trigger restocking order
+    SupplierPortal -> Database : Log new supplier order
+    Database --> SupplierPortal : Confirmation
+    SupplierPortal --> InventoryManagement : Order confirmed
+end
+
+Cook -> InventoryManagement : Monitor stock after menu update
+InventoryManagement -> Database : Query updated inventory
+Database --> InventoryManagement : Updated inventory data
+InventoryManagement --> Cook : Show updated stock levels
+@enduml

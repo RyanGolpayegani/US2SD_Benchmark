@@ -1,0 +1,24 @@
+@startuml
+participant "DAMS Manager" as manager
+participant "DIMS System" as DIMS
+participant "Copyright Database" as database
+participant "Notification System" as notification
+
+manager -> DIMS : Request copyright status
+DIMS -> database : Query copyright status
+database --> DIMS : Return current status
+DIMS --> manager : Display current copyright status
+
+alt Manual Update
+    manager -> DIMS : Update copyright status manually
+    DIMS -> database : Update status
+    database --> DIMS : Confirm update
+    DIMS -> notification : Trigger notification
+    notification --> manager : Notify copyright status change
+else Automatic Update Detected
+    database -> DIMS : Inform automatic status change
+    DIMS -> notification : Trigger notification
+    notification --> manager : Notify copyright status change
+end
+
+@enduml

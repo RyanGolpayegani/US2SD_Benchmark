@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the user story mentioned requires understanding the interactions between various components and actors within the system. Below is a PlantUML code that sketches out how an archivist can restrict access to some files by IP address, enabling reading room access to certain digital files.
+
+This sequence diagram assumes a basic system architecture with a User Interface (UI) for the archivist, a Backend Server where business logic is processed, and a Database where file access permissions and details are stored.
+
+```plantuml
+@startuml
+actor Archivist as arc
+participant "UI: Archive Management System" as ui
+participant "Backend Server" as server
+participant "Database" as db
+
+== Restrict Access to Files by IP Address ==
+
+arc -> ui : Select files to restrict
+ui -> server : Request restriction options
+server -> db : Retrieve current access settings
+db --> server : Return access settings
+server --> ui : Display current settings + IP restriction option
+arc -> ui : Apply IP restrictions (enters IP range)
+ui -> server : Send update access settings request with IP details
+server -> db : Update file access settings with IP restrictions
+db --> server : Confirm settings updated
+server --> ui : Display success message
+ui --> arc : Confirmation of IP restriction implementation
+
+@enduml
+```
+
+This sequence diagram simplifies a potentially complex process. The steps are as follows:
+
+1. **Archivist selects files to restrict**: The archivist starts by selecting files within the digital archive management system’s UI.
+2. **Request restriction options**: The UI requests the backend server to provide the current access settings for those files.
+3. **Retrieve and return current access settings**: The server consults the database to fetch the existing access settings for those files and then returns those details back to the UI.
+4. **Apply IP restrictions**: The archivist inputs the desired IP address or range that should have exclusive access to the selected files.
+5. **Send update access settings request with IP details**: The UI communicates this update request to the Backend Server, including the details of the IP restrictions.
+6. **Update file access settings with IP restrictions**: The Backend Server processes this request and updates the access settings in the Database accordingly.
+7. **Confirm settings updated**: The Database confirms that the settings have been updated.
+8. **Display success message**: The Backend Server sends a success message back to the UI, which then informs the archivist that the IP restriction has been successfully applied.
+
+This sequence diagram provides a high-level overview and can be adjusted based on detailed system requirements and architecture specifications. Each system and project might have different components, such as specific authentication and authorization services, that could further detail this diagram.

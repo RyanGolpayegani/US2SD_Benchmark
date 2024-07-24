@@ -1,0 +1,38 @@
+@startuml
+participant "Research Evaluation Manager" as manager
+participant DMPTool
+participant "Metadata System" as metadata
+participant "Repository Owner" as repository
+participant "Institutional System" as institution
+
+== Ensure Correct Citation ==
+manager -> DMPTool: Access project data details
+activate DMPTool
+DMPTool -> metadata: Query metadata for projects
+activate metadata
+metadata --> DMPTool: Return project metadata
+deactivate metadata
+
+DMPTool -> DMPTool: Validate citation format
+DMPTool --> manager: Show current citation details
+manager -> DMPTool: Request update for affiliation
+activate DMPTool
+DMPTool -> repository: Check data provenance
+activate repository
+repository --> DMPTool: Confirm data source
+deactivate repository
+
+DMPTool -> institution: Retrieve institutional affiliation details
+activate institution
+institution --> DMPTool: Provide affiliation details
+deactivate institution
+
+DMPTool -> metadata: Update metadata with correct affiliation
+activate metadata
+metadata --> DMPTool: Confirm metadata update
+deactivate metadata
+
+DMPTool --> manager: Confirm update of citations with correct affiliation
+deactivate DMPTool
+
+@enduml

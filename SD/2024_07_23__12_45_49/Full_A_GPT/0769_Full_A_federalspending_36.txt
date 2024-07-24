@@ -1,0 +1,27 @@
+Creating a detailed Sequence Diagram for the user story mentioned requires understanding the interactions between different components and actors in the process of resetting the environment to only accept Staging MAX permissions. Here's a PlantUML code snippet that outlines a possible sequence for this user story.
+
+```plantuml
+@startuml
+actor Owner
+participant "User Management System" as UMS
+participant "Permissions API" as PA
+participant "Staging Environment" as SE
+participant "Production Environment" as PE
+participant "FABS Testers" as FT
+
+Owner -> UMS : Request environment reset
+UMS -> PA : Retrieve current permissions
+PA --> UMS : List of Permissions
+UMS -> UMS : Identify FABS Tester permissions
+UMS -> PA : Request to revoke FABS Tester permissions
+PA --> UMS : Permissions revoked confirmation
+UMS -> SE : Apply Staging MAX permissions
+SE --> UMS : Staging MAX permissions applied
+UMS -> FT : Notify FABS testers about permission change
+UMS --> Owner : Environment reset to Staging MAX permissions only
+@enduml
+```
+
+This sequence diagram starts with the "Owner" requesting an environment reset from the "User Management System" (UMS). The UMS then communicates with the "Permissions API" (PA) to retrieve the current permissions. After receiving the list of permissions, the UMS identifies the permissions associated with "FABS Testers" and requests the PA to revoke these permissions. Once the revocation is confirmed, the UMS applies "Staging MAX permissions" to the "Staging Environment". After the permissions have been applied, the UMS notifies the FABS testers about the change in their access rights. Finally, the UMS confirms to the Owner that the environment has been reset to only take "Staging MAX permissions", ensuring FABS testers no longer have access.
+
+Please adjust the actors and systems according to your specific project structure and the actual technologies or systems in use for handling permissions and user management.

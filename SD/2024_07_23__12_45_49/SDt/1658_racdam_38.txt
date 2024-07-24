@@ -1,0 +1,36 @@
+@startuml
+actor Researcher as res
+participant "Upload Interface" as UI
+participant "Authentication System" as Auth
+database "Digital Archive Database" as DB
+participant "Access Control" as AC
+participant "Notification Service" as NS
+
+res -> UI : Navigate to Report Upload Page
+UI -> Auth : Request Authentication
+Auth --> res : Authenticate and Authorize
+res -> UI : Upload Report
+UI -> DB : Store Report Details\n(Set metadata, permissions)
+activate DB
+DB --> UI : Confirm Upload Success
+deactivate DB
+UI --> res : Display Upload Success Message
+
+UI -> AC : Update Access Permissions
+AC -> DB : Apply Access Rules
+activate AC
+AC --> UI : Permissions Updated
+deactivate AC
+
+UI -> NS : Trigger Notifications
+NS -> DB : Retrieve Subscriber List
+activate NS
+DB --> NS : Provide Subscriber List
+NS -> res : Send Confirmation Email
+NS -> DB : Retrieve Staff and Researchers Emails
+DB --> NS : Provide Emails
+NS -> DB : Send Notifications to Staff and Researchers
+DB --> NS : Notifications Sent
+deactivate NS
+
+@enduml

@@ -1,0 +1,45 @@
+To depict the user story "As a repository manager, I want to indicate names related to the collection either as creator, source, or subject" in a sequence diagram format using PlantUML, we would need first to understand the primary interactions and components involved in this feature within the DIMS context.
+
+Assuming the DIMS architecture includes components such as the Frontend Interface (where the repository manager interacts), the Backend Server processing requests, and a Database where the collections and related names (creator, source, subject) are stored, here is a simplified sequence diagram in PlantUML format:
+
+```plantuml
+@startuml
+
+actor "Repository Manager" as RM
+boundary "DIMS Frontend Interface" as Frontend
+control "Backend Server" as Backend
+entity "Database" as Database
+
+RM -> Frontend : Select collection to update
+Frontend -> Backend : Request edit form for collection
+Backend -> Database : Fetch collection data
+Database -> Backend : Return collection data
+Backend -> Frontend : Display edit form with data
+Frontend -> RM : Display form
+
+RM -> Frontend : Input/Update names (creator, source, subject)
+Frontend -> Backend : Submit updated names info
+Backend -> Database : Update collection with new names
+alt Successful update
+    Database -> Backend : Acknowledge update success
+    Backend -> Frontend : Confirm update to RM
+    Frontend -> RM : Display success message
+else Update failure
+    Database -> Backend : Notify update failure
+    Backend -> Frontend : Inform RM of failure
+    Frontend -> RM : Display error message
+end
+
+@enduml
+```
+
+This diagram illustrates the interaction flow from the repository manager's perspective when they want to indicate names related to a collection, comprising of the following steps:
+
+1. The repository manager selects the collection they wish to update through the DIMS Frontend Interface.
+2. The Frontend Interface requests the edit form for the selected collection from the Backend Server, which then fetches the required data from the Database.
+3. The Database sends the collection data back to the Backend Server, which forwards it to the Frontend Interface to display to the repository manager.
+4. The repository manager inputs or updates the names related to the collection (i.e., creators, sources, subjects) and submits this information through the Frontend Interface.
+5. The Backend Server processes this submission and updates the collection information in the Database accordingly.
+6. Depending on whether the update is successful or not, the Database acknowledges the result back to the Backend Server, which then informs the Frontend Interface to display a success or error message to the repository manager.
+
+This sequence diagram provides a high-level overview of the process flow and might need adjustments based on the specific system architecture and design of DIMS.

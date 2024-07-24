@@ -1,0 +1,54 @@
+Creating a comprehensive sequence diagram for the user story of a customer wanting to reserve a book in the Comprehensive Library Management System (CLMS) involves illustrating the interactions between the system components involved in the reservation process. Here is how you could structure the PlantUML code to represent these interactions:
+
+```plantuml
+@startuml
+participant Customer
+participant "CLMS Web Interface" as Web
+participant "Reservation System" as Reservation
+participant "Database" as DB
+
+Customer -> Web : Request to reserve a book
+Web -> Reservation : Validate request
+activate Reservation
+
+Reservation -> DB : Check book availability
+activate DB
+DB --> Reservation : Book availability status
+deactivate DB
+
+alt If book is available
+    Reservation --> Web : Show book available
+    Web --> Customer : Display success message
+
+    Customer -> Web : Confirm reservation
+    Web -> Reservation : Process reservation
+    activate Reservation
+
+    Reservation -> DB : Update book status to reserved
+    activate DB
+    DB --> Reservation : Confirmation of reservation
+    deactivate DB
+    
+    Reservation --> Web : Reservation success
+    Web --> Customer : Display reservation details
+else If book is unavailable
+    Reservation --> Web : Show book unavailable
+    Web --> Customer : Display waitlist option
+
+    Customer -> Web : Request to be added to waitlist
+    Web -> Reservation : Process waitlist request
+    Reservation -> DB : Add to waitlist
+    DB --> Reservation : Waitlist confirmation
+    deactivate DB
+
+    Reservation --> Web : Waitlist success
+    Web --> Share : Display waitlist confirmation
+endif
+
+deactivate Reservation
+@enduml
+```
+
+This diagram starts with the Customer interacting with the Comprehensive Library Management System (CLMS) Web Interface to reserve a book. The sequence includes checking the book's availability in the database and either proceeding with the reservation if the book is available or offering a waitlist option if it is not. In either case, the process involves interaction with the database to update the book's status or add the customer to the waitlist, and concludes with the system providing feedback to the customer.
+
+This representation is a simplified view meant to illustrate the fundamental interactions for reserving a book. Real-world implementations might include additional steps or complexity, such as handling payment for reservations if applicable, more detailed interactions for error handling, or interactions with external systems for notifications.

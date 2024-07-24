@@ -1,0 +1,23 @@
+@startuml
+actor Consumer
+participant "UI" as UI
+participant "Validation Service" as Validation
+participant "Data Package" as Data
+
+Consumer -> UI: Request to download Data Package
+UI -> Validation: Trigger automatic validation
+Validation -> Data: Validate Data Package for integrity and quality issues
+Data -> Validation: Validation Results
+alt Success path
+    Validation -> UI: Data Package is valid
+    UI -> Consumer: Display successful validation message
+    Consumer -> UI: Confirm download
+    UI -> Data: Download Data Package
+    Data -> Consumer: Data Package downloaded
+else Failure path
+    Validation -> UI: Data Package has issues
+    UI -> Consumer: Display data issues and warning
+    Consumer -> UI: Abort download / Choose another package
+end
+
+@enduml

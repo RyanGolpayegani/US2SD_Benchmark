@@ -1,0 +1,15 @@
+@startuml
+actor Librarian
+boundary SystemUI
+control RandomBookSuggestionController
+entity BookDatabase
+
+Librarian -> SystemUI : requestRandomBookSuggestion()
+SystemUI -> RandomBookSuggestionController : getRandomBookSuggestion()
+RandomBookSuggestionController -> BookDatabase : fetchAvailableBooks()
+BookDatabase --> RandomBookSuggestionController : listAvailableBooks
+RandomBookSuggestionController -> RandomBookSuggestionController : selectRandomBook(listAvailableBooks)
+RandomBookSuggestionController --> SystemUI : returnRandomBookDetails
+SystemUI --> Librarian : displayRandomBookDetails
+
+@enduml

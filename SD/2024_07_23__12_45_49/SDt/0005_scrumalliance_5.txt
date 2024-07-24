@@ -1,0 +1,26 @@
+@startuml
+participant Trainer as trainer
+participant "Trainer Profile Page" as profilePage
+participant "Profile Management System" as profileSystem
+participant "Database" as db
+
+== Trainer Updates Profile Details ==
+
+trainer -> profilePage : Navigate to Edit Profile
+profilePage -> trainer : Display Edit Profile Form
+
+trainer -> profilePage : Input Additional Details
+profilePage -> profileSystem : Submit Additional Details
+
+activate profileSystem
+profileSystem -> db : Update Trainer Profile
+activate db
+db --> profileSystem : Confirm Update
+deactivate db
+
+profileSystem --> profilePage : Display Update Success Message
+deactivate profileSystem
+
+profilePage --> trainer : Show Updated Profile
+
+@enduml

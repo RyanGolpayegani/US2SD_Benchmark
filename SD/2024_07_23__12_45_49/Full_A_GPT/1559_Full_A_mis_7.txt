@@ -1,0 +1,67 @@
+To illustrate how a developer might explore the viability of using Fedora 4's built-in event audit services within the context of the Enhanced Digital Repository Management System (EDRMS) project through a UML sequence diagram, the following PlantUML code captures this scenario. It focuses on the interactions between a developer and various system components to conduct an audit service check and determine its integration potential.
+
+```plantuml
+@startuml EDRMS_Fedora4_Audit_Check
+!theme plain
+participant Developer
+participant "EDRMS API" as EDRMS
+participant "Fedora Repository" as Fedora
+database "Audit Log" as AuditLog
+
+== Determine Fedora 4 Audit Service Usability ==
+
+Developer -> EDRMS : CheckAuditServiceIntegrationCapability()
+activate EDRMS
+EDRMS -> Fedora : QueryAuditServiceStatus()
+activate Fedora
+
+Fedora --> EDRMS : AuditServiceStatusResponse(enabled, details)
+deactivate Fedora
+
+EDRMS -> EDRMS : EvaluateIntegrationPotential(details)
+EDRMS --> Developer : IntegrationEvaluationResult(canIntegrate, reason)
+deactivate EDRMS
+
+alt canIntegrate == true
+    Developer -> EDRMS : InitiateIntegrationSetup()
+    activate EDRMS
+
+    EDRMS -> Fedora : EnableAuditEventCapture()
+    activate Fedora
+
+    Fedora -> AuditLog : InitializeAuditLogDatabase()
+    activate AuditLog
+
+    AuditLog --> Fedora : AuditLogReady()
+    deactivate AuditLog
+
+    Fedora --> EDRMS : AuditEventCaptureEnabled()
+    deactivate Fedora
+
+    EDRMS --> Developer : IntegrationSetupComplete()
+    deactivate EDRMS
+
+else canIntegrate == false
+    Developer -> Developer : ExploreAlternativeSolutions()
+end
+
+@enduml
+```
+
+This diagram outlines the following process:
+
+1. **Check Audit Service Integration Capability**: The developer initiates a request to the EDRMS API to check if the Fedora 4 built-in event audit services can be integrated into the EDRMS.
+   
+2. **Query Audit Service Status**: The EDRMS sends a query to the Fedora Repository to check the status of the audit services, including whether they are enabled and other relevant details.
+
+3. **Evaluate Integration Potential**: Based on the response from Fedora, the EDRMS evaluates whether its current setup and requirements align with integrating Fedora 4's audit services.
+
+4. **Integration Evaluation Result**: The EDRMS returns the result of the evaluation to the developer. If the result is positive (integration is feasible), the process moves to integration setup. If not, alternative solutions need to be explored.
+
+5. **Initiate Integration Setup**: If feasible, the developer commands the EDRMS to begin integration setup with Fedora's audit services.
+
+6. **Enable Audit Event Capture**: The EDRMS requests Fedora to enable audit event capture. Fedora prepares the audit log database and confirms when it's ready.
+
+7. **Integration Setup Complete or Explore Alternative Solutions**: Depending on the feasibility check, the developer either receives confirmation that the setup is complete or begins exploring alternative solutions if integration isn't possible.
+
+This sequence is a high-level representation meant to guide the development process related to audit service integration. Depending on the project's specifics, additional steps or different tools might be involved.

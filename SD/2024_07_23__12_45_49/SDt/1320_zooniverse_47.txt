@@ -1,0 +1,34 @@
+@startuml
+participant Admin
+participant "AMIDP UI" as UI
+participant "Content Management System" as CMS
+participant "Audio Analysis Service" as AAS
+participant "Database" as DB
+database "Audio Files" as AF
+
+Admin -> UI: Access AMIDP
+UI -> CMS: Request upload interface
+CMS -> UI: Provide upload interface
+Admin -> UI: Upload whale call audio
+UI -> CMS: Receive audio file
+CMS -> AF: Store audio file
+CMS -> AAS: Request analysis of audio
+AF -> AAS: Provide audio file
+AAs -> AAS: Analyze audio for fingerprinting
+AAS -> DB: Query for similar audio fingerprints
+DB -> AAS: Return matched similar audio fingerprints
+AAS -> CMS: Provide grouping suggestions
+CMS -> UI: Display similar whale calls groups
+UI -> Admin: Show suggested groups for review
+Admin -> UI: Approves suggested groups
+UI -> CMS: Update grouping
+CMS -> DB: Store updated groups
+DB -> CMS: Confirm storage
+UI <- CMS: Confirm group update to Admin
+Admin -> UI: Request to view grouped whale calls
+UI -> CMS: Request grouped whale calls
+CMS -> DB: Query for grouped whale calls
+DB -> CMS: Return grouped whale calls
+CMS -> UI: Display grouped whale calls
+UI -> Admin: Show grouped whale calls
+@enduml

@@ -1,0 +1,26 @@
+To illustrate the user story where a library member wants to search for books by their additional information such as author or category, we will create a detailed sequence diagram in PlantUML. This diagram will cover the interactions between the system components including the user interface, backend server, and database.
+
+```plantuml
+@startuml
+
+participant "Member" as member
+participant "Web Interface" as web
+participant "Backend Server" as server
+participant "Database" as db
+
+member -> web : Enter search query (author/category)
+web -> server : Request to search books by author/category
+alt If search query is valid
+    server -> db : Query books by the specified author/category
+    db -> server : Return list of matching books
+    server -> web : Display list of matching books
+    web -> member : Show search results
+else If search query is invalid or empty
+    server -> web : Signal query error (invalid or empty)
+    web -> member : Show error message (No input/Invalid)
+end
+
+@enduml
+```
+
+This sequence diagram starts with the member initiating a search through the web interface by entering information related to the book's author or category. The web interface sends this request to the backend server, which in turn, queries the database for books matching the specified criteria. If the search query is valid and matches are found, the database returns a list of these books to the server, which then sends this information back to the web interface to display to the member. In the scenario where the search query is invalid or empty, the server alerts the web interface, which informs the user accordingly with an error message.

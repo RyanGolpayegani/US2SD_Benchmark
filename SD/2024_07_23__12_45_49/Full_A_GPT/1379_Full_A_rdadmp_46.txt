@@ -1,0 +1,64 @@
+Given the requirements and the role described in the user story, we will design a sequence diagram to illustrate the interactions within the DMPTool system that lead to a Research Centre Director receiving summary reports of research data use. This diagram will focus on the steps from generating the data usage reports to their delivery to the Research Centre Director. 
+
+Please note, the actual diagram syntax can't be visually rendered here, but I'll provide a detailed example in PlantUML format which you can use in a PlantUML editor or integrating tool to visualize the sequence diagram.
+
+```plantuml
+@startuml
+actor "Research Centre\nDirector" as director
+participant "Reporting\nSystem" as reportSystem
+participant "Data Usage\nTracking System" as trackingSystem
+participant "Data Storage\nSystem" as storage
+participant "Email\nService" as emailService
+
+== Regular Summary Report Generation and Delivery ==
+
+director -> reportSystem : Request summary report
+activate reportSystem
+
+reportSystem -> trackingSystem : Retrieve data usage statistics
+activate trackingSystem
+trackingSystem --> reportSystem : Data usage statistics
+deactivate trackingSystem
+
+reportSystem -> storage : Access historical data trends
+activate storage
+storage --> reportSystem : Historical data trends
+deactivate storage
+
+reportSystem -> reportSystem : Generate summary report
+activate reportSystem #FFAAAA
+
+reportSystem --> director : Display preliminary report
+deactivate reportFactory
+
+director -> reportSystem : Schedule regular email delivery
+activate reportSystem
+reportSystem -> emailService : Configure report delivery settings
+activate emailService
+emailService --> reportSystem : Confirmation
+deactivate emailService
+
+reportSystem --> director : Schedule confirmation
+deactivate reportSystem
+
+alt Every Scheduled Period
+    emailService -> director : Email summary report
+    activate emailService
+    director -> emailService : Open/Download Report
+    deactivate emailService
+end
+
+@enduml
+```
+
+### Explanation:
+- **Research Centre Director requests a summary report:** This initiates the process, signaling the Reporting System to gather necessary data.
+- **Reporting System retrieves data usage statistics:** Pulls in detailed usage data from the Data Usage Tracking System.
+- **Access historical data trends:** Fetches historical data trends from the Data Storage System for comprehensive analysis.
+- **Generate summary report:** The Reporting System processes the collected data and statistics to produce a summary report.
+- **Display preliminary report:** A preliminary overview of the report is shown to the Research Centre Director, who requests regular email delivery.
+- **Configure report delivery settings:** The Director's preferences for scheduling and email delivery are set up in the Email Service.
+- **Schedule confirmation:** Confirmation of the scheduled email delivery setup is sent to the Director.
+- **Every Scheduled Period:** Representing the cyclic nature of the report delivery, the Email Service sends the summary report to the Director at the scheduled times.
+
+This sequence diagram provides a high-level overview of the interactions within the DMPTool platform related to generating and sending regular summary reports of research data usage to a Research Centre Director. Modify and extend this diagram based on the specific implementation details and additional features of the DMPTool system.

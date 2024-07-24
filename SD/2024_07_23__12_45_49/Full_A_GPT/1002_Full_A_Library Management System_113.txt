@@ -1,0 +1,49 @@
+Below is a sequence diagram in PlantUML format for the user story described. The process begins with the library manager assigning a unique identification number (ID) to a new book to better track it in the library's database. The sequence diagram assumes the interaction between the library manager, the library management system (LMS) interface, and the database system.
+
+```
+@startuml
+participant LibraryManager as LM
+participant "LMS Interface" as LMS
+database "Library Database" as DB
+
+LM -> LMS : Assign unique ID to book
+activate LMS
+LMS -> LMS : GenerateUniqueID()
+activate LMS
+
+LMS -> DB : CheckIfIDExists(uniqueID)
+activate DB
+alt ID exists
+    DB -> LMS : IDExists
+    LMS -> LMS : GenerateNewUniqueID()
+    LMS -> DB : CheckIfIDExists(newUniqueID)
+    DB -> LMS : IDAvailable
+else ID does not exist
+    DB -> LMS : IDAvailable
+end
+
+LMS -> DB : AssignIDToBook(uniqueID, bookDetails)
+DB -> DB : UpdateBookRecord()
+
+DB -> LMS : Confirmation(BookIDAssigned)
+LMS -> LM : DisplayConfirmation(BookIDAssigned)
+deactivate DB
+deactivate LMS
+@enduml
+```
+
+This sequence diagram focuses on a simple workflow where the key actions are:
+
+1. **Assign unique ID to book:** The library manager initiates the process by deciding to assign a unique ID to a new or existing book.
+
+2. **GenerateUniqueID:** The Library Management System (LMS) Interface generates a potential unique ID for the book.
+
+3. **CheckIfIDExists:** The LMS checks with the Library Database to see if the generated ID already exists.
+
+4. **IDExists / IDAvailable:** The database returns the existence status of the ID. If the ID exists, the system will generate a new one and check again. This loop continues until an available ID is found.
+
+5. **AssignIDToBook:** Once an available unique ID is confirmed, the LMS commands the database to assign this ID to the book along with updating relevant book details.
+
+6. **Confirmation:** The database confirms the assignment, and the LMS Interface displays a confirmation to the library manager.
+
+This scenario simplifies the process, focusing on the critical steps of generating a unique ID and updating the database. Depending on the specific requirements and existing system architecture, additional checks and processes (like error handling, authentication, authorization, etc.) can be added.

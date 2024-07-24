@@ -1,0 +1,32 @@
+@startuml
+actor Moderator
+participant "Web Interface" as UI
+participant "Game Management System" as GMS
+database "Database" as DB
+
+Moderator -> UI : Access Create Game Page
+activate UI
+
+UI -> GMS : Render Create Game Form
+activate GMS
+
+GMS -> UI : Display Form
+activate UI
+deactivate GMS
+
+Moderator -> UI : Enter Game Name and Description
+activate UI
+
+UI -> GMS : Submit Game Creation Request (Name, Description)
+activate GMS
+
+GMS -> DB : Store Game Information
+activate DB
+DB --> GMS : Confirmation
+deactivate DB
+GMS -> UI : Game Created Successfully
+deactivate GMS
+
+UI --> Moderator : Display Success Message & Shareable URL
+deactivate UI
+@enduml

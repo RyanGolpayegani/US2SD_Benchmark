@@ -1,0 +1,28 @@
+@startuml
+participant Employee as emp
+participant "Employee UI" as ui
+participant "Backend Server" as server
+participant "Performance Management Module" as perf
+participant "Database" as db
+
+emp -> ui: Request monthly performance
+ui -> server: GetPerformance(employeeId, month, year)
+server -> perf: FetchPerformanceMetrics(employeeId, month, year)
+perf -> db: QueryPerformanceData(employeeId, month, year)
+db -> perf: ReturnPerformanceData
+perf -> server: Process and Evaluate Metrics
+server -> ui: Display Performance Metrics
+ui -> emp: Show Performance Results
+
+alt Performance Meeting Bonus Criteria
+    emp -> ui: Request Bonus Based on Performance
+    ui -> server: RequestBonus(employeeId)
+    server -> db: LogBonusRequest(employeeId)
+    db -> server: ConfirmRequestLogged
+    server -> ui: Display Bonus Request Status
+    ui -> emp: Show Request Confirmation
+else Performance Not Meeting Bonus Criteria
+    emp -> ui: Display "Try harder next month!"
+end
+
+@enduml

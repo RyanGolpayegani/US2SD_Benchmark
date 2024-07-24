@@ -1,0 +1,30 @@
+@startuml
+actor Cook
+actor Waiter
+database DataBase
+
+Cook -> System: Login
+note right of Cook: Authentication Process
+
+Cook -> System: Select item to update
+System -> DataBase: Check item details
+
+DataBase --> System: Item details retrieved
+System --> Cook: Display item status
+Cook -> System: Mark item unavailable
+
+System -> DataBase: Update item status
+DataBase --> System: Confirm update
+System --> Cook: Show confirmation message
+
+alt Item marked as unavailable
+    System -> Waiter: Notify unavailable item
+    Waiter -> System: Acknowledge notification
+    System --> DataBase: Log waiter acknowledgment
+    DataBase --> System: Confirmation of log
+    System --> Waiter: Show update successful
+else Update fails
+    System --> Cook: Show error message
+end
+
+@enduml

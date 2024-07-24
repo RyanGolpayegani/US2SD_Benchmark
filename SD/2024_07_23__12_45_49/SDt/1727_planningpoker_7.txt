@@ -1,0 +1,23 @@
+@startuml
+participant Moderator
+participant WebAppFrontend as "Web Application Frontend"
+participant WebAppBackend as "Web Application Backend"
+participant Database
+
+Moderator -> WebAppFrontend : Requests to edit an item
+alt If item is selected for editing
+    WebAppFrontend -> Moderator : Display edit item interface
+    Moderator -> WebAppFrontend : Submits edited item details
+    WebAppFrontend -> WebAppBackend : Send edited item data
+    activate WebAppBackend
+    WebAppBackend -> Database : Update item details
+    activate Database
+    Database --> WebAppBackend : Confirm update
+    deactivate Database
+    WebAppBackend --> WebAppFrontend : Confirm item updated
+    deactivate WebAppBackend
+    WebAppFrontend -> Moderator : Display success message
+else If no item is selected
+    WebAppFrontend -> Moderator : Display error/select item message
+end
+@enduml

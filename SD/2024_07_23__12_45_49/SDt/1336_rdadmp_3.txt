@@ -1,0 +1,24 @@
+@startuml
+participant Researcher
+participant DMPTool
+participant MetadataTool
+participant ExternalSystemService
+
+Researcher -> DMPTool: Request metadata import option
+activate DMPTool
+
+DMPTool -> MetadataTool: Invoke metadata retrieval API
+activate MetadataTool
+MetadataTool --> DMPTool: Return metadata
+deactivate MetadataTool
+
+DMPTool -> ExternalSystemService: Authenticate access
+activate ExternalSystemService
+ExternalSystemService --> DMPTool: Confirm authentication
+deactivate ExternalSystemService
+
+DMPTool -> DMPTool: Process and import metadata
+DMPTool --> Researcher: Display imported metadata confirmation
+deactivate DMPTool
+
+@enduml

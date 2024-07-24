@@ -1,0 +1,39 @@
+@startuml
+actor OlderPerson as op "OlderPerson"
+participant "Voice Interface" as vi
+participant "ALFRED System" as as
+participant "Accessibility Features" as af
+participant "Device Settings" as ds
+database "Settings Storage" as ss
+
+== Adapt ALFRED Device for Accessibility Needs ==
+
+op -> vi : Activate device\n"ALFRED, turn on accessibility mode"
+activate vi
+vi -> as : Parse command
+activate as
+as -> af : Access Accessibility Module
+activate af
+af -> ds : Retrieve current settings
+activate ds
+ds -> ss : Fetch stored accessibility settings
+activate ss
+ss --> ds : Return settings
+deactivate ss
+ds --> af : Settings data
+deactivate ds
+af -> af : Adjust settings for\nvisual/hearing troubles
+af -> ds : Update & save new settings
+activate ds
+ds -> ss : Store updated settings
+activate ss
+ss --> ds : Confirm save
+deactivate ss
+ds --> af : Confirm update
+deactivate ds
+af -> vi : Confirm accessibility adjustments
+deactivate af
+vi -> op : "Accessibility mode activated"
+deactivate vi
+
+@enduml

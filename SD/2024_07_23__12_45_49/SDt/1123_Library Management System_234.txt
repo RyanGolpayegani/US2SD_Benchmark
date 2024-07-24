@@ -1,0 +1,31 @@
+@startuml
+!theme cerulean
+
+actor Member
+
+participant "LibraryWebApp" as WebApp
+participant "ReservationSystem" as Reservation
+database "Database" as DB
+participant "NotificationSystem" as Notification
+
+Member -> WebApp : searchForBook(bookDetails)
+WebApp -> Reservation : checkAvailability(bookDetails)
+Reservation -> DB : queryBookDetails(bookDetails)
+DB --> Reservation : bookStatus
+alt If book is available
+    Reservation --> WebApp : bookAvailable
+    Web/Reservation -> Member : displayBookAvailableMessage()
+else If book is reserved
+    Reservation --> WebApp : bookReserved
+    WebApp -> Member : displayBookReservedMessage()
+    Member -> WebApp : requestToReserveBook(bookId)
+    WebApp -> Reservation : reserveBook(bookId, memberId)
+    Reservation -> DB : updateBookStatus(reserved)
+    DB --> Reservation : reservationSuccessful
+    Reservation --> WebApp : displayReservationSuccess()
+    WebApp -> Member : displayReservationSuccessMessage()
+    Reservation -> Notification : sendReservationNotification(memberId, bookId)
+    Notification -> Member : email/SMSNotification
+end
+
+@enduml

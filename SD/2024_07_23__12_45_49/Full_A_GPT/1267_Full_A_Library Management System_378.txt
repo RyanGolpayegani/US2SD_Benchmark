@@ -1,0 +1,58 @@
+Creating a detailed sequence diagram for a user story where an employee wants to log their work times involves depicting the interaction between the user (employee), the front-end interface of your Comprehensive Library Management System (CLMS), and the back-end server handling data transactions to the database. Since the original project description doesn’t specify a feature directly related to time tracking for employees, this addition implies an enhancement to cater to internal library management functionalities. 
+
+Given this scenario, we’ll assume the existence of an “Employee Work Log” module within the CLMS that supports time entry, editing, and review. The sequence diagram in Plant UML format below illustrates the series of interactions for an employee logging their work times:
+
+```plaintext
+@startuml
+participant Employee as E
+participant "CLMS Frontend" as CF
+participant "Authentication Server" as AS
+participant "Work Log Server" as WLS
+participant Database as DB
+
+E -> CF : Clicks on "Log Work Time"
+CF -> AS : Validates Employee session
+AS --> CF : Session Valid
+CF -> E : Displays Work Log Form
+
+E -> CF : Submits Work Time Entry
+note right of E: Work Time Details: \n- Date \n- Start Time \n- End Time
+
+CF -> WLS : Request to Log Work Time
+activate WPA
+
+alt Work Time Validations Pass
+    WLS -> DB : Save Work Time Entry
+    DB --> WLS : Acknowledge Save
+    WLS --> CF : Work Time Logged Successfully
+    CF -> E : Display Success Message
+else Validation Fails
+    WLS --> CF : Error Message (Validation Failed)
+    CF -> E : Display Error Message
+end
+
+alt Edit Work Time
+    E -> CF : Requests to Edit Work Time
+    CF -> WLS : Request to Retrieve Work Time Data
+    WLS -> DB : Fetch Work Time Entry
+    DB --> WLS : Work Time Data
+    WLS --> CF : Display Work Time Data
+    CF -> E : Shows Editable Form with Data
+    E -> CF : Submits Updated Work Time
+    CF -> WLS : Update Work Time Entry in DB
+    DB --> WLS : Acknowledge Update
+    WLS --> CF : Work Time Updated Successfully
+    CF -> E : Display Success Message for Update
+end
+
+@enduml
+```
+
+### Explanation:
+- **Employee (E)**: Initiates interactions by trying to log or edit work times.
+- **CLMS Frontend (CF)**: Serves as the interface where the employee interacts. It captures work time entries and commands initiated by the employee and communicates with the backend servers.
+- **Authentication Server (AS)**: Handles user session validation to ensure that the user attempting to log or edit work time is authenticated, ensuring security.
+- **Work Log Server (WLS)**: Acts as a middleman between the frontend and the database, managing business logic, validations, and data transactions related to work time logging.
+- **Database (DB)**: Stores and retrieves work time entries and related data.
+
+This diagram lays out a foundational approach to integrating a work time logging feature into a library management system, illustrating how various system components might interact to support it.

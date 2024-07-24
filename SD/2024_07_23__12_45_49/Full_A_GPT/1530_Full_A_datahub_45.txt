@@ -1,0 +1,47 @@
+Creating a detailed PlantUML sequence diagram for the given user story involves illustrating the interaction between the Consumer and various components of the Data Registry and Publishing Platform, specifically focusing on accessing the details of data package schema changes. Below is a PlantUML code that represents this process:
+
+```plantuml
+@startuml
+participant Consumer
+participant "UI/CLI" as UI
+participant "API Server" as API
+participant "Database" as DB
+participant "Versioning System" as Versioning
+participant "Data Validation Service" as Validation
+
+== Consumer Requests Data Package Schema Changes ==
+Consumer -> UI: Request schema change details
+UI -> API: Fetch schema change details
+API -> DB: Query package version history
+DB -> API: Return version history
+API -> Versioning: Request detailed changes between versions
+Versionise -> Validation: Retrieve schema validation rules for versions
+Validation -> Versioning: Return validation rules
+Versioning -> API: Compile detailed schema changes
+API -> UI: Display schema changes
+UI -> Consumer: Show detailed schema changes
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+- **Consumer**: Initiates the request to know the full details of how the data package schema has changed. This could be done through a graphical user interface (GUI) or a command-line interface (CLI).
+- **UI/CLI**: Represents the user interface or command-line interface where the Consumer interacts with the platform.
+- **API Server**: The backend server that processes requests from the UI/CLI. It fetches, processes, and returns the requested data.
+- **Database**: Stores all data related to package versions, including schema changes.
+- **Versioning System**: Manages multiple versions of data packages, including the tracking of schema changes across versions.
+- **Data Validation Service**: Validates the data packages against the schema. It can be used to retrieve the validation rules that have applied to different versions, helping to clarify what changed in the schema.
+
+### Steps Illustrated in the Sequence Diagram:
+1. The **Consumer** requests to know the full details of the data package schema changes using the UI/CLI.
+2. The **UI/CLI** sends this request to the **API Server**.
+3. The **API Server** queries the **Database** for the version history of the requested data package.
+4. The **Database** returns the version history to the **API Server**.
+5. The **API Server** then requests detailed changes between versions from the **Versioning System**.
+6. The **Versioning System** retrieves schema validation rules for the versions in question from the **Data Validation Service** to understand what validations were added, removed, or changed.
+7. The **Data Validation Service** returns the validation rules to the **Versioning System**.
+8. The **Versioning System** compiles detailed schema changes, including the validation rule modifications, and sends this information back to the **API Server**.
+9. The **API Server** processes this information and sends it to the **UI/CLI**.
+10. Finally, the **UI/CLI** displays these detailed schema changes to the **Consumer**.
+
+With this sequence diagram code, you can generate a visual diagram using a PlantUML environment or any compatible tool, illustrating the flow as described.

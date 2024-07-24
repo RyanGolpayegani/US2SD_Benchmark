@@ -1,0 +1,48 @@
+@startuml
+!theme cerulean
+
+actor "Development Staff" as Staff
+participant ":UI/Application\nPortal" as UI
+participant ":Backend\nService" as Backend
+participant ":Database" as DB
+actor "Applicant" as Applicant
+
+== Issue Development-related Permit ==
+
+Staff -> UI: Log in
+UI -> Backend: Auth request
+Backend -> DB: Validate Staff credentials
+DB -> Backend: Credentials valid
+Backend -> UI: Auth successful
+UI -> Staff: Access Granted
+
+activate Staff
+
+Staff -> UI: Select Application to Review
+UI -> Backend: Locate Application
+Backend -> DB: Query Application Details
+DB -> Backend: Return Application Details
+Backend -> UI: Show Application Details
+UI -> Administrator: Display Application
+
+note right of Staff: Review Application Details\nand Compliance
+
+Staff -> UI: Issue Development Permit
+
+UI -> Backend: Process Permit Issuance
+Backend -> DB: Update Permit Status\n+Generate Permit
+DB -> Backend: Confirm Permit Issued
+Backend -> UI: Permit Issuance Successful
+UI -> Staff: Notify Permit Issued
+
+deactivate Staff
+
+Backend -> DB: Log Activity
+DB -> Backend: Log Confirmed
+
+Backend -> UI: Send Notification to Applicant
+UI -> Applicant: Notify Permit Issued
+
+note over Applicant: Applicant Receives\nPermit Issuance Notification
+
+@enduml

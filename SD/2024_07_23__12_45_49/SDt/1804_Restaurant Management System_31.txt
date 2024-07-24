@@ -1,0 +1,23 @@
+@startuml
+participant "Chef Interface" as Chef
+participant "Order Management System" as OMS
+participant "Database" as DB
+participant "Kitchen Display System" as KDS
+participant "Waiter Notification System" as WNS
+
+Chef -> OMS : Selects order to update
+OMS -> DB : Request current order status
+DB -> OMS : Return current order status
+OMS -> Chef : Display current order status
+
+Chef -> OMS : Update status to 'Can be served'
+OMS -> DB : Update order status in DB
+DB -> OMS : Confirm status update
+OMS -> KDS : Update display to 'Can be served'
+OMS -> WNS : Send notification to Waiter
+WNS -> OMS : Confirm notification sent
+
+OMS -> Chef : Display update confirmation
+Chef -> Chef : Confirm update visually
+
+@enduml

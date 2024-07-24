@@ -1,0 +1,49 @@
+@startuml
+actor "Repository Manager" as RepMgr
+entity "DIMS Notification System" as NotificationSys
+entity "Object Metadata Management" as ObjMetadata
+database "DAMS Database" as DAMSDB
+
+RepMgr -> DIMSDB: Check object/component info
+activate DIMSDB
+
+DIMSDB -> ObjMetadata: Retrieve info
+activate ObjMetadata
+
+ObjMetadata -> DAMSDB: Fetch object/component metadata
+activate DAMSDB
+DAMSDB --> ObjMetadata: Return metadata
+deactivate DAMSDB
+
+ObjMetadata --> DIMSDB: Provide object/component info
+deactivate ObjMetadata
+DIMSDB --> RepMgr: Show current object/component info
+deactivate DIMSDB
+
+RepMgr -> ObjMetadata: Subscribe to changes for object/component
+activate ObjMetadata
+
+ObjMetadata -> NotificationSys: Register subscription
+activate NotificationStanSir
+NotificationSys --> ObjMetadata: Subscription confirmed
+deactivate NotificationSys
+
+ObjMetadata --> RepMgr: Subscription success notification
+deactivate ObjMetadata
+
+... Time passes, a change occurs ...
+
+DIMSDB -> ObjMetadata: Update detected (object/component)
+activate ObjMetadata
+
+ObjMetadata -> NotificationSys: Trigger change notification
+activate NotificationSys
+
+NotificationSys -> RepMgr: Send change notification
+activate RepMgr
+RepMgr --> NotificationSys: Acknowledge notification
+deactivate RepMgr
+deactivate NotificationSys
+deactivate ObjMetadata
+
+@enduml

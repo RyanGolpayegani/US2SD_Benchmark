@@ -1,0 +1,17 @@
+@startuml
+actor DAMSManager as "DAMS Manager"
+participant DIMSInterface as "DIMS Web Interface"
+participant PolicyControlModule as "Policy Control Module"
+participant Database as "DIMS Database"
+participant Policy as "Library Policy"
+
+DAMSManager -> DIMSInterface : Request object/component info
+DIMSInterface -> PolicyControlModule : Query policy restrictions for object/component
+PolicyControlPanel -> Database : Fetch object/component details
+Database -> PolicyControlModule : Return details
+PolicyControlModule -> Policy : Check for policy restrictions
+Policy -> PolicyControlModule : Return restriction status
+PolicyControlModule -> DIMSInterface : Policy restriction result
+DIMSInterface -> DAMSManager : Display restriction information
+
+@enduml

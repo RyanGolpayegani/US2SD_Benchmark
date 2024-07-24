@@ -1,0 +1,45 @@
+To create a sequence diagram in PlantUML for the user story "As a customer, I want to give comments about dishes," you'll want to illustrate the interactions between different system components from the perspective of a customer providing feedback. Below is an example of how this interaction may be modeled.
+
+Since I can't draw diagrams directly here, I'll represent the PlantUML code needed to draw the sequence diagram. This code assumes a simple flow where a customer logs in, navigates to a dish they've ordered, and submits a comment on it. The system then records this feedback and updates the dish's feedback record.
+
+```plantuml
+@startuml
+actor Customer
+participant "UI Interface" as UI
+participant "Backend System" as Backend
+database "Database" as DB
+
+== Customer Gives Comment on a Dish ==
+Customer -> UI : Selects "My Orders"
+UI -> Backend : Request list of orders
+Backend -> DB : Fetch customer orders
+DB -> Backend : Return orders
+Backend -> UI : Display orders
+UI -> Customer : Show list of orders
+Customer -> UI : Selects a dish from an order
+UI -> Backend : Request dish details
+Backend -> DB : Fetch dish details
+DB -> Backend : Return dish details
+Backend -> UI : Display dish details
+UI -> Customer : Show dish details
+Customer -> UI : Enter comment and submit
+UI -> Backend : Post comment
+Backend -> DB : Save comment to dish
+DB -> Backend : Confirm save
+Backend -> UI : Display success message
+UI -> Customer : Show confirmation of comment submission
+
+@enduml
+```
+
+### Explained Steps:
+1. **Customer Selection**: The customer accesses the "My Orders" section through the UI Interface.
+2. **Fetching Orders**: The UI Interface requests a list of the customer's orders from the Backend System, which in turn fetches this information from the Database.
+3. **Display Orders**: The orders are returned to the customer for selection.
+4. **Selecting a Dish**: The customer selects a specific dish from their past orders to comment on.
+5. **Dish Details Request**: The Backend System retrieves and displays the details of the selected dish for the customer.
+6. **Entering Comments**: The customer enters their comment about the dish and submits it through the UI Interface.
+7. **Comment Submission**: The comment is posted to the Backend System, which then saves the comment associated with the dish in the Database.
+8. **Confirmation**: A success message is displayed to the customer, confirming the submission of their comment.
+
+This is a simplified representation. Depending on the complexity of the system, several other steps and components (like authentication, error handling, notifications for the chef or management, etc.) could be involved.

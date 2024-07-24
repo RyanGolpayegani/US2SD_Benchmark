@@ -1,0 +1,25 @@
+@startuml
+actor OlderPerson as "Older Person"
+participant "Speech Interaction" as Speech
+participant "Content Management" as Content
+participant "Visual Support" as Visual
+
+== Request Visual Support for Viewing Content ==
+
+OlderPerson -> Speech: "Show me today's agenda with visual support."
+activate Speech
+Speech -> Content: Get("today's agenda")
+activate Content
+
+Content -> Content: FetchAgendaDetails()
+Content --> Speech: AgendaDetails
+deactivate Content
+
+Speech -> Visual: ApplyVisualSupport(AgendaDetails)
+activate Visual
+Visual -> Visual: EnhanceVisibility()
+Visual --> OlderPerson: DisplayEnhancedAgenda
+deactivate Visual
+deactivate Speech
+
+@enduml

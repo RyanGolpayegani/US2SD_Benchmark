@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the user story "As a staff, I want to add book checkouts to the system," requires several participants such as the Staff member interface, Checkout Management System, and Database.
+
+Given the details of your project, let's draft a PlantUML code that represents this sequence:
+
+```plantuml
+@startuml
+participant StaffMemberInterface
+participant CheckoutManagementSystem
+participant Database
+
+alt Book Checkout Process
+    StaffMemberInterface -> CheckoutManagementSystem : initiateBookCheckout(borrowerId, bookId)
+    activate CheckoutManagementSystem
+
+    CheckoutManagementMSystem -> Database : verifyBookAvailability(bookId)
+    activate Database
+    Database --> CheckoutManagementSystem : bookAvailable=true
+    deactivate Database
+
+    CheckoutManagementSystem -> Database : checkBorrowerStatus(borrowerId)
+    Database --> CheckoutManagementSystem : borrowerStatus=active
+    deactivate Database
+
+    CheckoutManagementSystem -> Database : createCheckoutRecord(borrowerId, bookId)
+    Database --> CheckoutBorrowerManagementSystem : checkoutRecordCreated
+    deactivate Database
+
+    CheckoutManagementSystem --> StaffMemberInterface : displayCheckoutSuccess()
+    deactivate CheckoutScript
+    
+else Book Not Available or Borrower Inactive
+    CheckoutManagementSystem -> StaffMemberInterface : displayError(message)
+    deactivate CheckoutManagementSystem
+end
+
+@enduml
+```
+This sequence diagram begins with the `StaffMemberInterface` initiating a book checkout process by sending a borrower ID and a book ID to the `CheckoutManagementEndSystem`. The system, then verifies the availability of the book and the status of the borrower's account by querying the `Database`. If the book is available and the borrower is active, the checkout record is created in the database, and a success message is displayed to the staff member through the `StaffMemberInterface`. In case the book is not available or the borrower is not active, an error message is displayed instead.
+
+Please note this is a simplified view focusing on the core interactions for this user story. Depending on your specific requirements or additional functionalities of CLMS, you might need to include more details or other system components in the sequence diagram.

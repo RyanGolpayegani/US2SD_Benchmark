@@ -1,0 +1,50 @@
+To generate a detailed Sequence Diagram for the user story "As a member, I want to view book's shelf information" using PlantUML, follow the steps below. This sequence diagram outlines the interaction process between the library member, the Comprehensive Library Management System (CLMS) interfaces, and backend components to retrieve and display a book's shelf information.
+
+### PlantUML Code:
+
+```plantuml
+@startuml
+participant Member as M
+participant "CLMS Web Interface" as UI
+participant "Book Controller" as BC
+participant "Book Service" as BS
+database "Library Database" as DB
+
+autonumber
+
+M -> UI : Requests to view a book's details
+UI -> BC : Get book details (including shelf info)
+BC -> BS : Fetch book information
+BS -> DB : Query book details
+DB --> BS : Return book details
+BS --> BC : Book details (including shelf info)
+BC --> UI : Display book details with shelf info
+UI --> M : Shows book's shelf information
+
+@enduml
+```
+
+### Explanation:
+
+1. **Member (M)**: The library member who initiates the request to view a book’s details, including its shelf information.
+
+2. **CLMS Web Interface (UI)**: Acts as the interface between the library member and the backend systems. It receives the member’s request and presents the book details back to the member.
+
+3. **Book Controller (BC)**: This component acts as an intermediary that handles requests from the UI, asking for specific operations from the backend services.
+
+4. **Book Service (BS)**: A backend service dedicated to managing book-related operations, including interacting with the library database to fetch book details.
+
+5. **Library Database (DB)**: The storage system that holds all data related to books, including titles, authors, categories, and shelf information.
+
+### Sequence of Events:
+
+1. The **Member** initiates a request to view a book's details through the **CLMS Web Interface**.
+2. The **CLMS Web Interface** forwards this request to the **Book Controller** to get the book details, including shelf information.
+3. The **Book Controller** then requests the **Book Service** to fetch this information.
+4. The **Book Service** queries the **Library Database** for the book's details.
+5. The **Library Database** returns the queried book details back to the **Book Service**.
+6. The **Book Service** sends the book details, including the shelf information, back to the **Book Controller**.
+7. The **Book Controller** forwards the details to the **CLMS Web Interface**.
+8. Finally, the **CLMS Web Interface** displays the book's details, focusing on the shelf information, to the **Member**.
+
+This sequence diagram portrays the interactions necessary for a member to view a book’s shelf information within the Comprehensive Library Management System (CLMS), emphasizing the system's layered architecture and the flow of data.

@@ -1,0 +1,24 @@
+@startuml
+actor User
+participant "Front-End Interface" as Front
+participant "Back-End Server" as Back
+database "Music Database" as DB
+participant "Fingerprinting Service" as Fingerprint
+
+User -> Front : Enter music or upload file for search
+Front -> Back : Request music search
+activate Back
+Back -> Fingerprint : Send audio for fingerprinting
+activate Fingerprint
+Fingerprint -> Fingerprint : Analyzes audio & generates fingerprint
+Fingerprint -> Back : Return fingerprint data
+deactivate Fingerprint
+Back -> DB : Query music by fingerprint
+activate DB
+DB -> Back : Return matching music details
+deactivate DB
+Back -> Front : Send search results
+Front -> User : Display music search results
+deactivate Back
+
+@enduml

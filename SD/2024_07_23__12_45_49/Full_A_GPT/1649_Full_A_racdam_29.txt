@@ -1,0 +1,48 @@
+Creating a detailed sequence diagram for this specific user story in PlantUML format involves illustrating how the system components interact when an archivist wants to apply automatic contrast and level operations to a scanned file. This will simplify the understanding of the process flow from the user's action to the system's response and outcomes. Below is a simplified representation of these interactions in PlantUML code.
+
+Please note that the actual implementation might require more detailed system components and interactions based on the specific software architecture and libraries being used.
+
+```plantuml
+@startuml
+participant Archivist as archivist
+participant "UI Interface" as UI
+participant "File Management System" as FMS
+participant "Image Processing Service" as IPS
+participant "Database" as DB
+
+archivist -> UI : Selects scanned file
+UI -> FMS : Requests file upload
+activate FMS
+FMS -> DB : Checks file metadata
+DB --> FMS : Retrieves metadata
+FMS --> UI : Displays file and options
+deactivate FMS
+activate UI
+UI --> archivist : Shows file and available operations
+deactivate UI
+archivist -> UI : Chooses apply contrast and levels
+activate UI
+UI -> IPS : Sends file and processing request
+activate IPS
+IPS -> IPS : Applies automatic contrast and levels
+IPS -> FMS : Returns processed file
+deactivate IPS
+activate FMS
+FMS -> DB : Updates file metadata
+DB --> FMS : Confirms update
+FMS --> UI : Confirms operation completion
+deactivate FMS
+UI --> archivist : Displays processed file
+deactivate UI
+@enduml
+```
+
+This diagram starts with the Archivist selecting the scanned file and ends with the display of the processed file after automatic contrast and level adjustments have been applied. Each participant (Archivist, UI Interface, File Management System, Image Processing Service, and Database) plays a specific role in this sequence:
+
+- **Archivist:** The user who initiates the process.
+- **UI Interface:** The frontend interface where the archivist interacts with the system.
+- **File Management System:** Manages file uploads, stores, and retrieves file metadata.
+- **Image Processing Service:** Applies automatic contrast and levels to the image.
+- **Database:** Stores and updates file metadata as needed throughout the process.
+
+The interactions sequence demonstrates not just the dynamic actions but shows the system's response at each step, from file selection to displaying the processed file back to the archivist. This UML diagram can be used as a blueprint for developers to understand the expected behavior and interactions for this specific feature within the Digital Archive Management Enhancement Project.

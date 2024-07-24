@@ -1,0 +1,39 @@
+Given the scope of the user story focusing on a new library user wanting to register in the Comprehensive Library Management System (CLMS) so they can borrow books, here is a sequence diagram represented in PlantUML code. This diagram details the interactions between the User, Frontend Interface, Server (Backend), and Database during the registration process.
+
+```plantuml
+@startuml
+participant User
+participant "Frontend Interface" as Frontend
+participant "Server (Backend)" as Backend
+database Database
+
+User -> Frontend : Enters name, surname, credentials
+Frontend -> Backend : Sends registration data
+activate Backend
+    Backend -> Database : Checks if user already exists
+    alt If User Exists
+        Database --> Backend : User Exists Error
+        Backend -> Frontend : Notify user exists
+        Frontend -> User : Display error message
+    else User Does Not Exist
+        Database --> Backend : OK to Register
+        Backend -> Database : Create new user record
+        Database --> Backend : User Registered Confirmation
+        Backend -> Frontend : Notify registration success
+        Frontend -> User : Display success message & instructions
+    end
+deactivate Backend
+@enduml
+```
+
+Explanation:
+- The **User** starts the registration process by entering their name, surname, and credentials (such as email and password) into the system through the **Frontend Interface**.
+- The **Frontend Interface** then sends this registration data to the **Server (Backend)** for processing.
+- The **Server (Backend)** requests the **Database** to check if a user with the provided credentials already exists to prevent duplicate registrations.
+- The **Database** responds:
+  - If the user already exists, it sends a "User Exists Error" back to the Server, which then notifies the Front/engine that the user already exists, and an error message is displayed to the user.
+  - If the user does not exist (standard path), the Database confirms that it's okay to register the new user. The Server then instructs the Database to create a new user record with the provided details.
+- Upon successful creation of the new user record, the Database sends a confirmation back to the Server, which in turn notifies the Frontend of the successful registration.
+- Finally, the **Frontend Interface** displays a success message to the **User**, possibly with additional instructions for verifying their email or logging into the system for the first time.
+
+This sequence diagram outlines the system's behavior and interactions during the user registration process, highlighting the steps taken from the user's perspective to the backend operations and database interactions.

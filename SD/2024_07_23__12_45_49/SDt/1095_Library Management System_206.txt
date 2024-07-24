@@ -1,0 +1,23 @@
+@startuml
+actor Manager
+
+participant "Web Interface" as WebUI
+participant "Authentication Service" as AuthService
+participant "Subscription Management\nService" as SubsService
+participant "Database" as DB
+
+Manager -> WebUI : Selects Delete Subscription
+WebUI -> AuthService : Authenticate Manager
+AuthService -> WebUI : Authentication Success
+
+WebUI -> SubsService : Request to Delete Subscription (subId)
+alt Subscription Exists and Manager has permission
+    SubsService -> DB : Delete Subscription Record (subId)
+    DB --> SubsService : Confirm Deletion
+    SubsService -> WebUI : Deletion Success
+    WebUI -> Manager : Show Success Message
+else Subscription Does Not Exist or\nManager Lacks Permission
+    SubsService -> WebUI : Show Error Message
+    WebUI -> Manager : Display Error
+end
+@enduml

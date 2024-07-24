@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+participant Manager as mgr
+participant "Management Interface" as mngInt
+participant "Server: Employee Management Service" as empServ
+participant "Database" as db
+
+mgr -> mngInt : Accesses employee registration form
+mngInt -> empServ : Request to open registration form
+empServ -> mngInt : Display registration form
+mngInt --> mgr : Present registration form
+
+mgr -> mngInt : Submits filled registration form
+mngInt -> empServ : Validate submitted information
+alt Valid Information
+    empServ -> db : Create new employee record
+    db --> empServ : Confirm employee creation
+    empServ -> mngInt : Display confirmation message
+    mngInt --> mgr : Show success notification
+else Invalid Information
+    empServ -> mngInt : Show error message(s)
+    mngInt --> mgr : Display error notification(s)
+end
+
+@enduml

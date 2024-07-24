@@ -1,0 +1,42 @@
+Creating a detailed Sequence Diagram for the stated user story involves illustrating the interactions between the Older Person, ALFRED (the system), and possibly other system components that work together to program and manage spontaneous questions at specified times. Here's how one might formalize these interactions in PlantUML format:
+
+```plantuml
+@startuml
+participant OlderPerson
+participant "User Interface" as UI
+participant "System Core" as Core
+participant "Scheduler" as Scheduler
+participant "Question Module" as QModule
+
+== Program Spontaneous Questions ==
+OlderPerson -> UI : Access Settings
+UI -> Core : Request Programming Mode
+Core -> UI : Display Programming Options
+UI -> OlderPerson : Show Programming Options
+OlderPerson -> UI : Specify Times for Questions
+UI -> Core : Set Times for Questions
+Core -> Scheduler : Program Question Times
+Scheduler -> Core : Confirm Times Set
+Core -> UI : Confirm Programming Success
+UI -> OlderPerson : Show Success Message
+
+== Time for Spontaneous Question ==
+Scheduler -> QModule : Trigger Question at Specified Time
+QModule -> Core : Request Question Content
+Core -> QModule : Provide Question from Pool
+QModule -> UI : Display Question
+UI -> OlderPerson : Ask Spontaneous Question
+OlderPerson -> UI : Respond to Question
+UI -> QModule : Capture Response
+QModule -> Core : Analyze and Store Response
+@enduml
+```
+
+This sequence diagram outlines the flow from an OlderPerson's desire to have ALFRED ask spontaneous questions at programmed times, through the process of setting these times in the system, to the system's actions when it's time to ask a question. 
+
+- The process starts with the OlderPerson accessing settings through the User Interface (UI) and ends with the system asking a question and storing the response after the OlderPerson replies.
+- The "System Core" acts as a mediator for various activities, including displaying options, setting, and confirming times for questions with the "Scheduler," and requesting and providing questions for the "Question Module."
+- The "Scheduler" is responsible for triggering the "Questional Module" to ask questions at the OlderPerson's specified times.
+- The separation of components like the Scheduler and Question Module showcases modularity, allowing for future expansions or modifications to these systems.
+
+This sequence is a simplification and can become more complex based on detailed requirements such as handling exceptions (e.g., the OlderPerson not responding to a question) or integrating with other ALFRED features.

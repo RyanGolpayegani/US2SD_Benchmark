@@ -1,0 +1,19 @@
+@startuml
+participant User
+participant "UI" as UI
+participant "Content Identification\nSystem" as CIS
+participant "Brand Information\nDatabase" as DB
+participant "External Brand API" as API
+
+User -> UI : Upload video/search for video
+UI -> CIS : Initiate brand identification in video
+CIS -> DB : Query for known brands
+alt Brand found in Database
+    DB -> CIS : Return brand details
+else Brand not found in Database
+    CIS -> API : Request brand information
+    API -> CIS : Return brand details
+end
+CIS -> UI : Display brand information
+UI -> User : Show brand details and related information
+@enduml

@@ -1,0 +1,58 @@
+Creating a detailed sequence diagram for the specified user story involves representing several entities including the Training Coordinator, the Website Platform (which includes the Registration System), and potentially an external Payment System. Below is how you might express the sequence of events in PlantUML format. This sequence is based on the need to incorporate a cancellation deadline into the registration/cancellation workflow to minimize financial loss and spot wastage.
+
+```plantuml
+@startuml
+!theme cerulean
+
+participant "Training Coordinator" as TC
+participant "Website Platform\n(Registration System)" as WP
+database "External Payment System" as EPS
+
+== Set Cancellation Deadline ==
+TC -> WP : Set cancellation deadline for training\n(event details)
+activate WP
+WP -> WP : Store cancellation deadline\nin training details
+deactivate WP
+
+== Registration ==
+participant "Attendee" as A
+A -> WP : Attempt registration
+activate WP
+WP -> WP : Check if before cancellation deadline
+alt Registration Before Deadline
+    WP -> WP : Proceed with registration
+    WP --> A : Confirm registration
+    WP -> EPS : Process payment
+    activate EPS
+    EPS --> WP : Payment confirmed
+    deactivate EPS
+else Registration After Deadline
+    WP --> A : Deny registration\n(Past cancellation deadline)
+end
+deactivate WP
+
+== Cancellation Request ==
+A -> WP : Attempt cancellation
+activate WP
+WP -> WP : Check if before cancellation deadline
+alt Cancellation Before Deadline
+    WP -> WP : Cancel registration
+    WP --> A : Confirm cancellation
+    WP -> EPS : Initiate refund
+    activate EPS
+    EPS --> WP : Refund processed
+    deactivate EPS
+else Cancellation After Deadline
+    WP --> A : Deny cancellation\n(Past cancellation deadline)
+end
+deactivate WP
+
+@enduml
+```
+
+This PlantUML sequence diagram outlines the following:
+1. **Set Cancellation Deadline**: The Training Coordinator sets a cancellation deadline for a training event.
+2. **Registration**: It checks if an attendee's registration attempt is made before the cancellation deadline, proceeding with registration if it is.
+3. **Cancellation Request**: It describes what happens when an attendee attempts to cancel, checking against the set deadline, and proceeding accordingly with confirmation or denial, including refund processing if applicable.
+
+This diagram illustrates a simplified workflow focusing on adding a cancellation deadline to the registration/cancellation process to protect against financial losses and ensure spot management efficiency. Modifications can be made to cater to specific platform or business needs.

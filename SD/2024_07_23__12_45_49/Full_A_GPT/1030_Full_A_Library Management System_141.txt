@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the described user story ("As a library member, I want to check the availability of books, so that I can borrow them.") requires illustrating how different objects or components in the system interact with each other over time for this particular scenario. Below is a PlantUML code snippet that represents this interaction in a sequence diagram format.
+
+```plantuml
+@startuml
+actor Member as member
+participant "Search Interface" as search
+participant "Library Database" as db
+participant "Book Details" as bookDetails
+participant "Availability Checker" as availability
+participant "Reservation System" as reservation
+
+member -> search : enters search query\n(title, author, or category)
+search -> db : fetch matching books
+db -> search : return list of books
+search -> member : display books
+member -> bookDetails : select a book to check availability
+bookDetails -> availability : request availability status
+db -> availability : check status for the selected book
+availability -> db : query current borrowings & reservations
+db -> availability : return availability data
+availability -> bookDetails : show availability status
+bookDetails -> member : display if book is available or reserved
+alt If book is available
+    member -> reservation : request to borrow book
+    reservation -> db : update book status to "on loan"
+    db -> reservation : confirm update
+    reservation -> member : confirmation & due date
+else If book is reserved
+    member -> reservation : place reservation request
+    reservation -> db : add to reservation queue
+    db -> reservation : confirm reservation
+    reservation -> member : confirmation & estimated wait time
+end
+
+@enduml
+```
+
+This diagram starts with the library member interacting with a search interface to find books by title, author, or category. The search interface communicates with a database to fetch and display the results. When a member selects a book to check its availability, the system requests this information from the database. Depending on whether the book is available or already on loan/reserved, the member can either borrow the book immediately or place a reservation, with the system updating accordingly and informing the member of their request's status.
+
+To visualize this diagram, you need to have PlantUML set up on your local machine or use an online PlantUML editor. Paste the provided code snippet, and the editor/tool will render the sequence diagram based on the described user story.

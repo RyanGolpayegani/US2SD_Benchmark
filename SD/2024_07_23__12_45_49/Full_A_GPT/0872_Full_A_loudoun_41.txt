@@ -1,0 +1,65 @@
+Creating a detailed sequence diagram for the given user story involves mapping out the interaction flow between the system actors (both human and system components) involved in reviewing code modifications submitted by an applicant. Given the complexity and the number of actors potentially involved, please note that this diagram aims to capture the essential steps of the process within the constraints of the project description. This will include the Plan Review Staff Member, the Application System, possibly a Database for storing project and code modification requests, and the Applicant for initiating requests and receiving feedback.
+
+Below is a PlantUML sequence diagram code snippet that outlines the sequence of actions initiated by a Plan Review Staff Member (PRSM) wanting to review code modifications submitted by an Applicant and, if approved, associate them with the appropriate project.
+
+```plantuml
+@startuml
+actor Applicant
+participant "Application\nSystem" as AppSys
+database "Project Database" as DB
+actor "Plan Review\nStaff Member" as PRSM
+
+== Code Modification Submission ==
+Applicant -> AppSys : Submit Code Modification\nRequest with Documentation
+activate AppSys
+AppSys -> DB : Store Submission Details
+activate DB
+DB --> AppSys : Acknowledge Storage
+deactivate DB
+AppSys --> Applicant : Acknowledge\nSubmission Received
+deactivate AppSys
+
+== Code Review Process ==
+PRSM -> AppSys : Fetch Pending\nCode Modifications
+activate AppSys
+AppSys -> DB : Retrieve Submission\nDetails & Documents
+activate DB
+DB --> AppSys : Submission Details &\nDocuments
+deactivate DB
+AppSys --> PRSM : Display Details &\nDocuments
+deactivate AppSys
+PRSM -> PRSM : Review Submitted\nCode Modifications
+note right of PRSM: Review based on\napplicable standards\and project requirements
+
+== Decision Making ==
+alt If Code Modifications Approved
+    PRSM -> AppSys : Approve Modifications\n& Associate with Project
+    activate AppSys
+    AppSys -> DB : Update Project\nwith Modifications
+    activate DB
+    DB --> AppSys : Acknowledge Update
+    deactivate DB
+    AppSys --> PRSM : Confirm Association\n& Approval
+    deactivate AppSys
+    PRSM -> Applicant : Notify Approval\n& Next Steps
+else If Modifications Require Changes
+    PRSM -> Applicant : Request Further\nModifications with Feedback
+else If Code Modifications Rejected
+    PRSM -> Applicant : Notify Rejection\n& Reasons
+end
+
+@enduml
+```
+
+### Explanation:
+- The process begins with an **Applicant** submitting a code modification request through the **Application System**.
+- The **Application System** stores the submission details in the **Project Database** and acknowledges the submission to the **Applicant**.
+- When ready to review the submissions, the **Plan Review Staff Member** (PRSM) interacts with the **Application System** to fetch pending code modifications.
+- The **Application System** retrieves the submission details and documents from the **Project Database** and presents them to the PRSM.
+- The PRSM reviews the submitted code modifications based on applicable standards and project requirements.
+- Depending on the outcome of the review:
+    - If approved, the PRSM uses the **Application System** to update the project with the modifications, and both the system and the PRSM notify the applicant of the approval and any next steps.
+    - If the modifications require further changes, the PRSM directly requests further modifications from the **Applicant** with feedback.
+    - If the modifications are rejected, the PRSM notifies the **Applicant** of the rejection and provides reasons.
+
+This sequence diagram provides a high-level overview of the interactions involved in reviewing and processing a code modification request within the context of a County Services & Property Information Portal.

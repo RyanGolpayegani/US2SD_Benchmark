@@ -1,0 +1,29 @@
+@startuml
+participant Stakeholder
+participant "Digital Repository System" as DRS
+participant "Metadata Service" as Meta
+participant "File Storage" as Storage
+participant "Rendering Service" as Render
+
+Stakeholder -> DRS : Request file access
+activate DRS
+
+DRS -> Meta : Request file metadata
+activate Meta
+Meta --> DRS : Return metadata
+deactivate Meta
+
+DRS -> Storage : Fetch file
+activate Storage
+Storage --> DRS : File stream
+deactivate Storage
+
+DRS -> DRS : Verify metadata adequacy for rendering
+DRS -> Render : Send file with metadata
+activate Render
+Render -> Render : Process file for rendering
+Render --> Stakeholder : Display file
+deactivate Render
+
+deactivate DRS
+@enduml

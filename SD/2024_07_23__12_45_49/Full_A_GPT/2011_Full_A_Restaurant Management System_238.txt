@@ -1,0 +1,38 @@
+To illustrate how a restaurant manager checks the most frequently ordered food of the month using the Restaurant Management and Operations System, below is a detailed sequence diagram in PlantUML format. The diagram captures the interaction between the manager, the system's front end, the server, and the database in fetching the desired data.
+
+```plantuml
+@startuml
+actor Manager as M
+participant "UI Dashboard" as UI
+participant "Backend Server" as BS
+database "Database" as DB
+
+M -> UI: Selects "Monthly Popular Dishes" report
+UI -> BS: Request for most frequently ordered food of the month
+BS -> DB: Query ordered food data of the month
+
+alt If data available
+    DB --> BS: Return ordered food data of the month
+    BS -> BS: Process data to find most frequently ordered dishes
+    BS --> UI: Send report of most frequently ordered food
+    UI --> M: Display most frequently ordered food report
+else No data available
+    DB --> BS: Return empty result
+    BS --> UI: Send no data message
+    UI --> M: Display no data available message
+end
+@enduml
+```
+
+### Explanation:
+
+1. **Manager Initiates Request**: The sequence begins with the restaurant manager (M) selecting the option to view the "Monthly Popular Dishes" report from the UI Dashboard. This action sends a request to the Backend Server (BS) to fetch the most frequently ordered food of the month.
+   
+2. **Query Database**: The Backend Server then constructs and executes a query against the Database (DB) to retrieve data on all food ordered within the specified month.
+
+3. **Data Processing**:
+   - **If data is available**: The Database returns the ordered food data for the month to the Backend Server. The Server processes this data, identifying patterns to determine the most frequently ordered dishes. This result is then sent back to the UI Dashboard, which presents the "Most Frequently Ordered Food" report to the manager.
+   
+   - **No data available**: If there's no relevant data for the given period, the Database returns an empty result. The Backend Server then communicates this back to the UI Dashboard as a no data available message, which, in turn, displays the message to the manager.
+
+This sequence diagram embodies the steps involved when a restaurant manager wants to access a report on the most frequently ordered dishes, leveraging the capabilities of the Restaurant Management and Operations Scene to facilitate data-driven decisions.

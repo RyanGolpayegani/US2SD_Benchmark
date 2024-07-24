@@ -1,0 +1,26 @@
+@startuml
+participant Chef as chef
+participant "UI: Menu Management" as ui
+participant "Backend Server" as server
+local Storage as db
+
+chef -> ui : selects "Add New Dish"
+activate chef
+activate ui
+ui -> server : sends new dish details
+activate server
+
+server -> db : process dish details
+activate db
+db -> db : validate data
+db -> db : store new dish data
+db --> server : success message
+
+deactivate db
+server --> ui : display confirmation message
+deactivate server
+ui --> chef : show success message
+deactivate ui
+deactivate chef
+
+@enduml

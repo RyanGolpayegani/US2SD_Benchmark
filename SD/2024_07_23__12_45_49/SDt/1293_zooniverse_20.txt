@@ -1,0 +1,27 @@
+@startuml
+autonumber
+actor Admin
+participant "Video Management System" as VMS
+participant "Segmentation Tool" as Segmenter
+participant "Annotation Tool" as Annotator
+participant "Topic Extraction Engine" as TextExtractor
+participant "Database" as DB
+
+Admin -> VMS: Select video
+VMS -> Segmenter: Send video
+Segmenter -> Segmenter: Run segmentation algorithm
+Segmenter --> Admin: Display segments
+Note right of Admin: Admin reviews segments\nand selects one for annotation
+Admin -> Annotator: Annotate segment
+Annotator -> Annotator: Save annotation
+Note over Annotator: Annotation includes\ntime codes and text
+Annotator -> TextExtractor: Extract topic from annotation text
+TextExtractor -> TextExtractor: Analyze text\nIdentify topic
+TextExtractor --> Annotator: Return identified topic
+Annotator -> Admin: Display identified topic
+Admin -> Admin: Verify/Adjust identified topic
+Admin -> Annotator: Confirm annotation and topic
+Annotator -> DB: Update segment with annotation & topic
+DB --> Admin: Confirmation of update
+
+@enduml

@@ -1,0 +1,41 @@
+Creating a detailed sequence diagram for the user story "As a customer, I want to see an allergy list" involves illustrating the interactions between the customer and the Restaurant Management and Operations System, especially focusing on how the customer retrieves the allergy list information. Given the software architecture mentioned, this sequence will involve front-end interactions, back-end services, and database queries. 
+
+Sequence Diagram in PlantUML format:
+
+```
+@startuml
+
+participant Customer as C
+participant "Frontend\n(React.js/Angular)" as FE
+participant "Backend\n(Node.js + Express)" as BE
+participant "Database\n(MongoDB/PostgreSQL)" as DB
+
+C -> FE : Select "View Allergy List"
+FE -> BE : GET /allergyList
+activate BE
+BE -> DB : Query Allergy Information
+activate DB
+DB --> BE : Return Allergy Data
+deactivate DB
+BE --> FE : Allergy List Details
+deactivate BE
+FE --> C : Display Allergy List Information
+
+@enduml
+```
+
+Explanation:
+1. **Customer (C)**: Represents the restaurant customer who wants to view allergy information.
+2. **Frontend (React.js/Angular)**: The user interface layer where the customer interacts with the system.
+3. **Backend (Node.js + Express)**: Server-side logic that processes requests, including fetching the allergy list.
+4. **Database (MongoDB/PostgreSQL)**: Where data related to the allergy list is stored and retrieved from.
+
+Sequence:
+- The customer selects the option to "View Allergy List" on the front-end application.
+- The front-end communicates this request to the back-end using a GET request to the endpoint `/allergyList`.
+- The back-end, upon receiving this request, queries the database for allergy information.
+- The database returns the allergy data to the back-end.
+- The back-end then sends this data back to the front-end.
+- Finally, the front-end displays the allergy list information to the customer.
+
+This sequence ensures that the customer can easily access critical allergy information, enhancing their dining experience by making informed menu choices.

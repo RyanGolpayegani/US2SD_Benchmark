@@ -1,0 +1,46 @@
+Given your request, here is a detailed sequence diagram in PlantUML format illustrating the process of a moderator inviting estimators to an agile estimation game using a URL. This sequence diagram outlines the interactions between the moderator, the Agile Estimation and Planning Tool (AEPT) web application, and the estimators.
+
+Please note, to visualize this diagram, you'll need to use a PlantUML compiler or an online PlantUML editor. The diagram starts with the moderator creating a game session and ends with estimators receiving an invitation URL.
+
+```plantuml
+@startuml
+participant Moderator
+participant "AEPT Web Application" as WebApp
+participant Database
+participant Estimator
+
+== Game Creation ==
+Moderator -> WebApp: CreateGame(name, description)
+activate WebApp
+WebApp -> Database: SaveNewGame()
+activate Database
+Database --> WebApp: GameID
+deactivate Database
+WebApp --> Moderator: GameCreated(GameID, URL)
+deactivate WebApp
+
+== Inviting Estimators ==
+Moderator -> WebApp: InviteEstimators(GameID)
+activate WebApp
+loop Each Estimator
+    WebApp -> Estimator: SendInvitationEmail(GameID, URL)
+    activate Estimator
+    Estimator --> WebApp: AcknowledgeEmail()
+    deactivate Estimator
+end
+deactivate WebApp
+
+@enduml
+```
+
+### Explanation:
+
+1. **Game Creation**: The sequence begins with the moderator deciding to create a new game by interacting with the AEPT Web Application. The moderator provides necessary information such as the game's name and an optional description.
+   - The web application then processes this request and saves the new game information into the database, generating a unique GameID for this game session.
+   - Once the game is created successfully, the web application responds back to the moderator with the GameID and a unique URL that can be shared with estimators.
+
+2. **Inviting Estimators**: After the game session is set up, the moderator proceeds to invite estimators to join the session.
+   - The moderator sends a request to the web application to invite estimators, providing the GameID. The web application, in turn, handles the process of generating invitation emails (or messages) containing the game session URL.
+   - Each invited estimator receives an email with an invitation to join the game, which includes the unique URL. Upon acknowledging the email, each estimator can interact with the web application to confirm their participation.
+
+This sequence diagram abstracts the complexities in the background, focusing on the main interactions centered around inviting estimators to an estimation game using a URL.

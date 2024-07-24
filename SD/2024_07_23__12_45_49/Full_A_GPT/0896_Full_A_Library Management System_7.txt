@@ -1,0 +1,32 @@
+Generating a detailed sequence diagram for the user story "As a customer, I want to delete my borrows" involves illustrating the interactions between different system components and the user in a sequential order. Given the complexity and the numerous back-end processes that might be involved in such a feature, this sequence aims to capture the core steps in this process.
+
+```plantuml
+@startuml
+actor Customer
+participant "Web Interface" as Web
+participant "Authorization Service" as Auth
+participant "Borrow Management" as BorrowManage
+participant "Database" as DB
+
+Customer -> Web: Selects "My Borrows"
+Web -> Auth: Validate customer session
+Auth --> Web: Session valid
+Web -> BorrowManage: Request list of current borrows
+BorrowManage -> DB: Query for customer's borrows
+DB --> BorrowManage: Return list of borrows
+BorrowManage --> Web: Show borrows to customer
+Web --> Customer: Displays borrows
+
+Customer -> Web: Selects "Delete" on a borrow
+Web -> Auth: Validate customer action
+Auth --> Web: Action validated
+Web -> BorrowManage: Request borrow deletion
+BorrowManage -> DB: Delete borrow record
+DB --> BorrowManage: Confirm deletion
+BorrowManage --> Web: Deletion successful
+Web --> Customer: Confirm borrow has been deleted
+
+@enduml
+```
+
+In this sequence diagram, the process starts when the customer selects "My Borrows" from the web interface. The system first validates the customer's session through an Authorization Service. Once validated, the Borrow Management component requests the list of the customer's current borrowed items from the Database. After the customer views their borrows, they choose to delete a specific borrow. The system validates this action, and upon confirmation, the Borrow Management component sends a request to delete the specific borrow record from the Database. The Database confirms the deletion, and the customer is informed that the borrow has been successfully deleted.

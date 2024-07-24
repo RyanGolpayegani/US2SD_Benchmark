@@ -1,0 +1,56 @@
+Creating a detailed Sequence Diagram for the user story involves outlining the interactions between various systems, components, and actors involved in presenting additional helpful info in the submission dashboard for a FABS user. Below is a PlantUML script to visually represent these interactions.
+
+Please note that, given the complexity and breadth of the described project, the following sequence diagram is a simplified representation. Actual implementations may require more nuanced interactions and involvement of additional components not depicted here.
+
+```plantuml
+@startuml
+participant FABSUser as user
+participant Dashboard as dashboard
+participant API as api
+participant Database as db
+participant DataProcessor as dp
+participant NotificationService as ns
+
+user -> dashboard : Request Submission Dashboard
+activate dashboard
+
+dashboard -> api : Fetch Dashboard Data
+activate api
+
+api -> db : Query Submission Data
+activate db
+db --> api : Return Data
+deactivate db
+
+api -> dp : Request Additional Info\n(e.g., IG requests, status)
+activate dp
+dp -> db : Query Additional Data
+activate db
+db --> dp : Return Additional Data
+deactivate db
+
+dp --> api : Return Enriched Data
+deactivate dp
+
+api --> dashboard : Return Dashboard Data with Additional Info
+deactivate api
+
+dashboard -> ns : Request for Latest Notifications
+activate ns
+ns -> db : Query Notifications for User
+activate db
+db --> ns : Return Notifications
+deactivate db
+ns --> dashboard : Return Notifications
+deactivate ns
+
+dashboard --> user : Display Dashboard with Additional Info & Notifications
+deactivate dashboard
+@enduml
+```
+
+This sequence diagram starts with a FABS user requesting the submission dashboard. The dashboard, in turn, fetches the necessary data through an API, which queries a database (db) for submission data and also requests additional information like IG requests status from a DataProcessor component. The DataProcessor might need to fetch more data from the database to compile the necessary information. Once the API has all the required data, it returns this enriched information to the dashboard.
+
+In addition to the main data, the dashboard also requests the latest notifications for the user from a NotificationService, which again queries the database for any relevant notifications, returning them to be displayed alongside the submission information on the user's dashboard.
+
+This process aims to enhance the FABS user's dashboard with additional, helpful information, thus improving their ability to manage submissions and IG requests efficiently.

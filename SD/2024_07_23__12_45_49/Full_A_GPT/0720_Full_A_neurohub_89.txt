@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for the given user story encompasses outlining the interactions among various system components from the moment a researcher decides to upload and protect their data in the Virtual Research Environment (VRE) to the point where the data is successfully stored and protected. This action involves several steps, including authentication, data uploading, metadata attachment, data protection settings, and confirmation of the data’s immutability. Below is the PlantUML code representation of these interactions.
+
+```plantuml
+@startuml
+actor Researcher as researcher
+participant "Authentication Service" as auth
+participant "Data Upload Service" as upload
+participant "Metadata Service" as metadata
+participant "Data Protection Service" as protection
+participant "Storage System" as storage
+
+researcher -> auth: Request Access
+auth -> researcher: Grant Access
+
+researcher -> upload: Upload Data
+upload -> storage: Store Data
+
+upload -> metadata: Attach Metadata
+metadata -> storage: Update Data with Metadata
+
+researcher -> protection: Request Data Protection
+protection -> storage: Set Protection Flags
+
+storage -> protection: Confirm Protection
+protection -> researcher: Notify Protection Success
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram Steps:
+
+1. **Researcher Request Access:** The researcher requests access to the VRE through the Authentication Service.
+2. **Grant Access:** Assuming credentials are valid, the Authentication Service grants access to the researcher.
+3. **Upload Data:** The researcher uploads the data they wish to protect.
+4. **Store Data:** The Data Upload Service stores the uploaded data in the Storage System.
+5. **Attach Metadata:** The Data Upload Service instructs the Metadata Service to attach the appropriate metadata to the data, which includes specifying that the data is to be protected.
+6. **Update Data with Metadata:** The Metadata Service updates the data in the Storage System with the metadata.
+7. **Request Data Protection:** The researcher requests that the data be protected from modification or deletion.
+8. **Set Protection Flags:** The Data Protection Service sets the protection flags on the data within the Storage System to prevent modification or deletion.
+9. **Confirm Protection:** The Storage System confirms that the protection settings have been applied.
+10. **Notify Protection Success:** The Data Protection Service notifies the researcher that the data is now protected.
+
+The sequence diagram illustrates the collaborative processes among different system components to ensure the researcher’s data is securely uploaded, protected, and traceable back to a specific experiment and point in time, adhering to the user story requirements.

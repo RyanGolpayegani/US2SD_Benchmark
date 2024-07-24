@@ -1,0 +1,44 @@
+To generate a detailed sequence diagram for the user story "As a member, I want to look up books by their place and reservations so that I can see if they are available", we will illustrate the interaction between different system components from the initiation of a book lookup by the member until the display of the reservation and availability status. 
+
+Please note, creating a detailed sequence diagram in text format has limitations. Below is a textual representation of how the diagram would be drafted using PlantUML syntax. To visualize the diagram, the PlantUML code needs to be rendered in a PlantUML tool or a compatible environment.
+
+```plantuml
+@startuml
+!theme cerulean
+
+participant Member
+participant "Search Interface" as Search
+participant "Reservation System" as Reservation
+database "CLMS Database" as Database
+
+Member -> Search : Enter search criteria\n(title, author, category)
+activate Search
+Search -> Database : Query book information\nand availability status
+activate Database
+Database --> Search : Return book results\nand availability status
+deactivate Database
+
+Search --> Member : Display book results\nand availability status
+deactivate Search
+Member -> Reservation : Requests to reserve a book
+activate Reservation
+Reservation -> Database : Check availability\nand reservation status
+activate Database
+Database --> Reservation : Provide current\nreservation status
+deactivate Database
+
+alt If book is available
+    Reservation --> Member : Confirm reservation\nProvide pickup details
+else If book is reserved/waitlisted
+    Reservation --> Member : Inform\nWaitlist position
+else
+    Reservation --> Member : Book unavailable
+end
+
+deactivate Reservation
+@enduml
+```
+
+This sequence diagram starts with a member searching for a book using criteria like title, author, or category. The search interface queries the CLS Database to find matching books and their availability status. The results are displayed to the member. If the member decides to reserve an available book, the request is processed by the reservation system which again checks the database for the most current availability and reservation status before either confirming the reservation, providing waitlist position, or informing the member if the book is unavailable.
+
+To render this diagram, copy the PlantUML code into a PlantUML editor or tool that supports PlantUML diagrams. This will give you a visual sequence diagram illustrating the process as described in the user story.

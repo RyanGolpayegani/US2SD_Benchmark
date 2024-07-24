@@ -1,0 +1,20 @@
+@startuml
+actor Member
+boundary "Reservation System"
+control "Book Management"
+entity Database
+
+Member -> "Reservation System" : requestReservation(bookID)
+"Reservation System" -> "Book Management" : checkAvailability(bookID)
+"Book Management" -> Database : queryBookStatus(bookID)
+Database --> "Book Management" : bookStatus
+alt Book is already borrowed
+    "Book Management" --> "Reservation System" : isBorrowed
+    "Reservation System" -> Database : createReservationRecord(memberID, bookID)
+    Database --> "Reservation System" : reservationSuccess
+    "Reservation System" --> Member : reservationConfirmed
+else Book is available
+    "Book Management" --> "Reservation System" : isAvailable
+    "Reservation System" --> Member : bookAvailableNoReservationNeeded
+end
+@enduml

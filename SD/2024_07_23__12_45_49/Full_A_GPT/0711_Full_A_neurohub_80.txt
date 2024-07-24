@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram for the given user story involves outlining the interactions between different entities (such as the researcher, the Neurohub platform, and metadata services) in a sequence. Below is a PlantUML code snippet that represents the sequence diagram for the user story: "As a researcher, I want to have the ability to attach standard metadata for behavioral observations (and video), so that my data can later be searched for and understood."
+
+```plantuml
+@startuml
+actor Researcher as researcher
+participant "Neurohub UI" as UI
+participant "Data Management System" as DMS
+participant "Metadata Service" as metadata
+participant "Database" as DB
+
+== Metadata Attachment Flow ==
+
+researcher -> UI: Access data upload interface
+UI -> DMS: Initiate upload command
+DMS -> researcher: Prompt for data files (behavioral observations, video)
+researcher -> DMS: Uploads files
+
+== Metadata Input ==
+DMS -> metadata: Request standard metadata template
+metadata -> DMS: Return metadata template
+DMS -> researcher: Display metadata template
+researcher -> DMS: Input and submit metadata
+
+== Metadata and Data Association ==
+DMS -> metadata: Validate metadata
+metadata -> DMS: Metadata validated
+DMS -> DB: Store file and metadata association
+DB -> DMS: Confirmation
+DMS -> researcher: Confirmation of data and metadata upload
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram Code:
+
+1. **Actor and Participants**: The diagram initiates with defining the main actor of the story, which is the researcher, and the other participating components like the Neurohub UI, Data Management System (DMS), Metadata Service, and Database.
+
+2. **Metadata Attachment Flow**: This section outlines the sequence where the researcher accesses the Neurohub platform through its UI to initiate the process of uploading behavioral observations and video data. The DMS component handles the upload process.
+
+3. **Metadata Input**: After the upload process, the DMS requests and receives a standard metadata template from the Metadata Service, which is then displayed to the researcher by the DMS. The researcher fills out and submits this metadata.
+
+4. **Metadata and Data Association**: In this step, the submitted metadata is validated by the Metadata Service. Post-validation, the DMS stores the association between the metadata and the uploaded files in the Database. The DMS subsequently informs the researcher about the successful upload and metadata attachment.
+
+This sequence diagram highlights the necessary steps for attaching standard metadata to behavioral observations and video data, enabling effective searchability and understandability of the data in the Neurohub platform.

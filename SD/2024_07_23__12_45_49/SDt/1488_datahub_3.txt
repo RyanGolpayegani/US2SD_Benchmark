@@ -1,0 +1,38 @@
+@startuml
+
+actor Publisher
+participant "Sign-Up Page" as Signup
+participant "OAuth Service\n(GitHub/Google)" as OAuth
+participant "Platform Backend" as Backend
+participant "Database" as DB
+participant "Publisher Dashboard" as Dashboard
+
+== Sign-Up Process ==
+Publisher -> Signup: Visit sign-up page
+Signup -> OAuth: Select sign-up method (GitHub/Google)
+Publisher -> OAuth: Authenticate & grant permissions
+OAuth -> Backend: Return authentication token
+Backend -> DB: Create new user account
+DB -> Backend: Confirm account creation
+Backend -> Dashboard: Redirect to Publisher Dashboard
+
+== Post-Sign-Up Guidance ==
+Dashboard -> Publisher: Display post-sign-up guidance
+Publisher -> Dashboard: Acknowledge guidance\n(Proceed to publishing)
+
+== Data Publishing ==
+Publisher -> Dashboard: Navigate to publish data
+Dashboard -> Publisher: Show publishing form
+Publisher -> Dashboard: Submit data package details
+Dashboard -> Backend: Send data package for validation
+alt Data Package is Valid
+    Backend -> DB: Store data package information
+    DB -> Backend: Confirm storage
+    Backend -> Dashboard: Confirm publication success
+    Dashboard -> Publisher: Display success message
+else Data Package is Invalid
+    Backend -> Dashboard: Return validation errors
+    Dashboard -> Publisher: Display validation errors
+end
+
+@enduml

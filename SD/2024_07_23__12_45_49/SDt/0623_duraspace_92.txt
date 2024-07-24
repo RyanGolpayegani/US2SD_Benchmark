@@ -1,0 +1,29 @@
+@startuml
+actor DAMSManager as "DAMS Manager"
+participant DIMS as "DIMS System"
+database PolicyDB as "Policy Database"
+participant NotificationService as "Notification Service"
+
+== Check Policy Expiration for an Object or Component ==
+
+DAMSManager -> DIMS : Request policy details for object/component
+activate DIMS
+
+DIMS -> PolicyDB : Query policy expiration for given object/component
+activate PolicyDB
+
+PolicyDB --> DIMS : Return policy details
+deactivate PolicyDB
+
+DIMS -> NotificationService: Determine if near expiration
+activate NotificationService
+
+NotificationService --> DIMS : Expiration status and details
+deactivate NotificationService
+
+DIMS --> DAMSManager : Provide expiration details
+deactivate DIMS
+
+== End ==
+
+@enduml

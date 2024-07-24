@@ -1,0 +1,41 @@
+@startuml
+actor "Inspection Staff" as staff
+participant "Customer Portal" as portal
+participant "Inspection Management System" as ims
+database "Inspection Database" as db
+
+== Authentication ==
+staff -> portal : Login
+portal -> staff : Authentication Successful
+
+== Create Inspection ==
+staff -> portal : Select "Create Inspection"
+portal -> ims : Initiate Inspection Creation
+ims -> db : Retrieve Required Info(template, areas, inspectors)
+db --> ims : Return Info
+ims --> portal : Display Inspection Form(with Info)
+portal -> staff : Display Form
+staff -> portal : Fill Form and Submit
+portal -> ims : Process Inspection Submission
+ims -> db : Save New Inspection Details
+db --> ims : Confirmation
+ims --> portal : Acknowledge Creation
+portal -> staff : Display "Inspection Scheduled"
+
+== Assign Inspection ==
+staff -> portal : Access Pending Inspections
+portal -> ims : Request Pending Inspections
+ims -> db : Query Pending Inspections
+db --> ims : Return Pending Inspections
+ims --> portal : Display Pending Inspections
+portal -> staff : Show Pending Inspections
+staff -> portal : Select Inspection to Assign
+portal -> ims : Initiate Assignment Process
+staff -> portal : Select Inspector and Assign
+portal -> ims : Update Inspection with Assignee
+ims -> db : Save Inspector Assignment
+db --> ims : Confirmation
+ims --> portal : Acknowledge Assignment
+portal -> staff : Display "Inspection Assigned"
+
+@enduml

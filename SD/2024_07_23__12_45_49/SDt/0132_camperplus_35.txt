@@ -1,0 +1,22 @@
+@startuml
+participant "Camp Administrator" as admin
+participant "Web Interface" as web
+participant "Server" as server
+participant "Event Filter" as filter
+participant "Database" as db
+
+admin -> web : Requests to view events
+web -> server : Fetch all events
+server -> db : Query all events
+db -> server : Return all events
+server -> filter : Apply group filter(s)
+server -> web : Return filtered events
+web -> admin : Display events for specific group(s)
+
+alt events available for the selected group(s)
+    admin -> web : Views filtered events
+else no events available for the selected group(s)
+    web -> admin : Display no events message
+end
+
+@enduml

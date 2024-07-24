@@ -1,0 +1,45 @@
+To create a sequence diagram in PlantUML for the specified user story, we will outline the interaction between the patron and the Comprehensive Digital Repository System (CDRS) when a patron wants to know which reports or datasets are forthcoming. The sequence will typically involve the patron expressing interest in certain types of reports/datasets, subscribing to updates or notifications, and then receiving those notifications as new reports/datasets become available. 
+
+Please note, this sequence diagram assumes a simplified workflow for conceptualization:
+
+```plantuml
+@startuml
+actor Patron
+participant "CDRS Portal" as Portal
+participant "Notification System" as NotifSystem
+participant "Content Database" as ContentDB
+participant "Email Service" as Email
+
+== Subscription Process ==
+Patron -> Portal : Search for Topics/Keywords
+Portal -> ContentDB : Query for matching Topics/Keywords
+ContentDB --> Portal : Return Topics with Subscription Option
+Portal --> Patron : Display Topics with \nSubscription Button
+Patron -> Portal : Clicks Subscribe on Topics of Interest
+Portal -> NotifSystem : Register Patron for Updates
+NotifSystem --> Portal : Confirmation of Subscription
+Portal --> Patron : Display Subscription Confirmation
+
+== Notification Process ==
+ContentDB -> NotifSystem : Notify of New Reports/Datasets
+NotifSystem -> Email : Generate Notification Email
+Email -> Patron : Send Notification with Links
+
+@enduml
+```
+
+### Breakdown of the Sequence Diagram:
+
+1. **Subscription Process:**
+   - The Patron begins by searching for topics or keywords of interest within the CDRS portal. This action is communicated from the portal to the content database.
+   - The Content Database returns the topics that match the patron's interest, also indicating which topics can be subscribed to for updates.
+   - The CDRS portal displays these topics to the patron, including a subscription option for each.
+   - The patron chooses to subscribe to updates on topics of interest, and the portal registers this choice with the notification system.
+   - The notification system confirms the subscription, and this confirmation is displayed to the patron by the portal.
+
+2. **Notification Process:**
+   - When new reports or datasets become available that match the patron's subscribed interests, the content database informs the notification system.
+   - The notification system then prepares an email notification, detailing the new reports or datasets and providing links to access them.
+   - This notification email is sent to the patron, keeping them informed of the latest available reports or datasets.
+
+This sequence diagram outlines a high-level process and assumes the systems involved are capable of handling the operations described. Implementations might require detailed error handling, authentication checks, and other system-specific operations not depicted in this simplified diagram.

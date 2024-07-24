@@ -1,0 +1,53 @@
+@startuml
+
+participant Editor as E
+participant "Content Management System" as CMS
+database "CMS Database" as DB
+
+E -> CMS : Log in to CMS
+activate CMS
+
+CMS -> E : Authentication Successful
+E -> CMS : Navigate to "Create Content" section
+CMS -> E : Display "Create Content" form
+
+E -> CMS : Submit "What Is Scrum" content
+activate CMS
+
+CMS -> DB : Save new content
+activate DB
+DB --> CMS : Confirmation
+deactivate DB
+
+CMS --> E : Display "Content Created" message
+deactivate CMS
+
+E -> CMS : Publish "What Is Scrum" content
+activate CMS
+
+CMS -> DB : Update content status to "Published"
+activate DB
+DB --> CMS : Confirmation
+deactivate DB
+
+CMS --> E : Display "Content Published" message
+deactivate CMS
+
+E -> CMS : Log out
+alt Content is live
+
+Editor -> Visitor : Visitor navigates to "What Is Scrum"
+Visitor -> CMS : Request "What Is Scrum" page
+activate CMS
+
+CMS -> DB : Fetch "What Is Scrum" content
+activate DB
+DB --> CMS : Return content
+deactivate DB
+
+CMS --> Visitor : Display "What Is Scrum" content
+deactivate CMS
+
+end
+
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+participant Student
+participant "Web Interface" as Web
+participant "Search System" as Search
+database "Library Database" as DB
+participant "Notification System" as Notify
+participant "Reservation System" as Reserve
+
+Student -> Web: Request unavailable book search
+Web -> Search: Initiate search for book
+Search -> DB: Query for book status
+DB --> Search: Return book status (Unavailable)
+Search --> Web: Display status to Student
+Web --> Student: Show book is unavailable, offer reservation
+
+alt Book Reservation
+  Student -> Web: Opt to reserve the book
+  Web -> Reserve: Process reservation request
+  Reserve -> DB: Record reservation details
+  DB --> Reserve: Confirmation of reservation
+  Reserve --> Web: Show successful reservation message
+  Web -> Notify: Schedule notification for when book becomes available
+  Notify -> DB: Save notification request
+  Web --> Student: Display reservation confirmation and info about notification
+else Suggest Alternatives
+  Student -> Web: Request alternatives
+  Web -> Search: Fetch similar books
+  Search -> DB: Query for similar books
+  DB --> Search: Return list of similar books
+  Search --> Web: Show similar books to Student
+  Web --> Student: Display alternatives
+end
+
+@enduml

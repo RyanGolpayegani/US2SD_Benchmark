@@ -1,0 +1,27 @@
+@startuml
+actor User as U
+participant "User Interface" as UI
+participant "Protocol Management" as PM
+participant "Database" as DB
+database "Version Control" as VC
+
+== Modify or Branch Experimental Protocol ==
+
+U -> UI: Selects protocol to modify
+UI -> PM: Request protocol detail
+PM -> DB: Fetch protocol data
+DB --> PM: Protocol data
+PM --> UI: Display protocol data
+U -> UI: Chooses to branch or modify protocol
+UI -> PM: Request branch/modify action with details
+activate PM
+    PM -> VC: Check out protocol for branching/modification
+    VC --> PM: Provide protocol copy
+    PM -> PM: Create new protocol version/branch
+    PM -> DB: Save new protocol version/branch
+    DB --> PM: Confirm save
+    PM --> UI: Display success message
+deactivate PM
+UI --> U: Confirmation & details of new protocol version/branch
+
+@enduml

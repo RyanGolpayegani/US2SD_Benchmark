@@ -1,0 +1,65 @@
+To create a detailed sequence diagram that illustrates the process a Visual Designer would follow to create a moodboard for the nsf.gov website's redesign, and discuss design concepts with stakeholders, we can employ PlantUML. This sequence diagram will outline the key steps and interactions between the Visual Designer, the CMS (Content Management System), stakeholders, and other relevant entities.
+
+The sequence diagram described below is crafted to represent the interactions and processes involved:
+
+```plantuml
+@startuml
+participant VisualDesigner as Designer
+participant "CMS" as CMS
+participant "Cloud Storage" as Cloud
+participant "Stakeholders" as Stakeholders
+
+Designer -> CMS : Log into CMS
+activate CMS
+
+Designer -> Cloud : Access moodboard template
+activate Cloud
+Cloud --> Designer : Provide moodboard template
+
+Designer -> Designer : Create moodboard based\non design concepts
+Designer -> Cloud : Save moodboard drafts
+Cloud --> Designer : Confirm save
+
+Designer -> CMS : Link moodboard to relevant project
+CMS --> Designer : Confirm link
+
+loop Review and Revise
+    Designer -> Designer : Review and adjust moodboard
+end
+
+Designer -> CMS : Publish moodboard for review
+CMS --> Stakeholders : Notify of moodboard for review
+
+Stakeholders -> CMS : Access moodboard
+activate Stakeholders
+Stakeholders -> Stakeholders : Review moodboard
+
+alt Feedback Loop
+    Stakeholders -> Designer : Provide feedback
+    Designer -> Designer : Iterate on moodboard based on feedback
+    Designer -> CMS : Update moodboard
+    CMS --> Stakeholders : Notify of updated moodboard
+    Stakeholders -> CMS : Review updated moodboard
+end
+
+Stakeholders -> Designer : Approve moodboard
+Designer -> CMS : Finalize moodboard publication
+CMS --> Designer : Confirm publication
+
+deactivate CMS
+deactivate Cloud
+deactivate Stakeholders
+
+@enduml
+```
+
+Explanation of the Sequence Diagram’s Steps:
+1. **Login to CMS**: The Visual Designer starts by logging into the Content Management System.
+2. **Access Moodboard Template**: The designer accesses a moodboard template stored in Cloud Storage, which is used to ensure consistency and speed up the design phase.
+3. **Create Moodboard**: Using the template, the Visual Designer creates the moodboard based on initial design concepts.
+4. **Save and Link Moodboard Drafts**: The moodboard drafts are saved to Cloud Storage and linked to the relevant project in the CMS for easy access and organization.
+5. **Publish and Notify for Review**: Once a draft is ready, it's published through the CMS for stakeholder review, triggering notifications to them.
+6. **Feedback Loop**: Stakeholders review the moodboard, provide feedback, and the Visual Designer iterates on the design based on this feedback. This loop continues until approval is achieved.
+7. **Finalize Publication**: Upon receiving approval from stakeholders, the Visual Designer finalizes the moodboard's publication through the CMS.
+
+This sequence diagram assumes a foundational infrastructure where a CMS and Cloud Storage are already integrated, facilitating a streamlined process for creating, revisiting, and publishing design artifacts such as a moodboard.

@@ -1,0 +1,31 @@
+@startuml
+actor "Library Staff" as staff
+participant "Web Interface" as web
+database "Digital Repository" as repo
+participant "Version Control System" as version
+participant "Audit Logging System" as audit
+
+== Correction Process ==
+staff -> web: Log in
+web -> repo: Verify credentials
+repo --> web: Authentication successful
+web --> staff: Display dashboard
+
+staff -> web: Select document/metadata to edit
+web -> repo: Retrieve document/metadata details
+repo --> web: Display details
+web --> staff: Show edit form 
+
+staff -> web: Correct errors & submit reasons
+web -> repo: Update document/metadata
+repo --> web: Update successful
+
+web -> version: Create new version of document/metadata
+version --> web: Version tracking updated
+
+web -> audit: Log changes with reasons
+audit --> web: Logging successful
+
+web --> staff: Display confirmation & changes log
+
+@enduml

@@ -1,0 +1,57 @@
+Creating a detailed sequence diagram for the described scenario involves illustrating the interactions between the Asset Manager and various components of the Digital Repository System, with a focus on redundancy and backup processes. Since you requested a PlantUML format, below is a representation of how this interaction might occur in the context of the Comprehensive Digital Repository System for Cornell University.
+
+```plantuml
+@startuml
+!theme plain
+
+participant "Asset Manager" as Manager
+participant "Web Interface" as WebUI
+participant "Repository Backend" as Backend
+participant "Storage Management" as Storage
+database "Primary Storage" as Primary
+database "Backup Storage" as Backup
+
+== Deposit Digital Copy ==
+Manager -> WebUI: Deposit digital copy
+WebUI -> Backend: Request to store digital copy
+Backend -> Storage: Process storage with redundancy
+Storage -> Primary: Store in primary storage
+activate Primary
+Primary --> Storage: Confirmation
+deactivate Primary
+Storage -> Backup: Initiate redundant backup
+activate Backup
+Backup --> Storage: Backup confirmation
+deactivate Backup
+Storage --> Backend: Storage successful
+Backend -> WebUI: Display success message
+WebUI -> Manager: Confirm digital copy stored with redundancy
+
+== Retrieve Digital Copy on Damage ==
+Manager -> WebUI: Request access to damaged digital copy
+WebUI -> Backend: Lookup digital copy
+Backend -> Storage: Check primary storage
+alt Primary Storage Damaged
+  Storage -> Backup: Retrieve from backup
+  Backup --> Storage: Return backup copy
+  Storage -> Primary: Restore backup copy
+  Primary --> Storage: Restoration confirmation
+  Storage --> Backend: Provide restored copy
+else Primary Storage Intact
+  Storage -> Primary: Access digital copy
+  Primary --> Storage: Return digital copy
+  Storage --> Backend: Provide digital copy
+end
+Backend -> WebUI: Serve requested digital copy
+WebUI -> Manager: Download digital copy
+
+@enduml
+```
+
+### Explanation:
+
+1. **Deposit Digital Copy**: When the Asset Manager decides to deposit a digital copy, they interact with the Web Interface. This action triggers a series of backend processes that ensure the digital copy is not only stored in the primary storage but also redundantly backed up in a separate backup storage system. This sequence is critical to guaranteeing the safety and redundancy of deposited digital copies.
+
+2. **Retrieve Digital Copy on Damage**: If an Asset Manager discovers that a digital copy in the primary storage has suffered damage or unwanted changes, they can request access to this digital copy. The system then verifies the integrity of the primary storage. If the primary storage is compromised, the system fetches the backup copy, restores it to the primary storage, and then provides access to the Asset Manager. If the primary storage remains intact, the system simply fetches and delivers the digital copy directly.
+
+This sequence diagram outlines the essential interactions and processes involved in ensuring the redundancy of storage for digital copies, addressing the Asset Manager's need for a robust and reliable digital repository system.

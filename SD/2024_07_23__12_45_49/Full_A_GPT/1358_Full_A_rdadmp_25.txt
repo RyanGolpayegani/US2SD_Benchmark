@@ -1,0 +1,40 @@
+To create a sequence diagram in PlantUML format for the described user story, you'd focus on the process by which a researcher's information is prepopulated from other institutional systems to the DMPTool. This requires interactions among the researcher, the DMPTool, institutional systems, and potentially a metadata import tool. Here's a basic diagram to capture this functionality:
+
+```plantuml
+@startuml
+participant Researcher as res
+participant "DMPTool" as dmp
+participant "Institutional Systems" as ins
+participant "Metadata Import Tool" as meta
+
+res -> dmp: Request to create new DMP
+dmp -> ins: Query for researcher's data
+activate ins
+ins --> dmp: Return researcher's data
+deactivate ins
+dmp -> meta: Send researcher's data for processing
+activate meta
+meta -> ins: Fetch additional data
+activate ins
+ins --> meta: Return additional data
+deactivate ins
+meta --> dmp: Processed metadata
+deactivate meta
+dmp -> dmp: Integrate metadata into DMP
+dmp -> res: Display DMP with prepopulated information
+@enduml
+```
+
+This sequence diagram illustrates the following steps:
+
+1. The **Researcher** initiates the process by requesting to create a new Data Management Plan (DMP) in the **DMPTool**.
+2. The **DMPTool** queries the **Institutional Systems** for the researcher's data associated with their ID or project.
+3. The **Institutional Systems** return the researcher's data to the **DMPTool**.
+4. The **DMPTool** sends the researcher's data to the **Metadata Import Tool** for processing.
+5. The **Metadata Import Tool** may fetch additional data from **Institutional Systems** if necessary.
+6. **Institutional Systems** return any additional required data to the **Metadata Import Tool**.
+7. The **Metadata Import Tool** processes the collected data and sends the processed metadata back to the **DMPTool**.
+8. The **DMPTool** integrates the processed metadata into the DMP.
+9. Finally, the **DMPTool** displays the DMP with prepopulated information to the **Researcher**.
+
+This diagram represents a simplified view focusing on prepopulating the DMP with information from other institutional systems. Depending on the complexity of the systems and the specific operational details, more steps or actors might be involved, such as authentication systems, data validation services, or additional interactions for error handling and user feedback.

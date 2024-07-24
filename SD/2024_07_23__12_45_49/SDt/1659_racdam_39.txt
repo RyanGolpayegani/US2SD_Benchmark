@@ -1,0 +1,23 @@
+@startuml
+actor Researcher
+participant "Web Interface" as Web
+participant "Authentication System" as Auth
+participant "File Access Control" as FileAccess
+participant "File Management System" as FileManager
+participant "Digital Archive" as Archive
+
+Researcher -> Web : Request download for a file
+Web -> Auth : Validate researcher credentials
+Auth -> Web : Credentials valid
+
+alt if credentials are valid
+    Web -> FileAccess : Check access rights for the file
+    FileAccess -> FileManager : Request file for download if access allowed
+    FileManager -> Archive : Retrieve requested file
+    Archive -> FileManager : File data
+    FileManager -> Web : Provide download link
+    Web -> Researcher : Show download link
+else if credentials are invalid or access denied
+    Web -> Researcher : Show error message(access denied or login required)
+end
+@enduml

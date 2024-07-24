@@ -1,0 +1,42 @@
+To create a detailed Sequence Diagram in PlantUML format for the given user story, I'll outline the primary steps involved in the process when a library visitor wants to check the condition of a book before borrowing it. Please note, PlantUML syntax is designed to be as intuitive as possible, but it still requires a bit of understanding of its conventions to interpret correctly. 
+
+In this scenario, the library visitor interacts with the library management system (likely through a user interface) to check the condition of a book. The system then queries the database for the book's condition and returns this information to the user.
+
+Below, you'll find a PlantUML representation of this process:
+
+```plantuml
+@startuml
+actor Visitor
+participant "Library System Interface" as Interface
+participant "Book Management Module" as BookModule
+database "Library Database" as Database
+
+Visitor -> Interface : Enter/Search Book Title
+alt book found
+    Interface -> BookModule : Request Book Details(BookID)
+    BookModule -> Database : Query Book Condition(BookID)
+    Database --> BookModule : Book Condition
+    BookModule --> Interface : Display Book Condition
+    Interface --> Visitor : Show Book Condition
+else book not found
+    Interface --> Visitor : Display "Book Not Found"
+end
+@enduml
+```
+
+### Breakdown of the Sequence Diagram:
+
+1. **Visitor Interaction**: The library visitor starts by searching for the book they are interested in through the Library System Interface. This could be through a web page or a kiosk within the library.
+
+2. **System Processing**:
+   - The system's interface sends a request to the Book Management Module to retrieve the details for the book, identified by its BookID (or any unique identifier).
+   - The Book Management Module then queries the Library Database for the condition of the requested book.
+   - The database returns the information regarding the book's condition back to the Book Management Module.
+
+3. **Result Display**:
+   - The Book Management Module processes the information received from the database and sends the data regarding the book's condition (e.g., "Good", "Fair", "Damaged") to the Library System Interface.
+   - Finally, the visitor is shown the book's condition, allowing them to make an informed decision about borrowing it.
+
+4. **Alternative Path**: If the book is not found in the library database, the system will notify the visitor that the book is not available.
+
+This PlantUML sequence diagram effectively outlines the interaction flow between a library visitor and the library management system for checking the condition of a book. It highlights key components like system interfaces, modules, and the database, providing a clear picture of the process from the user's request to receiving the necessary information.

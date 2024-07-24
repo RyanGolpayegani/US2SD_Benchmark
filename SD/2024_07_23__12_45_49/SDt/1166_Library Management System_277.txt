@@ -1,0 +1,43 @@
+@startuml
+actor Member as member
+participant "Frontend Interface" as frontend
+participant "Reservation System" as reservationSystem
+database "Database" as database
+participant "Notification System" as notification
+
+== Search for Book ==
+member -> frontend : Search(bookDetails)
+frontend -> reservationSystem: Query(bookDetails)
+reservationSystem -> database: Fetch(bookDetails)
+database --> reservationSystem: BookResults
+reservationSensitiveArea --> frontend: DisplayResults(BookResults)
+frontend --> member: ShowBookResults
+
+== Select Book to Reserve ==
+member -> frontend : SelectBook(BookID)
+frontend -> reservationSystem: CheckAvailability(BookID)
+reservationSystem -> database: GetAvailability(BookID)
+database --> reservationSystem: AvailabilityStatus
+
+alt If Book is Available
+    reservationSystem --> frontend: ShowAvailable
+    frontend --> member: PromptReserveOption
+    member -> frontend : ConfirmReserve(BookID)
+    frontend -> reservationSystem: ReserveBook(MemberID, BookID)
+    reservationSystem -> database: UpdateReservation(MemberID, BookID)
+    database --> reservationSystem: ReservationSuccess
+    reservationSystem --> notification: SendReservationNotification(MemberID, BookID)
+    notification --> member: DisplayNotification(ReservationConfirmed)
+
+else If Book is Not Available
+    reservationSystem --> frontend: ShowNotAvailable
+    frontend --> member: ShowWaitlistOption
+    member -> frontend : ConfirmWaitlist(BookID)
+    frontend -> reservationSystem: AddToWaitlist(MemberID, BookID)
+    reservationSystem -> database: UpdateWaitlistStatus(MemberID, BookID)
+    database --> reservationSystem: WaitlistSuccess
+    reservationSystem --> notification: SendWaitlistNotification(MemberID, BookID)
+    notification --> member: DisplayNotification(AddedToWaitlist)
+end
+
+@enduml

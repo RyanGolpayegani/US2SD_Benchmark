@@ -1,0 +1,30 @@
+@startuml
+actor Patron
+
+boundary "Web Interface" as UI
+control "Search Controller" as Search
+entity "Calendar Service" as Calendar
+database "Repository Database" as RepoDB
+boundary "Authentication Service" as Auth
+boundary "External Calendar" as ExtCal
+
+Patron -> UI: Access Repository
+UI -> Auth: Request Authentication
+Auth -> Patron: Authenticate
+Patron -> UI: Authenticated
+Patron -> UI: Search for report/dataset release calendar
+UI -> Search: Execute Search(Query)
+Search -> RepoDB: Retrieve Calendar Data
+RepoDB -> Search: Calendar Data
+Search -> Calendar: Prepare Downloadable Calendar
+Calendar -> UI: Calendar File
+UI -> Patron: Download Prompt
+Patron -> UI: Confirm Download
+UI -> Patron: Download Calendar File
+
+note right of Patron: Load the calendar file\ninto own calendar application
+
+Patron -> ExtCal: Import Calendar File
+ExtCal -> Patron: Confirmation of Imported Calendar
+
+@enduml

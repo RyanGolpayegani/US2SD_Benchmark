@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram for the described user story requires understanding the interaction between different system components and the user. Below is a Plant UML code that represents the sequence diagram for the user story: "As an Older Person, I want to receive a wake-up call from ALFRED in the morning checking on me if I am ok."
+
+The sequence involves ALFRED, the Older Person, and potentially a Caregiver or Emergency Services if the Older Person does not respond positively.
+
+```plantuml
+@startuml
+participant "Older Person" as op
+participant "ALFED Device" as ad
+participant "Server" as s
+participant "Caregiver/Emergency Services" as ces
+
+alt Morning Time Reached
+    ad -> s: "Trigger wake-up call event"
+    s -> ad: "Send wake-up call command"
+    ad -> op: "Initiate wake-up call\nCheck if Older Person is ok"
+    op -> ad: "Response: I am ok"
+    ad -> s: "Log response\nStatus: Ok"
+else No Response or Help Needed
+    ad -> op: "Second attempt wake-up call"
+    alt No Response after Second Attempt
+        ad -> s: "Log event: No Response"
+        s -> ad: "Initiate emergency protocol"
+        ad -> ces: "Notify Caregiver/Emergency Services"
+        ces -> op: "Provide required assistance"
+    else Positive Response On Second Attempt
+        op -> ad: "Response: I am ok"
+        ad -> s: "Log response\nStatus: Ok after 2nd attempt"
+    end
+end
+
+@enduml
+```
+
+This diagram illustrates the interactions starting from the ALFRED device, triggering a wake-up call event based on a predefined schedule (morning time). The sequence includes the possibility of the Older Person not responding to the first call, thereby making a second attempt. If there is still no response or if help is directly requested, the ALFRED device will initiate protocols to inform Caregivers or Emergency Services as necessary. 
+
+In more comprehensive implementations, you might want to detail the communication protocols, include error handling, or expand on how ALFRED interacts with other services for emergency scenarios. The diagram keeps a focus on the core sequence to maintain clarity.

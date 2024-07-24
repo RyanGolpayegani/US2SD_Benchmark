@@ -1,0 +1,21 @@
+@startuml
+actor Staff
+participant "Search Interface" as SI
+participant "Search Controller" as SC
+participant "Database" as DB
+
+== Search Book by Author ==
+
+Staff -> SI: Enter author's name
+SI -> SC: Request search by author(name)
+alt if author name is valid
+    SC -> DB: Query books by author
+    DB --> SC: Return search results
+    SC --> SI: Show search results
+    SI --> Staff: Display books by author
+else if author name is invalid
+    SC --> SI: Show error message
+    SI --> Staff: Display error (no results)
+end
+
+@enduml

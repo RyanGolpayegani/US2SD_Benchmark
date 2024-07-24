@@ -1,0 +1,49 @@
+Creating a sequence diagram for the user story "As a manager, I want to delete what type of books are borrowed the most." involves detailing interactions between different components of the Comprehensive Library Management System (CLMS) that participate in the process of identifying and deleting a book category that is highly popular amongst borrowers. The process involves several steps, including authentication, fetching data, analyzing popular categories, and finally, deleting the specified category. Below is a basic outline in PlantUML to visualize these steps.
+
+```plantuml
+@startuml
+participant Manager as M
+participant AuthenticationSystem as Auth
+participant Database as DB
+participant AnalysisModule as Analysis
+participant BookManagement as BM
+
+activate M
+M -> Auth: Authenticate
+activate Auth
+Auth --> M: Authentication Successful
+deactivate Auth
+
+M -> Analysis: Request Most Borrowed Book Types
+activate Analysis
+Analysis -> DB: Fetch Borrowing Statistics
+activate DB
+DB --> Analysis: Statistics Data
+deactivate DB
+
+Analysis --> M: Most Borrowed Book Type Data
+deactivate Analysis
+
+M -> BM: Delete Book Type [Most Borrowed]
+activate BM
+BM -> DB: Delete Books by Type
+activate DB
+DB --> BM: Deletion Success
+deactivate DB
+BM --> M: Confirmation of Deletion
+deactivate BM
+
+@enduml
+```
+
+**Explanation:**
+
+1. **Authentication (Auth):** The manager initiates the process, and the first step involves authentication to ensure that only authorized personnel can perform deletions.
+
+2. **Analysis Module (Analysis):** Once authenticated, the manager requests information on the most borrowed book types. The Analysis Module fetches borrowing statistics from the database (DB) to determine which book types are currently the most popular among borrowers.
+
+3. **Database (DB):** The core repository where all data regarding book borrowings, categories, and other relevant metadata are stored. It responds to queries from both the Analysis Module and the Book Management component.
+
+4. **Book Management (BM):** After receiving the data on the most borrowed book type, the manager decides to proceed with the deletion. The Book Management component is responsible for handling this request. It interacts with the database to remove books of the specified type and confirms the successful deletion to the manager.
+
+This sequence diagram abstracts away the finer details of each interaction but provides a high-level overview of the flow involved in deleting a popular book type based on borrowing statistics. It's important to note that the actual implementation may require additional steps or checks, such as verifying that no books of the type are currently checked out or reserved before deletion.

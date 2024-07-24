@@ -1,0 +1,28 @@
+@startuml
+participant "Camp Administrator" as Admin
+participant "Web Interface" as Web
+participant "Group Management Service" as GroupService
+participant "Database" as DB
+
+== Create Group ==
+Admin -> Web : Select "Create Group"
+Web -> GroupService : Request to create group
+GroupService -> DB : Create new group record
+DB -> GroupService : Confirm group created
+Group  -> Web : Display new group
+GroupService --> Web : Return group creation success
+Web --> Admin : Show confirmation message
+
+== Add Campers to Group ==
+Admin -> Web : Select group and "Add Campers"
+Web -> GroupService : Request list of campers
+GroupService -> DB : Fetch campers
+DB -> GroupService : Return list of campers
+GroupService -> Web : Display list to Admin
+Admin -> Web : Select campers to add
+Web -> GroupService : Add selected campers to group
+GroupService -> DB : Update group with new campers
+DB -> GroupService : Confirm update
+GroupService -> Web : Confirmation of added campers
+Web -> Admin : Show success message
+@enduml

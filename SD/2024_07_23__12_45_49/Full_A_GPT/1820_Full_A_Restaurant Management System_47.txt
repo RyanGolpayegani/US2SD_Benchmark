@@ -1,0 +1,69 @@
+Creating a detailed sequence diagram to illustrate how a cook might keep track of customer orders and prepare their food involves showcasing the interaction between the cook, the system's backend services, and potentially, other parts of the restaurant management software such as the order management, notification services, and the kitchen display system. Here’s how it could be illustrated using PlantUML syntax:
+
+```plantuml
+@startuml
+participant Customer_UI as "Customer Interface"
+participant Ordering_Service as "Ordering Service"
+database Order_DB as "Order Database"
+participant Kitchen_Display as "Kitchen Display System"
+participant Cook
+
+activate Customer_UI
+Customer_UI -> Ordering_Service : PlaceOrder(orderDetails)
+activate Ordering_Service
+
+Ordering_Service -> Order_DB : SaveOrder(orderDetails)
+activate Order_DB
+Order_DB --> Ordering_Service : Confirmation(orderID)
+deactivate Order_DB
+
+Ordering_Service --> Customer_UI : OrderPlaced(orderID)
+deactivate Ordering_Service
+Customer_UI --> Cook : DisplayNewOrder(orderID)
+deactivate Customer_UI
+
+activate Cook
+Cook -> Kitchen_Display : FetchOrderDetails(orderID)
+activate Kitchen_Display
+Kitchen_Display -> Order_DB : QueryOrder(orderID)
+activate Order_DB
+Order_DB --> Kitchen_Display : OrderDetails
+deactivate Order_DB
+Kitchen_Display --> Cook : ShowOrderDetails
+deactivate Kitchen_Display
+
+Cook -> Kitchen_Display : UpdateOrderStatus(orderID, "In Preparation")
+activate Kitchen_Display
+Kitchen_Display -> Order_DB : SetOrderStatus(orderID, "In Preparation")
+activate Order_DB
+Order_DB --> Kitchen_Display : StatusUpdated
+deactivate Order_DB
+Kitchen_Display --> Cook : ConfirmationStatusUpdated
+decover Kitchen_Display
+
+Cook -> Kitchen_Display : UpdateOrderStatus(orderID, "Ready")
+activate Kitchen_Display
+Kitchen_Display -> Order_DB : SetOrderStatus(orderID, "Ready")
+activate Order_DB
+Order_DB --> Kitchen_Display : StatusUpdated
+deactivate Order_DB
+Kitchen_Display --> Cook : ConfirmationStatusUpdated
+deactivate Kitchen_Display
+
+Cook -> Ordering_Service : NotifyOrderReady(orderID)
+activate Ordering_Service
+Ordering_Service -> Customer_UI : UpdateCustomer(orderStatus)
+Ordering_Service -> Server_UI : NotifyServerOrderReady(orderID)
+deactivate Cook
+deactivate Ordering_Service
+
+@enduml
+```
+
+This sequence diagram starts with the customer placing an order through the customer interface (Customer_UI), which sends the order details to the Ordering Service. The service then saves the order in the Order Database and confirms the order placement back to the customer. Concurrently, the new order is displayed to the cook through the Kitchen Display System, which the cook then queries to fetch detailed order information.
+
+Upon preparing to cook, the cook updates the order status to "In Preparation," and once the food is ready, updates the order status to "Ready" using the Kitchen Display System. These status updates are saved in the Order Database through the Kitchen Display System.
+
+Finally, the cook notifies the Ordering Service that the order is ready, prompting the Ordering Service to update the customer and notify the server (Server_UI) that the food is ready for serving.
+
+This diagram provides a high-level overview, and depending on the specific requirements and system architecture, additional details and components can be added.

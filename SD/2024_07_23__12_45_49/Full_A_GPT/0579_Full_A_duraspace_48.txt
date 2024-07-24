@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram in PlantUML format for the specified user story involves illustrating the interaction between the user and the system components that facilitate viewing and navigating the component hierarchy of an object within the DAMS Integration and Management System (DIMS). This sequence defines how the system responds to a user's request to see and navigate through an object's components hierarchy.
+
+```plantuml
+@startuml
+!theme plain
+
+actor User
+participant "User Interface" as UI
+participant "Access Control" as AC
+participant "Data Service" as DS
+participant "Repository Manager" as RM
+
+== Component Hierarchy Navigation ==
+
+User -> UI : Request object's component hierarchy
+UI -> AC : Validate user access
+AC --> UI : Access granted
+
+UI -> DS : Fetch component hierarchy
+DS -> RM : Query object's components
+RM --> DS : Return components
+DS --> UI : Component hierarchy data
+
+UI -> User : Display component hierarchy
+User -> UI : Select a component to navigate
+UI -> DS : Fetch selected component details
+DS -> RM : Query selected component
+RM --> DS : Return component details
+DS --> UI : Selected component data
+
+UI -> User : Display selected component details
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram Steps
+
+1. **User Request:** The user initiates the process by requesting to view an object's component hierarchy through the user interface (UI).
+2. **Access Validation:** The UI queries the Access Control (AC) system to validate the user’s access rights to the requested object.
+3. **Access Granted:** Access Control responds to the UI, confirming the user's access.
+4. **Fetch Hierarchy:** The UI requests the component hierarchy from the Data Service (DS).
+5. **Query Repository:** The Data Service requests information about the object's components from the Repository Manager (RM).
+6. **Return Components:** The Repository Manager returns the details of the object's components to the Data Service.
+7. **Display Hierarchy:** The Data Service sends the component hierarchy data back to the UI, which in turn displays it to the user.
+8. **User Navigation:** The user selects a component within the hierarchy to view more details.
+9. **Fetch Component Details:** The UI requests the details of the selected component from the Data Service.
+10. **Query Component:** The Data Service queries the specific component details from the Repository Manager.
+11. **Return Component Details:** The Repository Manager returns the detailed information of the selected component to the Data Service.
+12. **Display Component:** The Data Service sends the selected component's details to the UI, which displays the information to the user.
+
+This sequence encapsulates the interactions and flow of data as a user navigates and explores the components of an object within the DAMS Integration and Management System (DIMS).

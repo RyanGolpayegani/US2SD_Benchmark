@@ -1,0 +1,32 @@
+Creating a detailed sequence diagram for the provided user story requires breaking down the process into interactions between various system components and actors involved in the early information gathering about data volume for preservation. Below is a PlantUML code that represents these interactions, focusing on the archive manager's perspective in determining necessary storage infrastructure.
+
+```plantuml
+@startuml
+actor ArchiveManager as AM
+participant "DMPTool" as DMT
+participant "Repository API" as RAPI
+participant "Data Manager" as DM
+participant "IT System" as ITS
+
+AM -> DMT : Request data volume information
+DMT -> RAPI: Query planned data submissions
+RAPI -> DMT: Return data submission estimates
+DMT -> ITS: Request current storage capacity
+ITS -> DMT: Return current storage capacity details
+DMT -> DM: Request additional data preservation details
+DM -> DMT: Provide data format, size, and period
+DMT -> AM: Show comprehensive storage needs analysis
+
+note over DMT, AM: Analysis includes\n- Data volume estimates\n- Current storage capacity\n- Required preservation duration\n- Data format and size details
+
+AM -> ITS: Plan for storage expansion
+note right of ITS: ITS plans infrastructure\nupdates based on analysis
+
+ITS -> AM: Confirm storage infrastructure plan
+AM -> DMT : Confirm storage planning completion
+
+@enduml
+```
+This sequence diagram begins with the Archive Manager (AM) requesting information about the volume of data that needs to be preserved. This triggers interactions between the DMPTool (DMT), a Repository API (RAPI), the Data Manager (DM), and the IT System (ITS). The process includes querying planned data submissions, checking current storage capacity, and obtaining additional data preservation details such as format, size, and expected preservation duration. Following this, the DMPTool compiles and presents a comprehensive analysis of storage needs to the Archive Manager. Based on this analysis, the IT System plans and confirms the necessary storage infrastructure adjustments.
+
+Please note, this is a simplified sequence aimed at illustrating the connections and flow of actions according to the described user story. Depending on the specific functionality and flexibility of the DMPTool and the systems it interacts with, more detailed steps might be necessary, especially around authentication, error handling, and data validation.

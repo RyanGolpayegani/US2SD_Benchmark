@@ -1,0 +1,38 @@
+Given your request, here’s a detailed Sequence Diagram in PlantUML syntax that outlines the interaction process for a user wanting to see the remaining days to return a book. This diagram will cover several entities including the User Interface (UI), Book Management Service, Database, and Notification Service to showcase how the system calculates and displays the remaining days to return a book, aiding the user in preventing fines.
+
+```plantuml
+@startuml
+actor User
+participant "UI: Library Portal" as UI
+participant "Book Management Service" as BookService
+database "Library Database" as DB
+participant "Notification Service" as Notification
+
+User -> UI: Request book return details
+UI -> BookService: Get return details(userId, bookId)
+BookService -> DB: Query return date for book
+DB -> BookService: Return date
+BookService -> BookService: Calculate remaining days
+alt remaining days <= 0
+  BookService -> Notification: Trigger overdue alert(userId, bookId, remainingDays)
+  Notification -> User: Display overdue notification
+else remaining days > 0
+  BookService -> UI: Send remaining days
+  UI -> User: Display remaining days
+end
+@enduml
+```
+
+### Explanation:
+
+- **User**: Initiates the process by requesting to see the book return details through the library's user interface.
+  
+- **UI/Library Portal**: Acts as the intermediary, receiving the user's request and forwarding it to the Book Management Service.
+  
+- **Book Management Service**: Handles the core logic by receiving requests from the UI, interacting with the Library Database to get the book's return date, calculating the remaining days for return, and based on the calculation, deciding to either trigger an overdue alert or respond with the remaining days.
+  
+- **Library Database**: Stores all data related to books, users, and transactions, including borrowing and returning dates.
+  
+- **Notification Service**: Engaged by the Book Management Service to send an overdue alert if the book is past its return date.
+
+This diagram aims to depict a simplified but comprehensive flow of operations for checking the remaining days to return a book in the context of a library management system. It covers both scenarios where the user is either within the return period or has overdue books, taking into account the necessity to alert the user to prevent fines.

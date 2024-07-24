@@ -1,0 +1,25 @@
+@startuml
+actor "Research Information Manager" as manager
+participant "User Interface" as UI
+participant "Integration Module" as integration
+database "Research Data Platform" as RDP
+database "CRIS" as CRIS
+
+manager -> UI : Initiate Integration Request
+UI -> integration : Request CRIS Integration
+activate integration
+
+integration -> RDP : Fetch Data
+activate RDP
+RDP -> integration : Return Data
+deactivate RDP
+
+integration -> CRIS : Send Data for Analysis
+activate CRIS
+CRIS -> integration : Acknowledge & Process Data
+deactivate CRIS
+
+integration -> UI : Confirm Integration & Analysis Status
+UI -> manager : Display Confirmation & Link to Analyzed Data
+
+@enduml

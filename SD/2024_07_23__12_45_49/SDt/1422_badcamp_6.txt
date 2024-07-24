@@ -1,0 +1,23 @@
+@startuml
+!theme plain
+participant UserInterface as UI
+participant AuthenticationSystem as Auth
+participant RegistrationController as RegCtrl
+participant Database as DB
+
+UI -> Auth: Authenticate user
+Auth -> UI: Authentication successful
+
+UI -> RegCtrl: Request to register for a session
+RegCtrl -> DB: Check existing registrations for the user
+DB -> RegCtrl: Return user's registrations for the day
+
+alt If no existing registration for the day
+    RegCtrl -> DB: Add new registration
+    DB -> RegCtrl: Registration added
+    RegCtrl -> UI: Display success message
+else If already registered for a session on the day
+    RegCtrl -> UI: Display error message (Limit exceeded)
+end
+
+@enduml

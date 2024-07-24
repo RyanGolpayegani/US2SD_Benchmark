@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+
+actor Publisher as publisher
+participant "CLI Client" as client
+participant "Authentication\nService" as auth
+participant "Publisher\nProfile Service" as profile
+participant "API Gateway" as gateway
+participant "Configuration\nManager" as configMgr
+
+== Configuration Process ==
+publisher -> client: Execute configuration command
+client -> auth: Request authentication URL
+auth -> client: Return authentication URL
+client -> publisher: Display authentication URL
+publisher -> auth: Navigate to URL and authenticate
+auth -> client: Confirm authentication
+client -> client: Generate and store access token
+
+== Profile Setup ==
+client -> profile: Request profile setup
+publisher -> client: Provide profile information
+client -> gateway: Send profile data
+gateway -> profile: Validate and create profile
+profile -> client: Confirm profile setup
+
+== Fetch Existing Data Packages (Optional) ==
+client -> configMgr: Request existing package configurations
+configMgr -> client: List available data packages
+
+== Finalize Configuration ==
+publisher -> client: Select data package or create new
+client -> configX: Setup selected package configuration
+client -> publisher: Confirm configuration success
+
+@enduml

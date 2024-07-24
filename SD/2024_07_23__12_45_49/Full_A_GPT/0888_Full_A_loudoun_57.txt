@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the described user story involves identifying the key entities and their interactions for the process of updating the GIS Property Management information in the context of the County Services & Property Information Portal project. Below is a PlantUML code snippet that outlines the sequence of actions from the moment a technical staff member initiates an update to the GIS Property Management information, specifically for updating a transactional Parcel Pin to reference a GIS layer where the Split or Merged Parcel Pin exists.
+
+```plantuml
+@startuml
+participant "Technical Staff" as Staff
+participant "Customer Portal" as Portal
+participant "Authentication Service" as Auth
+participant "GIS Property Management Module" as GIS
+participant "Database" as DB
+
+== Update GIS Property Management with Split/Merged Parcel Pin ==
+
+Staff -> Portal: Initiates GIS Update
+Portal -> Auth: Verify Staff Identity
+Auth --> Portal: Identity Confirmation
+Portal --> Staff: Authentication Successful
+
+Staff -> GIS: Request Update Form
+GIS --> Staff: Provide Update Form
+
+Staff -> GIS: Submit Update Form with New Parcel Pin Details
+GIS -> DB: Validate Parcel Pin
+DB --> GIS: Validation Success
+
+GIS -> DB: Update Parcel Pin Reference
+DB --> GIS: Update Confirmation
+GIS --> Staff: Display Update Success Message
+
+@enduml
+```
+
+### Explanation:
+
+1. **Initiates GIS Update**: The sequence begins with the technical staff member initiating the process to update GIS Property Management information.
+
+2. **Verify Staff Identity**: The Customer Portal requests identity verification from the Authentication Service to ensure the request is from an authorized staff member.
+
+3. **Authentication Successful**: Once the staff's identity is confirmed, the portal notifies the staff that authentication was successful.
+
+4. **Request Update Form**: The staff member requests the update form from the GIS Property Management Module.
+
+5. **Provide Update Form**: The GIS module provides the update form to the staff member.
+
+6. **Submit Update Form with New Parcel Pin Details**: The staff member fills out and submits the form with the details of the new or modified Parcel Pin, indicating whether a parcel has been split or merged.
+
+7. **Validate Parcel Pin**: The GIS module validates the new Parcel Pin details against the database to ensure they are correct and that the parcel exists.
+
+8. **Update Parcel Pin Reference**: Upon successful validation, the GIS module updates the reference to the Parcel Pin in the database to reflect the new GIS layer where the split or merged Parcel Pin exists.
+
+9. **Display Update Success Message**: Finally, the staff member is informed that the update was successful, completing the sequence.
+
+This diagram represents an abstract overview of the interactions within the system for the specific task of updating the GIS Property Management system with new or changed Parcel Pin information. Depending on the specific implementation, additional steps or systems might be involved.

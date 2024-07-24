@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram in PlantUML format can help visualize the interaction flow between objects for the user story: "As a manager, I want to update items in the inventory list." Here's how this sequence could be outlined:
+
+```plantuml
+@startuml
+actor Manager
+participant "Interface: UI" as UI
+participant "Backend Service" as Backend
+participant "Database" as DB
+
+Manager -> UI : Access inventory management
+activate UI
+
+UI -> Backend : Request current inventory list
+activate Backend
+
+Backend -> DB : Query inventory items
+activate DB
+
+DB --> Backend : Return inventory items
+deactivate DB
+
+Backend --> UI : Display inventory items
+deactivate Backend
+
+Manager -> UI : Select item to update
+activate UI
+
+Manager -> UI : Enter new inventory details
+UI -> Backend : Update inventory request with details
+activate Backend
+
+Backend -> DB : Update item in database
+activate DB
+
+DB --> Backend : Confirm update
+deactivate DB
+
+Backend --> UI : Confirm success to Manager
+deactivate Backend
+
+UI --> Manager : Display update confirmation
+deactivate UI
+
+@enduml
+```
+
+This sequence diagram starts with the manager accessing the inventory management feature through the user interface (UI). The UI requests the current inventory list from the backend service, which then queries the database for inventory items. The database returns the inventory items to the backend, which sends them to the UI to display to the manager.
+
+The manager selects an inventory item to update and enters the new details through the UI. The UI sends an update inventory request with the details to the backend service. The backend service updates the item in the database. The database confirms the update to the backend service, which in turn confirms the successful update to the UI. Lastly, the UI displays an update confirmation to the manager.
+
+This diagram provides a clear, step-by-time view of the system components' interactions, focusing on the task of updating inventory items in the restaurant management and operations system.

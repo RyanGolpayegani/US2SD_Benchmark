@@ -1,0 +1,42 @@
+To illustrate the sequence of interactions for the user story "As a manager, I want to change shifts of employees" in a Restaurant Management and Operations System, we will draft a sequence diagram in PlantUML format. This diagram will depict the flow between the Manager, the System (including its different internal components), and potentially other system actors involved in the process of changing employee shifts.
+
+Please note that this sequence diagram is simplified and conceptual, aiming to capture the primary interactions and not the minute implementation details.
+
+```plantuml
+@startuml
+participant Manager
+participant "UI: Employee Scheduling" as UI
+participant "Server: Scheduling Controller" as Controller
+participant "Database" as DB
+
+Manager -> UI : Access Employee Scheduling Module
+UI -> Controller : Request Current Shifts
+Controller -> DB : Query Current Shifts
+DB -> Controller : Return Shifts Data
+Controller -> UI : Display Shifts
+UI -> Manager : Show Current Shifts
+
+Manager -> UI : Request Shift Change
+UI -> Controller : Validate and Process Shift Change
+Controller -> DB : Update Shifts Information
+DB -> Controller : Confirm Update
+Controller -> UI : Shift Change Success
+UI -> Manager : Confirm Shift Change
+
+note over Manager : Reviews Shift Change Confirmation
+note over DB : Shifts are updated in the Database
+
+@enduml
+```
+
+Explanation of Steps:
+1. **Access Employee Scheduling Module**: The manager accesses the employee scheduling module within the system's UI to view and change shifts.
+2. **Request Current Shifts**: The system retrieves the current shifts from the database to display them to the manager.
+3. **Show Current Shifts**: The manager reviews the current shifts displayed by the system.
+4. **Request Shift Change**: The manager decides on the shift change and inputs the new shift details into the system.
+5. **Validate and Process Shift Change**: The system validates the shift change request, processes it, and then updates the shifts information in the database.
+6. **Confirm Shift Change**: The system confirms the shift change to the manager, indicating that the operation was successful.
+7. **Reviews Shift Change Confirmation**: The manager reviews the confirmation of the shift change.
+8. **Shifts are updated in the Database**: The database now holds the updated shifts information following the manager's change request.
+
+This diagram focuses on the main components and skips authentication steps and other lower-level validations for clarity. In a real-world scenario, additional steps like authorization checks, detailed validation, and error handling mechanisms would be included.

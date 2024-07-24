@@ -1,0 +1,48 @@
+@startuml
+participant Patron
+participant "Search Interface" as Search
+participant "CMS" as CMS
+database "Database" as DB
+participant "DB/IR Administrator" as Admin
+
+note over Patron, Admin: Name Change Management for Reports/Datasets
+
+Patron->Search: enter search term for report/dataset
+Search->DB: query report/dataset name
+DB-->Search: return search results
+Search-->Patron: display current and historic names
+
+Patron->Search: select historic report
+Search->DB: query selected historic report
+DB-->Search: return requested content
+
+Search-->Patron: display historic report content
+Patron->Patron: review content
+
+== Name Change Management ==
+Admin->CMS: log in
+CMS-->Admin: authentication success
+
+Admin->CMS: initiate name change for report/dataset
+CMS->DB: check if name exists
+DB-->CMS: name check result
+
+alt If name exists with historic records
+    CMS->Admin: prompt for merge or separate entry
+    Admin->CMS: select merge with historic
+    CMS->DB: merge records under new name
+    DB-->CMS: merge confirmation
+    CMS-->Admin: display success message
+else New Name
+    CMS->DB: update record with new name
+    DB-->CMS: update confirmation
+    CMS-->Admin: display success in name change
+end
+
+note over Admin: Monitor for any issues or inconsistencies
+Admin->CMS: periodically review report/dataset names
+CMS->DB: fetch all report/dataset names
+DB-->CMS: returns list
+CMS-->Admin: display report/dataset names for review
+
+@enduml

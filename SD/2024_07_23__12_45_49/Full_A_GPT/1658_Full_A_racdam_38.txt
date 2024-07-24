@@ -1,0 +1,53 @@
+To fulfill your request for generating a detailed sequence diagram for the specified user story "As a researcher, I want to share reports I've written, so that it is available to staff and researchers" using PlantUML, below is a representation of how this interaction could be modeled. This sequence diagram outlines the processes involved from a researcher's perspective to share reports, including interactions with the system and how the system processes this action to make the reports available to staff and researchers.
+
+Please note, this is a textual representation that should be converted to a visual sequence diagram using a PlantUML environment or any tool that supports PlantUML syntax.
+
+```plantuml
+@startuml
+actor Researcher as res
+participant "Upload Interface" as UI
+participant "Authentication System" as Auth
+database "Digital Archive Database" as DB
+participant "Access Control" as AC
+participant "Notification Service" as NS
+
+res -> UI : Navigate to Report Upload Page
+UI -> Auth : Request Authentication
+Auth --> res : Authenticate and Authorize
+res -> UI : Upload Report
+UI -> DB : Store Report Details\n(Set metadata, permissions)
+activate DB
+DB --> UI : Confirm Upload Success
+deactivate DB
+UI --> res : Display Upload Success Message
+
+UI -> AC : Update Access Permissions
+AC -> DB : Apply Access Rules
+activate AC
+AC --> UI : Permissions Updated
+deactivate AC
+
+UI -> NS : Trigger Notifications
+NS -> DB : Retrieve Subscriber List
+activate NS
+DB --> NS : Provide Subscriber List
+NS -> res : Send Confirmation Email
+NS -> DB : Retrieve Staff and Researchers Emails
+DB --> NS : Provide Emails
+NS -> DB : Send Notifications to Staff and Researchers
+DB --> NS : Notifications Sent
+deactivate NS
+
+@enduml
+```
+
+In this sequence diagram:
+
+1. **Researcher Navigates**: The researcher navigates to the report upload page on the upload interface.
+2. **Authentication**: Before uploading, the researcher is authenticated and authorized by the authentication system.
+3. **Report Upload**: The researcher uploads the report, which then gets stored in the digital archive database with appropriate metadata and permissions.
+4. **Confirmation**: The upload interface confirms the upload success back to the researcher.
+5. **Access Control Update**: Access permissions for the report are updated, so it becomes available to staff and researchers.
+6. **Notification Triggering**: The notification service is triggered to inform relevant parties (e.g., subscribers, staff, and researchers) about the new report.
+
+This interaction overview encapsulates the essential steps involved from the perspective of uploading and sharing research reports within a digital archive system, following the specifications of the project description provided.

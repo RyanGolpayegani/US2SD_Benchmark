@@ -1,0 +1,21 @@
+@startuml
+!theme cerulean
+
+actor "Library Manager" as Manager
+participant "System Interface" as Interface
+participant "Server" as Server
+participant "Database" as DB
+
+Manager -> Interface: Request to view member checkout statuses
+Interface -> Server: Validate manager credentials
+Server -> DB: Fetch checkout details per member
+DB --> Server: Return checkout data
+Server --> Interface: Display checkout statuses
+Manager -> Interface: Identify over-limit checkouts
+Interface -> Server: Request to block member(s)
+Server -> DB: Update member status to 'blocked'
+DB --> Server: Confirmation of status update
+Server --> Interface: Display updated member status
+Interface --> Manager: Show confirmation of member(s) blocked
+
+@enduml

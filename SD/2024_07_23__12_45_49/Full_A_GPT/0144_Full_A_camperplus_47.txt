@@ -1,0 +1,60 @@
+Creating a detailed Sequence Diagram for the user story mentioned involves illustrating the interaction between the parent, the Camp Management & Communication Platform's system components, and any other external system interfaces required to achieve the functionality of viewing and editing enrolled children for the camp year. Below is the PlantUML code that represents these interactions.
+
+```plantuml
+@startuml
+participant Parent as parent
+participant "Web Interface" as web
+participant "Camp Management System" as cms
+database "Camp Database" as db
+
+== Viewing Enrolled Children ==
+parent -> web : Access camp portal
+web -> cms : Request to view enrolled children
+cms -> db : Retrieve enrolled children list
+db --> cms : Return children list
+cms --> web : Display enrolled children
+web --> parent : Show enrolled children info
+
+== Editing Enrolled Child's Information ==
+parent -> web : Request to edit child info
+web -> cms : Validate parent's edit request
+alt Valid parent
+    cms -> db : Fetch child's current data
+    db --> cms : Return current child data
+    cms --> web : Show current child data
+    web --> parent : Allow data editing
+    parent -> web : Submit edited info
+    web -> cms : Update child's information request
+    cms -> db : Update child database record
+    db --> cms : Confirm update
+    cms --> web : Display confirmation message
+    web --> parent : Show success message
+    
+else Invalid parent
+    cms --> web : Deny edit request
+    web --> parent : Show error message
+end
+
+@enduml
+```
+
+This sequence diagram begins with the parent's intention to view and edit their enrolled children's information in the camp system. Here are the key steps in the sequence:
+
+1. **Viewing Enrolled Children:**
+   - The parent accesses the camp portal through the Web Interface.
+   - The Web Interface signals the Camp Management System (CMS) to retrieve the list of enrolled children.
+   - The CMS queries the Camp Database to get this list.
+   - The Camp Database returns the list to the CMS.
+   - The CMS sends this information back to the Web Interface.
+   - Finally, the parent is presented with the information about their enrolled children.
+
+2. **Editing Enrolled Child's Information:**
+   - The parent initiates an edit request through the Web Interface.
+   - The Web Interface asks the CMS to validate the parent's request.
+   - If the validation passes, the CMS fetches the current data of the specified child from the Camp Database and allows the parent to edit the information through the Web Interface.
+   - The parent submits the edited info, which is sent to the CMS.
+   - The CMS then updates the child's information in the Camp Database.
+   - Upon successful update, the CMS informs the Web Interface, which in turn notifies the parent of the successful update.
+   - If the initial validation fails, the CMS will directly instruct the Web Interface to display an error message to the parent.
+
+This PlantUML code captures a basic sequence of interactions for the user story but can be expanded to include error handling, authorization checks, and more detailed steps based on specific requirements and implementations.

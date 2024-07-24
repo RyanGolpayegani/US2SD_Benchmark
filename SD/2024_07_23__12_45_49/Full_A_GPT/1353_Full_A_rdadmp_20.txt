@@ -1,0 +1,33 @@
+Given the comprehensive project description provided for the Comprehensive Data Management Planning Tool (DMPTool), a detailed sequence diagram can illustrate the interactions involved when an archive manager seeks to know the conservation period of data. This user story involves multiple system components including the archive manager, the DMPTool interface, metadata tools, and perhaps a preservation planning module that's part of DMPTool. Let's focus on the key interactions:
+
+```plantuml
+@startuml
+participant ArchiveManager as "Archive Manager"
+participant DMPToolInterface as "DMPTool Interface"
+participant MetadataTools as "External Metadata Tools"
+participant PreservationPlanning as "Preservation Planning Module"
+
+Activate ArchiveManager
+ArchiveManager -> DMPToolInterface : RequestConservationPeriodInformation
+Activate DMPToolInterface
+DMPToolInterface -> MetadataTools : FetchMetadataForDataset
+Activate MetadataTools
+MetadataTools --> DMPToolInterface : ReturnMetadata
+deactivate MetadataTools
+DMPToolInterface -> PreservationPlanning : DetermineConservationPeriod(Metadata)
+Activate PreservationPlanning
+PreservationPlanning --> DMPToolInterface : ConservationPeriodDetails
+deactivate PreservationPlanning
+DMPToolInterface --> ArchiveManager : DisplayConservationPeriodDetails
+deactivate DMPToolInterface
+@enduml
+```
+
+This sequence diagram is organized into the following steps:
+1. **Request Initiation**: The Archive Manager initiates a request from the DMPTool Interface to view the conservation period of specific data.
+2. **Fetch Metadata**: The DMPTool Interface then communicates with External Metadata Tools to gather metadata related to the dataset in question.
+3. **Metadata Return**: The External Metadata Tools send the requested metadata back to the DMPTool Interface.
+4. **Determine Conservation Period**: The DMPTool Interface forwards this metadata to the Preservation Planning Module, which calculates or determines the conservation period based on the dataset's attributes.
+5. **Return Information**: Finally, the DMPTool Interface presents the conservation period details to the Archive Manager.
+
+In this scenario, the encapsulation of processes by the DMPTool ensures that archive managers can easily access crucial data management information, such as data conservation periods, thereby facilitating better organization and adaptation of preservation actions to meet service needs. This sequence also emphasizes the DMPTool's role in streamlining communication and function calls among various components and external tools for efficient data management planning.

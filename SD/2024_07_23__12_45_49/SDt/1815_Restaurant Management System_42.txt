@@ -1,0 +1,26 @@
+@startuml
+participant Cook
+participant "Inventory System" as Inventory
+participant "Supplier Management" as Supplier
+
+Cook -> Inventory : Check stock levels
+activate Inventory
+
+Inventory -> Inventory : Retrieve stock information
+Inventory --> Cook : Display stock levels
+
+Cook -> Inventory : Determine low stock items
+activate Cook
+Cook --> Cook : Decide on restocking\nbased on stock levels and\nupcoming menu requirements
+deactivate Cook
+
+Cook -> Inventory : Initiate restock request for\nlow stock items
+activate Inventory
+Inventory -> Supplier : Order new stock
+activate Supplier
+Supplier --> Inventory : Confirm order and\ndelivery schedule
+deactivate Supplier
+
+Inventory --> Cook : Display restocking\nconfirmation and\ndelivery schedule
+deactivate Inventory
+@enduml

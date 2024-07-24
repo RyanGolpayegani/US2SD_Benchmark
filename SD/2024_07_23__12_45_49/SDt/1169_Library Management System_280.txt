@@ -1,0 +1,27 @@
+@startuml
+actor Member
+participant "UI: Library Interface" as UI
+participant "Controller" as Controller
+participant "BookService" as BookService
+participant "BookRepository" as BookRepository
+database "LibraryDB" as LibraryDB
+
+Member -> UI: Enter publication date search criteria
+UI -> Controller: Request to search books by publication date
+Controller -> BookService: SearchBooksByDate(publicationDate)
+BookSanitize -> BookService: Verify and sanitize date input
+activate BookService
+BookService -> BookRepository: FindBooksByPublicationDate(publicationDate)
+activate BookRepository
+BookRepository -> LibraryDB: Query books with specific publication date
+activate LibraryDB
+LibraryDB --> BookRepository: Return book results
+deactivate LibraryDB
+BookRepository --> BookService: Book data
+deactivate BookRepository
+BookService -> BookService: Process results (if required)
+BookService --> Controller: Return search results
+deactivate BookService
+Controller --> UI: Display books matching the publication date
+UI --> Member: Show search results
+@enduml

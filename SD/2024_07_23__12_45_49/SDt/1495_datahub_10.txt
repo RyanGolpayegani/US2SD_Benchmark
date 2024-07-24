@@ -1,0 +1,28 @@
+@startuml
+actor Publisher as P
+participant "Publisher UI" as UI
+participant "Authorization Service" as Auth
+participant "Data Management Service" as DM
+participant "Database" as DB
+participant "Cache" as Cache
+
+== Unpublish Data Package ==
+
+P -> UI : Selects data package to unpublish
+UI -> Auth : Requests action authorization
+Auth --> UI : Confirms authorization
+
+UI -> DM : Send unpublish request\n[Data Package ID]
+DM -> DB : Query data package status
+DB --> DM : Data package details
+
+DM -> DB : Update data package status to 'unpublished'
+DB --> DM : Confirmation
+
+DM -> Cache : Invalidate cache for data package
+Cache --> DM : Cache invalidated
+
+DM --> UI : Unpublish successful
+UI --> P : Display success message
+
+@enduml

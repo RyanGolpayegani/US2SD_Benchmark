@@ -1,0 +1,53 @@
+Creating a detailed sequence diagram for the user story of a student wanting to find shelf information for books in a Comprehensive Library Management System (CLMS) involves depicting the interactions between the system's components in response to the user's action. Below is a PlantUML representation of how this process could be visualized.
+
+```plantuml
+@startuml
+participant Student
+participant "Search Interface" as search
+participant "Library Database" as db
+participant "Books Controller" as controller
+participant "Shelf Information System" as shelfInfo
+
+
+== Finding Shelf Information for a Book ==
+Student -> search : searches for a book
+search -> controller : fetchBookDetails(searchQuery)
+controller -> db : queryBookDetails(searchQuery)
+db -> controller : return bookDetails
+controller -> shelfInfo : getShelfInfo(bookID)
+shelfInfo -> controller : return shelfInfoDetails
+controller -> search : displayBookAndShelfInfo(bookDetails, shelfInfoDetails)
+search -> Student : showBookShelfInfo(bookDetails, shelfInfoDetails)
+
+@enduml
+```
+
+### Explanation:
+
+1. **Student**: This is the individual (student) initiating the action of searching for the shelf information of a particular book.
+   
+2. **Search Interface**: This interface within the CLMS allows the student to search for books based on different criteria such as title, author, or subject category.
+   
+3. **Library Database**: Houses all the information about books, including titles, authors, categories, and crucially, their shelf locations.
+   
+4. **Books Controller**: Acts as an intermediary that processes requests from the search interface and communicates with the database and other systems to fetch the desired information.
+   
+5. **Shelf Information System**: This component stores and manages detailed shelf information for each book, allowing for efficient retrieval of where a book can be found in the library.
+
+### Sequence of Events:
+
+1. The student starts the process by entering a search query (e.g., a book's title, author, or category) into the search interface.
+   
+2. The search interface forwards this query to the books controller to fetch the book's details, including its shelf information.
+   
+3. The books controller queries the library database to get the details of the requested book based on the search query provided by the student.
+   
+4. Once the book details are retrieved, the books controller requests the shelf information for that book from the shelf information system using the book's ID.
+   
+5. The shelf information system retrieves and returns the specific shelf location details of the book to the books controller.
+   
+6. Having gathered both the book details and the shelf information, the books controller returns this combined information to the search interface.
+   
+7. The search interface then displays the book details along with the shelf location to the student, completing the sequence.
+
+This sequence diagram demonstrates the backend process in the CLMS that allows students to effectively find where books are located in the library, ensuring a more efficient and user-friendly experience.

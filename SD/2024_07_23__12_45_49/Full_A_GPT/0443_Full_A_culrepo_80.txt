@@ -1,0 +1,48 @@
+Creating a detailed PlantUML sequence diagram based on the provided user story involves breaking down the process into its key interactions between the user (patron) and the system components. Note that actual implementation details may vary, and the following is a conceptual overview aimed to align with the project description of a Comprehensive Digital Repository System for Cornell University.
+
+Below is a PlantUML sequence diagram that outlines the process a patron would follow to download a report/dataset release calendar and load it into their personal calendar.
+
+```plantuml
+@startuml
+actor Patron
+
+boundary "Web Interface" as UI
+control "Search Controller" as Search
+entity "Calendar Service" as Calendar
+database "Repository Database" as RepoDB
+boundary "Authentication Service" as Auth
+boundary "External Calendar" as ExtCal
+
+Patron -> UI: Access Repository
+UI -> Auth: Request Authentication
+Auth -> Patron: Authenticate
+Patron -> UI: Authenticated
+Patron -> UI: Search for report/dataset release calendar
+UI -> Search: Execute Search(Query)
+Search -> RepoDB: Retrieve Calendar Data
+RepoDB -> Search: Calendar Data
+Search -> Calendar: Prepare Downloadable Calendar
+Calendar -> UI: Calendar File
+UI -> Patron: Download Prompt
+Patron -> UI: Confirm Download
+UI -> Patron: Download Calendar File
+
+note right of Patron: Load the calendar file\ninto own calendar application
+
+Patron -> ExtCal: Import Calendar File
+ExtCal -> Patron: Confirmation of Imported Calendar
+
+@enduml
+```
+
+In this sequence diagram:
+
+1. **Patron accesses the repository through the Web Interface** and is prompted to authenticate if not already. Authentication occurs through an Authentication Service.
+2. Once authenticated, **the Patron searches for a report/dataset release calendar** via the web interface, which forwards the query to the Search Controller.
+3. The **Search Controller queries the Repository Database** to retrieve the relevant calendar data.
+4. The **Calendar Service prepares a downloadable calendar file** based on the data retrieved.
+5. **The Web Interface provides the Patron with a download prompt**, allowing them to download the calendar file.
+6. **The Patron confirms the download** and the file is transferred.
+7. Finally, **the Patron imports the downloaded calendar file into their external calendar application** (e.g., Google Calendar, Outlook), where they receive confirmation of the imported calendar.
+
+This process accommodates the need for patrons to find, download, and integrate Cornell's reports/datasets release calendars into their personal calendar systems, enhancing the accessibility and utility of the university's academic resources.

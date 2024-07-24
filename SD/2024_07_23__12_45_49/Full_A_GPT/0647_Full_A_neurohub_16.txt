@@ -1,0 +1,40 @@
+To create a sequence diagram for the user story "As a researcher, I want to download files attached to an experiment using my Web browser," using PlantUML syntax, you would first outline the key actors and objects involved in the process. For simplicity, let's assume the vital entities are the Researcher (user), Web Browser, Neurohub Interface, Authentication System, Database, and File Storage System. 
+
+Here's a basic example of how this might look in PlantUML code:
+
+```plantuml
+@startuml
+actor Researcher as researcher
+participant "Web Browser" as browser
+participant "Neurohub Interface" as interface
+participant "Authentication System" as auth
+database "Database" as db
+entity "File Storage System" as storage
+
+researcher -> browser: Requests experiment files 
+browser -> interface: Fetch file request
+interface -> auth: Validate user session
+auth -> interface: Session valid
+interface -> db: Retrieve file metadata
+db -> interface: File metadata
+interface -> storage: Request files
+storage -> interface: Return files
+interface -> browser: Serve files to researcher
+browser -> researcher: Download files prompt
+researcher -> browser: Confirm download
+browser -> researcher: Download files
+
+@enduml
+```
+This sequence diagram outlines the steps involved when a researcher wants to download files attached to an experiment through a web browser. Here’s a step-by-sstep description:
+
+1. **Researcher Requests**: The researcher requests the files through their web browser.
+2. **Fetch File Request**: The web browser sends this request to the Neurohub Interface.
+3. **Validate User Session**: Before proceeding, the Neurohub Interface checks with the Authentication System to ensure the session is valid.
+4. **Retrieve File Metadata**: Once confirmed, the Neurohub Interface queries the Database to retrieve metadata about the requested files.
+5. **Request Files**: With metadata obtained, the Neurohub Interface then requests the actual files from the File Storage System.
+6. **Return Files**: The File Storage System sends the files back to the Neurohub Interface.
+7. **Serve Files to Researcher**: The Neurohub Interface processes the files, serving them back through the Web Browser to the researcher.
+8. **Download**: The researcher gets prompted to download the files and confirms. The files are then downloaded through the web browser.
+
+This visualization offers a high-level view of the interaction between different components when downloading files from an experiment. Depending on the specific implementation details and additional requirements (like logging, error handling, or user feedback mechanisms), this diagram might be expanded or modified.

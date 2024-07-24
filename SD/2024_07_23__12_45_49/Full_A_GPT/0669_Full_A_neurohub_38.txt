@@ -1,0 +1,38 @@
+Given the complexity and breadth of the user story you're asking for a sequence diagram for, the following PlantUML code illustrates a simplified view of capturing metadata for each file created during an experimental run in the context of the Neurohub Enhancement and Automation Project.
+
+This diagram is based on the assumption that a user (e.g., a researcher or lab technician) interacts with the Neurohub platform to attach or input metadata for files resulting from an experimental run. The process involves selecting files, inputting or selecting the appropriate metadata, and then saving this metadata with each file.
+
+```plantuml
+@startuml
+actor User as user
+participant "Web Interface" as web
+participant "API Server" as api
+database "Metadata Database" as db
+
+user -> web : Select files from experimental run
+web -> api : Request to attach metadata
+api -> db : Fetch existing metadata templates
+db -> api : Return metadata templates
+api -> web : Display metadata templates
+user -> web : Input/select metadata for files
+web -> api : Send metadata and file identifiers
+api -> db : Save metadata for each file
+db -> api : Confirm save operation
+api -> web : Confirm metadata attached
+web -> user : Display success message
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **User Interaction**: The process initiates with the user selecting files from an experimental run through the Neurohub platform's web interface. This step assumes that the files are already uploaded or exist within the system.
+
+2. **Metadata Template Fetching**: The web interface communicates with the API server, requesting the necessary action to attach metadata. The API server then queries the Metadata Database for existing metadata templates, which are essential for ensuring consistency and accuracy of the metadata across files.
+
+3. **Template Display and Metadata Input**: Once the API server retrieves and sends the metadata templates back to the web interface, the user is presented with these templates. The user then inputs or selects the appropriate metadata for each file based on the experimental run.
+
+4. **Saving Metadata**: After the user completes the metadata input, the web interface sends this data, along with identifiers for each associated file, back to the API server, which then processes and saves the metadata for each file into the Metadata Database.
+
+5. **Confirmation of Metadata Attachment**: Lastly, the API server sends a confirmation back to the web interface that the metadata has been successfully attached to each file. The web interface then displays a success message to the user.
+
+This sequence diagram is a simplified abstraction meant to provide a clear understanding of the process involved in capturing the same metadata for each file created in an experimental evening within Neurohub. Real-world implementations may involve additional complexities such as error handling, user authentication, and data validation which are not depicted here.

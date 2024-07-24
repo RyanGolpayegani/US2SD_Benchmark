@@ -1,0 +1,37 @@
+@startuml
+participant Archivist as A
+participant "Web Interface" as W
+participant "Licensing Module" as L
+participant "Database" as D
+
+A -> W : Select file(s) for licensing
+activate W
+
+W -> L : Request licensing options
+activate L
+
+L -> D : Retrieve available licenses
+activate D
+D --> L : Return licenses
+deactivate D
+
+L --> W : Show licenses
+deactivate L
+
+A -> W : Choose specific license/rights statement
+activate W
+
+W -> L : Apply chosen license to file(s)
+activate L
+
+L -> D : Update file(s) with chosen license
+activate D
+D --> L : Confirm license update
+deactivate D
+
+L --> W : Confirm successful application
+deactivate L
+W --> A : Show success message
+deactivate W
+
+@enduml

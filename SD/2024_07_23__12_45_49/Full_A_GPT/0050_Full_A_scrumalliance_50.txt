@@ -1,0 +1,34 @@
+Creating a detailed Sequence Diagram for the specific user story you provided involves detailing the interactions between system components such as the Member Interface, Ad Management System, Email Notification System, and Database. Here’s how you can represent this scenario with PlantUML language:
+
+```plantuml
+@startuml
+actor Advertiser
+entity "Email System" as Email
+control "Ad Management System" as AdSys
+database "Database" as DB
+
+== Ad Expiry Reminder Process ==
+
+AdSys -> DB: Query upcoming ad expirations
+activate DB
+DB --> AdSys: List of ads expiring in 7 days
+deactivate DB
+
+loop for each Ad expiring
+    AdSys -> DB: Get Advertiser Contact Info
+    activate DB
+    DB --> AdSys: Advertiser Email
+    deactivate DB
+
+    AdSys -> Email: Send Expiry Reminder(Advertiser Email)
+    activate Email
+    Email --> Advertiser: Email Reminder
+    deactivate Email
+end
+
+@enduml
+```
+
+This sequence diagram starts with the Ad Management System querying the database for ads that are about to expire in seven days. For each ad that meets this criterion, the system retrieves the contact information of the respective advertiser from the database. Then, it instructs the Email System to send a reminder to the advertiser about the impending ad expiration, facilitating action from the advertiser's side to extend the ad if desired.
+
+To use this diagram, you'll need to have PlantUML installed or use an online PlantUML editor. Replace the placeholder texts with more specific names relevant to your project's context if necessary. Note that this diagram assumes a relatively simple process for the sake of clarity and brevity; real-world applications might require more detailed interactions, especially in terms of error handling and security considerations.

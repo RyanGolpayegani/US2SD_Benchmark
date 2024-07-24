@@ -1,0 +1,25 @@
+@startuml
+participant AssetManager as AM
+participant DigitalRepositorySystem as DRS
+participant RedundancyService as RS
+participant ThreatDetectionService as TDS
+participant NotificationService as NS
+
+AM -> DRS : RequestIntegrityCheck()
+DRS -> RS : FetchRedundantCopiesLocations()
+RS --> DRS : RedundantCopiesDetails
+DRS -> TDS : CheckCopiesIntegrity(RedundantCopiesDetails)
+TDS -> TDS : AnalyzeCopies()
+alt Threat Detected
+    TDS -> DRS : ThreatNotification(ThreatDetails)
+    DRS -> RS : IsolateCopy(ThreatenedCopyDetails)
+    RS --> DRS : IsolationConfirmation
+    DRS -> NS : SendAlert(AM, ThreatDetails)
+    NS --> AM : ThreatAlertMsg
+else No Threat Detected
+    TDS --> DRS : AllCopiesSecure
+    DRS -> NS : SendConfirmation(AM)
+    NS --> AM : AllCopiesSecuredMsg
+end
+
+@enduml

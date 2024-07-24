@@ -1,0 +1,31 @@
+@startuml
+actor User
+participant "Search Interface" as SI
+participant "DIMS Backend" as DB
+participant "Metadata Repository" as MR
+database "Digital Asset Database" as DAD
+
+User -> SI: Request object/component details
+activate SI
+
+SI -> DB: Query for object/component
+activate DB
+
+DB -> MR: Retrieve metadata
+activate MR
+
+MR -> DAD: Fetch publication details\n(place of publication, publisher, etc.)
+activate DAD
+DAD --> MR: Return publication details
+deactivate DAD
+
+MR --> DB: Return metadata (including publication details)
+deactivate MR
+
+DB --> SI: Return comprehensive object/component info
+deactivate DB
+
+SI --> User: Display object/component\npublication details
+deactivate SI
+
+@enduml

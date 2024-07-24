@@ -1,0 +1,60 @@
+To visualize the user story "As a library member, I want to make a reservation for a book for 2 days so that I can reserve the book remotely" in a sequence diagram using Plant UML, we'll break down the steps involved in this process. This sequence will primarily involve the user (Library Member), the interface they interact with (Library Website or App), and the backend systems (Reservation System, Notification Service, and Database).
+
+**Plant UML Code for the Sequence Diagram**:
+
+```plantuml
+@startuml
+!theme plain
+
+actor LibraryMember as member
+participant "Library\nWebsite/App" as webApp
+participant "Reservation\nSystem" as reservationSys
+database Database
+participant "Notification\nService" as notifService
+
+== Reservation Process ==
+member -> webApp : Request to reserve book for 2 days
+webApp -> reservationSys : Check book availability
+reservationSys -> Database : Query book status
+Database -> reservationSys : Return book status
+
+alt If book is available
+    reservationSys --> webApp : Book is available
+    webApp -> member : Show success message & reservation details
+    webApp -> reservationSys : Make reservation
+    reservationSys -> Database : Update book status & reservation details
+    Database --> reservationSys : Confirmation
+    reservationSys -> notifService : Send reservation confirmation
+    notifService -> member : Email/SMS confirmation
+else If book is not available
+    reservationSys --> webApp : Book not available
+    webApp -> member : Show unavailable message & offer alternatives
+end
+
+alt If reservation is made
+    member -> webApp : Confirm reading and pick-up dates
+    webApp -> reservationSys : Update reservation with dates
+    reservationSys -> Database : Log reservation dates
+    Database --> reservationSys : Confirmation
+    reservationSys -> notifService : Send reservation date confirmation
+    notifService -> member : Email/SMS date confirmation
+end
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Library Member Request:** The library member initiates the process by making a request through the Library Website or App to reserve a book for 2 days.
+
+2. **Availability Check:** The request is forwarded to the Reservation System, which then queries the Database for the availability of the requested book.
+
+3. **Response Handling:** Based on the book's status from the Database, the Reservation System responds:
+   - If the book is available, it confirms availability to the member through the Website/App and proceeds to make the reservation. Upon a successful reservation, updates are made in the Database.
+   - If the book is not available, the member is notified about the unavailability and possibly provided with alternatives.
+
+4. **Reservation Confirmation:** Upon successful reservation, the Reservation System triggers the Notification Service to send a reservation confirmation via Email or SMS to the member.
+
+5. **Date Confirmation:** The member then confirms the reading and pick-up dates for the reservation. This information is updated in the reservation details by the Reservation System, and confirmation of these dates is again sent to the member through the Notification Service.
+
+This sequence diagram represents a simplified flow of making a book reservation for 2 days by a library member, highlighting interactions with different components of the Comprehensive Library Society Management System (CLMS).

@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram for the given user story in PlantUML format requires breaking down the interactions into a sequence of steps. The steps involve the repository manager querying the DMPTool for specific data details to determine if archiving can be arranged. Below is an example of how these interactions could be represented in PlantUML syntax:
+
+```plantuml
+@startuml
+actor "Repository Manager" as RM
+participant "DMPTool Interface" as DMP
+participant "Metadata System" as MetaSys
+participant "Data Storage Plan" as DSP
+participant "Provenance Check Module" as PCM
+
+RM -> DMP: Request data type details
+activate DMP
+
+DMP -> MetaSys: Query metadata for data type
+activate MetaSys
+MetaSys -> MetaSys: Retrieve metadata details
+MetaSys -> DMP: Return metadata details
+deactivate MetaSys
+
+DMP -> DSP: Access data storage plan
+activate DSP
+DSP -> DSP: Retrieve storage details
+DSP -> DMP: Return storage details
+deactivate DSP
+
+DMP -> PCM: Perform provenance check
+activate PCM
+PCM -> PCM: Validate data archiving criteria
+PCM -> DMP: Return provenance check results
+deactivate PCM
+
+DMP -> RM: Show data type and archiving information
+deactivate DMP
+@enduml
+```
+
+This diagram outlines the process from the perspective of a repository manager needing to understand specific details about the type of data to see if archiving can be supported. Here's a step-by-step explanation of the sequence:
+
+1. **Repository Manager Request**: The repository manager initiates the process by requesting data type details from the DMPTool.
+2. **Metadata Query**: The DMPTool queries its integrated metadata system to retrieve the requested metadata details.
+3. **Data Storage Plan Access**: Simultaneously, DMPTool accesses the data storage plan to ascertain details relevant to storage and archiving.
+4. **Provenance Check**: A provenance check is performed to ensure the data meets the necessary criteria for archiving.
+5. **Information Display**: Finally, the DMPTool presents the retrieved data type and archiving information back to the repository manager.
+
+It's worth noting that actual system implementations can be more complex, involving additional checks, user authentication, permissions validations, and error handling that were not included in this high-level overview.

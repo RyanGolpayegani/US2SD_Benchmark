@@ -1,0 +1,33 @@
+To construct a sequence diagram focusing on the user story "As a librarian, I want to read books in the library" within the context of the described Comprehensive Library Management System (CLMS) via PlantUML, we'll center on interactions involving searching and possibly reserving a book for reading. Given the project's multifaceted nature, this sequence will be rather elementary, considering the librarian's unique dual role as both staff and a user in the system. While librarians typically have broader interactions within the system, this scenario assumes the librarian's action of reading a book is akin to that of a regular library member.
+
+A scenario is illustrated where the librarian first searches for a book and then, upon finding it, proceeds to read it within the library. Note that the detailed handling of internal processes like logging in or the nuances involved in physically accessing the book from shelves are abstracted for simplicity.
+
+```plantuml
+@startuml
+participant Librarian as lib
+participant "Search System" as search
+participant "Database" as db
+participant "Book Details" as book
+participant "Book Management" as manage
+
+lib -> search : searches for book by title/author
+search -> db : query book details
+db -> search : return book results
+search -> lib : display results
+
+lib -> book : select book to read
+book -> db : check book availability
+db -> book : book is available
+book -> lib : confirm availability and location
+
+lib -> manage : mark book as being read in-library
+manage -> db : update book status
+db -> manage : confirm status updated
+manage -> lib : confirm book is ready for reading
+
+note right of lib : Librarian reads the book in-library.
+
+@enduml
+```
+
+This diagram emphasizes the steps a librarian might take to search for and read a book within the library, leveraging the system's capabilities. The sequence assumes an efficient digital system that allows librarians not only to manage their administrative tasks but also to enjoy the library's offerings. The action of marking the book as being read in-library is a step added to account for book management and to prevent the book from being mistakenly thought available for borrowing during the reading period.

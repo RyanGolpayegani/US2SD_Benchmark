@@ -1,0 +1,38 @@
+Creating a detailed sequence diagram for the user story of a Digital Records Archivist wanting to view and download summary embargo metadata for all ETDs in the repository involves various components including the user, UI interface, repository system, database, and possibly a file server or external storage. This sequence diagram will represent the steps involved in viewing and downloading the embargo metadata.
+
+Below is a PlantUML representation of the sequence diagram based on the given user story and the features listed in the project description:
+
+```plantuml
+@startuml
+actor "Digital Records Archivist" as archivist
+participant "Web Interface" as UI
+participant "EDRMS Backend" as Backend
+database "Repository Database" as DB
+entity "File Server" as Server
+
+archivist -> UI: 1. Request embargo metadata for ETDs
+UI -> Backend: 2. Fetch embargo metadata
+Backend -> DB: 3. Query embargo metadata
+DB --> Backend: 4. Return metadata
+Backend --> UI: 5. Display metadata
+UI --> archivist: 6. Shows embargo metadata
+
+archivist -> UI: 7. Request download of metadata
+UI -> Backend: 8. Fetch detailed metadata
+Backend -> DB: 9. Query detailed embargo data
+DB --> Backend: 10. Return detailed data
+Backend -> Server: 11. Prepare download file
+Server --> Backend: 12. Download link
+Backend --> UI: 13. Provide download link
+UI --> archivist: 14. Download link provided
+archivist -> Server: 15. Download file by link
+Server --> archivist: 16. Metadata file
+
+@enduml
+```
+
+This sequence diagram starts with the Digital Records Archivist requesting to view the embargo metadata. The Web Interface communicates with the EDRMS Backend, which then queries the Repository Database for the embargo metadata of all ETDs (Electronic Theses and Dissertations). The database returns the requested metadata to the backend, which is then displayed to the archivist through the Web Interface.
+
+Upon viewing the summary information, the Archivist decides to download the detailed embargo metadata. The system again interacts with the database to fetch detailed embargo data, prepares a downloadable file, likely on a File Server or equivalent storage solution, and provides a link to the Archivist for downloading the file.
+
+This example assumes that the detailed process in fetching and displaying the overview of embargo metadata before providing an option to download a comprehensive report on the data. Keep in mind, depending on the architecture and requirements of the EDRMS, additional steps or components (like authentication and authorization checks, logging actions for auditing, or real-time notification services) might be integrated into this flow.

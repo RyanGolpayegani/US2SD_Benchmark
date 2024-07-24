@@ -1,0 +1,35 @@
+@startuml
+actor Developer
+participant "DNS Configuration" as DNS
+participant "Cloud.gov Platform" as Cloud
+participant "Web Infrastructure Team" as WebTeam
+participant "Content Management System (CMS)" as CMS
+
+Developer -> DNS : Request setup for beta.nsf.gov
+activate DNS
+DNS -> WebTeam : Verify subdomain setup requirements
+activate WebTeam
+WebTeam -> DNS : Confirm subdomain setup guidelines
+DNS -> DNS : Configure beta.nsf.gov subdomain
+DNS -> Developer : Confirm subdomain setup completion
+deactivate DNS
+
+Developer -> Cloud : Initiate beta site deployment
+activate Cloud
+Cloud -> WebTeam : Request deployment permissions for beta.nsf.gov
+WebTeam -> Cloud : Grant deployment permissions
+Cloud -> Developer : Provide deployment details and access
+deactivate Cloud
+
+Developer -> CMS : Prepare site content and features for deployment
+activate CMS
+CMS -> Developer : Provide content management capabilities
+Developer -> Cloud : Deploy beta site to beta.nsf.gov
+Cloud -> Cloud : Validate deployment and security settings
+Cloud -> Developer : Confirm successful deployment
+
+Developer -> WebTeam : Request final review of deployed beta site
+WebTeam -> WebTeam : Conduct review and compliance check
+WebTeam -> Developer : Provide approval and feedback
+
+@enduml

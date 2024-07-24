@@ -1,0 +1,55 @@
+Creating a detailed sequence diagram in PlantUML format for the stated user story requires understanding the interactions between the authenticated user and the system components during the sponsorship payment process. Below is an illustrative PlantUML sequence diagram for the user story:
+
+```plantuml
+@startuml
+participant "Authenticated User" as user
+participant "Sponsorship Page" as page
+participant "Payment Module" as payment
+participant "Database" as db
+participant "Email Service" as email
+
+user -> page: Select $350 Company Sponsorship Level
+activate user
+activate page
+page -> db: Retrieve Payment Information
+activate db
+db --> page: Show Payment Details
+page -> user: Display Payment Options
+deactivate db
+
+user -> payment: Initiate $350 Payment
+activate payment
+payment -> db: Verify Sponsorship Level
+activate db
+db --> payment: Confirm Sponsorship Level
+deactivate db
+
+payment -> db: Process $350 Payment
+activate db
+db --> payment: Payment Successful
+deactivate db
+
+payment --> user: Payment Confirmation
+deactivate payment
+
+payment -> email: Send Confirmation Email
+activate email
+db -> email: Retrieve User Email
+email -> user: Email Payment Confirmation
+deactivate email
+
+deactivate user
+@enduml
+```
+
+This sequence diagram outlines the following steps:
+
+1. **Select Sponsorship Level**: The authenticated user selects the $350 Company Sponsorship Level on the Sponsorship Page.
+2. **Display Payment Options**: The Sponsorship Page communicates with the Database to retrieve and then show the user payment details and options.
+3. **Initiate Payment**: The user initiates the payment through the Payment Module.
+4. **Verify Sponsorship Level**: The Payment Module verifies the sponsorship level with the Database.
+5. **Process Payment**: The Payment Module processes the $350 payment, with the Database updating payment status as successful.
+6. **Send Confirmation**: The Payment Module sends a payment confirmation to the user.
+7. **Email Confirmation**: The Email Service sends a detailed confirmation email to the user's email address, with the Database providing the necessary user email details.
+
+This sequence ensures that the authenticated user can seamlessly pay for and secure a company sponsorship, enhancing the sponsorship engagement process for BADCamp without necessitating direct intervention from event personnel.

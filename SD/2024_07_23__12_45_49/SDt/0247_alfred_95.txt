@@ -1,0 +1,21 @@
+@startuml
+actor MedicalCaregiver as "Medical Caregiver"
+participant "ALFRED App" as App
+participant "ALFRED Server" as Server
+participant "User Device" as UserDevice
+participant "ALFRED Location Service" as LocationService
+
+MedicalCaregiver -> App : Request user location
+App -> Server : Authenticate request
+alt Authentication Successful
+    Server -> LocationService : Request user's last known location
+    LocationService -> UserDevice : Query current location
+    UserDevice -> LocationService : Return current location
+    LocationService -> Server : Provide user location
+    Server -> App : Send location data
+    App -> MedicalCaregiver : Display user location
+else Authentication Failed
+    Server -> App : Deny access
+    App -> MedicalCaregiver : Display error message
+end
+@enduml

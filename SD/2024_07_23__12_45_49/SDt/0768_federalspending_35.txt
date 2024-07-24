@@ -1,0 +1,27 @@
+@startuml
+actor Developer
+participant "Broker API" as Broker
+participant "Database" as DB
+participant "Data Validation" as Validation
+participant "Publishing Service" as Publishing
+
+Developer -> Broker : Request delete/update on record
+Broker -> DB : Check if record exists
+alt Record Exists
+    DB -> Broker : Record details
+    Broker -> Validation : Validate record changes
+    Validation -> Broker : Validation results
+    alt Validation Passed
+        Broker -> DB : Apply changes
+        DB -> Broker : Change confirmation
+        Broker -> Publishing : Prevent re-publishing
+        Publishing -> Broker : Acknowledgment
+        Broker -> Developer : Success Response
+    else Validation Failed
+        Broker -> Developer : Error Response (Validation)
+    end
+else Record Not Found
+    DB -> Broker : Record not found error
+    Broker -> Developer : Error Response (Record Not Found)
+end
+@enduml

@@ -1,0 +1,45 @@
+Given the scope of the project description and the specific user story you've provided, creating a detailed sequence diagram involves focusing on interactions between the user, the system (AMIDP), and any external services (such as a geolocation service). Note that this approach simplifies some interactions to maintain clarity and focus on the key processes related to the request.
+
+Below is a sequence diagram in PlantUML format, illustrating the process from when a user wants to explore content based on geographical location to receiving recommendations for relevant videos.
+
+```plantuml
+@startuml
+participant User
+participant "Mobile App" as App
+participant "AMIDP System" as System
+participant "Geolocation Service" as GeoService
+participant "Content Database" as Database
+
+User -> App : Opens AMIDP app and requests content by location
+App -> GeoService : Requests current geolocation
+GeoService -> App : Returns geolocation
+App -> System : Requests videos/content for current location
+activate System
+System -> Database : Queries for content by geolocation
+activate Database
+Database --> System : Returns list of relevant content
+deactivate Database
+System --> App : Sends content recommendations
+deactivate System
+App --> User : Displays recommended videos/content
+@enduml
+```
+This sequence diagram outlines the following steps:
+
+1. **User Opens App and Requests Content:** The user interacts with the AMIDP mobile application and requests content based on their current location. 
+
+2. **App Requests Current Geolocation:** The app makes a request to a geolocation service to obtain the current geographical coordinates of the user.
+
+3. **Geolocation Service Returns Location:** The geolocation service provides the app with the user's current geographical location.
+
+4. **App Requests Videos/Content for Location:** The app, with the user's location now known, requests from the AMIDP system any videos or other media content that is relevant to the user's current location.
+
+5. **AMIDP System Queries Database:** The AMIDP system processes the request by querying its content database for any media related to the provided geographical coordinates.
+
+6. **Database Returns List of Relevant Content:** The content database returns a list of media content that matches the geographical criteria to the AMIDD system.
+
+7. **AMIDP System Sends Content Recommendations:** With the list of relevant content obtained, the AMIDP system then sends these content recommendations back to the mobile app.
+
+8. **App Displays Recommended Videos/Content:** Finally, the AMIDP mobile app presents the recommended videos or other media content to the user based on their current location.
+
+This sequence outlines the basic flow of interactions to achieve the goal described in your user story. The diagram assumes the AMIDP system is well-integrated with both a content database containing geo-tagged videos/content and a reliable geolocation service, facilitating the seamless discovery of location-based media.

@@ -1,0 +1,31 @@
+@startuml
+actor Trainer
+participant "User Interface" as UI
+participant "Course and Event\nManagement System" as CEMS
+database "Database" as DB
+
+Trainer -> UI : Select course/event to change
+UI -> CEMS: Fetch course/event details
+CEMS -> DB: Query course/event details
+DB -> CEMS: Return details
+CEMS -> UI: Display details
+UI -> Trainer: Show details
+Trainer -> UI : Choose to convert to event/course
+UI -> CEMS: Request conversion
+activate CEMS
+
+alt is Course
+    CEMS -> DB: Update as Event
+    DB -> CEMS: Confirmation
+    CEMS -> UI: Conversion to event successful
+    UI -> Trainer: Show success message
+else is Event
+    CEMS -> DB: Update as Course
+    DB -> CEMS: Confirmation
+    CEMS -> UI: Conversion to course successful
+    UI -> Trainer: Show success message
+end
+
+deactivate CEMS
+
+@enduml

@@ -1,0 +1,55 @@
+@startuml
+!theme plain
+
+participant Student as student
+participant "Search Interface" as searchInterface
+participant "Digital Repository System" as repositorySystem
+participant "Faculty Profile Database" as profileDatabase
+participant "Course Management System" as courseSystem
+participant "Internship/Work Database" as internshipDatabase
+
+== Search for Research Topic ==
+student -> searchInterface : Enter search query on topic
+activate searchInterface
+
+searchInterface -> repositorySystem : Query for topic related research
+activate repositorySystem
+
+repositorySystem -> profileDatabase : Fetch involved faculty details
+activate profileDatabase
+
+profileDatabase --> repositorySystem : Return faculty profiles
+deactivate profileDatabase
+
+repositorySystem --> searchInterface : Display results (research, faculty profiles)
+deactivate repositorySystem
+
+searchInterface --> student : Show research topics, involved faculty
+deactivate searchInterface
+
+== Explore Faculty Profiles for Advisors, Courses, and Opportunities ==
+student -> searchInterface : Select faculty profile
+activate searchInterface
+
+searchInterface -> profileDatabase : Retrieve selected faculty profile details
+activate profile dataSeth
+
+profileDatabase --> searchInterface : Faculty details, courses, research areas
+deactivate profileDatabase
+
+searchInterface --> student : Display faculty profile, courses, research areas
+deactivate searchInterface
+
+student -> courseSystem : Query courses offered by faculty
+activate courseSystem
+
+courseSystem --> student : Display courses details
+deactivate courseSystem
+
+student -> internshipDatabase : Query for internships/work under faculty research
+activate internshipDatabase
+
+internshipDatabase --> student : Display available positions
+deactivate internshipDatabase
+
+@enduml

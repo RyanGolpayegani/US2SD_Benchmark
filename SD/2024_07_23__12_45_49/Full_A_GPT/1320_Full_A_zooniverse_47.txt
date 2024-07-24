@@ -1,0 +1,51 @@
+To create a detailed sequence diagram for the user story where a Zooniverse admin wants to group whale calls (presumably audio files) that are similar, using PlantUML syntax, we'll illustrate the interaction between the admin, the Advanced Media Identification & Discovery Platform (AMIDP), and its subsystems. It's important to highlight the process of uploading, analyzing, and grouping similar whale calls within the system.
+
+Please note, this example focuses on system interactions for the specific task of grouping similar whale calls, utilizing content fingerprinting and analysis techniques as mentioned in the project description.
+
+```plantuml
+@startuml
+participant Admin
+participant "AMIDP UI" as UI
+participant "Content Management System" as CMS
+participant "Audio Analysis Service" as AAS
+participant "Database" as DB
+database "Audio Files" as AF
+
+Admin -> UI: Access AMIDP
+UI -> CMS: Request upload interface
+CMS -> UI: Provide upload interface
+Admin -> UI: Upload whale call audio
+UI -> CMS: Receive audio file
+CMS -> AF: Store audio file
+CMS -> AAS: Request analysis of audio
+AF -> AAS: Provide audio file
+AAs -> AAS: Analyze audio for fingerprinting
+AAS -> DB: Query for similar audio fingerprints
+DB -> AAS: Return matched similar audio fingerprints
+AAS -> CMS: Provide grouping suggestions
+CMS -> UI: Display similar whale calls groups
+UI -> Admin: Show suggested groups for review
+Admin -> UI: Approves suggested groups
+UI -> CMS: Update grouping
+CMS -> DB: Store updated groups
+DB -> CMS: Confirm storage
+UI <- CMS: Confirm group update to Admin
+Admin -> UI: Request to view grouped whale calls
+UI -> CMS: Request grouped whale calls
+CMS -> DB: Query for grouped whale calls
+DB -> CMS: Return grouped whale calls
+CMS -> UI: Display grouped whale calls
+UI -> Admin: Show grouped whale calls
+@enduml
+```
+
+### Explanation
+1. **Starting the Process:** The admin accesses the AMIDP user interface (UI) to start the process of uploading and grouping similar whale calls.
+2. **Uploading Audio:** The admin uploads an audio file through the UI, which then gets stored in the Audio Files database via the Content Management System (CMS).
+3. **Analysis:** The uploaded audio file is sent to the Audio Analysis Service (AAS) for content fingerprinting and analysis to determine its unique features.
+4. **Finding Similarities:** The AAS queries a database for audio files with similar fingerprints or features.
+5. **Grouping Suggestions:** Based on the analysis, the system generates suggestions for grouping similar whale calls, which are displayed to the admin through the UI.
+6. **Approval and Storage:** The admin reviews and approves the suggested groups, and the CMS updates the groupings in the database.
+7. **Viewing Grouped Calls:** Finally, the admin can request to view the grouped whale calls, which the system retrieves from the database and displays via the UI.
+
+This sequence diagram is a high-level overview and does not delve into specifics such as authentication steps, error handling, and the internal workings of the audio analysis algorithms, focusing instead on delineating the main interactions between the system components and the admin user for the task of grouping similar whale calls.

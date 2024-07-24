@@ -1,0 +1,53 @@
+To create a detailed sequence diagram for the user story "As a moderator, I want to delete a game, so that stories and estimates for this game are no longer stored," you can use PlantUML. This scenario involves interactions between the moderator (the user), the web interface, the server-side application, and the database. Below is a PlantUML diagram that outlines these interactions.
+
+```plantuml
+@startuml
+participant Moderator as M
+participant "Web Interface" as W
+participant "Server Application" as S
+participant "Database" as D
+
+M -> W : Selects "Delete Game"
+activate W
+
+W -> S : Request to delete game (gameID)
+activate S
+
+S -> D : Query to check game existence (gameID)
+activate D
+D --> S : Game Exists
+deactivate D
+
+S -> D : Delete game records (gameID)
+activate D
+D --> S : Confirmation of Deletion
+deactivate D
+
+S --> W : Game Deleted Successfully
+deactivate S
+
+W --> M : Display Deletion Confirmation
+deputeate W
+
+@enduml
+```
+
+### Explanation:
+
+1. **Moderator (User Interaction):** The sequence begins with the moderator deciding to delete a game. This intention is communicated through the web interface by selecting the "Delete Game" action, possibly from a list of games they manage.
+
+2. **Web Interface to Server Application:** The web interface forwards the deletion request to the server-side application, identifying the specific game to be deleted by its `gameID`.
+
+3. **Server Application Queries Database:** Before proceeding with the deletion, the server-side application checks with the database to ensure the specified game exists. This step might involve retrieving and checking game metadata.
+
+4. **Database Confirming Game Existence:** The database confirms that the game indeed exists, allowing for the proceeding actions to take place.
+
+5. **Server Application Deletes Game Records:** With confirmation of the game's existence, the server application requests the deletion of all records associated with the specified `gameID` from the database. This includes the game itself, related stories, and any associated estimates.
+
+6. **Database Confirms Deletion:** The database performs the deletion and sends a confirmation back to the server application.
+
+7. **Server Application to Web Interface:** The server application confirms to the web interface that the game has been successfully deleted.
+
+8. **Web Interface to Moderator:** Finally, the moderator is informed through the web interface that the game and all its related data have been successfully deleted.
+
+This sequence diagram represents a simplified interaction flow for deleting a game in the Agile Estimation and Planning Tool. The actual implementation may include additional steps or checks, such as authentication and authorization checks, error handling, and logging activities for audit purposes.

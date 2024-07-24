@@ -1,0 +1,45 @@
+@startuml
+!theme cerulean
+
+participant "InformalCaregiver" as caregiver
+participant "ALFRED App" as app
+participant "ALFRED Device" as device
+participant "Game Module" as game
+participant "Health Monitoring\nSystem" as health
+database "User Data Store" as datastore
+
+== Game Selection ==
+caregiver -> app: Selects game for two players
+app -> game: Fetches game options
+game --> app: Displays games list
+app --> caregiver: Presents games list
+caregiver -> app: Chooses specific game
+app -> game: Initializes game with health monitoring
+
+== Game Initialization ==
+game -> device: Sends game start signal
+device -> caregiver: Shows game on screen
+
+== Playing the Game ==
+loop Game Session
+  caregiver -> device ++: Interacts with game
+  alt Health Event Triggered
+    device -> health: Monitors health parameters
+    health -> datastore ++: Logs health data
+    datastore --> health: Confirms data logging
+    health -> device: Adjust game difficulty based on health
+    device --> caregiver: Updates game difficulty
+  else Normal Game Play
+    device -> game: Updates game state
+    game --> device: Sends game feedback
+    device -> caregiver: Displays game feedback
+  end
+end
+
+== Post-Game ==
+game -> health: Analyzes session for health insights
+health -> datastore: Stores session data
+datastore -> health: Confirms storage
+health -> caregiver: Provides health summary and suggestions
+
+@enduml

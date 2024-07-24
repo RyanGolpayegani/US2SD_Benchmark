@@ -1,0 +1,16 @@
+@startuml
+actor Researcher as res
+participant "Web Interface" as web
+participant "API Gateway" as api
+database "Metadata Database" as mdb
+database "File Storage" as fs
+
+res -> web : Accesses Neurohub and searches for files using metadata
+web -> api : Request to locate files by metadata
+api -> mdb : Query metadata
+mdb -> api : Return result paths
+api -> fs : Retrieve files by paths
+fs -> api : Returns files data
+api -> web : Display files and locations
+web -> res : Shows search results with files and locations
+@enduml

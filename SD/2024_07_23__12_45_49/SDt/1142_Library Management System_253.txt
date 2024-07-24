@@ -1,0 +1,22 @@
+@startuml
+participant Member
+participant WebInterface
+participant Controller
+participant BookService
+database LibraryDB
+
+Member -> WebInterface : Enter unique ID for book search
+WebInterface -> Controller : Request book search(unique_id)
+Controller -> BookService : Search for book(unique_id)
+alt Book Found
+    BookService -> LibraryDB : Query book details by unique ID
+    LibraryDB -> BookService : Return book details
+    BookService -> Controller : Book details
+    Controller -> WebInterface : Display book details
+    WebInterface -> Member : Show book details
+else Book Not Found
+    BookService -> Controller : No book found message
+    Controller -> WebInterface : Display no book found
+    WebInterface -> Member : Show no book found message
+end
+@enduml

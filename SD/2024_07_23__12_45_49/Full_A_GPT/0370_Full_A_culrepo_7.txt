@@ -1,0 +1,58 @@
+Given the specific requirements of the user story within the context of a sophisticated project description for a digital repository system for Cornell University, the following represents a detailed sequence diagram in PlantUML format, outlining the process flow for a database/information retrieval (DB/IR) administrator managing name changes of reports/datasets. This ensures that both current and historic reports are findable by patrons, despite name variations over time.
+
+The sequence diagram reflects key interactions among system components, such as the DB/IR Administrator, Content Management System (CMS), Database, and the End User (Patron), to facilitate this process.
+
+```
+@startuml
+participant Patron
+participant "Search Interface" as Search
+participant "CMS" as CMS
+database "Database" as DB
+participant "DB/IR Administrator" as Admin
+
+note over Patron, Admin: Name Change Management for Reports/Datasets
+
+Patron->Search: enter search term for report/dataset
+Search->DB: query report/dataset name
+DB-->Search: return search results
+Search-->Patron: display current and historic names
+
+Patron->Search: select historic report
+Search->DB: query selected historic report
+DB-->Search: return requested content
+
+Search-->Patron: display historic report content
+Patron->Patron: review content
+
+== Name Change Management ==
+Admin->CMS: log in
+CMS-->Admin: authentication success
+
+Admin->CMS: initiate name change for report/dataset
+CMS->DB: check if name exists
+DB-->CMS: name check result
+
+alt If name exists with historic records
+    CMS->Admin: prompt for merge or separate entry
+    Admin->CMS: select merge with historic
+    CMS->DB: merge records under new name
+    DB-->CMS: merge confirmation
+    CMS-->Admin: display success message
+else New Name
+    CMS->DB: update record with new name
+    DB-->CMS: update confirmation
+    CMS-->Admin: display success in name change
+end
+
+note over Admin: Monitor for any issues or inconsistencies
+Admin->CMS: periodically review report/dataset names
+CMS->DB: fetch all report/dataset names
+DB-->CMS: returns list
+CMS-->Admin: display report/dataset names for review
+
+@enduml
+```
+
+This diagram depicts the recommended interactions for managing report and dataset name changes within the repository system, ensuring that both administrators and patrons can effectively handle and access both current and historical report data. It includes provisions for searching, updating, and decision-making processes that are crucial for maintaining the consistency and integrity of the repository’s data.
+
+Please note, customization might be necessary to fit the exact technical infrastructure or specific workflows at Cornell University.

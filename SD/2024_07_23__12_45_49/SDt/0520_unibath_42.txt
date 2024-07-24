@@ -1,0 +1,29 @@
+@startuml
+actor "Research\nInformation\nManager" as manager
+participant "Web Interface" as web
+participant "Authentication\nService" as auth
+database "External\nData Records" as extData
+participant "Data Management\nSystem" as dms
+database "University's\nData Archive" as uniArchive
+
+== Include Records for Externally Held Data ==
+
+manager -> web : Access the platform
+web -> auth : Request authentication
+auth -> manager : Authenticate
+
+manager -> web : Search/Input external data details
+web -> extData : Retrieve/search external records
+extData -> web : Return search results/data
+
+manager -> web : Select/Enter data records
+web -> dms : Validate records
+dms -> manager : Request additional information/validation
+manager -> dms : Provide required information/validation
+
+dms -> uniArchive : Save validated records
+uniArchive -> dms : Confirm save
+dms -> web : Confirm record inclusion
+web -> manager : Display confirmation/inclusion success
+
+@enduml

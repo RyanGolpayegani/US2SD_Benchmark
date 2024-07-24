@@ -1,0 +1,28 @@
+Creating a detailed sequence diagram for the described user story "As a borrower, I want to search by title, so that I can check if it exists or not in the database" involves illustrating the interactions between different components of the Comprehensive Library Management System (CLMS) such as the User Interface (UI), Controller, Business Logic Layer, and Database. Below is a PlantUML format sequence diagram illustrating these interactions:
+
+```plantuml
+@startuml
+actor Borrower as borrower
+participant "UI:Library Portal" as ui
+participant "SearchController" as controller
+participant "SearchService" as service
+participant "BookRepository" as repo
+database "LibraryDB" as db
+
+borrower -> ui : Enter search query by title
+ui -> controller : SearchByTitle(query)
+controller -> service : getBookByTitle(query)
+service -> repo : findBookByTitle(title)
+repo -> db : Query for Book by Title
+db -> repo : Book details/Not found
+repo -> service : Return Book details/Not found
+service -> controller : Search results
+controller -> ui : Display results
+ui -> borrower : Show Book Exists/Not Found
+
+@enduml
+```
+
+This sequence diagram starts with the borrower interacting with the CLMS's User Interface (UI) by entering their search query, specifically searching for a book by its title. The UI communicates this request to the `SearchController`, which then delegates the task to a specific `SearchService` responsible for handling search-related business logic. The `SearchService` asks the `BookRepository` to retrieve the book information from the database (`LibraryDB`). The database looks up the book by its title and returns the result (book details if the book exists, or a not-found status if it doesn't) back through the chain—Repository to Service, then Service to Controller, and finally, the Controller instructs the UI to display the outcomes to the borrower.
+
+This PlantUML diagram is a high-level representation of the interactions and does not detail every possible error handling, security measures, or other filters (like checking if the book is available or reserved) that might be part of a real implementation. Adjustments and additional sequences might be needed to accommodate specific project requirements or to reflect more complex logic in the system.

@@ -1,0 +1,46 @@
+Based on the given project description and the specific user story, below is a detailed PlantUML syntax for a sequence diagram illustrating the process by which a site visitor can post comments on articles.
+
+Note: To visualize this diagram, you'll need to use a PlantUML environment (like an online editor or integration within a development environment that supports PlantUML).
+
+```plantuml
+@startuml
+participant Visitor as V
+participant "Article Page" as AP
+participant "Comment System" as CS
+database "Database" as DB
+
+V -> AP: Visit article page
+AP -> CS: Show article and existing comments
+CS -> DB: Query existing comments
+DB --> CS: Return comments
+CS --> AP: Display article and comments
+V -> AP: Write comment
+AP -> CS: Submit new comment
+CS -> CS: Validate comment\n(check spam, content rules, etc.)
+alt Validation Success
+    CS -> DB: Save comment
+    DB --> CS: Confirm save
+    CS --> AP: Show success message
+    AP -> V: Display updated comments including new comment
+else Validation Failure
+    CS --> AP: Show error message
+    AP -> V: Prompt to correct comment
+end
+@enduml
+```
+
+**Explanation:**
+
+1. **Visitor Initiates Action**: The sequence begins with the site visitor (V) visiting the article page where they wish to post a comment.
+
+2. **Display Article and Comments**: The article page (AP) interacts with the Comment System (CS) to retrieve and show the current article and any existing comments. This involves querying the database (DB) and displaying the retrieved comments back on the article page.
+
+3. **Visitor Writes and Submits Comment**: The visitor composes their comment on the article page, which is then submitted to the Comment System.
+
+4. **Comment Validation**: The Comment System checks the submitted comment against predefined validation rules, such as spam detection and content guidelines.
+
+5. **Save and Display Comment**: Depending on whether the comment passes validation:
+   - **Success**: The comment is saved to the database, and a success message is displayed. The article page then refreshes (or dynamically updates) to show the new comment among the existing ones.
+   - **Failure**: An error message is displayed, and the visitor is prompted to correct their comment.
+
+This diagram provides a high-level view of the interactions involved in posting comments on an article within the Scrum Alliance Community Platform as described in your project.

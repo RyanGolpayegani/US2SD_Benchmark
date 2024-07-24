@@ -1,0 +1,42 @@
+Given the user story and project description provided, here's a detailed Plan UML sequence diagram that follows the scenario of a researcher wanting to locate experiment files using metadata. This diagram assumes interaction between the user (researcher), the web interface of Neurohub, and the system's backend services responsible for handling metadata queries and file retrieval.
+
+Please note, the sequence diagram represented as UML code will need to be rendered in a UML diagram tool that supports PlantUML syntax.
+
+```plantuml
+@startuml
+actor Researcher as res
+participant "Web Interface" as web
+participant "API Gateway" as api
+database "Metadata Database" as mdb
+database "File Storage" as fs
+
+res -> web : Accesses Neurohub and searches for files using metadata
+web -> api : Request to locate files by metadata
+api -> mdb : Query metadata
+mdb -> api : Return result paths
+api -> fs : Retrieve files by paths
+fs -> api : Returns files data
+api -> web : Display files and locations
+web -> res : Shows search results with files and locations
+@enduml
+```
+
+### Explanation:
+
+1. **Researcher (Actor):** Starts the process by using the Neurohub web interface to search for experiment files based on specific metadata. This could be anything from date, experimental condition, related project, etc.
+
+2. **Web Interface:** The front-end platform through which the researcher interacts with Neurohub. It collects the researcher's request and passes it on to the API Gateway.
+
+3. **API Gateway:** Acts as a mediator between the front-end web interface and the back-end services. It receives the search request from the web interface.
+
+4. **Metadata Database:** Stores all the metadata associated with each file and dataset within Neurohub. The API Gateway queries this database with the researcher's metadata criteria.
+
+5. **Query Result:** The metadata database returns the paths or identifiers of the files matching the metadata search criteria back to the API Gateway.
+
+6. **File Storage:** Holds the actual experiment files and data. With the paths or identifiers provided by the Metadata Database, the API Gateway retrieves the actual files.
+
+7. **Return Files Data:** The API Gateway receives the data of the requested files from the File Storage system.
+
+8. **Display Files and Locations:** The API Gateway sends the file data, including their locations, back to the Web Interface, which then displays the search results to the researcher.
+
+This diagram lays out a straightforward path for a researcher to find experiment files using metadata, assuming an underlying architecture that supports these operations via web and API interactions.

@@ -1,0 +1,20 @@
+@startuml
+participant Manager as mgr
+participant "Dashboard Interface" as dashboard
+participant "Inventory Management" as inventory
+participant "Usage Analytics" as analytics
+participant "Storage Estimates Processor" as processor
+
+mgr -> dashboard : Requests remaining time for products
+dashboard -> inventory : Fetches current inventory levels
+activate inventory
+inventory --> dashboard : Returns inventory data
+dashboard -> analytics : Requests usage patterns
+activate analytics
+analytics --> dashboard : Returns usage data
+dashboard -> processor : Sends inventory and usage data
+activate processor
+processor -> processor : Calculates estimated remaining times
+processor --> dashboard : Returns remaining time estimates
+dashboard -> mgr : Displays estimated remaining times
+@enduml

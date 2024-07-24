@@ -1,0 +1,39 @@
+@startuml
+participant LibraryMember as member
+participant "CLMS" as system
+participant "Notification Service" as notifyService
+participant "Database" as database
+
+member -> system : Logs in to the Library System
+activate system
+
+system -> database : Verifies member login
+activate database
+database --> system : Login Success
+deactivate database
+
+system -> system : Checks if any borrowed books are due soon
+activate system
+
+system -> database : Fetch member's borrowed books with due dates
+activate database
+database --> system : Returns list of books and due dates
+deactivate database
+
+loop for each book with due date approaching
+    system -> notifyService : Prepare due date notification
+    activate notifyService
+    notifyService -> system : Notification prepared
+    system -> notifyService : Send due date notification to member
+    notify.
+
+
+
+    notifyService -> member : Sends due date Email/SMS
+    deactivate notifyService
+end
+
+member --> system : Acknowledges notification
+deactivate system
+
+@enduml

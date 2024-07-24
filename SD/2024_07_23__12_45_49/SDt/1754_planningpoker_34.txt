@@ -1,0 +1,33 @@
+@startuml
+participant ParticipantUI
+participant GameService
+participant EstimationService
+participant Database
+
+ParticipantUI -> GameService : requestCurrentEstimationRound()
+GameService -> EstimationService : getCurrentRoundDetails()
+alt Estimation Round is Active
+    EstimationService -> GameService : roundDetails
+    GameService -> ParticipantUI : showCurrentRound(roundDetails)
+    ParticipantUI -> ParticipantUI : decideToChangeEstimate()
+    ParticipantUI -> EstimationService : submitNewEstimate(newEstimate)
+    activate EstimationService
+    EstimationService -> Database : updateEstimate(participantId, newEstimate)
+    Database --> EstimationService : confirmation
+    deactivate EstimationService
+    EstimationService -> EstimationService : checkIfAllEstimatesIn()
+    alt All Estimates are In
+        EstimationService --> ParticipantUI : disableEstimateChange()
+        loop For Each Participant
+            EstimationInfo -> GameService : notifyEstimateFinalized()
+            GameService -> ParticipantUI : revealEstimatesToAll()
+        end
+    else Still Waiting for Estimates
+        EstimationService --> ParticipantUI : enableEstimateChange()
+    end
+else Estimation Round Closed
+    EstimationService -> GameService : roundClosedMessage()
+    GameService -> ParticipantUI : showRoundClosedMessage()
+end
+
+@enduml

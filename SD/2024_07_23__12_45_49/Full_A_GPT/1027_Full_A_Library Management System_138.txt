@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the user story "As a library member, I want to apply for a time extension" in PlantUML format requires illustrating the interactions between the system components and the user in the order they occur. 
+
+Below is a sequence diagram in PlantUML format that demonstrates these interactions:
+
+```plantuml
+@startuml
+
+actor LibraryMember
+boundary SystemInterface
+control LibraryController
+database LibraryDatabase
+entity EmailSystem
+
+LibraryMember -> SystemInterface : Request time extension
+SystemInterface -> LibraryController : Validate member request
+LibraryController -> LibraryDatabase : Check book status\nand member's extension eligibility
+LibraryDatabase --> LibraryController : Status and eligibility confirmed
+LibraryController -> LibraryDatabase : Update due date
+LibraryDatabase --> LibraryController : Due date updated
+LibraryController -> EmailSystem : Send confirmation email to member
+EmailSystem --> LibraryMember : Email confirmation of time extension
+
+@enduml
+```
+
+In this sequence diagram:
+
+1. The **Library Member** initiates the process by requesting a time extension through the `System Interface`. This could be a web page or mobile app where the member is logged in and selects the book(s) for which they seek an extension.
+
+2. The `System Interface` forwards the request to the `Library Controller`, which is responsible for handling the logic of the application.
+
+3. The `Library Controller` asks the `Library Database` to check the current status of the book and whether the member is eligible for an extension. The database checks factors such as if the book is reserved by another member, or if the requesting member has exceeded their extension limit.
+
+4. The `Library Database` sends the information back to the `Library Controller`, confirming the status and the member’s eligibility for an extension.
+
+5. Upon confirmation, the `Library Controller` instructs the `Library Database` to update the due date for the book loan.
+
+6. The `Library Database` updates the due date and confirms the action back to the `Library Controller`.
+
+7. The `Library Controller`, through the `Email System`, sends a confirmation email to the Library Member, informing them of the successful time extension.
+
+This process helps in ensuring that time extension requests are handled efficiently, with clear communication between the library system and the member.

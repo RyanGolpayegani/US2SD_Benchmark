@@ -1,0 +1,22 @@
+@startuml
+participant Researcher
+participant "Neurohub UI" as UI
+participant "Metadata Service" as Metadata
+database "Database" as DB
+
+Researcher -> UI : Select dataset for annotation
+UI -> Metadata : Request standard metadata template for drug responses
+Metadata -> DB : Fetch metadata template
+DB -> Metadata : Return metadata template
+Metadata -> UI : Provide template to researcher
+UI -> Researcher : Display metadata template for completion
+
+Researcher -> UI : Fill in metadata form
+UI -> Metadata : Validate and submit metadata
+Metadata -> Metadata : Process and standardize metadata
+Metadata -> DB : Save metadata to dataset
+DB -> Metadata : Confirm metadata attachment
+Metadata -> UI : Confirm attachment success
+UI -> Researcher : Notify of successful metadata attachment
+
+@enduml

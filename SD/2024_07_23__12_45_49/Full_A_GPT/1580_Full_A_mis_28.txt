@@ -1,0 +1,53 @@
+Creating a detailed sequence diagram for the user story of a Digital Records Archivist wanting to edit the length of embargoes in an Enhanced Digital Repository Management System (EDRMS) will involve several actors and components. I'll provide a basic framework to get you started. The diagram will include interactions between the Digital Records Archivist (user), the User Interface (UI), the Embargo Management System, and the Database. This is a simplified view, focusing on the core functionality of modifying embargo lengths.
+
+```plantuml
+@startuml
+actor "DigitalRecords Archivist" as archivist
+participant "UI" as ui
+participant "Embargo Management\nSystem" as embargoSystem
+database "Database" as db
+
+== Edit Embargo Length ==
+
+archivist -> ui : Selects embargoed item
+ui -> embargoSystem : Request embargo details
+embargoSystem -> db : Retrieve embargo info
+db -> embargoSystem : Return embargo info
+embargoSystem -> ui : Display embargo details
+
+alt Edit Length
+  archivist -> ui : Inputs new embargo length
+  ui-> embargoSystem : Update embargo length request
+  embargoSystem -> db : Update embargo info in database
+  db -> embargoSystem : Confirm update
+  embargoSystem -> ui : Display success message
+  ui -> archivist : Show confirmation
+else Cancel
+  archivist -> ui : Cancels operation
+  ui -> archivist : Operation canceled
+end
+
+@enduml
+```
+
+### Explanation:
+
+1. **Digital Records Archivist (actor)**: This is the user initiating the interaction, aiming to change the length of an embargo on a digital item.
+
+2. **UI (User Interface)**: This is the front end through which the Digital Records Archivist interacts with the EDRMS. The archivist selects an embargoed item and either edits its embargo length or cancels the operation.
+
+3. **Embargo Management System**: This component processes the requests from the UI, interacts with the database to fetch or update embargo details, and communicates success or failure back to the UI.
+
+4. **Database**: Stores all embargo-related details, including lengths and statuses of digital items. It processes requests to retrieve or update these details as instructed by the Embargo Management System.
+
+### Sequence of Events:
+
+1. The archivist selects an item subject to an embargo from the UI.
+2. The UI requests the item's embargo details from the Embargo Management System.
+3. The Embargo Management System retrieves the item's embargo info from the Database and displays it to the archivist via the UI.
+4. The archivist inputs a new embargo length. This change request is passed from the UI to the Embargo Management System.
+5. The Embargo Management System updates the embargo info in the Database.
+6. Upon successful update, the Database confirms to the Embargo Management System, which then instructs the UI to show a success message to the archivist.
+7. If the archivist decides to cancel the operation, the UI handles this action without interacting with the Embargo Management System or Database.
+
+This sequence diagram outlines the basic steps involved when a Digital Records Archivist edits the length of an embargo in the EDRMS. Depending on the complexity of the system and additional features, more actors and components may be involved in real scenarios.

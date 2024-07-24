@@ -1,0 +1,46 @@
+@startuml
+actor "Library Staff" as staff
+participant "Web Interface" as web
+participant "Repository System" as system
+database "Content Storage" as storage
+database "Metadata Database" as metadata
+participant "Preservation System" as preservation
+
+== Preserve Content and Metadata ==
+
+staff -> web : Select content for preservation
+web -> system : Trigger preservation process
+activate system
+
+system -> storage : Retrieve content
+activate storage
+storage --> system : Content
+deactivate storage
+
+system -> metadata : Extract associated metadata
+activate metadata
+metadata --> system : Metadata details
+deactivate metadata
+
+system -> preservation : Prepare preservation package\n(content + metadata)
+activate preservation
+
+preservation -> preservation : Validate package integrity
+preservation -> preservation : Apply preservation policies
+
+preservation -> storage : Store preserved content
+activate storage
+storage --> preservation : Confirm storage
+deactivate storage
+
+preservation -> metadata : Update preservation metadata
+activate metadata
+metadata --> preservation : Confirm metadata update
+deactivate metadata
+
+deactivate preservation
+
+system --> web : Display preservation status
+web -> staff : Show success message
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+participant "Employee" as E
+participant "Order Management\nSystem" as OMS
+participant "Employee Management\nSystem" as EMS
+participant "Notification Service" as NS
+
+== New Order Entry ==
+E -> OMS : Enter new order details
+OMS -> OMS : Validate & Record Order
+OMS -> OMS : Analyze if biggest order of the day
+
+alt is Biggest Order
+    OMS -> EMS : Request list of employees
+    EMS -> OMS : Return list of employees
+    loop for Each Employee
+        OMS -> NS : Trigger Notification for Employee
+    end
+    NS -> E : Display Notification
+else not Biggest Order
+    OMS -> OMS : Continue without action
+end
+
+E -> E : Motivate other employees
+
+@enduml

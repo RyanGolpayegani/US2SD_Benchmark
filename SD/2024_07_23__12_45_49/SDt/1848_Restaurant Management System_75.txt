@@ -1,0 +1,17 @@
+@startuml
+actor Customer
+participant "UI Interface" as UI
+participant "Server/API" as Server
+database "Database" as DB
+participant "Billing System" as Billing
+
+Customer -> UI : Request to view bill
+UI -> Server : Get bill request(customerID)
+Server -> DB : Query bill details(customerID)
+DB -> Server : Return bill details
+Server -> Billing : Calculate total bill(billDetails)
+Billing -> Server : Bill total
+Server -> UI : Display bill information
+UI -> Customer : Show total bill
+
+@enduml

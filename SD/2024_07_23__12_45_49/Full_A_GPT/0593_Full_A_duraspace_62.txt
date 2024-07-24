@@ -1,0 +1,59 @@
+To fulfill your request for a detailed sequence diagram in PlantUML format, capturing the workflow for a repository manager who wants to be notified of any changes made to the origin information for an object, including its component parts, the following sequence diagram skeleton provides a logical flow considering the key functionalities stated in the project description of the DAMS Integration and Management System (DIMS).
+
+This diagram includes interactions among the repository manager, the DIMS system, and its internal components responsible for handling changes to digital objects and notifying relevant stakeholders.
+
+```plantuml
+@startuml
+actor "Repository Manager" as RepMgr
+entity "DIMS Notification System" as NotificationSys
+entity "Object Metadata Management" as ObjMetadata
+database "DAMS Database" as DAMSDB
+
+RepMgr -> DIMSDB: Check object/component info
+activate DIMSDB
+
+DIMSDB -> ObjMetadata: Retrieve info
+activate ObjMetadata
+
+ObjMetadata -> DAMSDB: Fetch object/component metadata
+activate DAMSDB
+DAMSDB --> ObjMetadata: Return metadata
+deactivate DAMSDB
+
+ObjMetadata --> DIMSDB: Provide object/component info
+deactivate ObjMetadata
+DIMSDB --> RepMgr: Show current object/component info
+deactivate DIMSDB
+
+RepMgr -> ObjMetadata: Subscribe to changes for object/component
+activate ObjMetadata
+
+ObjMetadata -> NotificationSys: Register subscription
+activate NotificationStanSir
+NotificationSys --> ObjMetadata: Subscription confirmed
+deactivate NotificationSys
+
+ObjMetadata --> RepMgr: Subscription success notification
+deactivate ObjMetadata
+
+... Time passes, a change occurs ...
+
+DIMSDB -> ObjMetadata: Update detected (object/component)
+activate ObjMetadata
+
+ObjMetadata -> NotificationSys: Trigger change notification
+activate NotificationSys
+
+NotificationSys -> RepMgr: Send change notification
+activate RepMgr
+RepMgr --> NotificationSys: Acknowledge notification
+deactivate RepMgr
+deactivate NotificationSys
+deactivate ObjMetadata
+
+@enduml
+```
+
+This sequence diagram starts with the repository manager checking the current information of an object or its components in the DAMS Database. The manager is then shown to subscribe to notifications for any changes to the object/component. When an update occurs, the system detects the change and triggers the notification system, which then informs the repository manager of the change.
+
+Keep in mind, this is a high-level overview; actual implementation details can vary based on the specific technologies used, and additional steps might be needed for authentication, error handling, and logging activities. The sequence diagram can be expanded to show interactions with these and other system components as required by your project's technical and functional specifications.

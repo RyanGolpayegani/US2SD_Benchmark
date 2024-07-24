@@ -1,0 +1,41 @@
+To illustrate the process of comparing different versions of a data package locally as a Data Analyst using a sequence diagram, you'd typically involve several interactions between the user, the CLI tool, the Data Registry, and potentially a version control system. Below is a detailed PlantUML code that outlines these interactions. The sequence diagram is focused on the use case where a Data Analyst fetches different versions of a data package to compare schemas locally.
+
+```plantuml
+@startuml
+actor Analyst as "Data Analyst"
+participant CLI as "CLI Tool"
+participant Registry as "Data Registry"
+participant LocalSys as "Local System"
+
+Analyst -> CLI : enter command to list versions of datapackage
+CLI -> Registry : request available versions
+Registry -> CLI : return versions list
+CLI -> Analyst : display versions list
+Analyst -> CLI : enter command to fetch specific versions (V1, V2)
+CLI -> Registry : request version V1
+Registry -> CLI : deliver datapackage V1
+CLI -> LocalSys : store datapackage V1
+CLI -> Registry : request version V2
+Registry -> CLI : deliver datapackage V2
+CLI -> LocalSys : store datapackage V2
+LocalSys -> LocalSys : compare schema of V1 vs V2
+Analyst <-- LocalSys : show comparison results / schema changes
+
+@enduml
+```
+
+This diagram illustrates the following steps for the use case:
+
+1. **Data Analyst** enters a command in the **CLI Tool** to list all available versions of a specific data package.
+2. **CLI Tool** requests the list of available versions from the **Data Registry**.
+3. **Data Registry** responds with the list of versions.
+4. **CLI Tool** displays this list to the **Data Analyst**.
+5. **Data Analyst** selects two versions (V1 and V2) for comparison and inputs a command to fetch these specific versions.
+6. **CLI Tool** requests version V1 from the **Data Registry**.
+7. **Data Registry** sends datapackage V1 to the **CLI Tool**.
+8. **CLI Tool** stores datapackage V1 on the **Local System**.
+9. Steps 6 to 8 are repeated for version V2.
+10. Once both versions are stored locally, the **Local System** (with potentially integrated diff tools or scripts run by the Data Analyst) compares the schema of V1 against V2.
+11. The results of the schema comparison or the schema changes are presented to the **Data Analyst**.
+
+This sequence diagram captures the general interactions that might occur during this process without delving into the specifics of how schema comparison is performed, as this could depend on the tools or scripts the Data Analyst uses locally.

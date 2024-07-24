@@ -1,0 +1,29 @@
+@startuml
+participant Staff as staff
+participant WebInterface as web
+participant SearchController as controller
+participant BookDatabase as database
+
+staff -> web : inputs book name in search
+activate web
+
+web -> controller : initiateSearch(bookName)
+activate controller
+
+controller -> database : queryBookByName(bookName)
+activate database
+
+alt book found
+    database --> controller : return book details
+    controller --> web : display book details
+else book not found
+    database --> controller : return not found message
+    controller --> web : display not found message
+end
+
+web --> staff : show search results
+deactivate database
+deactivate controller
+deactivate web
+
+@enduml

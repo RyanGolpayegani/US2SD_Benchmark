@@ -1,0 +1,21 @@
+@startuml
+!theme plain
+
+actor "Library Manager" as Manager
+participant ":Web Interface" as WebInterface
+participant ":CLMS Controller" as Controller
+participant ":Reservation Service" as ReservationService
+participant ":Database" as DB
+
+== Track Reserved Books ==
+
+Manager -> WebInterface : Request reserved books list
+WebInterface -> Controller : Fetch reserved books
+Controller -> ReservationService : Query reserved books
+ReservationService -> DB : Retrieve reserved books data
+DB -> ReservationService : Reserved books list
+ReservationService -> Controller : Return reserved books list
+Controller -> WebInterface : Show reserved books list
+WebInterface -> Manager : Display reserved books list
+
+@enduml

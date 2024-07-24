@@ -1,0 +1,45 @@
+Creating a detailed Sequence Diagram for the user story provided requires a clear understanding of the interactions between the various components within the Neurohub platform to fulfill the researcher's need to locate and access shared data. Below is a simplified Sequence explicitly designed in PlantUML format, capturing the essential steps involving a researcher trying to access shared data.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Researcher as user
+participant "Web Interface" as web
+participant "Authentication Service" as auth
+database "Data Repository" as repo
+participant "Data Management \nSystem" as dms
+participant "Collaboration \nModule" as collab
+
+user -> web: Request Shared Data
+activate web
+
+web -> auth: Validate User Session
+activate auth
+auth -> web: Session Valid
+deactivate auth
+
+web -> djs: Fetch Shared Data Info
+activate dms
+dms -> repo: Query Shared Records
+activate repo
+repo -> dms: Return Records Metadata
+deactivate repo
+
+dms -> collab: Get Sharing Permissions
+activate collab
+collab -> dms: Permissions Details
+deactivate collab
+
+dms -> web: Return Shared Data Metadata & Access
+deactivate dms
+
+web -> user: Display Shared Data & Access Options
+deactivate web
+
+@enduml
+```
+
+This sequence diagram begins with the researcher (as the actor) requesting to access shared data through the Neurohub's Web Interface. It involves steps such as user session validation by the Authentication Service to ensure that the researcher is logged in and authorized. Once validated, the Data Management System queries the Data Repository for records of shared data, considering metadata and collaboration settings (such as permissions) managed by the Collaboration Module. Finally, metadata and access options for the shared data are displayed back to the researcher through the Web Interface.
+
+This diagram is simplified and abstracts some complexities and possible variations in the actual implementation, such as specific authentication mechanisms, detailed interaction with the data repository, and the internal workings of the data management system and collaboration module. Additionally, it does not include error handling and alternative scenarios for brevity. The actual implementation might require more detailed sequences to cover varied scenarios and exceptions.

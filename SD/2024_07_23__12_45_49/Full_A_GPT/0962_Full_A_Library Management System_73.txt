@@ -1,0 +1,43 @@
+Below is a detailed sequence diagram in PlantUML format for the specified user story: "As a librarian, I want to notify members so that they can follow due dates." This sequence diagram outlines the process flow from the moment the librarian decides to notify members about their book due dates until the members receive the notification.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Librarian as librarian
+boundary "Email/SMS System" as emailSystem
+control "Notification Service" as notificationService
+entity "Library Database" as libraryDB
+participant "Member" as member
+
+== Notify Members about Due Dates ==
+
+librarian -> notificationService : trigger due date notification process
+notificationService -> libraryDB : query overdue books and member details
+libraryDB -> notificationService : return list of overdue books and member details
+notificationService -> emailSystem : prepare notification messages
+loop for each member with overdue books
+    emailSystem -> member : send due date reminder
+end
+note right of emailSystem : Notifications can be\nEmails or SMS based on\nmember's preference
+member -> member: Acknowledge receipt
+
+@enduml
+```
+
+### How to Read the Diagram:
+
+1. **Librarian to Notification Service**: The librarian triggers the process to notify members about their book due dates through the notification service.
+2. **Notification Service to Library Database**: The notification service queries the library database for a list of overdue books and the details of the members who have borrowed them.
+3. **Library Database to Notification Service**: The database returns the requested information to the notification service.
+4. **Notification Service to Email/SMS System**: The notification service then prepares the messages to be sent out, based on the information received.
+5. **Email/SMS System to Member**: For each member identified with overdue books, the Email/SMS system sends out a due date reminder.
+    - A loop is used in the sequence diagram to indicate that this step is iterated for each member identified in the earlier steps.
+6. **Member Acknowledgment**: Members receive and acknowledge the reminder. This step is represented as an action performed by the member, indicating the personal acknowledgment of the reminder.
+
+### Additional Notes:
+
+- **Notifications Preference**: The note next to the Email/SMS System specifies that the choice between email and SMS can be based on the member's preference, suggesting that the system supports both methods.
+- **Privacy and Authorization**: During the entire process, it is implicitly understood that actions performed on member data must comply with privacy regulations and that the librarian and the system have the necessary authorizations.
+
+To implement this in a real environment, ensure you have PlantUML installed or use an online PlantUML editor to render the sequence diagram from the given code.

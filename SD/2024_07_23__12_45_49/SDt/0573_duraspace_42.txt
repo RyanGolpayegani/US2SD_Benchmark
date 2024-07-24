@@ -1,0 +1,24 @@
+@startuml
+actor "Repository Manager" as RM
+participant "DIMS Frontend" as DF
+participant "DIMS Backend Server" as DBS
+database "DIMS Database" as DB
+
+activate RM
+RM -> DF : Initiates copyright status update for component
+activate DF
+DF -> RM : Prompts for copyright information
+RM -> DF : Provides copyright information
+DF -> DBS : Sends update request
+activate DBS
+DBS -> DB : Updates component metadata
+activate DB
+DB --> DBS : Acknowledges update
+deactivate DB
+DBS --> DF : Confirms update success
+deactivate DBS
+DF --> RM : Notifies of success
+deactivate DF
+deactivate RM
+
+@enduml

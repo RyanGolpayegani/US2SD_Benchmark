@@ -1,0 +1,19 @@
+@startuml
+actor Chef as chef
+participant "UI: Menu &\nInventory Management" as UIMenu
+participant "Backend Server" as Backend
+database "Database" as DB
+
+chef -> UIMenu : Select option to update ingredient list
+UIMenu -> Backend : Request current ingredient list
+Backend -> DB : Retrieve ingredient list
+DB -> Backend : Return ingredient list
+Backend -> UIMenu : Display ingredient list
+chef -> UIMenu : Enter new amounts for ingredients
+UIMenu -> Backend : Update ingredient amounts
+Backend -> DB : Save new ingredient amounts
+DB -> Backend : Confirm save success
+Backend -> UIMenu : Acknowledge update success
+UIMenu -> chef : Display update success message
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+participant "Zooniverse Admin" as admin
+participant "Education Decision System" as eds
+participant "Volunteer Management System" as vms
+participant "Content Database" as cdb
+participant "Educational Content System" as ecs
+
+admin -> eds : Request education trigger criteria
+eds -> vms : Fetch volunteer activity
+vms -> vms : Analyze activity patterns
+vms -> eds : Return activity analysis results
+eds -> eds : Determine need for education based on analysis
+alt Education Needed
+    eds -> cdb : Query volunteer interests/topics
+    cdb -> eds : Return interests/topics
+    eds -> ecs : Request relevant educational content
+    ecs -> cdb : Fetch educational content
+    cdb -> ecs : Return educational content
+    ecs -> admin : Provide educational content & guidelines
+else No Education Needed
+    eds -> admin : Inform no current need for education
+end
+
+@enduml

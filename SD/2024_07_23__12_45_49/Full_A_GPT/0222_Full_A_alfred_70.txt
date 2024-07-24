@@ -1,0 +1,54 @@
+Creating a detailed sequence diagram for the user story involving an older person wanting to use ALFRED to set up social groups with people who have similar diseases involves several key components and interactions between the older person (user), ALFRED's interface, the backend server, and a potential social group database or service. 
+
+Since the focus is on using PlantUML syntax, I'll guide you through crafting a sequence diagram illustrating these interactions.
+
+```plantuml
+@startuml
+actor OlderPerson as User
+participant "ALFRED Interface" as Interface
+participant "ALFRED Backend" as Backend
+database "Social Groups DB" as Database
+
+User -> Interface : Say "Initiate group setup for [Disease] patients"
+activate Interface
+Interface -> Backend : Request to setup social group for [Disease]
+activate Backend
+Backend -> Database : Search for groups by [Disease]
+activate Database
+Database -> Database : Fetch existing groups/Create new group
+Database --> Backend : Return group information
+deactivate Database
+Backend -> Interface : Display group information/setup details
+deactivate Backend
+Interface -> User : Show available groups/Setup options
+deactivate Interface
+
+User -> Interface : Select "Join [Group Name]" / "Create new group"
+activate Interface
+Interface -> Backend : Process join/create group request
+activate Backend
+Backend -> Database : Update group members/Add new group
+activate Database
+Database --> Backend : Confirm update
+deactivate Database
+Backend --> Interface : Confirm successful joining/creation
+deactivate Backend
+Interface --> User : Confirm & provide group details
+deactivate Interface
+@enduml
+```
+
+This sequence diagram focuses on the process an older person would go through when wanting to set up or join social groups of people with similar diseases using ALFRED. Here's a step-by-step explanation:
+
+1. The **Older Person (User)** initiates the process by communicating with the **ALFRED Interface**. This could be through voice commands or another accessible interaction method supported by ALFRED.
+2. The **ALFRED Interface** forwards this request to the **ALFRED Backend** which handles the logic and processes behind this request.
+3. The **ALFRED Backend** then interacts with the **Social Groups Database** to either search for existing groups by the specified disease or to create a new group if no existing group is found.
+4. The database returns the relevant group information or confirmation of a new group's creation to the backend.
+5. The backend then communicates the information or available setup options back to the interface.
+6. The interface displays this information to the user, allowing them to either join an existing group or to finalize the creation of a new group.
+7. Upon the user's selection, the interface sends the user's choice back to the backend.
+8. The backend processes this request by updating the social groups database — either by adding the user to an existing group or by adding a new group to the database.
+9. The database confirms the update to the backend, which then confirms the successful joining or creation of the group to the interface.
+10. Finally, the interface confirms the successful action to the user and provides details about the group.
+
+This sequence effectively illustrates the key interactions required to support the described user story within the ALFRED system.

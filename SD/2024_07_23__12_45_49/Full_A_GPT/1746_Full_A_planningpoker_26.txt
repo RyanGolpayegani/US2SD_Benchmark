@@ -1,0 +1,38 @@
+To create a detailed sequence diagram in PlantUML format based on the user story: "As a moderator, I want to get a password reminder by email, so that I can get back to using the application when I've forgotten my password," you would need to consider the steps involved in the process of requesting and sending a password reminder through email. This involves interaction between the user (moderator), the application's frontend, backend, potentially a user authentication service, and an email service.
+
+Below is an illustrative PlantUML sequence diagram based on the user story provided:
+
+```plantuml
+@startuml
+
+participant Moderator as mod
+participant "AEPT Web Interface" as web
+participant "Authentication Service" as auth
+participant "Email Service" as email
+database "Database" as db
+
+mod -> web: Request password reminder
+web -> auth: Validate moderator's email
+auth -> db: Check email existence
+db --> auth: Email found
+auth -> email: Send password reminder
+email -> mod: Email with password reminder
+
+@enduml
+```
+
+This diagram simplifies the flow into primary components and actions, notably:
+
+1. **Moderator requests a password reminder**: The sequence starts with the moderator (user) realizing they've forgotten their password and requesting a reminder through the application's web interface.
+
+2. **AEPT Web Interface processes the request**: The web interface forwards the request to the authentication service to validate the email provided by the moderator.
+
+3. **Authentication Service validates email**: The authentication service checks in the database if the email is registered with an account.
+
+4. **Database confirms email existence**: The database confirms that the email exists and is linked to a moderator account.
+
+5. **Authentication Service sends a password reminder request to Email Service**: After confirmation, the authentication service requests the email service to send a password reminder to the moderator.
+
+6. **Email Service sends a password reminder to the Moderator**: Finally, the email service sends an email with the password reminder or reset link to the moderator, allowing them to set a new password and regain access to the application.
+
+This sequence assumes a typical flow where email verification is part of the process for sending password reminders. Adjustments may be necessary based on specific implementation details of the authentication and email systems within the AEPT.

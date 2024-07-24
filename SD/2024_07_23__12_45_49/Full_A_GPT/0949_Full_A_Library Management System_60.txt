@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram for the user story "As a librarian, I want to get an alert when the due date is passed" involves outlining how different components of the Comprehensive Library Management System (CLMS) interact to fulfill the requirement. Given the complexity and multi-faceted nature of the system, the sequence will involve the database, notification service, and potentially the user interface (UI) that the librarian interacts with.
+
+Below is a simplified sequence diagram represented in PlantUML syntax that encapsulates the core interactions for generating and sending a due date passed alert to the librarian:
+
+```plantuml
+@startuml
+participant "Database" as DB
+participant "DueDateChecker" as Checker
+participant "NotificationService" as NS
+participant "LibrarianUI" as UI
+
+note over Checker: Checks daily for overdue books
+Checker -> DB : getOverdueBooks()
+activate DB
+DB --> Checker : overdueBooksList
+deactivate DB
+
+loop for each book in overdueBooksList
+    Checker -> NS : prepareAlert(book)
+    activate NS
+    NS -> DB : getLibrarianDetails(book)
+    activate DB
+    DB --> NS : librarianDetails
+    deactivate DB
+
+    NS -> NS : generateAlertMessage(librarianDetails, book)
+    NS -> NS : sendAlert(librarianDetails, alertMessage)
+
+    alt if email
+        NS -> UI : displayEmailSentConfirmation()
+    else if SMS
+        NS -> UI : displaySmsSentConfirmation()
+    end
+    deactivate NS
+end
+
+note over UI: Librarian gets notified via UI and Email/SMS
+
+@enduml
+```
+
+This diagram follows a simplified flow where:
+1. A service/task `DueDateChecker` is responsible for checking overdue books daily.
+2. It queries the `Database` for a list of overdue books.
+3. For each book in the overdue list, it asks the `NotificationService` to prepare an alert.
+4. The `NotificationService` fetches librarian details associated with the book from the `Database`.
+5. It generates an appropriate alert message based on librarian details and the overdue book.
+6. The notification is sent via the configured channels (email/SMS in this example).
+7. Optionally, the `LibrarianUI` shows a confirmation that alerts have been sent out. This step depends on whether there is an interactive dashboard or UI component for librarians within CLMS that tracks notification status.
+
+This sequence diagram is a high-level representation and can be expanded or modified based on additional requirements, such as handling multiple librarians, incorporating user feedback into the alert process, or integrating with external email/SMS service providers for notification delivery.

@@ -1,0 +1,38 @@
+@startuml
+!theme cerulean
+
+participant User
+participant "CMS Interface" as CMS
+participant "Content Management System" as System
+participant "Video Processing Service" as VideoService
+participant "Database" as DB
+
+User -> CMS: Navigate to article editor
+CMS -> User: Display article editor UI
+
+User -> CMS: Choose to add video
+CMS -> User: Display video upload option
+
+User -> CMS: Upload video file
+CMS -> System: Request to add video to article
+
+activate System
+System -> VideoService: Send video for processing
+activate VideoService
+VideoService -> VideoService: Process video
+VideoService -> System: Return processed video link
+deactivate VideoService
+
+System -> DB: Save video link to article
+activate DB
+DB -> System: Confirm video link saved
+deactivate DB
+
+System -> System: Update article with video
+System -> CMS: Confirm video added to article
+degenerate CMS
+
+CMS -> User: Display article with video
+deactivate System
+
+@enduml

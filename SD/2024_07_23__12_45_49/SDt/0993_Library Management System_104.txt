@@ -1,0 +1,28 @@
+@startuml
+actor Librarian
+participant "Library Management\nSystem" as LMS
+database BooksDB
+
+== Update Book Shelf Information ==
+
+Librarian -> LMS : Login()
+activate LMS
+LMS -> BooksDB : ValidateLibrarian()
+activate BooksDB
+BooksDB --> LMS : AuthenticationSuccess()
+deactivate BooksDB
+
+Librarian -> LMS : SelectBookToUpdateShelfInfo(BookID)
+LMS -> BooksDB : FetchBookDetails(BookID)
+BooksDB --> LMS : BookDetails()
+LMS --> Librarian : DisplayBookDetails(BookDetails)
+
+Librarian -> LMS : InputNewShelfInfo(NewShelfInfo)
+LMS -> BooksDB : UpdateShelfInfo(BookID, NewShelfInfo)
+activate BooksDB
+BooksDB --> LMS : UpdateSuccess()
+deactivate BooksDB
+LMS --> Librarian : DisplayUpdateSuccessMessage()
+
+deactivate LMS
+@enduml

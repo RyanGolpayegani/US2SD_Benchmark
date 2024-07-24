@@ -1,0 +1,40 @@
+To create a detailed sequence diagram in PlantUML format for the user story where a librarian wants to delete information about borrowed books, we need to outline the interactions between various components of the system. This example considers the main actors and components such as the Librarian (the actor who initiates the deletion), the Library Management System Interface (which the librarian interacts with), the Book Management Service (responsible for managing book-related operations), and the Database (where all book information is stored).
+
+Here's a simplified version of the sequence diagram in PlantUML format:
+
+```plantuml
+@startuml
+participant Librarian
+participant "Library Management\nSystem Interface" as Interface
+participant "Book Management\nService" as BookService
+database Database
+
+Librarian -> Interface : selectBookToDelete(bookId)
+activate Interface
+
+Interface -> BookService : requestDeleteBook(bookId)
+activate BookService
+
+BookService -> Database : deleteBookRecord(bookId)
+activate Database
+
+Database --> BookService : confirmation(deletionSuccessful)
+deactivate Database
+
+BookService --> Interface : result(deletionSuccessful)
+deactivate BookService
+
+Interface --> Librarian : displayResult(deletionSuccessful)
+
+@enduml
+```
+
+This sequence diagram follows these steps:
+
+1. **Selection**: The Librarian selects the book information to be deleted, identified by `bookId`, through the Library Management System Interface.
+2. **Request to Delete**: The System Interface forwards this request to the Book Management Service, which is responsible for book record management.
+3. **Deletion Process**: The Book Management Service communicates with the Database to delete the book record referenced by the provided `bookIdentification`.
+4. **Confirmation & Result**: Upon successful deletion, the Database sends a confirmation back to the Book Management Service, which in turn informs the System Interface of the outcome.
+5. **Display Outcome**: Finally, the System Interface displays the result to the Librarian, confirming whether the deletion was successful.
+
+This diagram represents a high-level sequence of interactions that enables a librarian to delete information about borrowed books from the Comprehensive Library Management System. Adjustments may be required depending on the system's specific technical implementation details, such as authentication steps, error handling mechanisms, or further interactions with other system components not covered in this simplified scenario.

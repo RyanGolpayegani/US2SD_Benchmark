@@ -1,0 +1,34 @@
+To create a detailed Sequence Diagram in PlantUML format for the user story "As a librarian, I want to create information about borrowed books", we would be illustrating the sequence of interactions between the Librarian, the Library Management System (Web Interface), and the backend components like the Database Management System. This process typically includes initiating the action to add a new loan record, filling in the necessary information about the loan (e.g., borrower details, book details, due date), and successfully storing this information in the database.
+
+Below is a simplified PlantUML sequence diagram to represent these interactions:
+
+```plantuml
+@startuml
+
+participant Librarian
+participant "Web Interface" as Web
+database "Database" as DB
+
+Librarian -> Web : Initiate Add Loan Record
+activate Web
+
+Web -> Librarian : Display Loan Record Form
+activate Librarian
+Librarian -> Web : Submit Loan Record Details \n(Borrower ID, Book ID, Due Date)
+deactivate Librarian
+activate Web
+
+Web -> DB : Insert Loan Record into Database
+activate DB
+DB --> Web : Confirm Record Insertion
+deactivate DB
+
+Web -> Librarian : Display Confirmation Message
+deactivate Web
+
+@enduml
+```
+
+This PlantUML diagram starts with the Librarian initiating the process to add a book loan record through the Web Interface. The Web Interface then prompts the Librarian to fill in and submit the necessary details for the loan record (e.g., Borrower ID, Book ID, and Due Date). After the Librarian submits these details, the Web Interface communicates with the Database to insert the new loan record. Finally, once the database confirms the insertion of the new record, the Web Interface displays a confirmation message to the Librarian, indicating that the information about the borrowed book has been successfully created.
+
+This sequence diagram is a high-level representation. In a real implementation, you'd likely have additional steps, including authentication checks, error handling for input validation (e.g., checking if a book is available for loan), and possibly interactions with other subsystems for notifications.

@@ -1,0 +1,33 @@
+Creating a detailed sequence diagram for the user story "As a member, I want to look up books by title, author, subject category, and publication date to easily list publications" involves depicting the sequence of events and interactions between the components of the CLMS (Comprehensive Library Management System) when a library member performs a search. Below is a PlantUML code snippet to generate this sequence diagram.  
+
+```plantuml
+@startuml
+participant Member
+participant SearchInterface
+participant SearchController
+database LibraryDatabase
+
+Member -> SearchInterface : Enter search criteria (title, author, category, date)
+SearchInterface -> SearchController : Validate input
+alt if input is valid
+  SearchController -> LibraryDatabase : Query books by criteria
+  LibraryDatabase -> SearchController : Return search results
+  SearchController -> SearchInterface : Display search results
+  SearchInterface -> Member : Show list of books
+else if input is invalid
+  SearchController -> SearchInterface : Show error message
+  SearchInterface -> Member : Retry search
+end
+@enduml
+```
+
+Explanation of the sequence diagram:
+
+- **Member**: This is the actor or the user of the system who wants to look up books by specific criteria (title, author, subject category, and publication date).
+- **SearchInterface**: Represents the frontend interface the member interacts with. It collects the input from the user and displays the results or messages back to the user.
+- **SearchController**: This is a part of the backend that processes the input from the SearchInterface. It validates the input and, if valid, queries the database.
+- **LibraryDatabase**: This is the database where all the information about books, authors, categories, and publication dates is stored. It is queried by the SearchController.
+
+The sequence starts when a member enters their search criteria into the SearchInterface. The SearchInterface sends this input to the SearchController, which first validates the input. If the input is valid, the SearchController queries the LibraryUnit DB by the provided criteria. The database returns the search results, which are then passed back through the SearchController and SearchInterface to the member, displaying the list of books that match the criteria. If the input is invalid, an error message is shown, prompting the user to retry the search.
+
+This sequence diagram captures the basic interactions for the described user story, focusing on searching and listing publications based on various criteria within the Comprehensive Library Management System.

@@ -1,0 +1,59 @@
+To illustrate the process of entering metadata or describing an experiment protocol before a file is created within the context of the Neurohub Enhancement and Automation Project using PlantUML, I'm providing an example sequence diagram. This diagram focuses on the interaction between the user, the front-end interface, and the back-end services that facilitate metadata input and protocol description.
+
+Please note, to visualize this PlantUML code, you would need to use a PlantUML editor or an online tool that can render PlantUML diagrams.
+
+```plantuml
+@startuml
+participant User as user
+participant "Web Interface" as web
+participant "API Gateway" as api
+participant "Metadata Service" as metadata
+participant "Protocol Service" as protocol
+participant "Database" as db
+
+user -> web: Access metadata/protocol input page
+web -> api: Request metadata/protocol form
+api -> metadata: Fetch metadata form template
+api -> protocol: Fetch protocol form template
+metadata -> api: Return metadata form template
+protocol -> api: Return protocol form template
+api -> web: Return combined form to user
+web -> user: Display metadata/protocol input form
+
+user -> web: Enter metadata and protocol details
+web -> api: Submit metadata and protocol information
+api -> metadata: Validate & store metadata
+api -> protocol: Validate & store protocol details
+metadata -> db: Save metadata
+protocol -> db: Save protocol information
+db -> metadata: Confirm metadata saved
+db -> protocol: Confirm protocol saved
+metadata -> api: Metadata saved confirmation
+protocol -> api: Protocol saved confirmation
+api -> web: Confirm saving to user
+web -> user: Display success message
+
+@enduml
+```
+
+### Explanation:
+
+1. **User accesses the metadata/protocol input page**: The user initiates the process by navigating to the section of the web interface dedicated to entering metadata or describing experiment protocols before any related files are created.
+
+2. **Web Interface requests form templates**: The web interface communicates with an API gateway to retrieve the necessary form templates for metadata and protocol description.
+
+3. **API Gateway fetches templates**: The API gateway requests the templates from both the Metadata Service and the Protocol Service, which are responsible for generating the appropriate form structures.
+
+4. **Metadata and Protocol Services return templates**: Each service responds with its respective form template, which the API Gateway then combines and forwards to the Web Interface.
+
+5. **User enters details**: The combined form is presented to the user, who fills in the required metadata and protocol details.
+
+6. **Web Interface submits information to API Gateway**: Once the user completes the form, this data is sent back through the API Gateway, which initiates the validation and storage process.
+
+7. **Validation and Storage**: The API Gateway forwards the information to the Metadata Service and Protocol Service for validation. Upon successful validation, these services store the information in the Database.
+
+8. **Confirmation of storage**: The Database confirms the successful saving of metadata and protocol information back to the services, which then relay this confirmation to the API Gateway.
+
+9. **Success message displayed to the user**: Finally, the Web Interface informs the user of the successful submission and storage of their entered information through a success message.
+
+This sequence outlines a straightforward, automated process for users to enter metadata and describe experiment protocols in advance of file creation within the Neurohub platform, aligning with the project's objectives to enhance data management and user experience.

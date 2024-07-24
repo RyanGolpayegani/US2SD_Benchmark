@@ -1,0 +1,48 @@
+@startuml
+participant User as U
+participant WebInterface as WI
+participant AuthenticationSystem as AS
+participant ContentManagementService as CMS
+participant Database as DB
+participant AccessControl as AC
+
+U -> WI: Navigate to upload section
+activate WI
+WI -> AS: Prompt for authentication
+activate AS
+U -> AS: Provide credentials
+AS -> AS: Validate credentials
+AS --> WI: Authentication success
+deactivate AS
+
+U -> WI: Select and upload project materials
+WI -> CMS: Initiate upload process
+activate CMS
+CMS -> DB: Store meta-data and files
+activate DB
+DB --> CMS: Confirm storage
+deactivate DB
+
+U -> WI: Specify organization and tagging
+WI -> CMS: Update meta-data with tags & organization
+CMS -> DB: Update record
+DB --> CMS: Record updated
+activate DB
+deactivate DB
+
+U -> WI: Set access levels (private, university, public)
+WI -> AC: Apply access control settings
+activate AC
+AC -> DB: Update access settings
+DB --> AC: Access settings updated
+deactivate DB
+
+AC --> WI: Access control set
+deactivate AC
+CMS --> WI: Upload and settings confirmed
+deactivate CMS
+
+WI --> U: Display success message
+deactivate WI
+
+@enduml

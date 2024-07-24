@@ -1,0 +1,57 @@
+Creating a detailed Sequence Diagram for the described User Story in PlantUML format involves clarifying the interactions between different system components and actors involved in linking electronic versions of researchers' publications to citations. Below is a PlantUML sequence diagram that represents these interactions:
+
+```plantuml
+@startuml
+actor Archivist
+participant "DigitalArchiveInterface" as Interface
+database "MetadataDatabase" as MetadataDB
+participant "FileStorageSystem" as Storage
+participant "CitationIndex" as Citation
+
+== Link Electronic Publication to Citation ==
+
+Archivist -> Interface : Select publication to link
+Interface -> MetadataDB : Query publication details
+MetadataDB --> Interface : Return publication details
+Interface --> Archivist : Display publication details
+
+Archivist -> Interface : Provide citation details
+Interface -> MetadataDB : Check if citation exists
+MetadataDB --> Interface : Citation status
+
+alt Citation Exists
+    Interface -> Citation : Request existing citation link
+
+else Citation Not Found
+    Interface -> Citation : Create new citation record
+    Citation --> MetadataDB : Store new citation
+    MetadataDB --> Interface : Confirm citation stored
+end
+
+Interface -> Citation : Link publication to citation
+Citation --> Interface : Confirm link successful
+
+Interface --> Archivist : Display confirmation message
+
+@enduml
+```
+
+This sequence diagram illustrates the process from the perspective of an archivist who wants to link electronic versions of researchers' publications to citations within a digital archive management system. Here's a breakdown of the steps:
+
+1. **Select publication to link**: The archivist selects the publication they want to link to a citation through the digital archive interface.
+
+2. **Query publication details**: The system queries the metadata database for the details of the selected publication.
+
+3. **Display publication details**: The digital archive interface displays the details of the publication to the archivist.
+
+4. **Provide citation details**: The archivist inputs the details of the citation they wish to link the publication to.
+
+5. **Check if citation exists**: The system checks in the metadata database whether the citation already exists.
+
+6. **Request existing citation link/Create new citation record**: Depending on whether the citation exists or not, the system either retrieves the existing citation link or creates a new citation record in the citation index.
+
+7. **Link publication to citation**: The publication is linked to the citation in the digital archive system.
+
+8. **Display confirmation message**: Finally, the digital archive interface displays a confirmation message to the archivist, confirming the successful linking of the publication to the citation.
+
+This diagram represents a simplified sequence of interactions for the specific user story, focusing on backend and frontend components like the digital archive interface, metadata database, file storage system, and citation index.

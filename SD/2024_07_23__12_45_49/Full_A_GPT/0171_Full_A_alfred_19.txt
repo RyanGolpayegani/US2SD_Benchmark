@@ -1,0 +1,46 @@
+To create a detailed sequence diagram for the user story "As an Older Person, I want to use ALFRED to pay for small amounts" using PlantUML, consider the interaction between the user, ALFRED (the assistive device/interface), any relevant payment processor or bank service, and the vendor or service the user is paying. Keep in mind, the goal is to illustrate the communication and process flow of making a small payment via ALFRED.
+
+Below is a PlantUML code example that represents these interactions:
+
+```plantuml
+@startuml
+!theme cerulean
+
+actor OlderPerson as "Older Person"
+participant ALFRED as "ALFRED Interface"
+participant "Payment Processor" as PP
+participant "Vendor" as Vendor
+
+== Payment Initiation ==
+OlderPerson -> ALFRED : "Initiate payment of X amount"
+ALFRED -> ALFRED : Verify user identity
+ALFRED -> PP : "Request payment of X to Vendor"
+
+== Payment Processing ==
+PP -> PP : "Process payment"
+alt Payment Success
+    PP -> Vendor : "Transfer X amount"
+    Vendor -> PP : "Confirm receipt"
+    PP -> ALFRED : "Payment successful"
+else Payment Failure
+    PP -> ALFRED : "Payment failed: [Reason]"
+end
+
+== Feedback to User ==
+alt Payment Successful
+    ALFRED -> OlderPerson : "Payment of X to Vendor successful"
+else Payment Failed
+    ALFRED -> OlderPerson : "Payment failed: [Reason]"
+end
+
+@enduml
+```
+This diagram illustrates the sequence of events for a simple payment scenario through ALFRED from the perspective of an Older Person. The steps include:
+
+1. **Payment Initiation**: The Older Person requests ALFRED to initiate a payment. ALFRED verifies the user's identity as a security measure.
+2. **Payment Processing**: ALFRED sends the payment request to a Payment Processor. The Payment Processor then attempts to process the payment.
+    - **If the payment succeeds**, the Payment Processor informs the Vendor, receives a confirmation, and then notifies ALFRED of the success.
+    - **If the payment fails**, the Payment Processor immediately informs ALFRED of the failure and provides a reason.
+3. **Feedback to User**: ALFRED then communicates the outcome of the payment attempt (success or failure) to the Older Person, along with any relevant details.
+
+This sequence assures security through identity verification and provides clear feedback to the user on the payment status. Adjustments may be needed based on specific payment mechanisms or additional security measures.

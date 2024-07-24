@@ -1,0 +1,64 @@
+Creating a detailed sequence diagram in PlantUML format for the specific user story involving site administrators managing the certification applications for Certified Scrum Practitioner (CSP) and Certified Scrum Trainer (CST) roles can be quite intricate. To encapsulate the sequence of actions from the point of view of a site administrator reviewing, approving, or rejecting applications, we will outline a scenario that represents the processing flow.
+
+```plantuml
+@startuml
+actor Admin as "Site Administrator"
+entity "Certification System" as CertificationSys
+database "Application DB" as AppDB
+
+Admin -> CertificationSys : Log in to Admin Panel
+activate CertificationSys
+
+CertificationSys -> AppDB : Retrieve Pending Applications
+activate AppDB
+
+AppDB --> CertificationSys : List of Pending Applications
+deactivate AppDB
+
+CertificationSys --> Admin : Display Pending Applications
+deactivate CertificationSys
+
+Admin -> CertificationSys : Select Application to Review
+activate CertificationSys
+
+CertificationSys -> AppDB : Fetch Application Details
+activate AppDB
+
+AppDB --> CertificationSys : Application Data
+deactivate AppDB
+
+CertificationSys --> Admin : Show Application Details
+deactivate CertificationSys
+
+Admin -> CertificationSys : Evaluate Application Details
+activate CertificationSys
+
+Admin -> CertificationSys : Approve/Reject Application
+activate CertificationSys
+
+CertificationSys -> AppDB : Update Application Status
+activate AppDB
+
+AppDB --> CertificationSys : Confirmation
+deactivate AppDB
+
+CertificationSys --> Admin : Display Status Update
+deactivate CertificationSys
+
+group Approval Process
+    Admin -> CertificationSys : Notify Applicant by Email
+    CertificationSys -> "Email System" : Send Approval/Rejection Email
+    activate "Email System"
+    "Email System" --> Admin : Email Sent Confirmation
+    deactivate "Email System"
+end
+
+Admin -> CertificationSys : Log out
+deactivate CertificationSys
+
+@enduml
+```
+
+This PlantUML sequence diagram starts with the site administrator logging into the administration panel of the certification system. The process includes retrieving and displaying the pending certification applications, selecting an application to review, and deciding whether to approve or reject the application. Once a decision is made, the application's status is updated in the system. Additionally, there's a step for notifying the applicant of the decision via email. Note that this diagram abstracts the actual decision-making criteria and assumes that the admin has the necessary information and authority to make the approval/rejection decision.
+
+The sequence emphasizes the interaction between the site administrator, the certification system, the application database, and the email system, offering a high-level overview of the process tailored to the user story provided.

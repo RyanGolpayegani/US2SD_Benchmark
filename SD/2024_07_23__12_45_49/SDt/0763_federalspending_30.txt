@@ -1,0 +1,39 @@
+@startuml
+actor AgencyUser as "Agency User"
+participant "Web Interface" as UI
+participant "API Gateway" as API
+participant "Flexfield Handler" as FlexHandler
+participant "Data Processor" as Processor
+participant "Database" as DB
+
+== Flexfield Submission ==
+AgencyUser -> UI : Submit data with large number of flexfields
+UI -> API : Request to process data submission
+API -> FlexHandler : Initiate flexfield processing
+activate FlexHandler
+
+FlexHandler -> Processor : Validate flexfields data
+activate Processor
+
+Processor -> FlexHandler : Validation Response
+deactivate Processor
+
+FlexHandler -> Processor : Optimize flexfields for performance
+activate Processor
+
+Processor -> DB : Update flexfields data in DB
+activate DB
+DB --> Processor : Acknowledge data update
+deactivate DB
+
+Processor -> Flexhandler : Flexfields optimized and stored
+deactivate Processor
+
+FlexHandler --> API : Data submission successful
+deactivate FlexHandler
+
+API --> UI : Display success message to Agency User
+UI --> Agencyuser : Confirm submission and expected performance
+
+== End ==
+@enduml

@@ -1,0 +1,49 @@
+To create a sequence diagram in PlantUML format based on the user story "As a librarian, I want to edit current books' shelf information," you need to illustrate how different parts of the system interact with each other during this process. Below is a detailed sequence diagram written in PlantUML language that outlines this interaction.
+
+```plantuml
+@startuml
+participant Librarian
+participant WebInterface
+participant AuthenticationServer
+participant Database
+participant BookManagementSystem
+
+Librarian -> WebInterface : Access Book Management Section
+WebInterface -> AuthenticationServer : Validate Librarian Credentials
+note right of AuthenticationServer : Authentication is necessary\nto ensure only authorized\nusers edit book information.
+Authenticationserver --> WebInterface : Verification Response
+
+alt Successful Verification
+    WebInterface --> Librarian : Display Edit Book Shelf Page
+    Librarian -> WebInterface : Search for Book to Edit
+    WebInterface -> Database : Fetch Book Details
+    Database --> WebInterface : Book Details
+    WebInterface --> Librarian : Show Book Details
+    Librarian -> WebInterface : Enter New Shelf Information
+    WebInterface -> BookManagementSystem : Update Shelf Information Request
+    BookManagementSystem -> Database : Update Shelf Info in Record
+    Database --> BookManagementSystem : Confirmation of Update
+    BookManagementSystem --> WebInterface : Update Successful Message
+    WebInterface --> Librarian : Display Success Notification
+else Failed Verification
+    WebInterface --> Librarian : Display Error Message
+end
+
+@enduml
+```
+
+### Explanation:
+- **Librarian**: This is the user initiating the sequence to edit a book's shelf information.
+- **WebInterface**: Represents the frontend part of the CLMS where the librarian interacts.
+- **AuthenticationServer**: This component is responsible for verifying the identity of the librarian to ensure that they are authorized to make changes.
+- **Database**: The central system where all data related to books and their shelving information are stored.
+- **BookManagementSystem**: A backend service responsible for handling operations related to managing books, which in this case includes updating book shelf information.
+
+### Sequence Flow:
+1. **Access and Verification**: The librarian accesses the book management section and is verified by the authentication server.
+2. **Search and Select Book**: After passing the verification, the librarian searches for and selects the book they wish to edit shelf information for.
+3. **Fetch and Display Book Details**: The system fetches and displays the details of the selected book.
+4. **Edit Shelf Information**: The librarian enters new shelf information for the book.
+5. **Update and Confirmation**: The updated information is processed and saved in the database, with a success message shown to the librarian.
+
+This sequence assumes a successful authentication process. In case of failure, an error message is displayed. The illustrated interaction is a high-level overview, focusing on significant steps from the librarian's intention through system components interaction to the final goal.

@@ -1,0 +1,45 @@
+@startuml
+actor Researcher as Res
+participant "UI: Web Interface" as UI
+participant "SearchController" as SC
+participant "CollectionService" as CS
+participant "FileService" as FS
+database "DigitalArchiveDB" as DB
+
+Res -> UI: Access digital archive
+activate UI
+
+UI -> SC: Request to browse collection
+activate SC
+
+SC -> CS: Retrieve collection list
+activate CS
+
+CS -> DB: Query available collections
+activate DB
+
+DB --> CS: Return collections
+deactivate DB
+
+CS --> SC: Collections list
+deactivate CS
+
+SC -> FS: Request files in collection
+activate FS
+
+FS -> DB: Query files in specified collection
+activate DB
+
+DB --> FS: Return files
+deactivate DB
+
+FS --> SC: Collection files
+deactivate FS
+
+SC --> UI: Display files to researcher
+deactivate SC
+
+UI --> Res: Show files in UI
+deactivate UI
+
+@enduml

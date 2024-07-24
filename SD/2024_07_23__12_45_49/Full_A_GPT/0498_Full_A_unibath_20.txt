@@ -1,0 +1,85 @@
+Creating a detailed sequence diagram for the given user story "As a depositor, I want to manage and share “live” research data, so that the whole project workflow is linked together" involves visualizing the interaction between various system components and the depositor. Below is a sequence diagram in PlantUML format which outlines this interaction considering the key features and objectives mentioned in the project description.
+
+The scenario depicted involves a depositor managing and sharing live research data through the Enhanced Research Data Management Platform, including depositing data, setting embargoes, and sharing data with collaborators.
+
+```plantuml
+@startuml
+participant Depositor
+participant WebClient as "Web Client"
+participant WebInterface as "Web Interface"
+participant DataManager as "Data Manager"
+participant ArchiveSystem as "Archive System"
+participant VRE as "Virtual Research Environment"
+participant ExternalSystems as "External Systems\n(Pure/Opus)"
+participant DOIService as "DOI Service"
+participant MetadataService as "Metadata Service"
+participant AccessControl as "Access Control"
+participant CollaborationTools as "Collaboration Tools"
+
+Depositor -> WebClient : Access platform
+WebClient -> WebInterface : Request data management page
+activate WebInterface
+
+WebInterface -> DataManager : Verify depositor access
+activate DataManager
+DataManager -> AccessControl : Check access rights
+activate AccessControl
+AccessControl --> DataManager : Access Granted
+deactivate AccessControl
+DataManager --> WebInterface : Access confirmed
+
+WebInterface --> WebClient : Display data management options
+deactivate WebInterface
+
+WebClient -> WebInterface : Upload "live" data
+activate WebInterface
+
+WebInterface -> DataManager : Initiate data upload
+DataManager -> ArchiveSystem : Deposit data
+activate ArchiveSystem
+ArchiveSystem -> VRE : Link data to project
+activate VRE
+VRE --> ArchiveSystem : Data linked
+deactivate VRE
+
+ArchiveSystem -> DOIService : Request DOI
+activate DOIService
+DOIService --> ArchiveSystem : DOI minted
+deactivate DOIService
+
+ArchiveSystem -> MetadataService : Generate metadata
+activate MetadataService
+MetadataService --> ArchiveSystem : Metadata attached
+deactivate MetadataService
+
+ArchiveSystem -> ExternalSystems : Sync with University systems
+activate ExternalSystems
+ExternalSystems --> ArchiveSystem : Data synced
+deactivate ExternalSystems
+
+ArchiveSystem --> DataManager : Data deposit successful
+DataManager -> AccessControl : Set embargoes and permissions
+AccessControl --> DataManager : Embargoes and permissions set
+
+DataManager -> CollaborationTools : Share data with collaborators
+activate CollaborationTools
+CollaborationTools --> DataManager : Data shared
+deactivate CollaborationTools
+
+DataManager --> WebInterface : Confirm "live" data shared
+WebInterface --> WebClient : Display confirmation message
+deactivate WebInterface
+
+@enduml
+```
+
+This diagram illustrates a sequence where:
+- The depositor accesses the platform and requests to manage their data.
+- The web client communicates with the platform's web interface, which in turn verifies the depositor's access through the Data Manager.
+- The Data Manager, upon confirming access rights, allows the depositor to upload "live" research data.
+- The data is deposited in the archive system, linked to the project in the Virtual Research Environment, and synced with external University systems like Pure and Opus.
+- A DOI is minted for the data, and metadata is generated for enhanced discoverability.
+- Access controls, such as embargoes and collaborator permissions, are set.
+- Finally, the data is shared with collaborators through integration with collaboration tools, and the depositor is notified of the successful management and sharing of their "live" research data.
+
+This sequence diagram is a conceptual representation and might be adjusted or extended based on the specific technical and functional requirements during the actual implementation phase of the platform.

@@ -1,0 +1,46 @@
+To craft a detailed sequence diagram for the specified user story — where a collection curator desires to set an expiration date for data resulting in its subsequent deletion or concealment and then deletion — using PlantUML notation, we must identify the participants (actors and systems) and the interactions between them that will bring this functionality to life. Below, the sequence of actions is delineated through PlantUML code, capturing the essence of the required process within the Enhanced Digital Repository Management System (EDRMS).
+
+**Note:** The specific implementation details can vary based on the software architecture and technologies in use. This example assumes a web interface for the collection curator to interact with, a server-side application managing the logic, and a database where the data and metadata are stored.
+
+```plantuml
+@startuml
+actor Curator as "Collection Curator"
+participant UI as "Web Interface"
+participant Server as "EDRMS Server"
+database DB as "Repository Database"
+
+Curator -> UI : select item(s) for expiration
+UI -> Server : send item(s) and expiration parameters
+activate Server
+Server -> DB : query to update item(s) with expiration date
+activate DB
+DB --> Server : confirm update
+deactivate DB
+Server -> Server : schedule task for item(s) expiration
+Server --> UI : confirm expiration date set
+UI --> Curator : display confirmation message
+deactivate Server
+
+loop Every Night at 12:00 AM
+    Server -> Server : check for expired items
+    Server -> DB : query for items to hide/delete
+    activate DB
+    DB --> Server : return expired items
+    deactivate DB
+    Server -> DB : update item(s) status to hidden or delete item(s)
+    activate DB
+    DB --> Server : confirm item(s) updated/removed
+    deactivate DB
+end
+@enduml
+```
+
+### Explanation:
+
+- **Curator**: Initiates the process by selecting one or more items to set an expiration date through the web interface.
+- **Web Interface (UI)**: Acts as the intermediary, collecting the curator's request and forwarding it to the server.
+- **EDRMS Server**: Processes the request. It updates the database with the expiration date for the selected items and schedules a task to manage the item(s) expiration based on the set criteria (hiding or deleting the data).
+- **Repository Database (DB)**: Stores all data, metadata, including expiration dates, and handles queries to update or retrieve items based on their expiration status.
+- **Scheduled Task**: Represents a repeated task that the EDRMS server performs, scanning for and acting upon items that have reached their expiration date.
+
+This diagram outlines a simplified workflow for setting and handling expiration dates for data within the EDRMS, focusing primarily on the interactions initiated by the collection curator's request. Depending on the specific requirements, the system's behavior (especially regarding if and how data is hidden or deleted) can be further refined.

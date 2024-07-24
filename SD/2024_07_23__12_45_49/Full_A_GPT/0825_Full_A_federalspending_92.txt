@@ -1,0 +1,46 @@
+Unfortunately, I cannot directly create visual diagrams or images. However, I can provide you with a detailed PlantUML syntax that you can use to generate the sequence diagram for your user story.
+
+This sequence diagram will illustrate the process a FABS user goes through to ensure they see only FABS relevant banner messages, excluding DABS messages, and vice versa.
+
+```plantuml
+@startuml
+participant "FABS User" as FABSUser
+participant "Broker Platform" as Broker
+participant "Banner Message Service" as BannerService
+participant "FABS Message Filter" as FABSFilter
+participant "DABS Message Filter" as DABSFilter
+participant "User Interface" as UI
+
+FABSUser -> Broker : Login into Broker Platform
+Broker -> BannerService : Request Banner Messages
+BannerService -> FABSFilter : Apply FABS Filter
+BannerService -> DABSFilter : Apply DABS Filter
+
+alt If FABS User
+    DABSFilter --> BannerService : Exclude DABS Messages
+    FABSFilter --> BannerService : Include FABS Messages
+    BannerService -> UI : Display FABS Messages
+    UI --> FABUser : Viewed by FABS User
+else If DABS User
+    FABSFilter --> BannerService : Exclude FABS Messages
+    DABSFilter --> BannerService : Include DABS Messages
+    BannerService -> UI : Display DABS Messages
+    UI --> FABSUser : Viewed by DABS User
+end
+
+@enduml
+```
+
+### Explanation:
+
+1. **FABS User logs into the Broker Platform**: The sequence starts with the FABS user logging into the platform.
+2. **Broker Platform requests Banner Messages**: Once logged in, the Broker Platform requests the banner messages to be displayed.
+3. **Banner Message Service applies filters**: The Banner Message Service then applies filters to determine which messages to display to the user.
+   - **FABS Filter** ensures only FABS related messages are considered for FABS users.
+   - **DABS Filter** ensures only DABS related messages are relayed for DABS users.
+4. **Alternatives in Filtering**:
+   - If the user is identified as a FABS user, DABS messages are excluded, and only FABS messages are forwarded to the User Interface to be displayed.
+   - Conversely, if the user is identified as a DABS user, FABS messages are excluded, and only DABS messages are sent to the UI.
+5. **Display Messages**: Finally, the relevant messages are displayed to the user based on their role and the filter's actions.
+
+To turn this PlantUML syntax into a diagram, you will need to use a PlantUML environment or an online tool that supports PlantUML code.

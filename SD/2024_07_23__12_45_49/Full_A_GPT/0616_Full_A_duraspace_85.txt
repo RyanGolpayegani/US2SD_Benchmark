@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the specified user story involves depicting the interactions between the DAMS manager, the DIMS system, and possibly other components involved in the process of tracking modifications to copyright status for an object or object component. Here's a PlantUML representation of how this scenario could be depicted:
+
+```plantuml
+@startuml
+participant "DAMS Manager" as manager
+participant "DIMS System" as DIMS
+participant "Copyright Database" as database
+participant "Notification System" as notification
+
+manager -> DIMS : Request copyright status
+DIMS -> database : Query copyright status
+database --> DIMS : Return current status
+DIMS --> manager : Display current copyright status
+
+alt Manual Update
+    manager -> DIMS : Update copyright status manually
+    DIMS -> database : Update status
+    database --> DIMS : Confirm update
+    DIMS -> notification : Trigger notification
+    notification --> manager : Notify copyright status change
+else Automatic Update Detected
+    database -> DIMS : Inform automatic status change
+    DIMS -> notification : Trigger notification
+    notification --> manager : Notify copyright status change
+end
+
+@enduml
+```
+
+This sequence diagram outlines a process where:
+
+1. The DAMS manager requests the current copyright status from the DIMS system.
+2. DIMS queries the copyright database for the current status.
+3. The database returns the status to DIMS, which then displays it to the DAMS manager.
+4. If a manual update is made:
+   - The manager updates the copyright status manually through DIMS.
+   - DIMS updates the status in the database.
+   - The database confirms the update to DIMS.
+   - DIMS triggers a notification of the status change.
+   - The manager receives a notification of the change.
+5. If an automatic update is detected:
+   - The database informs DIMS of the automatic status change.
+   - DIMS triggers a notification.
+   - The manager receives a notification of the change.
+
+This diagram is simplified for the scope of the user story and assumes the existence of a notification system within DIMS to alert the DAMS manager of changes. Depending on the actual system architecture and requirements, there might be additional steps, error handling, or systems involved in the process.

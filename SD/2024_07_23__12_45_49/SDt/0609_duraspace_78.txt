@@ -1,0 +1,28 @@
+@startuml
+participant "Repository Manager" as RM
+participant "DIMS Interface" as DI
+participant "Metadata Management" as MM
+participant "External Links" as EL
+participant "DAMS Database" as DB
+
+RM -> DI : Select Resource
+activate DI
+DI -> MM : Request Metadata Form
+activate MM
+MM -> DI : Provide Metadata Form
+DI -> RM : Display Metadata Form
+deactivate MM
+
+RM -> DI : Enter External Descriptions/Versions
+activate DI
+DI -> EL : Process External Descriptions/Versions
+activate EL
+EL -> DB : Update Metadata with External Links
+activate DB
+DB -> EL : Confirm Update
+deactivate DB
+EL -> DI : Update Confirmed
+deactivate EL
+DI -> RM : Display Confirmation Message
+deactivate DI
+@enduml

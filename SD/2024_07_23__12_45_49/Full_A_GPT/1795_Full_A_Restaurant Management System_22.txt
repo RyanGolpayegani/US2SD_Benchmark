@@ -1,0 +1,35 @@
+The sequence diagram below in Plant UML format illustrates the process of a chef checking the available ingredient amounts through the Restaurant Management and Operations System. This interaction involves several components, such as the Chef Interface, Menu Management System, Inventory Management System, and the Database.
+
+```plantuml
+@startuml
+actor Chef as chef
+participant "Chef Interface" as chefInterface
+participant "Menu Management\nSystem" as menuManagement
+participant "Inventory Management\nSystem" as inventoryManagement
+database "Database" as db
+
+chef -> chefInterface : Request ingredient amounts
+chefInterface -> menuManagement : Fetch ingredient list for dishes
+menuRequst : str menuRequst
+activate menuManagement
+menuManagement -> db : Query ingredient list
+activate db
+db -> menuManagement : Return ingredient list
+deactivate db
+menuManagement -> chefInterface : Provide ingredient list
+deactivate menuManagement
+chefInterface -> inventoryManagement : Request available amounts
+inventoryRequest : str inventoryRequest
+activate inventoryManagement
+inventoryManagement -> db : Query available ingredient amounts
+activate db
+db -> inventoryHead : Return available amounts
+deactivate db
+inventoryManagement -> chefInterface : Provide available amounts
+deactivate inventoryManagement
+chefInterface -> chef : Display available ingredient amounts
+@enduml
+```
+This sequence diagram starts with the Chef making a request to view the available ingredient amounts through the Chef Interface. The Chef Interface then interacts with the Menu Management System to fetch the relevant ingredient list for the dishes. Once the ingredient list is fetched, it requests the available amounts from the Inventory Management System. The Inventory Management System queries the Database to get the latest available amounts of the ingredients. Finally, the available amounts are displayed back to the Chef through the Chef Interface.
+
+This diagram is a high-level overview and might be simplified. Actual system implementations could involve more detailed interactions based on business rules, error handling, user permissions, and real-time updates.

@@ -1,0 +1,64 @@
+Creating a detailed Sequence Diagram for the user story "As a member, I want to borrow a book so that I can read the book outside of the library" involves depicting how system components interact with each other to fulfill this requirement. Below is a PlantUML code representation of the sequence diagram for borrowing a book in the Comprehensive Library Management System (CLMS).
+
+```plantuml
+@startuml
+actor Member as member
+participant "Search Interface" as searchInterface
+participant "Database" as database
+participant "Reservation System" as reservationSystem
+participant "Library Account" as account
+participant "Notification System" as notificationSystem
+
+member -> searchInterface: Enter search criteria
+searchInterface -> database: Query available books
+database -> searchInterface: Return search results
+searchInterface --> member: Display available books
+
+member -> searchInterface: Select a book
+searchInterface -> database: Check book status
+database --> searchInterface: Book is available
+
+member -> reservationSystem: Request to borrow book
+reservationSystem -> account: Check member's account status
+account --> reservationSystem: Account is valid
+
+reservationSystem -> database: Update book status to "on loan"
+database -> reservationSystem: Confirmation
+reservationSystem -> notificationSystem: Send borrow confirmation
+notificationSystem -> member: Send confirmation email/SMS
+
+alt If book is not returned by due date
+    reservationSystem -> notificationSystem: Trigger overdue notification
+    notificationSystem -> member: Send overdue notification email/SMS
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram Elements:
+
+- **Member:** The library member or user initiating the book borrowing process.
+  
+- **Search Interface:** The component that handles the search and discovery features, allowing the user to find available books.
+  
+- **Database:** The backend system storing all information about books, users, and borrowing statuses.
+
+- **Reservation System:** Manages book reservation requests, including borrowing and returns.
+
+- **Library Account:** Manages the member's library account status, ensuring they're eligible to borrow books.
+
+- **Notification System:** Handles sending automated emails/SMS notifications to members about various notifications like borrowing confirmations or overdue returns.
+
+### Process Flow:
+
+1. **Search for the Book:** The member initiates a search through the search interface using various criteria. The search results are fetched from the database and displayed to the member.
+
+2. **Select a Book:** The member selects a book from the available search results. The system checks the current status (availability) of the book from the database.
+
+3. **Borrowing Process:** Upon deciding to borrow the book, the member requests to borrow it through the reservation system. The system verifies the member’s account status and proceeds to update the book's status to "on loan" in the database.
+
+4. **Confirmation:** The reservation system confirms the borrowing action, and through the notification system, a confirmation message (email/SMS) is sent to the member.
+
+5. **Overdue Notification:** If the book is not returned by the due date, the reservation system triggers an overdue notification, which is sent out to the member by the notification system.
+
+This sequence diagram outlines a simplified process of how a member can borrow a book from the library using the Comprehensive Library Management System, focusing on the interaction between different system components.

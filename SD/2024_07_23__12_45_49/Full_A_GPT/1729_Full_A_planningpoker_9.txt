@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the user story "As a moderator, I want to show all estimates immediately, so that I can decide to show the estimates that have been given even though not all estimators have given their estimate" involves outlining the interactions between the various components of the Agile Estimation and Planning Tool (AEPT) and the actors involved. Below is a depiction in PlantUML format, illustrating how the system components might communicate to fulfill this requirement.
+
+```plantuml
+@startuml
+actor Moderator
+participant "UI: Estimation Game" as UI
+participant "Server: Game Controller" as Controller
+participant "Estimation Logic" as Logic
+database "Game Database" as DB
+
+Moderator -> UI: Selects "Show All Estimates"
+activate UI
+UI -> Controller: Request to Show Estimates
+activate Controller
+
+alt If all estimators have submitted
+    Controller -> Logic: Check Estimation Completion
+    activate Logic
+    Logic --> Controller: All Estimates Submitted
+    deactivate Logic
+else Some estimators have not submitted
+    Controller -> Logic: Check Estimation Completion
+    activate Logic
+    Logic --> Controller: Incomplete Estimates
+    deactivate Logic
+    Controller -> DB: Fetch Partial Estimates
+    activate DB
+    DB --> Controller: Return Estimates
+    deactivate DB
+    Controller -> UI: Display Estimates to Moderator
+    UI -> Moderator: Shows Estimates
+    deactivate Controller
+end
+
+deactivate UI
+@enduml
+```
+This sequence diagram represents a simplified view of the process that might occur when a moderator decides to show all estimates regardless of whether all estimators have submitted their estimates or not. 
+
+**Explanation of the Flow:**
+
+1. **Moderator Initiates Action:** The moderator decides to show all the estimates that have been submitted so far by selecting an option in the UI.
+2. **UI Requests Action from Server:** This action is communicated to the server's game controller, which is responsible for managing game states and actions.
+3. **Server Checks Estimation Status:** The server, through the game controller, checks if all estimations are complete. This logic determines whether it's a situation of showing all estimates because they're all in or revealing them early due to the moderator's request.
+   - If all estimators have submitted their estimates, the system proceeds normally.
+   - If some estimators have not submitted their estimates, the game controller fetches the partial estimates.
+4. **Fetching Partial Estimates:** In cases where not all estimates are submitted, the game controller queries the database to retrieve the estimates that have been given.
+5. **Estimates are Displayed:** The partial estimates are sent back to the UI, where they are displayed to the moderator.
+
+Please note, the actual implementation details may require additional steps based on specific system requirements, authentication, error handling, and the technologies used.

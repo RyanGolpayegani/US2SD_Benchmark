@@ -1,0 +1,40 @@
+@startuml
+!theme cerulean
+
+participant "Consumer" as consumer
+participant "Platform Web Interface" as web
+participant "Notification Service" as notify
+participant "Data Registry" as registry
+database "Data Package DB" as db
+
+== Consumer Subscribes to Notifications ==
+consumer -> web : Subscribe to package updates
+web -> notify : Initiate subscription process
+notify -> db : Store subscription details
+db --> notify : Confirmation
+notify --> web : Subscription confirmed
+web --> consumer : Subscription success notification
+
+== Publisher Updates a Data Package ==
+group Data Package Update
+    participant "Publisher" as publisher
+    publisher -> web : Upload updated package
+    web -> registry : Validate and update package
+    registry -> db : Update package details
+    db --> registry : Update confirmation
+    registry --> web : Package updated successfully
+    web --> publisher : Update success notification
+end
+
+== Notification Service Checks for Subscribers ==
+registry -> notify : Trigger notification check
+notify -> db : Retrieve subscribed consumers for package
+db --> notify : List of subscribed consumers
+
+== Notification Service Notifies Subscribers ==
+loop for each Consumer
+    notify -> consumer : Notify of package update
+    consumer --> notify : Acknowledge notification
+end
+
+@enduml

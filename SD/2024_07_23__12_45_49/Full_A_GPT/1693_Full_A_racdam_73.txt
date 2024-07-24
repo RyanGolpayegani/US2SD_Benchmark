@@ -1,0 +1,53 @@
+Creating a detailed sequence diagram for the user story provided, particularly focusing on the functionality for archivists to distinguish between images scanned in color or black and white to meet publication requirements, requires recognizing various components and their interactions in the system. Here’s a basic PlantUML code representation to visualize this scenario:
+
+```plantuml
+@startuml
+participant Archivist
+participant "Digital Archive System" as System
+participant "Image Metadata" as Metadata
+participant "File Storage" as Storage
+database "Digital Archive Database" as Database
+
+Archivist -> System : Upload image
+System -> Storage : Save image file
+activate Storage
+Storage --> System : Confirm save
+deactivate Storage
+System -> Metadata : Extract metadata
+activate Metadata
+Metadata --> System : Image color model (RGB/Grey scale)
+deallocate Metadata
+
+System -> Database : Update metadata record
+activate Database
+Database --> System : Confirm metadata update
+deactivate Database
+
+System -> Archivist : Display image status (Color/B&W)
+Archivist -> System : Request image list with color model
+System -> Database : Query images by color model
+activate Database
+Database -> System : Return list of images
+deactivate Database
+
+System --> Archivist : Display images meeting criteria
+@enduml
+```
+
+Explanation of the Diagram Elements:
+
+1. **Archivist**: The user or role initiating the process. In this case, the archivist wants to distinguish between images scanned in color or black and white.
+
+2. **Digital Archive System**: The central system handling the request. It acts as an intermediary between the archivist, the storage where files are saved, the metadata extraction process, and the database.
+
+3. **Image Metadata**: This element is responsible for extracting and processing metadata from images, such as determining whether an image is scanned in color or grayscale.
+
+4. **File Storage**: Represents where images are physically or digitally stored after uploading.
+
+5. **Digital Archive Database**: The database where image metadata, including color model information, is recorded and queried.
+
+The sequence diagram starts with the Archivist uploading an image to the Digital Archive System, which then saves the image via the File Storage service. Once the image is saved, the System initiates the Image Metadata service to extract relevant image details, including its color model. Then, the metadata (e.g., color model information) is updated in the Digital Archive Database. Following this, the System informs the Archivist of the image status (color or B&W).
+
+If the Archivist needs to find all images of a specific color model for publication requirements, they request a list based on the color model. The System queries the Database for images matching the criteria and displays the results to the Archivist.
+
+Please note, this diagram is a simplified representation. The actual system complexity and interactions may require additional details based on specific functional and non-functional requirements, including security layers, error handling mechanisms, and detailed user authentication steps.

@@ -1,0 +1,25 @@
+@startuml
+
+actor "Researcher" as researcher
+participant "UI: Reset Password Page" as ui
+participant "Authentication System" as auth
+participant "Email System" as email
+database "User Database" as db
+
+== Password Reset Initialization ==
+researcher -> ui: Requests password reset
+ui -> auth: Validates request
+auth -> email: Sends password reset link
+email -> researcher: Password reset email
+
+== Password Reset Process ==
+researcher -> ui: Clicks on reset link
+ui -> auth: Verify link
+auth -> ui: Prompt to enter new password
+researcher -> ui: Submits new password
+ui -> auth: Updates password in User Database
+auth -> db: Save new password
+auth -> email: Sends confirmation email
+email -> researcher: Password reset confirmation
+
+@enduml

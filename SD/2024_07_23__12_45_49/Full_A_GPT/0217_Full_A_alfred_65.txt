@@ -1,0 +1,61 @@
+To illustrate how an older person might use ALFRED to manage their agenda, we will create a detailed sequence diagram. This diagram will depict interactions between the user, ALFRED, and the system components responsible for agenda management, including setting up reminders, adding new appointments, and providing notifications.
+
+```plantuml
+@startuml
+participant OlderPerson as user
+participant "Voice Interface" as voice
+participant ALFRED as alfred
+database "Agenda System" as agenda
+participant "Notification System" as notify
+
+== Initialize ALFRED ==
+user -> voice : "Activate ALFRED"
+voice -> alfred : Activation signal
+activate alfred
+alfred -> user : "ALFRED activated, how may I assist you?"
+deactivate alfred
+
+== Add Appointment to Agenda ==
+user -> voice : "Add doctor's appointment on Monday at 9 AM"
+activate voice
+voice -> alfred : Parse command
+activate alfred
+alfred -> agenda : Add appointment("Doctor", "Monday 9 AM")
+activate agenda
+agenda -> agenda : Validate appointment details
+agenda -> alfred : Appointment added successfully
+deactivate agenda
+alfred -> user : "Doctor's appointment scheduled for Monday at 9 AM"
+deactivate alfred
+
+== Set Up Reminder ==
+user -> voice : "Set reminder for doctor's appointment"
+voice -> alfred : Parse reminder setup command
+alfred -> agenda : Set reminder("Doctor", "Monday 9 AM")
+agenda -> agenda : Configure reminder
+agenda -> alfred : Reminder set for Sunday 6 PM
+alfred -> notify : Schedule reminder notification("Sunday 6 PM")
+activate notify
+notify -> alfred : Reminder scheduled
+deactivate notify
+alfred -> user : "Reminder set for doctor's appointment on Sunday at 6 PM"
+deactivate alfred
+
+== Retrieve Day's Agenda ==
+user -> voice : "What's on my agenda today?"
+voice -> alfred : Parse query
+alfred -> agenda : Get today's appointments()
+agenda -> agenda : Fetch appointments
+agenda -> alfred : "Doctor's appointment at 9 AM"
+alfred -> user : "You have a doctor's appointment today at 9 AM"
+deactivate alfred
+
+== Reminder Notification ==
+activate notify
+notify -> user : "Reminder: Doctor's appointment tomorrow at 9 AM"
+deactivate notify
+
+@enduml
+```
+
+This sequence diagram provides an outline of how an older person might interact with ALFRED to manage their agenda, utilizing speech interaction for convenience. The diagram shows the process of activating ALFRED, adding an appointment, setting up a reminder for the appointment, querying the day's agenda, and receiving a reminder notification. Each step involves communication between the user, the voice interface, ALFRED's core system, the agenda system, and the notification system, ensuring a seamless user experience.

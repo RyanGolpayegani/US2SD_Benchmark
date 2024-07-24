@@ -1,0 +1,20 @@
+@startuml
+actor Manager
+participant "Management\nInterface" as Interface
+participant "Operational\nSystem" as System
+participant "Database" as DB
+
+Manager -> Interface : requestCurrentTableStatus()
+activate Interface
+Interface -> System : getCurrentTableStatus()
+activate System
+System -> DB : queryServedTables()
+activate DB
+DB --> System : returnTableData()
+deactivate DB
+System --> Interface : tableStatusData()
+deactivate System
+Interface --> Manager : showTableStatus(tableStatusData)
+deactivate Interface
+
+@enduml

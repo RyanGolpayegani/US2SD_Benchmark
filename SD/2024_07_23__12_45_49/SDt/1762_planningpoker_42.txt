@@ -1,0 +1,32 @@
+@startuml
+participant "Participant" as participant
+participant "Frontend UI" as ui
+participant "Profile Service" as profile
+participant "Game Service" as game
+database "Database" as db
+
+participant -> ui: Select/Upload Thumbnail Photo
+ui -> profile: UpdateProfileWithPhoto()
+activate profile
+profile -> db: SavePhotoInfo()
+activate db
+db -> db: StorePhoto()
+db --> profile: PhotoStored()
+deactivate db
+profile --> ui: Confirmation()
+deactivate profile
+ui --> participant: DisplayConfirmation()
+
+participant -> ui: PlayCard()
+ui -> game: DisplayCardWithThumbnail()
+activate game
+game -> db: GetParticipantThumbnail()
+activate db
+db -> db: RetrievePhotoInfo()
+db --> game: PhotoInfo()
+deactivate db
+game --> ui: RenderCardAndPhoto()
+ui --> participant: ShowCardWithThumbnail()
+deactivate game
+
+@enduml

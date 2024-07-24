@@ -1,0 +1,30 @@
+@startuml
+actor Curator as curator
+participant "UI Interface" as UI
+participant "Author Management\nModule" as authorModule
+participant "Database" as DB
+
+== Author Identification Process ==
+
+curator -> UI : Select item to update author details
+UI -> authorModule : Trigger author update process
+activate authorModule
+
+authorModule -> DB : Retrieve item details
+activate DB
+DB --> authorModule : Item details
+deactivate DB
+
+authorModule --> UI : Display current author(s)
+curator -> UI : Input unique identifier (e.g. ORCID) for author(s)
+UI -> authorModule : Provide unique identifier(s)
+activate DB
+authorModule -> DB : Update author details with identifier
+DB --> authorModule : Confirmation of update
+deactivate DB
+authorModule --> UI : Display update success message
+deactivate authorModule
+UI --> curator : Show success message
+
+== End ==
+@enduml

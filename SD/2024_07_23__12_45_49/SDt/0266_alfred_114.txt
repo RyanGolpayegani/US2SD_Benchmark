@@ -1,0 +1,31 @@
+@startuml
+actor MedicalCaregiver as caregiver
+participant "ALFRED Interface" as interface
+participant "Exercise Module" as exerciseModule
+participant "Sensors" as sensors
+participant "Analysis Engine" as analysisEngine
+participant "User Health Profile" as userProfile
+participant "Notification Service" as notificationService
+
+caregiver -> interface: Access Exercise Monitoring
+interface -> exerciseModule: Initiate Exercise Monitoring for User
+exerciseModule -> sensors: Collect Exercise Data
+sensors -> analysisEngine: Send Data for Analysis
+analysisEngine -> userProfile: Retrieve User's Physical Health Data
+userProfile -> analysisEngine: Provide User's Health Data
+analysisEngine -> exerciseModule: Analyze Exercise Correctness
+exerciseModule -> interface: Display Analysis Results
+interface -> caregiver: Show Exercise Correctness Status
+exerciseModule -> notificationService: Trigger Feedback Notification
+notificationService -> interface: Notify User with Feedback
+interface -> caregiver: Provide Options for Real-Time Guidance
+caregiver -> interface: Send Real-Time Guidance/Instruction
+interface -> exerciseModule: Update Exercise Session with Guidance
+exerciseModule -> sensors: Adjust Monitoring According to Guidance
+sensors -> user: Provide Real-Time Feedback
+user -> sensors: Continues/Adjusts Exercise
+sensors -> analysisEngine: New Data for Recalibration
+analysisEngine -> exerciseModule: Recalibrated Analysis
+exerciseModule -> notificationService: Update Feedback Notification
+notificationService -> user: New Feedback Directions
+@enduml

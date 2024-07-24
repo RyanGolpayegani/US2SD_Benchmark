@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for user stories involves illustrating different system components and how they interact with each other over time to achieve a specific goal. 
+
+Given the user story from your project description, the sequence diagram will detail the steps involved when a FABS (Federal Assistance Broker Submission) user wishes to link the SAMPLE FILE on the "What you want to submit" dialog to point to the correct file. This action ensures they have an accurate reference for agency submissions.
+
+Here’s a breakdown in PlantUML format to create such a sequence diagram:
+
+```plantuml
+@startuml
+actor FABSUser as "FABS User"
+participant UIBrowser as "UI Browser"
+participant Server as "Server"
+participant ValidationService as "Validation Service"
+participant Database as "Database"
+participant FileStorage as "File Storage"
+
+FABSUser -> UIBrowser: Selects "What you want to submit"
+UIBrowser -> Server: Request to open dialog
+Server -> Database: Fetch template info
+Database -> Server: Template details
+Server -> UIBrowser: Display dialog with link to current SAMPLE FILE
+UIBrowser -> FABSUser: Shows dialog
+FABSUser -> UIBrowser: Requests file update
+UIBrowser -> Server: Request file update
+Server -> ValidationService: Validate file path
+alt File path is valid
+    ValidationService -> Server: Path valid
+    Server -> FileStorage: Update link to SAMPLE FILE
+    FileStorage -> Server: Confirm update
+    Server -> Database: Update SAMPLE FILE link in DB
+    Database -> Server: Update confirmation
+    Server -> UIBrowser: Update success message
+    UIBrowser -> FABSUser: Display success message
+else File path is invalid
+    ValidationService -> Server: Path invalid
+    Server -> UIBrowser: Error message (invalid path)
+    UIBrowser -> FABSUser: Display error message
+end
+@enduml
+```
+
+This PlantUML diagram starts with the FABS User initiating the process by selecting the required dialog through the UI Browser. The dialog request is processed by the Server, which then fetches and returns the current template information from the Database. The dialog is displayed to the user with an option to update the SAMPLE FILE. When the user requests a file update, the server validates the new file path. If the path is valid, the link to the SAMPLE FILE is updated in the File Storage, and the Database is notified to update the corresponding link. Finally, the user receives a success message. If the path is invalid, an error message is relayed back to the user.
+
+This sequence diagram is a simplification and might need adjustments based on the actual system architecture and requirements.

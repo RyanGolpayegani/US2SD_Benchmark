@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram for the specific user story requires a captured flow of interactions between the administrator and the system (in this case, the BADCamp Enhancement Platform) and potentially external systems or services (for instance, Drupal Planet's aggregator). Given your request, here's a simplified version of such a sequence diagram expressed in PlantUML syntax.
+
+This diagram assumes the process involves an administrator logging into the platform, creating or editing a blog post, tagging it appropriately for Drupal Planet, and then the system handling the post in a way that ensures it's listed on Drupal Planet.
+
+```plantuml
+@startuml
+participant Administrator as admin
+participant "BADCamp Platform" as platform
+participant "Blog Module" as blog
+participant "Drupal Planet Aggregator" as drupalPlanet
+
+admin -> platform: Login
+activate platform
+
+platform -> admin: Authentication Successful
+admin -> blog: Access Blog Post Form
+activate blog
+
+admin -> blog: Create/Edit Blog Post
+admin -> blog: Tag for Drupal Planet
+blog -> platform: Save Blog Post with Tag
+platform -> drupalPlanet: Push Post to Drupal Planet
+activate drupalPlanet
+
+drupalPlanet -> platform: Confirm Receipt
+platform -> admin: Display Confirmation Message
+
+deactivate drupalPlanet
+deactivate blog
+deactivate platform
+@enduml
+```
+
+This sequence diagram starts with the Administrator logging into the BADCamp Enhancement Platform, moving to authoring or editing a blog post, tagging it specifically for Drupal Planet, and the platform then pushing this post to Drupal Planet. The confirmation flow ensures that the admin knows the process has been completed successfully.
+
+Please note, the actual implementation details and interactions can be more complex, depending on the precise requirements, existing integrations, and how Drupal Planet aggregation works. This diagram serves as a conceptual framework and might need adjustments to fit the system architecture accurately.

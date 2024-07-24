@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram in PlantUML format for the user story "As a member, I want to make online reservations for books" involves outlining the series of interactions between the system components from the moment a library member initiates a book reservation to the completion of the reservation process. Below is a basic representation of how this process could be visualized using PlantUML syntax.
+
+```plantuml
+@startuml
+actor Member
+participant "Search Interface" as Search
+participant "Reservation System" as Reservation
+database "Library Database" as DB
+
+Member -> Search : enters search criteria
+Search -> DB : query books based on criteria
+DB -> Search : return search results
+Search -> Member : display available books
+
+Member -> Reservation : select book for reservation
+Reservation -> DB : check book availability
+
+alt If book is available
+    DB -> Reservation : confirm book is available
+    Reservation -> Member : show available dates for reservation
+    Member -> Reservation : select date and confirm reservation
+    Reservation -> DB : create reservation record
+    DB -> Reservation : confirm reservation
+    Reservation -> Member : display reservation confirmation
+else If book is not available
+    DB -> Reservation : book not available
+    Reservation -> Member : inform book is currently unavailable
+end
+
+@enduml
+```
+
+### How to Read This Diagram:
+
+1. **Member initiates the process**: The library member starts by searching for a book through the search interface, inputting criteria such as title, author, or subject.
+   
+2. **Search operation**: The search interface queries the library database with the specified criteria to find matching books, and the results are returned to the member.
+
+3. **Making a reservation**: The member selects a book to reserve from the available search results. The reservation system then checks the database to confirm if the book is available for the desired date.
+
+4. **Condition handling**: 
+    - **If the book is available**, the system proceeds to show available dates for reservation. The member selects a date, confirms the reservation, and the system creates a reservation record in the database. The database confirms this action, and the reservation system informs the member of the successful reservation.
+    - **If the book is not available**, the reservation system informs the member that the book cannot be reserved at the moment.
+
+This sequence diagram represents a simplified view of the interactions involved in the online reservation process for books within the CLMS. Depending on the actual complexity and requirements of the CLMS, additional steps, components, or error-handling routines might be necessary for a comprehensive design.

@@ -1,0 +1,22 @@
+@startuml
+actor AnonymousUser as user
+entity "Session Submission System" as submissionSystem
+entity "Session Review Board" as reviewBoard
+entity "Notification System" as notificationSystem
+database "Session Database" as sessionDB
+
+user -> submissionSystem : Submits session
+submissionSystem -> sessionDB : Saves submission
+submissionDB -> reviewBoard : Submits for review
+reviewBoard -> sessionDB : Updates session status\nto "Accepted" or "Rejected"
+sessionDB -> notificationSystem : Triggers status update notification
+notificationFinishRef: Public/anonymized notification point
+note right of notificationFinishRef
+  Anonymous users check the status
+  of their submission through a public
+  feed or an anonymized system
+end note
+
+notificationSystem ..> notificationFinishRef : Notification is made public
+
+@enduml

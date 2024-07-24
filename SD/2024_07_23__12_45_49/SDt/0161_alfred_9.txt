@@ -1,0 +1,31 @@
+@startuml
+actor OlderPerson as user
+participant "Device Interface \n(Computer/Tablet/Phone)" as device
+participant "ALFRED Installation Service" as installService
+participant "User Account Service" as accountService
+participant "Device Synchronization Service" as syncService
+database "ALFRED Database" as alfredDB
+
+user -> device : Request ALFRED installation
+device -> installService : Invoke installation
+installService -> alfredDB : Check user account
+alfredDB --> installService : Account details
+installTimer -left-> accountService : Create/Verify account
+accountService --> user : Account setup/confirmation
+installTimer --> installService : Download ALFRED\nfor specific device
+installService --> device : Install ALFRED
+device --> user : Confirm installation
+
+== Synchronization across devices ==
+user -> device : Login to ALFRE
+device -> accountService : Authenticate user
+accountService --> user : Authentication success
+
+user -> device : Request sync with other devices
+device -> syncService : Initiate synchronization
+syncService -> alfredDB : Fetch user's settings\nand preferences
+alfredDB --> syncService : User settings\nand preferences
+syncService --> device : Apply settings\nand preferences
+device --> user : Synchronization complete
+
+@enduml

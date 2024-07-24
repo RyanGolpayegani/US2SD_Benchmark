@@ -1,0 +1,49 @@
+Creating a detailed UML sequence diagram for the specific user story "As a Staff, I want to search for a book by author, so that I can quickly search for an author's book" involves depicting the interactions among different system components in the Comprehensive Library Management System (CLMS) to fulfill this requirement. 
+
+Below is a sequence diagram, in PlantUML format, that represents the process:
+
+```plantuml
+@startuml
+actor Staff
+participant "Search Interface" as SI
+participant "Search Controller" as SC
+participant "Database" as DB
+
+== Search Book by Author ==
+
+Staff -> SI: Enter author's name
+SI -> SC: Request search by author(name)
+alt if author name is valid
+    SC -> DB: Query books by author
+    DB --> SC: Return search results
+    SC --> SI: Show search results
+    SI --> Staff: Display books by author
+else if author name is invalid
+    SC --> SI: Show error message
+    SI --> Staff: Display error (no results)
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram Steps:
+
+1. **Staff Interaction:** The staff member starts the process by entering the author's name into the Search Interface. 
+
+2. **Search Interface to Search Controller:** The Search Interface captures this request and sends it to the Search Controller, indicating that the staff wishes to search for books by a specific author.
+
+3. **Decision Making:** An alternative path is depicted here based on the validity of the author's name input.
+   
+   - **If the author's name is valid:**
+     - The Search Controller queries the Database for books by the specified author.
+     - The Database returns the search results to the Search Controller.
+     - The Search Controller then sends these results back to the Search Interface.
+     - Finally, the Search Interface displays the list of books by the author to the staff member.
+   
+   - **If the author's name is invalid or results in no matches:**
+     - The Search Controller directly informs the Search Interface of the failure.
+     - The Search Interface then shows an error message or a "no results" message to the staff.
+
+The sequence diagram highlights the simplicity and efficiency of searching for books by authors within the system, providing a straightforward pathway for staff members to access the information they need rapidly.
+
+This UML sequence diagram provides a high-level overview of interactions that happen behind the scenes in the Comprehensive Library Management System when a staff member seeks to find books by a particular author.

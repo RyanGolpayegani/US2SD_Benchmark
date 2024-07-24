@@ -1,0 +1,32 @@
+@startuml
+actor Publisher as publisher
+participant "UI Interface" as ui
+participant "API Gateway" as api
+participant "Publishing Service" as pubservice
+participant "Validation Service" as valservice
+database "Data Storage" as storage
+
+publisher -> ui : Initiate publishing
+ui -> api : POST /datasets/publish
+api -> pubservice : Prepare dataset
+pubservice -> valservice : Validate dataset
+activate valservice
+valservice -> storage : Fetch schema/previous version
+storage -> valservice : Schema/Version data
+valservice -> valservice : Perform validation checks
+alt If validation passes
+    valservice --> pubservice : Validation Success
+    deactivate valservice
+    pubservice -> storage : Store dataset
+    storage -> pubservice : Confirmation
+    pubservice -> api : Publishing Success
+    api -> ui : Show success message
+    ui -> publisher : Display "Publish Successful"
+else Validation fails
+    valservice --> pubservice : Validation Errors
+    deactivate valservice
+    pubservice -> api : Validation Failed
+    api -> ui : Show error messages
+    ui -> publisher : Display validation errors
+end
+@enduml

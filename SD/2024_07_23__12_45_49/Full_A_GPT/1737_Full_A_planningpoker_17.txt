@@ -1,0 +1,23 @@
+Creating a detailed sequence diagram for the given user story "As a moderator, I want to view a transcript of a game, so that I can see the stories and estimates" involves outlining the series of interactions among the system's components. Below is a PlantUML code that represents these interactions.
+
+```plantuml
+@startuml
+actor Moderator
+participant "Web Interface" as Web
+participant "Game Controller" as Controller
+database "Game Database" as DB
+participant "Export Service" as Export
+
+Moderator -> Web : Request to view game transcript
+Web -> Controller : Fetch game details (ID)
+Controller -> DB : Query game & estimates by ID
+DB -> Controller : Return game data
+Controller -> Export : Prepare transcript (stories, estimates)
+Export -> Web : Generate transcript file (HTML/CSV)
+Web -> Moderator : Display/download transcript
+@enduml
+```
+
+This diagram starts with the moderator initiating a request to view a game's transcript through the web interface. The request then moves from the web interface to the game controller, which is responsible for fetching the details of the game identified by its ID. The game controller queries the database for the game information and related estimates. Upon receiving the necessary data, the game controller interacts with an export service designed to prepare the transcript, which includes compiling the stories and their corresponding estimates into a document. This document can be generated in either HTML or CSV format, depending on the system's capabilities and the user's preference. Finally, the transcript file is sent back to the web interface, which then presents the moderator with options to display or download the transcript.
+
+This sequence diagram assumes the existence of certain components such as a web interface, game controller, game database, and export service. The actual implementation may vary depending on the system's architecture and the technologies used.

@@ -1,0 +1,60 @@
+To generate a detailed sequence diagram for the user story "As a manager, I want to update what type of books are borrowed the most" using PlantUML notation, it's essential to outline the interactions involved in this process. This scenario involves retrieving borrowing statistics, identifying the most borrowed book types or categories, and updating the library's focus or stock based on these insights.
+
+Below is a PlantUML sequence diagram that depicts these steps:
+
+```plantuml
+@startuml
+participant Manager as M
+participant WebInterface as WI
+participant BackendServer as BS
+participant Database as DB
+
+M -> WI: Access reporting module
+activate WI
+
+WI -> BS: Request: Get most borrowed book types
+activate BS
+
+BS -> DB: Query borrowed books statistics
+activate DB
+
+DB --> BS: Return statistics
+deactivate DB
+
+BS --> WI: Show statistics to Manager
+deactivate BS
+
+M <-- WI: Display most borrowed book types
+deactivate WI
+
+M -> WI: Select update library stock option
+activate WI
+
+WI -> BS: Request: Update focus on most borrowed types
+activate BS
+
+BS -> DB: Update stock/focus records
+activate DB
+
+DB --> BS: Confirm update
+deactivate DB
+
+BS --> WI: Show update confirmation to Manager
+deactivate BS
+
+WI --> M: Display confirmation message
+deactivate WI
+
+@enduml
+```
+
+This sequence diagram explains the following steps:
+
+1. **Manager Access**: The manager accesses the reporting module through the web interface (WebInterface).
+2. **Request Statistics**: The web interface forwards a request to the backend server (BackendServer) to retrieve statistics on the most borrowed book types.
+3. **Query Database**: The backend server queries the database (Database) for statistics related to borrowed books.
+4. **Display Statistics**: The database returns the statistics to the backend server, which are then displayed to the manager through the web interface.
+5. **Update Stock/Focus**: The manager decides to update the library stock or focus based on the most borrowed book types, initiating this update through the web interface.
+6. **Update Confirmation**: The backend server updates the relevant records in the database, and the successful update is confirmed to the manager through the web interface.
+
+Note: This sequence diagram is simplified to highlight the key interactions for the stated user story. Depending on the project specifics, additional details like authentication and error handling might also be needed for a comprehensive design.

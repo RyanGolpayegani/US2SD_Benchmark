@@ -1,0 +1,35 @@
+@startuml
+
+actor Researcher
+participant "User Interface" as UI
+participant "Authentication Service" as Auth
+participant "File Management" as FileMgmt
+participant "Social Media Share Service" as SocialMedia
+participant "Database" as DB
+
+== Share a Link to a File on Social Media ==
+
+Researcher -> UI: Selects file to share
+UI -> Auth: Validate user session
+Auth --> UI: Session valid
+
+UI -> FileMgmt: Request file link
+FileMgmt -> DB: Query file metadata
+DB --> FileMgmt: Return file metadata
+
+FileMgmt --> UI: Display file link and social share options
+Researcher -> UI: Choose social media platform to share
+UI -> SocialMedia: Initiate share process with file link
+
+alt Social Media Platform Integrations
+    SocialMedia -> DB: Log share activity
+    DB --> SocialMedia: Confirm log entry
+    SocialMedia -> Researcher: Display share confirmation
+else Social Media Sharing via External Browser/Application
+    SocialMedia -> Researcher: Provide share link and instructions
+end
+
+SocialMedia --> UI: Update UI with share status
+UI --> Researcher: Confirm file has been shared
+
+@enduml

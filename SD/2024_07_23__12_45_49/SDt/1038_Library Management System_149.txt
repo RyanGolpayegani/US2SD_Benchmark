@@ -1,0 +1,36 @@
+@startuml
+actor Member as user
+participant "UI\nFrontend" as frontend
+participant "Server\nBackend" as backend
+participant "Database" as db
+
+user -> frontend : Selects "Book Categories"
+activate frontend
+
+frontend -> backend : Request available categories
+activate backend
+
+backend -> db : Query categories
+activate db
+
+db -> backend : Return categories
+deactivate db
+
+backend -> frontend : Show categories
+deactivate backend
+
+user -> frontend : Choose a specific category
+frontend -> backend : Request books in category [X]
+activate backend
+
+backend -> db : Query books in category [X]
+activate db
+
+db -> backend : Return books in category [X]
+deactivate db
+
+backend -> frontend : Show books in category [X]
+deactivate backend
+frontend -> user : Display books list
+
+@enduml

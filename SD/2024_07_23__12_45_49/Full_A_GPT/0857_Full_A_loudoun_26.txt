@@ -1,0 +1,57 @@
+Certainly! To create a detailed sequence diagram for the given user story in the context of the County Services & Property Information Portal, you can follow the outlined steps and use PlantUML code. The sequence diagram will illustrate the interaction between the Zoning Staff Member and the system components involved in issuing zoning-related permits upon verifying an applicant's eligibility and compliance with the Zoning Ordinance.
+
+**User Story**: As a Zoning Staff member, I want to Issue the Zoning-Related Permits, so that I can satisfy an Applicant's request for service that has proven to be eligible and in compliance with the Zoning Ordinance.
+
+### PlantUML Sequence Diagram Code:
+
+```plantuml
+@startuml
+
+actor "Zoning Staff Member" as staff
+participant ":Portal Interface" as portal
+database "Application Database" as db
+participant ":Compliance Check" as compliance
+participant ":Permit Issuance System" as permitSystem
+
+== Application Review ==
+staff -> portal : Selects Application\nfor Review
+portal -> db : Fetches Application\nDetails
+db -> portal : Returns Application\nInformation
+portal -> staff : Shows Application\nInformation
+
+== Verify Compliance ==
+staff -> compliance : Initiates Compliance\nCheck
+compliance -> db : Retrieves Zoning\nRegulations
+db -> compliance : Returns Zoning\nRegulations
+compliance -> compliance : Compares Application against\nZoning Regulations
+compliance -> staff : Returns Compliance\nResult
+
+== Issue Permit ==
+alt if in compliance
+    staff -> permitSystem : Triggers Permit Issuance
+    permitSystem -> db : Records Permit Issuance\nDetails
+    db -> permitSystem : Confirm Permit\nRecorded
+    permitSystem -> staff : Indicates Success\n& Permit Number
+    staff -> portal : Updates Application Status\nas "Permit Issued"
+    portal -> db : Record Application\nStatus Change
+    db -> portal : Confirmation
+    portal -> staff : Displays Updated\nApplication Status
+else not in compliance
+    staff -> portal : Updates Application Status\nas "Denied"
+    portal -> db : Record Application\nStatus Change
+    db -> portal : Confirmation
+    portal -> staff : Displays Updated\nApplication Status
+end
+
+@enduml
+```
+
+This sequence diagram straightforwardly encapsulates the process:
+
+1. **Application Review**: The Zoning Staff Member selects an applicant's submission for review via the portal, which fetches and displays the application details from the database.
+
+2. **Verify Compliance**: The Zoning Staff initiates a compliance check, where the system retrieves zoning regulations from the database and compares the application against these regulations. The result of this compliance check is then communicated back to the staff member.
+
+3. **Issue Permit**: If the application is in compliance, the staff member triggers the permit issuance process, records the details in the database, and updates the application status to "Permit Issued". If not compliant, the application status is updated to "Denied".
+
+Remember to adapt and expand upon this template based on the specific requirements of your system, such as additional steps for payment processing or any post-permit issuance actions.

@@ -1,0 +1,45 @@
+@startuml
+actor Librarian as lib
+participant "Subscription Management\nInterface" as smi
+participant "Database" as db
+
+== Update Subscription Information ==
+
+lib -> smi: Access Subscription Management
+alt Subscription Details Found
+    smi -> db: Query Member Subscription
+    db -> smi: Return Subscription Details
+    smi -> lib: Show Subscription Details
+    
+    lib -> smi: Request Update Subscription
+    smi -> db: Update Subscription Details
+    db -> smi: Confirmation Update
+    smi -> lib: Show Update Confirmation
+else No Subscription Details
+    smi -> db: Query Member Subscription
+    db -> smi: Error: No Details Found
+    smi -> lib: Show No Subscription Message
+end
+
+== Subscription Renewal Process ==
+
+lib -> smi: Access Subscription Management
+smi -> db: Check Subscription Status
+db -> smi: Subscription Status Returned
+
+alt Subscription Active
+    smi -> lib: Show Active Status
+    lib -> smi: Request Renewal (if needed)
+    smi -> db: Process Renewal Request
+    db -> smi: Renewal Confirmation
+    smi -> lib: Show Renewal Success
+else Subscription Expired
+    smi -> lib: Show Expired Status
+    lib -> lib: Inform Member About Renewal
+    lib -> smi: Process Renewal
+    smi -> db: Update Subscription Status
+    db -> smi: Confirmation Status Updated
+    smi -> lib: Show Update Confirmation
+end
+
+@enduml

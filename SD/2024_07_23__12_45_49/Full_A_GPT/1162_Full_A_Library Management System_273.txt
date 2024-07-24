@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram for the user story "As a member, I want to read the book record so that I can see whether the book is borrowed or not" involves illustrating the interactions between the system components (like the User Interface, Database, and Book Management System) upon the member's action to view a book's status. Below is a PlantUML code snippet to visualize this process:
+
+```plantuml
+@startuml
+participant MemberUI as UI
+participant BookManagementSystem as BMS
+database LibraryDB as DB
+
+UI -> BMS: RequestBookStatus(bookID)
+note right of BMS: Validate request\nand user permissions
+BML -> DB: QueryBookAvailability(bookID)
+note right of DB: Look up book status
+DB --> BMS: BookStatus(isBorrowed, dueDate)
+alt Book is available
+    BMS --> UI: ShowMessage("The book is available.")
+else Book is borrowed
+    BMS --> UI: ShowMessage("The book is borrowed.\nDue back on: " + dueDate)
+end
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **MemberUI (User Interface for Member):** This is the starting point of the interaction where the member (library user) initiates a request to view a book's borrowing status by identifying the book they are interested in, using a unique identifier like `bookID`.
+
+2. **BookManagementSystem (BMS):** Once the UI forwards the request to the Book Management System, BMS takes responsibility for processing this request. It first validates the request and checks if the user has the necessary permissions to view the book's status.
+
+3. **LibraryDB (Database):** After validation, BMS queries the Library Database for the availability status of the specified book using its `bookID`. The database checks its records for the book's status, which includes whether the book is currently borrowed and the due date if it is borrowed.
+
+4. **BookStatus Response:** The Database responds to BMS with the book's status, including a flag indicating whether it's borrowed (`isBorrowed`) and the `dueDate` if applicable.
+
+5. **Displaying the Message:** Depending on the response from the database, the Book Management System processes the information:
+    - If the book is available, BMS sends a message back to the Member UI, indicating that "The book is available."
+    - If the book is currently borrowed, BMS sends a message to the Member UI with the book's due date, indicating it is not currently available, e.g., "The book is borrowed. Due back on: " followed by the `dueDate`.
+
+By following this sequence, the member can clearly understand whether the book they are interested in is available for borrowing or when it might become available if it's currently borrowed. This diagram provides a high-level overview of the interactions between different system components for this specific user story within the Comprehensive Library Management System (CLMS).

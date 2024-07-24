@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for the user story "As a customer, I want to see my total bill information" involves outlining the interactions between different parts of the system when a customer requests to see their bill. I'll provide a basic outline that you can further customize based on specific project requirements and technical architecture.
+
+Given the capabilities of PlantUML, the diagram cannot be rendered directly here, but the following code snippet can be used in a PlantUML environment to generate the sequence diagram.
+
+```plantuml
+@startuml
+actor Customer
+participant "UI Interface" as UI
+participant "Server/API" as Server
+database "Database" as DB
+participant "Billing System" as Billing
+
+Customer -> UI : Request to view bill
+UI -> Server : Get bill request(customerID)
+Server -> DB : Query bill details(customerID)
+DB -> Server : Return bill details
+Server -> Billing : Calculate total bill(billDetails)
+Billing -> Server : Bill total
+Server -> UI : Display bill information
+UI -> Customer : Show total bill
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram Steps:
+
+1. **Customer Requests to View Bill**: The customer initiates the process by requesting to see their total bill, usually through a user interface (UI) such as a web page or mobile app.
+
+2. **UI Interface to Server/API**: The UI forwards the customer's request to the server or back-end API to retrieve the bill information. This interaction typically includes the customer's identification information (`customerID`).
+
+3. **Server to Database**: The server processes the request and queries the database for the bill details associated with the provided `customerID`.
+
+4. **Database to Server**: The database returns the bill details, including itemized charges, applicable taxes, discounts, etc., to the server.
+
+5. **Server to Billing System**: The server sends the retrieved bill details to the billing system to calculate the total amount due. This step might include applying any additional charges or discounts not previously accounted for.
+
+6. **Billing System to Server**: The billing system returns the calculated total bill to the server.
+
+7. **Server to UI Interface**: The server sends the bill information, including the total amount due, back to the UI.
+
+8. **UI Interface to Customer**: Finally, the UI displays the total bill information to the customer.
+
+This sequence diagram outlines a fundamental flow of interactions for a customer requesting to see their total bill in a restaurant management system. Depending on specific project details, additional complexities, like handling errors or integrating with third-party payment services, can be added to this diagram.

@@ -1,0 +1,26 @@
+@startuml
+actor "DB/IR Administrator" as admin
+participant "Web Interface" as web
+participant "Authentication System" as auth
+participant "Report/Dataset Management Module" as manage
+participant "Database" as db
+
+== Authentication ==
+admin -> web: Access dashboard
+web -> auth: Request authentication
+auth -->> web: Authentication successful
+
+== Report/Dataset Error Marking ==
+admin -> web: Select report/dataset with error
+web -> manage: Retrieve item details
+manage -> db: Query item details
+db -->> manage: Return item details
+manage -->> web: Display item details
+admin -> web: Mark as not email/viewable due to error
+web -> manage: Update item status & metadata
+manage -> db: Save updated status and metadata
+db -> manage: Confirm save
+manage -> web: Update confirmation
+web -> admin: Display confirmation message
+
+@enduml

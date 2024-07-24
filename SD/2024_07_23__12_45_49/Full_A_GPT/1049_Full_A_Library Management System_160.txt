@@ -1,0 +1,58 @@
+To fulfill the request for a detailed sequence diagram in PlantUML format for the user story described, we need to outline the interactions among different parts of the library system when a library member looks up books and places a reservation. The sequence diagram will focus on the key activities undertaken during this process.
+
+Given the complexity of the full library management system, the sequence diagram below represents a simplified yet comprehensive flow specific to searching for books and placing a reservation from the perspective of a library member.
+
+Please note: The actual code needs to be written within a PlantUML environment or a compatible tool to visualize the diagram.
+
+```plantuml
+@startuml
+participant Member
+participant "Search Interface" as Search
+participant "Library Database" as Database
+participant "Reservation System" as Reservation
+
+Member -> Search : enter search criteria
+activate Search
+Search -> Database : query books by criteria
+activate Database
+Database --> Search : return book results
+deactivate Database
+Search --> Member : display results
+deactivate Search
+
+Member -> Search : select book
+activate Search
+Search -> Reservation : request reservation details
+activate Reservation
+Reservation -> Database : check availability
+activate Database
+Database --> Reservation : book status (available/reserved)
+deactivate Database
+
+alt If Book is Available
+    Reservation --> Search : show available status
+    Member -> Reservation : place reservation
+    Reservation -> Database : create reservation entry
+    activate Database
+    Database --> Reservation : reservation confirmed
+    deactivate Database
+    Reservation --> Member : reservation confirmation
+else If Book is Reserved or on Loan
+    Reservation --> Search : show next available date
+    Member -> Reservation : reserve for next available date
+    Reservation -> Database : create reservation queue entry
+    activate Database
+    Database --> Reservation : queue confirmation
+    deactivate Subscription
+    Reservation --> Member : queue confirmation
+end
+
+deactivate Reservation
+deactivate Search
+
+@enduml
+```
+
+This sequence diagram starts with the library member entering search criteria in the search interface. The search system then queries the library database for books matching the criteria, and the results are displayed to the member. The member selects a book to see if it's available for reservation. The reservation system checks the book's availability with the database. If available, the member can place a reservation, which is then recorded in the database, and a confirmation is sent back to the member. If the book is already reserved or loan Ilan, the system shows the next available date and allows the member to reserve for that date instead.
+
+This structure provides a high-level overview. In a real-world implementation, the sequence might involve more intricate details, especially concerning error handling, user authentication, and interface dynamics.

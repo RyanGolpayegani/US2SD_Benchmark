@@ -1,0 +1,23 @@
+@startuml
+actor Researcher as r
+participant "Search Interface" as si
+participant "Authentication System" as auth
+participant "File Management Service" as fms
+database "Archive Database" as db
+
+r -> si: Enter search keyword
+si -> auth: Validate researcher credentials
+activate auth
+auth --> si: Credentials valid
+deactivate auth
+
+si -> fns: Request files by keyword
+activate fms
+fms -> db: Fetch metadata matching keyword
+activate db
+db --> fms: Return metadata of files
+deactivate db
+fms --> si: Provide files information
+deactivate fms
+si --> r: Display search results
+@enduml

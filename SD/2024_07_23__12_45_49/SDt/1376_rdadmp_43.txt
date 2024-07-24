@@ -1,0 +1,31 @@
+@startuml
+actor "Repository Manager" as RM
+participant "DMPTool Interface" as DMP
+participant "Metadata System" as MetaSys
+participant "Data Storage Plan" as DSP
+participant "Provenance Check Module" as PCM
+
+RM -> DMP: Request data type details
+activate DMP
+
+DMP -> MetaSys: Query metadata for data type
+activate MetaSys
+MetaSys -> MetaSys: Retrieve metadata details
+MetaSys -> DMP: Return metadata details
+deactivate MetaSys
+
+DMP -> DSP: Access data storage plan
+activate DSP
+DSP -> DSP: Retrieve storage details
+DSP -> DMP: Return storage details
+deactivate DSP
+
+DMP -> PCM: Perform provenance check
+activate PCM
+PCM -> PCM: Validate data archiving criteria
+PCM -> DMP: Return provenance check results
+deactivate PCM
+
+DMP -> RM: Show data type and archiving information
+deactivate DMP
+@enduml

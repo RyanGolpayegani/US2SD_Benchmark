@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the user story "As an OlderPerson, I want to receive support to have a taxi on time" involves illustrating the interactions between the Older Person (User), ALFRED (the assistive technology), possible third-party services (such as a Taxi Dispatch System), and any other relevant system components. Here's how you can represent this scenario with PlantUML:
+
+```plantuml
+@startuml
+participant OlderPerson as User
+participant "ALFRED\nAssistive Device" as ALFRED
+participant "Taxi Dispatch\nSystem" as Taxi
+
+User -> ALFRED : "Request taxi for [time]"
+ALFRED -> ALFRED : Process request\nIdentify current location
+ALFRED -> Taxi : Send taxi request with\ntime and location
+note right of Taxi : Taxi allocation process
+Taxi --> ALFRED : Confirm taxi booking\ndetails (Time, Car Number)
+ALFRED -> User : "Taxi booked for [time]\nCar Number: [XYZ]"
+User --> ALFRED : "Acknowledge"
+note left of User : Prepares for pickup
+
+alt if Taxi arrival is imminent
+    Taxi -> ALFRED : "Taxi arriving in 5 minutes"
+    ALFRED -> User : "Your taxi will\narrive in 5 minutes"
+end
+
+alt if Taxi is delayed
+    Taxi -> ALFRED : "Taxi delayed by [minutes]"
+    ALFRED -> User : "Your taxi is delayed\nby [minutes]"
+end
+
+@enduml
+```
+
+Here's a breakdown of the interactions depicted in this sequence diagram:
+1. **Older Person (User) Requests a Taxi:** The sequence begins with the user asking ALFRED for a taxi at a specific time.
+2. **ALFRED Processes the Request:** ALFRED processes this request, which includes identifying the current location of the user.
+3. **ALFRED Requests a Taxi:** ALFRED sends a request to the Taxi Dispatch System with the necessary details (time and location).
+4. **Taxi Dispatch System Responds:** The Taxi Dispatch System allocates a taxi and confirms the booking details back to ALFRED, including the car number and expected arrival time.
+5. **ALFRED Informs the User:** ALFRED then notifies the Older Person about the taxi booking details.
+6. **User Acknowledges:** The Older Person acknowledges the taxi booking information.
+7. **Additional Notifications:** Depending on real-time updates, ALFRED may inform the user of the taxi’s imminent arrival or any delays.
+
+This sequence diagram can be adjusted or expanded based on additional requirements or functionalities within the ALFRED system. For example, if ALFRED also provides support for payment or selection of taxi types (regular, accessible, etc.), those steps could be incorporated into the diagram.

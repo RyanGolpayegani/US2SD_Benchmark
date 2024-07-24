@@ -1,0 +1,23 @@
+@startuml
+actor Member
+participant "Web Interface" as Web
+database "CLMS Database" as DB
+participant "Reservation System" as RS
+
+Member -> Web: Access Reservation Tracking
+activate Web
+
+Web -> RS: Request Reservation Status(MemberID)
+activate RS
+
+RS -> DB: Query Reservation Details(MemberID)
+activate DB
+DB --> RS: Return Reservation Details
+deactivate DB
+
+RS --> Web: Display Reservation Status
+deactivate RS
+
+Web --> Member: Show Reservation Status
+deactivate Web
+@enduml

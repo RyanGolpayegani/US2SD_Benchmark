@@ -1,0 +1,60 @@
+Below is a detailed sequence diagram in PlantUML format illustrating the process by which a Developer determines how agencies generate and validate D files using FABS and FPDS data. This scenario involves multiple systems and actors including the Developer, Broker Platform, Database, and Validation System.
+
+```plantuml
+@startuml
+participant Developer
+participant "Broker Platform" as Broker
+database "Database" as DB
+participant "Validation System" as Validator
+
+== Generation Request ==
+Developer -> Broker: Request D File Generation
+activate Broker
+
+Broker -> DB: Retrieve FABS and FPDS Data
+activate DB
+DB --> Broker: FABS and FPDS Data
+deactivate DB
+
+Broker -> Validator: Submit data for preliminary validation
+activate Validator
+Validator --> Broker: Validation results
+deactivate Validator
+
+alt If Preliminary Validation Fails
+    Broker --> Developer: Display preliminary validation errors
+    deactivate Broker
+    stop
+else If Preliminary Validation Succeeds
+    deactivate Broker
+
+    == Generation Process ==
+    Broker -> Broker: Generate D Files from FABS and FPDS
+    activate Broker
+    Broker --> Developer: D Files Generation in Progress
+    deactivate Broker
+
+    == Final Validation ==
+    Developer -> Broker: Initiate Final Validation of D Files
+    activate Broker
+    Broker -> Validator: Submit D Files for final validation
+    activate Validator
+    Validator --> Broker: Final validation results
+    deactivate Validator
+
+    alt If Final Validation Fails
+        Broker --> Developer: Display final validation errors
+        deactivate Broker
+    else If Final Validation Succeeds
+        Broker -> DB: Update database with validated D Files
+        activate DB
+        DB --> Broker: Update confirmation
+        deactivate DB
+        Broker --> Developer: D Files successfully generated and validated
+        deactivate Broker
+    end
+end
+@enduml
+```
+
+This diagram represents the flow starting from a Developer's request to generate D Files, progressing through preliminary and final validations, and ending with either a success message indicating the D Files have successfully been generated and validated, or an error message detailing any issues encountered during the process. It also highlights interactions with the Broker platform, database for retrieving and updating data, and a validation system responsible for assessing the data's integrity.

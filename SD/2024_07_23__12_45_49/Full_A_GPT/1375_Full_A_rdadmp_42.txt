@@ -1,0 +1,31 @@
+To illustrate the user story "As a researcher, I want to know about costs, so that I can plan my research," using a sequence diagram, the following PlantUML script describes the sequence of interactions between a researcher and the Comprehensive Data Management Planning Tool (DMPTool) system, focusing on obtaining cost-related information. This scenario includes interactions with subsystems like the cost calculation tool and repository information.
+
+```plantuml
+@startuml
+participant Researcher
+participant DMPToolInterface as Interface
+participant DataManager as DM
+participant RepositorySystem as RepoSys
+participant CostCalculationTool as CostTool
+
+Researcher -> Interface : request(cost information)
+Interface -> DM : query(metadata for cost estimation)
+DM --> Interface : metadata
+Interface -> CostTool : calculateCosts(metadata)
+activate CostTool
+CostTool -> RepoSys : getRepositoryCriteria()
+RepoSys --> CostTool : criteria
+CostTool -> RepoSys : estimateSubmissionFees(metadata, criteria)
+RepoSys --> CostTool : submissionFees
+deactivate CostTool
+CostTool --> Interface : costsDetail(submissionFees,\n storage, preservation)
+Interface --> Researcher : display(costsDetail)
+@enduml
+```
+In this sequence diagram, the process starts when the researcher requests cost information through the DMPTool interface. The system, via its interface, queries metadata relevant for cost estimation from the data manager. Once the necessary metadata is retrieved, it is passed to the Cost Calculation Tool.
+
+The Cost Calculation Tool then interacts with the Repository System to access repository criteria necessary for accurate cost estimation. This could involve calculations based on data volume, format, and intended preservation period, among other factors. With this information, the Cost Calculation Tool estimates the submission fees by considering both the repository's criteria and the specifics of the project's data.
+
+Finally, the Cost Calculation Tool compiles a detailed cost estimate including submission fees, costs related to data storage, and any preservation costs. This comprehensive cost detail is then relayed back to the researcher through the DMPTool interface.
+
+This PlantUML script provides a high-level visualization of how a researcher can interact with the DMPTool to obtain essential cost information, aiding in the planning and management of their research project.

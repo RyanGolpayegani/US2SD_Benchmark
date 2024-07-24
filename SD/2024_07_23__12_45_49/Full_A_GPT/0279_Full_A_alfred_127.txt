@@ -1,0 +1,37 @@
+To create a detailed sequence diagram for the user story using PlantUML, we need to define the key interactions and components involved in the notification of state changes of a developer's app within the ALFRED platform. Let's break down the interactions step by step, involving relevant actors and systems like the Developer, ALFRED's App Management System, Notification Service, and the App itself.
+
+Here is a simplified version of how the process might be mapped out in PlantUML:
+
+```plantuml
+@startuml
+participant Developer
+participant "ALFRED's App\nManagement System" as AppManagement
+participant "ALFRED's Notification\nService" as NotificationService
+participant App
+
+Developer -> AppManagement : Registers App
+activate AppManagement
+AppManagement -> App : Deploy App
+activate App
+App -> App : State Change
+App -> AppManagement : Notify State Change
+deactivate App
+
+AppManagement -> NotificationService : Trigger Notification
+activate NotificationService
+NotificationService -> Developer : Send Notification
+deactivate NotificationService
+deactivate AppManagement
+
+@enduml
+```
+
+Explanation of the Sequence:
+1. The Developer registers their App with ALFRED's App Management System.
+2. Once the registration is successful, the App is deployed.
+3. At some point, the App experiences a state change (such as an update, fault, or critical incident).
+4. The App notifies ALFRED's App Management System of this state change.
+5. The App Management System, upon receiving this notification, triggers the Notification Service.
+6. The Notification Service then sends a notification to the Developer, informing them of the state change as soon as possible.
+
+This diagram is a basic representation and can be expanded based on additional requirements, such as handling errors, specifying the type of state changes, or detailing what information the notification contains. PlantUML allows for the diagram to be enriched with more interactions, alternative flows, and other components as needed for a more comprehensive diagram.

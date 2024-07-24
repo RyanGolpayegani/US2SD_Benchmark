@@ -1,0 +1,39 @@
+@startuml
+participant Consumer
+participant PlatformUI
+participant Database
+participant AnalyticsService
+
+== Checking Downloads Count for Data Packages ==
+
+Consumer -> PlatformUI : Search for data packages
+activate PlatformUI
+
+PlatformUI -> Database : Query available data packages
+activate Database
+
+Database --> PlatformUI : Return data packages list
+deactivate Database
+
+PlatformUI --> Consumer : Display data packages list
+deactivate PlatformUI
+
+Consumer -> PlatformUI : Request download counts for packages
+activate PlatformUI
+
+PlatformUI -> AnalyticsService : Fetch download counts
+activate AnalyticsService
+
+AnalyticsService -> Database : Retrieve download statistics
+activate Database
+
+Database --> AnalyticsComplexService : Send statistics data
+deactivate Database
+
+AnalyticsService --> PlatformUI : Return download counts to UI
+deactivate AnalyticsService
+
+PlatformUI --> Consumer : Display download counts next to packages
+deactivate PlatformUI
+
+@enduml

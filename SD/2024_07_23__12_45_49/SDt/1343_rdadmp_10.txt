@@ -1,0 +1,36 @@
+@startuml
+
+participant Researcher
+participant "DMPTool Interface" as Interface
+participant "Metadata Management" as Metadata
+participant "DMP Templates" as Templates
+participant "DMP Database" as Database
+
+Researcher -> Interface : login()
+activate Interface
+
+Interface -> Database : fetchUserDetails()
+activate Database
+Database --> Interface : userDetails
+deactivate Database
+
+Interface --> Researcher : showDashboard()
+Researcher -> Interface : requestMandatoryTopics()
+activate Interface
+
+Interface -> Templates : fetchDMPGuidelines()
+activate Templates
+Templates -> Database : getMandatorySimilarTopics()
+activate Database
+Database --> Templates : mandatorySimilarTopics
+deactivate Database
+
+Templates --> Interface : displayTopics(mandatorySimilarTopics)
+deactivate Templates
+
+Interface --> Researcher : showMandatorySimilarTopics(mandatorySimilarTopics)
+deactivate Interface
+
+Researcher -> Researcher : reviewTopics()
+
+@enduml

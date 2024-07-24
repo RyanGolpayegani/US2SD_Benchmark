@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the given user story in PlantUML format involves understanding the processes a researcher would undergo to inquire about a specific file within a digital archive management system. Below is a sequence diagram that outlines the series of interactions between the researcher, the system, and other components to achieve the stated goal.
+
+Please note, the sequence diagram code assumes a basic scenario where the researcher uses a web interface to send a query, which is processed by the backend system, potentially requiring interaction with a database, and finally, a response is generated and sent back to the user.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Researcher as researcher
+participant "Web Interface" as web
+participant "Backend System" as backend
+database "Archive Database" as db
+participant "Notification System" as notification
+entity "Archivist" as archivist
+
+== Ask a Question About a Specific File ==
+
+researcher -> web : Access file details
+web -> backend : Request file information
+backend -> db : Query file details
+db -> backend : Return file information
+backend -> web : Display file info to researcher
+researcher -> web : Click on "Ask a Question"
+web -> backend : Show question form
+researcher -> web : Submit question form
+web -> backend : Process question
+backend -> db : Log question with file reference
+db -> backend : Confirm log entry
+backend -> notification : Send notification to Archivist
+notification -> archivist : Notify about new question
+archivist -> notification : View question details
+notification -> backend : Request detailed information
+backend -> db : Fetch file and question details
+db -> backend : Return requested information
+backend -> notification : Send detailed info to Archivist
+archivist -> backend : Submit response
+backend -> notification : Process response
+notification -> researcher : Notify researcher with answer
+researcher -> web : View response
+
+@enduml
+```
+
+This diagram starts with the researcher accessing the web interface, moves through finding and asking about a specific file, and ends with receiving an answer from an archivist. Key processes like file information display, question form submission, notification to the archivist, and finally, the researcher viewing the response, are depicted.
+
+To use this code, you'd need a PlantUML environment or an online PlantUML editor where you can paste this code to generate the sequence diagram. The diagram visually represents the interactions over time, providing a clear understanding of the steps involved in a researcher asking a question about a specific file in a digital archive.

@@ -1,0 +1,65 @@
+Given the project description and the specific user story regarding setting up a website recruitment test for real-time user recruitment, below is a detailed sequence diagram in PlantUML format. This diagram illustrates the sequence of interactions between the user researcher, the website (specifically, the CMS and recruitment module), potential participants, and the cloud infrastructure involved in setting up and executing the recruitment test.
+
+```plantuml
+@startuml
+participant UserResearcher as UR
+participant "CMS (Content Management System)" as CMS
+participant "Recruitment Module" as RM
+database CloudInfrastructure as CI
+participant "Potential Participant" as PP
+
+UR -> CMS : Log in to CMS
+activate CMS
+
+UR -> CMS : Access recruitment module
+CMS -> RM : Fetch module interface
+activate RM
+
+UR -> RM : Input recruitment test details\n(e.g., recruitment criteria, test duration)
+RM -> CI : Store recruitment details in cloud
+activate CI
+CI --> RM : Confirm details stored
+deactivate CI
+
+RM --> UR : Display recruitment test setup confirmation
+deactivate RM
+
+UR -> RM : Activate test
+RM -> CI : Initialize test on cloud
+CI -> RM : Confirm test activation
+RM --> UR : Test activation confirmation
+deactivate CMS
+
+loop Every Visitor
+    CI -> PP : Display recruitment message
+    activate PP
+    PP -> RM : Express interest in participation
+    RM -> CI : Log participant details
+    CI --> PP : Confirmation of interest registration
+    deactivate PP
+end
+
+PP -> RM : Complete recruitment tasks
+activate RM
+RM -> CI : Update participant status
+CI --> RM : Confirm status update
+RM --> PP : Confirm completion & next steps
+deactivate RM
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+1. **User Researcher Log In**: The User Researcher logs into the Content Management System (CMS) to access the recruitment module.
+2. **Access Recruitment Module**: The CMS fetches the module interface for the User Researcher.
+3. **Input Recruitment Test Details**: The User Researcher inputs details of the recruitment test into the module, which includes criteria for selecting participants, the duration of the test, and any other relevant information.
+4. **Store Recruitment Details in Cloud**: These details are stored in the cloud infrastructure to configure the recruitment test.
+5. **Activate Test**: Upon setting up the recruitment test details, the User Researcher activates the test.
+6. **Display Recruitment Message to Visitors**: Every site visitor (Potential Participant) is shown the recruitment message, which is a call-to-action to participate in the test.
+7. **Interest Expression by Potential Participant**: Interested participants express their willingness to join the test through the recruitment module.
+8. **Log Participant Details**: The details of interested participants are logged and stored in the cloud.
+9. **Complete Recruitment Tasks**: Participants complete predefined recruitment tasks as part of the test.
+10. **Update Participant Status**: The Recruitment Module updates the status of participants upon completion of tasks, which gets confirmed by the cloud infrastructure.
+11. **Confirm Completion & Next Steps to Participant**: The Recruitment Module communicates the completion confirmation and outlines next steps to the participants.
+
+This sequence diagram lays out a framework for how user recruitment testing might be set up and conducted using a web infrastructure supported by cloud technologies, focusing on realistic interactions between system components and users.

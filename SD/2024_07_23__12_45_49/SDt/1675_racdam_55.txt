@@ -1,0 +1,32 @@
+@startuml
+participant DonorRepresentative as DR
+participant AuthenticationSystem as Auth
+participant DigitalArchiveSystem as DAS
+database FileDatabase as Database
+participant LicensingAndRightsManagement as LRM
+participant FileManagementSystem as FMS
+
+DR -> Auth: Authenticate
+Auth -> DR: AuthenticationSuccess
+
+DR -> DAS: RequestAccessToCollectionImages
+DAS -> Database: QueryScannedImagesByCollection
+Database -> DAS: ReturnScannedImages
+DAS -> LRM: CheckImageLicensesAndRights(DonorCollection)
+LRM -> DAS: ReturnAccessRightsInfo
+
+DAS -> FMS: RequestScannedImages(DonorCollection)
+FMS -> Database: RetrieveScannedImages(DonorCollection)
+Database -> FMS: ImagesRetrieved
+FMS -> DAS: ProvideImages
+DAS -> DR: DisplayImages
+
+DR -> DAS: SelectImagesForUse
+DAS -> LRM: VerifyUsageRights(SelectedImages)
+LRM -> DAS: UsageRightsConfirmed
+DAS -> DR: AllowImageDownloadOrShare
+
+DR -> DAS: Download/ShareImagesForInstitutionUse
+DAS -> FMS: ProcessImageDownload/Share(SelectedImages)
+FMS -> DR: ImagesDownloaded/SharedForInstitutionUse
+@enduml

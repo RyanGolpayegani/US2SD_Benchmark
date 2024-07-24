@@ -1,0 +1,27 @@
+@startuml
+
+participant "DAMS Manager" as manager
+participant "DIMS User Interface" as ui
+participant "DIMS Backend" as backend
+participant "DIMS Database" as database
+participant "External Copyright Service" as copyright
+
+manager -> ui : Request license info for content
+ui -> backend : Query license for content ID
+backend -> database : Check content license
+database -> backend : Return license details
+alt License Details Found
+    backend -> manager : Display license info
+else License Details Not Found
+    backend -> copyright : Query external license
+    copyright -> backend : Return external license info
+    alt External License Info Found
+        backend -> database : Update license info
+        database -> backend : Confirm update
+        backend -> manager : Display updated license info
+    else No External License Info Found
+        backend -> manager : Display no license found message
+    end
+end
+
+@enduml

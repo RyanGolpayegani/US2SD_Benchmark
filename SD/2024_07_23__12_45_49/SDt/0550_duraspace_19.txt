@@ -1,0 +1,37 @@
+@startuml
+participant "Repository Manager" as manager
+participant "DIMS Interface" as interface
+participant "Metadata Management" as metadata
+participant "Repository Database" as database
+
+manager -> interface : Access object description form
+activate interface
+
+interface -> metadata : Request object metadata form
+activate metadata
+
+metadata -> interface : Return metadata form
+deactivate metadata
+
+interface -> manager : Display metadata form
+deactivate interface
+
+manager -> interface : Input object details (title, date(s), language(s), etc.)
+activate interface
+
+interface -> metadata : Validate and Process Input
+activate metadata
+
+metadata -> database : Update object metadata
+activate database
+
+database -> metadata : Confirm Update
+deactivate database
+
+metadata -> interface : Confirm successful update to manager
+deactivate metadata
+
+interface -> manager : Display confirmation message
+deactivate interface
+
+@enduml

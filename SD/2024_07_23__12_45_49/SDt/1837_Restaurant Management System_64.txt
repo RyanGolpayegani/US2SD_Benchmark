@@ -1,0 +1,18 @@
+@startuml
+participant Customer
+participant "Frontend Interface" as Frontend
+participant "Backend Server" as Backend
+participant "Translation Service" as Translation
+participant Database
+
+Customer -> Frontend : Select language and request menu
+Frontend -> Backend : Send request for translated menu
+Backend -> Database : Retrieve menu items
+Database --> Backend : Return menu items
+Backend -> Translation : Send menu items for translation
+note right of Translation : Translation could be internal\nor through a third-party API
+Translation --> Backend : Return translated menu items
+Backend --> Frontend : Send translated menu items
+Frontend --> Customer : Display translated menu items
+
+@enduml

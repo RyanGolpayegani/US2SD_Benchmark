@@ -1,0 +1,66 @@
+Creating a detailed sequence diagram for the user story "As a participant, I want to immediately see that an estimate has been given by a specific estimator, so that I know who has already given an estimate and who we’re still waiting for," involves illustrating the interaction between the user (participant), the web interface of the Agile Estimation and Planning Tool (AEPT), and potentially other components such as a backend server and data storage system. The sequence diagram below is written in PlantUML format and demonstrates the process flow from the moment a participant joins an estimation session to the display of submitted estimates from various estimators.
+
+```plantuml
+@startuml
+participant Participant as P
+participant "AEPT Web Interface" as W
+participant "Server" as S
+database "Database" as D
+
+P -> W : Join Estimation Game
+activate W
+W -> S : Request Estimation Items & Status
+activate S
+S -> D : Get Estimation Items & Submissions
+activate D
+D --> S : Estimation Items & Status Data
+deactivate D
+S --> W : Display Estimation Items & Current Estimates
+deactivate S
+
+== Estimator Submits an Estimate ==
+participant "Estimator" as E
+E -> W : Submit Estimate
+activate W
+W -> S : Update Estimate with Estimator ID
+activate S
+S -> D : Store Estimate
+activate D
+D --> S : Confirmation
+deactivate D
+S --> W : Estimate Update Confirmation
+deactivate S
+
+== Notify Participants ==
+W -> S : Request Updated Estimates & Estimators
+activate S
+S -> D : Get Updated Estimates & Submitter Info
+activate D
+D --> S : Updated Estimates & Estimators Data
+deactivate D
+S --> W : Updated Estimates & Estimators
+deactivate S
+
+W --> P : Notify: New Estimate & Submitter Info
+deactivate W
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Participant Joins the Estimation Game:** The participant accesses the AEPT web interface and joins an ongoing estimation game.
+
+2. **Request Estimation Items & Status:** The AEPT interface requests the list of estimation items and the submission status for each item from the server, which, in turn, fetches this information from the database.
+
+3. **Display Estimation Items & Current Estimates:** The current estimation items and any estimates already submitted are displayed to the participant.
+
+4. **Estimator Submits an Estimate:** An estimator (who could also be a participant) submits their estimate for an item through the web interface.
+
+5. **Update Estimate with Estimator ID:** The web interface sends the estimate along with the estimator's identifier to the server, which updates the database with the new estimate.
+
+6. **Request Updated Estimates & Estimators:** The web interface requests updated estimates and information on who has submitted these estimates.
+
+7. **Notify Participants:** Finally, the web interface notifies the participant about the new estimate and which estimator submitted it, fulfilling the user story’s requirement for immediate visibility of who has given their estimate.
+
+This sequence illustrates the main interactions needed to realize the user story in the context of developing the AEPT. Note that this is a high-level description and actual implementation might involve additional details or considerations, especially regarding real-time updates and handling concurrent submissions.

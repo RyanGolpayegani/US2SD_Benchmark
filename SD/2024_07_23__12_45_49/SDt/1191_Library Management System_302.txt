@@ -1,0 +1,24 @@
+@startuml
+actor Member
+participant "Frontend Interface" as Frontend
+participant "Backend Server" as Backend
+participant "Database" as DB
+
+Member -> Frontend : Request to view borrowed books with deadlines
+activate Frontend
+
+Frontend -> Backend : Fetch member's borrowed books and deadlines
+activate Backend
+
+Backend -> DB : Query borrowed books & calculate remaining times
+activate DB
+DB --> Backend : Return list of books with remaining time for return
+deactivate DB
+
+Backend --> Frontend : Provide borrowed books with remaining times
+deactivate Backend
+
+Frontend --> Member : Display books and remaining times
+deactivate Frontend
+
+@enduml

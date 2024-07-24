@@ -1,0 +1,47 @@
+Certainly! For the given user story: "As a repository manager, I want to know any changes occurring to titles for the repository's collections, objects, and object components," here is a detailed Sequence Diagram in PlantUML format. This diagram outlines the interactions between a Repository Manager and the DAMS Integration and Management System (DIMS) components when tracking title changes.
+
+```
+@startuml
+
+participant RepositoryManager as RM "Repository Manager"
+participant DIMS as D "DIMS"
+database DAMS_DB "DAMS Database"
+participant EventMonitoring as EM "Event Monitoring"
+
+RM -> D: Request title change notifications
+D -> DAMS_DB: Retrieve current titles
+DAMS_DB -> D: Current titles information
+D -> EM: Subscribe to title change events
+note right of EM: Event Monitoring subscribes \n to changes on titles for collections, \n objects, and components as requested.
+EM --> D: Subscription confirmed
+D -> RM: Subscription to title change notifications confirmed
+
+alt Title Change Detected
+    EM -> D: Notify title change event
+    D -> DAMS_DB: Log title change event
+    DAMS_DB -> D: Confirmation & details of change
+    D -> RM: Notify title change
+    note over RM: Repository Manager reviews \n the changes.
+else No Title Change Detected
+    note over EM: No action required until \n a change is detected.
+end
+
+@enduml
+```
+
+**Explanation:**
+
+1. **Repository Manager to DIMS:** The Repository Manager (RM) initiates the process by requesting to be notified of any changes occurring to titles within the repository's collections, objects, and object components.
+
+2. **DIMS to DAMS Database:** DIMS then retrieves the current titles from the DAMS Database to establish a baseline for tracking changes.
+
+3. **Subscription to Event Monitoring:** DIMS subscribes to title change events specifically for tracking modifications in titles of collections, objects, and components as per the Repository Manager's request.
+
+4. **Notification Process:**
+    - When a title change is detected, the Event Monitoring system notifies DIMS of the change.
+    - DIMS then logs this event in the DAMS Database and confirms the details of the change.
+    - Finally, DIMS notifies the Repository Manager of the title change, thus fulfilling the user story's requirement.
+
+5. **Alternate Path (No Change Detected):** If no title changes are detected, no action is taken until a change occurs. This is an ongoing process.
+
+This sequence diagram outlines a basic flow for monitoring and notifying title changes in the database collections, objects, and object components, based on the capabilities described in the DIMS project description.

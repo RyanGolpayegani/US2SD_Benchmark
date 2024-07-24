@@ -1,0 +1,34 @@
+@startuml
+actor User
+participant "Twitter API" as Twitter
+participant "Authorization Module" as Auth
+participant "Tweet Fetching Service" as Fetch
+participant "Neurohub Interface" as Neurohub
+
+User->Neurohub: Log in to Neurohub
+activate Neurohub
+Neurohub->User: Display Dashboard
+
+User->Neurohub: Request to link Twitter account
+Neurohub->Auth: Initiate authentication process
+activate Auth
+Auth->User: Request Twitter authentication
+User->Twitter: Provide authentication
+activate Twitter
+Twitter->Auth: Confirm authentication
+deactivate Twitter
+
+Auth->Neurohub: Authentication successful
+deactivate Auth
+Neurohub->Fetch: Set up Twitter Fetch service for User
+activate Fetch
+Fetch->Twitter: Request recent Tweets by User
+activate Twitter
+Twitter->Fetch: Return Tweets
+deactivate Twitter
+
+Fetch->Neurohub: Display Tweets in Neurohub
+Neurohub->User: Show Twitter feed in Dashboard
+deactivate Neurohub
+
+@enduml

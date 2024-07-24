@@ -1,0 +1,49 @@
+@startuml
+participant Librarian
+participant "CLMS Interface" as Interface
+participant "Book Management Module" as BookManagement
+participant "Supplier System" as Supplier
+participant "Finance Module" as Finance
+database "Library Database" as Database
+
+== Initiate Book Purchase ==
+Librarian -> Interface : Access Book Management
+Interface -> BookManagement : Initiate Purchase
+activate BookManagement
+
+== Search for Books ==
+Librarian -> Interface : Search for books
+Interface -> BookManagement : Search query
+BookManagement -> Database : Fetch book details
+Database --> BookManagement : Book details
+BookManagement --> Interface : Display books
+Interface --> Librarian : Show search results
+
+== Select Books ==
+Librarian -> Interface : Select books to purchase
+Interface -> BookManagement : List of selected books
+activate Supplier
+BookManagement -> Supplier : Request book availability and price
+Supplier --> BookManagement : Availability and price details
+
+== Confirm Purchase ==
+Librarian -> Interface : Confirm purchase
+Interface -> BookManagement : Confirm purchase details
+BookManagement -> Supplier : Place book order
+Supplier --> BookManagement : Order confirmation and invoice
+deactivate Supplier
+
+== Process Payment ==
+BookManagement -> Finance : Process invoice and make payment
+activate Finance
+Finance --> BookManagement : Payment confirmation
+deactivate Finance
+
+== Update Library Database ==
+BookManagement -> Database : Add new books to inventory
+Database --> BookManagement : Confirmation of book addition
+deactivate BookManagement
+BookManagement -> Interface : Purchase successful
+Interface -> Librarian : Display success message
+
+@enduml

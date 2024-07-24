@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the given user story using PlantUML requires defining the actors and the systems involved, alongside the interactions between them, in the process of creating and submitting content mockups. In this context, the "Broker user" is the primary actor, while systems involved might include the UI/UX system, the Data Validation System, and possibly an intermediary Content Management System (CMS) or similar.
+
+Please note that for a comprehensive sequence, one would typically need specific details about the internal workings of these systems. However, based on the general project description provided, I will draft a generic sequence diagram that might apply to such a scenario.
+
+```plantuml
+@startuml
+actor User as "Broker User"
+participant "UI/UX System" as UI
+participant "Content Management \nSystem (CMS)" as CMS
+participant "Data Validation System" as Validator
+participant "Data Submission \nModule" as Submission
+
+User -> UI : initiate content mockup
+UI -> CMS : create new mockup session
+CMS --> User : provide mockup editor
+User -> CMS : draft content & upload data
+CMS --> User : preview mockup
+User -> CMS : submit mockup for validation
+
+alt Validation Successful
+    CMS -> Validator : validate content & data
+    Validator --> CMS : validation success
+    CMS --> User : show success notification
+    User -> Submission : submit final content and data
+    Submission -> UI : update submission status
+    UI --> User : confirmation & summary
+else Validation Failed
+    Validator --> CMS : validation errors
+    CMS --> User : show errors & required fixes
+    User -> CMS : correct data & resubmit
+    CMS -> Validator : re-validate content & data
+end
+
+@enduml
+```
+
+This diagram outlines the following generalized steps:
+1. The Broker user initiates the content mockup process in the UI/UX system.
+2. The UI/UX system contacts the CMS to create a new mockup session.
+3. The CMS provides the user with a mockup editor to draft content and upload data.
+4. After drafting, the CMS presents a preview to the user.
+5. The user submits the mockup to the CMS for validation.
+6. Depending on the validation result:
+   - If successful, the CMS notifies the user of success, and the user proceeds to the final submission. The submission module updates the status and confirms back to the user.
+   - If failed, the validator sends back errors through the CMS to the user for correction. The user corrects and resubmits. This loop continues until validation is successful.
+
+Note: This diagram assumes a simplified process for illustrative purposes. Actual systems may have additional layers of complexity, such as authentication, more detailed error handling, and multiple rounds of user feedback and corrections.

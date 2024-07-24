@@ -1,0 +1,23 @@
+@startuml
+participant Employee as E
+participant ITSupport as IT
+participant CloudGovSupport as CGS
+database CloudInfrastructure as CI
+
+E -> IT : Request hosting plan switch to FISMA low
+IT -> CGS : Verify eligibility for FISMA low plan
+CGS --> IT : Confirm eligibility and requirements
+
+alt If Eligibility is confirmed
+    IT -> IT : Review current prototype settings
+    IT -> CGS : Initiate switch to FISMA low plan
+    CGS --> IT : FISMA low plan activated
+    IT -> CI : Apply necessary configuration changes
+    CI --> IT : Configuration changes successful
+    IT -> E : Confirm switch to FISMA low plan is complete
+else If Not Eligible
+    CGS --> IT : Provide reasons and guidance for eligibility
+    IT -> E : Inform about eligibility issues and next steps
+end
+
+@enduml

@@ -1,0 +1,51 @@
+@startuml
+participant Librarian
+participant "Library Management\nSystem (LMS)" as LMS
+database Database
+
+Librarian -> LMS : Select Edit Member Subscription
+activate LMS
+
+LMS -> Database : Retrieve Member Subscription Details
+activate Database
+
+Database --> LMS : Send Member Subscription Details
+deactivate Database
+
+LMS --> Librarian : Display Member Subscription Details
+deactivate LMS
+activate Librarian
+
+Librarian -> LMS : Update Subscription Details\n(New Plan, Expiry Date etc.)
+activate LMS
+
+LMS -> Database : Update Subscription Record
+activate Database
+
+Database --> LMS : Confirm Update
+deactivate Database
+
+LMS --> Librarian : Display Update Confirmation
+deactivate LMS
+
+Librarian -> LMS : Send Notification to Member
+activate LMS
+
+LMS -> Database : Retrieve Member Contact Information
+activate Database
+
+Database --> LMS : Member Contact Information
+deactivate Database
+
+LMS -> LMS : Generate Notification Message
+
+LMS -> Email/SMS_Service : Send Notification to Member
+activate Email/SMS_Service
+Email/SMS_Service --> LMS : Confirmation
+deactivate Email/SMS_Service
+
+LMS --> Librarian : Display Notification Sent Confirmation
+deactivate LMS
+deactivate Librarian
+
+@enduml

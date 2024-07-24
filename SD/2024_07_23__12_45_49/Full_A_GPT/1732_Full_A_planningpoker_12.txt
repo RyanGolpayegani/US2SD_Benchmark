@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the described user story—where a moderator wants to enter the agreed-upon estimate, so the team can move on to the next item—requires outlining the interactions between the system components in a sequence. For simplicity and given the context, let’s assume the basic flow involves a web-based UI, a frontend application communicating with backend services, and finally, a database to record the estimate.
+
+Here is a simple PlantUML sequence diagram illustrating this process:
+
+```plantuml
+@startuml
+
+actor Moderator
+participant "Frontend UI" as UI
+participant "Backend Service" as Backend
+database "Estimation Database" as Database
+
+Moderator -> UI: Enters agreed estimate
+UI -> Backend: POST /estimates {itemID, estimateValue}
+alt Successful Entry
+    Backend -> Database: Insert estimate record
+    Database -> Backend: Acknowledge save
+    Backend -> UI: Confirm save to moderator
+    UI -> Moderator: Display success message
+else Validation Error
+    Backend -> UI: Error message (Validation)
+    UI -> Moderator: Display error message
+end
+Moderator -> UI: Requests next item
+UI -> Backend: GET /nextItem {currentItemID}
+Backend -> Database: Query next item
+Database -> Backend: Return next item data
+Backend -> UI: Next item details
+UI -> Moderator: Display next item
+
+@enduml
+```
+
+This sequence diagram starts with the moderator entering the agreed-upon estimate into the Frontend UI. The UI sends this estimate to the Backend Service via a POST request. From there:
+
+1. **Successful Entry Path**: The backend receives the request and inserts a new estimate record into the Estimation Database. Once the database acknowledges the save, the backend confirms the save back to the Frontend UI, which in turn notifies the moderator of the successful entry with a success message.
+
+2. **Validation Error Path**: If there’s a validation error (e.g., the estimate doesn't fit the allowed range or format), the backend will respond to the Frontend UI with an error message, which is then displayed to the moderator.
+
+Following the entry of the agreed estimate, the moderator can request the next estimation item. The Frontend UI sends a GET request to fetch the next item based on the current item’s ID. The backend service queries the Estimation Database for the next item and returns this information to the UI, which then presents it to the moderator.
+
+This sequence diagram outlines a streamlined process for entering an estimation and moving to the next item, facilitating fast and efficient agile estimation sessions as described in the AEPT project overview.

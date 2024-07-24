@@ -1,0 +1,29 @@
+@startuml
+participant OlderPerson
+participant "ALFRED Interface" as UI
+participant "ALFRED System" as System
+participant "Reminder Service" as Reminder
+
+== Setup Posture Reminder ==
+OlderPerson -> UI: Access Posture Reminder Feature
+UI -> System: Activate Posture Reminder
+System -> Reminder: Schedule Posture Reminders
+System --> UI: Confirm Activation
+UI --> OlderPerson: Display Activation Confirmation
+
+== Posture Reminder ==
+loop Daily Checks
+    Reminder -> System: Trigger Posture Reminder
+    System -> System: Check OlderPerson's Activity
+    alt if Active and Not Busy
+        System -> UI: Send Posture Reminder
+        UI -> OlderPerson: Display/Voice Reminder
+        OlderPerson -[#red]> UI: Adjust Posture
+        UI -> System: Optional Feedback
+        System -> Reminder: Adjust Reminder Based on Feedback
+    else if Busy or Unavailable
+        System -> Reminder: Reschedule Reminder
+    end
+end
+
+@enduml

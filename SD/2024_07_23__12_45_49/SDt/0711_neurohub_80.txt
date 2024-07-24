@@ -1,0 +1,28 @@
+@startuml
+actor Researcher as researcher
+participant "Neurohub UI" as UI
+participant "Data Management System" as DMS
+participant "Metadata Service" as metadata
+participant "Database" as DB
+
+== Metadata Attachment Flow ==
+
+researcher -> UI: Access data upload interface
+UI -> DMS: Initiate upload command
+DMS -> researcher: Prompt for data files (behavioral observations, video)
+researcher -> DMS: Uploads files
+
+== Metadata Input ==
+DMS -> metadata: Request standard metadata template
+metadata -> DMS: Return metadata template
+DMS -> researcher: Display metadata template
+researcher -> DMS: Input and submit metadata
+
+== Metadata and Data Association ==
+DMS -> metadata: Validate metadata
+metadata -> DMS: Metadata validated
+DMS -> DB: Store file and metadata association
+DB -> DMS: Confirmation
+DMS -> researcher: Confirmation of data and metadata upload
+
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+participant User as usr
+participant "UI: Community Platform" as ui
+participant "Backend System" as backend
+participant "Email Service" as email
+
+usr -> ui : Request password reset
+ui -> backend : Validate request
+alt Validation Success
+    backend -> backend : Generate reset token
+    backend -> email : Send reset email with token
+    email -> usr : Password Reset Email
+else Validation Failed
+    backend -> ui : Show error message
+    ui -> usr : Display error
+end
+usr -> ui : Click on reset link in email
+ui -> ui : Prompt to enter new password
+usr -> ui : Submit new password
+ui -> backend : Validate and update password
+alt Password Update Success
+    backend -> ui : Confirmation of password update
+    ui -> usr : Display password update success
+    backend -> email : Send confirmation email
+    email -> usr : Password Update Confirmation Email
+else Password Update Failed
+    backend -> ui : Show error message
+    ui -> usr : Display error
+end
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+
+actor "Library Member" as member
+participant "Mobile App" as app
+participant "Payment System" as paymentSystem
+database "Library Database" as database
+participant "Notification Service" as notification
+
+== Payment Process Initiation ==
+member -> app: Selects fees/fines to pay
+app -> paymentSystem: Initiates payment process
+
+== Payment Authorization ==
+paymentSystem -> member: Requests payment authorization
+member -> paymentSystem: Authorizes payment
+
+== Payment Processing ==
+paymentSystem -> paymentSystem: Processes payment
+paymentSystem -> database: Updates payment status
+
+== Acknowledgement ==
+database -> app: Confirms payment success
+app -> member: Displays payment success message
+
+== Notification ==
+paymentSystem -> notification: Trigger payment confirmation notification
+notification -> member: Sends payment confirmation
+
+@enduml

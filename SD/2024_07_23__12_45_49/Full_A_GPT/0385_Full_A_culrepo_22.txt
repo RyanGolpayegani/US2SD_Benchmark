@@ -1,0 +1,35 @@
+To generate a detailed sequence diagram in PlantUML format for the stated user story, we need to outline the specific interactions between the system components involved in the process of a DB/IR (Database/Information Retrieval) administrator viewing the list of subscribers for a specified report. This scenario involves several steps, including authentication, report identification, subscriber list retrieval, and potentially handling errors or missing reports.
+
+The following PlantUML script outlines these interactions:
+
+```plantuml
+@startuml
+actor DBIRAdmin as "DB/IR Administrator"
+participant AuthenticationSystem as "Authentication System"
+participant ReportDB as "Report Database"
+participant SubscriberDB as "Subscriber Database"
+database SystemDB as "System Database"
+
+== Authentication ==
+DBIRAdmin -> AuthenticationSystem: Authenticate()
+AuthenticationSystem --> DBIRAdmin: AuthenticationSuccess()
+
+== Identify Report ==
+DBIRAdmin -> ReportDB: RequestReportID("Specified Report")
+ReportDB --> DBIRAdmin: ReportID
+
+== List Subscribers ==
+DBIRAdmin -> SubscriberDB: RequestSubscribersList(ReportID)
+SubscriberDB -> SystemDB: LookupSubscribers(ReportID)
+SystemDB --> SubscriberDB: SubscribersList
+SubscriberDB --> DBIRAdmin: DisplaySubscribersList(SubscribersList)
+
+@enduml
+```
+
+### Explanation of the Steps:
+1. **Authentication:** The DB/IR Administrator begins by authenticating themselves with the system to ensure secure access to administrative functionalities.
+2. **Identify Report:** The administrator requests the ID of the specified report they are interested in. The Report Database returns the unique identifier (ReportID) for that report.
+3. **List Subscribers:** Using the ReportID, the administrator then requests a list of subscribers from the Subscriber Database. The Subscriber Database queries the System Database for subscribers associated with that ReportID and returns a list of subscribers. This list is then displayed to the administrator.
+
+This sequence diagram represents a simplified view of the process. Depending on the specific requirements and existing system architecture at Cornell University, additional steps or checks (such as error handling for missing reports or unauthorized access attempts) might need to be incorporated into the actual implementation.

@@ -1,0 +1,39 @@
+The following is a detailed PlantUML sequence diagram for the described user story. This diagram assumes the interaction between the user (researcher), a Web UI (User Interface), and the backend systems responsible for handling metadata templates and data insertion within the Neurohub platform.
+
+```plantuml
+@startuml
+participant Researcher as user
+participant "Web UI" as web
+participant "Template Manager" as tempMgr
+participant "Data Management System" as dataMgr
+
+user -> web : Select to add new data
+web -> tempMgr : Request available templates
+tempMgr -> tempMgr : Fetch templates
+tempMgr -> web : Return templates
+web -> user : Display templates with common metadata
+user -> web : Select preferred template\nand add/update data
+web -> tempMgr : Get selected template metadata
+tempMgr -> web : Return metadata
+web -> dataMgr : Insert new data with template metadata
+dataMgr -> dataMgr : Validate and store data
+dataMgr -> web : Confirm data addition
+web -> user : Display success message
+
+@enduml
+```
+
+This sequence diagram outlines the process from a researcher's perspective of adding new data to the Neurohub platform using a partially pre-populated template. The steps detailed are as follows:
+
+1. The researcher initiates the process to add new data through the Web UI.
+2. The Web UI requests a list of available templates from the Template Manager.
+3. The Template Manager retrieves the templates from its storage and returns them to the Web UI.
+4. The Web UI presents these templates to the researcher, showcasing those that contain commonly entered metadata.
+5. The researcher selects their preferred template and adds or updates data as needed.
+6. The Web UI requests the metadata associated with the selected template from the Template Manager.
+7. The Template Manager returns the necessary metadata to the Web UI.
+8. The Web UI then sends the new data along with the pre-populated metadata to the Data Management System for insertion.
+9. The Data Management System verifies the information and stores the data.
+10. Upon successful storage, the Data Management System informs the Web UI, which in turn notifies the researcher of the successful data addition.
+
+This workflow enhances the user experience by streamlining the process of adding new data with common metadata, thus saving time and reducing repetitive tasks for researchers.

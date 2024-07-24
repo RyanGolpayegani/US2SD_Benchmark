@@ -1,0 +1,32 @@
+To capture the user story "As a data manager, I want to know whether the data can be reproduced efficiently, so that I can determine whether and how the data has to be stored" in a sequence diagram, we focus on the interactions between the data manager and the DMPTool, as well as any other components necessary for assessing data reproducibility. This will include checking data provenance, evaluating data format, size, and the computational requirements for reproduction.
+
+Here is a PlantUML sequence diagram that visualizes these interactions:
+
+```plantuml
+@startuml
+actor DataManager
+participant "DMPTool" as DMP
+database "Metadata Repository" as MetaRepo
+database "Storage System" as Storage
+participant "Provenance Checker" as ProvCheck
+participant "IT Resource Planner" as ITPlanner
+
+DataManager -> DMP : Request data reproducibility assessment
+DMP -> ProvCheck : Retrieve data provenance information
+ProvCheck -> MetaRepo : Query metadata
+MetaRepo -> ProvCheck : Return metadata
+ProvCheck -> DMP : Provide provenance analysis
+note right of ProvCheck : Analysis includes:\n- Data origin\n- Modification history\n- Dependencies
+DMP -> ITPlanner : Request computational requirements estimate
+ITPlanner -> Storage : Check available resources
+Storage -> ITPlanner : Provide current resource usage
+ITPlanner -> DMP : Send computational requirements and availability
+DMP -> DataManager : Present reproducibility and storage recommendations
+note over DataManager : Recommendations include:\n- Reproducibility status\n- Storage options\n- Additional resource needs
+
+@enduml
+```
+
+This diagram starts with the data manager initiating a request to the DMPTool for assessing the data's reproducibility. The DMPTool then interacts with the Provenance Checker to retrieve and analyse data provenance information, which is crucial for evaluating reproducibility. The Provenance Checker queries a Metadata Repository for the necessary metadata and returns a provenance analysis to the DMPTool. Subsequently, the DMPTool requests an estimate of the computational requirements for data reproduction from the IT Resource Planner, which in turn checks the available resources with a Storage System. Based on the storage resources and computational requirements, the IT Resource Planner sends a report back to the DMPTool, which then presents the data manager with recommendations on whether and how the data can be stored efficiently, with considerations for reproducibility, storage options, and possible needs for additional resources.
+
+This sequence of interactions encapsulates how the DMPTool assists the data manager in making informed decisions regarding the storage and reproducibility of data based on provenance information and IT resource availability.

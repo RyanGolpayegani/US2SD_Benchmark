@@ -1,0 +1,58 @@
+Given the user story and project description, a detailed PlantUML sequence diagram illustrating the process of a researcher uploading files prior to having them attached to a logbook page using a mapped network drive could be structured as follows:
+
+```plantuml
+@startuml
+actor Researcher as R
+participant "Mapped Network Drive" as MND
+participant "Neurohub Interface" as UI
+participant "File Management System" as FMS
+database "Neurohub Database" as DB
+
+R -> MND : Places files in mapped drive location
+activate MND
+
+MND -> FMS : Notifies file arrival
+deactivate MND
+activate FMS
+
+FMS -> DB : Checks for duplicates
+activate DB
+DB --> FMS : Duplication status
+deactivate DB
+
+alt If files are new
+    FMS -> DB : Stores metadata
+    activate DB
+    DB --> FMS : Confirm storage
+    deactivate DB
+
+    FMS -> UI : Displays new files to attach
+    activate UI
+    UI --> R : Shows files ready for attachment
+    deactivate UI
+
+    R -> UI : Selects files to attach to logbook page
+    activate UI
+
+    UI -> DB : Attaches files metadata to logbook page
+    activate DB
+    DB --> UI : Confirm attachment
+    deactivate DB
+
+    UI --> R : Confirms attachment to logbook
+    deactivate UI
+else If files exist
+    FMS -> UI : Indicates duplication
+    activate UI
+    UI --> R : Shows duplication error
+    deactivate UI
+end
+
+deactivate FMS
+
+@enduml
+```
+
+This diagram lays out the interaction between the researcher, the mapped network drive, the Neurohub interface, the file management system, and the Neurohub database when uploading and attaching files to a logbook page. It includes decision logic for duplicate file handling and feedback to the researcher throughout the process.
+
+Please note, to view this diagram, you'll need to use a tool or an application that supports PlantUML syntax.

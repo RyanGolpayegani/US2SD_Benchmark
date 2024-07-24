@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+
+participant Librarian
+participant ReservationSystem
+participant Database
+participant NotificationService
+
+activate Librarian
+Librarian -> ReservationSystem : CheckPendingReservations()
+activate ReservationSystem
+
+ReservationSystem -> Database : FetchReservationByBook()
+activate Database
+Database --> ReservationSystem : ReservationListOrderedByDate
+deactivate Database
+
+ReservationSystem --> Librarian : ShowOrderedReservations(ReservationList)
+deactivate ReservationSystem
+
+Librarian -> ReservationSystem : SelectNextBorrower(ReservationList)
+activate ReservationSystem
+
+ReservationSystem -> Database : UpdateReservationStatusToReady(BorrowerID, BookID)
+activate Database
+Database --> ReservationSystem : StatusUpdated
+deactivate Database
+
+ReservationSystem -> NotificationService : NotifyBorrowerBookReady(BorrowerID)
+activate NotificationService
+NotificationService --> ReservationSystem : NotificationSent
+deactivate NotificationMaster
+
+ReservationSystem --> Librarian : AcknowledgeNextInLineNotified()
+deactivate ReservationSystem
+
+deactivate Librarian
+
+@enduml

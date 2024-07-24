@@ -1,0 +1,29 @@
+@startuml
+participant "IT Staff Member" as IT
+participant "DMPTool Interface" as UI
+participant "Project Database" as DB
+participant "Analysis Module" as Analysis
+participant "Storage Estimation Tool" as Estimate
+
+IT -> UI : Login to DMPTool
+UI --> IT : Display Dashboard
+
+IT -> UI : Navigate to Storage Estimation
+UI -> DB : Fetch data project details
+DB --> UI : Return project metadata
+
+UI -> Analysis : Analyze data project requirements
+Analysis -> Estimate : Retrieve data volume estimates
+Estimate -> DB : Collect historical data estimates
+
+DB --> Estimate : Historical data estimation
+Estimate --> Analysis : Calculate estimated storage needs
+Analysis --> UI : Present storage consumption estimation
+
+UI --> IT : Display estimated storage consumption
+IT -> UI : Review and plan resource allocation
+UI -> DB : Update IT resource plan with new estimates
+DB --> UI : Confirm update
+UI --> IT : Show confirmation of update
+
+@enduml

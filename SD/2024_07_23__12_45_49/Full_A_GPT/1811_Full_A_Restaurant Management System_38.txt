@@ -1,0 +1,41 @@
+Creating a sequence diagram for the described user story involves visualizing the interactions between different system components and users (in this case, the cook) when editing product availability. Below is a PlantUML representation of such a sequence.
+
+This diagram assumes the cook has already logged into the system and is in the process of updating the availability of a product (or dish). The process involves the cook, the system's UI, backend services, and the database where product data is stored.
+
+```plantuml
+@startuml
+participant Cook as cook
+participant "UI" as ui
+participant "Backend Service" as backend
+participant "Database" as db
+
+cook -> ui : Selects "Edit Product Availability"
+ui -> backend : Request to fetch current product data
+backend -> db : Query product availability
+db -> backend : Return product data
+backend -> ui : Display current availability
+ui -> cook : Show current product availability
+
+cook -> ui : Updates availability
+ui -> backend : Submit updated availability
+backend -> db : Update product availability in database
+db -> backend : Confirm update success
+backend -> ui : Confirm update to cook
+ui -> cook : Show success message
+
+@enduml
+```
+
+### Explaining the Diagram:
+1. **Cook Selects "Edit Product Availability"**: The cook starts the process by selecting the option to edit product availability through the system interface.
+2. **UI Requests Current Product Data**: The system's user interface sends a request to the backend service to fetch the current availability status of the chosen product.
+3. **Query Database**: The backend service queries the database for the current product data, including its availability status.
+4. **Database Returns Product Data**: The database returns the requested data back to the backend service.
+5. **Display Current Availability**: The backend service sends the current product availability data to the UI, which displays it to the cook.
+6. **Cook Updates Availability**: The cook inputs the new availability status for the product.
+7. **Submit Updated Availability**: The updated data is submitted from the UI to the backend service.
+8. **Update Database**: The backend service updates the product's availability status in the database based on the cook’s input.
+9. **Confirm Update**: Once the update is successfully made, the database sends a confirmation to the backend service, which in turn confirms the update to the UI.
+10. **Show Success Message**: The UI shows a message to the cook indicating that the product's availability status has been successfully updated.
+
+This sequence diagram provides a high-level overview of the interactions involved in editing product availability within a Restaurant Management and Operations System.

@@ -1,0 +1,20 @@
+@startuml
+actor Manager as manager
+participant ":Web Interface" as WebInterface
+participant ":Authentication Service" as AuthService
+participant ":Report Management" as ReportManager
+participant ":Inventory System" as Inventory
+participant ":Database" as Database
+
+manager -> WebInterface : Request Inventory Report
+WebInterface -> AuthService : Validate Session
+AuthService --> WebInterface : Session Valid
+WebInterface -> ReportManager : Get Inventory Report
+ReportManager -> Inventory : Request Inventory Data
+Inventory -> Database : Fetch Inventory Data
+Database --> Inventory : Return Data
+Inventory --> ReportManager : Inventory Data
+ReportManager -> WebInterface : Generate Report
+WebInterface -> manager : Display Inventory Report
+
+@enduml

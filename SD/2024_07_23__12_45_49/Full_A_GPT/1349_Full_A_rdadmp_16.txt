@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for your specified use case — revealing how an administrator can access information about project funding and requirements using the DMPTool — involves illustrating the communication between system components (actors, systems, databases) in fulfilling the request. 
+
+PlantUML is a tool that allows the creation of UML diagrams using a simple and intuitive language. Below is a description for a sequence diagram in PlantUML syntax, focusing on the administrator's interaction with the DMPTool to obtain funder information and their requirements.
+
+```
+@startuml
+actor Administrator as admin
+participant "DMPTool Interface" as interface
+participant "Authorization Service" as auth
+database "Project Database" as db
+participant "Funder Info Module" as funderModule
+
+== Check Funder Info and Requirements ==
+
+admin -> interface : Request to view funder info
+interface -> auth : Validate admin credentials
+auth -> interface : Authentication success
+interface -> db : Query project details
+db -> interface : Return project details
+
+== Project Details Retrieved ==
+
+interface -> funderModule : Request funder info based on project ID
+funderModule -> db : Query funder info and requirements
+db -> funderModule : Return funder info and requirements
+funderModule -> interface : Display funder info and specific obligations
+
+== Info Displayed to Administrator ==
+
+interface -> admin : Show funder info and requirements
+
+@enduml
+```
+
+### Explanation:
+- **Administrator (admin)**: The actor initiating the request to access information about who funded the project and their specific requirements.
+- **DMPTool Interface**: Represents the user interface of the DMPTool through which the administrator interacts with the system.
+- **Authorization Service (auth)**: Handles the authentication and authorization of users attempting to access sensitive or restricted information.
+- **Project Database (db)**: Contains all stored data related to projects, including metadata, funder information, and project-specific data management plans.
+- **Funder Info Module (finderModule)**: A dedicated system component responsible for retrieving and managing information related to funders and their requirements for projects stored within the DMPTool.
+
+This sequence diagram outlines the steps taken from the moment the administrator requests to view funder information, through the system's verification and authentication steps, to the querying and retrieval of the relevant project and founder details, and finally the presentation of this information back to the administrator. This flow helps illustrate how the system accommodates the needs of administrators to monitor and adhere to funder-specific obligations.

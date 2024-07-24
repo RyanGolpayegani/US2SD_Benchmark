@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram with PlantUML for the user story involves outlining the interaction between various actors and system components for the process of assigning sponsors to events, trainings, and summits. This includes interactions from the administrator's perspective, how the system processes these actions, and updates the relevant pages. Below is an example of how this could be structured in PlantUML syntax:
+
+```plantuml
+@startuml
+participant Administrator as admin
+participant "Admin Dashboard" as dashboard
+participant "Database" as db
+participant "Sponsor Detail Page" as sponsorPage
+
+== Assigning Sponsors to an Event ==
+admin -> dashboard : Accesses Sponsor Management
+dashboard -> db : Fetches available sponsors
+db -> dashboard : Returns sponsor list
+dashboard -> admin : Displays sponsors
+admin -> dashboard : Selects Sponsor, Event/Training/Summit
+dashboard -> db : Assign Sponsor to Event/Training/Summit
+db -> db : Updates Event/Training/Summit Details
+db -> dashboard : Confirmation
+dashboard -> admin : Shows Success Message
+
+== Updating Sponsor Detail Page ==
+dashboard -> db : Fetch updated sponsor info
+db -> db : Retrieves assigned Sponsor details
+db -> sponsorPage : Updates with new Sponsor Info
+sponsorPage -> db : Confirmation of update
+db -> dashboard : Confirms page update
+dashboard -> admin : Notifies update success
+
+@enduml
+```
+
+Explanation:
+
+1. **Administrator and Admin Dashboard:** The administrator accesses the sponsor management functionality within the admin dashboard to manage sponsor assignments.
+
+2. **Database Interactions:** The system interacts with the database to fetch available sponsors and their details. This is also where the assignment of sponsors to specific events, trainings, or summits is recorded.
+
+3. **Sponsor Selection and Assignment:** The administrator selects which sponsor to assign to which event, training, or summit. This triggers a series of database updates to officially link the sponsor with the chosen event, training, or summit.
+
+4. **Updating the Sponsor Detail Page:** After the assignment, the database retrieves the updated sponsor information, including their new association with an event, training, or summit. This information is then used to update the Sponsor Detail Page on the website.
+
+5. **Confirmation and Notifications:** Throughout the process, the administrator is kept informed with success messages both when the assignment is successfully made and when the Sponsor Detail Page is updated.
+
+This diagram makes assumptions on a simplified view of the interactions and does not cover every possible error handling or security measure that might be necessary in a real implementation.

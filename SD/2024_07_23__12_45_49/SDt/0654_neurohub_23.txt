@@ -1,0 +1,20 @@
+@startuml
+participant User
+participant Interface
+participant FileManager
+participant MetadataManager
+database FileDatabase
+
+User -> Interface : Select file
+Interface -> FileManager : Get file details
+FileManager -> FileDatabase : Query file type
+return File Type
+FileManager --> Interface : Display file type & metadata form
+User -> Interface : Provide bespoke information for file type
+Interface -> MetadataManager : Prepare metadata package
+MetadataManager -> FileDatabase : Assign metadata to file
+FileDatabase --> MetadataManager : Confirm metadata assignment
+MetadataManager --> Interface : Display success message
+Interface --> User : Confirm bespoke information assignment
+
+@enduml

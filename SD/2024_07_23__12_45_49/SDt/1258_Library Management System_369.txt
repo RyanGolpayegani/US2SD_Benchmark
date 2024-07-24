@@ -1,0 +1,21 @@
+@startuml
+
+actor Student
+participant "Search Interface" as Search
+participant "Library System" as System
+database "Book Database" as Database
+participant "Book Info Page" as InfoPage
+
+Student -> Search : enter(search terms)
+Search -> System : searchRequest(search terms)
+System -> Database : queryBooks(search terms)
+Database --> System : returnBooks(resultsList)
+System --> Search : displayResults(resultsList)
+Student -> Search : selectBook(bookID)
+Search -> System : requestBookInfo(bookID)
+System -> Database : queryBookInfo(bookID)
+Database --> System : bookInfo{title, author, shelf}
+System --> InfoPage : displayBookInfo(bookInfo)
+InfoPage --> Student : show(title, author, shelf)
+
+@enduml

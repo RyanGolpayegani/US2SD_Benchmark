@@ -1,0 +1,21 @@
+@startuml
+participant LibrarianUI as UI
+participant LibrarianController as Controller
+participant MemberService as Service
+participant MemberRepository as Repository
+database MemberDatabase as DB
+
+UI -> Controller : AddMemberDetails(newMemberData)
+Controller -> Service : createNewMember(newMemberInfo)
+alt Validation Success
+    Service -> Repository : saveMember(member)
+    Repository -> DB : insertMemberData
+    DB --> Repository : confirmation
+    Repository --> Service : memberSaved
+    Service --> Controller : memberCreated(memberID)
+    Controller --> UI : displaySuccess(memberID)
+else Validation Failure
+    Service -> Controller : error(validationErrors)
+    Controller --> UI : displayError(errors)
+end
+@enduml

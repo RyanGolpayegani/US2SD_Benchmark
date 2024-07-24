@@ -1,0 +1,24 @@
+@startuml
+actor Member as "Site Member"
+participant "Profile Page" as Profile
+participant "Certification Form" as Form
+participant "Certification System" as CertificationSys
+participant "Admin Panel" as Admin
+
+== Certification Application Process ==
+Member -> Profile: Navigate to Profile
+Profile -> Form: Select "Apply for Certification"
+Member -> Form: Fill out application
+Form -> CertificationSys: Submit application data
+CertificationSys -> Admin: Notify new application
+Admin -> CertificationSys: Review application
+alt Application Approved
+    Admin --> CertificationSys: Approve application
+    CertificationSys --> Member: Update status to "Certified Scrum Trainer"
+    Member -> Profile: Update profile with CSM/CSPO course offerings
+else Application Rejected
+    Admin --> CertificationSys: Reject application
+    CertificationSys --> Member: Notify rejection
+end
+
+@enduml

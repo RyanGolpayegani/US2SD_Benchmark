@@ -1,0 +1,49 @@
+Below is a detailed sequence diagram written in PlantUML format for the user story: "As a librarian, I want to edit the detail of books in the library so that I can fix in case of any mistake about them."
+
+```plantuml
+@startuml
+actor Librarian as librarian
+participant "Authentication Service" as AuthService
+participant "Library Management\nSystem (LMS)" as LMS
+participant "Database" as DB
+
+librarian -> AuthService : Validate login credentials
+AuthService -> librarian : Authentication successful
+
+librarian -> LMS : Request to edit book details
+alt Book ID Valid
+    LMS -> DB : Query book details by Book ID
+    DB -> LMS : Return book details
+    LMS -> librarian : Show book details form
+    librarian -> LMS : Submit updated book details
+    LMS -> DB : Update book details in database
+    DB -> LMS : Confirmation of update
+    LMS -> librarian : Show success message
+else Book ID Invalid
+    LMS -> librarian : Show error message (Book not found)
+end
+@enduml
+```
+
+### Explanation
+
+1. **Librarian Authentication:** The sequence begins with the librarian logging into the system, where their credentials are validated by an Authentication Service. Upon successful authentication, the librarian gains access to the Library Management System (LMS).
+
+2. **Request to Edit Book Details:** The librarian selects the option to edit the details of a book within the LMS.
+
+3. **Validation and Retrieval of Book Details:** 
+   - The LMS checks if the provided Book ID is valid.
+   - If valid, the LMS queries the database for the book details based on the Book ID and returns this information to the librarian.
+   - The librarian is presented with a form containing the book's current details.
+
+4. **Submitting Updated Book Details:** The librarian makes the necessary changes to the book details and submits the updated information to the LMS.
+
+5. **Updating the Database:** 
+   - Upon receiving the updated book details, the LMS sends these updates to the database.
+   - The database applies these updates and confirms the action back to the LMS.
+
+6. **Confirmation:** Finally, the LMS informs the librarian that the book details have been successfully updated, displaying a success message. 
+
+    - In the case where a Book ID is invalid (i.e., if the book cannot be found in the database), the LMS will display an error message to the librarian indicating that the book has not been found.
+
+This sequence diagram outlines the interactions between the librarian, the library management system (LMS), its authentication service, and the database necessary to update a book's details within a comprehensive library management system.

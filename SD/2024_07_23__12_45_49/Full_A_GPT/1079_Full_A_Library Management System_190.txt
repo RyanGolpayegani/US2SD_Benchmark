@@ -1,0 +1,40 @@
+Creating a sequence diagram in PlantUML for the user story described requires depicting the flow of messages between objects or components in the system to fulfill the request of listing members who have borrowed a specific book. Here's a detailed sequence diagram in PlantUML syntax to illustrate this:
+
+```plantuml
+@startuml
+participant "Library Worker" as Worker
+participant "Web Interface" as Interface
+participant "Book Management System" as BookSys
+participant "Database" as DB
+
+Worker -> Interface : selects "List Borrowers" option
+Interface -> BookSys : requestListOfBorrowers(bookId)
+activate BookSys
+
+BookSys -> DB : queryBorrowersByBook(bookId)
+activate DB
+DB --> BookSys : borrowersList
+deactivate DB
+
+BookSys --> Interface : displayBorrowers(borrowersList)
+Interface --> Worker : shows list of borrowers and return dates
+deactivate BookSys
+
+@enduml
+```
+
+### Explanation
+
+1. **Library Worker to Web Interface**: The sequence initiates with the library worker selecting the option to list all borrowers of a particular book through the system's web interface. This action represents the initial user interaction with the system.
+
+2. **Web Interface to Book Management System**: The web interface, acting as a middleman, processes the library worker's request and forwards it to the Book Management System. It calls a function or method (`requestListOfBorrowers`) with the unique identifier of the book (`bookId`) as an argument.
+
+3. **Book Management System to Database**: The Book Management System, upon receiving the request, queries the system's database to retrieve a list of all borrowers who have currently borrowed the specified book. This involves sending a query (`queryBorrowersByBook`) with the `bookId` to find all matching records.
+
+4. **Database to Book Management System**: The database processes the query and returns a list (`borrowersList`) of borrowers, which includes each borrower's details and the expected return dates for the book. This information is sent back to the Book Management System.
+
+5. **Book Management System to Web Interface**: Having obtained the list of borrowers, the Book Management System then forwards this list back to the web interface through the `displayBorrowers` function or method, which is designed to format and present the data properly.
+
+6. **Web Interface to Library Worker**: Finally, the web interface displays the list of borrowers and their respective book return dates to the library worker, completing the sequence of events for this user story.
+
+This diagram and description outline a simplified interaction flow for listing members who have borrowed a specific book in a Comprehensive Library Management System, focusing on back-end interactions and data flow.

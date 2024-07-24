@@ -1,0 +1,57 @@
+To represent the process of a chef updating the status of ordered items as received in a detailed sequence diagram using PlantUML, I'll describe each step in the process and outline how these steps connect within a sequence diagram. Given the complexity and breadth of the system described in the project description, I'll focus on the main actors and systems involved in this user story.
+
+Please note, due to the text-based nature of this explanation, I'll guide you on how to set up the PlantUML code rather than provide a visual diagram directly.
+
+```plantuml
+@startuml
+participant Customer
+participant Server as S
+participant "Order Management System" as OMS
+participant "Inventory Management" as INV
+participant Database as DB
+
+title Chef Updating Order Item Status to Received
+
+Customer -> S: Place order
+S -> OMS: Send order details
+OMS -> DB: Log order\n(Status: Pending)
+DB --> OMS: Confirmation
+OMS --> S: Order confirmed
+S --> Customer: Order processing
+
+... Later ...
+
+OMS -> OMS: Check Order Status
+OMS -> Chef: Display Pending Orders
+Chef -> OMS: Select Order Item to Update
+Chef -> OMS: Update Status to Received
+OMS -> DB: Update Order Item Status\n(Status: Received)
+DB --> OMS: Confirmation
+OMS --> Chef: Status Updated Confirmation
+OMS -> INV: Adjust Inventory Stock
+INV -> DB: Update Stock Levels
+DB --> INV: Confirmation
+INV --> OMS: Inventory Updated
+
+@enduml
+```
+
+### Breaking down the Sequence Diagram steps:
+
+1. **Customer Places Order**: The interaction starts with the customer placing an order, which is communicated to the server (waitstaff).
+
+2. **Server Sends Order to Order Management System (OMS)**: The order details are sent from the server to the OMS for processing.
+
+3. **OMS Logs Order in Database**: The OMS logs the order in the database with an initial status of 'Pending' and sends a confirmation back to the server.
+
+4. **Server Confirms Order to Customer**: The server then confirms to the customer that the order is being processed.
+
+5. **Chef Updates Order Status**: After some time, the chef checks for pending orders. Upon preparing or receiving items, the chef updates the order item status to 'Received' through the OMS.
+
+6. **OMS Updates Database**: The OMS processes this status update and changes the order item's status in the database to 'Received', confirming this back to the chef.
+
+7. **OMS Adjusts Inventory**: The system recognizes that an item's status has been received, prompting an automatic adjustment to the inventory stock levels through the Inventory Management subsystem.
+
+8. **Inventory Management Updates Database**: Inventory adjustments are logged in the database, completing the stock level updates.
+
+This diagram outlines the interaction flow between the chef, the ordering, and the inventory systems when updating the status of ordered items. Remember, the actual implementation may require additional steps or systems based on the restaurant's specific operational needs and tech stack.

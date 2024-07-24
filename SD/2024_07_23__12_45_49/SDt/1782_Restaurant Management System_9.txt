@@ -1,0 +1,21 @@
+@startuml
+participant Chef as chef
+participant "UI Interface" as ui
+participant "API Gateway" as api
+participant "Menu Management Service" as menuService
+participant "Inventory Management Service" as inventoryService
+participant Database as db
+
+chef -> ui : Selects "Create Backup Food List"
+ui -> api : POST /backup-food-list/create
+api -> menuService : CreateBackupFoodList()
+menuService -> inventoryService : GetAvailableIngredients()
+inventoryService -> db : Query Ingredients
+db -> inventoryService : Return Ingredients List
+inventoryService -> menuService : Ingredients List
+menuService -> db : Save Backup Food List & Ingredients
+db -> menuService : Confirmation
+menuService -> api : Backup List Created
+api -> ui : Display Confirmation
+ui -> chef : Show Backup Food List & Ingredients
+@enduml

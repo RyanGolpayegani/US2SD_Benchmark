@@ -1,0 +1,66 @@
+To illustrate the sequence of interactions for the user story "As a cook, I want to create new customer orders" in the context of the Restaurant Management and Operations System, we will use PlantUML to create a sequence diagram. This diagram will capture how the cook interacts with the system components to fulfill their goal.
+
+### Sequence Diagram in PlantUML Format
+
+```plantuml
+@startuml
+actor Cook
+participant "Order Management System" as OMS
+participant "Inventory Management" as Inventory
+participant "Database" as DB
+
+Cook -> OMS: Initiates Order Creation
+activate OMS
+
+OMS -> DB: Retrieve Available Menu Items
+activate DB
+DB --> OMS: Menu Items List
+deactivate DB
+
+OMS --> Cook: Display Menu Items
+Cook -> OMS: Selects Menu Items & Quantities
+activate OMS
+
+OMS -> Inventory: Check Item Availability
+activate Inventory
+Inventory -> DB: Retrieve Current Stock
+activate DB
+DB --> Inventory: Stock Details
+deactivate DB
+
+Inventory --> OMS: Availability Status
+deactivate Inventory
+
+OMS -> Cook: Confirm Available Items
+Cook -> OMS: Confirms Order Details
+OMS -> DB: Create New Order
+activate DB
+DB --> OMS: Order Confirmation
+deactivate DB
+
+OMS --> Cook: Display Order Confirmation
+deactivate OMS
+@enduml
+```
+
+### Explanation of the Sequence Diagram
+
+1. **Order Initiation**: The cook initiates the creation of a new customer order using the Order Management System (OMS).
+
+2. **Menu Item Retrieval**: The OMS queries the database to retrieve a list of available menu items to display to the cook.
+
+3. **Display Menu Items**: The OMS displays the available menu items to the cook.
+
+4. **Selection of Menu Items & Quantities**: The cook selects the desired menu items along with their quantities.
+
+5. **Availability Check**: The OMS checks the availability of the selected items with the Inventory Management system.
+
+6. **Stock Retrieval**: The Inventory Management system retrieves current stock details for the selected items from the database.
+
+7. **Confirmation of Available Items**: The OMS informs the cook of the availability status of the selected items.
+
+8. **Order Confirmation**: The cook confirms the order details, and the OMS proceeds to create a new order in the database.
+
+9. **Order Creation Confirmation**: The database confirms the creation of the new order, and the OMS displays the order confirmation to the cook.
+
+This sequence diagram outlines the interactions between the cook, the Order Management System, Inventory Management, and the database to facilitate the creation of a new customer order within the Restaurant Management and Operations System.

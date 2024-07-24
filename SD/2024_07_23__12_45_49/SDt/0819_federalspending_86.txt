@@ -1,0 +1,23 @@
+@startuml
+participant "Data User" as user
+participant "Broker Interface" as interface
+participant "Validation Service" as validation
+participant "FPDS Data Service" as fpds
+participant "Data Processing Service" as processing
+
+user -> interface : Request additional FPDS fields
+interface -> validation : Validate request format and permissions
+alt validation success
+    validation --> interface : Validation success
+    interface -> fpds : Request updated FPDS pull config
+    fpds -> processing : Update data pull to include new fields
+    processing -> fpds : Confirm update
+    fpds --> interface : Confirmation & Data pull initiated
+    interface -> processing : Process and import data
+    processing -> interface : Processing complete
+    interface --> user : Provide access to updated data
+else validation failure
+    validation --> interface : Validation failure (Error message)
+    interface --> user : Display error message
+end
+@enduml

@@ -1,0 +1,49 @@
+To create a detailed PlantUML sequence diagram for the given user story "As a Zooniverse admin, I want to automatically detect Plankton Portal images with no classifiable plankton in them", we will visualize the steps involved in this process from the admin's request to the system's identification and notification of the detected images without classifiable plankton.
+
+Given the complexity and technical scope of the AMIDP platform, incorporating AI for content recognition and classification, our sequence will include interaction with an AI model trained for plankton image classification. Here's how the PlantUML code might look:
+
+```plantuml
+@startuml
+actor ZooniverseAdmin as admin
+participant "AMIDP Platform" as platform
+participant "Image Database" as db
+participant "AI Classification Model" as ai
+participant "Notification Service" as notify
+
+== Automatic Detection of Non-classifiable Plankton Images ==
+admin -> platform : requests detection of\nnon-classifiable images
+platform -> db : retrieves plankton images
+loop for each image
+    db -> ai : send image for classification
+    activate ai
+    ai -> ai : analyze image
+    alt image without classifiable planklon
+        ai -> db : mark image as non-classifiable
+        deactivate ai
+        db -> notify : trigger alert for admin
+    else image with classifiable plankton
+        ai -> db : confirm image as classifiable
+        deactivate ai
+    end
+end
+notify -> admin : notify about non-classifiable images
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Zooniverse Admin Request**: The process begins with a Zooniverse admin requesting the detection of plankton portal images that have no classifiable plankton content.
+
+2. **Platform Retrieves Images**: The AMIDP platform communicates with the image database to retrieve the set of plankton images to be analyzed.
+
+3. **Image Analysis Loop**: For each fetched image, the following steps are iterated:
+    - The image is sent to the AI Classification Model specifically trained to identify or classify plankton features within images.
+    - The AI model analyzes the image to determine whether it contains classifiable plankton content.
+
+4. **Handling Based on AI Analysis**:
+    - **Non-classifiable Images**: If the AI model determines an image does not contain classifiable plankton, it marks the image as non-classifiable in the database. Following this, the Notification Service is triggered to alert the admin about the detection.
+    - **Classifiable Images**: If the image is found to have classifiable plankton, it's simply confirmed as classifiable, and no further immediate action is taken for the image.
+
+5. **Notification**: The Zooniverse admin is notified about all images that are determined to be non-classifiable by the process.
+
+This sequence diagram outlines the automated flow from the initiation of a request by the Zooniverse admin to identify images devoid of classifiable plankton, through to classification by AI and notification of the detected images. It incorporates interactions between administrators, the AMIDP platform, an AI classification model, image database, and a notification service, highlighting the platform's capabilities in leveraging AI for efficient content management and curation.

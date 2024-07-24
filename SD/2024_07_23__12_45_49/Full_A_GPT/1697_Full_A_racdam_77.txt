@@ -1,0 +1,33 @@
+Generating a detailed sequence diagram for the specific user story requires representing the interaction between the system components involved in processing a researcher's keyword search across multiple scanned diary segments of an RF program officer. Below is a representation in PlantUML format designed to visualize this process:
+
+```plantuml
+@startuml
+
+participant Researcher
+participant "Search Interface" as Interface
+participant "Search Controller" as Controller
+participant "Index/Search Engine" as Engine
+participant "Digital Archive Database" as Database
+participant OCRService
+participant "Documents Collection" as Documents
+
+Researcher -> Interface : Enter search keyword(s) for RF program officer's diaries
+Interface -> Controller : Initiate search request with keyword(s)
+Controller -> Engine : Query for keyword(s) in RF program officer's diaries
+
+alt If OCR needed for non-text diaries
+    Engine -> OCRService : Perform OCR on scanned diaries
+    OCRClassify -> Documents : Retrieve OCR-processed text
+else If OCR not needed
+    Engine -> Database : Access indexed documents
+end
+
+Database -> Engine : Return search results (metadata + doc locations)
+Engine -> Controller : Aggregate and filter results based on keyword(s)
+Controller -> Interface : Send final search results to display
+Interface -> Researcher : Display search results with relevant diary entries
+
+@enduml
+```
+
+This sequence diagram outlines the steps taken from a researcher's perspective in searching across all of an RF program officer's scanned diaries. It begins with the researcher's entry of search keywords into the system interface, triggering a series of interactions between the system components to fetch, process, and display the relevant entries based on the input keywords. The process considers the possibility of needing OCR (Optical Character Recognition) services when the diary segments are scanned images without text recognition, ensuring that all searchable text, regardless of format, is included in the search parameters.

@@ -1,0 +1,35 @@
+Given your request, I'll generate a detailed Sequence Diagram in PlantUML format, describing the process outlined in the user story: "As a repository support team member, I want to move a collection, so that I can fulfill the collection owner's request." This diagram will illustrate the interactions between the repository support team member, the digital repository system, and other components during the process of moving a collection within the system.
+
+```plantuml
+@startuml
+actor "Repository Support\nTeam Member" as support
+participant "User Interface" as UI
+participant "Collection Management\nService" as CMS
+participant "Database" as DB
+participant "Notification\nService" as NS
+
+support -> UI: Select collection move option
+UI -> CMS: Initiate move collection request
+CMS -> DB: Validate collection ID\nand ownership
+alt Collection ID and Ownership Valid
+  DB -> CMS: Validation successful
+  support -> UI: Specify new location \nfor collection
+  UI -> CMS: Submit new location details
+  CMS -> DB: Update collection location
+  DB -> CMS: Confirm update
+  CMS -> NS: Trigger notification to collection owner
+  NS -> DB: Log notification
+  DB -> NS: Confirmation
+  NS -> support: Display success message\n(Collection moved)
+else Collection ID or Ownership Invalid
+  DB -> CMS: Validation failed
+  CMS -> UI: Display error message\n(Invalid collection or ownership)
+  UI -> support: Show error message
+end
+
+@enduml
+```
+
+This sequence diagram starts with the repository support team member choosing to move a collection via the user interface. The collection management service then validates the collection ID and ownership with the database. If valid, the system will proceed with the support team member specifying a new location, and the collection management service updates the location in the database. Following a successful update, a notification service triggers a message to the collection owner, logging this activity. If the initial validation fails, an error message is displayed to the support team member, indicating the problem.
+
+This diagram is a high-level conceptualization; specific implementations can vary depending on system architecture, security protocols, and other factors unique to Cornell University's digital repository infrastructure.

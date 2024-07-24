@@ -1,0 +1,47 @@
+Creating a sequence diagram in PlantUML for the described user story involves visualizing the interactions between different system components during the deletion of old books by a staff member. Note that to execute PlantUML code, you will need to use a PlantUML environment or an online tool that supports PlantUML diagrams.
+
+Below is an illustrative PlantUML sequence diagram code snippet that represents the process of a staff member deleting old books from the Comprehensive Library Management System (CLMS) using a unique book ID:
+
+```plantuml
+@startuml
+participant StaffMember as Staff
+participant BookManagementInterface as Interface
+participant Database as DB
+
+== Deletion of Old Books ==
+
+Staff -> Interface : requestBookDeletion(uniqueID)
+activate Interface
+
+Interface -> DB : checkBookExists(uniqueID)
+activate DB
+
+DB --> Interface : bookExistsConfirmation
+deactivate DB
+
+alt If book exists
+    Interface -> DB : deleteBookByID(uniqueID)
+    activate DB
+    DB --> Interface : deletionSuccess
+    deactivate DB
+    Interface --> Staff : showSuccessMessage
+else If book does not exist
+    Interface --> Staff : showErrorBookNotFound
+end
+
+@enduml
+```
+
+### Explanation:
+
+1. **Staff -> Interface : requestBookDeletion(uniqueID)**: This line indicates that the staff member initiates the process by requesting the deletion of an old book through the library management interface, passing the unique ID of the book as an argument.
+
+2. **Interface -> DB : checkBookExists(uniqueID)**: The book management interface forwards the request to the database to check if a book with the provided unique ID exists.
+
+3. **DB --> Interface : bookExistsConfirmation**: The database responds back to the interface confirming whether the book exists.
+
+4. **alt If book exists**: This block handles the scenario if the book with the specified unique ID exists. The process includes deleting the book record and notifying the staff member of the successful deletion.
+   
+5. **else If book does not exist**: This block handles the scenario if the book with the specified unique ID does not exist. The interface shows an error message indicating that the book was not found.
+
+To visualize this sequence diagram, you must run the PlantUML code in a suitable environment. This diagram provides a high-level sequence of interactions for the deletion of old books based on their unique ID, as performed by a staff member using the Comprehensive Library Management System.

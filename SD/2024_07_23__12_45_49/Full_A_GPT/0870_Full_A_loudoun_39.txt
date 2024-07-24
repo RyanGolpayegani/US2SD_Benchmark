@@ -1,0 +1,64 @@
+Here's a detailed sequence diagram in PlantUML format based on your request. This sequence diagram outlines the interactions between a Plan Review Staff member and various components of the County Services & Property Information Portal when reviewing plans for compliance, and subsequently approving, failing, or denying the plans with conditions or corrections as needed.
+
+```plantuml
+@startuml
+autonumber
+participant ":Web Browser" as UserInterface
+participant ":AuthenticationService" as Auth
+participant ":UserSession" as Session
+participant ":PlanReviewModule" as PlanReview
+participant ":Database" as DB
+participant ":ApplicantAccount" as Applicant
+participant ":NotificationService" as Notify
+
+== Authentication ==
+UserInterface -> Auth: login(credentials)
+Auth -> Session: createSession()
+Session --> UserInterface: sessionDetails
+
+== Plan Review Process ==
+UserUserInterface -> PlanReview: selectPlansForReview()
+alt Plan Review In Progress
+    PlanReview -> DB: fetchPlans(status="submitted")
+    DB --> PlanReview: plansList
+    PlanReview -> PlanReview: reviewPlans(plansList)
+    loop For Each Plan
+        PlanReview --> UserInterface: displayPlanDetails(plan)
+        UserInterface -> PlanReview: submitReview(decision, comments)
+        alt Decision Conditions
+            PlanReview -> DB: updatePlanStatus(planId, status="conditions")
+            DB --> PlanReview: statusUpdated
+            PlanReview -> Applicant: addCorrectionRequest(planId, details)
+            PlanReview -> PlanReview: logActivity(planId, "conditions added")
+        else Decision Approved
+            PlanReview -> DB: updatePlanStatus(planId, status="approved")
+            DB --> PlanReview: statusUpdated
+            PlanReview -> PlanReview: logActivity(planId, "approved")
+        else Decision Denied
+            PlanReview -> DB: updatePlanCoinsStatus(planId, status="denied")
+            DB --> PlanReview: statusUpdated
+            PlanReview -> PlanReview: logActivity(planId, "denied")
+        end
+        PlanReview -> Notify: sendNotification(applicantId, reviewOutcome)
+        Notify -> Applicant: notifyViaEmail(notificationDetails)
+    end
+else No Plans For Review
+    PlanReview --> UserInterface: displayMessage("No plans available for review")
+end
+
+== Review Completion ==
+PlanReview --> UserInterface: displayReviewCompletionMessage()
+UserInterface -> Auth: logout()
+Auth -> Session: terminateSession()
+Session --> User inInterface: confirmLogout()
+
+@enduml
+```
+
+This sequence diagram starts with the authentication phase where a Plan Review Staff member logs into the system. Following successful authentication, the session details are returned to the user's web browser, which then allows access to the Plan Review Module.
+
+Within the plan review process, the staff member selects plans to review, and the system fetches submitted plans from the database. Depending on the review outcome (conditions required, approved, or denied), the system updates the plan status in the database accordingly. Conditions, approvals, or denials are logged, and correction requests might be added for the applicant if necessary. Notifications are then sent out to the applicant through a notification service, informing them of the review outcome.
+
+This detailed sequence wraps up with the review completion message displayed to the staff member, followed by a logout process that terminates the user session.
+
+Please note, this is a simplified version that outlines key interactions based on your requirements. Actual implementation details may vary based on the specific technologies and architectures used in your project.

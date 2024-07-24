@@ -1,0 +1,39 @@
+Creating a detailed sequence diagram in PlantUML format for the user story "As a manager, I want to keep track of products available so that I can manage inventory" requires illustrating the sequence of actions between the manager, the system's inventory management module, and possibly the supplier management module. Here's how to represent this scenario:
+
+```plantuml
+@startuml
+
+participant Manager
+participant "Inventory Management System" as IMS
+participant Database
+participant "Supplier Management Module" as SMM
+
+Manager -> IMS: Check current inventory levels
+IMS -> Database: Query inventory data
+Database -> IMS: Return inventory data
+IMS -> Manager: Display inventory levels
+
+alt If Inventory is Low
+    Manager -> IMS: Initiate restock process
+    IMS -> SMM: Send restock request to suppliers
+    SMM -> Database: Log restock order
+    SMM -> Manager: Confirm restock initiation
+else Inventory Sufficient
+    Manager -> IMS: No action needed
+end
+
+@enduml
+```
+
+### Explanation:
+- **Manager**: Initiates the process by requesting to check current inventory levels and, based on the data, might start a restock process if inventory is low.
+- **Inventory Management System (IMS)**: Acts as the central hub for managing inventory requests. It queries the database for current inventory levels and communicates with the Supplier Management Module (SMM) for restocking.
+- **Database**: Contains all data related to inventory, including current stock levels, suppliers, and products. It receives queries and updates from the IMS.
+- **Supplier Management Module (SMM)**: Manages communications and orders to suppliers for restocking purposes. It logs restock orders in the database and confirms initiation of the restock process to the manager.
+
+### Notes:
+- The sequence starts with the manager checking inventory levels, which is a routine task to ensure the restaurant always has enough supplies.
+- Depending on the result, an alternate flow allows the manager to initiate a restock process if inventory levels are found to be low.
+- The flow emphasizes the importance of keeping the database updated with the latest information regarding inventory levels and supplier orders for efficient operation.
+
+This sequence diagram is a simplified view of the process focusing on major interactions. Depending on the complexity of the system and specific requirements, additional steps or actors (e.g., notifications to other staff, detailed interaction with suppliers, automated restocking triggers based on predefined thresholds) could be included for a more comprehensive workflow.

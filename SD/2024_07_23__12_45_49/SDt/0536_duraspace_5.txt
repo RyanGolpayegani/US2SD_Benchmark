@@ -1,0 +1,34 @@
+@startuml
+participant "User Interface" as UI
+participant "Contact Form" as CF
+participant "DIMS Backend" as DB
+participant "Notification System" as NS
+participant "Repository Manager Interface" as RMI
+
+UI -> CF: Select 'Contact Repository'
+activate CF
+
+CF -> CF: Display Form (incl. repository selection, message, sender info)
+UI -> CF: Submit Form
+activate UI
+
+CF -> DB: Send Form Data
+activate DB
+
+DB -> NS: Process Contact Request
+activate NS
+
+NS -> RMI: Notify Repository Manager
+activate RMI
+
+RMI -> RMI: Repository Manager Reviews Message
+RMI -> NS: Acknowledge Receipt(optional)
+
+RMI -> UI: Send Response to User (optional)
+deactivate CF
+deactivate UI
+deactivate DB
+deactivate NS
+deactivate RMI
+
+@enduml

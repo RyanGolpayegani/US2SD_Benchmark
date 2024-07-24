@@ -1,0 +1,85 @@
+To create a detailed sequence diagram in PlantUML format for the user story described, we focus on the key interactions between the roles (staff member, system, and database) and components involved in processing appeals. Given the scope of the project and the user story, we'll illustrate a workflow where a staff member processes an appeal, updates the outcome, and then records the impact of this outcome on the relevant records.
+
+```plantuml
+@startuml
+actor StaffMember as "Staff Member"
+participant WebPortal as "County Services\n& Property Information Portal"
+participant SystemBackend as "System Backend"
+database Database as "County Database"
+
+== Process Appeal ==
+
+StaffMember -> WebPortal : Log in to Portal
+activate WebPortal
+
+WebPortal -> SystemBackend : Authenticate Staff Member
+activate SystemBackend
+
+SystemBackend -> Database : Validate Credentials
+activate Database
+Database --> SystemBackend : Credentials Valid
+deactivate Database
+
+SystemBackend --> WebPortal : Authentication Success
+deactivate SystemBackend
+
+StaffMember -> WebPortal : Navigate to Appeals Section
+WebPortal -> SystemBackend : Request Pending Appeals List
+activate SystemBackend
+
+SystemBackend -> Database : Fetch Pending Appeals
+activate Database
+Database --> SystemBackend : Pending Appeals List
+deactivate Database
+
+SystemBackend --> WebPortal : Show Pending Appeals
+deactivate SystemBackend
+
+StaffMember -> WebPortal : Select Appeal to Process
+WebPortal -> SystemBackend : Fetch Appeal Details
+activate SystemBackend
+
+SystemBackend -> Database : Retrieve Appeal Details
+activate Database
+Database --> SystemBackend : Appeal Information
+deactivate Database
+
+SystemBackend --> WebPortal : Display Appeal Information
+deactivate SystemBackend
+
+StaffMember -> WebPortal : Update Outcome & Notes
+WebPortal -> SystemBackend : Process Appeal Outcome
+activate SystemBackend
+
+SystemBackend -> Database : Update Appeal Record
+activate Database
+Database --> SystemElements : Appeal Updated
+deactivate Database
+
+SystemBackend -> Database : Record Impact on Related Records
+activate Database
+Database --> SystemBackend : Related Records Updated
+deactivate Database
+
+SystemBackend --> WebPortal : Appeal Processed Successfully
+deactivate SystemBackend
+
+WebPortal --> StaffMember : Display Success Message
+
+== End ==
+
+@enduml
+```
+
+### Explanation:
+- **Authentication**: The sequence begins with the staff member logging into the County Services & Property Information Portal, followed by system backend authentication and session establishment.
+  
+- **Navigate to Appeals Section**: Once logged in, the staff member navigates to the appeals section of the portal.
+  
+- **Fetch and Display Appeal Details**: The system retrieves and displays the details of pending appeals for the staff member, who then selects an appeal to process.
+  
+- **Update and Process Appeal**: The staff member updates the outcome of the appeal and any relevant notes in the portal. This information is sent to the backend.
+  
+- **Recordkeeping**: The system backend updates the appeal record with the new outcome and also updates related records to reflect the impact of the appeal's outcome. A success message is displayed to the staff member upon completion.
+
+This sequence diagram outlines a simplified process and highlights the interaction flow involved in processing an appeal within the County Services & Property Information Portal as per the provided user story.

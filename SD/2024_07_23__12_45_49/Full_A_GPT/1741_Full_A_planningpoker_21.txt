@@ -1,0 +1,57 @@
+Creating a sequence diagram for the described user story in PlantUML involves detailing the interactions between the actor (the moderator) and the system components involved in creating an account. Here’s a breakdown to visualize the process:
+
+```plantuml
+@startuml
+actor Moderator
+
+participant "UI: Account Creation Page" as UI
+participant "Server: Account Controller" as Controller
+participant "Service: Account Management" as Service
+database "DB: User Database" as DB
+
+== Account Creation Sequence ==
+
+Moderator -> UI : Enter Name, Email, Username, Password
+UI -> Controller : Validate Input
+alt Validation Success
+    Controller -> Service : Create Account Request(Name, Email, Username, Password)
+    Service -> DB : Check Username & Email Uniqueness
+
+    alt Username and Email Unique
+        DB -> Service : Uniqueness Confirmed
+        Service -> DB : Save New Account Details
+        DB -> Service : Account Save Confirmation
+        Service -> Controller : Account Creation Success
+        Controller -> UI : Display Success Message
+        UI -> Moderator : Show Confirmation
+    else Username or Email Already Exists
+        DB -> Service : Error: Details Not Unique
+        Service ->  Controller : Account Creation Failure
+        Controller -> UI : Display Error Message
+        UI -> Moderator : Show Error (Details Exist)
+    end
+
+else Validation Failed
+    Controller -> UI : Display Error Message (Validation Failed)
+    UI -> Moderator : Show Error (Invalid Input)
+end
+@enduml
+```
+
+### Explanation:
+
+1. **Moderator Interaction**: The sequence starts with the moderator entering the required details (name, email, username, password) into the account creation page.
+
+2. **Input Validation**: The input from the moderator is sent to the server's account controller, which validates the provided details. If the validation fails (e.g., due to improper formatting), an error message is shown.
+
+3. **Account Creation Request**: Upon successful validation, the account controller requests account creation from the account management service.
+
+4. **Uniqueness Check**: The account management service checks with the user database (DB) to ensure the username and email are unique.
+
+5. **Account Saving**: If the username and email are confirmed to be unique, the service saves the new account details in the database. The database confirms the account has been saved.
+
+6. **Confirmation or Error Handling**:
+    - If the account is successfully created, the service informs the account controller, which in turn instructs the UI to display a success message to the moderator.
+    - If the username or email already exists, the process is halted, and an error message is displayed indicating the problem.
+
+This sequence diagram represents a simplified view to focus on the main flow. In a real-world scenario, additional considerations such as encryption of the password before storage and more detailed error handling might be necessary.

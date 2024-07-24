@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram in PlantUML for the mentioned user story involves detailing the interactions between different system components when a staff member adds a book with a unique ID to the Comprehensive Library Management System (CLMS). Below is an example of how this could be illustrated using PlantUML syntax.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Staff as staff
+participant WebInterface as web
+participant BackendSystem as backend
+database LibraryDB as db
+
+staff -> web : Access add book interface
+activate web
+
+web -> backend : Request to add book details
+activate backend
+
+backend -> db : Check if unique ID exists
+activate db
+db --> backend : ID does not exist
+deactivate db
+
+backend -> db : Insert new book details with unique ID
+activate db
+db --> backend : Book added successfully
+deactivate db
+
+backend --> web : Confirm book addition
+deactivate backend
+
+web --> staff : Display success message
+deactivate web
+
+@enduml
+```
+
+Explanation of Steps:
+1. **Access add book interface:** The staff member accesses the interface on the web application to add a new book.
+2. **Request to add book details:** The web interface sends the book details including the desired unique ID to the backend system for processing.
+3. **Check if unique ID exists:** The backend system queries the database to see if the provided unique ID already exists to ensure uniqueness.
+4. **ID does not exist:** The database confirms that the ID does not exist, and thus, the new book can be added.
+5. **Insert new book details with unique ID:** The backend system sends a command to insert the new book details including the unique ID into the database.
+6. **Book added successfully:** The database confirms that the book has been successfully added.
+7. **Confirm book addition:** The backend system sends a confirmation message to the web interface indicating that the book has been successfully added.
+8. **Display success message:** The web interface displays a success message to the staff member, confirming that the book has been added to the library system.
+
+This diagram captures the sequence of steps involved when a staff member adds a book with a unique ID to the library management system, involving interactions between the staff member, web interface, backend system, and the library database.

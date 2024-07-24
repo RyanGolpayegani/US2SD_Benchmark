@@ -1,0 +1,41 @@
+Creating a detailed PlantUML sequence diagram specific to a cook wanting to manage primary operations in a restaurant can encompass several key interactions, such as updating dish availability, checking inventory levels, and creating new orders. Here is a simplified representation to fit the brief.
+
+```plantuml
+@startuml
+participant Cook
+participant "Cook Interface" as CI
+participant "Order Management System" as OMS
+participant "Inventory Management System" as IMS
+participant "Database" as DB
+
+Cook -> CI : Access system
+CI -> OMS : Select manage dishes
+alt Edit Dish Availability
+  Cook -> CI : Choose to update dish status
+  CI -> OMS : Request update dish status (dish_id, new_status)
+  OMS -> DB : Update Dish Status
+  DB --> OMS : Confirmation
+  OMS --> CI : Update Confirmed
+  CI --> Cook : Display success message
+else Check Inventory
+  Cook -> CI : Request inventory levels
+  CI -> IMS : Query inventory (ingredient_id)
+  IMS -> DB : Fetch Inventory Data
+  DB --> IMS : Inventory Details
+  IMS --> CI : Display Inventory Levels
+  CI --> Cook : Show inventory levels
+else Create New Order
+  Cook -> CI : Initiate new order
+  CI -> OMS : Create new Order (order_details)
+  OMS -> DB : Save new Order
+  DB --> OMS : Order Saved
+  OMS --> CI : Order Confirmation
+  CI --> Cook : Display order success
+end
+
+@enduml
+```
+
+This diagram illustrates the basic sequence of actions a cook might undertake when using a restaurant management system software to handle their primary responsibilities. The "Cook" interacts with the "Cook Interface," which interfaces with both the "Order Management System" and the "Inventory Management Store" depending on the task. Operations such as editing dish availability, checking inventory levels, and creating new orders are simplified into sequence steps, guiding the system to process and respond to the cook's requests, ultimately affecting the "Database" where all data is stored and managed.
+
+Remember, the actual sequence diagram can be more complex depending on the system's depth, including error handling, authentication steps, more detailed interactions, and other services the system might interact with, such as notification services or external suppliers management in case of low inventory levels.

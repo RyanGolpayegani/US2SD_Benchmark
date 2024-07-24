@@ -1,0 +1,39 @@
+@startuml
+actor OlderPerson as User
+participant "ALFRED" as Alfred
+participant "GroceryShoppingSystem" as Grocery
+participant "PaymentService" as Payment
+
+User -> Alfred : "I want to buy groceries"
+Alfred -> Grocery : listCategories()
+activate Grocery
+Grocery --> Alfred: CategoriesList
+deactivate Grocery
+Alfred --> User : displayCategories(CategoriesList)
+User -> Alfred : selectCategory("Fruits")
+Alfred -> Grocery : listItems("Fruits")
+activate Grocery
+Grocery --> Alfred : ItemsList
+deactivate Grocery
+Alfred --> User : displayItems(ItemsList)
+User -> Alfred : addItemToCart("Apples",2)
+Alfred -> Grocery : addToCart("Apples",2)
+activate Grocery
+Grocery --> Alfred: CartUpdated
+deactivate Grocery
+User -> Alfred : confirmOrder()
+Alfred -> Grocery : getCart()
+activate Grocery
+Grocery --> Alfred : CartDetails
+deactivate Grocery
+Alfred -> Payment : initiatePayment(CartDetails)
+activate Payment
+Payment --> Alfred : PaymentSuccessful
+deactivate Payment
+Alfred -> Grocery : confirmPayment()
+activate Grocery
+Grocery --> Alfred : OrderConfirmed
+deactivate Grocery
+Alfred --> User : displayOrderConfirmation(OrderConfirmed)
+
+@enduml

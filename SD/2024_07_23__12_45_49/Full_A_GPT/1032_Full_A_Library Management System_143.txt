@@ -1,0 +1,56 @@
+To model the "Display Books" user story as a detailed sequence diagram using PlantUML, we aim to capture the interactions between the library member and the library management system (including its sub-components) that enable the display of books for the member to decide what to borrow. Here’s a detailed representation:
+
+```plantuml
+@startuml
+title Display Books Sequence Diagram
+
+actor "Library Member" as Member
+participant "Web Interface" as Web
+participant "Book Search Controller" as Controller
+database "Book Database" as DB
+participant "Book List" as BookList
+
+== Display Books Process ==
+Member -> Web: Access library website
+activate Web
+
+Web -> Controller: Request to display books
+activate Controller
+
+Controller -> DB: Query available books
+activate DB
+
+DB --> Controller: Return query results
+deactivate DB
+
+Controller -> BookList: Organize books into list
+activate BookList
+
+BookList --> Web: Send formatted book list
+deactivate BookList
+
+Web --> Member: Display book list
+deactivate Web
+
+@enduml
+```
+
+This sequence diagram illustrates the following steps involved in displaying books for a library member to decide which book they will take:
+
+1. **Library Member Accesses Website:** The library member starts the process by accessing the library website. This is the entry point for the library member to interact with the Comprehensive Library Management System (CLMS).
+
+2. **Request to Display Books:** Once on the website, the member requests to view the available books. This request is captured by the web interface, which acts as the bridge between the member and the internal systems of CLMS.
+
+3. **Book Search Controller Activation:** The web interface forwards this request to the Book Search Controller, responsible for handling book search and display requests.
+
+4. **Query Available Books:** The Book Search Controller sends a query to the Book Database to retrieve information about the available books. The Book Database contains detailed records of all books within the library.
+
+5. **Return Query Results:** The Book Database returns the results of the query to the Book Search Controller. These results include details like the title, author, subject category, and publication date of each available book.
+
+6. **Organize Books into List:** With the query results, the Book Search Controller organizes the information into a list format suitable for the member to view. This step might involve sorting or filtering the books based on certain criteria (e.g., most popular, new arrivals).
+
+7. **Display Book List:** Finally, this organized list of books is sent back to the web interface, which displays it to the library member. The member can then browse through this list to decide which book they want to take.
+
+8. **Member Makes Decision:** While not explicitly shown in the diagram, the next step involves the member making a decision on which book to borrow based on the displayed list.
+
+This sequence diagram provides a high-level overview of the interactions and flow of information in the CLMS when a library member wants to display books. It encapsulates the sequence of actions from the initial request by the member to the display of book information, ultimately assisting the member in making a borrowing decision.

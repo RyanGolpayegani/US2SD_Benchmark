@@ -1,0 +1,22 @@
+@startuml
+participant User
+participant Browser
+participant WebClient
+participant AuthenticationModule
+participant ActiveDirectory
+
+User -> Browser : Enter username and password
+Browser -> WebClient : Send login credentials
+WebClient -> AuthenticationModule : Request authentication
+AuthenticationAPIView -> ActiveDirectory : Validate credentials
+alt Successful Authentication
+    ActiveDirectory -> AuthenticationModule : Return Success + User Details
+    AuthenticationModule -> WebClient : Generate session/token
+    WebClient -> Browser : Display successful login message
+else Failed Authentication
+    ActiveDirectory -> AuthenticationModule : Return Failure
+    AuthenticationModule -> WebClient : Error message
+    WebClient -> Browser : Display login error
+end
+Browser -> User : Show result
+@enduml

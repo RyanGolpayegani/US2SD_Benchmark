@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the User Story mentioned requires an intricate understanding of the interactions among various components in the Restaurant Management and Operations System. Given the variety of tasks and stakeholders mentioned in the project description, focusing on automating POS payments involves several key components, including the cashier interface, payment processing system, and possibly inventory and financial reporting modules. Below is a representation of these interactions in PlantUML format:
+
+```plantuml
+@startuml
+participant CashierUI
+participant PaymentModule
+participant InventorySystem
+participant FinancialReporting
+database DB
+
+CashierUI -> PaymentModule : initiatePayment(orderDetails)
+activate PaymentModule
+
+PaymentModule -> DB : validateOrder(orderID)
+activate DB
+DB --> PaymentModule : orderValidated
+deactivate DB
+
+PaymentModule -> InventorySystem : updateInventory(orderDetails)
+activate InventorySystem
+InventorySystem --> Paymentmodule : inventoryUpdated
+deactivate InventorySystem
+
+PaymentModule -> PaymentModule : calculateTotal(orderDetails)
+PaymentModule -> PaymentModule : processDiscounts(coupons)
+PaymentModule -> FinancialReporting : recordTransaction(orderDetails, finalAmount)
+activate FinancialReporting
+FinancialReporting --> PaymentModule : transactionRecorded
+deactivate FinancialReporting
+
+PaymentModule -> DB : updatePaymentStatus(orderID, "Completed")
+activate DB
+DB --> PaymentModule : statusUpdated
+deactivate DB
+
+PaymentModule --> CashierUI : displayReceipt(finalAmount, orderID)
+deactivate PaymentModule
+
+@enduml
+```
+
+This sequence diagram starts with the CashierUI initiating a payment process by sending the order details to the PaymentModule. The PaymentModule then validates the order against the database (DB) and proceeds to communicate with the InventorySystem to update the inventory based on the sold items. Simultaneously, it calculates the total amount taking into account any applied discounts. The PaymentModule then records the transaction in the FinancialReporting system for accounting and analytics purposes.
+
+Finally, the PaymentModule updates the payment status of the order in the DB to "Completed" and returns the final amount and order ID back to the CashierUI, which can then display the receipt to the cashier. This flow ensures that cashier operations are swift, reducing manual tasks and potential for error.
+
+This diagram assumes some simplifications and abstracts away from the finer details of authentication, error handling, and the specifics of third-party payment processors, which would be essential in a real-world implementation.

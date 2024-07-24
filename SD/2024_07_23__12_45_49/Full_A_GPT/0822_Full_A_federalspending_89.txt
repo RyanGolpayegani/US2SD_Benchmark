@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the requested user story in PlantUML format would involve illustrating the sequence of events that a Developer would go through to quickly access application data for issue investigation. For simplicity, let's assume the process involves the Developer engaging with a logging system and an analytics tool (like New Relic mentioned in the project description) to pinpoint and troubleshoot the issue.
+
+Here's a basic sequence diagram in PlantUML format to illustrate this flow:
+
+```plantuml
+@startuml
+actor Developer
+participant "Logging System" as Log
+participant "Analytics Tool" as Analytics
+participant "Data Store" as Data
+
+Developer -> Log: Request logs for issue
+alt logs available
+    Log -> Developer: Provide logs
+else logs not available
+    Log -> Developer: Log request error
+    Developer -> Analytics: Request data analytics
+    Analytics -> Developer: Provide analytics dashboard
+    Developer -> Analytics: Drill down to issue specifics
+    Analytics -> Data: Query related data
+    Data -> Analytics: Return data
+    Analytics -> Developer: Display issue details
+end
+
+Developer -> Data: Request detailed data
+Data -> Developer: Provide detailed data
+Developer -> Developer: Analyze data to identify issue
+Developer -> Data: Apply temporary data patch
+
+alt issue resolved
+    Developer -> Log: Log issue resolution
+else further investigation required
+    Developer -> Log: Log continuation of investigation
+end
+
+@enduml
+```
+
+This sequence diagram outlines a path where:
+- The Developer first requests logs related to an issue from the Logging System.
+- If logs are available, they are provided. If not, an error is issued, and the Developer then approaches an Analytics Tool to get a dashboard overview.
+- Depending on the availability and necessity, the Developer might need to drill down further into specifics, querying the Data Store via the Analytics Tool for more detailed data.
+- After receiving detailed data, the Developer analyzes it to identify the issue.
+- A temporary data patch may be applied by the Developer to the Data Store.
+- Depending on whether the issue is resolved or not, the Developer logs the resolution or the need for continued investigation back in the Logging ‘System.
+
+This sequence can be tailored with more specifics related to the Broker application data access mechanisms, tools, and protocols used within your organization's infrastructure.

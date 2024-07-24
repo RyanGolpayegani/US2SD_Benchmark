@@ -1,0 +1,27 @@
+@startuml
+actor DataManager as "Data Manager"
+participant "DMPTool Interface" as Interface
+participant "Metadata Repository" as Metadata
+participant "Legal & Compliance Module" as LegalModule
+participant "External Metadata Tools" as ExternalTools
+participant "Institutional Systems" as InstitutionalSystems
+database "Rights Repository" as RightsRepo
+
+== Clarify Re-use Rights Sequence ==
+
+DataManager -> Interface : request re-use rights information
+Interface -> Metadata : query data project metadata
+Metadata --> Interface : return metadata details
+Interface -> LegalModule : request legal compliance check
+LegalModule -> RightsRepo : check rights and compliance rules
+RightsRepo --> LegalModule : provide rights information
+LegalModule -> ExternalTools : verify rights with external sources
+ExternalTools --> LegalModule : confirm external rights statuses
+LegalModule --> Interface : provide comprehensive rights information
+Interface -> InstitutionalSystems : cross-reference institutional policies
+InstitutionalSystems --> Interface : provide institutional policy constraints
+Interface --> DataManager : display rights and compliance information
+DataManager -> Interface : confirm understanding/acceptance of rights
+Interface -> Metadata : log rights clarification action
+
+@enduml

@@ -1,0 +1,40 @@
+To design a sequence diagram for the user story provided, considering the complexities and features listed in the Comprehensive Digital Repository System project for Cornell University, I'll outline a simplified PlantUML code sequence. This will illustrate the process an external user might follow to find and access research and educational materials related to a particular topic.
+
+Please note, the sequence diagram will focus on the interactions between the system components such as the user interface, search system, access control, and data storage. Given the project description's emphasis on user-friendliness and comprehensive access, the diagram will reflect an intuitive and secure process for accessing materials.
+
+```plantuml
+@startuml
+autonumber
+actor ExternalUser as User
+participant "Search Interface" as Search
+participant "Authentication System\n(Shibboleth)" as Auth
+participant "Content Management\nSystem" as Content
+participant "Data Storage" as Storage
+
+User -> Search : Enter search query\nfor specific topic
+Search -> Content : Request relevant\nmaterials
+Content -> Storage : Fetch metadata\nof materials
+Storage --> Content : Metadata of\nrelated materials
+Content --> Search : Display search\nresults with metadata
+User -> Search : Select desired material
+Search -> Auth : Request access\nfor external user
+Auth --> User : Prompt login/create account
+User -> Auth : Login/Signup
+Auth --> User : Authentication successful
+User -> Search : Request selected material
+Search -> Content : Check access permissions
+Content -> Storage : Fetch full material
+Storage --> Content : Return requested material
+Content --> Search : Deliver material to user
+Search --> User : Display/download\nmaterial
+@enduml
+```
+
+This diagram represents a sequence where an external user searches for academic resources on a particular topic, undergoes an authentication process (assuming the system requires this for external users, which might depend on the material's access rights), and subsequently accesses the desired materials.
+
+**Key Points:**
+- **Search Interface:** Represents the system's user interface where the external user inputs their query.
+- **Authentication System (Shibboleth):** This tool is used for managing secure remote access, highlighting the integration with Shibboleth for authentication.
+- **Content Management System & Data Storage:** These components work together to manage and retrieve the academic materials requested, handling metadata and actual content delivery.
+
+This diagram simplifies complex backend processes such as metadata handling, access rights management, and the actual content delivery into more manageable interactions. Depending on the project's phase and detail level required, further breaking down components or adding additional steps (like error handling or feedback loops) might be necessary for a full implementation plan.

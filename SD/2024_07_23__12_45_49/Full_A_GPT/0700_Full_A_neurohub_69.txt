@@ -1,0 +1,46 @@
+Creating a sequence diagram in PlantUML requires us to illustrate the interaction between a researcher, the Mendeley client, the Neurohub platform (specifically the group-wide shared repository feature), and possibly an external repository or databank that hosts the repository of research papers. This interaction is based on the project description provided.
+
+Since the project aims to facilitate the integration with external tools such as Mendeley, the sequence diagram will outline the steps taken by a researcher to point their Mendeley client to a shared repository in Neurohub and how they receive notifications when new content is added. 
+
+Let's begin with a basic setup:
+
+```plantuml
+@startuml
+participant Researcher as researcher
+participant "Mendeley Client" as mendeley
+participant "Neurohub Platform" as neurohub
+participant "Group-Wide Shared\nRepository" as sharedRepo
+
+== Pointing the Mendeley Client to the Shared Repository ==
+
+researcher -> mendeley : Point to Shared Repository
+mendeley -> neurohub : Request Access to Shared Repository
+neurohub -> sharedRepo : Validate Access Request
+sharedRepo -> neurohub : Access Granted
+neurohub -> mendeley : Provide Repository URL/Access
+mendeley -> researcher : Access Setup Complete
+
+== Receiving Notifications on New Content Addition ==
+
+sharedRepo -> neurohub : New Content Added Notification
+neurohub -> mendeley : Push Notification
+mendeley -> researcher : Display Notification
+
+@enduml
+```
+
+### Explanation of the Diagram
+
+1. **Pointing the Mendeley Client to the Shared Repository:**
+   - The **Researcher** initiates the process by configuring their Mendeley Client to point to the Neurohub's shared research paper repository.
+   - The **Mendeley Client** sends a request to the **Neurohub Platform** for access to the said repository.
+   - **Neurohub** then verifies this request with the **Group-Wide Shared Repository**.
+   - Once access is granted, Neurohub communicates back to the Mendeley Client, providing necessary details such as the repository URL or access tokens as needed.
+   - The Mendeley Client then confirms to the **Researcher** that the access setup to the shared repository is complete.
+
+2. **Receiving Notifications on New Content Addition:**
+   - When new content is added to the shared repository, the **Group-Wide Shared Repository** informs the **Neurohub Platform**.
+   - Neurohub, in turn, pushes a notification to the **Mendeley Client**.
+   - The **Mendeley Client** then notifies the **Researcher** about the new addition to the shared repository.
+
+This sequence diagram provides a high-level overview of how a researcher interacts with the Mendeley client and Neurohub to access and receive notifications from a group-wide shared repository. Note that the detailed implementation may require authentication, error handling, and other interactions not shown in this basic outline.

@@ -1,0 +1,45 @@
+Creating a sequence diagram involves depicting the flow of interaction between objects through time in a specific scenario. For the described user story of a moderator wishing to update account details in the Agile Estimation and Planning Tool (AEPT), we can outline a simplified interaction process involving the Moderator, the Web Interface of the AEPT, and the Backend Server responsible for account management. The sequence diagram will represent how these entities communicate to update a moderator's account details.
+
+Below is a detailed sequence diagram in PlantUML syntax for this user story:
+
+```plantuml
+@startuml
+actor Moderator
+participant "Web Interface" as Web
+participant "Backend Server" as Server
+database "Account Database" as DB
+
+Moderator -> Web : Navigates to Account Settings
+activate Web
+Web -> Server : Request to view current account details
+activate Server
+Server -> DB : Fetch account details
+activate DB
+DB --> Server : Return account details
+deactivate DB
+Server --> Web : Display current account details
+deactivate Server
+Web --> Moderator : Shows account details form
+deactivate Web
+
+Moderator -> Web : Inputs updated account details
+activate Web
+Web -> Server : Submit updated account details
+activate Server
+Server -> DB : Update account details
+activate DB
+DB --> Server : Confirm details updated
+deactivate DB
+Server --> Web : Acknowledge successful update
+deactivate Server
+Web --> Moderator : Display update success message
+deactivate Web
+
+@enduml
+```
+
+This diagram starts with the "Moderator" initiating the process by navigating to their Account Settings page on the AEPT's web interface. The Web Interface then communicates with the Backend Server to fetch the current account details from the Account Database. Once fetched, these details are displayed to the Moderator, who can enter their updated account details into the form presented by the web interface.
+
+Upon submission of the updated details, the Web Interface sends this new information to the Backendserver, which will then update the account details in the Account Database. Finally, a confirmation of the successful update is sent back to the Moderator via the Web Interface.
+
+This sequence diagram focuses on the high-level interaction and omits specific implementation details such as HTTP methods, security considerations (like authentication and validation processes), and the internal logic of how the Backend Server processes the update request. These aspects can be elaborated upon based on the specific technical architecture and requirements of the AEPT project.

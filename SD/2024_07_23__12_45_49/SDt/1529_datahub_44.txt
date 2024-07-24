@@ -1,0 +1,26 @@
+@startuml
+actor Publisher
+participant "UI" as UI
+participant "Server" as Server
+participant "VersioningSystem" as Versioning
+participant "DataStorage" as Storage
+
+Publisher -> UI : Select "Manage Data Packages"
+UI -> Server : Request tagged versions list
+Server -> Versioning : Query tagged versions
+Versioning -> Storage : Fetch metadata for tagged versions
+Storage -> Versioning : Return metadata
+Versioning -> Server : List of tagged versions
+Server -> UI : Display tagged versions
+UI -> Publisher : Show list of tagged versions
+
+Publisher -> UI : Select a version to review
+UI -> Server : Request selected version
+Server -> Versioning : Query specific version details
+Versioning -> Storage : Fetch version data
+Storage -> Versioning : Return version data
+Versioning -> Server : Specific version details
+Server -> UI : Display version details
+UI -> Publisher : Show version data
+
+@enduml

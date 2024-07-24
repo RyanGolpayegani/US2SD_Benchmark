@@ -1,0 +1,24 @@
+@startuml
+!theme amiga
+
+actor User as user
+participant "UI" as ui
+participant "CMS" as cms
+participant "Video Processing\nService" as vps
+participant "Database" as db
+
+== View Thumbnail Sequences of Video Segments ==
+user -> ui: Request video thumbnails
+ui -> cms: Fetch video ID
+cms -> db: Query video metadata
+db -> cms: Return video metadata
+cms -> vps: Request thumbnail generation\n(video ID, timestamps)
+vps -> db: Access video file
+db -> vps: Return video file
+vps -> vps: Generate thumbnails
+vps -> db: Store thumbnail metadata & URLs
+db -> vps: Confirm storage
+vps -> cms: Return thumbnail URLs
+cms -> ui: Display thumbnails
+ui -> user: Show thumbnail sequences
+@enduml

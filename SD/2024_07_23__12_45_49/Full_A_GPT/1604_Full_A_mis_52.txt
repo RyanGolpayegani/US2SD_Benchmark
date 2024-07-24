@@ -1,0 +1,36 @@
+Certainly! Below is a sequence diagram in PlantUML format, detailing how a collection curator can view the referrers for visitors who use resolver-abstracted links to reach collection items. This scenario assumes the system has functionality to log and display referrer data for each visit through abstracted links.
+
+```plantuml
+@startuml
+actor Curator as curator
+participant "EDRMS Interface" as edrms
+participant "Database" as db
+participant "Analytics Engine" as analytics
+participant "Resolver Service" as resolver
+
+curator -> edrms : Request item referrer data
+edrms -> db : Query for item ID
+db -> edrms : Return item ID
+edrms -> analytics : Request referrer stats for item ID
+analytics -> db : Query referrer logs
+db -> analytics : Return referrer data
+analytics -> edrms : Provide summarized referrer info
+edrms -> curator : Display referrer data
+
+note over curator, resolver: Resolver Service redirects visitors\nto the repository item using abstracted links.\nIt logs the referrer URL for each visitor.
+
+note over analytics: Analytics Engine processes and aggregates\nreferrer data for easy interpretation by the curator.
+
+@enduml
+```
+
+This sequence diagram outlines the interaction process:
+
+1. The **Curator** requests to view the referrer data for visitors accessing their collection items via abstracted links.
+2. The **EDRIMS Interface** receives the request and queries the **Database** to obtain the specific item ID.
+3. After retrieving the item ID, the EDRMS Interface asks the **Analytics Engine** for the referrer statistics associated with that item.
+4. The **Analytics Engine** queries the database to gather all referrer logs linked to the requested item.
+5. The **Database** returns the raw referrer data to the Analytics Engine, which then processes and summarizes this information.
+6. Finally, the **EDRMS Interface** displays the summarized referrer data to the Curator.
+
+This diagram assumes the system includes a resolver service that logs each redirect from an abstracted link to the repository items, capturing the referrer URL in the process. It also assumes an analytics component is in place to process these logs and provide meaningful statistics to the curators.

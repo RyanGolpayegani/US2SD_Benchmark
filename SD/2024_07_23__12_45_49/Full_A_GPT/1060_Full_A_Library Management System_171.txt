@@ -1,0 +1,47 @@
+Creating a detailed Sequence Diagram for the provided user story involves visualizing the interaction between various components of the Comprehensive Library Management System (CLMS) when a library member is to receive due date notifications for the books. Below is a PlantUML code that represents these interactions.
+
+```plantuml
+@startuml
+actor LibraryMember as member
+participant "Notification Service" as notification
+participant "Database" as db
+participant "Email Service" as email
+participant "SMS Service" as sms
+
+== Receive Due Date Notifications ==
+
+member -> notification: Checks for upcoming due dates
+activate notification
+
+notification -> db: Query due dates for member's borrowed books
+activate db
+db --> notification: Due dates data
+deactivate db
+
+notification -> email: Prepares due date notification email
+activate email
+email -> member: Sends due date email notification
+deactivate email
+
+notification -> sms: Prepares due date SMS notification
+activate sms
+sms -> member: Sends due date SMS notification
+deactivate sms
+
+deactivate notification
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Library Member**: The actor who interacts with the system to trigger the process. This process might be automatically triggered by the system as well based on a predefined schedule.
+
+2. **Notification Service**: A service component of CLMS that checks for the due dates of borrowed books for library members. It serves as the central logic coordinating the notification process.
+
+3. **Database**: This component stores all data related to books, borrowings, and members. The Notification Service queries this component to retrieve the due dates for the library member's borrowed books.
+
+4. **Email Service**: One of the channels through which notifications about due dates are sent. The Notification Service prepares an email notification with the due dates.
+
+5. **SMS Service**: Another channel for sending notifications about due dates. The Notification Service also prepares an SMS notification for sending due date alerts.
+
+In this sequence, the Notification Service acts upon the receipt of a trigger (or periodically) to check for due dates of borrowed books for a library member. It queries the database to fetch these dates and then prepares notifications via email and SMS, which are sent to the library member. This diagram does not explicitly cover error handling or the scheduling mechanism for simplicity.

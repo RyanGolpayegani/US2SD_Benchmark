@@ -1,0 +1,25 @@
+@startuml
+participant Chef_UI as UI
+participant Auth_Service as Auth
+participant Inventory_Service as Inventory
+participant Database as DB
+
+UI -> Auth: authenticate(chefCredentials)
+Auth --> UI: isAuthenticated()
+
+alt Authentication Success
+    UI -> Inventory: getLowStockItems(threshold)
+    Inventory -> DB: queryLowStockItems(threshold)
+    DB --> Inventory: lowStockItemsList
+    Inventory --> UI: showLowStockItems(lowStockItemsList)
+    loop for each item in lowStockItemsList
+        UI -> Inventory: getSupplierInfo(itemId)
+        Inventory -> DB: querySupplierInfo(itemId)
+        DB --> Inventory: supplierInfo
+        Inventory --> UI: displaySupplierInfo(supplierInfo)
+    end
+else Authentication Failed
+    UI --> Chef_UI: displayAuthError()
+end
+
+@enduml

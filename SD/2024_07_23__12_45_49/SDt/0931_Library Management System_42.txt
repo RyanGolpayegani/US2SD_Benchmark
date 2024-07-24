@@ -1,0 +1,19 @@
+@startuml
+participant Librarian as librarian
+participant "Library Management\nSystem Interface" as system
+participant "Database" as db
+participant "Notification\nService" as notifier
+
+librarian -> system : Access delete book feature
+system -> db : Search for book details
+db --> system : Display book details
+system --> librarian : Show book details & confirm deletion
+librarian -> system : Confirm deletion
+system -> db : Delete book record
+db --> system : Confirm deletion success
+alt if book was reserved or in high demand
+    system -> notifier : Send notifications to interested users
+    notifier -> system : Confirmation of notifications sent
+end
+system --> librarian : Show success message
+@enduml

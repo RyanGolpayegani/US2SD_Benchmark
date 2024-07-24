@@ -1,0 +1,42 @@
+To illustrate the interaction involved for a repository manager to know all the collections and objects in the DAMS for which they have custodial responsibility, the following sequence diagram in PlantUML syntax is provided. This diagram demonstrates the communication between the repository manager (user), the DIMS system interface, and the underlying services responsible for fetching and presenting the required information.
+
+```plantuml
+@startuml
+actor "Repository Manager" as repoManager
+participant "DIMS Interface" as dimsInterface
+participant "Access Control" as accessControl
+database "Collections Database" as collectionsDB
+
+== Get Collections and Objects with Custodial Responsibility ==
+
+repoManager -> dimsInterface : Request Collections and Objects
+dimsInterface -> accessControl : Validate Access Rights(repoManagerID)
+activate accessControl
+accessControl --> dimsInterface : Access Granted
+deactivate accessControl
+dimsInterface -> collectionsDB : Fetch Collections(repoManagerID)
+activate collectionsDB
+collectionsDB --> dimsInterface : Collections Data
+deactivate collectionsDB
+dimsInterface -> collectionsDB : Fetch Objects(repoManagerID)
+activate collectionsDB
+collectionsDB --> dimsInterface : Objects Data
+deactivate collectionsDB
+dimsInterface -> repoManager : Display Collections and Objects
+@enduml
+```
+
+### Explanation:
+1. **Repository Manager requests Collections and Objects:** This is the initial step where the repository manager initiates a request through the DIMS interface to view all collections and objects for which they have custodial responsibility.
+   
+2. **DIMS Interface validates Access Rights:** The DIMS interface, upon receiving the request, interacts with the Access Control component to validate the repository manager's rights to access the requested information.
+
+3. **Access Control grants or denies access:** The Access Control component determines whether the repository manager has the appropriate rights. If access is granted, the process continues; if not, an error message or a denial of access is issued.
+
+4. **Fetching Collections data:** Once access is granted, the DIMS Interface inquires the Collections Database to retrieve all collections linked to the repository manager's ID. This step includes getting information about each collection that the manager has custodial responsibility for.
+
+5. **Fetching Objects data:** Similar to the collections data fetching, this step involves retrieving details about objects within those collections, again based on the repository manager's ID.
+
+6. **Displaying Collections and Objects to the Repository Manager:** Finally, the gathered information about collections and objects is presented to the repository manager through the DIMS Interface. This allows the manager to oversee and manage their custodial responsibilities effectively.
+
+This sequence diagram outlines the high-level interactions involved in enabling a repository manager to view collections and objects they supervise in the DAMS, focusing on access control and data retrieval processes facilitated by DIMS.

@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the described user story involves mapping out the interaction between actors and the system components when a library staff member applies or removes an embargo on an item upon the request of an item author. Below is a PlantUML code that illustrates this process:
+
+```plantuml
+@startuml
+
+actor "Library Staff" as staff
+actor "Item Author" as author
+boundary "Digital Repository System" as system
+database "Repository Database" as db
+
+== Request for Embargo Application/Removal ==
+author -> staff: Request embargo application/removal
+staff -> system: Authenticate login
+
+alt Applying Embargo
+    staff -> system: Select item for embargo
+    system -> db: Query item details
+    db --> system: Return item details
+    staff -> system: Apply embargo with specified parameters (e.g., duration)
+    system -> db: Update item with embargo details
+    db --> system: Confirm embargo applied
+    system --> staff: Display confirmation message
+else Removing Embargo
+    staff -> system: Select item for embargo removal
+    system -> db: Query item with embargo details
+    db --> system: Return item details
+    staff -> system: Request embargo removal
+    system -> db: Update item to remove embargo
+    db --> system: Confirm embargo removed
+    system --> staff: Display confirmation message
+end
+
+@enduml
+```
+
+This sequence diagram starts with an "Item Author" requesting the application or removal of an embargo to a "Library Staff" member. The staff member then logs into the "Digital Repository System" to perform the requested action. If the action is to apply an embargo, the staff member selects the item, applies the embargo with the specified parameters (such as the duration of the embargo), and the system updates the item details in the repository database. Conversely, if the action is to remove an embargo, the staff member selects the embargoed item, requests the removal of the embargo, and the system updates accordingly.
+
+The "Digital Repository System" interacts with the "Repository Database" to query and update item details based on the actions taken by the library staff. Confirmation messages are displayed to the staff member upon successful application or removal of an embargo.
+
+This diagram provides a simplified view focused on the main interactions and does not delve into error handling and other system functionalities that would also be part of a comprehensive implementation.

@@ -1,0 +1,37 @@
+Given the user story at hand, to create a detailed sequence diagram in Plant UML format, one would need to illustrate the interaction between the library member, the user interface (UI), and the back-end system components involved in looking up books by an author. The components involved typically include the UI, a controller to handle the request, the business logic layer, and the database where book information is stored.
+
+Below is a simplistic representation of how a sequence diagram for this scenario could be structured in PlantUML format. This example assumes a simple flow where a library member searches for books by a specific author, and the system responds with a list of books authored by the specified individual.
+
+```plantuml
+@startuml
+actor LibraryMember as member
+participant "UI" as UI
+participant "SearchController" as controller
+participant "BookService" as service
+database "Database" as db
+
+member -> UI : Search for books by author
+UI -> controller : Request(bookSearchByAuthor)
+controller -> service : SearchBooksByAuthor(authorName)
+service -> db : QueryBooksByAuthor(authorName)
+db -> service : ReturnBooksList
+service -> controller : BooksList
+controller -> UI : ShowBooksList
+UI -> member : DisplayBooksList
+@enduml
+```
+
+Explanation:
+1. **LibraryMember (member)**: This is the actor initiating the process by searching for books by a specific author through the user interface.
+
+2. **UI**: Represents the front-end interface through which the library member interacts with the system. It receives the input (author's name) from the library member and forwards it to the `SearchController` for processing.
+
+3. **SearchController (controller)**: Acts as an intermediary that handles the request from the UI. It takes the author's name as input and calls the appropriate service (`BookService`) to process the query.
+
+4. **BookService (service)**: This represents the business logic layer where the search functionality resides. It receives the author's name, interacts with the database to fetch books by the specified author, and returns a list of books found.
+
+5. **Database (db)**: The database where all book information is stored. It processes the query sent by `BookService` and returns the results (books by the author).
+
+6. **Flow**: The sequence starts with the library member searching for books by an author, which is processed through the UI, controller, and service layers, eventually querying the database. The resulting list of books is then passed back through the layers to the UI, which displays the results to the member.
+
+This example illustrates a basic flow without considering error handling or more complex interactions such as pagination or sorting, which could be included in a more detailed implementation.

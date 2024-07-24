@@ -1,0 +1,23 @@
+@startuml
+participant Reader
+participant "Front End" as FE
+participant "Back End" as BE
+database DB
+participant "Recommendation \n Engine" as RE
+
+Reader -> FE : Request bestseller books
+FE -> BE : Get bestseller list
+activate BE
+BE -> DB : Query bestseller criteria
+activate DB
+DB --> BE : Return book data
+deactivate DB
+BE -> RE : Determine bestsellers
+activate RE
+RE --> BE : Bestseller book list
+deactivate RE
+BE --> FE : Send bestseller books
+FE --> Reader : Display bestseller books
+deactivate BE
+
+@enduml

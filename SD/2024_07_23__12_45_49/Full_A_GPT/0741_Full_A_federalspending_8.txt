@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram in PlantUML for the user story you've described requires outlining the steps and interactions between different actors and components when a Developer wants to modify the updates on a Federal Assistance Broker Submission (FABS) as its `publishStatus` changes.
+
+The following is a simple example of how these interactions could be documented in PlantUML syntax, focusing on the main steps that would occur. Note that actual implementations may involve more complex interactions and additional steps, especially concerning error handling and security checks, which are not included in this basic outline.
+
+```plantuml
+@startuml
+actor Developer
+entity "FABS Submission System" as FABS
+database "Broker Database" as BrokerDB
+entity "Notification Service" as Notification
+entity "Logging Service" as Logging
+
+Developer -> FABS : Request to update FABS submission
+alt Submission found and update requested
+    FABS -> BrokerDB : Query submission by ID
+    BrokerDB -> FABS : Return submission details
+    FABS -> FABS : Validate update request
+    alt Update valid
+        FABS -> BrokerDB : Update submission details\n(Change publishStatus)
+        BrokerDB -> FABS : Confirm update
+        FABS -> Developer : Notify update success
+        FABS -> Notification : Trigger status change notification
+        Notification -> Developer : Send status change notification
+        FABS -> Logging : Log change and notification
+    else Update invalid
+        FABS -> Developer : Notify update failure
+        FABS -> Logging : Log attempted update and failure
+    end
+else Submission not found
+    FABS -> Developer : Error message (Submission not found)
+    FABS -> Logging : Log error
+end    
+@enduml
+```
+
+### Explanation of the Diagram:
+- **Developer**: Initiates the process by requesting an update to a FABS submission, specifically when `publishStatus` changes.
+- **FABS Submission System (FABS)**: The central system where the Developer submits the request. It handles validations, updates, notifications, and logging regarding submission updates.
+- **Broker Database (BrokerDB)**: Stores all the details about FABS submissions. It is queried to get the submission details and is where the update takes place.
+- **Notification Service**: Manages sending notifications to relevant stakeholders (in this case, likely the Developer or a related team) when the `publishStatus` of a submission changes.
+- **Logging Service**: Used for recording the sequence of actions, successes, and failures for troubleshooting and auditing purposes.
+
+This sequence diagram is a high-level representation. The actual implementation might include additional components such as user authentication, more detailed error handling, interaction with other microservices, and compliance checks before performing operations in the database.

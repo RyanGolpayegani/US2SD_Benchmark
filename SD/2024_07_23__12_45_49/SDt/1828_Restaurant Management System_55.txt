@@ -1,0 +1,31 @@
+@startuml
+participant CustomerUI
+participant SystemAPI
+participant BackendServer
+participant Database
+
+== Cook Updates Estimated Cook Time ==
+Cook -> BackendServer: Login
+BackendServer --> Cook: Authentication success
+
+Cook -> BackendServer: Request to update dish with new cook time
+BackendServer -> Database: Process update request
+Database --> BackendServer: Update confirmed
+
+BackendServer --> Cook: Update successful
+
+== Customer Places Order ==
+CustomerUI -> SystemAPI: Request menu
+SystemAPI -> BackendServer: Fetch menu with cook times
+BackendServer -> Database: Get menu items and cook times
+Database --> BackendServer: Return menu data
+BackendServer --> SystemAPI: Menu data with cook times
+SystemAPI --> CustomerUI: Display menu with estimated times
+
+CustomerUI -> SystemAPI: Place order with selected items
+SystemAPI -> BackendServer: Process order
+BackendServer -> Database: Record new order
+Database --> BackendServer: Order confirmation
+BackendServer --> SystemAPI: Order placed successfully
+SystemAPI --> CustomerUI: Display order confirmation and wait times
+@enduml

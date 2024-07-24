@@ -1,0 +1,33 @@
+@startuml
+actor Chef as chef
+participant "UI: Chef Dashboard" as UI
+participant "Backend: Menu Management Service" as Backend
+participant "Database" as DB
+
+== Ingredient Writing and Allergy Information Update ==
+
+chef -> UI : Selects 'Update Ingredient List'
+UI -> Backend : Request to update ingredients for a dish
+activate Backend
+
+Backend -> DB : Fetch current ingredients
+activate DB
+DB --> Backend : Current ingredients data
+deactivate DB
+
+Backend --> UI : Show current ingredients
+UI --> chef : Display ingredients
+
+chef -> UI : Add/Update ingredients & specify allergies
+UI -> Backend : Sends updated ingredients & allergy info
+activate Backend
+
+Backend -> DB : Update ingredient & allergy info
+activate DB
+DB --> Backend : Confirmation
+deactivate DB
+
+Backend --> UI : Update confirmation
+UI --> chef : Display confirmation message
+
+@enduml

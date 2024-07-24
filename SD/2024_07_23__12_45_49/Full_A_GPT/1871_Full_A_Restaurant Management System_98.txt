@@ -1,0 +1,48 @@
+Creating a detailed sequence diagram for the mentioned user story, "As a manager, I want to be able to edit customer orders," involves visualizing how different system components and actors interact to accomplish order editing. Here is a PlantUML code snippet that illustrates this interaction.
+
+```plantuml
+@startuml
+actor Manager as M
+participant "Management Interface" as MI
+participant "Order Management System" as OMS
+participant "Database" as DB
+
+M -> MI : Request to edit order
+activate MI
+MI -> OMS : Retrieve order details
+activate OMS
+OMS -> DB : Query order info
+activate DB
+DB -> OMS : Return order info
+deactivate DB
+OMS -> MI : Display order details
+deactivate OMS
+M -> MI : Provides new order details
+MI -> OMS : Send updated order info
+activate OMS
+OMS -> DB : Update order in DB
+activate DB
+DB --> OMS : Confirmation of update
+deactivate DB
+OMS --> MI : Confirm order updated
+deactivate OMS
+MI --> M : Display success message
+deactivate MI
+@enduml
+```
+
+Description of the interactions in the diagram:
+
+1. The manager requests to edit an order through the Management Interface.
+2. The Management Interface forwards this request to the Order Management System to retrieve the current details of the order.
+3. The Order Management System queries the Database for the specified order's information.
+4. The Database returns the requested order information to the Order Management System.
+5. The Order Management System then sends this information back to the Management Interface, where it is displayed to the manager.
+6. The manager inputs the new order details into the Management Interface.
+7. The Management Interface forwards these updated order details to the Order Management System.
+8. The Order Management System updates the order in the Database with the provided information.
+9. The Database confirms the update to the Order Management System.
+10. The Order Management System confirms to the Management Interface that the order has been updated.
+11. Finally, the Management Interface displays a success message to the manager, confirming that the order update process is complete.
+
+This sequence diagram outlines the basic interactions required for a manager to edit an order within a Restaurant Management and Operations System. Each step in the sequence ensures that order changes are accurately captured and stored, maintaining data integrity and reflecting the manager's adjustments promptly.

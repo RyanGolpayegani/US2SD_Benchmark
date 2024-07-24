@@ -1,0 +1,49 @@
+@startuml
+actor Manager as manager
+participant "Management Interface" as managementUI
+participant "Reporting Module" as reportingModule
+database "Database" as db
+
+manager -> managementUI: Access Reporting Section
+activate managementUI
+managementUI -> reportingModule: Request Report Generation Options
+activate reportingModule
+
+reportingModule -> db: Query Required Data
+activate db
+db -> reportingModule: Return Queried Data
+deactivate db
+
+reportingModule -> reportingModule: Process Data for Reports
+reportingModule -> managementUI: Display Report Types (Weekly, Monthly)
+managementUI -> manager: Choose Report Type (Weekly/Monthly)
+manager -> managementUI: Select Weekly Report
+managementUI -> reportingModule: Generate Weekly Report
+
+reportingModule -> db: Fetch Weekly Data
+activate db
+db -> reportingModule: Return Weekly Data
+deactivate db
+
+reportingModule -> reportingModule: Compile Weekly Report
+reportingModule -> managementUI: Display Weekly Report
+managementUI -> manager: Show Weekly Report
+deactivate managementUI
+
+manager -> managementUI: Request Monthly Report
+activate managementUI
+managementUI -> reportingModule: Generate Monthly Report
+activate reportingHelmetModule
+
+reportingModule -> db: Fetch Monthly Data
+activate db
+db -> reportingModule: Return Monthly Data
+deactivate db
+
+reportingModule -> reportingModule: Compile Monthly Report
+reportingModule -> managementUI: Display Monthly Report
+managementUI -> manager: Show Monthly Report
+
+deactivate reportingModule
+deactivate managementUI
+@enduml

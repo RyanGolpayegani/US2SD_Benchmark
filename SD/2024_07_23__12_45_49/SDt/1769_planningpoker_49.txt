@@ -1,0 +1,34 @@
+@startuml
+participant User
+participant "Web Interface" as Web
+participant "Backend Server" as Backend
+participant "Database" as DB
+
+User -> Web : Enters text in preferred language
+activate Web
+
+Web -> Backend : Validates input and converts to Unicode
+activate Backend
+
+alt Valid Unicode
+    Backend -> DB : Stores text in Unicode format
+    activate DB
+    DB --> Backend : Confirm text stored
+    deactivate DB
+    
+    Backend -> Backend : Prepare confirmation message
+    Backend --> Web : Confirmation (Text in preferred language is saved)
+else Invalid Unicode
+    Backend -> Backend : Prepare error message
+    Backend --> Web : Error (Unsupported text)
+end
+deactivate Backend
+
+alt Confirmation Received
+    Web --> User : Display confirmation message
+else Error Received
+    Web --> User : Display error message
+end
+
+deactivate Web
+@enduml

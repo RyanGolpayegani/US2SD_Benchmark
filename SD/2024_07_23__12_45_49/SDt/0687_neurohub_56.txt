@@ -1,0 +1,37 @@
+@startuml
+participant "System Administrator" as Admin
+participant "Old NeuroHub" as OldHub
+participant "Migration Tool" as MigrationTool
+participant "Current NeuroHub" as NewHub
+
+Admin -> MigrationTool: Initiate migration process
+activate MigrationTool
+
+MigrationTool -> OldHub: Validate version compatibility
+activate OldHub
+OldHub --> MigrationTool: Validation result
+deactivate OldHub
+alt if compatible
+
+  MigrationTool -> OldHub: Extract data & metadata
+  activate OldHub
+  OldHub --> MigrationTool: Data & metadata
+  deactivate OldHub
+
+  MigrationTool -> NewHub: Transform data & metadata (if necessary)
+  activate MigrationTool
+  deactivate MigrationTool
+
+  MigrationTool -> NewHub: Import data & metadata
+  activate NewHub
+  NewHub --> MigrationTool: Confirmation of import
+  deactivate NewField
+
+  MigrationTool --> Admin: Migration success message
+else not compatible
+
+  MigrationTool --> Admin: Error message (incompatibility)
+end
+
+deactivate MigrationTool
+@enduml

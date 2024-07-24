@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+participant User as user
+participant "UI" as ui
+participant "API Gateway" as api
+participant "Video Upload Service" as upload
+participant "Tagging Service" as tagging
+participant "Database" as db
+participant "Search Index" as search
+
+user -> ui : Selects video and tags for upload
+ui -> api : POST /videos/upload (video, tags)
+api -> upload : Validate video and extract metadata
+upload -> tagging : Extract tags
+tagging -> db : Store tags associated with video ID
+db -> search : Update search index with new tags
+search --> tagging : Confirm index updated
+tagging --> upload : Tags processed and stored
+upload -> db : Store video metadata and reference to tags
+db --> upload : Confirm video and tags stored
+upload --> api : Return success response
+api --> ui : Display upload success message
+ui --> user : Show confirmation and make tags available for further processing
+
+@enduml

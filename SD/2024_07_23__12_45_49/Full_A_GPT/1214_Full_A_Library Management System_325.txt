@@ -1,0 +1,38 @@
+Creating a detailed Sequence Diagram for the user story "As a staff, I want to add books with shelf number" requires illustrating the interactions between different components and participants involved in adding a book to the Comprehensive Library Management Silvaem (CLMS). Below is a PlantUML code snippet representing the sequence diagram for this functionality:
+
+```plantuml
+@startuml
+participant "Staff Interface" as SI
+participant "Validation Module" as VM
+database "Library Database" as DB
+participant "Notification Service" as NS
+
+SI -> VM: Enter book details\nand shelf number
+VM -> VM: Validate details
+alt Validation Success
+    VM -> DB: Add book record
+    DB --> VM: Confirmation
+    VM --> SI: Display success message
+    SI -> NS: Send update notification
+    NS --> SI: Confirmation of notification sent
+else Validation Failure
+    VM --> SI: Display error message
+end
+
+@endnite
+```
+
+### Explanation of the Sequence Diagram
+
+1. **Staff Interface (SI) to Validation Module (VM):** The process begins with the staff entering the book details and the shelf number into the system via the Staff Interface. This information is then forwarded to the Validation Module.
+
+2. **Validation Module (VM) Self-interaction:** The Validation Module checks the entered details for correctness and completeness.
+
+3. **Validation Process:**
+   - **Success Path:** If the validation is successful, the Validation Module sends a request to the Library Database to add the new book record, including the shelf number.
+     - **Library Database (DB) to Validation Module (VM):** The Library Database confirms the addition of the book.
+     - **Validation Module (VM) to Staff Interface (SI):** A success message is displayed to the staff through the Staff Interface.
+     - **Notification Process:** The Staff Interface then triggers the Notification Service to send out notifications about the new addition, after which the Notification Service confirms the action.
+   - **Failure Path:** If the validation fails (e.g., missing information or invalid details), the Validation Module directly sends an error message to the Staff Interface, indicating the failure to add the book.
+
+This sequence diagram is structured to show the logical flow of interactions for adding a book to the library system in the context of the Comprehensive Library Management System project. Depending on specific project requirements or technological constraints, additional details or steps may be added to the diagram.

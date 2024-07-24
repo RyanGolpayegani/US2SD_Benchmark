@@ -1,0 +1,29 @@
+@startuml
+participant Depositor as depositor
+participant "Depositor Interface" as UI
+participant "Ingest Service" as Ingest
+participant "Validation Service" as Validation
+participant "Notification Service" as Notification
+
+depositor -> UI : Submit Files
+activate UI
+
+UI -> Ingest : Ingest Files
+activate Ingest
+
+Ingest -> Validation : Validate Files
+activate Validation
+
+alt Files are invalid or not well-formed
+    Validation -> Depositor : Alert: Files Invalid/Not Well-Formed
+else Files are valid
+    Validation -> Ingest : Proceed with Ingestion
+    Ingest -> Notification : Generate Success Notification
+    Notification -> Depositor : Alert: Files Successfully Ingested
+end
+
+deactivate Validation
+deactivate Ingest
+deactivate UI
+
+@enduml

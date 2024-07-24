@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for the described user story in Plant UML format requires outlining the steps involved when the UnivIT service stores archived data on existing storage systems, ensuring data consistency, maintainability, and future availability. Let's break down these interactions:
+
+1. **UnivIT Service Request**: The process begins with the UnivIT service deciding to store a dataset.
+2. **Validate Data**: Before storing data, it must be validated to ensure it meets storage criteria.
+3. **Check Storage Availability**: The system needs to check if there's sufficient storage available.
+4. **Archive Data**: The data is then archived (compressed and prepared for storage).
+5. **Store Data**: The dataset is stored in the existing storage system.
+6. **Log Storage Operation**: The operation is logged for future audits and tracking.
+7. **Update Metadata**: Metadata for the dataset is updated to reflect its storage location and status.
+8. **Notify Success**: Confirm the successful storage of data back to the UnivIT service.
+
+Here's how the sequence diagram for these interactions might look in Plant UML syntax:
+
+```plantuml
+@startuml
+actor UnivITService as UnivIT
+entity ValidationService as Validate
+entity StorageService as Storage
+database StorageSystem as DB
+entity LoggingService as Log
+entity MetadataService as Metadata
+
+UnivIT -> Validate : Validate dataset
+Validate -> Storage : Request to check storage availability
+Storage -> DB : Check available space
+DB -> Storage : Confirm available space
+Storage -> UnivIT : Storage space confirmed
+
+UnivIT -> Storage : Archive and store dataset
+Storage -> DB : Store archived data
+DB -> Storage : Confirm data stored
+Storage -> Log : Log storage operation
+Log -> Storage : Confirm operation logged
+
+Storage -> Metadata : Update dataset metadata
+Metadata -> Storage : Metadata updated
+
+Storage -> UnivIT : Confirm data stored successfully
+
+@enduml
+```
+
+This diagram illustrates the basic interactions based on the project description and the specific user story focusing on the UnivIT service's role in storing archived data. The sequence outlined ensures data is validated, stored properly, and any related metadata is updated accordingly, aiming for consistent and maintainable university data storage with guaranteed future availability.

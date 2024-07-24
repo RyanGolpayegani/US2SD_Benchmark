@@ -1,0 +1,31 @@
+@startuml
+participant SiteEditor as SE
+participant Dashboard as DB
+participant FAQManagementSystem as FAQ
+database FAQDatabase as DBS
+
+SE -> DB: Log in to dashboard
+activate DB
+
+DB -> SE: Display dashboard options
+SE -> FAQ: Select manage FAQ option
+activate FAQ
+
+FAQ -> DBS: Retrieve existing FAQs
+activate DBS
+
+DBS -> FAQ: Return existing FAQs
+FAQ -> SE: Show current FAQs
+
+SE -> FAQ: Add/Update/Delete FAQ
+activate FAQ
+FAQ -> DBS: Update FAQ database
+activate DBS
+
+DBS -> FAQ: Confirm update
+FAQ -> SE: Show update confirmation
+
+deactivate DBS
+deactivate FAQ
+deactivate DB
+@enduml

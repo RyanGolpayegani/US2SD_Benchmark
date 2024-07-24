@@ -1,0 +1,53 @@
+Creating a detailed sequence diagram for the user story "As a user, I want to filter the files I get from search results based on their type" involves illustrating the interaction between different components of the Neurohub platform to fulfill this request. We'll use PlantUML syntax to outline this process, starting from the user's action in the web interface through the backend processing and back to the display of filtered results.
+
+```plantuml
+@startuml
+participant UserInterface as UI
+participant SearchModule as SM
+participant FilterModule as FM
+participant Database as DB
+
+UI -> SM: initiateSearch(query)
+activate SM
+SM -> DB: fetchResults(query)
+activate DB
+DB --> SM: results
+deactivate DB
+
+SM -> FM: filterResults(results, fileType)
+activate FM
+FM -> DB: getFilesOfType(fileType)
+activate DB
+DB --> FM: filteredResults
+deactivate DB
+
+FM --> SM: filteredResults
+deactivate FM
+SM --> UI: displayResults(filteredResults)
+deactivate SM
+
+UI -> User: showFilteredResults(filteredResults)
+@enduml
+```
+
+### Explanation:
+
+1. **UserInterface (UI) to SearchModule (SM):** The sequence begins with the user initiating a search through the UI. This action triggers the UI to send the search query to the SearchModule.
+
+2. **SearchModule (SM) to Database (DB):** The SM then requests the Database for results based on the query. 
+
+3. **Database (DB) to SearchModule (SM):** The Database returns the complete search results to the SM.
+
+4. **SearchModule (SM) to FilterModule (FM):** The SM sends these results to the FilterModule, requesting it to filter the results based on the specified file type.
+
+5. **FilterModule (FM) to Database (DB):** To accomplish the filtering, the FM might need to query the Database for files of the specific type if not already discernible from the provided results.
+
+6. **Database (DB) to FilterModule (FM):** The Database returns the filtered results, now limited to files of the specified type, to the FM.
+
+7. **FilterModule (FM) to SearchModule (SM):** The FM sends these filtered results back to the SM.
+
+8. **SearchModule (SM) to UserInterface (UI):** The SM then sends the filtered results back to the UI.
+
+9. **UserInterface (UI) to User:** Finally, the UI displays the filtered search results to the user.
+
+This sequence diagram uses a simplified abstraction to illustrate the components involved in filtering search results by file type. Actual implementation may involve additional layers of interaction, error handling, and security considerations.

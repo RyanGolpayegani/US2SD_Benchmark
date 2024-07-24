@@ -1,0 +1,53 @@
+Given the requirements and context provided, below is a detailed sequence diagram represented in PlantUML format for the user story: "As an estimator, I want to join a game by entering my name on the page I received the URL for, so that I can participate." This diagram outlines the interaction between the system components when an estimator attempts to join a game.
+
+```plantuml
+@startuml
+participant UserInterface as UI
+participant "Join Game Form" as JGF
+participant "Game Server" as GS
+database "Game Database" as GD
+
+UI -> JGF: Enter URL
+note over JGF: URL contains game ID
+JGF -> JGF: Validate URL format
+alt URL is valid
+    JGF -> UI: Request Name Input
+    UI -> JGF: Submit Name
+    JGF -> GS: Request to join game (Name, Game ID)
+    GS -> GD: Check Game Status (Game ID)
+    alt Game exists and is accepting players
+        GD -> GS: Game details
+        GS -> GD: Add Estimator (Name, Game ID)
+        GD --> GS: Confirmation
+        GS -> UI: Join Success
+        UI -> UserInterface : Display Game Session
+    else Game does not exist or not accepting
+        GS -> UI: Error Message (Game not available)
+    end
+else URL is invalid
+    JGF -> UI: Error Message (Invalid URL)
+end
+@enduml
+```
+
+**Explanation of Steps:**
+
+1. **Enter URL:** The estimator interacts with the User Interface (UI) where they enter the URL they received, which directs them to the Join Game Form (JGF).
+
+2. **Validate URL format:** The JGF checks if the URL structure contains a game ID and is in a valid format.
+
+3. **URL Validity Outcomes:**
+   - **If the URL is valid:**
+     - The form requests the estimator to input their name.
+     - The estimator submits their name through the UI.
+     - The Join Game Form sends a request to join the game, including the submitted name and the game ID extracted from the URL, to the Game Server (GS).
+     - The Game Server checks with the Game Database (GD) if the game exists and is currently accepting new players.
+     - If the game is found and is open for joining:
+       - The Game Database updates to add the estimator to the game.
+       - The Game Server confirms the addition to the UI, and the estimator is successfully added to the game session.
+     - If the game does not exist or is not accepting new players:
+       - The Game Server sends an error message to the UI indicating the game is not available.
+   - **If the URL is invalid:**
+     - The Join Game Form sends an error message to the UI indicating the URL is invalid.
+
+This sequence diagram illustrates the interaction flow for an estimator attempting to join an agile estimation game using a provided URL.

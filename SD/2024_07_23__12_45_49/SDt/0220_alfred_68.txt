@@ -1,0 +1,29 @@
+@startuml
+participant OlderPerson
+participant ALFRED_Interface as ALFRED
+database PreferencesDB
+database ScheduleDB
+
+== Initialization ==
+OlderPerson -> ALFRED: "Initiate day start"
+activate ALFRED
+ALFRED -> PreferencesDB: "Retrieve user preferences"
+activate PreferencesDB
+PreferencesDB --> ALFRED: "Preferences data"
+deactivate PreferencesDB
+
+ALFRED -> ScheduleDB: "Retrieve today's schedule"
+activate ScheduleDB
+ScheduleDB --> ALFRED: "Schedule data"
+deactivate ScheduleDB
+
+== Process ==
+ALFRED -> ALFRED: "Determine items based on schedule and preferences"
+ALFRED --> OlderPerson: "Reminder: Items to bring today"
+deactivate ALFRED
+
+OlderPerson -> ALFRED: "Acknowledge"
+activate ALFRED
+ALFRED --> OlderPerson: "Acknowledgement received"
+deactivate ALFRED
+@enduml

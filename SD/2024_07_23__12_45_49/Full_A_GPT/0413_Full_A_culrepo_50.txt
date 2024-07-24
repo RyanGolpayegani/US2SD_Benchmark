@@ -1,0 +1,61 @@
+Creating a detailed PlantUML sequence diagram to represent the interactions for the described user story involves laying out the sequence of actions that occur when a student wants to learn about Cornell faculty engaged in research related to a specific topic. The user story involves several steps such as searching for the topic, viewing the results, and possibly interacting with the content or faculty profile.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Student as student
+participant "Search Interface" as searchInterface
+participant "Digital Repository System" as repositorySystem
+participant "Faculty Profile Database" as profileDatabase
+participant "Course Management System" as courseSystem
+participant "Internship/Work Database" as internshipDatabase
+
+== Search for Research Topic ==
+student -> searchInterface : Enter search query on topic
+activate searchInterface
+
+searchInterface -> repositorySystem : Query for topic related research
+activate repositorySystem
+
+repositorySystem -> profileDatabase : Fetch involved faculty details
+activate profileDatabase
+
+profileDatabase --> repositorySystem : Return faculty profiles
+deactivate profileDatabase
+
+repositorySystem --> searchInterface : Display results (research, faculty profiles)
+deactivate repositorySystem
+
+searchInterface --> student : Show research topics, involved faculty
+deactivate searchInterface
+
+== Explore Faculty Profiles for Advisors, Courses, and Opportunities ==
+student -> searchInterface : Select faculty profile
+activate searchInterface
+
+searchInterface -> profileDatabase : Retrieve selected faculty profile details
+activate profile dataSeth
+
+profileDatabase --> searchInterface : Faculty details, courses, research areas
+deactivate profileDatabase
+
+searchInterface --> student : Display faculty profile, courses, research areas
+deactivate searchInterface
+
+student -> courseSystem : Query courses offered by faculty
+activate courseSystem
+
+courseSystem --> student : Display courses details
+deactivate courseSystem
+
+student -> internshipDatabase : Query for internships/work under faculty research
+activate internshipDatabase
+
+internshipDatabase --> student : Display available positions
+deactivate internshipDatabase
+
+@enduml
+```
+
+This diagram provides an outlined sequence of steps starting from the student's search for a research topic, leading to the discovery of relevant faculty members engaged in research in that area, including the viewing of faculty profiles, and ending with the identification of courses and work/internship opportunities. Each step in the process is represented as a message or action between the student, various system interfaces (Search Interface, Digital Repository System, etc.), and underlying databases or management systems. This helps visualize the interactions necessary to achieve the student's goal as described in the user story.

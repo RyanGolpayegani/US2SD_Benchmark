@@ -1,0 +1,83 @@
+To represent the user story in a sequence diagram with PlantUML, we need to consider the interactions between the faculty member and the digital repository system along with its components. This sequence would likely involve steps for preparing the upload, performing the upload, processing the large file, making it accessible for download, and ensuring compliance with funder requirements. 
+
+Given the complexity and the multiple systems and actions involved, the diagram will be somewhat simplified.
+
+```plantuml
+@startuml
+actor FacultyMember
+participant "Upload Interface" as UI
+participant "Repository System" as RS
+participant "File Processing" as FP
+participant "Storage" as S
+participant "Compliance Checker" as CC
+participant "Access Management" as AM
+participant "Download Interface" as DI
+
+== Upload Process ==
+FacultyMember -> UI : Navigate to upload section
+activate UI
+UI -> RS : Initiate file upload (>1GB)
+activate RS
+
+RS -> FP : Check file size & type
+activate FP
+alt file size > 1GB
+    FP -> FP : Split file into chunks
+else smaller file
+    FP -> FP : Proceed without splitting
+end
+FP -> S : Stores file chunks/data
+activate S
+S --> FP : Confirm storage
+deactivate S
+FP --> RS : File processing complete
+deactivate FP
+
+== Compliance and Access Management ==
+RS -> CC : Verify compliance with funder requirements
+activate CC
+CC --> RS : Compliance confirmed
+deactivate CC
+
+RS -> AM : Set access permissions ('Downloadable' by users)
+activate AM
+AM --> RS : Permissions set
+deactivate AM
+
+RS -> UI : Upload success message
+deactivate RS
+UI --> FacultyMember : Display success & access details
+deactivate UI
+
+== Download Process ==
+FacultyMember -> FacultyMember : Share download link with intended users
+
+User -> DI : Navigate to shared link
+activate DI
+DI -> RS : Request to download file (>1GB)
+activate RS
+
+RS -> AM : Check access permissions
+activate AM
+AM --> RS : Permissions validated
+deactivate AM
+
+RS -> FP : Prepare file for download
+activate FP
+FP -> FP : Reassemble file (if split)
+FP -> DI : Provide file
+deactivate FP
+
+DI -> User : Start file download
+deactivate DI
+
+@enduml
+```
+
+This sequence diagram starts from the faculty member preparing to upload a large file (>1GB) till the point where an intended user starts to download the file. Several steps are simplified or abstracted:
+
+1. **Upload Process:** Includes splitting the large file into manageable chunks if necessary, ensuring the system can handle large uploads effectively.
+2. **Compliance and Access Management:** Ensuring the uploaded files meet funder's requirements and setting appropriate permissions for file access.
+3. **Download Process:** Reassembling the file if it was split and making it available for the intended users to download.
+
+This diagram assumes a system capable of handling large files through a chunking process, compliance checks, access management, and an efficient method for users to download these files. Adaptations may be necessary depending on specific technical implementations and system capabilities.

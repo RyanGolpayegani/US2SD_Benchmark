@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+
+actor Member as M
+participant "User Interface\n(Frontend System)" as UI
+participant "Server\n(Backend System)" as B
+participant "Reservation\nManagement Subsystem" as RMS
+database "Database" as DB
+
+== Update Reservation Process ==
+
+M -> UI : Selects reservation to update
+UI -> B : Request reservation details
+B -> RMS : Fetch reservation data
+RMS -> DB : Query reservation details
+DB -> RMS : Return reservation details
+RMS -> B : Reservation data
+B -> UI : Display reservation details
+M -> UI : Inputs new reservation date
+UI -> B : Submit update request with new date
+B -> RMS : Process update request
+RMS -> DB : Update reservation date
+DB -> RMS : Confirmation of update
+RMS -> B : Update successful
+B -> UI : Show success message
+UI -> M : Display update confirmation
+
+@enduml

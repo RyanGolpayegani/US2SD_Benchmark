@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram for the specific user story "As a manager, I want to see the time of entrance of employees so that I can track the shifts" involves illustrating how various system components interact to fulfill this requirement. We will use Plant UML syntax to represent this process.
+
+Please note, this sequence diagram focuses on the interaction between the manager, the system's front end, the server-side logic, and the database. The process begins with the manager's request to view employee entrance times and concludes with displaying this information.
+
+```
+@startuml
+participant Manager as M
+participant "Frontend UI" as F
+participant "Backend Server" as B
+participant "Database" as D
+
+M -> F: Request employee entrance times
+activate M
+activate F
+F -> B: GET /api/employee/entrance-times
+activate B
+B -> D: Query employee shift data
+activate D
+
+note right of D: Filters data based on\nemployee and shift date
+D --> B: Return employee entrance times
+deactivate D
+B --> F: Display entrance times data
+deactivate B
+F --> M: Show employee entrance times
+deactivate F
+deactivate M
+@enduml
+```
+
+This sequence diagram flows as follows:
+
+1. **Manager's Request**: The process begins with the manager requesting to see the employees' entrance times, an action performed through the Frontend UI.
+
+2. **Frontend UI to Backend Server**: The Frontend UI sends this request to the Backend Server using a specific API endpoint (`GET /api/employee/entrance-times`).
+
+3. **Backend Server Queries Database**: The Backend Server processes this request and queries the Database for the required employee shift data, including entrance times.
+
+4. **Database Processes and Responds**: The Database filters the data based on employee IDs and shift dates, retrieves the entrance times, and sends this information back to the Backend Server.
+
+5. **Data Sent to Frontend UI**: The Backend Server processes the response and forwards the entrance times data to the Frontend UI.
+
+6. **Manager Views Information**: Finally, the Frontend UI displays the employee entrance times to the manager, completing the process.
+
+Remember, this diagram is a high-level representation, and depending on the complexity and requirements of the Restaurant Management and Operations System, additional details or steps may be involved in an actual implementation scenario.

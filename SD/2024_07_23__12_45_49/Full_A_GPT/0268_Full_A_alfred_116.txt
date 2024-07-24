@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the scenario where an informal caregiver wants to have a game that both the caregiver and the user can play together, which allows for both fun and monitoring the user's state of health, involves several components of the ALFRED system interacting together. Below is the PlantUML code illustrating this sequence of actions.
+
+
+```plantuml
+@startuml
+!theme cerulean
+
+participant "InformalCaregiver" as caregiver
+participant "ALFRED App" as app
+participant "ALFRED Device" as device
+participant "Game Module" as game
+participant "Health Monitoring\nSystem" as health
+database "User Data Store" as datastore
+
+== Game Selection ==
+caregiver -> app: Selects game for two players
+app -> game: Fetches game options
+game --> app: Displays games list
+app --> caregiver: Presents games list
+caregiver -> app: Chooses specific game
+app -> game: Initializes game with health monitoring
+
+== Game Initialization ==
+game -> device: Sends game start signal
+device -> caregiver: Shows game on screen
+
+== Playing the Game ==
+loop Game Session
+  caregiver -> device ++: Interacts with game
+  alt Health Event Triggered
+    device -> health: Monitors health parameters
+    health -> datastore ++: Logs health data
+    datastore --> health: Confirms data logging
+    health -> device: Adjust game difficulty based on health
+    device --> caregiver: Updates game difficulty
+  else Normal Game Play
+    device -> game: Updates game state
+    game --> device: Sends game feedback
+    device -> caregiver: Displays game feedback
+  end
+end
+
+== Post-Game ==
+game -> health: Analyzes session for health insights
+health -> datastore: Stores session data
+datastore -> health: Confirms storage
+health -> caregiver: Provides health summary and suggestions
+
+@enduml
+```
+
+This code snippet outlines the sequence of interactions initiated by an informal caregiver choosing a game on the ALFRED app, leading to gameplay that integrates health monitoring. It showcases how the caregiver interacts with the ALFRED app and device, initializing a game from the game module, which in turn communicates with the health monitoring system. The system logs health data and adjusts the game based on the user's health events, ensuring an engaging yet safe gaming experience. After the game, the health monitoring system provides insights and suggestions based on the data collected during the game session, adding value to both recreational and health monitoring aspects of ALFRED for the caregiver and the user.

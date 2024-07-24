@@ -1,0 +1,33 @@
+@startuml
+participant Ext_Collaborator as "External Collaborator"
+participant Web_Interface as "Web Interface"
+participant Auth_Service as "Authentication Service"
+participant Proj_Manager as "Project Manager"
+participant Data_Archive as "Data Archive System"
+
+actor Ext_Collaborator
+
+activate Ext_Collaborator
+Ext_Collaborator -> Web_Interface : Request access to project data
+activate Web_Interface
+
+Web_Interface -> Auth_Service : Validate collaborator
+activate Auth_Service
+Auth_Service -> Auth_Service : Authenticate credentials
+Auth_Service -> Web_Interface : Authentication success
+deactivate Auth_Service
+
+Web_Interface -> Proj_Manager : Verify involvement in project
+activate Proj_Manager
+Proj_Manager -> Proj_Manager : Check project membership
+Proj_Manager -> Web_Interface : Verification success
+deactivate Proj_Manager
+
+Web_Interface -> Data_Archive : Request privileged access to data
+activate Data_Archive
+Data_Archive -> Data_Archive : Apply access controls
+Data_Archive --> Ext_Collaborator : Grant access to data
+deactivate Data_Archive
+deactivate Web_Interface
+
+@enduml

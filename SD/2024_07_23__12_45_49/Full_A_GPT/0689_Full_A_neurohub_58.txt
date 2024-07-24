@@ -1,0 +1,51 @@
+Considering the provided project description and the specific user story, below is a detailed sequence diagram in PlantUML format. This sequence diagram visually represents the interaction between different system components when a user wants to view and update the inventory of equipment and consumables present in the center.
+
+```plantuml
+@startuml
+participant User
+participant WebInterface
+participant AuthenticationModule
+participant InventoryService
+participant Database
+
+User -> WebInterface: Request inventory page
+WebInterface -> AuthenticationModule: Validate user session
+AuthenticationModule --> WebInterface: Session valid
+
+WebInterface -> InventoryService: Fetch inventory data
+InventoryService -> Database: Query inventory items
+Database --> InventoryService: Return inventory items
+InventoryService --> WebInterface: Display inventory items
+WebInterface --> User: Show inventory page with items
+
+User -> WebInterface: Request edit item (Equipment/Consumable)
+WebInterface -> AuthenticationModule: Check edit permissions
+AuthenticationModule --> WebInterface: Permissions valid
+
+WebInterface -> InventoryService: Request edit form for item
+InventoryService --> WebInterface: Provide edit form
+WebInterface --> User: Show edit form
+
+User -> WebInterface: Submit updated item details
+WebInterface -> InventoryService: Update item in inventory
+InventoryService -> Database: Update item details
+Database --> InventoryService: Confirm update
+InventoryService --> WebInterface: Confirm update to user
+WebInterface --> User: Show update confirmation
+
+@enduml
+```
+
+Explanation of the Steps:
+1. **User requests to view the inventory:** The user accesses the Neurohub web interface and requests to view the inventory of equipment and consumables.
+2. **Authentication check:** The web interface queries the authentication module to ensure the user is logged in and has a valid session.
+3. **Fetching inventory data:** Upon successful authentication, the web interface requests the current inventory data from the Inventory Service.
+4. **Querying the database:** The Inventory Service retrieves the equipment and consumable details from the database.
+5. **Displaying the inventory:** The fetched inventory items are sent back to the web interface, which then displays them to the user.
+6. **User requests to edit an item:** The user selects an item to edit, and the web interface checks with the Authentication Module to verify if the user has the necessary permissions.
+7. **Providing the edit form:** If permissions are confirmed, the Inventory Service provides an edit form for the selected item.
+8. **Submitting the updated details:** The user submits the updated item details through the web interface.
+9. **Updating the database:** The Inventory Service updates the item details in the database and sends a confirmation back to the web interface.
+10. **Confirmation to the user:** The web interface finally shows a confirmation message to the user indicating that the item has been successfully updated.
+
+This sequence diagram outlines the process flow for viewing and updating the inventory of equipment and consumables, fitting within the scope of the Neurohub Enhancement and Automation Project.

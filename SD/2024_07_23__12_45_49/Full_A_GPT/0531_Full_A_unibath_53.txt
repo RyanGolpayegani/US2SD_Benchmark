@@ -1,0 +1,35 @@
+Creating a detailed sequence diagram for the described user story in PlantUML requires specifying the interactions between the funding body and the Enhanced Research Data Management Platform, focusing on the metadata harvesting process. Here's how you might structure this interaction:
+
+```plantuml
+@startuml
+participant FundingBody as FB
+participant "API Gateway" as API
+participant "Data Management \nPlatform" as DMP
+participant Database as DB
+
+== Metadata Harvesting ==
+FB -> API : Request metadata for funded research outputs
+API -> DMP : Validate request & fetch metadata
+DMP -> DB : Query metadata of funded projects
+DB -> DMP : Return metadata
+DMP -> API : Process & format metadata
+API -> FB : Respond with metadata
+
+@enduml
+```
+
+In this sequence diagram, the steps to harvest metadata on outputs from the research funded by a funding body are illustrated as follows:
+
+1. **FundingBody (FB) to API Gateway:** The process begins with the funding body sending a request for metadata related to the research outputs it has funded. This request hits the API gateway, which acts as the entry point for the data management platform.
+
+2. **API Gateway to Data Management Platform (DMP):** The API gateway forwards this request to the main engine of the Enhanced Research Data Management Platform, which is responsible for handling such queries. The platform first validates the request to ensure it's authorized and then proceeds to fetch the requested metadata.
+
+3. **Data Management Platform to Database:** The platform queries the database to gather metadata related to the projects funded by the funding body. This step involves searching for datasets that match the criteria specified by the requestor, such as the funding body's identifier or specific project codes.
+
+4. **Database to Data Management Platform:** The database returns the queried metadata back to the data management platform.
+
+5. **Data Management Platform to API Gateway:** The platform processes the received metadata, potentially formatting or filtering it based on the requirements shared by the funding body, and then sends it back to the API gateway.
+
+6. **API Gateway to FundingBody:** Finally, the API gateway responds to the funding body's initial request by sending the processed metadata. This metadata can then be used by the funding body to analyze the effectiveness of its funding strategy and encourage cross-fertilization of research outputs.
+
+Please note, for implementing this sequence diagram in a real-world scenario, you might need to adjust the interactions based on the technical architecture of your specific data management platform and the APIs it exposes.

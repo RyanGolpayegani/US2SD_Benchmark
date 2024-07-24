@@ -1,0 +1,49 @@
+Given your request to create a detailed sequence diagram for the user story of an external collaborator seeking privileged access to data for collaboration, below is a PlantUML sequence diagram that captures this process. This script includes interactions between the external collaborator, the Enhanced Research Data Management Platform's web interface, the authentication service, project manager, and the data archive system.
+
+Please note, the sequence diagram outlines a simplified view of the interactions and might need adjustments based on the detailed system design and authentication mechanisms (e.g., OAuth2, SAML) in use at your institution.
+
+```plantuml
+@startuml
+participant Ext_Collaborator as "External Collaborator"
+participant Web_Interface as "Web Interface"
+participant Auth_Service as "Authentication Service"
+participant Proj_Manager as "Project Manager"
+participant Data_Archive as "Data Archive System"
+
+actor Ext_Collaborator
+
+activate Ext_Collaborator
+Ext_Collaborator -> Web_Interface : Request access to project data
+activate Web_Interface
+
+Web_Interface -> Auth_Service : Validate collaborator
+activate Auth_Service
+Auth_Service -> Auth_Service : Authenticate credentials
+Auth_Service -> Web_Interface : Authentication success
+deactivate Auth_Service
+
+Web_Interface -> Proj_Manager : Verify involvement in project
+activate Proj_Manager
+Proj_Manager -> Proj_Manager : Check project membership
+Proj_Manager -> Web_Interface : Verification success
+deactivate Proj_Manager
+
+Web_Interface -> Data_Archive : Request privileged access to data
+activate Data_Archive
+Data_Archive -> Data_Archive : Apply access controls
+Data_Archive --> Ext_Collaborator : Grant access to data
+deactivate Data_Archive
+deactivate Web_Interface
+
+@enduml
+```
+
+This sequence diagram illustrates the following steps:
+1. The external collaborator requests access to project data through the web interface.
+2. The web interface requests the authentication service to validate the collaborator.
+3. The authentication service authenticates the collaborator's credentials and returns a success message.
+4. The web interface then verifies the collaborator's involvement in the project with the project manager.
+5. Upon successful verification, the web interface requests privileged access to data from the data archive system.
+6. The data archive system applies the necessary access controls and grants access to the collaborator.
+
+Be aware that this diagram assumes a general flow and might need tailoring to fit specific protocols or detailed workflows of your platform, particularly around authentication and project membership verification.

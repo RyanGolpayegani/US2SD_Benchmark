@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the user story where a library manager wants to see books by authors requires capturing the interactions among various components in the Comprehensive Library Management System (CLMS). The process involves querying the system for books by a specific author and displaying the results to the library manager, potentially highlighting any known gaps in the author's bibliography that the library's collection might have.
+
+Here's how you can represent this process in PlantUML format:
+
+```plantuml
+@startuml
+!theme plain
+
+participant LibraryManager as LM
+participant WebInterface as WI
+participant CLMSServer as CS
+participant Database as DB
+
+LM -> WI : Enter author's name and request books list
+activate WI
+WI -> CS : Request books by author
+activate CS
+CS -> DB : Query books by author name
+activate DB
+DB --> CS : Return book list
+destroy DB
+CS --> WI : Display books by author
+deactivate CS
+WI --> LM : Show list of books by author
+deactivate WI
+LM -> WI : Request missing books check
+activate WI
+WI -> CS : Initiate missing books check for author
+activate CS
+CS -> DB : Query for author's complete bibliography
+activate DB
+DB --> CS : Return complete bibliography
+deactivate DB
+CS -> CS : Compare author's bibliography with library collection
+CS --> WI : Display missing books
+deactivate CS
+WI --> LM : Show missing books by author
+deactivate WI
+
+@enduml
+```
+
+This sequence diagram outlines the basic interactions:
+
+1. **Library Manager Request:** The library manager (LM) starts by entering the author's name into the Web Interface (WI) and requests a list of books by that author.
+2. **Request Handling:** The Web Interface forwards the request to the CLMS Server (CS), which queries the Database (DB) for books by the specified author.
+3. **Display Results:** The list of books by the author is returned from the Database to the CLMS Server, then to the Web Interface, and finally displayed to the Library Manager.
+4. **Check for Missing Books:** The Library Manager requests a check for any missing books by the author. 
+5. **Missing Books Check:** The Web Interface sends this request to the CLMS Server, which then queries the Database for the complete bibliography of the author.
+6. **Comparison and Result:** The CLMS Server compares the complete bibliography with the library's collection, identifies any missing books, and sends this information back to the Web Interface, which displays the missing books to the Library Manager.
+
+This diagram provides a high-level overview of the necessary components and interactions to support the library manager's goal of checking for any missing books by a specific author within the Comprehensive Library Management System.

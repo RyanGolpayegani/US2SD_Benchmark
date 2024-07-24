@@ -1,0 +1,22 @@
+Creating a sequence diagram that captures the process of a camp administrator deleting tasks or activities from the schedule involves depicting the interaction between the camp administrator and the Camp Management & Communication Platform, as well as any other involved components such as the database. Here's how you can represent this process in PlantUML syntax. This example assumes a typical web application structure with a web UI, a server handling requests, and a database where tasks or activities are stored.
+
+```plantuml
+@startuml
+actor Administrator as admin
+participant "Web Interface" as web
+participant "Server" as server
+participant "Database" as db
+
+admin -> web : Selects activity/task to delete
+web -> server : Requests deletion of the selected task/activity
+server -> db : Query to delete the task/activity
+db -> server : Confirm deletion
+server -> web : Confirm task/activity deleted
+web -> admin : Display deletion confirmation message
+
+@enduml
+```
+
+This sequence diagram starts with the camp administrator selecting the activity or task they wish to delete through the web interface. The web interface then sends a deletion request to the server. The server processes this request, forms a query to delete the specified task or activity from the database, and sends this query to the database. After the database has executed the deletion, it sends a confirmation back to the server. The server, having received this confirmation, informs the web interface, which then displays a message to the camp administrator confirming that the task or activity has been successfully deleted.
+
+This process ensures the schedule remains updated and free from unneeded activities, as outlined in the project description. Keep in your mind that the detailed internals like error handling, authentication checks, or the specifics of the database operation (e.g., SQL command) are not expanded here for the sake of clarity and simplicity.

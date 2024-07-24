@@ -1,0 +1,23 @@
+@startuml
+actor Chef
+participant "Web Interface" as UI
+participant "Backend Service\n(Node.js/Express)" as Backend
+database "Database\n(MongoDB/PostgreSQL)" as DB
+
+Chef -> UI : Selects menu item to update
+UI -> Backend : Request to update menu item status
+Backend -> DB : Query to find menu item
+
+alt If menu item exists
+    DB -> Backend : Menu item details
+    Backend -> DB : Update status to "out of"
+    DB -> Backend : Confirm update
+    Backend -> UI : Update success message
+    UI -> Chef : Display success message
+else If menu item does not exist
+    DB -> Backend : Error message
+    Backend -> UI : Display error message
+    UI -> Chef : Show error "Menu item not found"
+end
+
+@enduml

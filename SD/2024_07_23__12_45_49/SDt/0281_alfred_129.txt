@@ -1,0 +1,39 @@
+@startuml
+actor Developer
+participant "Developer Portal" as Portal
+participant "ALFRED API" as API
+participant "App Store" as Store
+participant "ALFRED System" as ALFRED
+participant "User's Device" as UserDevice
+
+== App Submission ==
+Developer -> Portal : Log in to developer account
+Developer -> Portal : Submit new app for review
+Portal -> API : Validate app submission
+API -> Store : Review app
+Store --> Developer : Notify app approval/rejection
+
+== App Promotion ==
+Developer -> Portal : Opt to promote app
+Portal -> Store : List app under featured/promotions
+
+== App Installation ==
+UserDevice -> Store : Browse for apps
+UserDevice -> Store : Select Developer's app
+Store -> UserDevice : Install app
+UserDevice -> ALFRED : Integrate app functionalities
+
+== App Usage ==
+UserDevice -> ALFRED : Invocation of app features
+ALFRED -> UserDevice : Display app information\n(ex: Usage instructions, features)
+UserDevice -> ALFRED : User interacts with app
+ALFRED --> UserDevice : Provide personalized user experience
+
+== Feedback Loop ==
+UserDevice-> Portal : Send user feedback and usage data
+Portal -> Developer : Offer analytics and user feedback
+Developer -> Portal : Update app based on feedback
+Portal -> Store : Submit app update
+Store --> UserDevice : Notify about app update
+
+@enduml

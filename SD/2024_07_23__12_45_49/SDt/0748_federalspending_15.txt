@@ -1,0 +1,24 @@
+@startuml
+participant OwnerSystem as Owner
+participant BrokerPlatform as Broker
+participant ValidationService as Validator
+participant USAspendingDB as USAspending
+
+Owner -> Broker : Request grant records
+activate Broker
+
+Broker -> USAspending : Fetch records
+activate USAspending
+USAspending --> Broker : All records
+deactivate USAspending
+
+Broker -> Validator : Validate records (grants only)
+activate Validator
+Validator -> Validator : Filter grant records
+Validator --> Broker : Grant records only
+deactivate Validator
+
+Broker -> Owner : Send validated grant records
+deactivate Broker
+Owner --> OwnerSystem : Process received grant records
+@enduml

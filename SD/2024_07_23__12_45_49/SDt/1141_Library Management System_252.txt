@@ -1,0 +1,27 @@
+@startuml
+participant User as U
+participant "Web Interface" as W
+participant "Controller" as C
+participant "Search Service" as S
+participant "Database" as D
+
+U -> W : Enter search criteria\n[Author Name]
+W -> C : Request to search by author
+activate C
+
+C -> S : Query author's books
+activate S
+
+S -> D : SELECT books FROM library\nWHERE author = ?
+activate D
+D --> S : Return results
+deactivate D
+
+S --> C : Search results
+deactivate S
+
+C --> W : Display books by author
+deactivate C
+
+W --> U : Show author's books list
+@enduml

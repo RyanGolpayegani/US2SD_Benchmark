@@ -1,0 +1,38 @@
+@startuml
+actor "Library Staff" as staff
+participant "Digital Repository System" as repo
+participant "Metadata Management" as metadata
+participant "Content Management" as content
+participant "External System/Web Page" as external
+
+== Use Content and Metadata from Repository ==
+
+staff -> repo : Search for content and metadata
+repo -> metadata : Retrieve metadata
+repo -> content : Access content
+metadata --> staff : Display metadata results
+content --> staff : Display content options
+
+activate staff
+staff -> metadata : Select relevant metadata
+staff -> content : Select specific content
+deactivate staff
+
+== Export and Integrate Content and Metadata ==
+
+staff -> repo : Request export of selected items
+repo -> metadata : Package selected metadata
+repo -> content : Package selected content
+metadata -> repo : Metadata packaged
+content -> repo : Content packaged
+repo --> staff : Provide packaged content and metadata
+
+activate staff
+staff -> external : Integrate content and metadata\ninto designated system or web page
+deactivate staff
+
+== Feedback ==
+
+external -> staff : Confirm integration success
+staff -> repo : Log activity and feedback(optional)
+@enduml

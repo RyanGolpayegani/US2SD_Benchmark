@@ -1,0 +1,39 @@
+To generate a detailed sequence diagram in PlantUML format for the user story you've mentioned, we'll walk through the interactions involved in checking the due date of an unavailable book. This involves several actors and components such as the Library Member, CLMS (Comprehensive Library Management System), and Database.
+
+Here's a basic representation in PlantUML format:
+
+```plantuml
+@startuml
+!theme amiga
+participant LibraryMember as LM
+participant CLMS_Interface as CI
+participant ReservationSystem as RS
+participant Database as DB
+
+LM -> CI : Enter search criteria for book
+CI -> RS : Request availability for book
+RS -> DB : Query book details
+DB --> RS : Return book details including availability status
+RS --> CI : Inform book is unavailable, but reserved
+CI -> RS : Request due date for reserved book
+RS -> DB : Query reservation details
+DB --> RS : Provide due date for the reserved book
+RS --> CI : Return due date to interface
+CI --> LM : Display due date to library member
+LM -> CI : Decide to wait or buy from external source
+@enduml
+```
+
+This sequence diagram outlines the following steps:
+1. The Library Member enters the search criteria for a book through the CLMS interface.
+2. The CLMS then checks with its Reservation System to verify the book's availability.
+3. The Reservation System queries the Database for the book details, which includes its availability status.
+4. The Database returns the book details to the Reservation System, which in turn notifies the CLMS interface that the book is currently unavailable but reserved.
+5. The CLMS interface, wanting to fulfill the Library Member's need to know the due date, requests this specific piece of information from the Reservation System.
+6. The Reservation System asks the Database for the reservation details of the book.
+7. Upon receiving the due date from the Database, the Reservation System passes this information back to the CLMS interface.
+8. Finally, the CLMS interface displays this due date to the Library Member, who then decides whether to wait for the book to become available or to purchase it from an external source.
+
+This diagram details a straightforward scenario based on the features of the system you've described, showing the interactions between the user and the system for learning about the due date of an unavailable book.
+
+Please note, the actual implementation details might require additional steps or different interactions based on the system's architecture and the specific requirements of the Comprehensive Library Management System.

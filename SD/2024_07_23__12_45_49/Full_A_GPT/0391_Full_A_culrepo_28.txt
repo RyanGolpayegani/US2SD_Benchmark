@@ -1,0 +1,39 @@
+Creating a detailed sequence diagram for the user story provided involves depicting the interaction between the various components of the system as the Cornell faculty member uploads a data file and sets a Creative Commons license (CC-By or CC0) on it. Below is the PlantUML code that represents these interactions.
+
+```plantuml
+@startuml
+actor FacultyMember as "Cornell Faculty Member"
+participant BrowserGUI as "Web Browser Interface"
+participant UploadService as "File Upload Service"
+participant DRMService as "Digital Rights Management Service"
+participant Repository as "Digital Repository"
+participant LicenseService as "Licensing Service"
+participant DB as "Database"
+
+== Upload Process ==
+FacultyMember -> BrowserGUI : Selects data file for upload
+BrowserGUI -> UploadService : Initiates file upload process
+UploadService -> Repository : Stores data file
+Repository --> DB : Saves file metadata\n(including uploader info)
+DB --> Repository : Confirm metadata storage
+Repository --> UploadService : Confirm file storage
+UploadService -> BrowserGUI : Display file upload success
+UploadService --> FacultyMember : Provides file ID and upload confirmation
+
+== Licensing Process ==
+FacultyMember -> BrowserGUI : Choose licensing option (CC-By or CC0)
+BrowserGUI -> LicenseService : Send license choice and file ID
+LicenseService -> DRMService : Apply chosen license to file
+DRMService -> Repository : Updates file metadata with license info
+Repository --> DB : Update file record with license metadata
+DB --> Repository : Confirm license update
+Repository -> LicenseService : Confirm license application to file
+LicenseService -> BrowserGUI : Display license application success
+BrowserGUI --> FacultyMember : Confirm license has been set
+
+@enduml
+```
+
+This sequence diagram starts with the "Cornell Faculty Member" initiating the upload process through a "Web Browser Interface". The file is then uploaded to the "Digital Repository" through the "File Upload Service". After the file is stored, its metadata, including uploader information, is saved in a "Database". Upon successful upload, the faculty member is informed and proceeds to select a license (either CC-By or CC0) for the data file using the same web interface. This choice is communicated to the "Licensing Service", which coordinates with the "Digital Rights Management Service" to apply the license. The updated licensing information is then saved back into the "Digital Repository", and the process concludes with the faculty member being informed that the licensing desires have been clearly stated and applied to the uploaded file.
+
+This sequence diagram outlines a general interaction flow and can be further detailed or modified based on specific system design decisions, such as error handling, authentication, and authorization steps.

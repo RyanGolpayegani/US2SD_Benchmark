@@ -1,0 +1,45 @@
+Below is a PlantUML sequence diagram for the user story: "As a user, I want to assign bespoke information to a file dependent on its type." This sequence diagram outlines the interactions between the user and the system, from the point of choosing a file to assigning specific metadata based on its type.
+
+```plantuml
+@startuml
+participant User
+participant Interface
+participant FileManager
+participant MetadataManager
+database FileDatabase
+
+User -> Interface : Select file
+Interface -> FileManager : Get file details
+FileManager -> FileDatabase : Query file type
+return File Type
+FileManager --> Interface : Display file type & metadata form
+User -> Interface : Provide bespoke information for file type
+Interface -> MetadataManager : Prepare metadata package
+MetadataManager -> FileDatabase : Assign metadata to file
+FileDatabase --> MetadataManager : Confirm metadata assignment
+MetadataManager --> Interface : Display success message
+Interface --> User : Confirm bespoke information assignment
+
+@enduml
+```
+
+### Explanation:
+1. **User Selects File**: The process begins with the user selecting a file through the web interface. This could be through file browsing or dragging and dropping a file into the Neurohub interface.
+
+2. **Get File Details**: The interface communicates this action to the `FileManager` component, which is responsible for handling files within Neurohub. The `FileManager` then retrieves the details of the selected file, including its type.
+
+3. **Query File Type**: The `FileManager` checks the type of the file by querying the `FileDatabase`, which stores all the information about the files within Neurohub, including their types and metadata.
+
+4. **Display File Type & Metadata Form**: The `FileManager` sends the file type information back to the interface, and the interface displays this information to the user along with a form for entering bespoke information (metadata) based on the file type.
+
+5. **User Provides Bespoke Information**: The user fills out the form with the bespoke information that should be assigned to the file. This could include specific metadata fields related to the file type, such as experimental parameters for a dataset or author information for a document.
+
+6. **Prepare Metadata Package**: The interface passes the user-provided information to the `MetadataManager`, which packages the metadata in a format that can be assigned to the file.
+
+7. **Assign Metadata to File**: The `MetadataManager` communicates with the `FileDatabase` to assign the prepared metadata to the specific file. The `FileDatabase` updates the file's record to include this new metadata.
+
+8. **Confirm Metadata Assignment**: Once the metadata has been successfully assigned to the file, the `FileDatabase` sends a confirmation back to the `MetadataManager`.
+
+9. **Display Success Message**: The `MetadataManager` informs the interface that the assignment has been successful, and the interface then displays a confirmation message to the user.
+
+This sequence diagram simplifies the interactions to focus on the key components involved in assigning bespoke information to a file based on its type within the Neurohub Enhanced and Automation Project.

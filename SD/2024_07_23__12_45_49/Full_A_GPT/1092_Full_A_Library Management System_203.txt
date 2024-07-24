@@ -1,0 +1,76 @@
+Creating a detailed sequence diagram for the "Create Paying Subscriptions" user story involves depicting the interactions between different system components and actors in the Comprehensive Library Management System (CLMS). Given PlantUML's syntax, let's outline a sequence diagram that represents these interactions.
+
+```plantuml
+@startuml
+actor Manager as M
+participant "Subscription Management Interface" as SMI
+participant "Database" as DB
+participant "Payment Module" as PM
+participant "Notification Service" as NS
+
+== Creating Paying Subscriptions ==
+
+M -> SMI: Access Subscription Management
+activate SMI
+
+SMI -> DB: Retrieve existing subscription plans
+activate DB
+DB --> SMI: Subscription plans
+deactivate DB
+
+SMI --> M: Display subscription plans
+M -> SMI: Select to create new subscription
+activate SMI
+M -> SMI: Provide subscription details
+activate SMI
+
+SMI -> DB: Save new subscription plan
+activate DB
+DB --> SMI: Confirmation
+deactivate DB
+
+SMI --> M: Display confirmation message
+deactivate SMI
+
+== Integrating Payment for Subscription ==
+
+M -> PM: Configure payment options
+activate PM
+
+PM -> DB: Update payment settings for subscription
+activate DB
+DB --> PM: Confirmation
+deactivate DB
+
+PM --> M: Display payment setup confirmation
+deactivate PM
+
+== Sending Notification to Librarians ==
+
+M -> NS: Trigger notification to librarians
+activate NS
+
+NS -> DB: Retrieve librarian contacts
+activate DB
+DB --> NS: Contacts
+deactivate DB
+
+NS -> NS : Generate subscription notification
+NS -> NS : Send notifications
+deactivate NS
+
+NS --> M: Confirmation of notification dispatch
+deactivate NS
+
+@enduml
+```
+
+Explanation:
+1. **Access Subscription Management:** The manager (M) accesses the Subscription Management Interface (SMI) to view or manage subscriptions.
+2. **Retrieve and Display Subscriptions:** SMI retrieves existing subscription plans from the Database (DB) and displays them to the manager.
+3. **Provide Subscription Details:** The manager decides to create a new subscription and provides the necessary details (e.g., subscription type, cost, duration) to the SMI.
+4. **Save and Confirm New Subscription Plan:** SMI saves the new subscription plan in DB and confirms the action to the manager.
+5. **Configure Payment Options:** The manager then configures related payment options through the Payment Module (PM), which updates DB accordingly and provides a confirmation.
+6. **Trigger Notification to Librarians:** Lastly, the manager decides to notify librarians about the new subscription, using the Notification Service (NS) to gather librarian contacts from DB, send out notifications, and confirm the dispatch to the manager.
+
+This sequence diagram outlines the major steps and system components involved when a manager initiates the creation of new paying subscriptions within the Comprehensive Library Management System.

@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for the described user story, "As a Staff member, I want to Send a Formal Response to Applicant, so that I can satisfy communication and records responsibilities," involves illustrating the interactions between the staff member, the County Services & Property Information Portal system, possibly an email service, and the database for storing records.
+
+Below is a PlantUML code sketching out these interactions. This sequence diagram assumes that after reviewing an application or at any point necessitating communication with the applicant, a staff member uses the portal to send a formal response. The system then records this action in the database and sends an email to the applicant.
+
+```plantuml
+@startuml
+actor StaffMember as "Staff Member"
+participant "Portal" as Portal
+participant "EmailService" as Email
+database "Database" as DB
+
+== Send Formal Response to Applicant ==
+
+StaffMember -> Portal: Access application response form
+activate Portal
+
+Portal -> DB: Retrieve Applicant Details
+activate DB
+DB --> Portal: Applicant Email & Application Info
+deactivate DB
+
+Portal --> StaffMember: Show form with Applicant Info\n(Pre-filled)
+
+StaffMember -> Portal: Submit Formal Response\n(Includes response text and attachments)
+activate Portal
+
+Portal -> DB: Save Response Details
+activate DB
+DB --> Portal: Confirmation
+deactivate DB
+
+Portal -> Email: Send Formal Response to Applicant\n(Email with response & attachments)
+activate Email
+Email --> Portal: Email Sent Confirmation
+deactivate Email
+
+Portal --> StaffMember: Display Confirmation Message\n(Response Sent)
+deactivate Portal
+
+@enduml
+```
+
+This sequence starts with the staff member initiating the process by accessing the application response form on the portal. The system retrieves the applicant’s details from the database, pre-fills the form where applicable, and presents it to the staff member. Once the staff submits their formal response, the portal records the details in the database and sends an email to the applicant using an email service. The interaction concludes with the staff member receiving a confirmation message that the formal response has been sent.

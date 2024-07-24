@@ -1,0 +1,44 @@
+@startuml
+actor "Repository Manager" as RM
+participant ":User Interface" as UI
+participant ":Collection Management\nModule" as CM
+participant ":Access Control\nModule" as AC
+participant ":Database" as DB
+
+== Compose Collection ==
+
+RM -> UI : Initiate collection composition
+UI -> CM : Request to compose\nnew collection
+activate CM
+
+... 
+CM -> CM : Validate composition criteria
+...
+
+CM -> AC : Check access rights\nfor collection composition
+activate AC
+AC --> CM : Access granted
+deactivate AC
+
+CM -> DB : Retrieve items with\nsame provenance
+activate DB
+DB --> CM : List of items
+deactivate DB
+
+CM -> CM : Create collection from\nretrieved items
+CM --> UI : Show draft of new collection
+RM -> UI : Adjust collection\n(add/remove items)
+UI -> CM : Update collection draft
+CM -> CM : Validate updates
+CM --> UI : Show updated collection
+
+RM -> UI : Confirm collection composition
+UI -> CM : Confirm new collection
+CM -> DB : Store new collection
+activate DB
+DB --> CM : Confirmation
+deactivate DB
+CM --> UI : Collection composed successfully
+UI --> RM : Display success message
+
+@enduml

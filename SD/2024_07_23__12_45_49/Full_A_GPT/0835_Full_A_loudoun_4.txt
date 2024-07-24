@@ -1,0 +1,42 @@
+To create a PlantUML sequence diagram for the user story mentioned, we'll outline the interactions involved in creating a Customer Portal User Account. This diagram represents the steps a customer would take to register an account on the County Services & Property Information Portal and the systems involved in this process.
+
+The sequence diagram below details the process from the customer's standpoint, interacting with the portal's UI, the authentication system, and possibly a database for account storage and retrieval. Note this example focuses on the interactions without getting into the specifics of the underlying technology or database structures.
+
+```plantuml
+@startuml
+actor Customer as customer
+participant "Portal UI" as portal
+participant "Authentication System" as auth
+database "Accounts Database" as db
+
+customer -> portal : Request to Create Account
+portal -> customer : Display Account Creation Form
+customer -> portal : Submit Account Details (username, email, password)
+portal -> auth : Validate Account Details
+alt Details Valid
+    auth -> portal : Confirm Details Valid
+    portal -> db : Create New User Account
+    db -> portal : Confirm Account Created
+    portal -> customer : Display Account Creation Success
+    portal -> auth : Initiate First-Time Login Sequence
+    auth -> customer : Request Authentication (Login)
+    customer -> auth : Provide Credentials
+    auth -> db : Validate Credentials
+    db -> auth : Confirm Credentials Valid
+    auth -> customer : Authentication Successful
+else Details Invalid
+    auth -> portal : Error (Details Invalid)
+    portal -> customer : Display Error (Invalid Details)
+end
+@enduml
+```
+
+In this diagram:
+- The **Customer** interacts with the **Portal UI** to request account creation and submits their desired account details.
+- The **Portal UI** forwards the details to the **Authentication System** to validate these details.
+    - If details are valid, the **Authentication System** informs the **Portal UI**, which then interacts with the **Accounts Database** to create the new user account.
+    - Once the account is successfully created, the **Portal UI** notifies the customer of the success and initiates a first-time login sequence to authenticate the customer.
+    - The **Authentication System** validates the credentials against the **Accounts Database** and, if valid, authenticates the session.
+- If details are invalid at any validation step, the customer is notified of the error and can attempt to correct the details.
+
+This sequence diagram simplifies complex backend processes, such as security measures during account creation (e.g., password hashing) and the handling of sessions or tokens for user authentication, as these usually depend on specific implementation details not covered in the user story.

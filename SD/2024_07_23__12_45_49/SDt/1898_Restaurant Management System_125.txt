@@ -1,0 +1,22 @@
+@startuml
+participant Manager_UI as "Manager Interface"
+participant Application_Server as "Application Server"
+database Database
+
+Manager_UI -> Application_Server : DeleteMenuRequest(menuID)
+activate Application_Server
+
+Application_Server -> Database : RetrieveMenu(menuID)
+activate Database
+Database --> Application_Server : MenuDetails
+deactivate Database
+
+Application_GS -> Database : DeleteMenu(menuID)
+activate Database
+Database --> Application_Server : DeleteConfirmation
+deactivate Database
+
+Application_Server --> Manager_UI : DeleteSuccessMessage
+deactivate Application_Server
+
+@enduml

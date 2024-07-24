@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+
+participant "Library Manager" as LM
+participant "Library Management\nSystem Interface" as LMS
+participant "Database" as DB
+participant "Fines Calculator" as FC
+
+LM -> LMS : Request to calculate fines
+activate LM
+activate LMS
+
+LMS -> DB : Get Return Details\n(Book ID, User ID, Due Date)
+activate DB
+
+DB -> DB: Fetch details
+DB --> LMS : Return Details
+
+LMS -> FC : Calculate fines based on\nDue Date and Current Date
+activate FC
+
+FC -> FC : Compute fines
+FC --> LMS : Fines Information
+
+LMS -> DB : Update User Account\nwith fines
+DB -> DB : Update operation
+DB --> LMS : Update Confirmation
+
+LMS --> LM : Display fines information and\nConfirmation of update
+deactivate DB
+deactivate FC
+deactivate LMS
+deactivate LM
+
+@enduml

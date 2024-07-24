@@ -1,0 +1,49 @@
+Creating a detailed sequence diagram for the user story "As a collection curator, I want to view the permissions on my objects all together" involves covering the interaction between the collection curator and the Enhanced Digital Repository Management System (EDRMS), focusing primarily on the user authentication, object permission retrieval, and display processes.
+
+Below is a PlantUML code snippet that illustrates this sequence. The diagram outlines the steps taken when a collection curator requests to view permissions on their digital objects, covering interactions with the system from the initial request to the display of permissions.
+
+```plantuml
+@startuml
+actor Curator as curator
+participant "UI Interface" as UI
+participant "Authentication Service" as AuthService
+participant "Permission Service" as PermService
+participant "Database" as DB
+participant "Permissions Display" as PermDisplay
+
+== View Permissions on Objects ==
+
+curator -> UI: Request to view permissions
+UI -> AuthService: Validate curator session
+AuthService -> UI: Session Valid
+
+UI -> PermService: Request object permissions for curator
+activate PermFormat
+
+PermService -> DB: Query permissions by curator ID
+DB -> PermService: Return permissions data
+PermService -> UI: Permissions data processed
+
+UI -> PermDisplay: Display formatted permissions data
+PermDisplay -> curator: Show permissions overview
+
+@enduml
+```
+
+This code snippet follows the sequence of interactions initiated by the collection curator, proceeding through system validation, permission data retrieval, and finally the presentation of the permissions in a readable format. Here's an overview of the steps:
+
+1. **Curator Requests to View Permissions**: The collection curator initiates the request through the User Interface (UI) to view permissions on their objects.
+
+2. **Validation**: The UI sends a request to the Authentication Service to validate the curator's session to ensure that the request is being made by an authenticated user.
+
+3. **Session Validation**: The Authentication Service confirms the session is valid and informs the UI.
+
+4. **Request for Permissions**: The UI, now assured of the curator's authenticated status, requests the permission service to retrieve the permissions associated with the curator's objects.
+
+5. **Database Query**: The Permission Service queries the database with the curator's ID to find all permissions related to their objects.
+
+6. **Permissions Data Processing**: The permissions data is returned to the Permission Service, processed, and passed back to the UI ready for display.
+
+7. **Display Permissions**: The UI Interface sends the permissions data to the Permissions Display component, which formats and shows an overview of the permissions to the curator.
+
+This sequence diagram assumes a simplified interaction flow focusing on the collection curator's perspective. Depending on the specific implementation and system architecture of EDRMS, additional steps, services, or interactions might be involved, especially concerning data privacy, error handling, and the granularity of permission settings.

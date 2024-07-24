@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram for the described user story requires understanding the interactions between the user (OlderPerson), ALFRED, and potentially other systems like health monitoring sensors and a data repository used for storing exercise and health data. Below is a PlantUML code snippet that describes the sequence of interactions for an older adult doing guided exercises with ALFRED, while ALFRED captures health data using integrated sensors.
+
+```plantuml
+@startuml
+actor OlderPerson as OP
+participant "ALFRED" as A
+participant "Health Sensor" as HS
+database "Health Data Repository" as HDR
+
+== Exercise Setup ==
+OP -> A: Request guided exercise
+A -> OP: Provide list of available exercises
+OP -> A: Select specific exercise
+A -> OP: Begin exercise instructions
+
+== Exercise Execution ==
+loop Health Monitoring During Exercise
+    A -> HS: Activate sensors
+    HS -> A: Send real-time health data
+    A -> HDR: Store health data
+    A -> OP: Display current health stats
+end
+
+== Post Exercise ==
+A -> OP: Exercise completed notification
+A -> HDR: Save final health data
+A -> OP: Provide health summary and recommendations
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram
+
+1. **Exercise Setup:**
+   - The sequence starts with the Older Person (OP) requesting to do a guided exercise from ALFRED (A).
+   - ALFRED provides a list of available exercises to the OP.
+   - The OP selects a specific exercise from the list provided.
+   - ALFRED starts providing instructions for the selected exercise to the OP.
+
+2. **Exercise Execution:**
+   - During the exercise, ALFRED activates health monitoring sensors (HS) to capture real-time health data from the OP.
+   - The Health Sensor sends this data back to ALFRED.
+   - ALFRED then stores this health data in a Health Data Repository (HDR) for future reference.
+   - ALFRED displays current health stats to the OP while they are doing the exercise, providing instant feedback.
+
+3. **Post Exercise:**
+   - Upon completing the exercise, ALFRED sends a notification to the OP indicating the exercise session is completed.
+   - ALFRED saves the final pieces of health data to the Health Data Repository.
+   - Finally, ALFRED provides the OP with a summary of their health data captured during the exercise and may give recommendations based on their performance.
+
+This diagram assumes real-time interaction between the OP and ALFRED through a device that houses or communicates with health sensors. The saving of health data implies there's a backend system designed to handle and analyze health information securely, respecting the privacy and data control requirements of the ALFRED project.

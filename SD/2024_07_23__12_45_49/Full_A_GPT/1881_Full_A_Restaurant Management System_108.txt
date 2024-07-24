@@ -1,0 +1,34 @@
+To create a detailed sequence diagram for the user story "As a manager, I want to compare monthly sales" in PlantUML format, we need to define the actors, systems, and processes involved. This involves interactions with the management, the Restaurant Management and Operations System (RMOS), and the database where sales data is stored.
+
+Here's how a sequence diagram could look in PlantUML, focusing on this specific user story:
+
+```plantuml
+@startuml
+actor Manager
+participant "RMOS Interface" as RMOS
+participant "Backend Server" as Backend
+database "Sales Database" as Database
+
+Manager -> RMOS : select "Compare Monthly Sales"
+activate RMOS
+RMOS -> Backend : requestSalesData(currentMonth, previousMonth)
+activate Backend
+Backend -> Database : querySales(currentMonth)
+activate Database
+Database --> Backend : salesDataCurrentMonth
+Backend -> Database : querySales(previousMonth)
+Database --> Backend : salesDataPreviousMonth
+deactivate Database
+Backend -> Backend : calculateComparison(salesDataCurrentMonth, salesDataPreviousMonth)
+Backend --> RMOS : comparisonResult
+deactivate Backend
+RMOS --> Manager : displayComparison(comparisonResult)
+deactivate RMOS
+@enduml
+```
+
+This diagram starts with the Manager interacting with the RMOS Interface to select an option to compare monthly sales. The RMOS then communicates with the Backend Server to request the sales data for the current and previous months. The Backend Server makes queries to the Sales Database to retrieve the needed data. Once the sales data for both months are obtained, the Backend Server calculates the comparison, such as percentage increase or decrease in sales. The result of this calculation is then sent back to the RMOS Interface, which displays the comparison to the Manager.
+
+This sequence reflects a simplified flow of operations for comparing monthly sales. Depending on specific requirements, the flow can become more complex. For instance, additional steps might be added for authentication and authorization checks, detailed error handling, or if the comparison involves more sophisticated analytics.
+
+Remember, the actual implementation can vary based on the chosen technologies, specific requirements, and the system's architecture.

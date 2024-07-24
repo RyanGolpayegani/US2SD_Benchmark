@@ -1,0 +1,34 @@
+To fulfill the request for a detailed Sequence Diagram depicting the user story where a researcher wants to access files stored in their Neurohub workspace using a network drive attached to their workstation, we can outline the process flow in PlantUML format. This diagram will illustrate the interactions between the researcher (user), the workstation, potentially a network drive software interface, and the Neurohub platform.
+
+```plantuml
+@startuml
+participant Researcher as researcher
+participant "Workstation\n(Network Drive Software)" as workstation
+participant "Neurohub\nPlatform" as neurohub
+
+researcher -> workstation : Open network drive
+workstation -> neurohub : Authenticate user
+alt successful authentication
+    neurohub -> workstation : Authentication success
+    else authentication fails
+    neurohub -> workstation : Authentication failed
+    workstation -> researcher : Show error
+    stop
+end
+
+workstation -> neurohub : Request access to workspace files
+neurohub -> workstation : Return list of files in workspace
+workstation -> researcher : Display files
+researcher -> workstation : Select file(s) to access
+workstation -> neurohub : Request file(s) data
+neurohub -> workstation : Send file(s) data
+workstation -> researcher : Open/Display file(s)
+
+@enduml
+```
+
+This sequence diagram starts with the researcher initiating the process by attempting to open the network drive on their workstation. The workstation, equipped with network drive software, proceeds to authenticate the user with the Neurohub platform. Assuming authentication is successful, the workflow continues; otherwise, an error is displayed to the researcher.
+
+Upon successful authentication, the workstation requests access to the files stored within the researcher's Neurohub workspace. Neurohub then sends a list of these files back to the workstation, which in turn displays them to the researcher. The researcher selects the file(s) they wish to access, and the workstation requests the data for these file(s) from Neurohub. Finally, upon receiving the data, the workstation makes it available to the researcher, completing the use case scenario.
+
+This scenario assumes a direct interaction and request-response pattern between the workstation (through network drive software) and the Neurohub platform, simplifying some complexities around network protocols and data transfer methods for clarity. Adjustments may be necessary to reflect the specific technical architecture and protocols used by the Neurohub platform and the network drive software.

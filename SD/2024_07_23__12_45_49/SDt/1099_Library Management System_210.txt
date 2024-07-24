@@ -1,0 +1,26 @@
+@startuml
+participant Manager_UI as "Manager UI"
+participant Backend_Server as "Backend Server"
+participant Database as "Database"
+
+Manager_UI->Backend_Server: Request to access book addition page
+activate Backend_Server
+Backend_Server->Database: Fetch categories and details form
+activate Database
+Database-->Backend_Server: Categories and details form
+deactivate Database
+Backend_Server-->Manager_UI: Display book addition form
+deactivate Backend_Server
+
+Manager_UI->Backend_Server: Submit book details with request for unique ID
+activate Backend_Server
+Backend_Server->Backend_Server: GenerateUniqueID()
+Backend_Server->Database: Check existing IDs
+activate Database
+Database-->Backend_Server: ID availability confirmation
+Backend_Server->Database: Save new book details with ID
+Database-->Backend_Server: Confirmation of book save
+deactivate Database
+Backend_Server-->Manager_UI: Display success message with unique ID
+deactivate Backend_Server
+@enduml

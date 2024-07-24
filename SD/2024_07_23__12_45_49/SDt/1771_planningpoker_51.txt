@@ -1,0 +1,24 @@
+@startuml
+participant User
+participant "Web Application" as WebApp
+participant "Error Handling System" as ErrorHandler
+participant "Error Page" as ErrorPage
+
+User -> WebApp: Performs action (e.g., page request)
+activate WebApp
+
+alt success scenario
+    WebApp -> User: Desired Page Content
+else error scenario
+    WebApp -> ErrorHandler: Error Detected
+    activate ErrorHandler
+    ErrorHandler -> ErrorPage: Fetch Custom Error Page
+    activate ErrorPage
+    ErrorPage --> ErrorHandler: Custom Error Page Content
+    deactivate ErrorPage
+    ErrorHandler -> User: Custom Error Page Content
+    deactivate ErrorHandler
+end
+
+deactivate WebApp
+@enduml

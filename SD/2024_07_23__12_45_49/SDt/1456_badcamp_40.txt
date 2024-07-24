@@ -1,0 +1,24 @@
+@startuml
+actor Attendee as attendee
+participant "Web Interface" as web
+participant "Authentication System" as auth
+database "Platform DB" as db
+participant "Summit Management" as summit
+
+== Authentication ==
+attendee -> web : Request to view registered summits
+web -> auth : Validate session or prompt login
+auth -> web : Session valid
+
+== Fetch Registered Summits ==
+web -> db : Query attendee's registered summits
+db -> web : Return list of summits
+web -> summit: Get summit details
+summit -> db: Query for summit details
+db -> summit: Return detailed information
+summit -> web: Detailed summit information
+
+== Display Summits ==
+web -> attendee : Display summits with dates & details
+
+@enduml

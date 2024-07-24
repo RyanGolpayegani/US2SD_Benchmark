@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram for the user story "As an archivist, I want to create quality scans of images and documents, so that they can be reused." involves outlining the specific interactions between the user (Archivist) and the system components designed for scanning and managing digital files within the Digital Archive Management Enhancement Project. Given that the request specifically asks for a PlantUML format, below is a PlantUML code snippet that represents these interactions:
+
+```plantuml
+@startuml
+
+participant Archivist
+participant "ScanningSystem" as Scan
+participant "FileManagementSystem" as FMS
+participant "Database" as DB
+participant "DigitalArchive" as DA
+
+== Scanning Process ==
+Archivist -> Scan : Place document/image on scanner
+Scan -> Scan : Scan document/image
+Scan -> Scan : Adjust scan settings\n(quality, format, etc.)
+Archivist -> Scan : Confirm scan settings
+Scan -> FMS : Send digitized file
+
+== File Processing ==
+FMS -> FMS : Generate unique identifier
+FMS -> FMS : Apply initial metadata
+Archivist -> FMS : Input additional metadata\n(title, date, rights, etc.)
+FMS -> DB : Save file metadata
+DB --> FMS : Acknowledge saving
+
+== Licensing & Restrictions ==
+Archivist -> FMS : Apply licensing
+FMS -> FMS : Set access restrictions\n(based on licensing)
+FMS -> DB : Update file record\n(with license & restrictions)
+DB --> FMS : Acknowledge update
+
+== Availability ==
+FMS -> DA : Move file to digital archive
+DA --> Archivist : Confirm file availability
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+- **Scanning Process**: This section depicts the initial steps where the Archivist places a document or image on the scanning system (Scan), makes adjustments to the scan settings for optimal quality, and confirms the scanning operation. The ScanningSystem then sends the digitized file to the FileManagementSystem (FMS).
+- **File Processing**: Upon receiving the digitized file, the FileManagementSystem generates a unique identifier for it, applies initial metadata, and allows the Archivist to input additional metadata such as the title, creation date, and rights information. This metadata is then saved in the Database (DB).
+- **Licensing & Restrictions**: The Archivist applies licensing information to the digitized file through the FileManagementSystem, which sets access restrictions based on the licensing. The updated file record, including the license and restrictions, is saved in the Database.
+- **Availability**: Finally, the FileManagementSystem moves the file to the DigitalArchive (DA), and the DigitalArchive confirms the file's availability to the Archivist for reuse.
+
+This sequence diagram outlines a workflow starting from the physical scanning of documents or images to making them available in the digital archive with appropriate metadata, licensing, and access restrictions.

@@ -1,0 +1,21 @@
+@startuml
+participant DAMSManager as manager
+participant "DIMS System" as DIMS
+database "Copyright Database" as DB
+participant "Notification Service" as Notify
+participant "Calendar/Scheduler" as Scheduler
+
+== Check Statute Expiration for Object/Component ==
+
+manager -> DIMS : Check statute expiration
+DIMS -> DB : Retrieve statute details\n(for object/component)
+DB --> DIMS : Statute details and expiration date
+DIMS -> Scheduler : Schedule expiration check
+Scheduler --> DIMS : Expiration date confirmed
+
+== On Expiration Date ==
+Scheduler -> DIMS : Notify of statute expiration
+DIMS -> Notify : Trigger notification
+Notify -> manager : Send statute expiration alert
+
+@enduml

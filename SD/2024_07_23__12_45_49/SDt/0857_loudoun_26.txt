@@ -1,0 +1,39 @@
+@startuml
+
+actor "Zoning Staff Member" as staff
+participant ":Portal Interface" as portal
+database "Application Database" as db
+participant ":Compliance Check" as compliance
+participant ":Permit Issuance System" as permitSystem
+
+== Application Review ==
+staff -> portal : Selects Application\nfor Review
+portal -> db : Fetches Application\nDetails
+db -> portal : Returns Application\nInformation
+portal -> staff : Shows Application\nInformation
+
+== Verify Compliance ==
+staff -> compliance : Initiates Compliance\nCheck
+compliance -> db : Retrieves Zoning\nRegulations
+db -> compliance : Returns Zoning\nRegulations
+compliance -> compliance : Compares Application against\nZoning Regulations
+compliance -> staff : Returns Compliance\nResult
+
+== Issue Permit ==
+alt if in compliance
+    staff -> permitSystem : Triggers Permit Issuance
+    permitSystem -> db : Records Permit Issuance\nDetails
+    db -> permitSystem : Confirm Permit\nRecorded
+    permitSystem -> staff : Indicates Success\n& Permit Number
+    staff -> portal : Updates Application Status\nas "Permit Issued"
+    portal -> db : Record Application\nStatus Change
+    db -> portal : Confirmation
+    portal -> staff : Displays Updated\nApplication Status
+else not in compliance
+    staff -> portal : Updates Application Status\nas "Denied"
+    portal -> db : Record Application\nStatus Change
+    db -> portal : Confirmation
+    portal -> staff : Displays Updated\nApplication Status
+end
+
+@enduml

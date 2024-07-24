@@ -1,0 +1,49 @@
+To illustrate how an external coordinator can access data from Bath collaborators off campus using the Enhanced Research Data Management Platform, we'll create a detailed sequence diagram in PlantUML format. This sequence diagram will outline the interactions between the external coordinator, the platform's interface, and backend systems to achieve effective collaboration.
+
+```plantuml
+@startuml
+actor ExternalCoordinator as EC
+participant "Web Interface" as WI
+participant "Authentication System" as AS
+participant "Data Management\nSystem" as DMS
+participant "Access Control\nModule" as ACM
+database "Bath Data Archive" as BDA
+
+EC -> WI: Request access to specific dataset
+WI -> AS: Authenticate ExternalCoordinator
+AS --> WI: Authentication Success
+WI -> DMS: Request for dataset access(ExternalCoordinator)
+DMS -> ACM: Verify access rights for ExternalCoordinator
+ACM --> DMS: Access Granted
+DSC -> BDA: Fetch dataset details
+BDA --> DSC: Return dataset details
+DMS --> WI: Provide dataset details and access link
+WI --> EC: Display dataset details and download link
+EC -> WI: Download dataset
+WI -> DMS: Initiate download request
+DMS -> BDA: Fetch dataset and metadata
+BDA --> DMS: Return dataset and metadata
+DMS --> WI: Provide dataset and metadata
+WI --> EC: Download dataset and metadata
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **ExternalCoordinator (EC) Request**: The external coordinator starts by requesting access to a specific dataset through the Web Interface (WI).
+
+2. **Authentication**: The WI interacts with the Authentication System (AS) to authenticate the external coordinator. Upon successful authentication, the process moves forward.
+
+3. **Access Request**: The authenticated request for dataset access is passed from the WI to the Data Management System (DMS).
+
+4. **Verify Access Rights**: The DMS consults the Access Control Module (ACM) to verify the external coordinator's access rights to the requested dataset.
+
+5. **Access Granted**: If access is granted, the DMS interacts with the Bath Data Archive (BDA) to fetch the details of the requested dataset.
+
+6. **Display Data and Download Link**: The web interface presents the dataset details and a download link to the external coordinator.
+
+7. **Dataset Download**: Upon the external coordinator's request to download the dataset, the WI instructs the DMS to initiate the download.
+
+8. **Fetch and Return Dataset**: The DMS retrieves the dataset and any associated metadata from the BDA and passes it back through the WI to the external coordinator for download.
+
+This sequence diagram outlines the flow of actions from the perspective of an external coordinator wanting to access and download datasets from the Enhanced Research Data Management Platform while off-campus. It captures the interactions with the system’s interface, authentication, access control, and data retrieval mechanisms.

@@ -1,0 +1,41 @@
+Creating a sequence diagram for a specific feature—such as accepting zero and blank values for non-loan records during FABS validation—requires outlining how different parts of the system and stakeholders interact from the beginning to the end of this process. Below, I have created a detailed sequence diagram in PlantUML format based on the user story provided. This diagram represents the interactions between the agency user, the Broker platform, validation services, and the database systems involved during the update and validation of FABS records.
+
+```plantuml
+@startuml
+actor AgencyUser as "Agency User"
+participant BrokerUI as "Broker UI"
+participant ValidationService as "Validation Service"
+participant Database as "Database"
+participant FeedbackSystem as "Feedback System"
+
+== Update FABS Validation Rules to Accept Zero and Blank ==
+AgencyUser -> BrokerUI : Submit request to update FABS validation rules
+BrokerUI -> ValidationService : Process update request
+
+== Validation Rule Update ==
+ValidationService -> Database : Validate current rules
+alt If rules need an update
+    Database -> ValidationService : Confirm rules are outdated
+    ValidationService -> Database : Update rules to accept zero and blank for non-loan records
+    Database -> ValidationService  : Confirm rules updated
+    ValidationService -> BrokerUI : Display success message
+    BrokerUI -> AgencyUser : Notify update success
+else Rules already accept zero and blank
+    Database -> ValidationService : Confirm no update needed
+    ValidationService -> BrokerUI : Display "No update required" message
+    BrokerUI -> AgencyUser : Notify no update needed
+end
+
+== User Feedback ==
+AgencyUser -> FeedbackSystem : Provide feedback on update process
+FeedbackSystem -> BrokerUI : Collect feedback
+BrokerUI -> Database : Store feedback for analysis
+Database -> BrokerUI : Confirm feedback stored
+BrokerUL -> AgencyUser : Acknowledge feedback received
+
+@enduml
+```
+
+The above sequence starts with the agency user's request to update the FABS (Federal Assistance Broker Submission) validation rules through the Broker UI. The request is processed by a validation service, which checks the current state of the validation rules in the database. If an update is necessary (i.e., to accept zero and blank for non-loan records), the service updates the rules and notifies the user of the success. If no update is needed, the user is informed accordingly. Additionally, the user has the opportunity to provide feedback on the process, which is collected and stored for future reference.
+
+This diagram simplifies complex software interactions into a sequence of steps, assuming basic familiarity with the technologies and processes described. Adjustments might be necessary depending on the specific technologies used (e.g., specific databases, UI frameworks, etc.), and the intricacies of the Broker platform's architecture.

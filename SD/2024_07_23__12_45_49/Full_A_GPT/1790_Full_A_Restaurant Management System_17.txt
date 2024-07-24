@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram in PlantUML for the user story "As a chef, I want to know customer orders so that I can prepare ordered food" involves representing the interactions between the chef (user), the Restaurant Management and Operations System, and related components for processing and displaying customer orders. Below is the sequence diagram in PlantUML code that illustrates these interactions:
+
+```plantuml
+@startuml
+participant Chef
+participant "Restaurant Management\nand Operations System" as System
+participant "Order Management Module" as OrderModule
+participant Database
+
+Chef -> System : Checks for new orders
+System -> OrderModule : Retrieve new orders
+activate OrderModule
+
+OrderModule -> Database : Query new orders
+activate Database
+Database --> OrderModule : Return new order data
+deactivate Database
+
+OrderModule --> System : Display new orders
+System --> Chef : Show new orders on chef's dashboard
+deactivate OrderModule
+
+Chef -> System : Select order to prepare
+System -> OrderModule : Update order status to "In preparation"
+OrderModule -> Database : Update order status
+Database --> OrderModule : Confirm status update
+OrderModule --> System : Notify order update
+System --> Chef : Confirm order is in preparation
+
+Chef --> System : Mark order as Ready-to-Serve
+System -> OrderModule : Update order status to "Ready-to-Serve"
+OrderModule -> Database : Update order status
+Database --> OrderModule : Confirm status update
+OrderModule --> System : Notify servers order is Ready-to-Serve
+System -> Chef : Confirmation order is Ready-to-Serve
+
+@enduml
+```
+
+This sequence diagram starts with the chef checking the Restaurant Management and Operations System for new customer orders. The system consults the Order Management Module, which fetches new order data from the database. The fetched orders are then displayed to the chef via the System. When the chef selects an order to prepare and updates its status (e.g., to "In preparation"), this update is reflected back in the database through the Order Management Module. Along the serving process, once an order is prepared and ready to be served, the chef updates the order status to "Ready-to-Serve," which is again processed through the Order Management Module and notified to servers through the system. The sequence diagram illustrates the flow and interactions involved in managing customer orders from the chef's perspective within the Restaurant Management and Operations System.

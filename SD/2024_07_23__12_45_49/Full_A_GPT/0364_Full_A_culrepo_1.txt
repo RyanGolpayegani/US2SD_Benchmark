@@ -1,0 +1,40 @@
+Given your requirements, here's a detailed sequence diagram written in PlantUML format which outlines the steps a faculty member would take to access a collection within the repository system. This includes interactions with the system interface, authentication, search functionalities, and finally accessing the desired collection.
+
+```plantuml
+@startuml
+actor FacultyMember as FM
+participant "Authentication Service" as Auth
+participant "Search Interface" as SI
+participant "Database" as DB
+participant "Collection" as Coll
+
+FM -> Auth: Enter credentials
+Auth -> FM: Validate credentials
+activate Auth
+Auth --> FM: Authentication Successful
+deactivate Auth
+
+FM -> SI: Access Search Interface
+activate SI
+SI --> FM: Display Search Options
+
+FM -> SI: Input search criteria for collection
+activate DB
+SI -> DB: Query database with search criteria
+DB --> SI: Return search results
+deactivate DB
+
+SI --> FM: Display list of matching collections
+
+FM -> SI: Select desired collection
+SI -> DB: Request selected collection details
+activate Coll
+DB --> SI: Retrieve collection details
+deactivate DB
+SI --> Coll: Access Collection
+Coll --> FM: Display Collection Content
+
+@enduml
+```
+
+This UML sequence diagram represents the process flow from the perspective of a faculty member (FM), detailing the steps involved in accessing a research collection within the digital repository system. It begins with the faculty member logging in through the Authentication Service. Once authenticated successfully, the faculty member uses the Search Interface to find a specific collection, utilizes the search functionality to input search criteria which queries the Database, and upon receiving the search results, selects and accesses the desired collection. The Collection then displays its content to the faculty member.

@@ -1,0 +1,39 @@
+To generate a detailed sequence diagram in PlantUML format for the given user story, we need to outline the interactions involved in performing automatic worm motion analysis to reduce video duration in Worm Watch Lab. The sequence will involve interactions between the Zooniverse admin, the AMIDP platform, and possibly additional subsystems like video analysis tools and the video database.
+
+The following is a sequence diagram in PlantUML format, capturing the essential steps of this process:
+
+```plantuml
+@startuml
+actor ZooniverseAdmin as admin
+participant "AMIDP Platform" as AMIDP
+participant "Video Analysis\nTool" as AnalysisTool
+database "Video Database" as VideoDB
+
+admin -> AMIDP : Request video reduction for\nworm motion analysis
+AMIDP -> VideoDB : Fetch target video
+VideoDB --> AMIDP : Video data
+AMIDP -> AnalysisTool : Initiate motion analysis\nwith video data
+AnalysisTool -> AnalysisTool : Analyze motion to\nidentify relevant segments
+AnalysisTool --> AMIDP : Analysis results with\ntimeframes
+AMIDP -> AMIDP : Process analysis results to\ndetermine segments to keep
+AMIDP -> VideoDB : Update video with reduced\nduration
+VideoDB --> AMIDP : Confirmation of update
+AMIDP --> admin : Notify completion and\nprovide access to reduced video
+@enduml
+```
+
+### Explanation:
+
+1. **Zooniverse Admin Request:** The process begins with the Zooniverse admin requesting the reduction of a video's duration specifically for worm motion analysis within the Worm Watch Lab project. This is initiated through the AMIDP platform.
+  
+2. **Fetch Target Video:** The AMIDP platform communicates with the video database to fetch the target video for analysis.
+
+3. **Motion Analysis:** The AMIDP platform then sends the video data to a video analysis tool specially equipped for motion analysis. This tool processes the video to identify relevant segments where worm motion is detected. The focus here is on determining which portions of the video are critical for the analysis, thereby identifying which segments can potentially be trimmed.
+
+4. **Analysis Results Processing:** Once the motion analysis tool provides the timeframes of important segments, the AMIDP platform processes these results. This step involves deciding which parts of the video to keep and which to remove, aiming to reduce the duration without losing significant content.
+
+5. **Update Video:** After determining the segments to retain, the AMIDP platform requests the video database to update the video with the reduced duration, effectively creating a shortened version of the video focused on relevant worm motions.
+
+6. **Notification of Completion:** Lastly, the AMIDP platform notifies the Zooniverse admin that the video reduction process is complete, providing access to the shortened version of the video for further use in the Worm Watch Lab project.
+
+This sequence diagram outlines the workflow involved in automating the process of video reduction based on worm motion analysis, highlighting the interactions between the Zooniverse admin, the AMIDP platform, the video analysis tool, and the video database.

@@ -1,0 +1,31 @@
+@startuml
+participant StaffMember as "Library Staff Member"
+participant UploadInterface as "Upload Interface"
+participant RepositorySystem as "Repository System"
+participant Database as "Database"
+participant EmbargoService as "Embargo Service"
+participant CalendarService as "Calendar Service"
+
+== Upload Process ==
+StaffMember -> UploadInterface : select item for upload
+UploadInterface -> RepositorySystem : initiate upload process
+RepositorySystem -> Database : save item metadata\n(set visibility to 'embargoed')
+Database --> RepositorySystem : confirm metadata saved
+RepositorySystem -> EmbargoService : set embargo details
+activate EmbargoService
+EmbargoService -> CalendarService : schedule visibility change
+CalendarService --> EmbargoService : confirm schedule set
+deactivate EmbargoService
+EmbargoService --> RepositorySystem : embargo details confirmed
+RepositorySystem --> UploadInterface : upload and embargo set successfully
+UploadInterface --> StaffMember : display confirmation message
+
+== Embargo Expiry ==
+CalendarService -> EmbargoService : trigger at embargo end date/time
+activate EmbargoService
+EmbargoService -> RepositorySystem : update item visibility
+RepositorySystem -> Database : change item visibility to 'visible'
+Database --> RepositorySystem : confirm visibility updated
+deactivate EmbargoService
+RepositorySystem --> CalendarService : item now visible
+@enduml

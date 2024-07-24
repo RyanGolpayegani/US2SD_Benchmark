@@ -1,0 +1,28 @@
+@startuml
+actor FacultyMember as "Cornell Faculty Member"
+participant WebInterface as "Repository Web Interface"
+participant ControlPanel as "Collection Control Panel"
+participant SortFunction as "Sorting Functionality"
+participant Database as "Repository Database"
+
+== Control Sorting of Collection Items ==
+
+FacultyMember -> WebInterface: Accesses Collection Management
+WebInterface --> FacultyMember: Presents Collection Management Dashboard
+
+FacultyMember -> ControlPanel: Navigate to "Sort Collection Items"
+ControlPanel --> FacultyMember: Shows current sorting options and items
+
+FacultyMember -> ControlPanel: Specifies new sorting criteria
+ControlPanel -> SortFunction: Requests update to sorting logic
+
+SortFunction -> Database: Fetches collection items
+Database --> SortFunction: Returns items
+
+SortFunction -> Database: Applies new sorting criteria and updates collection
+Database --> SortFunction: Confirms items re-ordered
+
+SortFunction --> ControlPanel: Confirms new sorting applied
+ControlPanel --> FacultyMember: Displays collection with new sorting
+
+@enduml

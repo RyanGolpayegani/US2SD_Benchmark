@@ -1,0 +1,46 @@
+To visualize how a researcher would interact with a system to view film clips within the Digital Archive Management Enhancement Project, we can break down the process into different steps and represent these interactions using a sequence diagram. Below is a PlantUML code snippet that describes the interaction between the researcher (user), the system's interface, and backend services necessary to fulfill this user story.
+
+```plantuml
+@startuml
+participant Researcher as user
+participant "Search Interface" as search
+participant "Authorization Service" as auth
+participant "File Management System" as fileManager
+participant "Media Streaming Service" as mediaStream
+
+== User Requests Film Clips ==
+user -> search : Enter search keywords
+search -> fileManager : Retrieve matching files
+fileManager --> search : Return film clip metadata
+search --> user : Display film clip options
+
+== User Selects a Film Clip ==
+user -> search : Select specific film clip
+search -> auth : Check user permissions
+auth --> search : Permission granted
+
+== Streaming Film Clip ==
+search -> fileManager : Request film clip access
+fileManager -> mediaStream : Fetch film clip
+mediaStream --> fileManager : Stream film clip
+fileManager --> user : Display film player UI
+user -> mediaPlayer : Interacts with player controls
+
+@enduml
+```
+
+### Explanation:
+
+1. **Researcher Inputs Search Keywords**: The user (researcher) starts by entering search keywords into the Search Interface, aiming to find relevant film clips.
+
+2. **Search Interface Retrieves Matches**: The Search Interface communicates with the File Management System to retrieve files that match the search criteria, returning metadata about potential film clips to the user.
+
+3. **User Selects Film Clip**: Based on the options provided, the researcher chooses a specific film clip they wish to view. The Search Interface then requests permission from the Authorization Service to access the selected film clip.
+
+4. **Authorization Granted**: The Authorization Service checks the user's permissions and, if authorized, grants access to the film clip.
+
+5. **Streaming Service Fetches Film Clip**: The File Management System requests the actual film clip from the Media Streaming Service based on the authorization.
+
+6. **User Views Film Clip**: The Media Streaming Service streams the film clip back through the File Management System to the user, displaying it within a film player UI. The researcher can then interact with the player controls (play, pause, rewind, etc.).
+
+This sequence diagram outlines the interactions between the researcher and the Digital Archive Management System's components for viewing film clips, emphasizing search, authorization, file management, and media streaming functionalities.

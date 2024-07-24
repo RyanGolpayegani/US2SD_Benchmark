@@ -1,0 +1,51 @@
+Below is a detailed sequence diagram written in PlantUML syntax, portraying the user story: "As a staff, I want to keep track of subscriber profiles." This diagram depicts the interaction between the library staff and the Comprehensive Library Management System (CLMS) for maintaining the subscriber profiles including operations like viewing, updating, or deleting profiles.
+
+```plantuml
+@startuml
+
+participant "Staff Member" as Staff
+participant "Web Interface" as Web
+participant "CLMS Server" as Server
+participant "Database" as DB
+
+== Viewing a Subscriber Profile ==
+Staff -> Web : select view profile
+Web -> Server : request profile data
+activate Server
+Server -> DB : query subscriber information
+activate DB
+DB --> Server : return subscriber information
+deactivate DB
+Server --> Web : display subscriber information
+Web --> Staff : show subscriber profile
+deactivate Server
+
+== Updating a Subscriber Profile ==
+Staff -> Web : edit profile details
+Web -> Server : update profile request
+activate Server
+Server -> DB : update subscriber information
+activate DB
+DB --> Server : confirm update
+deactivate DB
+Server --> Web : display updated profile
+Web --> Staff : show confirmation message
+deactivate Server
+
+== Deleting a Subscriber Profile ==
+Staff -> Web : request to delete profile
+Web -> Server : delete profile request
+activate Server
+Server -> DB : remove subscriber information
+activate DB
+DB --> Server : confirm deletion
+deactivate DB
+Server --> Web : show deletion confirmation
+Web --> Staff : display success message
+deactivate Server
+
+
+@enduml
+```
+
+This sequence diagram illustrates three main processes: viewing, updating, and deleting subscriber profiles through interactions primarily between the staff member and the library system facilitated by a web interface. The web interface relays requests to the CLMS server, which, in turn, interacts with the database to perform the requested operations. Confirmation of the actions is sent back to the staff member via the same path in reverse. This communication ensures that staff can effectively manage subscriber profiles within the Comprehensive Library Management System, maintaining up-to-date records that are essential for efficient library management.

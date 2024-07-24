@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+
+participant Librarian as librarian
+participant "Web Interface" as webInterface
+participant "Server" as server
+participant "Database" as db
+
+== Update Bibliographical Information for a Book ==
+librarian -> webInterface : Access update book feature
+web_wf: Authenticate librarian role
+alt authentication success
+  webInterface -> server : Request book details
+  server -> db : Query book information
+  db --> server : Return book information
+  server --> webInterface : Display book information
+  webInterface -> librarian : Show book details form
+
+  librarian -> webInterface : Update and submit book details
+  web_wf: Validate updated information
+  alt validation success
+      webInterface -> server : Send updated book details
+      server -> db : Update book information in database
+      db --> server: Confirm update
+      server --> webOut WF : Acknowledge successful update
+      webInterface -> librarian : Show success message
+  else validation failure
+      webArgumentError Tanemo Error:Show error message
+      webInterface -> librarian : Show error message and ask for re-submission
+  end
+else authentication failure
+  webInterface -> librarian : Deny access, prompt for login
+end
+
+@enduml

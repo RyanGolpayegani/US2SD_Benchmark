@@ -1,0 +1,24 @@
+@startuml
+actor OlderPerson as user
+participant "ALFRED Interface" as ai
+participant "Reminder System" as rs
+participant "Appointment Database" as ad
+participant "Notification Service" as ns
+
+user -> ai : Request upcoming appointments
+ai -> rs : Fetch upcoming appointments
+rs -> ad : Retrieve appointments for User
+ad -> rs : Appointment details
+rs -> ns : Schedule reminder notifications
+ns -> user : Display reminders at scheduled times
+
+alt Appointment modification
+    user -> ai : Modify/Delete appointment
+    ai -> rs : Update appointment details
+    rs -> ad : Update/Delete appointment
+    ad -> rs : Confirmation of update
+    rs -> ns : Update/Delete scheduled reminder
+    ns -> user : Confirmation message
+end
+
+@enduml

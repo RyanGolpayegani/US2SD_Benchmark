@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the user story described involves representing the interactions between various components of the Agile Estimation and Planning Tool (AEPT) when a participant decides to change their estimate during an estimation game. Below is a sequence diagram in PlantUML format, highlighting the process from a participant deciding to change an estimate until the estimation round ends.
+
+```plantuml
+@startuml
+participant ParticipantUI
+participant GameService
+participant EstimationService
+participant Database
+
+ParticipantUI -> GameService : requestCurrentEstimationRound()
+GameService -> EstimationService : getCurrentRoundDetails()
+alt Estimation Round is Active
+    EstimationService -> GameService : roundDetails
+    GameService -> ParticipantUI : showCurrentRound(roundDetails)
+    ParticipantUI -> ParticipantUI : decideToChangeEstimate()
+    ParticipantUI -> EstimationService : submitNewEstimate(newEstimate)
+    activate EstimationService
+    EstimationService -> Database : updateEstimate(participantId, newEstimate)
+    Database --> EstimationService : confirmation
+    deactivate EstimationService
+    EstimationService -> EstimationService : checkIfAllEstimatesIn()
+    alt All Estimates are In
+        EstimationService --> ParticipantUI : disableEstimateChange()
+        loop For Each Participant
+            EstimationInfo -> GameService : notifyEstimateFinalized()
+            GameService -> ParticipantUI : revealEstimatesToAll()
+        end
+    else Still Waiting for Estimates
+        EstimationService --> ParticipantUI : enableEstimateChange()
+    end
+else Estimation Round Closed
+    EstimationService -> GameService : roundClosedMessage()
+    GameService -> ParticipantUI : showRoundClosedMessage()
+end
+
+@enduml
+```
+
+This diagram details the following sequence of events:
+
+1. **Request Current Round Details**: The participant's user interface (ParticipantUI) requests the current estimation round details from the GameService.
+2. **Retrieve and Display Round Details**: The GameService communicates with the EstimationService to get the details of the current round. The details are then sent back to the participant's UI.
+3. **Participant Decides to Change Estimate**: Based on the information heard or a change of mind, the participant decides to change their estimate through the ParticipantUI.
+4. **Submission of New Estimate**: The new estimate is submitted to the EstimationService, which updates the participant's estimate in the database.
+5. **Check for All Estimates**: The EstimationService checks if all participants have submitted their estimates.
+    - If all estimates are in, it disables further changes for the participant and proceeds to reveal all estimates to participants.
+    - If not all estimates are in, participants are allowed to change their estimates until the last one is received.
+6. **Handle Closed Round**: If the round is already closed by the time a participant tries to change an estimate, a message indicating the closure is shown.
+
+This sequence diagram outlines the flow and interactions involved in changing an estimate during an estimation round within AEPT, ensuring that estimates can be adjusted until the point where all participants have made their selections.

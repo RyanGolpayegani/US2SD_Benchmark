@@ -1,0 +1,32 @@
+Creating a detailed sequence diagram for the described user story -- "As a camp administrator, I want to be able to delete parents from the database, so that I can keep my pages free of unneeded clutter" -- requires illustrating the interactions between the system's various components from the initiation of the delete action by the camp administrator to the removal of the parent's record from the database. The sequence diagram in PlantUML format outlined below captures these interactions.
+
+```plantuml
+@startuml
+participant "Camp Administrator" as Admin
+participant "Camp Management \n& Communication Platform" as Platform
+database "Camp Database" as DB
+
+Admin -> Platform : Selects Delete Parent option
+Platform -> DB : Retrieves Parent Record
+DB --> Platform : Display Parent Record
+Platform --> Admin : Show Parent Record & Confirm Delete
+Admin -> Platform : Confirms Deletion
+
+alt successful deletion
+    Platform -> DB : Delete Parent Record
+    DB --> Platform : Confirm Deletion
+    Platform --> Admin : Confirmation Message: Parent Deleted
+else deletion failed
+    Platform -> DB : Log Error
+    DB --> Platform : Error Logged
+    Platform --> Admin : Error Message: Deletion Unsuccessful
+end
+
+@enduml
+```
+
+This sequence diagram starts with the "Camp Administrator" initiating the delete process by selecting the option to delete a parent. The system, referred to as "Camp Management & Communication Platform," then retrieves the record of the parent meant for deletion from the "Camp Database." After displaying and confirming the specific parent record with the administrator, the administrator confirms the deletion.
+
+Following the administrator's confirmation, two paths are illustrated: one for successful deletion and another for a failed attempt. In the case of a successful deletion, the database confirms the deletion back to the platform, which then informs the administrator about the successful deletion. In the scenario where the deletion fails, the system logs an error in the database and communicates to the administrator that the deletion was unsuccessful.
+
+This diagram efficiently captures the sequence of interactions for the specified user story in the context of the provided project description.

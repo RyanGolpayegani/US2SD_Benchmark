@@ -1,0 +1,60 @@
+Given your request, below is a detailed PlantUML code snippet to create a sequence diagram for the user story: "As an administrator, I want to have a platform that can support a variety of media file and text-based formats, so that the intellectual output of the school can be showcased and preserved in a more comprehensive way."
+
+The sequence diagram will depict the interaction between the administrator and the digital repository system, including file uploading and format support verification steps.
+
+```plantuml
+@startuml
+participant Administrator as admin
+participant "Digital Repository System" as system
+participant "Content Management Module" as content
+participant "Format Support Check" as formatCheck
+participant Database as db
+
+== Check Format Support ==
+admin -> system: Request format support info
+activate system
+system -> formatCheck: Retrieve supported formats
+activate formatCheck
+formatCheckout -> system: Return supported formats list
+deactivate formatCheck
+system -> admin: Display supported formats
+deactivate system
+
+== Upload Process ==
+admin -> system: Initiate file upload
+activate system
+system -> content: Upload requested
+activate content
+admin -> content: Select files for upload
+loop for each file
+    content -> formatCheck: Verify format
+    activate formatCheck
+    alt If file format is supported
+        formatCheck --> content: Format verified
+        deactivate formatCheck
+        content -> db: Save file metadata
+        activate db
+        db --> content: File metadata saved
+        deactivate db
+        content --> admin: File upload successful
+    else File format not supported
+        formatCheck --> content: Format unsupported
+        deactivate formatCheck
+        content --> admin: File format error
+    end
+end
+deactivate content
+deactivate system
+
+@enduml
+```
+
+This diagram illustrates the following steps:
+1. The administrator requests information about supported formats from the digital repository system.
+2. The system retrieves and displays the supported formats to the administrator.
+3. The administrator initiates the file upload process through the system.
+4. For each selected file, the system checks if the file format is supported.
+5. If a file's format is supported, it saves the file metadata to the database and notifies the administrator of a successful upload.
+6. If a file's format is not supported, the system notifies the administrator of the error.
+
+This sequence diagram provides a high-level view of the interactions required to support and manage a variety technically diverse files within the digital repository system, focusing on the administrator's perspective in ensuring comprehensive showcase and preservation of intellectual outputs.

@@ -1,0 +1,26 @@
+@startuml
+actor Librarian as librarian
+participant "Login Interface" as login
+participant "Add Book Interface" as addBook
+participant "Validation System" as validation
+database "CLMS Database" as db
+
+librarian -> login: Logs into the system
+login --> librarian: Authentication Successful
+
+librarian -> addBook: Selects "Add New Book"
+addBook -> librarian: Presents book details form
+librarian -> addBook: Enters book details and submits
+
+addBook -> validation: Validate book details
+validation --> addBook: Validation Success
+
+addBook -> db: Check for duplicate entries
+db --> addBook: No duplicates found
+
+addBook -> db: Save new book details
+db --> addBook: Book saved successfully
+
+addBook --> librarian: Display confirmation message
+
+@enduml

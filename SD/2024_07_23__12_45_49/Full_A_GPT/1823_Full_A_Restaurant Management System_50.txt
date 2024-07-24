@@ -1,0 +1,58 @@
+To represent the described user story "As a cook, I want to mark items unavailable, so that Waiter can inform customers." in a sequence diagram with PlantUML, you'd design a flow demonstrating how a cook interacts with the system to update item availability and how this information is subsequently communicated to the waiter. 
+
+For simplicity, the sequence will focus on the key interactions without dives into authorization or detailed UI interaction processes.
+
+```plantuml
+@startuml
+actor Cook
+actor Waiter
+database DataBase
+
+Cook -> System: Login
+note right of Cook: Authentication Process
+
+Cook -> System: Select item to update
+System -> DataBase: Check item details
+
+DataBase --> System: Item details retrieved
+System --> Cook: Display item status
+Cook -> System: Mark item unavailable
+
+System -> DataBase: Update item status
+DataBase --> System: Confirm update
+System --> Cook: Show confirmation message
+
+alt Item marked as unavailable
+    System -> Waiter: Notify unavailable item
+    Waiter -> System: Acknowledge notification
+    System --> DataBase: Log waiter acknowledgment
+    DataBase --> System: Confirmation of log
+    System --> Waiter: Show update successful
+else Update fails
+    System --> Cook: Show error message
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Cook Login**: The sequence starts with the Cook logging into the system, showcasing the initial authentication process necessary to access the functionality of updating menu items.
+
+2. **Select Item to Update**: The Cook selects an item to update from the system, which then checks the database for the details of that item.
+
+3. **Display Item Status**: The System retrieves the item details from the Database and displays them to the Cook, including its current availability status.
+
+4. **Mark Item Unavailable**: The Cook submits a request to mark the item as unavailable through the System.
+
+5. **Update Item Status**: The System processes this request and updates the item's status in the Database.
+
+6. **Confirmation Message**: Upon successful update, the System shows a confirmation message to the Cook indicating the item has been marked as unavailable.
+
+7. **Notify Waiter**: The system immediately notifies the Waiter(s) about the change in item status so they can inform customers accordingly. This may involve an automatic notification system integrated within the platform.
+
+8. **Waiter Acknowledgement**: The Waiter acknowledges the notification, and the System logs this acknowledgment in the Database.
+
+9. **Error Handling**: In case of an update failure, the System will show an error message to the Cook detailing why the update could not be processed.
+
+This sequence assumes a synchronous flow of information and updates between the System, the Cook, the Waiter, and the Database, providing a straightforward approach to updating and communicating changes in menu item availability.

@@ -1,0 +1,29 @@
+Creating a detailed Sequence Diagram for the described user story involves representing the interaction between different system components and actors to achieve the goal of a trainer reading information relevant only to them. Here is an example PlantUML code to illustrate this interaction:
+
+```plantuml
+@startuml
+actor Trainer
+database Database
+participant "ContentFilterService" as Filter
+participant "ContentManagementSystem" as CMS
+participant "UserProfile" as Profile
+
+== Read Relevant Information Flow ==
+
+Trainer -> CMS : Request content
+CMS -> Filter : Get Trainer's profile ID
+Filter -> Database : Query profile details
+Database -> Filter : Return profile details
+Filter -> CMS : Identify content relevant to Trainers
+CMS -> Database : Request relevant content
+Database -> CMS : Return relevant content
+CMS -> Trainer : Display relevant content
+
+@enduml
+```
+
+This sequence diagram begins with the Trainer requesting content from the Content Management System (CMS). The CMS then interacts with a ContentFilterService to obtain the trainer's profile ID and queries the database for the profile details of the trainer. Once the Filter service receives the trainer's profile details, it identifies content that is relevant to trainers specifically. The CMS then requests this filtered, relevant content from the database. After the database returns the relevant content, the CMS finally displays this content to the trainer.
+
+The diagram highlights the flow of data and the interactions between the system's components, ensuring that trainers are only shown information pertinent to their interests and roles. This enhances the user experience by providing targeted, relevant content efficiently.
+
+Keep in mind, the actual implementation details like service and database names may vary, and additional security or authentication steps could be integrated into this process based on the project's specific requirements.

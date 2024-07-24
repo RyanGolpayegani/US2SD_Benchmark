@@ -1,0 +1,33 @@
+@startuml
+actor DAMSManager as "DAMS Manager"
+participant DAMSInterface as "DAMS Interface"
+participant PermissionService as "Permission Service"
+participant Database as "Database"
+participant NotificationService as "Notification Service"
+
+== Modification of Permissions or Restrictions ==
+
+DAMSManager -> DAMSInterface : Modify permissions/restrictions
+DAMSInterface -> PermissionService : Check modifications
+PermissionService -> Database : Update permissions/restrictions
+
+Database --> PermissionService : Confirm update
+PermissionService -> PermissionService : Detect modification
+
+== Notification Process ==
+PermissionService -> NotificationService : Prepare notification message
+PermissionService -> NotificationService : Identify affected DAMS managers
+PermissionService -> NotificationService : Set active dates for notification
+PermissionService -> NotificationService : Log notification event
+
+PermissionService -> NotificationService : Check for opt-out preferences
+alt Opted-out of notifications
+  PermissionService -> NotificationService : Skip notification
+else Not opted-out
+  PermissionService -> NotificationService : Process for sending
+  PermissionService -> NotificationService : Determine appropriate channel (e-mail, system alert)
+  PermissionService -> NotificationService : Send notification
+  NotificationService -> DAMSManager : Notify modification event
+end
+
+@enduml

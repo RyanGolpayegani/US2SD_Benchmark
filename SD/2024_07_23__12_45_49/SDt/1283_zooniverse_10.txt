@@ -1,0 +1,21 @@
+@startuml
+
+actor User as user
+participant "User Interface" as UI
+participant "Recommendation Engine" as RE
+participant "Profile Service" as PS
+participant "Content Database" as CD
+database "User Profiles" as UP
+
+user -> UI : Request recommendations
+UI -> RE : Query recommendations for User
+RE -> PS : Get similar profiles
+PS -> UP : Fetch user profile data
+UP -> PS : Return profile data
+PS -> RE : Return similar profiles
+RE -> CD : Fetch content for profiles
+CD -> RE : Return content data
+RE -> UI : Send recommended content
+UI -> user : Display recommendations
+
+@enduml

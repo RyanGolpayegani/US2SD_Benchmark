@@ -1,0 +1,55 @@
+Given the user story's requirements, below is an example of a detailed sequence diagram in PlantUML format to illustrate how a staff member can manage hearing calendars to track hearing-related activities and due dates within the County Services & Property Information Portal.
+
+```plantuml
+@startuml
+actor Staff as S
+participant "Authentication System" as Auth
+participant "Staff Dashboard" as Dash
+participant "Hearing Calendar Management" as HCM
+participant "Database" as DB
+
+S -> Auth: Login
+Auth -> S: Authentication Success
+
+S -> Dash: Access Hearing Calendar Module
+activate Dash
+Dash -> HCM: Request to View Hearing Calendar
+activate HCM
+HCM -> DB: Query Scheduled Hearings
+DB -> HCM: Return Hearings Data
+HCM -> S: Display Hearing Calendar
+deactivate HCM
+
+S -> HCM: Request to Add New Hearing
+activate HCM
+HCM -> S: Display "Schedule New Hearing" Form
+
+S -> HCM: Submit New Hearing Details
+HCM -> DB: Insert New Hearing into Calendar
+DB -> HCM: Confirmation
+HCM -> S: Show Success Message & Updated Calendar
+deactivate HCM
+
+== Modify an Existing Hearing ==
+S -> HCM: Select Hearing to Modify
+activate HCM
+HCM -> S: Display "Edit Hearing Details" Form
+
+S -> HCM: Update and Submit Hearing Details
+HCM -> DB: Update Hearing Details in Calendar
+DB -> HCM: Confirmation
+HCM -> S: Show Success Message & Updated Calendar
+deactivate HCM
+
+== Delete a Hearing ==
+S -> HCM: Select Hearing to Delete
+activate HCM
+HCM -> DB: Delete Hearing from Calendar
+DB -> HCM: Confirmation
+HCM -> S: Show Success Message & Updated Calendar
+deactivate HCM
+
+@enduml
+```
+
+This sequence diagram starts with a staff member logging in through the authentication system. Once authenticated, the staff member accesses the hearing calendar module from the staff dashboard. They can then view the current hearing calendar, add new hearings, modify existing hearings, or delete hearings as needed. Each of these operations involves interactions with the database to retrieve, insert, or update hearing-related information, with success messages displayed to the staff member upon completion of these actions.

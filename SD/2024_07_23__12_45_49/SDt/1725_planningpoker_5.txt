@@ -1,0 +1,30 @@
+@startuml
+actor Moderator
+participant "Moderator Interface" as MI
+participant "Estimation Game Session" as EGS
+participant "Estimators Interface" as EI
+
+== Select Item for Estimation ==
+Moderator -> MI : selectItem(itemId)
+activate MI
+MI -> EGS : requestItemEstimation(itemId)
+activate EGS
+EGS -> EGS : retrieveItemDetails(itemId)
+EGS -> EI : displayItemForEstimation(itemDetails)
+activate EI
+EI --> Moderator : showItemOnEstimatorsScreens
+deactivate EI
+deactivate EGS
+deactivate MI
+
+== Estimation Process ==
+loop Each Estimator
+    EI -> EI : submitEstimate(estimatorId, itemId, estimate)
+end
+EI -> EGS : compileEstimates(estimates)
+EGS -> EGS : calculateAverageEstimate(estimates)
+EGS -> MI : displayAverageEstimate(averageEstimate)
+MI --> Moderator : showAverageEstimate
+deactivate MI
+
+@enduml

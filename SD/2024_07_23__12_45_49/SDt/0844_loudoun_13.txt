@@ -1,0 +1,35 @@
+@startuml
+participant "Staff Member" as Staff
+participant "Authentication Service" as AuthService
+participant "User Dashboard" as Dashboard
+participant "Application System" as AppSystem
+participant "Database" as DB
+
+== Authentication ==
+Staff -> AuthService: Authenticate
+AuthService -> Staff: Authentication Success
+
+== Navigate to Application ==
+Staff -> Dashboard: Access Dashboard
+Dashboard -> AppSystem: Request Application List
+AppSystem -> DB: Retrieve Applications
+DB -> AppSystem: Applications List
+AppSystem -> Dashboard: Display Applications
+Dashboard -> Staff: Show Applications
+
+== Apply Hold ==
+Staff -> AppSystem: Select Application to Hold
+AppSystem -> AppSystem: Check Application Status
+Staff -> AppSystem: Request to Apply Hold
+AppSystem -> DB: Verify Permissions
+DB -> AppSystem: Permissions Granted
+
+alt Application Status is Valid for Hold
+    AppSystem -> DB: Apply Hold to Application
+    DB -> AppSystem: Hold Applied
+    AppSystem -> Staff: Hold Application Success
+else Application Status is Not Valid for Hold
+    AppSystem -> Staff: Error Message - Cannot Apply Hold
+end
+
+@enduml

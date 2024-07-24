@@ -1,0 +1,48 @@
+Creating a detailed sequence diagram for the described user story involves outlining the interactions between different system components needed to remove a book reservation by a library member. Below is a PlantUML code snippet representing these interactions:
+
+```plantuml
+@startuml
+participant Member_UI as Member
+participant AuthorizationService as Auth
+participant ReservationService as Reservation
+participant Database as DB
+
+Member -> Member_UI : Select "Cancel Reservation"
+Member_UI -> Auth : Authenticate(userID)
+Auth -> Member_UI : AuthenticationSuccess
+
+alt Authentication Successful
+    Member_UI -> Reservation : RequestCancelReservation(userID, reservationID)
+    Reservation -> DB : QueryReservationDetails(reservationID)
+    DB -> Reservation : ReservationDetails
+    Reservation -> DB : RemoveReservation(reservationID)
+    DB -> Reservation : Confirmation
+    Reservation -> Member_UI : ShowSuccessMessage("Reservation cancelled successfully")
+else Authentication Fails
+    Member_UI -> Member : ShowErrorMessage("Authentication Failed")
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram
+
+1. **Member Interaction**: The member initiates the process by selecting an option to cancel a reservation through the User Interface (Member_UI), typically a web page or a mobile app.
+
+2. **Authentication**: The system needs to ensure that the user requesting the cancellation is authenticated and authorized to make changes to the reservation. The Member_UI sends the member's `userID` to the Authorization Service (Auth) to authenticate the user.
+
+3. **Authentication Results**:
+   - **If authentication succeeds**: The sequence continues to the next steps.
+   - **If authentication fails**: An error message is displayed to the member, and the process ends.
+
+4. **Request to Cancel Reservation**: Once authenticated, the Member_UI sends a request to cancel a specific reservation by providing the `userID` and `reservationID` to the Reservation Service (Reservation).
+
+5->6. **Query Existing Reservation**: The Reservation Service queries the Database (DB) to ensure the reservation exists and retrieves its details.
+
+7->8. **Remove Reservation**: If the reservation details are verified, the Reservation Service asks the Database to remove the reservation record.
+
+9. **Confirmation**: The Database confirms the removal of the reservation.
+
+10. **Success Message**: Finally, the Reservation Service informs the Member_UI of the successful cancellation, and a success message is shown to the user.
+
+This sequence diagram provides a clear interaction flow to implement the user story of canceling a book reservation in the Comprehensive Library Management System.

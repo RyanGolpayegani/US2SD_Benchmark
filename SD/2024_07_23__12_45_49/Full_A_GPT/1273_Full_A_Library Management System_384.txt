@@ -1,0 +1,52 @@
+Creating a detailed Sequence Diagram for the user story "As a librarian, I want to update books in the library" involves illustrating the interactions between objects in the system from the initiation of the book update process by the librarian to the confirmation of the update. Here's how the sequence might unfold in PlantUML:
+
+```plantuml
+@startuml
+participant Librarian
+participant WebInterface as "Web Interface"
+participant AuthenticationController as "Authentication Controller"
+participant BookManagementSystem as "Book Management System"
+participant Database as "Database"
+
+Librarian -> WebInterface: Initiate book update process
+activate WebInterface
+
+WebInterface -> AuthenticationController: Validate librarian credentials
+activate AuthenticationController
+AuthenticationController --> WebInterface: Credentials validated
+deactivate AuthenticationController
+
+WebInterface -> BookManagementSystem: Request book details update form
+activate BookManagementSystem
+BookManagementSystem --> WebInterface: Display update form
+deactivate BookManagementSystem
+
+Librarian -> WebInterface: Submit updated book details
+activate WebInterface
+WebInterface -> BookManagementSystem: Process book update
+activate BookManagementSystem
+
+BookManagementSystem -> Database: Update book details
+activate Database
+Database --> BookManagementSystem: Book details updated
+deactivate Database
+
+BookManagementSystem --> WebInterface: Confirm book updated successfully
+deactivate BookManagementSystem
+WebInterface --> Librarian: Display success message
+deactivate WebInterface
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Initiation**: The librarian initiates the book update process through the web interface.
+2. **Authentication**: The web interface requests the authentication controller to validate the librarian's credentials. Once validated, the process moves forward.
+3. **Update Form Request**: The librarian requests the book details update form, which is provided by the book management system.
+4. **Submission**: The librarian submits the updated book details through the web interface.
+5. **Processing**: The book management system receives the updated details and processes the update request.
+6. **Database Update**: The book management system interacts with the database to update the book details.
+7. **Confirmation**: Once the database confirms the update, the book management system confirms the success to the web interface, which then displays a success message to the librarian.
+
+This sequence diagram is a high-level depiction and can be further detailed based on the system's complex validations, error handling routines, and other specific interactions as per the requirements and technical specifications of the CLMS project.

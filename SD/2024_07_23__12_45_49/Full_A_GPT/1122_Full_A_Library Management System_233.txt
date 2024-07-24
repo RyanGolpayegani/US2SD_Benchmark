@@ -1,0 +1,58 @@
+To represent the process of a library member placing a reservation for books that are currently unavailable as a sequence diagram in PlantUML format, you need to include several actors and systems that interact throughout the process. Below is an example of how you could structure this sequence diagram:
+
+```plantuml
+@startuml
+actor Member
+participant "Search System" as Search
+participant "Reservation System" as Reserve
+participant "Database" as DB
+participant "Notification System" as Notify
+
+Member -> Search : search(bookDetails)
+Search -> DB : query(bookAvailability)
+DB --> Search : bookUnavailable
+Search --> Member : displayUnavailableBookInfo
+
+Member -> Reserve : requestReservation(bookID)
+Reserve -> DB : checkBookStatus(bookID)
+alt Book is available
+  DB --> Reserve : bookAvailable
+  Reserve --> Member : informBookAvailable\nUnable to Reserve
+else Book is unavailable
+  DB --> Reserve : bookUnavailable
+  Reserve -> DB : addReservation(bookID, memberID)
+  DB --> Reserve : reservationConfirmed
+  Reserve --> Member : reservationSuccess(bookID)
+  Reserve -> Notify : scheduleReservationNotification(bookID, memberID)
+  DB -> Notify : setNotificationDetails(notificationInfo)
+  Notify --> Reserve : notificationScheduled
+end
+
+@enduml
+```
+
+### Explanation of the Sequence:
+
+1. **Member initiates a search**: The sequence starts with the library member searching for a book by title, author, subject category, etc., using the search system.
+
+2. **Search System queries the Database**: The search system queries the database to check the availability of the requested book.
+
+3. **Database responds with book availability**: The database indicates that the book is currently unavailable.
+
+4. **Search System informs the Member**: The unavailable book information is displayed to the member, including an option to place a reservation.
+
+5. **Member requests to reserve the book**: The member decides to reserve the book and places a reservation request through the reservation system.
+
+6. **Reservation System checks book status**: The reservation system checks the current status of the book in the database.
+
+7. **Database responds with availability**: The database responds. If the book is unexpectedly available, the member is informed they can't reserve but borrow it now. If it’s still unavailable, the process continues.
+
+8. **Reservation System adds a reservation**: The reservation system confirms the book's unavailability and adds a reservation in the database for the member.
+
+9. **Database confirms the reservation**: After successfully adding the reservation, the database sends a confirmation to the reservation system.
+
+10. **Member is informed of the successful reservation**: The reservation system informs the member that the reservation is successful.
+
+11. **Notification System schedules a notification**: The reservation system schedules a notification for when the book becomes available, involving interaction with the notification system and the database to set up and confirm notification details.
+
+The above sequence diagram illustrates how different components of the Comprehensive Library Management System (CLMS) interact to allow a library member to place a reservation for books currently unavailable, including the handling of book status checks, reservation requests, database updating, and notification scheduling.

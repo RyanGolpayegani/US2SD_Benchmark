@@ -1,0 +1,46 @@
+Given your request, here's a detailed sequence diagram written in PlantUML syntax to visualize the process outlined in the user story: "As a depositor, I want to attach subject-specific discoverability metadata to records, so that researchers in my discipline can find my data more easily."
+
+Please note, this diagram assumes a high-level interaction sequence with the system components and actors involved in attaching subject-specific discoverability metadata to dataset records.
+
+```plantuml
+@startuml
+actor Depositor
+participant "Web Interface" as Web
+participant "Metadata Service" as Meta
+database "Data Archive" as Archive
+
+Depositor -> Web : Navigate to dataset management
+Web -> Depositor : Display dataset list
+
+Depositor -> Web : Select dataset for metadata addition
+Web -> Depositor : Present metadata form
+
+Depositor -> Web : Input subject-specific metadata
+Web -> Meta : Validate metadata format
+
+Meta --> Web : Metadata validation result
+alt Metadata is Valid
+    Web -> Archive : Attach metadata to dataset
+    Archive --> Web : Confirmation of metadata attachment
+    Web -> Depositor : Display success message
+else Metadata is Invalid
+    Web -> Depositor : Display error message
+    Depositor -> Web : Correct metadata input
+    Web -> Meta : Re-validate metadata
+    [-> Archive : Metadata attachment process repeats
+end
+
+@enduml
+```
+
+### Explaining the Sequence Diagram:
+
+1. **Depositor Interaction**: The depositor starts by navigating to the dataset management section through the web interface.
+2. **Dataset Selection**: The web interface displays a list of datasets managed by the depositor, from which the depositor selects the specific dataset they want to add metadata to.
+3. **Metadata Input**: The depositor is presented with a form to input the subject-specific discoverability metadata.
+4. **Validation Process**: The inputted metadata is then validated by a metadata service component to ensure it meets certain format criteria.
+5. **Conditional Flow**: 
+   - If the metadata is valid, it's attached to the dataset record in the Data Archive with a confirmation sent back to the web interface and subsequently to the depositor.
+   - If the metadata is invalid, an error message is displayed to the depositor prompting correction. The depositor corrects the input, and the validation process repeats until successful metadata attachment.
+
+This sequence diagram provides a high-level overview of the interactions and steps a depositor would take to attach subject-specific metadata to their dataset records within the Enhanced Research Data Management Platform. Adjustments might be needed based on the specific implementation details and system architecture.

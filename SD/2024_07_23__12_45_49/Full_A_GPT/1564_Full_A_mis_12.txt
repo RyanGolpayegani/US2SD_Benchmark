@@ -1,0 +1,42 @@
+To create a detailed sequence diagram for the user story you've described, we will use PlantUML syntax. This example will focus on demonstrating how a collection curator interacts with the Enhanced Digital Repository Management System (EDRMS) to get a summary of all remote replication statuses at the collection level on their dashboard.
+
+The sequence diagram assumes the existence of a few system components such as User Interface (UI), Dashboard Backend Service, Replication Service, and Database. It illustrates the process from the curator's request on the dashboard to receiving the replication status summary.
+
+```plantuml
+@startuml
+actor Curator as curator
+participant "UI Dashboard" as dashboard
+participant "Dashboard\nBackend Service" as backendService
+participant "Replication\nService" as replicationService
+participant Database as db
+
+curator -> dashboard : Requests replication status summary
+dashboard -> backendService : Fetches replication summary request
+backendService -> replicationService : Queries replication statuses
+replicationService -> db : Retrieves replication data
+db --> replicationService : Returns replication data
+replicationService --> backendService : Sends collected statuses
+backendService --> dashboard : Returns summary of replication statuses
+dashboard --> curator : Displays replication status summary
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Curator Requests Replication Status Summary**: The sequence begins with the curator requesting a summary of all remote replication statuses from their dashboard.
+   
+2. **Dashboard to Backend Service**: The UI Dashboard forwards this request to the Dashboard Backend Service to process the retrieval of replication status summaries.
+   
+3. **Query Replication Services**: The Backend Service then communicates with the Replication Service to query the current replication statuses.
+   
+4. **Replication Service Retrieves Data**: The Replication Service interacts with the Database where replication data is stored or logged to fetch the requested information.
+   
+5. **Database Returns Data**: The Database provides the Replication Service with the data it requested.
+   
+6. **Service Aggregates and Sends Data**: With the replication data retrieved, the Replication Service sends back a collected and possibly aggregated status report to the Dashboard Backend Service.
+
+7. **Backend Service to UI Dashboard**: The Backend Service processes the replication statuses into a summarized form suitable for the dashboard display.
+
+8. **Dashboard Displays Summary**: Finally, the UI Dashboard presents the summarized replication status to the curator, completing the request.
+
+This sequence assumes a straightforward interaction without considering complex error handling and authentication steps for simplicity. Incorporating these would add additional messages and possibly new components to the diagram, depending on the system's architecture and security requirements.

@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the user story "As a Staff, I want to edit book, so that I can correct book records that are faulty" using PlantUML syntax involves representing the interaction between different components such as the User Interface (UI), Backend Server, Database, and the Book Record System within the Comprehensive Library Management System (CLMS). Below is a depiction of the sequence diagram in PlantUML format:
+
+```plantuml
+@startuml
+participant Staff as S
+participant UI as UI
+participant BackendServer as B
+participant Database as DB
+
+S -> UI: Select book to edit
+UI -> B: Request edit book form
+B -> DB: Fetch book details
+DB --> B: Book details
+B --> UI: Display edit book form with details
+S -> UI: Submit edited book details
+UI -> B: Submit update request for book
+B -> DB: Update book record
+alt Success
+    DB --> B: Acknowledgement
+    B --> UI: Display success message
+    S --> UI: Sees confirmation
+else Error
+    DB --> B: Error message
+    B --> UI: Display error message
+    S --> UI: Sees error
+end
+@enduml
+```
+
+This sequence diagram follows a simplified flow of the interaction for editing a book record:
+
+1. **Staff Interaction:** The staff member (S) initiates the process by selecting a book to edit through the User Interface (UI).
+
+2. **Fetching Book Details:**
+   - The UI sends a request to the Backend Server (B) to retrieve the edit form, which in turn requests the current details of the book from the Database (DB).
+   - The Database responds with the details, and the Backend Server passes them to the UI, where the staff can see the current details populated in an edit form.
+
+3. **Submitting Edits:**
+   - The staff member makes the necessary corrections and submits the edited details through the UI.
+   - The UI sends these updates to the Backend Server, which then updates the book record in the Database.
+
+4. **Acknowledgement:**
+   - Depending on the outcome (success or error), the Database sends an acknowledgement or an error message back to the Backend Server.
+   - The Backend Server then communicates this result back to the UI, displaying a corresponding success or error message to the staff member.
+
+This sequence diagram aims to provide a clear flow of operations for editing a book's details in the CLMS, highlighting the components involved in the process and their interactions.

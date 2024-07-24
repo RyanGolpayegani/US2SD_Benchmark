@@ -1,0 +1,53 @@
+Creating a detailed sequence diagram for the specific user story "As an archivist, I want to automatically embed metadata in file headers, so that I avoid repetitive and easily-forgotten tasks." using PlantUML syntax will involve defining the sequence of interactions between the archivist and the digital archive management system components involved in the process of automatically embedding metadata in file headers. This process spans from the archivist's initial action to trigger metadata embedding to the system response and confirmation of successful embedding.
+
+Below is a basic PlantUML sequence diagram that outlines these interactions:
+
+```
+@startuml
+!theme plain
+
+participant Archivist as archivist
+participant "User Interface" as UI
+participant "File Management System" as FMS
+participant "Metadata Embedding Service" as MES
+database "Digital Archive Database" as DAD
+
+== Automatic Metadata Embedding Process ==
+archivist -> UI: Select files for metadata embedding
+UI -> FMS: Trigger metadata embedding process
+activate FMS
+
+FMS -> MES: Request metadata details
+activate MES
+MES -> DAD: Retrieve metadata
+activate DAD
+DAD --> MES: Metadata details
+deactivate DAD
+MES --> FMS: Metadata for embedding
+deactivate MES
+
+FMS -> FMS: Embed metadata in file headers
+FMS -> DAD: Update file records
+activate DAD
+DAD --> FMS: Confirm update
+deactivate DAD
+
+FMS --> UI: Confirm embedding success
+deactivate FMS
+UI --> archivist: Display success message
+
+@enduml
+```
+
+This diagram illustrates the following steps:
+
+1. **Archivist selects files for metadata embedding:** The process begins with the archivist selecting files that require metadata embedding through a user interface.
+2. **Trigger metadata embedding process:** The interface signals the file management system to initiate the metadata embedding procedure for the selected files.
+3. **Request metadata details:** The file management system requests the required metadata from the metadata embedding service.
+4. **Retrieve and return metadata:** The metadata embedding service retrieves the requested metadata from the digital archive database and returns it to the file management system.
+5. **Embed metadata in file headers:** With the metadata details received, the file management system then embeds this metadata into the headers of the selected files.
+6. **Update file records:** After embedding, the file management system updates the records in the digital archive database to reflect the changes.
+7. **Confirm embedding success:** The database confirms the record update, and the file management system signals a success message to the user interface.
+8. **Display success message:** Finally, the user interface displays a message to the archivist indicating that the metadata has been successfully embedded in the file headers.
+
+Note: The specific details regarding the metadata retrieval, embedding mechanisms, and user interface elements would depend on the architecture and technologies used in the digital archive management system. This diagram provides a high-level overview and can be further detailed as required by specific implementation needs.

@@ -1,0 +1,72 @@
+Creating a detailed Sequence Diagram in PlantUML requires understanding the flow between different system components when a member wants to edit their profile. Below is an example of how the sequence might be represented in PlantUML syntax for the "Edit Profile" user story in the context of the Comprehensive Library Management System (CLMS).
+
+```plantuml
+@startuml
+participant MemberUI
+participant AuthenticationController
+participant ProfileController
+participant Database
+
+== Edit Profile Sequence ==
+
+MemberUI -> AuthenticationController : isMemberAuthenticated()
+activate AuthenticationController
+AuthenticationController -> Database : validateMemberCredentials()
+activate Database
+Database --> AuthenticationController : AuthenticationStatus
+deactivate Database
+AuthenticationController --> MemberUI : AuthenticationResult
+deactivate AuthenticationController
+
+alt Authentication Success
+    MemberUI -> ProfileController : requestEditProfileForm()
+    activate ProfileController
+    ProfileController -> Database : fetchMemberDetails()
+    activate Database
+    Database --> ProfileController : MemberDetails
+    deactivate Database
+    ProfileController --> MemberUI : displayEditProfileForm(MemberDetails)
+    deactivate ProfileController
+
+    MemberUI -> ProfileController : submitProfileChanges(ProfileData)
+    activate ProfileController
+    ProfileController -> Database : updateMemberProfile(ProfileData)
+    activate Database
+    Database --> ProfileController : UpdateStatus
+    deactivate Database
+    ProfileEvent -\ ProfileController : notifyChanges()
+    ProfileController --> MemberUI : displaySuccessMessage()
+    deactivate ProfileController
+else Authentication Failure
+    AuthenticationController --> MemberUI : displayErrorMessage()
+    deactivate AuthenticationController
+end
+@enduml
+```
+
+### Explanation:
+
+- **MemberUI**: Represents the User Interface through which a member interacts with the CLMS to edit their profile.
+- **AuthenticationController**: Manages the authentication logic to ensure that only authenticated members can edit their profiles.
+- **ProfileController**: Handles the requests related to fetching and submitting the member profile edit form.
+- **Database**: The central storage system where member details are stored and retrieved.
+
+### Sequence Flow:
+
+1. **Authentication**: The sequence begins with the MemberUI sending a request to check if the member is authenticated.
+   - The AuthenticationController queries the Database to validate member credentials.
+   - The Database responds with the authentication status.
+   - If authentication fails, an error message is displayed.
+
+2. **Fetching Profile Details**: Upon successful authentication:
+   - The ProfileController is requested to fetch the current member details.
+   - It retrieves these details from the Database and sends them back to display in the edit profile form.
+
+3. **Submitting Profile Changes**:
+   - The MemberUI sends the updated profile data to the ProfileController.
+   - The ProfileController updates the member's profile in the Database.
+   - If the data is successfully updated, the MemberUI displays a success message.
+
+4. **Error Handling**: The sequence diagram also contemplates error handling in case of an authentication failure, ensuring the system's robustness.
+
+This PlantUML sequence diagram outlines the interaction between different components within the Comprehensive Library Management System when a member wishes to edit their profile, highlighting the system's responsiveness to member requests and ensuring secure and efficient data handling.

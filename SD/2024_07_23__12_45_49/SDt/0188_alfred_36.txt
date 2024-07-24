@@ -1,0 +1,26 @@
+@startuml
+participant "Older Person" as op
+participant "ALFED Device" as ad
+participant "Server" as s
+participant "Caregiver/Emergency Services" as ces
+
+alt Morning Time Reached
+    ad -> s: "Trigger wake-up call event"
+    s -> ad: "Send wake-up call command"
+    ad -> op: "Initiate wake-up call\nCheck if Older Person is ok"
+    op -> ad: "Response: I am ok"
+    ad -> s: "Log response\nStatus: Ok"
+else No Response or Help Needed
+    ad -> op: "Second attempt wake-up call"
+    alt No Response after Second Attempt
+        ad -> s: "Log event: No Response"
+        s -> ad: "Initiate emergency protocol"
+        ad -> ces: "Notify Caregiver/Emergency Services"
+        ces -> op: "Provide required assistance"
+    else Positive Response On Second Attempt
+        op -> ad: "Response: I am ok"
+        ad -> s: "Log response\nStatus: Ok after 2nd attempt"
+    end
+end
+
+@enduml

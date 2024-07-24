@@ -1,0 +1,34 @@
+@startuml
+participant DataManager as DM
+participant "DMPTool Interface" as UI
+participant "Metadata Management" as MM
+participant "Data Repository" as DR
+participant "Project Database" as PD
+
+DM -> UI: Access DMPTool
+UI -> MM: Request current data descriptions
+MM -> PD: Fetch descriptions
+PD -> MM: Return data descriptions
+MM -> UI: Display current descriptions
+UI -> DM: Show current data descriptions
+
+DM -> UI: Add/Update description
+UI -> MM: Capture updated info
+MM -> PD: Update dataset details
+PD -> MM: Confirm update
+MM -> UI: Update confirmation
+UI --> DM: Show update confirmation
+
+DM -> UI: Verify completeness
+UI -> MM: Check completeness status
+MM -> PD: Assess description details
+PD -> MM: Return completeness status
+MM -> UI: Display completeness status
+UI --> DM: Show completeness status
+
+UI -> DR: Update data set description
+DR -> UI: Confirmation of update
+UI -> DM: Notify completion
+
+note right of DM: Periodic checks and updates \nto ensure accuracy and detail
+@enduml

@@ -1,0 +1,60 @@
+Given your request for a detailed sequence diagram in PlantUML format for the specified user story from the project description, here's a basic conceptual representation focusing on using a controlled vocabulary for tagging within Neurohub. This diagram outlines the basic interaction between the user, the system interface (assuming a web interface for simplicity), and the backend systems responsible for managing tags based on a controlled vocabulary.
+
+Please note that the actual implementation details, system components, and interactions could vary significantly based on the specifics of the Neurohub architecture and requirements.
+
+```plantuml
+@startuml
+actor User
+participant "Web Interface" as Web
+participant "Tagging System" as Tagging
+participant "Controlled Vocabulary DB" as VocabularyDB
+
+User -> Web : Initiates tagging process
+activate Web
+
+Web -> Tagging : Request available tags
+activate Tagging
+
+Tagging -> VocabularyDB : Query controlled vocabulary
+activate VocabularyDB
+
+VocabularyDB --> Tagging : Return vocabulary list
+deactivate VocabularyDB
+
+Tagging --> Web : Display vocabulary tags
+deactivate Tagging
+
+User -> Web : Selects tags from controlled vocabulary
+activate Web
+
+Web -> Tagging : Assign selected tags to dataset/file
+activate Tagging
+
+Tagging -> VocabularyDB : Validate and save tags
+activate VocabularyDB
+
+VocabularyDB --> Tagging : Confirmation of tag assignment
+deactivate VocabularyDB
+
+Tagging --> Web : Confirm successful tagging to user
+deactivate Tagging
+
+Web --> User : Display tagging success message
+deactivate Web
+
+@enduml
+```
+
+This diagram starts with the user initiating the tagging process and ends with the system confirming the successful tagging of a dataset or file using tags from a controlled vocabulary. Here's a brief explanation of the steps involved:
+
+1. The user begins the tagging process through the web interface.
+2. The web interface requests a list of available tags from the tagging system.
+3. The tagging system queries the controlled vocabulary database for its list of accepted tags.
+4. The controlled vocabulary database returns the list of tags.
+5. The tagging system presents the tags to the web interface, which then displays them to the user.
+6. The user selects one or more tags from this controlled list.
+7. The selected tags are sent back to the tagging system to be assigned to the specified dataset or file.
+8. The tagging system validates and saves these tags in the database, checking against the controlled vocabulary for accuracy and consistency.
+9. Lastly, the tagging system confirms the successful assignment of the tags back to the web interface, which then notifies the user.
+
+This simplified sequence ensures that only tags from a predefined, controlled vocabulary can be used, promoting standardization and consistency across the Neurohub platform.

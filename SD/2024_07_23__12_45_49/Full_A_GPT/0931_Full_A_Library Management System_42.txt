@@ -1,0 +1,49 @@
+Creating a sequence diagram for the user story "As a librarian, I want to delete books" involves outlining the interaction between different components of the Comprehensive Library Management System (CLMS) when a librarian decides to remove a book from the library's collection. This process typically involves the librarian accessing the system, searching for the book, and executing the deletion command, after which the system updates its records and possibly notifies users if needed. 
+
+Below is a detailed sequence diagram described in PlantUML syntax:
+
+```plantuml
+@startuml
+participant Librarian as librarian
+participant "Library Management\nSystem Interface" as system
+participant "Database" as db
+participant "Notification\nService" as notifier
+
+librarian -> system : Access delete book feature
+system -> db : Search for book details
+db --> system : Display book details
+system --> librarian : Show book details & confirm deletion
+librarian -> system : Confirm deletion
+system -> db : Delete book record
+db --> system : Confirm deletion success
+alt if book was reserved or in high demand
+    system -> notifier : Send notifications to interested users
+    notifier -> system : Confirmation of notifications sent
+end
+system --> librarian : Show success message
+@enduml
+```
+
+### Sequence Diagram Explanation:
+
+1. **Librarian -> System**: The librarian starts the process by accessing the delete book feature in the library management system interface.
+
+2. **System -> Database**: The system searches the database for the book that the librarian wants to delete, using the details provided by the librarian (e.g., book title, author, or ISBN).
+
+3. **Database -> System**: The database returns the book details to the system, which then displays them to the librarian.
+
+4. **System -> Librarian**: The system shows the book details to the librarian and asks for confirmation to proceed with the deletion.
+
+5. **Librarian -> System**: The librarian confirms the deletion of the book.
+
+6. **System -> Database**: The system requests the database to delete the book record based on the librarian's confirmation.
+
+7. **Database -> System**: The database confirms that the deletion was successful.
+
+8. **(Alternative Path) System -> Notification Service**: If the book was reserved by a user or flagged as in high demand, the system triggers notifications to interested users about the book's removal.
+
+9. **Notification Service -> System**: The notification service confirms that notifications have been sent out.
+
+10. **System -> Librarian**: Finally, the system displays a success message to the librarian, confirming that the book has been successfully deleted from the library's collection.
+
+This sequence diagram outlines the process and interactions between the librarian, the library management system, the database, and the notification service involved in deleting a book from the Comprehensive Library Management System.

@@ -1,0 +1,21 @@
+@startuml
+participant Consumer
+participant "UI/CLI" as UI
+participant "API Server" as API
+participant "Database" as DB
+participant "Versioning System" as Versioning
+participant "Data Validation Service" as Validation
+
+== Consumer Requests Data Package Schema Changes ==
+Consumer -> UI: Request schema change details
+UI -> API: Fetch schema change details
+API -> DB: Query package version history
+DB -> API: Return version history
+API -> Versioning: Request detailed changes between versions
+Versionise -> Validation: Retrieve schema validation rules for versions
+Validation -> Versioning: Return validation rules
+Versioning -> API: Compile detailed schema changes
+API -> UI: Display schema changes
+UI -> Consumer: Show detailed schema changes
+
+@enduml

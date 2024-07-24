@@ -1,0 +1,30 @@
+@startuml
+actor SiteEditor as editor
+participant "Editorial Dashboard" as dashboard
+participant "Authentication System" as auth
+database "Course/Event Database" as db
+participant "Content Management System" as cms
+
+== Update Course/Event Sequence ==
+
+editor -> dashboard: Choose to edit course/event
+dashboard -> auth: Verify editor credentials
+auth --> dashboard: Credentials confirmed
+
+dashboard -> db: Fetch course/event details
+db --> dashboard: Display details
+
+editor -> dashboard: Edit details
+dashboard -> cms: Update request(course/event ID, new details)
+cms -> db: Validate update
+alt success
+    db --> cms: Update confirmed
+    cms --> dashboard: Display success message
+    dashboard --> editor: Update successful
+else failure
+    db --> cms: Update error
+    cms --> dashboard: Display error message
+    dashboard --> editor: Update failed
+end
+
+@enduml

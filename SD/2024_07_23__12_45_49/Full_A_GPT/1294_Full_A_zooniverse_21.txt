@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram for the specified user story involves showcasing the interactions between actors and system components for the process of filtering and ranking videos based on audio and video (A/V) quality aspects. Below is a PlantUML code representation for such a sequence:
+
+```plantuml
+@startuml
+actor Admin
+participant "Admin Interface" as AI
+participant "Video Management System" as VMS
+participant "A/V Quality Assessment Module" as AVQAM
+participant "Database" as DB
+participant "Ranking Algorithm" as RA
+
+Admin -> AI: Selects A/V Quality Filter Option
+AI -> VMS: Initiates A/V Quality Filtering
+VMS -> AVQAM: Sends Video for A/V Analysis
+loop for each video
+    AVQAM -> AVQAM: Analyzes Video A/V Quality
+    AVQAM -> DB: Stores A/V Quality Scores
+end
+AVQAM -> VMS: A/V Analysis Complete
+VMS -> RA: Sends Scores for Ranking
+RA -> RA: Calculates Rankings based on A/V Quality
+RA -> DB: Updates Rankings
+DB -> VMS: Sends Filtered and Ranked Video List
+VMS -> AI: Displays Ranked Videos to Admin
+AI -> Admin: Shows Filtered & Ranked Videos
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+- **Admin Interaction:** The process begins with the admin selecting the option to filter and evaluate videos based on A/V quality through the Admin Interface.
+- **Initiate A/V Quality Analysis:** The Admin Interface communicates this action to the Video Management System, which in turn sends videos to be analyzed by the A/V Quality Assessment Module.
+- **A/V Quality Analysis Loop:** Each video is analyzed for audio and video quality. The results, quantified as scores, are stored in the Database.
+- **Calculating Rankings:** Once the A/V quality has been assessed for all relevant videos, the Video Management System requests the Ranking Algorithm to calculate rankings based on the obtained quality scores.
+- **Database Update and Result Display:** The calculated rankings are updated in the Database. Subsequently, a list of videos filtered and ranked by their A/V quality is sent back to the Video Management System, which then displays the sorted list to the admin through the Admin Interface.
+
+This sequence diagram illustrates the process from an admin's decision to rank videos based on their A/V quality, through the analysis and ranking phases, to displaying the sorted list. Adjustments can be made based on specific platform capabilities and workflow nuances.

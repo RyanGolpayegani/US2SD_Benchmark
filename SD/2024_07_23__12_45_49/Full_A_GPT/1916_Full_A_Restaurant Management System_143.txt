@@ -1,0 +1,43 @@
+To generate a detailed sequence diagram for the described user story using PlantUML format, it's important to break down the interactions step by step. Here's an example of how this process might look for a manager entering clock-in and out information of employees in the Restaurant Management and Operations System:
+
+```plantuml
+@startuml
+actor Manager
+participant "Manager Interface" as MI
+participant "Authentication Service" as AS
+participant "Employee Management System" as EMS
+participant "Database" as DB
+
+Manager -> MI : Enter Employee ID & Clock-In/Out Info
+MI -> AS : Validate Manager's Session
+activate AS
+AS --> MI : Session Valid
+deactivate AS
+
+MI -> EMS : Submit Clock-In/Out Data [Employee ID, Timestamp, Type]
+activate EMS
+EMS -> DB : Query Employee Record
+activate DB
+DB --> EMS : Employee Record Found
+deactivate DB
+
+EMS -> DB : Update Employee Record with New Timestamp
+activate DB
+DB --> EMS : Record Updated Successfully
+deactivate DB
+
+EMS --> MI : Clock-In/Out Successfully Recorded
+deactivate EMS
+
+MI --> Manager : Confirmation Message
+@enduml
+```
+
+### Explanation:
+1. **Manager**: The actor who initiates the process by entering the employee's clock-in or clock-out information through the managerial interface.
+2. **Manager Interface (MI)**: The front-end component through which the manager interacts with the system. It's responsible for collecting input (e.g., employee ID, timestamp, and whether it's a clock-in or clock-out action) and displaying the confirmation message once the process is complete.
+3. **Authentication Service (AS)**: This service validates the session of the manager to ensure that the request is authenticated. It's crucial to prevent unauthorized access to employee records.
+4. **Employee Management System (EMS)**: This component handles the logic for managing employee-related data, including clock-in and clock-out records. It interacts with the database to retrieve and update employee records.
+5. **Database (DB)**: Stores all data related to the restaurant's operations, including employee records. In this scenario, it processes queries from the EMS to find and update the relevant employee's clock-in or clock-out information.
+
+This sequence diagram outlines the steps involved in entering clock-in and clock-out information for employees from the perspective of a restaurant manager using the system. It includes authentication to ensure that only authorized users can perform this action, and it interacts with the database to update employee records accordingly.

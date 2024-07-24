@@ -1,0 +1,41 @@
+Here is a detailed sequence diagram in PlantUML format capturing the process of a manager editing employee details in the Restaurant Management and Operations System. This takes into account the interactions between the manager, the system interface, the server, and the database.
+
+```plantuml
+@startuml
+title Manager Editing Employee Details
+
+actor Manager as mgr
+participant "UI Interface" as ui
+participant "Server" as srv
+participant "Database" as db
+
+mgr -> ui : Select employee management\noption from dashboard
+ui -> srv : Request employee list
+srv -> db : Query employee list
+db -> srv : Return employee list
+srv -> ui : Display employee list
+mgr -> ui : Select employee to edit
+ui -> srv : Request employee details
+srv -> db : Query selected employee details
+db -> srv : Return employee details
+srv -> ui : Display employee details form
+
+mgr -> ui : Edits employee details
+ui -> srv : Send updated employee details
+srv -> db : Update employee details in database
+alt Success
+  db -> srv : Confirm details updated
+  srv -> ui : Show success message to Manager
+  mgr -> ui : Acknowledges confirmation
+else Failure
+  db -> srv : Return error message
+  srv -> ui : Show error message to Manager
+  mgr -> ui: Attempt to edit details again
+end
+
+@enduml
+```
+
+This sequence diagram outlines the steps involved when a manager wants to edit employee details through the Restaurant Management and Operations System. It starts with the manager selecting the option to manage employee details from the dashboard, followed by the system presenting a list of employees. The manager then selects an employee to edit, and the system fetches and displays the details of that employee in a form. The manager makes the desired changes and submits them, after which the system updates these details in the database and confirms the update to the manager.
+
+Remember, to visualize this UML diagram, you need to use a PlantUML environment, or any software or online tool that supports PlantUML diagrams.

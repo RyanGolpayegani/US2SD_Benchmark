@@ -1,0 +1,28 @@
+@startuml
+actor Consumer
+participant "Search Module" as SM
+participant "Publisher Database" as PD
+participant "Data Package Database" as DPD
+participant "UI Interface" as UI
+
+== Consumer Searches for Publishers ==
+Consumer -> SM: Enter search criteria\n(e.g., topic, keyword)
+activate SM
+SM -> PD: Query publishers based on criteria
+activate PD
+PD --> SM: Return list of matching publishers
+deactivate PD
+SM --> UI: Display publishers
+deactivate SM
+
+== Consumer Selects a Publisher ==
+Consumer -> UI: Select a publisher
+activate UI
+UI -> PD: Retrieve selected publisher details (including data packages)
+activate PD
+PD --> UI: Return publisher details and packages
+deactivate PD
+UI --> Consumer: Display publisher details and their data packages
+deactivate UI
+
+@enduml

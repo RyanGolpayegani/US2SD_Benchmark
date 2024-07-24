@@ -1,0 +1,27 @@
+@startuml
+actor Researcher as r
+participant "SearchInterface" as ui
+participant "SearchService" as ss
+database "DigitalArchiveDB" as db
+participant "AccessControl" as ac
+participant "MaterialsManagement" as mm
+
+r -> ui : Enter search criteria\n(including keywords/tags)
+ui -> ss : Initiate search
+ss -> db : Retrieve matching items across collections
+db --> ss : Return results
+ss -> ac : Check access permissions for Researcher
+ac --> ss : Access permissions details
+ss -> mm : Compile accessible materials
+mm --> ss : Compiled materials
+ss -> ui : Display searchable materials with\n common elements across collections
+r -> ui : Select materials for analysis
+ui -> mm : Request detailed view
+mm -> ac : Validate access for detailed materials
+ac --> mm : Access granted
+mm -> db : Fetch detailed material information
+db --> mm : Detailed material information
+mm -> ui : Display detailed material to Researcher
+r -> ui : Analyze and download materials\nfor comprehensive analysis
+
+@enduml

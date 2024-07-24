@@ -1,0 +1,46 @@
+@startuml
+participant JuniorResearcher as JR
+participant "UI/Portal" as UI
+participant "SearchEngine" as SE
+participant "Database" as DB
+participant "CollaborationTool" as CT
+
+JR -> UI: Access Neurohub Portal
+UI -> JR: Display Dashboard
+
+alt Access Shared Documents
+    JR -> UI: Navigate to Shared Documents
+    UI -> DB: Query shared documents
+    DB -> UI: Return shared documents list
+    UI -> JR: Display shared documents
+    JR -> UI: Select Document to View
+    UI -> DB: Fetch Document Details
+    DB -> UI: Return Document Details
+    UI -> JR: Display Document
+end
+
+alt Search for Research Data/Experiments
+    JR -> UI: Search for specific keywords
+    UI -> SE: Pass search query
+    SE -> DB: Fetch relevant data
+    DB -> SE: Return search results
+    SE -> UI: Display search results
+    UI -> JR: Show search results
+    JR -> UI: Select result to explore further
+    UI -> DB: Fetch detailed information
+    DB -> UI: Return detailed information
+    UI -> JR: Display detailed information
+end
+
+alt Engage with Collaboration Tools
+    JR -> UI: Navigate to Group Collaboration Tools
+    UI -> CT: Fetch available tools and discussions
+    CT -> UI: Return tools and discussions
+    UI -> JR: Display tools and ongoing discussions
+    JR -> UI: Post New Comment/Question
+    UI -> CT: Update discussion thread
+    CT -> UI: Confirm update
+    UI -> JR: Display updated thread
+end
+
+@enduml

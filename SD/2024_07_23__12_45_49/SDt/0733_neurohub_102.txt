@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+
+participant Researcher as researcher
+participant "Web Interface" as web
+database "Neurohub Platform" as platform
+entity "Execution Engine" as engine
+database "Data Storage" as storage
+
+researcher -> web : Initiate workflow with parameters
+web -> platform : Validate user and request
+activate platform
+
+platform -> engine : Execute workflow
+activate engine
+engine -> storage : Log workflow plan
+storage --> engine : Acknowledge logging
+
+engine -> engine : Process workflow
+engine -> storage : Log execution history and results
+storage --> engine : Acknowledge logging
+
+deactivate engine
+platform <-- engine : Workflow execution complete
+deactivate platform
+
+web <-- platform : Display execution history and results
+researcher <-- web : View workflow details
+
+@enduml

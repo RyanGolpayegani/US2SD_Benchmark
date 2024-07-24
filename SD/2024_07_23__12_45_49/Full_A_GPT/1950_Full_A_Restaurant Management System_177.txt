@@ -1,0 +1,38 @@
+To create a detailed sequence diagram for the user story "As a manager, I want to see historic daily total sales information" using PlantUML format, you would first outline the interaction between the manager and the various system components to retrieve this information. The process generally involves the manager requesting the data, the system querying the database, and then displaying the results.
+
+Here is a simplified PlantUML sequence diagram example that captures this workflow. This example assumes the system has a web interface for the manager to interact with, a backend service to process the request, and a database where sales data is stored.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Manager
+participant "Web Interface" as Web
+participant "Backend Service" as Backend
+database "Sales Database" as DB
+
+Manager -> Web: Request daily total sales history
+Web -> Backend: Get sales data
+activate Backend
+Backend -> DB: Query daily sales totals
+activate DB
+DB --> Backend: Return sales
+deactivate DB
+Backend --> Web: Sales data
+deactivate Backend
+Web --> Manager: Display sales history
+@enduml
+```
+
+### Explanation:
+1. **Manager initiates the request:** The sequence starts with the manager requesting the daily total sales history. This request is made through the web interface of the Restaurant Management and Operations System.
+
+2. **Web Interface processes the request:** Upon receiving the request from the manager, the web interface then communicates with the backend service, asking it to retrieve the necessary sales data.
+
+3. **Backend Service handles logic:** The backend service, upon receiving the request from the web interface, makes a query to the Sales Database to fetch the historical sales data. The query is for daily sales totals over a specified period.
+
+4. **Sales Database returns data:** The Sales Database processes the query from the Backend Service and returns the requested sales data. This data represents the historic daily total sales.
+
+5. **Data is presented to the Manager:** Finally, the backend service processes and sends the sales data back to the web interface, which then presents it to the manager in a readable format, completing the request.
+
+Remember, this is a simplified diagram for the purpose of illustrating the interaction based on the user story provided. In a real-world scenario, additional steps might be included, such as authentication and authorization of the manager to access the sales data, data processing in the backend to format or calculate additional metrics, error handling mechanisms, and possibly caching mechanisms to improve performance for frequently requested data.

@@ -1,0 +1,60 @@
+Given the specific requirements outlined in your user story, I will provide you a detailed sequence diagram in PlantUML format focused on the interaction process among the DAMS manager, preservation managers, and relevant system components when an object's integrity or authenticity is in question, or it has been updated to a more current file format.
+
+```plantuml
+@startuml
+actor "DAMS Manager" as DAMSManager
+participant "Preservation Manager" as PreservationManager
+participant "DIMS System" as DIMSSystem
+database "DAMS Repository" as DAMSRepo
+
+== Event and Integrity Monitoring ==
+DAMSManager -> DIMSSystem: Request integrity/authentication checks or format updates
+activate DIMSSystem
+
+DIMSSystem -> DAMSRepo: Retrieve object information
+activate DAMSRepo
+DAMSRepo --> DIMSSystem: Object information
+deactivate DAMSRepo
+
+DIMSSystem -> PreservationManager: Analyze object for integrity, authenticity, or format update
+activate PreservationManager
+PreservationManager -> DIMSSystem: Report findings
+deactivate PreservationManager
+
+== Decision Making ==
+DIMSSystem --> DAMSManager: Notify of issues or updates per object
+deactivate DIMSSystem
+
+DAMSManager -> DIMSSystem: Decide on object update or preservation action
+activate DIMSSystem
+
+DIMSSystem -> PreservationManager: instruct correction or update procedure
+deactivate DIMSSystem
+activate PreservationManager
+PreservationManager -> DAMSRepo: Execute correction/update
+activate DAMSRepo
+DAMSRepo --> PreservationManager: Confirmation of action
+deactivate DAMSRepo
+PreservationManager --> DIMSSystem: Update success
+deactivate PreservationManager
+
+== Notification ==
+DIMSSystem --> DAMSManager: Confirm object status update
+deactivate DIMSSystem
+
+@enduml
+```
+
+This sequence diagram outlines the flow initiated by the DAMS manager's need to understand the integrity, authenticity, or file format status of digital objects within the DAMS. It details interactions between the DAMS manager, the preservation manager (who could be part of or an extension of the system functionalities), the DIMS system itself, and the DAMS repository where the digital objects are stored.
+
+- The process begins with the DAMS manager requesting checks on object integrity, authenticity, or notifications of file format updates.
+- The DIMS system retrieves relevant object information from the DAMS repository.
+- The preservation manager is then tasked with analyzing the object for integrity, authenticity, or determining if a file format update has occurred.
+- Upon analysis, the preservation manager reports findings back to the DIMS system.
+- The DIMS system notifies the DAMS manager of any issues or updates concerning the objects.
+- Based on this information, the DAMS manager decides on necessary update or preservation actions.
+- Instructions are sent to the preservation manager to execute any corrections or updates on the objects.
+- Upon successful update/correction, the preservation manager confirms the action to the DIMS system.
+- Finally, the DAMS manager is notified of the object status update.
+
+This diagram provides a high-level overview. In practice, it may be necessary to expand on specific steps, especially regarding how the preservation manager analyzes objects and the criteria used for integrity checks or deciding on file format updates.

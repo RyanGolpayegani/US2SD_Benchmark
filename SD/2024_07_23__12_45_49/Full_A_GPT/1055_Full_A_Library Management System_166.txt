@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram to illustrate the user story about a library member wanting to pay contactively through an app can encapsulate several interactions among system components. Below is a PlantUML sequence diagram example that outlines this process.
+
+```plantuml
+@startuml
+
+actor "Library Member" as member
+participant "Mobile App" as app
+participant "Payment System" as paymentSystem
+database "Library Database" as database
+participant "Notification Service" as notification
+
+== Payment Process Initiation ==
+member -> app: Selects fees/fines to pay
+app -> paymentSystem: Initiates payment process
+
+== Payment Authorization ==
+paymentSystem -> member: Requests payment authorization
+member -> paymentSystem: Authorizes payment
+
+== Payment Processing ==
+paymentSystem -> paymentSystem: Processes payment
+paymentSystem -> database: Updates payment status
+
+== Acknowledgement ==
+database -> app: Confirms payment success
+app -> member: Displays payment success message
+
+== Notification ==
+paymentSystem -> notification: Trigger payment confirmation notification
+notification -> member: Sends payment confirmation
+
+@enduml
+```
+
+### Explanation of the Diagram:
+
+1. **Payment Process Initiation:** The library member selects fees or fines they wish to pay through the mobile app. This could be overdue fees, reservation fees, or other applicable charges.
+   
+2. **Payment Authorization:** The payment system requests authorization from the library member to proceed with the payment. This step is crucial for contactless payments to ensure user consent.
+
+3. **Payment Processing:** After obtaining authorization, the payment system processes the payment. This involves verifying the payment details, confirming transaction success, and updating the library database with the new payment status.
+
+4. **Acknowledgement:** Once the payment is successfully processed, the Library Database confirms the transaction's success back to the Mobile App, which then displays a payment success message to the library member.
+
+5. **Notification:** The payment system triggers a notification to be sent to the library member confirming the payment. This could be done via email, SMS, or app notifications, providing an additional layer of confirmation for the transaction.
+
+This sequence diagram provides a high-level view of the interactions involved when a library member wishes to pay fees or fines through an app, emphasizing the simplicity and effectiveness of contactless payments.

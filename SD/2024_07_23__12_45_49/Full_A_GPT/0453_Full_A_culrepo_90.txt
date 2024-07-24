@@ -1,0 +1,50 @@
+Given your request, I'll outline a PlantUML sequence diagram that demonstrates the process a Database/Information Retrieval (DB/IR) administrator might follow to unpublish a report or dataset upon request from a USDA agency. The diagram will cover the steps from receiving the unpublish request to the actual unpublishing of the dataset or report.
+
+Please note, PlantUML syntax can be used to generate diagrams programmatically. If you're not familiar, you might need specific tools or extensions to render this code into a visual diagram. 
+
+```plantuml
+@startuml
+participant "USDA Agency" as USDA
+participant "DB/IR Administrator" as Admin
+participant "Digital Repository System" as System
+participant "Database" as DB
+
+USDA -> Admin: Request to Unpublish Dataset/Report
+activate Admin
+Admin -> System: Authenticate Admin
+activate System
+
+alt Authentication Failed
+    System -> Admin: Authentication Failure Message
+    deactivate Admin
+    deactivate System
+else Authentication Successful
+    System -> Admin: Access Granted
+    Admin -> System: Navigate to Dataset/Report Management
+    Admin -> System: Select Dataset/Report for Unpublishing
+    System -> DB: Retrieve Dataset/Report Metadata
+    activate DB
+    DB -> System: Dataset/Report Metadata
+    System -> Admin: Display Dataset/Report Details
+    Admin -> System: Confirm Unpublish Action
+    System -> DB: Unpublish Dataset/Report
+    DB -> System: Confirmation of Unpublishing
+    System -> Admin: Display Successful Unpublishing Message
+    deactivate DB
+    deactivate System
+    Admin -> USDA: Confirm Dataset/Report Unpublishing
+    deactivate Admin
+end
+@enduml
+```
+
+### Explanation:
+- **USDA Agency**: Initiates the sequence by requesting the unpublishing of a specific dataset or report.
+- **DB/IR Administrator**: Receives the request and performs several actions in the system.
+- **Digital Repository System**: This is the platform where datasets and reports are managed. The system authenticates the administrator, allows for the retrieval and display of the specific dataset/report details, and processes the unpublishing command.
+- **Database**: Stores all the data, including datasets, reports, and their metadata. It is queried to retrieve and update the status of a dataset or report.
+
+### How to Execute:
+If you want to see this sequence diagram visualized, you'll need to use PlantUML software or an online PlantUML editor where you can paste this code to generate and view the diagram.
+
+The diagram clearly outlines the process steps and interactions between the DB/IR administrator, the Digital Repository System, and the Database, ultimately fulfilling the USDA Agency's request to unpublish a dataset or report.

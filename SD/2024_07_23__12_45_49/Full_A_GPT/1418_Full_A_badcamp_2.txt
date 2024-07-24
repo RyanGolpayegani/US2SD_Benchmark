@@ -1,0 +1,31 @@
+To illustrate the user story "As an anonymous user, I want to view a list of user profiles, so that I know who is attending the conference" in a detailed sequence diagram in PlantUML, please note that the original project description does not explicitly mention a feature allowing anonymous users to view lists of user profiles attending the conference. Therefore, for the purpose of this exercise, we will assume such a feature exists and is accessible to anonymous users under specific conditions that are compliant with privacy policies and user consent settings.
+
+Given this context, the sequence diagram will depict the steps involved when an anonymous user accesses a list of publicly visible user profiles of conference attendees.
+
+```plantuml
+@startuml
+participant "Anonymous User" as AU
+participant "BADCamp Website" as BW
+participant "User Profile Service" as UPS
+participant "Profile Database" as PD
+
+== Viewing List of User Profiles ==
+AU -> BW: Visit attendee profiles page
+BW -> UPS: Request list of visible profiles
+activate UPS
+UPS -> PD: Query visible profiles
+activate PD
+PD --> UPS: Return profile list
+deactivate PD
+UPS --> BW: Return profile data
+deactivate UPS
+BW --> AU: Display profiles
+
+note over AU, PD: Only publicly consented profiles are displayed to ensure privacy compliance.
+
+@enduml
+```
+
+In this diagram, the process starts when an anonymous user navigates to the section of the BADCamp website where attendee profiles are displayed. The website then interacts with a backend service designed to manage user profiles. This service queries a database to fetch a list of profiles that are set to be visible publicly, based on user consent to display their information. Finally, the list of profiles is returned to the website, which then displays the information to the anonymous user. 
+
+This sequence strictly adheres to privacy concerns by highlighting that only profiles with consent to be publicly visible are accessed and shown, ensuring the platform complies with data protection regulations.

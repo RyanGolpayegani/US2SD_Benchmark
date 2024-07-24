@@ -1,0 +1,42 @@
+Below, you'll find a sequence diagram written in PlantUML format which illustrates the process for a Research Information Manager who wishes to have datasets linked to metadata about projects in order to report on projects depositing datasets in relation to funder requirements.
+
+Please note that PlantUML is very versatile, and the way this interaction is modeled can be implemented in different ways depending on specific platform architecture or requirements. This example assumes a fairly typical web application architecture.
+
+```
+@startuml
+!theme cerulean
+
+participant UserInterface as UI
+participant AuthenticationSystem as Auth
+participant DataManager as DM
+participant ProjectDatabase as PD
+participant ExternalFunderAPI as EFA
+participant ReportGenerator as RG
+
+== Accessing the Research Data Management Platform ==
+UI -> Auth: Authenticate (Research Information Manager)
+Auth -> UI: Authentication Success
+
+== Linking Datasets to Project Metadata ==
+UI -> DM: Request project-dataset linkage
+DM -> PD: Fetch Project Metadata linked to Datasets
+PD -> DM: Return Metadata
+DM -> UI: Show linked Datasets and Metadata
+
+== Generating Report based on Funder Requirements ==
+UI -> RG: Request Report (by Funder Requirements)
+RG -> EFA: Fetch Funder Requirements
+EFA -> RG: Return Requirements
+RG -> PD: Fetch Projects & Datasets matching Requirements
+PD -> RG: Return matching Projects & Datasets
+RG -> UI: Display Report
+UI -> Auth: Log out
+
+@enduml
+```
+
+This diagram illustrates a sequential flow where the Research Information Manager accesses the Enhanced Research Data Management Platform, authenticates, and performs operations to link datasets to project metadata and generate reports based on specific funder requirements. It includes interactions with external APIs (e.g., for fetching funder requirements) and internal databases for managing project and dataset metadata.
+
+To run this PlantUML diagram, you will need a PlantUML environment set up, such as an IDE with PlantUML integration, a PlantUML server, or an online PlantUML editor.
+
+Bear in mind that this is a high-level diagram. In real-world scenarios, additional steps might be necessary for error handling, data validation, and more intricate processing logic.

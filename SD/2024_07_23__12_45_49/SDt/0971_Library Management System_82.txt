@@ -1,0 +1,47 @@
+@startuml
+
+participant Librarian
+participant "System Interface" as Interface
+participant "Database" as DB
+participant "Reservation System" as Reservation
+
+activate Librarian
+Librarian -> Interface : Request Unavailable Books
+activate Interface
+
+Interface -> DB : Query Unavailable Books
+activate DB
+
+DB --> Interface : Return List of Unavailable Books
+deactivate DB
+
+Interface --> Librarian : Display Unavailable Books
+deactivate Interface
+
+Librarian -> Interface : Select Book for Reservation Details
+activate Interface
+
+Interface -> DB : Query Reservation Details for Selected Book
+activate DB
+
+DB --> Interface : Return Reservation Details
+deactivate DB
+
+Interface --> Librarian : Display Reservation Details
+deactivate Interface
+
+Librarian -> Reservation : Add/Update Reservation Request
+activate Reservation
+
+Reservation --> DB : Update Reservation Info
+activate DB
+
+DB --> Reservation : Confirmation of Reservation Update
+deactivate DB
+
+Reservation --> Librarian : Display Reservation Update Confirmation
+deactivate Reservation
+
+deactivate Librarian
+
+@enduml

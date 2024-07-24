@@ -1,0 +1,24 @@
+@startuml
+participant "UI: Web Interface" as UI
+participant "BLL: Search Manager" as BLL
+participant "DAL: Data Access" as DAL
+participant "Database" as DB
+
+UI -> BLL : searchBooksByGenre(genre)
+activate BLL
+
+BLL -> DAL : getBooksByGenre(genre)
+activate DAL
+
+DAL -> DB : SELECT * FROM Books WHERE genre=:genre
+activate DB
+DB --> DAL : booksData
+deactivate DB
+
+DAL --> BLL : return booksData
+deactivate DAL
+
+BLL --> UI : displayBooks(booksData)
+deactivate BLL
+
+@enduml

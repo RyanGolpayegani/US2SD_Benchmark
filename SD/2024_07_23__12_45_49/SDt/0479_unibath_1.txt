@@ -1,0 +1,34 @@
+@startuml
+actor Depositor
+participant "Web Interface" as Web
+database "Data Management \nSystem" as DMS
+participant "Metadata Service" as Meta
+participant "DOI Service" as DOI
+participant "License Management" as License
+
+Depositor -> Web : Access Web Interface
+Depositor -> Web : Submits Dataset
+Web -> DMS : Store Dataset
+activate DMS
+
+DMS -> Meta : Generate Metadata
+return Metadata to Web
+Web -> Depositor : Confirm Dataset Submission
+
+Depositor -> Web : Apply License
+Web -> License : Manage License
+License --> Web : License Confirmed
+
+Depositor -> Web : Attach Metadata
+Web -> DMS : Update Dataset with Metadata
+DMS -> DOI : Request DOI
+DOI --> DMS : DOI Generated
+DMS --> Web : Dataset Updated
+Web -> Depositor : Dataset Updated with DOI
+
+Depositor -> Web : Track Citations/Downloads
+Web -> DMS : Query Citations/Downloads
+DMS --> Web : Citations/Downloads Data
+Web -> Depositor : Display Citations/Downloads
+
+@enduml

@@ -1,0 +1,37 @@
+Below is a detailed Sequence Diagram in PlantUML format, outlining the interaction between components in the "Comprehensive Library Management System (CLMS)" when a library member is notified via email about a new book. This sequence incorporates several integral parts of the system such as the database, notification service, and the user's email, following the user story: As a library member, I want to get an email when there is a new book so that I can borrow it.
+
+```plantuml
+@startuml
+participant LibraryMember as member
+participant CLMSWebInterface as web
+participant SubscriptionService as subService
+participant Database as db
+participant NotificationService as notifService
+participant EmailService as email
+
+== New Book Registration ==
+librarian -> web : Register new book details
+web -> db : Save new book information
+db --> web : Acknowledge save
+web --> librarian : Display success message
+
+== Notification Process ==
+activate subService
+
+librarian -> subService : Trigger notification process for new book
+
+loop for each member subscribed to notifications
+    subService -> db : Retrieve subscriber list
+    db -> subService : Return list of subscribers
+
+    subService -> notifService : Prepare notification for new book
+    notifService -> email : Compile email content
+    email -> member : Send email notification
+end
+
+member -> email : Receive notification & check new book
+deactivate subService
+@enduml
+```
+
+This sequence diagram illustrates the process from the registration of a new book by a librarian to the sending of an email notification to a library member who has subscribed to notifications. The librarian inputs the new book details via the CLMS Web Interface, which is then saved in the database. Once the book is successfully registered, the librarian can trigger the notification process. The Subscription Service retrieves a list of subscribers from the database and instructs the Notification Service to prepare a notification. The Notification Service works with the Email Service to compile and send an email to each subscribed member.

@@ -1,0 +1,25 @@
+@startuml
+actor Librarian as librarian
+participant "Web Interface" as web
+participant "Application Server" as server
+database Database as db
+
+librarian -> web : Navigate to "Add New Member" section
+web -> server : Request to add new member
+activate server
+
+server -> db : Check if member already exists
+activate db
+db --> server : Member does not exist
+deactivate db
+
+server -> db : Create new member record
+activate db
+db --> server : Member created successfully
+deactivate db
+
+server --> web : Display success message
+web --> librarian : Show success message
+deactivate server
+
+@enduml

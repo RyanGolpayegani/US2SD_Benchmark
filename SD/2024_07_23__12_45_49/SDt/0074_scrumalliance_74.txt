@@ -1,0 +1,29 @@
+@startuml
+participant Trainer
+participant "Submission Form" as Form
+participant "Submission System" as System
+participant "Database" as DB
+
+Trainer -> Form : Access submission form
+Form -> Trainer : Display form
+
+Trainer -> Form : Submit survey/fedback
+Form -> System : Submit entry
+System -> DB : Check for duplicates
+
+alt If duplicate exists
+    DB -> System : Duplicates found
+    System -> Trainer : Error message (duplicates not allowed)
+else No duplicate
+    DB -> System : No duplicates found
+    System -> DB : Save entry
+    DB -> System : Confirmation (Entry saved)
+    System -> Trainer : Display confirmation message
+end
+
+Trainer -> System : Request results
+System -> DB : Retrieve results
+DB -> System : Results data
+System -> Trainer : Display results
+
+@enduml

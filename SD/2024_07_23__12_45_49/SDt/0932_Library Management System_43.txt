@@ -1,0 +1,22 @@
+@startuml
+actor Librarian as librarian
+participant "Library Management\nSystem" as system
+database "Library Database" as db
+
+librarian -> system : Access system
+note right: Librarian logs into the system\nand navigates to book management section.
+librarian -> system : Select "Delete Book"
+note right: Librarian searches and selects\nthe book to be deleted.
+system -> db : Query book existence
+note right: System checks if the book exists\nand is not currently borrowed.
+db --> system : Book data
+alt Book is eligible for deletion
+  librarian -> system : Confirm deletion
+  system -> db : Delete book record
+  db --> system : Confirm deletion
+  system --> librarian : Show success message
+else Book is not eligible for deletion
+  system --> librarian : Show error message (e.g., Book is borrowed)
+end
+
+@enduml

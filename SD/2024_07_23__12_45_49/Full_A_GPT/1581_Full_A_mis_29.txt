@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram for the given user story using PlantUML syntax involves imagining the various systems and actors involved in exposing a descriptive record for each Electronic Theses and Dissertations (ETD) item for reuse external to the Fedora system. Below is an example of how the sequence might look, focusing on the interaction between the Digital Records Archivist (the user), the Enhanced Digital Repository Management System (EDRMS), the Fedora Repository, and external systems.
+
+```
+@startuml
+participant DigitalRecordsArchivist as Archivist
+participant EDRMS
+participant FedoraRepository as Fedora
+database ExternalSystem as External
+
+== Expose Descriptive Record for ETD Item ==
+
+Archivist -> EDRMS: Request descriptive record for ETD item
+activate EDRMS
+
+EDRMS -> Fedora: Query ETD item descriptive record
+activate Fedora
+
+Fedora -> Fedora: Retrieve ETD item metadata
+Fedora -> EDRMS: Return ETD item descriptive record
+deactivate Fedora
+
+EDRMS -> EDRMS: Format descriptive record for external use
+EDRMS -> External: Expose formatted descriptive record
+activate External
+
+External -> External: Store/Utilize descriptive record
+deactivate External
+
+EDRMS -> Archivist: Confirm descriptive record exposure
+deactivate EDRMS
+
+@enduml
+```
+
+This sequence diagram lays out the process as follows:
+
+1. **Digital Records Archivist Requests Descriptive Record**: The archivist initiates the process by requesting the descriptive record for a specific ETD item from the EDRMS.
+
+2. **EDRMS Queries Fedora for Descriptive Record**: The EDRMS sends a request to the Fedora Repository to retrieve the metadata or descriptive record of the specified ETD item.
+
+3. **Fedora Retrieves and Returns Descriptive Record**: Inside the Fedora system, the requested item's metadata is retrieved and then sent back to the EDRMS.
+
+4. **EDRMS Formats the Descriptive Record for External Use**: Upon receiving the ETD item's descriptive record from Fedora, the EDRMS formats or adapts this record for external consumption, ensuring it meets the requirements or standards necessary for external systems.
+
+5. **EDRMS Exposes the Formatted Descriptive Record to External System**: The EDRMS then exposes or makes the formatted descriptive record available to an external system, which could be another repository or a system designed to aggregate and use such metadata.
+
+6. **External System Stores or Utilizes the Descriptive Record**: The external system receives the descriptive record, after which it stores, displays, or utilizes this information as necessary.
+
+7. **EDRMS Confirms Exposure to Archivist**: Finally, the EDRMS sends a confirmation back to the digital records archivist that the descriptive record has been successfully exposed for external use.
+
+This sequence diagram is a high-level representation and assumes that the EDRMS and Fedora systems are capable of communicating and that there is an existing mechanism for external systems to access or receive data from the EDRMS. Depending on the specific implementation details, additional steps or systems (such as authentication and authorization systems) could be involved.

@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the given user story involves modeling the interactions between the user, ALFRED, and other systems or components required to navigate to an event or concert and provide help when the user is lost. We will use PlantUML to define this sequence diagram. 
+
+Given your user story, let's consider ALF, the older person, utilizes ALFRED to request navigation assistance to an event and later uses the help feature when lost. This diagram will include interactions with a mapping service and potentially emergency services or a caregiver if needed.
+
+```plantuml
+@startuml
+participant ALF as "OlderPerson"
+participant ALFRED as "ALFRED"
+participant MappingService as "Mapping Service"
+participant LocationSensor as "Location Sensor"
+participant Caregiver as "Caregiver/Emergency Contact"
+
+ALF -> ALFRED: "Navigate me to the nearest Jazz Concert."
+ALFRED -> MappingService: "Find nearest Jazz Concert."
+MappingService -> MappingService: "Search Event Database"
+MappingService --> ALFRED: "Concert Location Found."
+ALFRED -> LocationSensor: "Get Current Location"
+LocationSensor --> ALFRED: "Current Location Data"
+ALFRED -> MappingService: "Generate Route from Current Location to Concert."
+MappingService -> MappingService: "Calculating Route"
+MappingService --> ALFRED: "Route Information"
+ALFRED --> ALF: "Route to Jazz Concert: \n1. Turn right on Main St. \n2. Concert is 500m on the left."
+
+... Time Passes ...
+
+ALF -> ALFRED: "I think I'm lost."
+ALFRED -> LocationSensor: "Confirm Current Location"
+LocationSensor --> ALFRED: "Current Location Data Updated"
+ALFRED -> MappingService: "Find Current Location to Concert Route"
+MappingService --> ALFRED: "Updated Route Information"
+ALFRED --> ALF: "You've diverted. To return to the route: \n1. Go back 200m to Main St. \n2. Continue as previously instructed."
+
+alt If ALF cannot be re-routed
+    ALFRED --> ALF: "Unable to navigate back safely. Contacting caregiver for assistance."
+    ALFRED -> Caregiver: "ALF is lost and requires assistance."
+    Caregiver --> ALFRED: "Acknowledged. On my way."
+    ALFRED --> ALF: "Help is on the way. Stay where you are."
+end
+
+@enduml
+```
+
+### Explanation
+1. **ALF (OlderPerson) to ALFRED:** ALF requests navigation to a jazz concert.
+2. **ALFRED to Mapping Service:** Sends a request to find the nearest jazz concert and then, after finding the concert, requests route generation based on ALF’s current location obtained from the Location Sensor.
+3. **Mapping Service:** Looks up the event in its database, calculates the route, and sends the route information back to ALFRED.
+4. **ALFRED to ALF:** Provides ALF with the detailed route to the concert.
+5. **ALF indicates they're lost:** When ALF thinks they're lost, they inform ALFRED.
+6. **Reacting to being lost:** ALFRED reassesses ALF's location, attempts to update the route, and communicates revised instructions. If ALF cannot be rerouted safely, ALFRED contacts a caregiver for assistance.
+7. **Caregiver/Emergency Contact:** In scenarios where ALF is significantly lost or in distress, ALFRED communicates with a specified caregiver or emergency contact for immediate assistance.
+
+This sequence diagram outlines the general flow of interactions based on the user story and illustrates the capabilities of the ALFRED system to provide navigational aid and support in case the older person gets lost.

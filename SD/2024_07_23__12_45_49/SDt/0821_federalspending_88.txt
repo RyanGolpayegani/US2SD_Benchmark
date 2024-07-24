@@ -1,0 +1,42 @@
+@startuml
+participant FABSUser as User
+participant WebInterface as UI
+participant VerificationService as Verify
+participant FileService as File
+database FABSDB as DB
+
+User -> UI: Request to download FABS file
+activate UI
+
+UI -> Verify: Validate user permissions
+activate Verify
+
+Verify -> UI: Validation successful
+deactivate Verify
+
+UI -> File: Request file from DB
+activate File
+
+File -> DB: Query for FABS file
+activate DB
+
+DB -> File: Return file details
+deactivate DB
+
+File -> UI: Provide file download link
+deactivate File
+
+UI -> User: Display download link
+deactivate UI
+
+User -> UI: Click download link
+activate UI
+
+UI -> File: Initiate file download
+activate File
+
+File -> User: Stream FABS file
+deactivate File
+deactivate UI
+
+@enduml

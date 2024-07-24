@@ -1,0 +1,30 @@
+@startuml
+participant User
+participant "Search UI" as UI
+participant "Search Controller" as Controller
+participant "File Service" as FileService
+participant "Data Repository" as Repository
+
+User -> UI: Enter search criteria
+UI -> Controller: Send search request
+Controller -> Repository: Query data
+Repository --> Controller: Return search results
+Controller --> UI: Display search results
+
+User -> UI: Select file(s) for download
+UI -> Controller: Request file download
+Controller -> FileState: Validate download request
+
+alt If file is available and user has permission
+    FileState -> Repository: Request file location
+    Repository --> FileState: Return file location
+    FileState --> Controller: Confirm file ready for download
+    Controller -> FileService: Initiate file download
+    FileService -> Repository: Access file
+    Repository --> FileService: Transfer file data
+    FileService --> User: Download file(s)
+else If file is unavailable or user lacks permission
+    Controller --> UI: Show error message
+end
+
+@enduml

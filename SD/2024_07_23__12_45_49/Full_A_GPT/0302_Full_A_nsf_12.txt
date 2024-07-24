@@ -1,0 +1,69 @@
+Creating a detailed sequence diagram in PlantUML for the described user story involves illustrating the interactions between the research participant and the various system components involved during the testing of a prototype in a usability study setting. Below is a PlantUML description that outlines these interactions focusing on ensuring that the prototype's appearance does not distract from the workflow, allowing the research participant to complete the user interview.
+
+```plantuml
+@startuml
+participant ResearchParticipant as RP
+participant "UI/UX Prototype" as Prototype
+participant UserResearchSystem as URS
+participant CMS
+
+actor Facilitator
+
+== Preparation ==
+Facilitator -> URS : Schedule usability session
+activate URS
+URS -> RP : Invite with session details
+activate RP
+RP -> URS : Confirm participation
+deactivate RP
+deactivate URS
+
+== Usability Testing Session ==
+Facilitator -> Prototype : Prepare prototype for testing
+activate Prototype
+Prototype -> CMS : Request necessary content
+activate CMS
+CMS --> Prototype : Provide content 
+deactivate CMS
+
+Facilitator -> RP : Introduce prototype
+activate RP
+
+loop Feedback Collection
+    RP -> Prototype : Navigate and interact
+    Prototype -> RP : Display workflow feature
+    RP -> URS : Provide feedback on distractions
+    deactivate Prototype
+    URS -> Facilitator : Log feedback
+    Facilitator -> URS : Adjust prototype based on feedback
+    URS -> Prototype : Update to reduce distractions
+    activate Prototype
+    note right of URS : Iterations for minimizing distractions
+end
+
+RP -> Prototype : Complete tasks
+Prototype -> RP : Confirm task completion
+RP -> URS : Submit final feedback
+URS -> Facilitator : Compile and analyze feedback
+Facilitator -> RP : Thank for participation
+
+deactivate RP
+deactivate Prototype
+deactivate URS
+
+@enduml
+```
+
+### Explanation:
+
+- **Facilitator**: Represents the researcher or team member responsible for facilitating the usability testing session.
+
+- **ResearchParticipant (RP)**: The user involved in the usability testing, whose feedback is crucial for understanding the prototype's effectiveness.
+
+- **UI/UX Prototype**: The visual and functional representation of the NSF's beta site being tested. It interacts with the CMS for content and displays workflow features to the research participant.
+
+- **UserResearchSystem (URS)**: A system or platform used to schedule usability sessions, gather feedback, and communicate with participants and facilitators.
+
+- **CMS**: Content Management System used by the prototype to fetch and display content.
+
+This sequence diagram focuses on ensuring the prototype's appearance is optimized to avoid distracting the participant, based on the feedback loop facilitated by the URS and the direct interaction between the Facilitator, the prototype, and the research participant. The feedback loop allows for adjustments to be made to the prototype in real-time or in iterative testing phases to minimize distractions and ensure the workflow is clear to the participant.

@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+
+participant Archivist as archivist
+participant "User Interface" as UI
+participant "File Management System" as FMS
+participant "Metadata Embedding Service" as MES
+database "Digital Archive Database" as DAD
+
+== Automatic Metadata Embedding Process ==
+archivist -> UI: Select files for metadata embedding
+UI -> FMS: Trigger metadata embedding process
+activate FMS
+
+FMS -> MES: Request metadata details
+activate MES
+MES -> DAD: Retrieve metadata
+activate DAD
+DAD --> MES: Metadata details
+deactivate DAD
+MES --> FMS: Metadata for embedding
+deactivate MES
+
+FMS -> FMS: Embed metadata in file headers
+FMS -> DAD: Update file records
+activate DAD
+DAD --> FMS: Confirm update
+deactivate DAD
+
+FMS --> UI: Confirm embedding success
+deactivate FMS
+UI --> archivist: Display success message
+
+@enduml

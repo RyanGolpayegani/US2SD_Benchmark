@@ -1,0 +1,34 @@
+Creating a detailed sequence diagram for the "As a management user, I want to list all current orders so that I can see the current status" user story involves illustrating the steps taken from the point the management user requests to view all current orders, until the system displays the orders along with their statuses. Here's how you might represent this flow using PlantUML syntax:
+
+```plantuml
+@startuml
+!theme plain
+
+actor "Management User" as user
+participant "Web Interface" as web
+participant "Server: Order Management" as server
+database "Database" as db
+
+user -> web : Selects "View Current Orders"
+web -> server : GET /orders/current
+activate server
+server -> db : Fetch current orders and statuses
+activate db
+db --> server : Return orders and statuses
+deactivate db
+server --> web : Display orders and statuses
+web --> user : Shows current orders with statuses
+deactivate server
+
+@enduml
+```
+
+This sequence diagram depicts the following steps:
+1. The Management User selects to view current orders through the Web Interface.
+2. The Web Interface sends a request to the server-side order management system to retrieve current orders (a 'GET /orders/current' request in this scenario).
+3. The server-side component then queries the Database to fetch the details of current orders along with their statuses.
+4. The Database returns the requested information to the server-side component.
+5. The server-side component then sends this information back to the Web Interface.
+6. Finally, the Web Interface displays this information to the Management User, showing the current orders with their statuses.
+
+This simplified sequence diagram can be expanded or modified based on more specific requirements, such as handling errors or including security measures like authentication and authorization steps. Also, if the technology stack or architectural choices evolve, that might influence the interactions depicted here.

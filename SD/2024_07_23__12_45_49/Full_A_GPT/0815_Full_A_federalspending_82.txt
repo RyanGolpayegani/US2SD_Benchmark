@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram in PlantUML for the user story provided involves illustrating the specific interactions between the FABS user and the Broker platform system components involved in submitting a citywide as a Primary Place of Performance ZIP (PPoPZIP) and passing validations. Please note, the following sequence diagram is conceptual and simplifies complex system interactions for clarity.
+
+```plantuml
+@startuml
+participant FABSUser as User
+participant "UI Interface" as UI
+participant "Submission Module" as Submission
+participant "Validation Engine" as Validation
+participant "Database" as DB
+
+User -> UI : Navigate to submission form
+UI -> User : Display form
+
+User -> UI : Enter citywide as PPoPZIP
+UI -> Submission : Submit PPoPZIP data
+activate Submission
+
+Submission -> Validation : Initiate validation
+activate Validation
+
+Validation -> DB : Fetch validation rules
+activate DB
+DB -> Validation : Return rules
+
+Validation -> Validation : Apply rules to PPoPZIP
+alt All validations passed
+  Validation -> Submission : Validation passed
+else Validation failed
+  Validation -> UI : Display error messages
+  UI -> User : Show errors\nand request correction
+  User -> UI : Correct PPoPZIP data
+  UI -> Submission : Resubmit corrected data
+  Submission -> Validation : Revalidate
+  repeat 
+    Validation -> Validation : Apply rules
+  until All validations passed
+  Validation -> Submission : Validation passed
+end
+
+Submission -> DB : Store submission data
+DB -> Submission : Confirm storage
+
+Submission -> UI : Confirm successful submission
+UI -> User : Display success message
+
+@enduml
+```
+This sequence diagram outlines the basic flow from the FACP (Federal Audit Clearinghouse Posting) user's perspective for submitting citywide information as PPoPZIP and passing the validation processes. It starts with the user navigating to the submission form, entering the necessary citywide as PPoPZIP, and initiating the submission. The submission module then sends the data for validation. The Validation Engine checks the data against a set of predefined rules fetched from the database. If the data fails to meet any rule, the error is communicated back to the user via the UI, prompting for correction. Once the data passes all validations, it is stored in the database, and a success message is displayed to the user. 
+
+This diagram assumes a simplified flow for ease of understanding and might not capture all possible scenarios and error handling mechanisms in complex real-world systems.

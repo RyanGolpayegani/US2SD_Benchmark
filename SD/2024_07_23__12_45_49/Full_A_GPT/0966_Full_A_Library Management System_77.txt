@@ -1,0 +1,48 @@
+To fulfill your request, I'll create a detailed sequence diagram in PlantUML format that captures the process of a librarian removing a book from the asset list when a user borrows it. This operation typically involves interactions between the user, the system interface, and the backend database. 
+
+```plantuml
+@startuml
+actor Librarian
+participant "Library System Interface" as System
+participant "Book Management Module" as BookModule
+database "Library Database" as Database
+
+Librarian -> System : Selects 'Remove Book' option
+System -> BookModule : InitiateBookRemoval(userID, bookID)
+activate BookModule
+
+BookModule -> Database : CheckBookAvailability(bookID)
+activate Database
+Database --> BookModule : BookAvailabilityStatus
+deactivate Database
+
+alt If book is available and issue process completed
+  BookModule -> Database : UpdateBookStatus(bookID, 'Removed')
+  activate Database
+  Database --> BookModule : Confirmation
+  deactivate Database
+  
+  BookModule --> System : DisplayRemovalConfirmation()
+  System --> Librarian : Confirm book removal
+else If book is not available or already issued
+  BookModule --> System : DisplayError(message)
+  System --> Librarian : Show error message
+end
+
+deactivate BookModule
+@enduml
+```
+
+Explanation:
+1. **Librarian Interaction**: The sequence begins with the Librarian selecting the option to remove a book from the system, typically done when a user borrows it and the book must be marked as such.
+   
+2. **System Processing**: The Library System Interface receives this action and communicates with the Book Management Module to initiate the removal (or status update) of the book, passing along necessary identifiers like the userID of the borrower and the bookID.
+
+3. **Database Verification**: The Book Management Module queries the Library Database to check the current availability status of the book. This step is crucial to ensure that the book hasn't already been removed or is currently not available for some reason.
+
+4. **Conditional Logic**: 
+   - If the book is available and the removal can proceed, the Book Management Module sends an update command to the Database to change the book's status to 'Removed' or a similar status indicating it's been borrowed.
+   - Once the Database confirms this update, the System displays a confirmation to the Librarian that the book has been successfully removed (or marked as borrowed).
+   - If, for any reason, the book cannot be removed (e.g., it has already been borrowed, is reserved, or the ID provided was incorrect), an error message is displayed to the Librarian through the System Interface.
+
+This sequence encapsulates the process from the Librarian's action to remove a book due to a user borrowing it, through system processing and database interactions, to the final feedback provided to the Librarian.

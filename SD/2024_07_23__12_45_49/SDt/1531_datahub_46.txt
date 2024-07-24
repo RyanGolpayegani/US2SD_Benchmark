@@ -1,0 +1,53 @@
+@startuml
+participant Consumer
+participant "UI/CLI" as UI
+participant "Web Server" as WS
+participant "Data Package Registry" as DPR
+
+Consumer -> UI: Request age of downloaded data package
+activate UI
+
+UI -> WS: Send request to check data package age
+activate WS
+
+WS -> DPR: Query data package metadata including version and publish date
+activate DPR
+
+DPR --> WS: Return metadata for data package
+deactivate DPR
+
+WS --> UI: Translate data package age from metadata and send response
+deactivate WS
+
+UI --> Consumer: Display age of data package
+deactivate UI
+
+Consumer -> UI: Decide to update or not based on age
+activate UI
+
+alt if Consumer decides to update
+    UI -> WS: Request latest data package version
+    activate WS
+    
+    WS -> DPR: Query for latest data package version
+    activate DPR
+    
+    DPR --> WS: Return latest version data
+    deactivate DPR
+    
+    WS --> UI: Provide download link for latest version
+    deactivate WS
+    
+    UI --> Consumer: Offer latest version download
+    deactivate UI
+    Consumer -> UI : Download latest version
+    UI -> WS: Initiate download process
+    WS -> DPR: Request data package download
+    DPR --> WS: Stream data package to Web Server
+    WS --> UI: Provide data package to Consumer
+    Consumer -> UI: Receive and save updated data package
+else if Consumer decides not to update
+    UI --> Consumer: Ends process
+    deactivate UI
+end
+@enduml

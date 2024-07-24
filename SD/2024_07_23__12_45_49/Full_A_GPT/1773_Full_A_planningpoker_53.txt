@@ -1,0 +1,63 @@
+Creating a detailed sequence diagram for the user story "As a Mike, I want to be able to see some metrics on use of the game, so that I can see how much it is being used." involves depicting the interactions between various system components to fulfill this requirement. This description will focus on outlining the framework for such a diagram in PlantUML format, considering the Agile Estimation and Planning Tool's (AEPT) functionalities as described.
+
+Since PlantUML syntax might not be fully rendered here, I'll guide you through designing the sequence diagram with comments to indicate what each line represents. You can add this code to a PlantUML editor to visualize the sequence diagram.
+
+```plantuml
+@startuml
+
+' Define actors
+actor Mike
+participant "Web Interface" as Web
+participant "Server" as Server
+participant "Database" as DB
+participant "Analytics Module" as Analytics
+
+' Mike interacts with the Web Interface
+Mike -> Web: access metrics dashboard
+activate Web
+
+' Web Interface requests metrics data from Server
+Web -> Server: request metrics data
+activate Server
+
+' Server queries Database for metrics
+Server -> DB: query game usage metrics
+activate DB
+DB --> Server: return metrics data
+deactivate DB
+
+' Server processes data with Analytics Module
+Server -> Analytics: process metrics data
+activate
+  Analytics -> Analytics: calculate usage statistics
+  Analytics --> Server: return processed data
+deactivate Analytics
+
+' Server sends processed data back to Web Interface
+Server --> Web: send metrics data
+deactivate Server
+
+' Web Interface displays metrics to Mike
+Web --> Mike: display metrics dashboard
+deactivate Web
+
+@enduml
+```
+
+### Breakdown of the Diagram:
+1. **Mike (Actor)**: Represents the user, in this case, an admin or moderator interested in viewing usage metrics of AEPT.
+2. **Web Interface (Participant)**: The frontend through which Mike interacts with AEPT.
+3. **Server (Participant)**: The backend logic that handles requests from the web interface.
+4. **Database (Participant)**: Stores all data related to game usage, among other data.
+5. **Analytics Module (Participant)**: A subsystem or service responsible for processing raw data into meaningful metrics.
+
+### Flow of Events:
+1. Mike accesses the metrics dashboard through the web interface.
+2. The web interface requests this data from the server.
+3. The server queries the database for necessary metrics related to game usage.
+4. Raw data is fetched from the database and passed to the analytics module.
+5. The analytics module processes this data, calculating relevant usage statistics.
+6. Processed metrics data is sent back to the server, then to the web interface.
+7. Finally, the web interface displays the metrics dashboard to Mike, fulfilling the user story.
+
+This sequence diagram outlines a high-level interaction flow without delving into specifics like authentication or error handling, which would depend on the actual implementation details of AEPT.

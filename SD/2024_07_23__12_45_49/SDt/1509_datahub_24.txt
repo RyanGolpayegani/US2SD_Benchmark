@@ -1,0 +1,24 @@
+@startuml
+actor Consumer
+participant "UI/CLI Interface" as Interface
+participant "Authentication Service" as Auth
+database "Data Registry" as Registry
+participant "Data Package Viewer" as Viewer
+
+== Viewing Data Package Process ==
+
+Consumer -> Interface: Request to view data package
+Interface -> Auth: Validate consumer identity
+Auth --> Interface: Identity confirmed
+
+alt Successful Authentication
+    Interface -> Registry: Request data package metadata
+    Registry --> Interface: Data package metadata response
+    Interface -> Viewer: Request to render data package preview
+    Viewer --> Interface: Display data package preview
+    Interface --> Consumer: Show data package details and preview
+else Authentication Failed
+    Interface --> Consumer: Display authentication error
+end
+
+@enduml

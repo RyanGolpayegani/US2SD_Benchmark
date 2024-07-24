@@ -1,0 +1,32 @@
+Creating a detailed sequence diagram in PlantUML format that captures the interaction flow for the given user story requires identifying the actors, components, and interactions involved in notifying a researcher when only part of a folder has been digitized. Below is a simplified version of how these elements could be structured in a sequence diagram for this scenario. This example assumes the existence of a Digital Archive Management System (DAMS) with components like a User Interface (UI), Backend Server, Database, and potentially a Notification System.
+
+Please note, this is a textual representation of a PlantUML script. To visualize it, you would need to use a PlantUML processor or compatible tool.
+
+```plantuml
+@startuml
+
+actor Researcher as researcher
+participant "UI: Digital Archives Portal" as UI
+participant "Backend Server" as server
+participant "Database" as db
+participant "Notification System" as notify
+
+researcher -> UI : Search for items in folder
+UI -> server : Query request for folder items
+server -> db : Check digitized status of items
+db --> server : Return statuses
+server -> server : Determine partial digitization
+alt if folder is partially digitized
+    server -> notify : Initiate notification
+    notify -> UI : Show notification
+    UI --> researcher : Display "Partially Digitized" alert
+else all items digitized
+    UI --> researcher : Display full contents
+end
+
+@enduml
+```
+
+In this sequence diagram, the workflow starts with a `Researcher` searching for items within a folder through the `UI: Digital Archives Portal`. The query is sent to the `Backend Server`, which then checks the digitization status of each item in the folder by querying the `Database`. The `Database` returns the statuses to the `Backend Server`, which determines whether the folder is partially digitized. If it is, the `Backend Server` uses a `Notification System` to initiate a notification, which is then shown to the researcher through the UI indicating that only part of the folder has been digitized. If all items are found to be digitized, the researcher sees the full contents without a partial digitization alert.
+
+This diagram is quite generalized and might lack specifics about the technology stack or detailed interactions within the digital archive's infrastructure. Depending on the complexity of your system and the level of detail required, enhancements might include error handling, authentication checks, or interactions with additional systems like a content delivery network (CDN) for the digitized files.

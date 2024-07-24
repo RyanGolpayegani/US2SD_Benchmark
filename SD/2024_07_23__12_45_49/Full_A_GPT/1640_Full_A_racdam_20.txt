@@ -1,0 +1,58 @@
+To create a detailed sequence diagram for the user story provided, you'll need to outline the interactions between the assistant archivist, the digital archive management system, potentially other systems such as a database or a file storage system, and users like staff or researchers who will access the uploaded documents. Here's an example of how you can structure this in PlantUML language. 
+
+Please note that to keep this example clear, some simplifications were made. Depending on the complexity of your actual system, you might need to add more details or steps.
+
+```plantuml
+@startuml
+participant "Assistant Archivist" as AA
+participant "Digital Archive\nManagement System" as DAMS
+database "Archive Database" as DB
+participant "File Storage" as FS
+participant "Staff/Researchers" as SR
+
+== Upload Process ==
+AA -> DAMS : Select working papers
+AA -> DAMS : Enter metadata and tags
+loop For each document
+   DAMS -> FS : Store working paper
+   activate FS
+      FS -> FS : Assign unique ID
+      FS --> DAMS : Confirm storage and ID
+   deactivate FS
+   DAMS -> DB : Save metadata, tags, and ID
+   activate DB
+      DB --> DAMS : Confirm saved
+   deactivate DB
+end
+DAMS --> AA : Confirm upload and tagging
+
+== Access Process ==
+SR -> DAMS : Search/Browse working papers
+DAMS -> DB : Query metadata/tags
+activate DB
+   DB --> DAMS : Return results
+deactivate DB
+DAMS -> SR : Display search results
+SR -> DAMS : Select working paper
+DAMS -> FS : Retrieve document by ID
+activate FS
+   FS --> DAMS : Serve working paper
+deactivate FS
+DAMS --> SR : Display/Download working paper
+
+@enduml
+```
+
+This diagram represents the process as follows:
+
+1. **Upload Process:**
+   - The assistant archivist selects and provides the digital archive management system (DAMS) with working papers, along with their metadata and tags.
+   - For each document, DAMS stores the file in a File Storage system, which assigns a unique ID to the document. The File Storage system confirms the storage and ID back to DAMS.
+   - DAMs then save the metadata, tags, and unique ID in the Archive Database, which confirms that the information has been saved.
+
+2. **Access Process:**
+   - Staff or researchers search or browse for working papers through DAMS, which queries the Archive Database for metadata or tags.
+   - The database returns the results to DAMS, which then displays the search results to the staff or researchers.
+   - Upon selecting a working paper, DAMS retrieves the document from the File Storage by its unique ID and serves the paper to the requestor for viewing or downloading.
+
+This sequence diagram outlines the basic flows for uploading and accessing staff-generated working papers in a digital archive, addressing the key elements of the user story. Adjustments might be needed based on the specific technical architecture and requirements of your project.

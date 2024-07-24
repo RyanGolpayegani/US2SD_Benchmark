@@ -1,0 +1,25 @@
+@startuml
+actor SiteVisitor as visitor
+participant "UI Interface" as UI
+participant "Course Controller" as controller
+database "Course Database" as db
+
+== List Upcoming Certification Courses ==
+
+visitor -> UI: Access course listing
+UI -> controller: Request list of upcoming courses
+controller -> db: Query upcoming courses
+db --> controller: Return list of courses
+controller --> UI: Display courses with pagination
+UI --> visitor: Show course list & pagination options
+
+== Page Through Courses ==
+
+visitor -> UI: Select page number
+UI -> controller: Request courses for selected page
+controller -> db: Query courses by page
+db --> controller: Provide courses for page
+controller --> UI: Display courses for selected page
+UI --> visitor: Show courses for page
+
+@enduml

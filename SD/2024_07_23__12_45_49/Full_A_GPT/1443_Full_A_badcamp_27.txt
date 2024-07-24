@@ -1,0 +1,32 @@
+Below is a detailed PlantUML sequence diagram that depicts the process for an authenticated user to view and pay for their individual sponsorships as the third step of the registration process. This diagram outlines the interactions between the user, the platform's front-end interface, and the necessary back-end systems involved in the process, including authentication checks, sponsorship details retrieval, and payment processing.
+
+```plantuml
+@startuml
+actor AuthenticatedUser as User
+participant "Front-end Interface" as FE
+participant "Authentication Service" as Auth
+participant "Sponsorship Management System" as SMS
+participant "Payment Gateway" as PG
+
+User -> FE: Access Sponsorship Registration
+FE -> Auth: Validate User Session
+Auth --> FE: Session Valid
+FE -> SMS: Request Sponsorship Details
+SMS --> FE: Display Sponsorship Options
+User -> FE: Select Sponsorship Package
+FE -> FE: Display Payment Page with Selected Package
+User -> FE: Enter Payment Details
+FE -> PG: Process Payment with Details
+PG --> FE: Payment Successful
+FE -> SMS: Update Sponsorship Status
+SMS --> FE: Confirmation & Receipt
+FE --> User: Display Confirmation & Receipt
+
+@enduml
+```
+
+This sequence diagram starts with the user accessing the sponsorship registration section on the platform's interface. The system then validates the user's session to ensure they are authenticated. After authentication, the user requests to view the sponsorship options available, and the system retrieves and displays these details.
+
+Upon selecting a sponsorship package, the user is directed to the payment page where they input their payment information. The front-end interface then communicates with the payment gateway to process the transaction. Assuming the payment is successful, the system updates the sponsorship status accordingly and provides the user with a confirmation and receipt of their sponsorship.
+
+Please note, this diagram assumes that each interaction leads to a successful outcome (e.g., session validation is successful, payment is processed without issues). In a real-world implementation, additional steps should be considered to handle errors or unsuccessful actions (such as failed payment processing).

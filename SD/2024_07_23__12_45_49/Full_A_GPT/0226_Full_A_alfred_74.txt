@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the user story "As an OlderPerson, I want to use ALFRED to get a personalized invitation to a social event, so that it motivates me more to go." involves illustrating the interactions between the user, ALFRED, and potentially external services or databases. However, please note that PlantUML code cannot be directly executed or visualized here. You can copy the provided PlantUML code and use a PlantUML editor or compatible tool to visualize the sequence diagram.
+
+```plantuml
+@startuml
+!theme cerulean
+
+participant OlderPerson as OP
+participant ALFRED as ALF
+participant "Social Events API" as SEA
+participant "Database" as DB
+
+== Request for Social Activities ==
+OP -> ALF : "What social events are happening this week?"
+ALF -> SEA : GetEventsByDateAndInterest()
+SEA --> ALF : ReturnsListOfEvents
+ALF -> DB : GetUserPreferences(OP)
+DB --> ALF : ReturnsOPPreferences
+ALF -> ALF : MatchEventsWithPreferences(ReturnsListOfEvents, ReturnsOPPreferences)
+
+== Generate Personalized Invitation ==
+ALF -> DB : GetPersonalDetails(OP)
+DB --> ALF : ReturnsPersonalDetails
+ALF -> ALF : CreatePersonalizedInvitation(ReturnsListOfEvents, ReturnsPersonalDetails)
+ALF --> OP : ShowsPersonalizedInvitation()
+
+== User Confirmation ==
+OP -> ALF : ConfirmAttendance(EventID)
+ALF -> DB : SaveEventAttendance(OP, EventID)
+DB --> ALF : ConfirmationStatus
+ALF --> OP : NotifyConfirmationStatus(ConfirmationStatus)
+OP -> ALF : "Thank you, remind me a day before"
+
+== Reminder Setup ==
+ALF -> DB : SetReminder(OP, EventID, -1day)
+DB --> ALF : ReminderSetConfirmation
+ALF --> OP : AcknowledgeReminderSetup(ReminderSetConfirmation)
+
+@enduml
+```
+
+This sequence diagram starts with the OlderPerson asking ALFRED about social events happening during the week. ALFRED then queries a Social Events API for events and retrieves the user's preferences from a database to match the events with the user's interests. 
+
+Upon finding suitable events, ALFRED generates personalized invitations based on the OlderPerson's personal details (also fetched from the database) and presents an invitation to the user. 
+
+If the OlderPerson confirms attendance to an event, ALFRED saves this information in the database and confirms the action back to the user. Lastly, at the OlderPerson's request, ALFRED sets up a reminder for the event, confirming this setup back to the user.
+
+This diagram is a simplified representation and does not cover all possible errors or exceptions, such as what happens if no events match the user’s preferences or if the API fails to respond. However, it captures the core sequence of actions for generating and acting upon a personalized event invitation.

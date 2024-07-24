@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+
+participant "UI: Cook's Dashboard" as CookUI
+participant "Backend Server" as Backend
+database "Database" as DB
+
+CookUI -> Backend : requestNewOrders()
+activate Backend
+
+Backend -> DB : fetchNewOrders()
+activate DB
+DB --> Backend : newOrdersData
+deactivate DB
+
+Backend --> CookUI : displayNewOrders(newOrdersData)
+activate CookUI
+CookUI -> CookUI : visualizeOrders()
+deactivate CookUI
+
+deactivate Backend
+@enduml

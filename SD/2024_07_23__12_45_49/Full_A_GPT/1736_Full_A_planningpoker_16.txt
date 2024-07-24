@@ -1,0 +1,56 @@
+Given the user story and the project description for the Agile Estimation and Planning Tool (AEPT), below is a detailed PlantUML sequence diagram illustrating how a moderator can browse through previous games to find the one they're looking for. This sequence involves interactions among user interfaces, controllers, databases, and possibly other components of the system.
+
+```plantuml
+@startuml
+actor Moderator
+participant "Web Interface" as UI
+participant "Game Controller" as Controller
+participant "Database" as DB
+
+Moderator -> UI: Access previous games
+UI -> Controller: Request list of previous games
+Controller -> DB: Query previous games for user
+DB --> Controller: Return list of previous games
+Controller --> UI: Display previous games
+UI --> Moderator: Shows list of previous games
+
+Moderator -> UI: Scroll/Filter games
+UI -> Controller: Request filtered/next set of games
+Controller -> DB: Query based on filter/scroll
+DB --> Controller: Return filtered/next set of games
+Controller --> UI: Update game list
+UI --> Moderator: Shows updated list
+
+Moderator -> UI: Select a previous game
+UI -> Controller: Request selected game details
+Controller -> DB: Query for game details by ID
+DB --> Controller: Return game details
+Controller --> UI: Display game details
+UI --> Moderator: Shows game details
+
+alt Successful Retrieval
+  Moderator -> UI: Interacts with game details
+else Retrieval Error
+  UI -> Moderator: Show error message
+end
+
+@enduml
+```
+
+Explanation:
+
+1. **Access Previous Games**: The sequence begins with the moderator accessing the section of the web interface designated for viewing previous games. This action triggers a request to the Game Controller to retrieve a list of previous games.
+
+2. **Request List of Previous Games**: The Game Controller, upon receiving the request, queries the database for a list of games associated with the moderator's user account.
+
+3. **Display Previous Games**: The list of previous games is returned to the Game Controller, which then sends it to the web interface for display to the moderator.
+
+4. **Scroll/Filter Games**: If the moderator needs to narrow down the list or view more games, they might use a filter option or scroll for more games. This would trigger another set of requests to update the list according to the specified criteria.
+
+5. **Select a Previous Game**: Once the moderator identifies the game they were looking for, they select it, which prompts the interface to request detailed information about that game from the Game Controller.
+
+6. **Display Game Details**: The Game Controller retrieves the details of the selected game from the database and returns them to the web interface, which then presents them to the moderator.
+
+7. **Error Handling**: Optionally, if there are any issues retrieving the list of games or the details of a selected game, the system is designed to inform the moderator of the retrieval error.
+
+This PlantUML sequence diagram outlines the general interactions involved in browsing and selecting a previous game from a moderator's perspective, incorporating basic error handling and user interface interactions.

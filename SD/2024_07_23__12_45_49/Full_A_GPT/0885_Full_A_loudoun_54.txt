@@ -1,0 +1,51 @@
+To fulfill your request for a detailed sequence diagram in PlantUML format for the user story provided, here's how you can visualize the process where a staff member is notified upon changes to Geospatial attributes, which is crucial for reviewing applications or permits with the most current data and standards.
+
+The following PlantUML script outlines the interactions: from detecting changes in Geospatial attributes, notifying the system, and ending with the staff member being informed about these changes.
+
+```plantuml
+@startuml
+!theme plain
+
+participant "Geospatial Data System" as GDS
+participant "Change Detection Module" as CDM
+participant "Notification System" as NS
+participant "Staff Member's Interface" as SMI
+database "Property Information Database" as PID
+
+GDS -> PID: Update Geospatial Attributes
+activate PID
+PID --> GDS: Acknowledgement
+deactivate PID
+
+GDS -> CDM: Report Update
+activate CDM
+CDM -> PID : Confirm Changes
+activate PID
+PID --> CDM : Changes Confirmed
+deactivate PID
+
+CDM --> NS : Trigger Notification
+deactivate CDM
+activate NS
+NS -> SMI : Notify Staff of Changes
+activate SMI
+SMI --> NS : Acknowledge Notification
+deactivate SMI
+deactivate NS
+
+@enduml
+```
+
+### Explanation:
+
+1. **Geospatial Data System (GDS):** This is the system where geospatial attributes of properties are updated. The update could be due to a routine survey, property division, or any other reason affecting geospatial data.
+
+2. **Property Information Database (PID):** This database stores all relevant data, including geospatial attributes, related to properties in the county.
+
+3. **Change Detection Module (CDM):** When the Geospatial Data System reports an update, this module verifies changes in the Property Information Database and determines if significant changes impacting permit or application reviews have occurred.
+
+4. **Notification System (NS):** Upon receiving information about significant changes from the Change Detection Module, this system triggers a notification process.
+
+5. **Staff Member's Interface (SM1):** This represents the user interface where county staff members, including those reviewing permits and applications, receive notifications about changes to geospatial attributes.
+
+This sequence diagram is structured to depict the flow of information and interactions from updating geospatial attributes to notifying the staff member. Each component plays a specific role in ensuring that staff are informed of updates in real-time, allowing for a review process that considers the most accurate and current data available.

@@ -1,0 +1,49 @@
+Creating a detailed sequence diagram for the user story "As an estimator, I want to see the item we're estimating, so that I know what I'm giving an estimate for" involves illustrating the interactions between the estimator, the system (Agile Estimation and Planning Tool, AEPT), and possibly other system components. Here, we focus on the flow from when the estimator requests to view an item to when the system displays that item for estimation.
+
+Below is a basic Plant UML code for generating the sequence diagram:
+
+```plantuml
+@startuml
+!theme plain
+
+participant Estimator
+participant "Web Interface" as Web
+database "AEPT Database" as DB
+participant "Estimation Logic" as Logic
+
+Estimator -> Web : Request to view estimation item
+activate Web
+
+Web -> Logic : Fetch current item details
+activate Logic
+
+Logic -> DB : Query item data
+activate DB
+
+DB --> Logic : Item data
+deactivate DB
+
+Logic --> Web : Item details
+deactivate Logic
+
+Web --> Estimator : Display estimation item
+deactivate Web
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Estimator Requests Item**: The sequence begins with the estimator requesting to view the estimation item. This would typically happen within the agile estimation software's web interface, where the estimator interacts with the system.
+
+2. **Web Interface Processes Request**: The web interface receives the request and passes it on to the internal logic for fetching the current item's details. This step illustrates the user's interaction with the front end of the AEPT.
+
+3. **Estimation Logic Fetches Data**: The estimation logic, which manages the logic and rules of how the estimation and planning tool operates, queries the AEPT database for the requested item's data. This includes details necessary for the estimator to understand what they are estimating.
+
+4. **Database Returns Data**: The database, which stores all information about estimation sessions, items, estimations, and users, returns the data for the requested item to the estimation logic.
+
+5. **Logic Processes and Sends Data**: After receiving the item's data from the database, the estimation logic processes this information as needed and sends it back to the web interface.
+
+6. **Web Interface Displays Item**: Finally, the web interface displays the estimation item to the estimator. This includes all relevant details that the estimator needs to know in order to provide an accurate estimate.
+
+This sequence is a high-level representation meant to outline the basic interactions within the system for this specific user story. Depending on the project's complexity and specific requirements, additional steps, such as error handling, user authentication, and conditional logic based on user permissions or roles, may also be included in a more detailed design.

@@ -1,0 +1,39 @@
+Given your request for a detailed sequence diagram based on the provided user story and project description, the following is a PlantUML code snippet that illustrates the interaction between different system components following the scenario where a DAMS manager wants to know if the application of a library policy to an object or an object component has been modified, either manually or automatically.
+
+Please note, for a more thorough representation, you might need to adjust the scenario specifics based on your system's actual architecture and functionalities:
+
+```plantuml
+@startuml
+actor "DAMS Manager" as DAMSManager
+participant "DIMS Interface" as Interface
+participant "Policy Management Module" as PolicyModule
+participant "Object/Component Database" as Database
+participant "Event and Integrity Monitoring" as EventMonitor
+participant "Notification System" as Notification
+
+== Check Policy Modification for Object or Component ==
+
+DAMSManager -> Interface : Request policy modification status
+Interface -> PolicyModule : Query modification status for object/component
+PolicyModule -> Database : Retrieve current policy data
+Database -> PolicyModule : Return policy data
+PolicyModule -> EventMonitor : Request last modification details
+EventMonitor -> PolicyModule : Return modification events (manual/automatic)
+PolicyModule -> Interface : Provide modification status and details
+Interface -> DAMSManager : Display policy modification status and details
+
+== Notification on Policy Change ==
+
+EventMonitor -> Database : Monitor policy changes
+Database -> EventMonitor : Notify policy update event
+EventMonitor -> Notification : Trigger policy change notification
+Notification -> DAMSManager : Send policy change alert
+
+@enduml
+```
+
+This sequence diagram starts with the DAMS Manager requesting the policy modification status for a specific digital object or its component through the DIMS Interface. The request is processed by the Policy Management Module, which queries the Object/Component Database for the current policy data. To provide comprehensive information, the Policy Management Module also requests the last modification details from the Event and Integrity Monitoring system, which tracks all events, including policy updates, whether they are done manually or automatically.
+
+The modification status and details are then sent back to the DIMS Interface, which displays them to the DAMS Manager. Additionally, the sequence diagram outlines a process for notifying the DAMS Manager about policy changes. The Event and Integrity Monitoring system continuously monitors for policy changes, sending notifications through the system's Notification component whenever a policy update occurs, ensuring the DAMS Manager is always informed of any modifications.
+
+This diagram is a simplified representation and should be adapted to match the specific technologies, modules, and processes used in your DIMS implementation.

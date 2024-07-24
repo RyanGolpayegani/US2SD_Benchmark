@@ -1,0 +1,54 @@
+To create a detailed sequence diagram in PlantUML for the user story "As a manager, I want to create a new menu, so that I can choose food to serve the customer", follow the steps below. The sequence outlines the process from the perspective of the manager interacting with the Restaurant Management and Operations System.
+
+```plantuml
+@startuml
+participant Manager
+participant "Management Interface" as Interface
+participant "Backend System" as Backend
+participant "Database" as DB
+
+Manager -> Interface : Log in to management portal
+activate Manager
+activate Interface
+
+Interface -> Backend : Authenticate manager
+activate Backend
+
+Backend -> DB : Validate manager credentials
+activate DB
+
+DB -> Backend : Return authentication response
+deactivate DB
+
+Backend -> Interface : Display management dashboard
+deactivate Backend
+
+Manager -> Interface : Select "Create New Menu"
+Interface -> Backend : Request menu creation form
+activate Backend
+
+Backend -> Interface : Provide menu creation form
+deactivate Backend
+
+Manager -> Interface : Fill in menu details (dishes, prices, descriptions)
+Manager -> Interface : Submit new menu
+Interface -> Backend : Submit new menu details
+activate Backend
+
+Backend -> DB : Store new menu information
+activate DB
+
+DB -> Backend : Confirm menu saved
+deactivate DB
+
+Backend -> Interface : Display success message
+deactivate Backend
+
+Interface -> Manager : Show confirmation of menu creation
+deactivate Interface
+
+Manager -> Interface : Log out
+@enduml
+```
+
+This PlantUML sequence diagram visualizes the steps taken by a manager to create a new menu within the Restaurant Management and Operations System. The process involves interacting with a management interface, which communicates with a backend system to save the new menu information in a database. Along the way, authentication and form submission steps ensure that only authorized managers can create new menus and receive confirmation upon successful creation.

@@ -1,0 +1,20 @@
+@startuml
+actor User
+participant "UI: Library Portal" as UI
+participant "Book Management Service" as BookService
+database "Library Database" as DB
+participant "Notification Service" as Notification
+
+User -> UI: Request book return details
+UI -> BookService: Get return details(userId, bookId)
+BookService -> DB: Query return date for book
+DB -> BookService: Return date
+BookService -> BookService: Calculate remaining days
+alt remaining days <= 0
+  BookService -> Notification: Trigger overdue alert(userId, bookId, remainingDays)
+  Notification -> User: Display overdue notification
+else remaining days > 0
+  BookService -> UI: Send remaining days
+  UI -> User: Display remaining days
+end
+@enduml

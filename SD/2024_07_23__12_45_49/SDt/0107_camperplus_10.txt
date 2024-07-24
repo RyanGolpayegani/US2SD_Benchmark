@@ -1,0 +1,30 @@
+@startuml
+actor Administrator as admin
+participant "Management Platform" as platform
+database "Platform Database" as db
+
+== Assign Positions to Staff Members ==
+admin -> platform : log in to platform
+activate platform
+
+platform -> db : validate admin credentials
+activate db
+db -> platform : credentials validated
+deactivate db
+
+platform -> admin : show dashboard
+admin -> platform : select 'Staff Management'
+platform -> admin : display 'Staff Management' options
+admin -> platform : select 'Assign Positions'
+platform -> admin : display available staff & positions
+admin -> platform : select staff member
+admin -> platform : assign position
+platform -> db : update staff position
+activate db
+db -> platform : confirm update
+deactivate db
+
+platform -> admin : show success message
+admin -> platform : logs out
+deactivate platform
+@enduml

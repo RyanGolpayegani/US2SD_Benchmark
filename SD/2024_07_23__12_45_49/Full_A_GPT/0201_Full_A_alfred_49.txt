@@ -1,0 +1,57 @@
+Below is a detailed PlantUML sequence diagram for the user story of an older person needing to contact help in case of an emergency using the ALFRED system. This sequence diagram is a visual representation that shows how different systems and entities interact with each other in this process.
+
+```plantuml
+@startuml
+actor OlderPerson as person
+boundary "ALFRED Device" as alfred
+entity "Health Monitoring\nSystem" as healthSystem
+control "Emergency Service\nDispatcher" as dispatcher
+database "Contacts Database" as contactsDb
+participant "Family Member/\nCaregiver" as family
+
+person -> alfred : Press emergency button\nor\nSay "Emergency"
+alfred -> healthSystem : Trigger emergency protocol
+healthSystem -> alfred : Gather user's current health data
+alfred -> dispatcher : Send emergency signal\nand\nUser's health data
+dispatcher -> alfred : Acknowledge receipt\nProvide ETA of assistance
+alfred -> person : Inform about assistance ETA
+
+alt If Emergency Contact is set
+    alfred -> contactsDb : Retrieve emergency contacts
+    contactsDb -> alfred : Return emergency contacts data
+    alfred -> family : Send notification\nInclude user's location & status
+    family -> person : Communicates via ALFRED
+end
+
+alt If Fall Detected
+    person -> alfred : Fall detected scenario
+    alfred -> healthSystem : Assess fall impact
+    healthSystem -> alfred : Critical: True/False
+    alt If Critical
+        alfred -> dispatcher ++ : Immediate assistance required
+        dispatcher -> alfred : Confirm action
+        alfred -> person : Inform critical help on way
+    else Non-Critical
+        alfred -> family ++ : Inform about fall, non-critical
+        family -> alfred : Acknowledge
+        alfred -> person : Family informed, no immediate danger
+    end
+end
+
+@enduml
+```
+
+### Explanation:
+- The sequence begins with the **OlderPerson (actor)** initiating contact for help via the **ALFRED Device**. This can be done either by pressing an "emergency button" or through a voice command like "Emergency".
+- The **ALFRED Device** communicates with the **Health Monitoring System** to trigger the emergency protocol, which collects the user's current health status.
+- **ALFRED** then sends an emergency signal along with the user's health data to the **Emergency Service Dispatcher**.
+- The **Dispatcher** acknowledges the receipt of the emergency signal and provides an estimated time of arrival (ETA) for assistance.
+- The **ALFRED Device** informs the **OlderPerson** about the assistance ETA.
+
+There are additional conditional paths:
+- If an emergency contact is set, **ALFRED** retrieves this information from the **Contacts Database** and notifies the **Family Member/Caregiver** about the emergency, including the user's location and status.
+- In a scenario where a fall is detected by the person or the ALFRED system:
+    - The **Health Monitoring System** assesses the impact of the fall.
+    - Based on the criticality of the fall, the system decides on the next steps: if critical, the **Emergency Service Dispatcher** is contacted for immediate help; if not, the **Family Member/Caregiver** is informed about the non-critical fall but no immediate emergency action is taken.
+
+This diagram showcases a simplified flow of events designed to ensure that in case of an emergency, the older person gets timely and appropriate assistance while also keeping their emergency contacts informed.

@@ -1,0 +1,49 @@
+Creating a detailed sequence diagram for the given user story in Plant UML format involves depicting the interactions between the donor representative and the various components of the Digital Archive Management Enhancement Project system. Below is a Plant UML code that creates a sequence diagram for the user story: "As a donor representative, I want to look at images that have been scanned from my collection, so that I can use them in my institution's exhibits, reports, etc."
+
+```plantuml
+@startuml
+participant DonorRepresentative as DR
+participant AuthenticationSystem as Auth
+participant DigitalArchiveSystem as DAS
+database FileDatabase as Database
+participant LicensingAndRightsManagement as LRM
+participant FileManagementSystem as FMS
+
+DR -> Auth: Authenticate
+Auth -> DR: AuthenticationSuccess
+
+DR -> DAS: RequestAccessToCollectionImages
+DAS -> Database: QueryScannedImagesByCollection
+Database -> DAS: ReturnScannedImages
+DAS -> LRM: CheckImageLicensesAndRights(DonorCollection)
+LRM -> DAS: ReturnAccessRightsInfo
+
+DAS -> FMS: RequestScannedImages(DonorCollection)
+FMS -> Database: RetrieveScannedImages(DonorCollection)
+Database -> FMS: ImagesRetrieved
+FMS -> DAS: ProvideImages
+DAS -> DR: DisplayImages
+
+DR -> DAS: SelectImagesForUse
+DAS -> LRM: VerifyUsageRights(SelectedImages)
+LRM -> DAS: UsageRightsConfirmed
+DAS -> DR: AllowImageDownloadOrShare
+
+DR -> DAS: Download/ShareImagesForInstitutionUse
+DAS -> FMS: ProcessImageDownload/Share(SelectedImages)
+FMS -> DR: ImagesDownloaded/SharedForInstitutionUse
+@enduml
+```
+
+This sequence diagram illustrates the following process:
+1. The donor representative (DR) authenticates with the system.
+2. Once authenticated, the DR requests access to images that have been scanned from their collection.
+3. The Digital Archive System (DAS) queries the File Database for the scanned images pertaining to the DR's collection.
+4. Upon retrieving the images, the DAS checks with the Licensing and Rights Management (LRM) to ascertain the licensing and rights attached to these images.
+5. Assuming the necessary rights for viewing and using these images are confirmed, the DAS then requests the scanned images from the File Management System (FMS).
+6. The FMS retrieves the requested images from the database and provides them to the DAS, which, in turn, displays the images to the DR.
+7. The DR selects images for use in their institution's exhibits, reports, etc., and the DAS verifies the usage rights for the selected images with the LRM.
+8. Once usage rights are confirmed, the DR is allowed to download or share the images for institution use.
+9. Finally, the DAS processes the DR's request to download or share the selected images through the FMS, completing the interaction.
+
+This sequence diagram is a high-level visualization and different implementations may require adjustments based on specific project needs and architectural decisions.

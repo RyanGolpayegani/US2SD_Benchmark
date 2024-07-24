@@ -1,0 +1,39 @@
+Given the complexity of this user story within the context of a DAMS Integration and Management System (DIMS), a detailed PlantUML sequence diagram might look as follows:
+
+```plantuml
+@startuml
+participant "DAMS Manager" as Manager
+participant "DIMS Interface" as Interface
+participant "Digital Asset\nNavigation & Structuring\nModule" as NavigationModule
+participant "Repository" as Repo
+participant "Metadata Management\nSystem" as Metadata
+
+Manager -> Interface : request object components\n(in assigned order)
+Interface -> NavigationModule : query for object components\nand order
+NavigationModule -> Repo : fetch object ID\nand related components
+Repo -> NavigationModule : return object components\nand metadata
+NavigationModule -> Metadata : request component\nordering information
+Metadata -> NavigationModule : provide ordering\nbased on metadata
+NavigationModule -> Interface : send ordered components list
+Interface -> Manager : display components\n(in assigned order)
+
+@enduml
+```
+
+This sequence diagram outlines the steps a DAMS Manager might follow when interacting with the DIMS to present all components comprising an object in their assigned order. Key steps include:
+
+1. **DAMS Manager Request:** The DAMS Manager initiates a request via the DIMS Interface to present the components of a specified object in their assigned order.
+
+2. **Query Navigation and Structuring Module:** The DIMS Interface forwards this request to the Digital Asset Navigation & Structuring Module, which is responsible for orchestrating the retrieval and ordering of object components.
+
+3. **Fetch Object Components:** The Navigation & Structuring Module retrieves the object's ID and its related components from the Repository.
+
+4. **Return Components and Metadata:** The Repository sends back the components and their metadata to the Navigation & Structuring Module.
+
+5. **Request and Provide Ordering Information:** The Navigation & Structuring Module requests component ordering information from the Metadata Management System, which then provides the necessary data to determine the assigned order of components.
+
+6. **Send Ordered Components List:** Armed with this information, the Navigation & Structuring Module finalizes the list of components in their correct order and forwards this list back to the DIMS Interface.
+
+7. **Display Ordered Components:** The DIMS Interface, in turn, presents this ordered list to the DAMS Manager, fulfilling the request.
+
+This sequence supports the user story of a DAMS Manager intending to display all components of an object in their designated order, reflecting the operations behind the scenes in DIMS.

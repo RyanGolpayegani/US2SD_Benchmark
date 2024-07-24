@@ -1,0 +1,57 @@
+Given your request, below is a detailed PlantUML sequence diagram code snippet that illustrates how a lab administrator interacts with the system to change the theme of the web interface graphics/colours. This sequence incorporates the initiation of the theme change request, system processing, and eventual application of the new theme settings.
+
+Ensure you have PlantUML installed or use an online PlantUML editor to visualize this sequence diagram.
+
+```plantuml
+@startuml
+participant LabAdministrator as admin
+participant WebInterface as web
+participant ThemeSettings as theme
+participant SystemDatabase as db
+
+admin -> web: Access Theme Settings
+activate web
+
+web -> theme: Load Current Theme Settings
+activate theme
+
+theme -> db: Fetch Current Theme Settings
+activate db
+
+db --> theme: Current Theme Settings
+deactivate db
+
+theme --> web: Display Current Settings
+deactivate theme
+
+admin -> web: Select New Theme
+activate web
+
+web -> theme: Update Theme Settings
+activate theme
+
+theme -> db: Save New Theme Settings
+activate db
+
+db --> theme: Confirmation
+deactivate db
+
+theme --> web: Update Successful
+deactivate theme
+
+web --> admin: Display New Theme
+deactivate web
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+- **LabAdministrator to WebInterface**: The lab administrator accesses the theme settings on the Neurohub web interface.
+- **WebInterface to ThemeSettings to SystemDatabase**: The web interface requests the current theme settings from the "ThemeSettings" component, which in turn fetches this data from the system database.
+- **SystemDatabase to ThemeSettings to WebInterface**: The current theme settings are returned to the web interface, which displays them to the lab administrator.
+- **LabAdministrator to WebInterface**: The lab administrator selects a new theme.
+- **WebInterface to ThemeSettings to SystemDatabase**: The web interface updates the theme settings in the "ThemeSettings" component, which saves the new settings in the database.
+- **SystemDatabase to ThemeSettings to WebInterface**: A confirmation of the update is sent back to the web interface.
+- **WebInterface to LabAdministrator**: Finally, the web interface displays the new theme to the lab administrator, completing the theme change process.
+
+This sequence diagram aims to capture the core interactions involved in changing the web interface theme, focusing on the exchange between the lab administrator, the web interface, the theme settings component, and the system database. Adjustments or enhancements might be necessary depending on additional requirements or system behaviors not covered in the project description.

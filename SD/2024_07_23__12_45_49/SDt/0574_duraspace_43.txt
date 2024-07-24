@@ -1,0 +1,42 @@
+@startuml
+!theme plain
+
+actor "Repository Manager" as RM
+participant "DIMS Interface" as UI
+participant "Rights Management Component" as Rights
+participant "Database" as DB
+
+RM -> UI: Access component management
+activate UI
+
+UI -> Rights: Retrieve component details
+activate Rights
+
+Rights -> DB: Query component information
+activate DB
+
+DB --> Rights: Return component details
+deactivate DB
+
+Rights --> UI: Show component rights management options
+deactivate Rights
+
+RM -> UI: Indicate statute pertaining to component
+activate UI
+
+UI -> Rights: Update component rights with statute
+activate Rights
+
+Rights -> DB: Save statute information for component
+activate DB
+
+DB --> Rights: Confirm save
+deactivate DB
+
+Rights --> UI: Display save confirmation
+deactivate Rights
+
+UI --> RM: Confirm statute indication
+deactivate UI
+
+@enduml

@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the mentioned user story in PlantUML format involves scripting interactions between the actors (in this case, the data librarian) and the system components involved in extracting pointers from the Data Management Plan (DMP) to metadata in other systems for import into a data catalogue. Below is a template you can use and adapt:
+
+```plantuml
+@startuml
+participant DataLibrarian as librarian
+participant DMPTool
+participant ExternalMetadataSystem
+participant DataCatalogue
+
+librarian -> DMPTool: Request metadata pointers
+activate DMPTool
+DMPTool -> ExternalMetadataSystem: Fetch metadata pointers
+activate ExternalMetadata(m)
+ExternalMetadataSystem --> DMPTool: Return metadata pointers
+deactivate ExternalMetadataSystem
+
+DMPTool --> librarian: Show metadata pointers
+deactivate DMPTool
+
+librarian -> DataCatalogue: Initiate metadata import
+activate DataCatalogue
+librarian -> DMPTool: Extract metadata using pointers
+activate DMPTool
+DMPTool -> ExternalMetadataSystem: Request metadata using pointers
+activate ExternalMetadataSystem
+ExternalMetadataSystem --> DMPTool: Return metadata
+deactivate ExternalMetadataSystem
+
+DMPTool --> DataCatalogue: Transfer metadata
+DataCatalogue --> librarian: Confirm metadata import
+deactivate DataCatalogue
+deactivate DMPTool
+
+@enduml
+```
+
+This PlantUML sequence diagram script outlines the process where:
+
+1. **Data Librarian** requests metadata pointers from the DMPTool.
+2. **DMPTool** then fetches these metadata pointers from an **External Metadata System**.
+3. The external system returns the pointers to DMPTool, which in turn, shows them to the Data Librarian.
+4. The Data Librarian initiates metadata import to the **Data Catalogue** and requests the DMPTool to extract actual metadata using those pointers.
+5. DMPTool requests and retrieves the metadata from the External Metadata System based on those pointers.
+6. Finally, DMPTool transfers the metadata to the Data Catalogue, which confirms the successful import of the metadata to the Data Librarian.
+
+Remember, this script is a base template. Depending on the specifics of your project, such as the technology stack, exact processes, and how the components interact, you might need to adjust the interactions, include more steps to reflect authentication/authorization if necessary, or detail error handling procedures.

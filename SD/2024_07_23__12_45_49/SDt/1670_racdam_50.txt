@@ -1,0 +1,23 @@
+@startuml
+actor Archivist
+participant "Web Interface" as UI
+participant "Authentication Service" as Auth
+participant "User Management" as UserMan
+participant "Download Tracking" as Track
+participant "Database" as DB
+
+Archivist -> UI: Select View User Downloads
+UI -> Auth: Validate Archivist Credentials
+Auth --> UI: Credentials Valid
+UI -> UserMan: Request User List
+UserMan -> DB: Fetch Users
+DB --> UserMan: User List
+UserMan --> UI: Display Users
+UI --> Archivist: Select User
+Archivist -> UI: Request Downloads for Selected User
+UI -> Track: Fetch Downloads by User ID
+Track -> DB: Query Downloads
+DB --> Track: User Download Data
+Track --> UI: Display Download Data
+UI --> Archivist: Show Downloaded Items
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+actor StaffMember as "Staff Member"
+entity "Customer Portal" as Portal
+database "Application Database" as DB
+entity "Administrative Tools" as Tools
+
+== Denote Application with Final Action Status ==
+
+StaffMember -> Portal : Login
+activate StaffMember
+activate Portal
+Portal --> StaffMember : Show Dashboard
+
+note over StaffMember, Portal : Staff Accesses Administrative Tools
+
+StaffMember -> Portal : Select Application to Finalize
+Portal -> Tools : Open Administrative Tools
+activate Tools
+Tools --> StaffMember : Display Application Details
+
+StaffMember -> Tools : Request Change Status to Final Action
+activate Tools
+
+Tools -> DB : Update Application Status to Final Action
+activate DB
+DB --> Tools : Confirm Status Updated
+deactivate DB
+
+Tools --> StaffMember : Show Final Action Confirmation
+deactivate Tools
+StaffMember -> Portal : Logout
+deactivate Portal
+deactivate StaffMember
+
+@enduml

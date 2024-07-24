@@ -1,0 +1,69 @@
+Creating a detailed Sequence Diagram for a specific user story requires breaking down the process into distinct interactions between system components and users. The given user story involves a site editor who wants to post information in a trainers-only section, with access limited to trainers. Here's a PlantUML sequence diagram that represents the process:
+
+```plantuml
+@startuml
+actor SiteEditor as SE
+actor Trainer
+participant "Authentication\nSystem" as Auth
+participant "Editor\nDashboard" as ED
+participant "Trainers-Only\nSection" as TS
+participant Database
+
+SE -> Auth: Login()
+activate Auth
+Auth --> SE: Authentication Success
+deactivate Auth
+
+SE -> ED: Access Editor Tools()
+activate ED
+
+ED --> SE: Display Tools
+
+SE -> ED: Select Post to Trainers-Only Section
+ED -> TS: Access Post Creation Tool()
+activate TS
+
+SE -> TS: Create Post(Content)
+TS -> Database: Save Post(Content, Visibility: Trainers-Only)
+activate Database
+Database --> TS: Confirm Post Saved
+deactivate Database
+
+TS --> SE: Display Post Success Message
+deactivate TS
+
+Trainer -> Auth: Login()
+activate Auth
+Auth --> Trainer: Authentication Success
+deactivate Auth
+
+Trainer -> TS: Access Trainers-Only Section()
+activate TS
+TS -> Database: Fetch Posts(Visibility: Trainers-Only)
+activate Database
+Database --> TS: Return Posts
+deactivate Database
+
+TS --> Trainer: Display Posts
+deactivate TS
+
+@enduml
+```
+
+**Explanation:**
+
+1. **Site Editor Logs In:** The site editor interacts with the Authentication System to log in. The system authenticates the user.
+   
+2. **Access Editor Tools:** Once authenticated, the site editor accesses the editor dashboard to use the post creation tools.
+
+3. **Select Post to Trainers-Only Section:** The editor selects the option to post content specifically in the trainers-only section of the platform.
+
+4. **Create and Save Post:** The editor creates the post with the specific content intended for trainers. This action involves saving the post to the database with a visibility setting that restricts access to trainers only.
+
+5. **Post Success Message:** The site editor receives a confirmation message indicating the post has been successfully saved and is visible only to trainers.
+
+6. **Trainer Logs In:** A trainer logs into the platform and is authenticated by the system.
+
+7. **Trainer Accesses Content:** The authenticated trainer navigates to the trainers-only section, where the system fetches and displays posts that are flagged for trainers' eyes only.
+
+This sequence diagram outlines the primary interactions to fulfill the requirement of the user story while encapsulating the steps of authentication, posting, and accessing restricted content.

@@ -1,0 +1,42 @@
+@startuml
+!theme plain
+
+participant OlderPerson as user
+participant "ALFRED's Interface" as interface
+participant "Battery Management System" as battery
+participant "Notification System" as notification
+participant "Energy Saving Mode" as energy
+
+== Daily Battery Check ==
+user -> interface: Activate ALFRED
+interface -> battery: Check battery status
+battery -> interface: Display battery level
+user <- interface: Battery level shown
+
+== Battery Low Notification ==
+alt Battery level low
+    battery -> notification: Trigger low battery alert
+    notification -> user: Display low battery warning
+    user -> interface: Request energy saving options
+    interface -> energy: List available energy saving modes
+    user <- interface: Energy saving modes displayed
+    user -> interface: Select preferred mode
+    interface -> energy: Activate selected mode
+else Battery level sufficient
+    battery -> interface: Continue normal operation
+end
+
+== User Checks Battery Level Manually ==
+user -> interface: Request battery level
+battery -> interface: Current battery level
+user <- interface: Display current battery level
+
+== Outcomes ==
+alt Battery level critically low
+    battery -> notification: Send critical battery warning
+    notification -> user: Prompt to charge ALFRED
+else Sufficient battery for the day
+    battery -> user: No action required
+end
+
+@enduml

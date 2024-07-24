@@ -1,0 +1,23 @@
+@startuml
+autonumber
+actor User as user
+participant "UI Navigation Controls" as controls
+participant "Navigation Handler" as handler
+participant "Session Manager" as session
+participant "Data Store" as datastore
+
+user -> controls: Request to navigate (forward/backward)
+controls -> handler: Trigger navigation with direction
+handler -> session: Check current page and direction
+alt if forward navigation is requested
+  session -> datastore: Query for next page data based on current state
+  datastore --> session: Next page data
+  session -> handler: Increment page state; Forward next page data
+else if backward navigation is requested
+  session -> datastore: Query for previous page data based on current state
+  datastore --> session: Previous page data
+  session -> handler: Decrement page property; Return previous page data
+end
+handler -> controls: Provide data for next/previous page
+controls -> user: Display the requested page
+@enduml

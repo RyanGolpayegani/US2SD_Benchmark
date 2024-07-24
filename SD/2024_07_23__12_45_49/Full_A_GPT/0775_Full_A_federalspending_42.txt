@@ -1,0 +1,49 @@
+Creating a detailed sequence diagram for the user story - "As an agency user, I want to be confident that the data coming from SAM is complete" - involves representing the sequence of actions between different system components from the moment an agency user requests data from SAM (System for Award Management) to the validation and presentation of this data, ensuring its completeness. Given the complexity of such a process, below is an abstracted Plant UML sequence diagram that captures these key interactions.
+
+Please note, due to the inherent limitations in a text-based medium and to ensure clarity, the diagram will cover the main steps rather as granular details of every possible interaction or system component.
+
+```plantuml
+@startuml
+!theme cerulean
+
+participant "Agency User" as user
+participant "Broker Platform" as broker
+participant "Data Validation Service" as validation
+participant "SAM API" as samAPI
+database "SAM Database" as samDB
+
+== Request Data from SAM ==
+user -> broker : Request data
+broker -> samAPI : Fetch data request
+samAPI -> samDB : Query requested data
+samDB --> samAPI : Return requested data
+samAPI --> broker : Data payload
+
+== Validate Data Completeness ==
+broker -> validation : Validate data completeness
+alt Data is complete
+    validation --> broker : Validation success
+    broker --> user : Display complete data
+else Data is incomplete
+    validation --> broker : Validation fail (Data gaps found)
+    broker -> samAPI : Request missing data
+    samAPI -> samDB : Query missing data
+    samDB --> samAPI : Return missing data
+    samAPI --> broker : Data payload (missing data)
+    broker --> validation : Re-validate data
+    validation --> broker : Validation success
+    broker --> user : Display complete data
+end
+
+@enduml
+```
+This diagram simplifies the interaction flow but encompasses essential steps:
+
+1. **Request Data from SAM**: The agency user requests data through the Broker Platform, which in turn fetches this data from SAM using its API.
+2. **Fetch Data from SAM Database**: The SAM API retrieves the requested data from the SAM Database and returns it to the Broker Platform.
+3. **Validate Data Completeness**: The Broker Platform submits the data to its Data Validation Service to check for completeness.
+4. **Data Validation Outcomes**:
+    - If the data is complete, it is displayed to the agency user.
+    - If the data is found to be incomplete, the Broker Platform requests the missing data from SAM, which is then validated again until it meets the completeness criteria. 
+
+This sequence ensures that an agency user receives only complete data from SAM, addressing the user story requirement.

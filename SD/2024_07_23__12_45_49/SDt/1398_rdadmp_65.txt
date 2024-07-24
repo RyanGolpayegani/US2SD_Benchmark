@@ -1,0 +1,44 @@
+@startuml
+actor DataManager as DM
+participant "DMPTool Interface" as UI
+participant "Metadata Management System" as MMS
+participant "Data Format Repository" as DFR
+participant "Technology Info System" as TIS
+database "Data Formats Database" as DFD
+
+DM -> UI: Request data format info
+activate UI
+
+UI -> MMS: Retrieve associated metadata
+activate MMS
+
+MMS -> DFR: Request specific data format details
+activate DFR
+
+DFR -> DFD: Fetch data formats
+activate DFD
+
+DFD --> DFR : Return data formats
+deactivate DFD
+
+DFR --> MMS : Provide data format details
+deactivate DFR
+
+MMS --> UI: Send metadata including formats
+deactivate MMS
+
+UI -> TIS: Request technology/background info
+activate TIS
+
+TIS -> DFD: Query for technology requirements
+activate DFD
+
+DFD --> TIS : Respond with tech requirements
+deactivate DFD
+
+TIS --> UI : Send tech/background info
+deactivate TIS
+
+UI --> DM : Display data format and tech info
+deactivate UI
+@enduml

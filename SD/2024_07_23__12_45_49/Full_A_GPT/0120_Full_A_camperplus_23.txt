@@ -1,0 +1,48 @@
+Creating a detailed UML sequence diagram to represent the functionality of a camp administrator logging daily attendance can be complex due to the limitations of answering format. However, I will guide you on how to draft this sequence diagram in PlantUML syntax, so you can generate it using a PlantUML editor or tool.
+
+The scenario involves several components:
+- **Admin Interface**: Where the camp administrator interacts with the system.
+- **System Backend**: Handles the logic and database interactions.
+- **Database**: Stores information including camper profiles and attendance records.
+
+Here's a basic outline in PlantUML format:
+
+```plantuml
+@startuml
+participant "Admin Interface" as UI
+participant "System Backend" as Backend
+database "Database" as DB
+
+== Attendance Logging ==
+
+UI -> Backend : logAttendance(camperId, date, status)
+activate Backend
+
+Backend -> DB : getCamperProfile(camperId)
+activate DB
+DB --> Backend : camperProfile
+deactivate DB
+
+Backend -> DB : updateAttendanceRecord(camperId, date, status)
+activate DB
+DB --> Backend : confirmation
+deactivate DB
+
+Backend --> UI : displayConfirmation(confirmation)
+deactivate Backend
+
+@enduml
+```
+
+Explanation of Steps:
+1. **logAttendance(camperId, date, status)**: This is the action initiated by the camp administrator to log a camper's attendance. The `camperId` is the unique identifier for each camper, `date` represents the day's date, and `status` could be 'Present', 'Absent', etc. 
+
+2. **getCamperProfile(camperId)**: The system checks the database to retrieve the camper's profile using their ID. This step ensures that the attendance log is being made for a valid camper.
+
+3. **updateAttendanceRecord(camperId, date, status)**: After validating the camper's profile, the system records the attendance status for the camper on the specified date in the database.
+
+4. **displayConfirmation(confirmation)**: Lastly, the system sends back a confirmation to the Admin Interface that the attendance has been successfully logged, and the UI displays this confirmation.
+
+Note that this is a simplified view of the process. Real-world scenarios might involve additional steps like error handling, authentication and authorization checks, logging, and more detailed interactions. You can extend this basic structure with more details as necessary for your specific project needs. 
+
+To generate a diagram from this PlantUML code, you can use online editors like PlantText (planttext.com) or any PlantUML compatible tools you prefer.

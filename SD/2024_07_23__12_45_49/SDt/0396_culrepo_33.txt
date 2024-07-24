@@ -1,0 +1,43 @@
+@startuml
+actor TeamMember as "Repository Support Team Member"
+participant UserInterface as "Web UI"
+participant ControlLayer as "Controller"
+database RepositoryDb as "Repository Database"
+participant CollectionManager as "Collection Management\nService"
+
+TeamMember -> UserInterface : Select item to alias
+UserInterface -> ControlLayer : Request item aliasing
+activate ControlLayer
+
+ControlLayer -> RepositoryDb : Retrieve item information
+activate RepositoryDb
+RepositoryDb --> ControlLayer : Item details
+deactivate RepositoryDb
+
+ControlLayer -> CollectionManager : Verify permissions
+activate CollectionManager
+CollectionManager --> ControlLayer : Permissions verified
+deactivate CollectionManager
+
+ControlLayer -> RepositoryDb : Get collection details
+activate RepositoryDb
+RepositoryDb --> ControlLayer : Collection info
+deactivate RepositoryDb
+
+ControlLayer -> CollectionManager : Request alias creation
+activate CollectionManager
+CollectionManager -> RepositoryDb : Create alias in both collections
+activate RepositoryFeed
+RepositoryFeed -> CreatorRepo : Send notifications (if applicable)
+deactivate CreatorRepo
+deactivate RepoFeed
+RepositoryFeed --> CollectionManager : Alias creation success
+deactivate RepositoryFeed
+
+CollectionManager --> ControlLayer : Alias success message
+deactivate CollectionManager
+
+ControlLayer --> UserInterface : Display success message
+UserInterface --> TeamMember : Show confirmation
+deactivate ControlLayer
+@enduml

@@ -1,0 +1,53 @@
+Creating a detailed sequence diagram for the user story provided involves depicting the system's interactions from the perspective of an archivist making rights information available to researchers and donors within the Digital Archive Management Enhancement Project context.
+
+Considering PlantUML syntax for creating sequence diagrams, below is an illustration of such a process. This example focuses on the sequence of actions following the archivist's decision to make rights information available for images, ensuring researchers and donors understand what they are permitted to do with these items.
+
+```plantuml
+@startuml
+participant Archivist
+participant "Rights Management System" as Rights
+participant "Database" as DB
+participant "User Interface" as UI
+
+== Make Rights Information Available ==
+
+Archivist -> Rights : selectImages()
+activate Rights
+
+Rights -> DB : fetchImageRights(images)
+activate DB
+DB --> Rights : rightsDetails
+deactivate DB
+
+Rights -> UI : displayRightsInformation(rightsDetails)
+activate UI
+UI --> Archivist : showRightsInfo
+deactivate UI
+
+== Viewing Rights Information ==
+
+Archivist -> UI : inputRightsInformationForPublic(rightsInfo)
+activate UI
+
+UI -> DB : updatePublicRightsInfo(images, rightsInfo)
+activate DB
+DB --> UI : confirmation
+deactivate DB
+
+UI -> Rights : notifyResearchersAndDonors()
+activate Rights
+Rights --> UI : notificationStatus
+deactivate Rights
+
+UI --> Archivist : status
+deactivate UI
+deactivate Rights
+
+@enduml
+```
+
+This diagram starts with the archivist selecting images for which they want to make rights information available. The Rights Management System then fetches the rights details from the Database. Once acquired, this information is displayed to the archivist through the User Interface.
+
+Subsequently, the archivist inputs the rights information into the system to be made available to the public, including researchers and donors. This update involves the Database storing the updated rights information and confirming the process.
+
+Finally, researchers and donors are notified about the availability of this rights information, signifying the completion of the archivist's task. This sequence encapsulates the interaction from the archivist's perspective in making rights information accessible, in line with the user story provided.

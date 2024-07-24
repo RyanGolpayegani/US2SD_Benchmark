@@ -1,0 +1,21 @@
+@startuml
+participant Archivist
+participant "ScanningSystem" as Scan
+participant "DigitalArchiveSystem" as DAS
+participant "MetadataApplication" as Metadata
+participant "StorageService" as Storage
+participant "AccessControl" as AC
+participant "StaffUser" as Staff
+
+Archivist -> Scan : Scan physical documents
+Scan -> DAS : Upload scanned files
+Archivist -> Metadata : Apply metadata to files
+Metadata -> DAS : Update files with metadata
+Archivist -> Storage : Store files securely
+loop Each Staff User
+    Archivist -> AC : Set file access permissions
+    AC -> Staff : Grant access based on role
+end
+Staff -> DAS : Access electronic files for use
+
+@enduml

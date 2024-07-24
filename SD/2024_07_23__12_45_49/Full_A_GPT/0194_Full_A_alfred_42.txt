@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the user story, "As an Older Person, I want to use ALFRED to see who is standing at my door and open the door" requires illustrating how various components of the system interact. Below is the PlantUML code to generate such a sequence diagram. 
+
+```plantuml
+@startuml
+actor OlderPerson as user
+participant "Voice Recognition" as VR
+participant ALFRED as A
+database "Privacy Settings" as PS
+participant "Door Camera" as DC
+participant "Smart Lock" as SL
+
+user -> VR: "Show me who's at the door"
+VR --> A: Translates command
+A -> PS: Check user privacy settings
+PS --> A: Privacy verified
+A -> DC: Activate camera
+DC --> A: Display video feed
+A --> user: Show video on device
+
+user -> VR: "Open the door"
+VR --> A: Translates command
+A -> PS: Check user privacy settings
+PS --> A: Privacy verified
+A -> SL: Unlock command
+SL --> A: Door unlocked confirmation
+A --> user: "Door is unlocked"
+
+@enduml
+```
+
+### Explanation:
+
+1. **Older Person (User)**: Initiates the interaction by speaking a command to see who's at the door and then to open the door.
+2. **Voice Recognition**: This component captures the voice command from the user.
+3. **ALFRED (A)**: It's the central system that receives the translated command from the voice recognition module. It checks the user's privacy settings before proceeding with any action.
+4. **Privacy Settings (PS)**: This database ensures that the request respects the user's predefined privacy preferences.
+5. **Door Camera (DC)**: Upon receiving a request from ALFRED, it activates to show who is at the door.
+6. **Smart Lock (SL)**: This component receives the unlock command from ALFRED to open the door.
+
+This sequence illustrates a straightforward interaction between the older person and the ALFRED system for security and home access management, making it more intuitive for the user to interact with their environment.

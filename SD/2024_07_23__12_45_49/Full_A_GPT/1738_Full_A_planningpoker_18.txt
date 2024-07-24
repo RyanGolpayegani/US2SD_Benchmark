@@ -1,0 +1,58 @@
+To create a detailed PlantUML sequence diagram for the described user story where a moderator wants to export a transcript of a game as an HTML file, follow the steps outlined below. This diagram assumes a scenario within the Agile Estimation and Planning Tool (AEPT) where the data flow between the user interface (UI), server, and database is highlighted for the export function.
+
+```plantuml
+@startuml
+
+participant ModeratorUI as UI
+participant BackendServer as Server
+participant FileSystem as FS
+participant Database as DB
+
+UI -> Server: RequestExport(gameId)
+activate Server
+
+Server -> DB: GetGameData(gameId)
+activate DB
+DB --> Server: ReturnGameData(gameData)
+deactivate DB
+
+Server -> Server: ProcessDataToHTML(gameData)
+Server -> FS: SaveHTMLFile(exportHTML)
+activate FS
+FS --> Server: FileSaved(filePath)
+deactivate FS
+
+Server -> FS: GetDownloadLink(filePath)
+FS --> Server: ReturnDownloadLink(downloadLink)
+
+Server --> UI: SendDownloadLink(downloadLink)
+deactivate Server
+
+UI -> Moderator: DisplayDownloadLink(downloadLink)
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram Steps:**
+
+1. **RequestExport(gameId):** The UI (Moderator UI) sends a request to the backend server to export a game's data by providing the `gameId`. This is the action triggered by the moderator when selecting the option to export a game transcript as an HTML file.
+
+2. **GetGameData(gameId):** The server requests the necessary game data from the database using the `gameId`. This includes all stories, estimates, and any other relevant information needed to generate the transcript.
+
+3. **ReturnGameData(gameData):** The database returns the requested game data to the server.
+
+4. **ProcessDataToHTML(gameData):** The server processes the game data, structuring it according to the HTML format for the export. This step involves converting data into a readable HTML transcript of the game.
+
+5. **SaveHTMLFile(exportHTML):** The server then saves the processed HTML data into a file on the filesystem. 
+
+6. **FileSaved(filePath):** The filesystem returns the path of the saved file back to the server.
+
+7. **GetDownloadLink(filePath):** The server requests a download link for the saved HTML file from the filesystem.
+
+8. **ReturnDownloadLink(downloadLink):** The filesystem generates and returns a URL link from which the file can be downloaded.
+
+9. **SendDownloadLink(downloadLink):** The server sends the download link back to the moderator UI, completing the process of exporting the game transcript.
+
+10. **DisplayDownloadLink(downloadLink):** Finally, the moderator UI displays the download link to the moderator, allowing them to download the HTML transcript file onto their local machine.
+
+This sequence diagram provides a high-level overview of the interactive components in the AEPT necessary for a moderator to export a game transcript as an HTML file.

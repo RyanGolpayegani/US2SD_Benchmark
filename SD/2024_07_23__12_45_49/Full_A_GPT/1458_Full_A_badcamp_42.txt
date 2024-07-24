@@ -1,0 +1,44 @@
+To create a Sequence Diagram in PlantUML format for the user story you provided, here's a detailed breakdown. Assuming you have basic knowledge of how UML diagrams work and how to use PlantUML syntax, I'll design the sequence of interactions between different objects/system components necessary for a summit coordinator to list basic information about a summit.
+
+This sequence aims to capture the process from the perspective of a "Summit Coordinator" who wants to list summit details on the BADCamp Experience and Administration Enhancement Platform.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Coordinator as Coord
+participant Authentication as Auth
+participant Dashboard
+participant SummitForm as Form
+participant Database as DB
+
+== Authentication ==
+Coord -> Auth: Access Dashboard
+Auth --> Coord: Authentication Success
+
+== Access Summit Creation Form ==
+Coord -> Dashboard: Select Create/Edit Summit
+Dashboard --> Coord: Display Summit Form
+
+== Fill Summit Information ==
+Coord -> Form: Fill in Summit Details
+
+== Submit Summit Information ==
+Coord -> Form: Submit Summit Information
+Form -> Dashboard: Validate Information
+alt Validation Success
+  Dashboard -> DB: Store Summit Information
+  DB --> Dashboard: Confirmation
+  Dashboard --> Coord: Display Success Message
+else Validation Failure
+  Dashboard --> Coord: Display Error Message
+end
+
+@enduml
+```
+
+This sequence diagram starts with the summit coordinator accessing the administration dashboard after successful authentication. Once authenticated, the coordinator selects the option to create or edit a summit, which brings up the summit information form. After filling in the details for the summit, including its name, description, location, date, and possibly a list of key speakers or topics, the coordinator submits this information.
+
+The dashboard then validates this information -- checking for completeness, format, and any logical checks that might be necessary (e.g., the date is in the future). If successful, it stores the information in the database and confirms back to the dashboard, which in turn notifies the coordinator of success. If there's a validation failure, an error message is displayed instead.
+
+This sequence diagram could be modified or extended based on additional requirements or features, such as editing existing summit information, adding images, or linking to speaker profiles. Remember, the actual implementation may require adjusting the sequence based on technical constraints, security considerations, or user experience design principles.

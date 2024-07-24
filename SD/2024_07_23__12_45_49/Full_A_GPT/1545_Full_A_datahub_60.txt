@@ -1,0 +1,35 @@
+To create a PlantUML sequence diagram for the user story "As an owner, I want to make a user an owner, so that they have full control" based on your project description, you would include various components such as the User Interface (UI), Authentication Service, User Account Management Service, and Data Storage. Below is a simplistic approach to how these interactions might be visualized using PlantUML syntax:
+
+```plantuml
+@startuml
+actor Owner_UI
+participant "Authentication\nService" as Auth
+participant "User Account\nManagement Service" as AccountService
+database "Data Storage" as Storage
+
+Owner_UI -> Auth: Login as Owner
+Auth --> Owner_UI: Authentication Success
+
+Owner_UI -> AccountService: Request to view users list
+AccountService -> Storage: Fetch users list
+Storage --> AccountService: Users list
+AccountService --> Owner_UI: Display users list
+
+Owner_UI -> Account)Service: Select user to elevate to owner
+AccountService -> Storage: Update user role to owner
+Storage --> AccountService: Confirmation
+AccountService --> Owner_UI: User is now an owner
+
+@enduml
+```
+
+In this sequence diagram:
+1. The **Owner** authenticates through the Authentication Service.
+2. Once authenticated, the Owner requests to view a list of platform users through the User Account Management Service.
+3. The User Account Management Service fetches and returns this list from the Data Storage.
+4. The Owner selects a user from the list to elevate to the role of an Owner.
+5. The User Account Management Service updates the user's role in the Data Storage.
+6. The Data Storage confirms the update.
+7. The User Account Management Service informs the Owner that the user's role has been successfully updated to an Owner.
+
+This is a simplified visualization and depending on the actual complexity of your platform, interactions might be more detailed, including error handling, notification services for the updated user, auditing services logging the role change, and more advanced authentication and authorization checks.

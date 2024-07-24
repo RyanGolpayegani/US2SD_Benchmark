@@ -1,0 +1,62 @@
+Creating a detailed sequence diagram for the user story—"*As a researcher, I want to have the bulk upload directories and files with minimal effort*," entails illustrating the interactions between different system components to accomplish the bulk upload functionality. Given the complexity and level of interaction required for such a feature, the sequence diagram will outline the essential steps, actors, and systems involved in the process.
+
+Below is a PlantUML representation of how a researcher can perform bulk uploads of directories and files to the Neurohub platform, emphasizing minimal effort on the user's part. This representation assumes that the user is already authenticated and authorized to perform uploads.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Researcher as researcher
+participant "Web Interface" as webinterface
+participant "Upload Service" as uploadservice
+participant "Authentication Service" as authservice
+participant "File Management System" as filesys
+participant "Metadata Service" as metadataservice
+database "Neurohub Database" as db
+
+== Authentication ==
+researcher -> webinterface : Accesses Neurohub
+webinterface -> authservice : Validate session
+authservice -> webinterface : Session valid
+
+== Initiate Bulk Upload ==
+researcher -> webinterface : Select "Bulk Upload"
+webinterface -> uploadservice : Prepare for bulk upload
+uploadservice -> filesys : Create upload session
+
+== File Selection ==
+researcher -> webinterface : Selects files & directories
+webinterface -> uploadservice : Upload files & directories
+
+== Metadata Assignment ==
+uploadservice -> metadataservice : Request metadata template
+metadataservice --> uploadservice : Provide template
+uploadservice -> researcher : Present metadata form
+researcher -> webinterface : Inputs metadata
+webinterface -> uploadservice : Attach metadata to files
+
+== Upload Processing ==
+uploadservice -> filesys : Validate file types & sizes
+filesys -> uploadservice : Validation passed
+uploadservice -> filesys : Store files & directories
+filesys -> db : Update records with new files & metadata
+db -> filesos : Confirm successful update
+
+== Completion ==
+filesys -> uploadservice : Confirm upload completion
+uploadservice -> webinterface : Display success message
+webinterface -> researcher : Show upload summary
+
+@enduml
+```
+
+This diagram illustrates the following steps:
+1. The researcher accesses the Neurohub via the web interface and is authenticated.
+2. The researcher selects the "Bulk Upload" option, prompting the system to prepare for a bulk upload session.
+3. The researcher selects the files and directories they wish to upload.
+4. The system requests metadata assignment for the uploads, presenting the researcher with a metadata form.
+5. The researcher inputs the necessary metadata for the files/directories.
+6. The upload service validates and processes the upload, storing the files/directories and updating the database with the new information and attached metadata.
+7. Upon completion, the system confirms the successful upload to the researcher, providing a summary of the uploaded items.
+
+This sequence diagram aims to represent a streamlined and efficient process for researchers to perform bulk uploads, minimizing manual effort as highlighted in the project description.

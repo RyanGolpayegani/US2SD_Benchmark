@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram in PlantUML requires a structured approach to outlining how the system will handle automatic metadata insertion when new data is added by a researcher. Below is a PlantUML code that visualizes this process. This sequence diagram involves interactions among components such as the Researcher, Frontend UI, Metadata Service, Database, and an External Metadata Source (if applicable).
+
+Please note, this is a generalized example focusing on the key steps involved in the process as described in the user story. Specific implementations might require additional steps or services.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Researcher as researcher
+participant "Frontend UI" as frontend
+participant "Metadata Service" as metadataService
+participant "Database" as database
+participant "External Metadata Source\n(optional)" as externalMetadata
+
+== Data Addition and Metadata Insertion Process ==
+
+researcher -> frontend : Uploads new data
+activate frontend
+
+frontend -> metadataService : Request metadata generation
+activate metadataService
+
+metadataService -> externalMetadata : Fetch predefined metadata
+activate externalMetadata
+externalLib -> metadataService : Return metadata
+
+metadataService -> database : Insert automatic metadata
+activate database
+database --> metadataService : Acknowledge insertion
+deactivate database
+
+metadataService --> frontend : Confirm metadata added
+deactivate metadataService
+
+frontend --> researcher : Notify data and metadata addition successful
+deactivate frontend
+
+@enduml
+```
+
+This sequence diagram outlines the following steps:
+
+1. **Researcher Uploads New Data**: The process begins when a researcher uploads new data to the system through the Frontend UI.
+2. **Request Metadata Generation**: The Frontend UI then requests the Metadata Service to generate or fetch the necessary metadata.
+3. **Fetch Predefined Metadata (Optional)**: The Metadata Service may reach out to an External Metadata Source, if applicable, to fetch predefined metadata templates or information.
+4. **Insert Automatic Metadata**: The Metadata Service then proceeds to insert this automatic metadata into the Database.
+5. **Acknowledge Insertion**: The Database acknowledges the successful insertion of the metadata.
+6. **Confirm Metadata Added**: The Metadata Service confirms to the Frontend UI that the metadata has been successfully added.
+7. **Notify Data and Metadata Addition Successful**: Finally, the Frontend UI notifies the researcher that both their data and the metadata have been successfully added to the system.
+
+This sequence aims to illustrate a generalized process for automatic metadata insertion associated with new data additions by a researcher. Adjustments may be needed to align with the specific technologies, protocols, and requirements of the Neurohub Enhancement and Automation Project.

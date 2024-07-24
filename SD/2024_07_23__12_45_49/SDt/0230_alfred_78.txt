@@ -1,0 +1,39 @@
+@startuml
+participant OlderPerson as user
+participant "ALFRED Device" as alfred
+participant "Calendar Service" as calendar
+participant "Friend Contacts" as contacts
+participant "Meeting Notification Service" as notificationService
+participant "Location Service" as location
+
+== Organize Meeting ==
+
+user -> alfred : "Organize meeting with friends at [location] on [date & time]"
+activate alfred
+
+alfred -> calendar : Check availability on [date & time]
+activate calendar
+calendar --> alfred : Availability confirmed
+deactivate calendar
+
+alfred -> contacts : Retrieve friend contact details
+activate contacts
+contacts --> alfred : Provide contact details
+deactivate contacts
+
+alfred -> location : Validate meeting location
+activate location
+location --> alfred : Location confirmed
+deactivate location
+
+alfred -> notificationService : Send meeting invitations to friends
+activate notificationService
+notificationService -> contacts : Retrieve friend contact details for notifications
+notificationService --> alfred : Invitations sent
+deactivate notificationService
+
+alfred -> alfred : Log meeting in system calendar
+alfred -> user : "Meeting organized successfully for [date & time] at [location]"
+deactivate alfred
+
+@enduml

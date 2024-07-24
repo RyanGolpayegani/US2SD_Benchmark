@@ -1,0 +1,22 @@
+@startuml
+actor Manager as manager
+participant "Web Interface" as web
+participant "Server Controller" as controller
+participant "Database" as db
+participant "Penalty Calculation System" as penaltySys
+
+== View Overdue Members and Determine Penalties ==
+
+manager -> web : Log in and select "View Overdue Books"
+web -> controller : Request overdue books list
+controller -> db : Query overdue books and members
+db --> controller : Return overdue books and member details
+controller -> penaltySys : Request penalty calculation for each overdue member
+penaltySys -> db : Fetch penalty rules
+db --> penaltySys : Return penalty rules
+penaltySys -> penaltySys : Calculate penalties based on rules
+penaltySys --> controller : Return calculated penalties
+controller --> web : Display overdue members with penalties
+web --> manager : Show overdue members and their penalties
+
+@enduml

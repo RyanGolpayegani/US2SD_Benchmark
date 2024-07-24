@@ -1,0 +1,46 @@
+To create a detailed Sequence Diagram for the user story "As a customer, I want to complain" in PlantUML format, we need to visualize the interaction between various system components and actors when a customer decides to lodge a complaint. Given the scope of the Restaurant Management and Operations System, let's lay down a potential sequence that includes interactions with the system's UI, the complaints management subsystem, and how the complaint is handled and recorded.
+
+```plantuml
+@startuml
+actor Customer
+participant "UI/Complaint Form" as UIF
+participant "Complaint Handling System" as CHS
+participant "Database" as DB
+participant "Notification Service" as NS
+participant "Restaurant Manager" as RM
+
+== Customer Submits a Complaint ==
+Customer -> UIF : Choose to submit a complaint
+UIF -> Customer : Display complaint form
+Customer -> UIF : Enter complaint details (Issue, Time, Severity)
+UIF -> CHS : Submit complaint data
+note right of CHS : Validate and log complaint
+CHS -> DB : Save complaint details
+DB -->> CHS : Acknowledgement
+CHS -> NS : Trigger notification to management
+NS -> RM : Send complaint notification
+RM -->> CHS : Acknowledge receipt
+CHS -->> UIF : Notify customer of successful submission
+UIF -->> Customer : Display confirmation and follow-up steps
+
+== Complaint Resolution ==
+RM -> CHS : Update complaint status (investigation, resolution)
+CHS -> DB : Log status updates
+DB -->> CHS : Acknowledgement
+CHS -> Customer : Email update on complaint status
+
+@enduml
+```
+
+This sequence chart begins with the Customer deciding to submit a complaint via the system. Here's a brief walkthrough of the process:
+
+1. **Customer decides to submit a complaint** through the system's UI, specifically selecting a complaint form made available for such issues.
+2. **The UI displays the complaint form**, where the customer enters details about their issue, the time it occurred, and its severity.
+3. **Submitted data is forwarded** by the UI to the Complaint Handling System (CHS), which is responsible for initial validation and logging of the complaint.
+4. **The CHS saves complaint details** in the Database, which acknowledges the save.
+5. **A notification is triggered** by the CHS to the restaurant's management via a Notification Service, informing them of a new complaint.
+6. **The Restaurant Manager acknowledges receipt**, and this acknowledgment is communicated back to the CHS and then to the UI, which in turn informs the customer of the successful submission and outlines follow-up steps.
+7. **For complaint resolution**, the Restaurant Manager updates the complaint's status (e.g., under investigation, resolved) in the CHS, which logs these updates in the Database.
+8. **The customer is kept informed** through periodic emails or system notifications about the status of their complaint until it is resolved.
+
+This diagram represents a simplified view of the interactions involved in lodging and managing a complaint within the Restaurant Management and Operations System. Adjustments could be made based on specific requirements or additional functionalities within the actual system.

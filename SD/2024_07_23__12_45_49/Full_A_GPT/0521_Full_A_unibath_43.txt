@@ -1,0 +1,54 @@
+To create a detailed Sequence Diagram for the User Story you've provided using PlantUML, follow the syntax and steps outlined below. This sequence diagram will illustrate the process of a Research Information Manager seeking to track citation counts for published datasets.
+
+Please note, for bremsstrahlung visualization or to generate an actual diagram, you'll need to run this code in a PlantUML environment or a compatible tool.
+
+```plantuml
+@startuml
+participant ResearchInformationManager as manager
+participant WebInterface as web
+participant DataManager as dataManager
+participant Database as database
+participant CitationTrackingSystem as citationSystem
+participant ExternalCitationDB as externalDB
+
+== Track Citation Counts for Published Datasets ==
+
+manager -> web : Access data management platform
+web -> dataManager : Request dataset list
+activate dataManager
+
+dataManager -> database : Query published datasets
+activate database
+database --> dataManager : Return dataset list
+deactivate database
+
+dataManager --> web : Display datasets with metadata
+deactivate dataManager
+web -> manager : Show datasets
+
+manager -> web : Select dataset for citation tracking
+web -> citationSystem : Request citation count
+activate citationSystem
+
+citationSystem -> externalDB : Query citations by DOI
+activate externalDB
+externalDB --> citationSystem : Return citation count
+deactivate externalDB
+
+citationSystem --> web : Display citation count
+deactivate citationSystem
+web -> manager : Show citation count for selected dataset
+
+@enduml
+```
+
+This sequence diagram starts with the Research Information Manager accessing the data management platform through a web interface. It then goes through querying the published datasets from the database, selecting a dataset to track, and fetching the citation count from an external citation database through the citation tracking system. Then, the citation count is displayed back to the Research Information Manager.
+
+Key Points Covered:
+- Accessing the data management platform.
+- Requesting and displaying a list of published datasets.
+- Selecting a dataset for tracking citations.
+- Querying an external database for citation counts using dataset DOIs.
+- Displaying the citation count to the Research Information Manager.
+
+The real-world implementation might involve additional steps or details, especially concerning authentication and error handling, which are not fleshed out in this general diagram. For a more detailed representation specific to your infrastructure and processes, you might need to adapt and elaborate on this template.

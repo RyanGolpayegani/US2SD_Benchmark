@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the specific user story you've mentioned involves several actors and systems interacting. Given that your project description outlines a comprehensive system, the "Enhanced Digital Repository Management System (EDRMS)," and involves interactions with an external service like EZID for DOI management, we'll break down the user story into key interactions and then represent it in PlantUML code.
+
+### User Story Breakdown:
+**As a collection curator, I want to have metadata changes made to items with repository-assigned DOIs to be propagated to the EZID.**
+
+1. **Collection Curator** updates metadata on an item within the EDRMS.
+2. EDRMS validates the change and updates the item's metadata.
+3. EDRMS checks if the item has a repository-assigned DOI.
+4. If a DOI exists, EDRMS sends the updated metadata to the EZID service.
+5. EZID updates the metadata associated with the DOI.
+6. EZID returns an acknowledgment to EDRMS.
+7. EDRMS notifies the Collection Curator of the successful update.
+
+### PlantUML Code:
+```plantuml
+@startuml
+participant "Collection Curator" as Curator
+participant "EDRMS" as EDRMS
+database "EZID" as EZID
+
+Curator -> EDRMS : Update item metadata
+activate EDRMS
+EDRMS -> EDRMS : Validate metadata change
+EDRMS -> EDRMS : Check if item has DOI
+alt item has DOI
+    EDRMS -> EZID : Send updated metadata for DOI
+    activate EZID
+    EZID -> EZID : Update metadata
+    EZID -> EDRMS : Acknowledge update
+    deactivate EZID
+    EDRMS -> Curator : Notify success
+else item has no DOI
+    EDRMS -> Curator : Notify no action needed
+end
+deactivate EDRMS
+@enduml
+```
+
+### Explanation:
+The sequence diagram starts with the **Collection Curator** initiating a metadata update on an item within the EDRMS. The system then processes this update by validating the changes and checking for a repository-assigned DOI for the item. If a DOI is present, the updated metadata is sent to the EZID service, which then updates its records and acknowledges the update back to the EDRMS. Finally, the EDRMS notifies the **Collection Curator** whether the update was successful or, in the case of items without a DOI, that no action was needed for DOI propagation.
+
+Please note, to run this PlantUML code, you'll need access to a PlantUML environment such as an online editor or a local installation with Graphviz. This diagram is a simplified representation and may require adjustments based on the specific implementation details of the EDRMS and interactions with the EZID service.

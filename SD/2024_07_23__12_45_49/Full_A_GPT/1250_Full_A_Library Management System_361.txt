@@ -1,0 +1,58 @@
+Creating a detailed Sequence Diagram in PlantUML for the user story: "As a student, I want to ask for books that are currently unavailable," involves illustrating interaction between the student (client), the library management system, and other subsystems involved in handling the request for unavailable books. Here's a step-by-step breakdown of the interaction:
+
+```plantuml
+@startuml
+participant Student
+participant "Web Interface" as Web
+participant "Search System" as Search
+database "Library Database" as DB
+participant "Notification System" as Notify
+participant "Reservation System" as Reserve
+
+Student -> Web: Request unavailable book search
+Web -> Search: Initiate search for book
+Search -> DB: Query for book status
+DB --> Search: Return book status (Unavailable)
+Search --> Web: Display status to Student
+Web --> Student: Show book is unavailable, offer reservation
+
+alt Book Reservation
+  Student -> Web: Opt to reserve the book
+  Web -> Reserve: Process reservation request
+  Reserve -> DB: Record reservation details
+  DB --> Reserve: Confirmation of reservation
+  Reserve --> Web: Show successful reservation message
+  Web -> Notify: Schedule notification for when book becomes available
+  Notify -> DB: Save notification request
+  Web --> Student: Display reservation confirmation and info about notification
+else Suggest Alternatives
+  Student -> Web: Request alternatives
+  Web -> Search: Fetch similar books
+  Search -> DB: Query for similar books
+  DB --> Search: Return list of similar books
+  Search --> Web: Show similar books to Student
+  Web --> Student: Display alternatives
+end
+
+@enduml
+```
+
+In this sequence diagram:
+
+1. **Student requests a search for an unavailable book**: The student interacts with the web interface of the Comprehensive Library Management System (CLMS) to search for a book that is currently unavailable.
+
+2. **Search System queries the Library Database**: The search request is processed, querying the library's database for the book's availability.
+
+3. **Status returned to Student**: The database returns the book's status as unavailable, and this information is relayed to the student through the web interface, with an option to reserve the book.
+
+4. **Book Reservation**: If the student chooses to reserve the book:
+   - The web interface sends the reservation request to the Reservation System.
+   - The Reservation System records the reservation details in the Library Database and confirms the reservation.
+   - A notification request is saved by the Notification System to alert the student when the book becomes available.
+   - The student is informed about the successful reservation and the upcoming notification.
+
+5. **Suggesting Alternatives**: Alternatively, the student might request suggestions for similar books.
+   - The Search System queries the database for similar books, using criteria like genre, author, or subject.
+   - The database returns a list of similar books, which is displayed to the student.
+
+This diagram illustrates the complexity and efficiency of the library management system in handling requests for unavailable books, including reservation and notification mechanisms, ensuring a streamlined and user-friendly experience for students.

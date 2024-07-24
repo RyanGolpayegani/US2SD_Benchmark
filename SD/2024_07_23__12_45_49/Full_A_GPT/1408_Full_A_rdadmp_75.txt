@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram for the user story mentioned—where a researcher wants to check sections on responsibilities submitted by other researchers in their department to explore data manager post sharing—requires a clear depiction of interactions between the system (DMPTool) and its users (researchers), along with any other relevant actors. Below is an example of how this could be visualized using PlantUML code:
+
+```plantuml
+@startuml
+actor Researcher
+participant "DMPTool Interface" as Interface
+participant "Authorization Module" as Auth
+participant "Department Data" as DeptData
+participant "Data Section Retrieval" as DataRetrieval
+
+Researcher -> Interface : Log in
+Interface -> Auth : Verify credentials
+Auth -> Interface : Access granted
+
+Researcher -> Interface : Select 'View Departmental Submissions'
+Interface -> DeptData : Retrieve researcher's department
+DeptData -> DataRetrieval : Fetch sections on responsibilities from department
+
+DataRetrieval -> Interface : Display responsibilities sections
+Interface -> Researcher : Show sections on responsibilities
+
+Researcher -> Interface : Request shared data manager posts suggestions
+Interface -> DeptData : Analyze responsibilities for shared posts possibilities
+DeptData -> Interface : Suggest potential shared data manager posts
+Interface -> Researcher : Display shared posts suggestions
+
+@enduml
+```
+
+Explanation of the Sequence Diagram's Steps:
+1. **Log in Process**: The researcher logs in through the DMPTool interface, which then verifies the credentials with an Authorization Module. Upon successful verification, access is granted.
+2. **Viewing Departmental Submissions**: The researcher selects the option to view departmental submissions related to responsibilities. The DMPTool Interface requests the researcher's department information from the Department Data component.
+3. **Fetching and Displaying Responsibilities**: The Department Data component instructs the Data Section Retrieval module to fetch the relevant sections on responsibilities submitted by other researchers in the department. These details are then displayed to the researcher via the DMPTool Interface.
+4. **Requesting Shared Data Manager Posts Suggestions**: The researcher can request suggestions for shared data manager posts based on the responsibilities sections viewed. The Department Data module analyzes the fetched responsibilities for possibilities of sharing data manager posts and sends these suggestions back to the researcher through the DMPTool Interface.
+
+This sequence diagram is a high-level representation and assumes functionalities such as user authentication, departmental data fetching, responsibilities section retrieval, and suggestions generation for shared posts as part of the DMPTool's capabilities. Depending on the detailed functionalities and features of the DMPTool, more specific interactions and actors (like databases or external services) might be needed in a more detailed design.

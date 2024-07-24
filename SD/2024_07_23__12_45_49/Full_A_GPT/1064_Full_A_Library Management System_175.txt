@@ -1,0 +1,34 @@
+Creating a detailed Sequence Diagram for the specific user story "As a library member, I want to see books that are currently unavailable so that I can wait for them" involves outlining the interactions between the system components from when a library member requests to see unavailable books till the system provides this information. For this purpose, we'll illustrate the sequence of operations in PlantUML. 
+
+While it's not possible to render visual diagrams directly in this format, below is a textual representation that can be used with PlantUML to create the sequence diagram:
+
+```plantuml
+@startuml
+actor Member as member
+participant "Web Interface" as web
+participant "Search Controller" as controller
+participant "Book Service" as service
+database "Books Database" as db
+
+== Show Unavailable Books ==
+member -> web: Requests unavailable books
+web -> controller: GetUnavailableBooks()
+controller -> service: fetchUnavailableBooks()
+service -> db: queryUnavailableBooks()
+db -> service: return unavailableBooks
+service -> controller: List<BookDetails>
+controller -> web: ShowUnavailableBooks(unavailableBooks)
+web -> member: Display Unavailable Books
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **Member (Actor):** The library member initiates the process by requesting to see books that are currently unavailable.
+2. **Web Interface (Participant):** Acts as the intermediary that the member interacts with. It receives the member's request.
+3. **Search Controller (Participant):** Handles incoming requests from the web interface. It asks the Book Service to fetch information about unavailable books.
+4. **Book Service (Participant):** Contains the logic to retrieve the details of unavailable books. It communicates with the Books Database to get this information.
+5. **Books Database (Database):** Stores data about all books, including availability status. It processes queries from the Book Service and returns information about unavailable books.
+6. **Sequence of Actions:** The sequence of actions follows the information flow from the member's request to the display of unavailable books through the system components.
+
+This diagram provides a high-level overview of the interactions involved in fetching and displaying unavailable book information to a library member in the Comprehensive Library Management System (CLMS).

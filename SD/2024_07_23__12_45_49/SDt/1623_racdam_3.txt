@@ -1,0 +1,36 @@
+@startuml
+!theme cerulean
+
+participant Archivist as Arch
+participant "File Management Interface" as FMI
+participant "Database" as DB
+participant "Access Control \nSystem" as ACS
+
+== Mark Groups of Files as Restricted ==
+
+Arch -> FMI : Select groups of files
+activate FMI
+FMI -> DB : Retrieve selected files' data
+activate DB
+DB --> FMI : Return files' data
+deactivate DB
+
+FMI --> Arch : Display files' data
+deactivate FMI
+Arch -> FMI : Apply restriction settings
+activate FMI
+
+FMI -> ACS : Update access permissions
+activate ACS
+ACS -> DB : Mark files as restricted
+activate DB
+DB --> ACS : Confirm restriction applied
+deactivate DB
+
+ACS --> FMI : Confirm access updated
+deactivate ACS
+
+FMI --> Arch : Display success message
+deactivate FMI
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+participant Librarian
+participant "Library Management\nSystem Interface" as System
+participant "Loan Management\nModule" as LoanModule
+participant Database
+
+Librarian -> System: Access loan record
+System -> LoanModule: Retrieve loan record details
+LoanModule -> Database: Query loan record by book & borrower
+Database --> LoanModule: Return loan record details
+LoanModule --> System: Show loan record details
+System --> Librarian: Display loan record details
+
+Librarian -> System: Request to edit due date
+System -> LoanModule: Initiate due date edit process
+LoanModule -> System: Prompt for new due date
+
+Librarian -> System: Enter new due date
+System -> LoanModule: Update due date in system
+LoanModule -> Database: Update loan record with new due date
+Database --> LoanModule: Confirm update
+LoanModule --> System: Confirm due date update to Librarian
+System --> Librarian: Display update confirmation message
+@enduml

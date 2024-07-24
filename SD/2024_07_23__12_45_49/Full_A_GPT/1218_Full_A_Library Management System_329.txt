@@ -1,0 +1,40 @@
+Creating a detailed Sequence Diagram for the user story: "As a staff, I want to add new books to the system," involves outlining the interactions between the library staff and the different components of the Comprehensive Library Management System (CLMS) during the process of adding a new book. The sequence starts with the library staff initiating the process and ends with the book data being stored in the system. Here's how you can represent this flow using PlantUML code.
+
+```plantuml
+@startuml
+participant Staff
+participant WebInterface
+participant ValidationService
+participant Database
+
+Staff -> WebInterface : Accesses book addition form
+WebInterface -> Staff : Presents book addition form
+
+Staff -> WebInterface : Submits new book details (Title, Author, Category, etc.)
+WebInterface -> ValidationService : Validates submitted details
+alt If validation fails
+    Validation their submit users to books and info stafftitle authors
+    ValidationService -> WebInterface : Sends validation errors
+    WebInterface -> Staff : Displays validation errors
+    Staff -> WebInterface : Corrects and resubmits book details
+    WebInterface -> ValidationService : Revalidates submitted details
+else If validation succeeds
+    ValidationService -> WebInterface : Confirmation of successful validation
+    WebInterface -> Database : Save new book details
+    Database -> WebInterface : Confirmation book details are saved
+    WebInterface -> Staff : Display success message
+end
+@enduml
+```
+This sequence diagram illustrates the following steps:
+1. The staff accesses the book addition form through the Web Interface.
+2. The web interface then presents the form to the staff.
+3. Upon filling out the form, the staff submits the new book details, which include information such as the title, author, and category, back to the Web Interface.
+4. The Web Interface sends these details to the Validation Service to ensure that all the necessary fields are filled correctly and adhere to predetermined rules (e.g., no duplicate titles, correct format for dates).
+5. If validation fails (for example, a required field is missing or the book already exists in the system), the Validation Service sends the error details back to the Web Interface, which in turn informs the staff of the issues. The staff then makes the necessary corrections and resubmits the book details.
+6. If the validation succeeds, the Validation Service sends a confirmation of successful validation to the Web Interface.
+7. The Web Interface proceeds to save the new book details in the Database.
+8. Once the book details are successfully stored, the Database sends a confirmation back to the Web Interface.
+9. Finally, the Web Interface displays a success message to the staff, indicating that the new book has been added to the system.
+
+This diagram can be expanded or modified based on additional requirements, such as handling unique identifiers for books (ISBN), integrating with external databases for additional validation, or adding steps for categorizing and shelving books within the library's physical layout.

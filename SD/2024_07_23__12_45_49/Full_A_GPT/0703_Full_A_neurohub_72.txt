@@ -1,0 +1,61 @@
+Given the project description and the specific user story regarding long-term data curation, here's an example of a sequence diagram in PlantUML format that outlines the interactions involved in ensuring long-term data curation within the Neurohub platform.
+
+Please note, the sequence diagram will illustrate the process starting from when the researcher accesses the data curation service, goes through data upload, metadata assignment, backup, and ends with data verification to ensure longevity. This is a high-level overview and might not cover every single detail or step in the process. Specific implementations can vary based on the project details and infrastructure.
+
+```plantuml
+@startuml
+participant Researcher
+participant WebInterface as "Web Interface"
+participant UploadService as "Upload Service"
+participant MetadataService as "Metadata Service"
+participant DataService as "Data Service"
+participant BackupService as "Backup Service"
+participant VerificationService as "Verification Service"
+
+Researcher -> WebInterface: Access Data Curation Service
+activate WebInterface
+
+WebInterface -> UploadService: Initiate Upload
+activate UploadService
+
+UploadService -> Researcher: Request File & Details
+activate Researcher
+
+Researcher -> UploadService: Provide File & Details
+deactivate Researcher
+
+UploadService -> MetadataService: Assign Metadata
+activate MetadataService
+
+MetadataService -> DataService: Save File & Metadata
+activate DataService
+deactivate MetadataService
+
+DataService -> BackupService: Backup Data
+activate BackupService
+deactivate DataService
+
+BackupService -> VerificationService: Verify Backup Integrity
+activate VerificationService
+VerificationService -> BackupService: Integrity Confirmed
+deactivate VerificationService
+
+BackupService --> Researcher: Confirmation & Access Details
+deactivate BackupService
+
+deactivate WebInterface
+
+@enduml
+```
+
+This diagram illustrates the following sequence of events for long-term data curation from the perspective of a researcher:
+1. The researcher accesses the data curation service through the web interface.
+2. They initiate a data upload via the web interface, which in turn calls the upload service.
+3. The upload service requests the file and its details from the researcher, who then provides the necessary information.
+4. Once the upload is successful, the uploaded file's metadata is assigned through the metadata service.
+5. The file and its metadata are then saved by the data service.
+6. The backup service takes over to back up the saved data, ensuring its long-term preservation.
+7. The verification service checks the integrity of the backup, confirming that the data is correctly saved and backed up.
+8. The researcher receives confirmation and access details for the backed-up data, completing the process.
+
+This sequence of interactions ensures that researchers' data is not only saved but also curated for long-term use, addressing the concerns of data loss over time.

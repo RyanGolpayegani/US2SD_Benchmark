@@ -1,0 +1,22 @@
+@startuml
+actor DataManager
+participant "DMPTool" as DMP
+database "Metadata Repository" as MetaRepo
+database "Storage System" as Storage
+participant "Provenance Checker" as ProvCheck
+participant "IT Resource Planner" as ITPlanner
+
+DataManager -> DMP : Request data reproducibility assessment
+DMP -> ProvCheck : Retrieve data provenance information
+ProvCheck -> MetaRepo : Query metadata
+MetaRepo -> ProvCheck : Return metadata
+ProvCheck -> DMP : Provide provenance analysis
+note right of ProvCheck : Analysis includes:\n- Data origin\n- Modification history\n- Dependencies
+DMP -> ITPlanner : Request computational requirements estimate
+ITPlanner -> Storage : Check available resources
+Storage -> ITPlanner : Provide current resource usage
+ITPlanner -> DMP : Send computational requirements and availability
+DMP -> DataManager : Present reproducibility and storage recommendations
+note over DataManager : Recommendations include:\n- Reproducibility status\n- Storage options\n- Additional resource needs
+
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+actor Owner
+participant "UI Dashboard" as Dashboard
+participant "Auth Service" as AuthService
+participant "Organization Management" as OrgManagement
+participant "Database" as Database
+
+== Login Process ==
+Owner -> Dashboard: Accesses Dashboard
+Dashboard -> AuthService: Initiate authentication
+AuthService --> Owner: Prompts login via GitHub/Google
+Owner -> AuthService: Provides authentication details
+AuthService --> Dashboard: Confirms authentication
+Dashboard --> Owner: Displays main dashboard
+
+== Navigate to Organization Management ==
+Owner -> Dashboard: Selects 'My Organizations'
+Dashboard -> OrgManager: Retrieve organization list
+OrgManagement -> Database: Query organization details
+Database -> OrgManagement: Returns organization information
+OrgManagement --> Dashboard: Displays owned organizations
+Dashboard --> Owner: Shows list of organizations
+
+== Select Organization ==
+Owner -> Dashboard: Chooses specific organization
+Dashboard -> OrgManagement: Request organization details
+OrgManagement -> Database: Retrieve organization members
+Database -> Org379
+Org3725
+Jose-Management: Return member list
+OrgManagement --> Dashboard: Show organization and members
+Dashboard --> Owner: Displays organization details and member list
+
+== Remove Member Process ==
+Owner -> Dashboard: Selects member to remove
+Dashboard -> OrgManagement: Initiate remove member
+OrgManagement -> Database: Process member removal
+Database -> OrgManagement: Confirm member removal
+OrgManagement --> Dashboard: Update organization details
+Dashboard --> Owner: Display confirmation of member removal
+
+@enduml

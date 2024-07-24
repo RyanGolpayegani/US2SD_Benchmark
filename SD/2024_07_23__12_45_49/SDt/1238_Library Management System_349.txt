@@ -1,0 +1,50 @@
+@startuml
+actor Staff as staff
+participant "UI: Library Management" as ui
+participant "Controller: Book Management" as controller
+database "Database: LibraryDB" as db
+
+== Add New Book ==
+staff -> ui : Select "Add New Book"
+activate ui
+ui -> controller : Trigger addBook(details)
+activate controller
+controller -> db : INSERT book details
+activate db
+db --> controller : Confirm book added
+deactivate db
+controller --> ui : Display "Book Added Successfully"
+deactivate controller
+ui --> staff : Show confirmation message
+deactivate ui
+
+== Update Book Details ==
+staff -> ui : Select "Update Book"
+activate ui
+ui -> controller : Trigger updateBook(bookID, newDetails)
+activate controller
+controller -> db : UPDATE book details WHERE bookID = {bookID}
+activate db
+db --> controller : Confirm book updated
+deactivate db
+controller --> ui : Display "Book Updated Successfully"
+deactivate controller
+ui --> staff : Show updated book details
+deactivate ui
+
+== Remove Book ==
+staff -> ui : Select "Remove Book"
+activate ui
+ui -> controller : Trigger removeBook(bookID)
+activate controller
+controller -> db : DELETE FROM books WHERE bookID = {bookID}
+activate db
+db --> controller : Confirm book removed
+deactivate db
+controller --> ui : Display "Book Removed Successfully"
+deactivate controller
+ui --> staff : Show confirmation message
+deactivate ui
+
+
+@enduml

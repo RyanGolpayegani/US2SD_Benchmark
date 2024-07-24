@@ -1,0 +1,37 @@
+Creating a detailed sequence diagram in PlantUML format requires defining the actors, systems, and interactions for the specific user story: "As a cook, I want to keep track of store orders so that I can schedule orders." Below is a basic PlantUML diagram illustrating this process, from the cook's initiation of tracking orders to updating the inventory after scheduling the necessary orders.
+
+```plantuml
+@startuml
+
+participant Cook
+participant "Order Management System" as OMS
+participant "Inventory System" as InvSys
+participant "Supplier Portal" as SuppPortal
+
+Cook -> OMS: Check pending orders
+OMS -> InvSys: Query low-stock items
+InvSys --> OMS: Return low-stock items list
+OMS --> Cook: Show low-stock items & related orders
+Cook -> OMS: Schedule orders for low-stock items
+OMS -> SuppPortal: Place orders with suppliers
+SuppPortal --> OMS: Confirm orders placed
+OMS --> Cook: Confirm orders and scheduled delivery
+Cook -> InvSys: Update inventory with expected stock
+InvSys --> Cook: Confirm inventory update
+
+@enduml
+```
+
+Explanation of the Sequence:
+1. **Cook initiates** the process by checking pending orders that might be affected by low-stock items.
+2. **Order Management System (OMS) queries the Inventory System** to identify items that are low in stock.
+3. The **Inventory System returns a list** of low-stock items to the OMS.
+4. The OMS then **shows the cook a list** of these low-stock items, along with orders that might be affected.
+5. **The cook decides to schedule orders** for these low-stock items to ensure continuity of service.
+6. The OMS places these orders with the suppliers through the **Supplier Portal**.
+7. The **Supplier Portal confirms** that the orders have been placed.
+8. The OMS **confirms with the cook** that the orders have been scheduled and when they are expected to be delivered.
+9. The cook uses this information to **update the inventory system** with the expected stock, ensuring the restaurant kitchen can plan accordingly.
+10. The **Inventory System confirms** this update to the cook, completing the process.
+
+This diagram assumes a simplified interaction between the cook, the order management system, inventory system, and supplier portal. Depending on the project's complexity, you might consider adding more details, such as error handling, notification systems for the cook regarding order status updates, or integration points for automatic inventory adjustments post-delivery.

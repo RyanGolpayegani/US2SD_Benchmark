@@ -1,0 +1,31 @@
+@startuml
+actor "Plan Review Staff" as staff
+actor Applicant
+entity "Meeting Scheduler" as scheduler
+database "Application Database" as db
+entity "Meeting Platform" as platform
+database "Recording Storage" as storage
+
+staff -> scheduler : Request Plan Review Meeting
+scheduler -> db : Check Applicant's Data
+db -> scheduler : Confirm Details
+scheduler -> Applicant : Schedule Meeting Invitation
+Applicant -> scheduler : Confirm Meeting
+scheduler -> platform : Initiate Meeting Setup
+platform -> db : Register Meeting Details
+db -> platform : Meeting Scheduled
+
+staff -> platform : Conduct Plan Review Meeting
+platform -> Applicant : Join Plan Review Meeting
+platform -> storage : Start Recording
+
+Applicant -> staff : Discuss Plan
+staff -> Applicant : Provide Feedback
+
+platform -> storage : Stop Recording
+storage -> platform : Save Recording Details
+platform -> db : Update Meeting Outcome
+db -> platform : Confirmation
+platform -> staff : Meeting & Recording Saved
+staff -> storage : Access Recording If Needed
+@enduml

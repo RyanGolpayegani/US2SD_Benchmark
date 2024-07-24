@@ -1,0 +1,18 @@
+@startuml
+participant Publisher
+participant CLI
+participant PlatformAPI as "Platform API"
+participant Backend
+
+Publisher -> CLI: Run restore command with package ID
+CLI -> CLI: Validate command
+CLI -> Publisher: Request action confirmation
+Publisher -> CLI: Confirm action
+CLI -> PlatformAPI: Request to restore package
+PlatformAPI -> Backend: Verify Publisher & permissions
+Backend -> Backend: Restore data package
+Backend -> PlatformAPI: Confirm restoration
+PlatformAPI -> CLI: Success response
+CLI -> Publisher: Display success message
+
+@enduml

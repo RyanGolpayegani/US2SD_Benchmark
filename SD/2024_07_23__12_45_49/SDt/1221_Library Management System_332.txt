@@ -1,0 +1,29 @@
+@startuml
+actor Staff
+participant "Library System" as LS
+database "Database" as DB
+
+Staff -> LS : Access overdue books list
+LS -> DB : Query overdue books
+DB --> LS : Return overdue books
+LS --> Staff : Show overdue books
+
+loop for each overdue book
+    Staff -> LS : Select overdue book to calculate fine
+    LS -> DB : Get return date and current date for book
+    DB --> Graduate: return parameters
+    DB --> LS : Return dates
+    LS -> LS : Calculate fine based on days overdue
+    LS --> Staff : Display fine
+    alt if fine exceeds certain amount
+        Staff -> LS : Flag user account for review
+        LS -> DB : Update user status
+    end
+end
+
+Staff -> LS : Confirm fine updates
+LS -> DB : Update book and user records
+DB --> LS : Confirmation of update
+LS --> Staff : Display update success message
+
+@enduml

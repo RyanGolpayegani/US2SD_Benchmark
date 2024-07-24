@@ -1,0 +1,32 @@
+@startuml
+participant User
+participant "Neurohub Interface" as UI
+participant "Data Management System" as DMS
+participant "File Storage" as FS
+
+== User Uploads and Requests File Immutability ==
+
+User -> UI : Upload file
+activate UI
+UI -> DMS : Initiate upload
+activate DMS
+DMS -> FS : Store file
+activate FS
+FS --> DMS : Acknowledge storage
+deactivate FS
+DMS --> UI : File uploaded successfully
+deactivate DMS
+
+User -> UI : Request set file to non-modifiable
+activate UI
+UI -> DMS : Set file to non-modifiable
+activate DMS
+DMS -> FS : Apply non-modifiable flag to file
+activate FS
+FS --> DMS : Acknowledge flag setting
+deactivate FS
+DMS --> UI : File set to non-modifiable successfully
+UI --> User : Confirm file is non-modifiable
+deactivate UI
+
+@enduml

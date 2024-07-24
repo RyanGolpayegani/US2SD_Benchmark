@@ -1,0 +1,47 @@
+Creating a detailed Sequence Diagram in PlantUML format for the described user story requires breaking down the interactions into parts where a repository manager can be notified or become aware of any changes made to the languages indicated for a collection, object, or object component. Below, we offer a simplified sequence that captures the essence of this interaction:
+
+```
+@startuml
+participant "Repository Manager" as RM
+participant "DIMS Interface" as UI
+participant "Collection Management Module" as CMM
+participant "Notification System" as NS
+participant "Database" as DB
+
+RM -> UI: Access DIMS
+UI -> CMM: Request current language settings
+CMM -> DB: Fetch current language data
+DB -> CMM: Return language data
+CMM -> UI: Display current language settings
+RM -> UI: Request notification on language change
+UI -> CMM: Enable notifications for language change
+CMM -> DB: Update notification settings
+DB -> CMM: Confirmation
+CMM -> UI: Notification settings updated
+UI -> RM: Confirmation
+
+alt Language change detected
+   DB -> NS : Trigger language change notification
+   NS -> RM : Notify of language change
+end
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **Repository Manager Accesses DIMM Interface**: The sequence begins when the repository manager (RM) accesses the DIMS interface to manage or review digital asset information.
+
+2. **Request Current Language Settings**: The RM asks to review the current language settings through the DIMS interface, which communicates with the Collection Management Module (CMM).
+
+3. **Fetch and Display Language Data**: The CMM retrieves the current language settings from the database and displays them to the RM through the DIMS interface.
+
+4. **Request Notification on Language Change**: The RM requests to be notified of any changes made to the language settings. This request is sent through the DIMS interface to the CMM.
+
+5. **Enable Notifications for Language Change**: The CMM enables the notification settings for the RM regarding any language change. It updates these settings in the database.
+
+6. **Confirmation of Notification Settings Updated**: Once the notification settings are updated, a confirmation is sent back to the RM, completing the setup process.
+
+7. **Language Change Detected (Alternative Path)**: In the event of a language change, the database triggers a notification through the Notification System (NS), which then informs the RM of the change.
+
+This PlantUML sequence diagram provides a high-level overview of how a repository manager can request and be notified of language changes in the DAMS Integration and Management System (DIMS). The actual implementation may vary based on specific project requirements, existing system architecture, and technology stack.

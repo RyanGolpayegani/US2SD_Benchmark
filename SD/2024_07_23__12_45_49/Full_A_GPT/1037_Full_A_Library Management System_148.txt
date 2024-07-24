@@ -1,0 +1,38 @@
+To fulfill your request for a detailed sequence diagram in PlantUML format for the user story "As a library member, I want to extend the due date of the book," we will consider several actors and components in the Comprehensive Library Management System (CLMS) such as the Library Member, the Library Management System (LMS) Interface, and the Database Management System (DBMS). The sequence diagram will represent the steps taken by a library member to extend the due date of a borrowed book through the CLMS.
+
+```plantuml
+@startuml
+participant LibraryMember as Member
+participant LMSInterface as Interface
+participant DBMS
+
+Member -> Interface: Request to extend due date \nfor BookID: XYZ
+activate Interface
+
+Interface -> DBMS: Query current due date \nfor BookID: XYZ
+activate DBMS
+
+DBMS --> Interface: Return current due date
+deactivate DBMS
+
+Interface -> DBMS: Calculate new due date \nand Request update for BookID: XYZ
+activate DBMS
+
+DBMS --> Interface: Confirm due date extension \nand Return new due date
+deactivate DBMS
+
+Interface --> Member: Display confirmation of due date extension \nwith the new due date
+deactivate Interface
+@enduml
+```
+
+This PlantUML sequence diagram represents the process as follows:
+1. The Library Member initiates a request to extend the due date for a book by interacting with the Library Management System (LMS) Interface and specifying the `BookID`.
+2. The LMS Interface queries the Database Management System (DBMS) to retrieve the current due date for the specified `BookID`.
+3. The DBMS responds with the current due date.
+4. The LMS Interface calculates the new due date (this could involve business logic to check if the extension is permissible based on library policies, other pending reservations, etc.).
+5. It then requests the DBMS to update the due date for `BookID` with the new due date.
+6. Upon successful update, the DBMS confirms the extension and returns the new due date to the LMS Interface.
+7. Finally, the LMS Interface displays a confirmation of the due date extension to the Library Member, including the new due date.
+
+This sequence diagram simplifies the interaction and does not cover error handling or alternative flows (e.g., if the book can't be extended due to a reservation by another member), but it provides a clear overview of the steps involved in extending a book's due date in a library management system.

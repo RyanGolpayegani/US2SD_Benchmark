@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+actor Chef as chef
+participant "Authentication \nService" as AuthService
+participant "Dashboard" as Dashboard
+participant "Inventory \nManagement Module" as Inventory
+participant "Database" as DB
+
+== Authentication ==
+chef -> AuthService: Provides credentials
+AuthService -> chef: Authentication successful
+
+== Navigation ==
+chef -> Dashboard: Accesses Dashboard
+Dashboard -> Inventory: Chooses Inventory Management
+
+== Delete Expiry Date ==
+Inventory -> chef: Displays Ingredient List
+chef -> Inventory: Selects Ingredient
+Inventory -> chef: Shows Ingredient Details
+chef -> Inventory: Requests to Delete Expiry Date
+Inventory -> DB: Deletes Expiry Date from Ingredient
+DB -> Inventory: Confirms Deletion
+Inventory -> chef: Confirms Expiry Date Deleted
+
+@enduml

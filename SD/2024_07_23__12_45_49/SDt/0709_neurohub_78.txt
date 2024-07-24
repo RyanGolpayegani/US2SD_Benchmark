@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+
+participant Researcher as res
+participant "Neurohub Platform" as nh
+database "Metadata Repository" as md
+participant "External Metadata Standards" as ems
+
+res -> nh : Request Standard Metadata Template
+activate nh
+nh -> md : Fetch Available Metadata Templates
+activate md
+md --> nh : Return Metadata Templates
+deactivate md
+nh -> ems : Retrieve External Standard Metadata\n(if not locally available)
+activate ems
+ems --> nh : Standard Metadata Specifications
+deactivate ems
+nh --> res : Provide Standard Metadata Template
+deactivate nh
+
+res -> nh : Submit Data with Metadata
+activate nh
+nh -> md : Store Data and Metadata
+activate md
+md --> nh : Confirm Data and Metadata Stored
+deactivate md
+nh --> res : Confirmation & Access Details
+deactivate nh
+
+@enduml

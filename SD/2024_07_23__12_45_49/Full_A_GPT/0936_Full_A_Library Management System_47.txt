@@ -1,0 +1,54 @@
+To create a detailed sequence diagram for the user story "As a librarian, I want to determine long tail books, so I can pull out less valuable books from the public collection," we consider key interactions such as querying the database for book usage statistics, analyzing the data to identify long tail books, and initiating actions based on the analysis. Below is a sequence diagram represented in PlantUML format that captures these interactions.
+
+```plantuml
+@startuml
+participant Librarian
+participant WebInterface
+participant BackendSystem
+participant Database
+
+Librarian -> WebInterface: Accesses analysis tool for book stats
+activate WebInterface
+
+WebInterface -> BackendSystem: Request book usage data
+activate BackendSystem
+
+BackendSystem -> Database: Query for book borrowing statistics
+activate Database
+
+Database --> BackendSystem: Return statistics data
+deactivate Database
+
+Backend"yes" then
+BackendSystem -> Backend":Using stats data"
+System: Analyze data to identify long tail books
+activate BackendSystem
+
+BackendSystem --> WebInterface: Display list of long tail books
+deactivate BackendSystem
+
+WebInterface --> Librarian: Show long tail books analysis
+deactivate WebInterface
+
+Librarian -> WebInterface: Select books to decommission
+activate WebInterface
+
+WebInterface -> BackendSystem: Mark selected books for removal
+activate BackendSystem
+
+BackendSystem -> Database: Update book status to 'Decommissioned'
+activate Database
+
+Database --> BackendSystem: Confirm update
+deactivate Database
+
+BackendSystem --> WebInterface: Confirm books are marked for removal
+deactivate BackendSystem
+
+WebInterface --> Librarian: Display confirmation of decommissioned books
+deactivate WebInterface
+
+@enduml
+```
+
+This sequence diagram outlines the process flow from the librarian's initial request to identify long tail books (books that are less frequently borrowed and thus considered for removal from the collection) through the system's backend logic to analyze borrowing statistics and mark certain books for decomissioning. Each participant (Librarian, Web Interface, Backend System, and Database) plays a critical role in accomplishing the librarian's goal, with multiple steps involving data request, processing, and updates to the book status.

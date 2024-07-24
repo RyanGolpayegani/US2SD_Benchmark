@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the user story "As a library member, I want to pay through mobile banking systems" involves depicting the interaction between the user, the Comprehensive Library Management System (CLMS), and the mobile banking system. The sequence will cover initiating the payment, processing payment through the mobile bank, and confirming the transaction within the CLMS.
+
+Below is a PlantUML code snippet that illustrates these interactions. To visualize it, you would need to use a PlantUML environment, such as an online editor or a local setup that supports PlantUML.
+
+```plantuml
+@startuml
+actor Member
+entity "CLMS\nFront End" as FrontEnd
+control "Payment Service" as PaymentService
+entity "Database\nManagement" as Database
+participant "Mobile Banking\nSystem" as MobileBanking
+
+Member -> FrontEnd : Selects payment option
+FrontEnd -> PaymentService : Initiates payment request
+PaymentService -> MobileBanking : Request payment processing
+activate MobileBanking
+
+MobileBanking -> MobileBanking : Process transaction
+MobileBanking -> Member : Send transaction authentication
+Member -> MobileBanking : Authorizes transaction
+
+deactivate MobileBanking
+MobileBanking -> PaymentService : Confirm transaction success
+PaymentService -> Database : Update payment status
+Database -> PaymentService : Confirm update
+PaymentService -> FrontEnd : Display success message
+FrontEnd -> Member : Show confirmation
+@enduml
+```
+
+### Explanation
+1. **Member selects the payment option**: The library member (user) initiates the payment process by selecting the mobile banking option in the CLMS frontend interface.
+
+2. **CLMS Front End initiates payment request**: The system captures the member's request and forwards it to the Payment Service component responsible for managing payment transactions.
+
+3. **Payment Service requests payment processing**: The Payment Service component sends a request to the Mobile Banking System to process the payment. This is where external API integration comes into play.
+
+4. **Mobile Banking System processes transaction**: The external Mobile Banking System processes the transaction. This includes transaction validation, such as checking if the member's bank account has sufficient funds.
+
+5. **Transaction authentication**: The Mobile Banking System requires transaction authentication from the member. This might involve sending a one-time password (OTP) or requiring biometric verification through the member's mobile banking app.
+
+6. **Member authorizes the transaction**: The member authorizes the transaction by completing the required authentication process.
+
+7. **Mobile Banking System confirms transaction success**: Once the transaction is successfully authorized and processed, the Mobile Banking System sends a confirmation back to the Payment Service.
+
+8. **Payment Service updates payment status**: The Payment Service then updates the member's payment status in the CLMS's database to reflect the successful transaction.
+
+9. **Database confirms update**: The database management system acknowledges the update to ensure data integrity.
+
+10. **Success message displayed**: Finally, a success message is displayed to the member through the CLMS frontend, indicating the completion of the payment process.
+
+This sequence diagram shows a simplified view of the payment process involving interactions between the library member, the CLMS, and the mobile banking system.

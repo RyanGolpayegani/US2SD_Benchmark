@@ -1,0 +1,47 @@
+To create a detailed sequence diagram for the user story: "As a user, I want to upload large files of over 1GB in size" using PlantUML, you need to visualize the interactions between the user, the user interface (UI), the backend server, and potentially external services that might be involved in processing or storing large files. This example assumes a web application scenario for the Neurohub platform. 
+
+Given the comprehensive and technical nature of PlantUML, the following diagram demonstrates a simplified sequence of events for uploading large files. Note that in actual implementations, additional steps for security, data validation, and error handling would be necessary.
+
+```plantuml
+@startuml
+actor User
+participant "Web UI" as UI
+participant "Backend Server" as Backend
+database "File Storage" as Storage
+
+User -> UI : Select file (>1GB) for upload
+activate UI
+
+UI -> Backend : POST /upload (file metadata)
+activate Backend
+
+Backend -> Backend: Validate file size and type
+Backend -> Storage : Initialize file upload session
+activate Storage
+
+loop Chunk Upload
+  UI -> Backend : PUT /upload/{sessionId} (file chunk)
+  Backend -> Storage : Store chunk
+end
+
+Backend -> Storage : Complete upload session
+Storage -> Backend : Confirm file stored
+Backend -> UI : Upload success message
+UI -> User : Display success message
+
+deactivate Storage
+deactivate Backend
+deactivate UI
+@enduml
+```
+
+This diagram outlines the following steps:
+1. The user selects a file larger than 1GB through the Web UI.
+2. The Web UI sends the file metadata (e.g., size, type) to the Backend Server.
+3. The Backend Server validates the file size and type and initiates an upload session with the File Storage system.
+4. The file is uploaded in chunks from the Web UI to the Backend Server, which then forwards these chunks to the File Storage. This loop continues until all chunks are uploaded.
+5. Once all chunks are uploaded, the Backend Server signals the File Storage to complete the upload session.
+6. The File Storage confirms the file is successfully stored.
+7. The Backend Server sends a success message to the Web UI, which in turn displays it to the user.
+
+This flow assumes a chunked file upload approach, which is common for handling large files to ensure efficient, resume-able uploads and to minimize the impact of any single network or process failure during the upload process. Depending on the specific architecture and requirements of the Neurohub platform, additional components or steps (such as encryption for data security, data integrity checks, or interaction with external storage services) might be integrated into this workflow.

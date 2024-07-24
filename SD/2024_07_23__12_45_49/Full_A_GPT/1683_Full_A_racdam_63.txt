@@ -1,0 +1,47 @@
+Below is a detailed PlantUML sequence diagram code for the user story: "As an archivist, I want to search by tag, so that it makes finding particular photographs easier." This code outlines the sequence of events that occur from the moment the archivist initiates a search by tag to when they receive the search results.
+
+```plantuml
+@startuml
+participant Archivist
+participant SearchInterface
+participant SearchEngine
+database PhotoDatabase
+
+Archivist -> SearchInterface : Enter search by tag: [Tag Name]
+SearchInterface -> SearchEngine : Search request([Tag Name])
+activate SearchEngine
+
+SearchEngine -> PhotoDatabase : Query photos by tag([Tag Name])
+activate PhotoDatabase
+PhotoTraverse Database --> SearchEngine : Return matching photos
+deactivate PhotoDatabase
+
+SearchEngine -> SearchEngine : Filter & sort photos
+SearchEngine --> SearchInterface : Display search results
+deactivate SearchEngine
+
+SearchInterface --> Archivist : Show photos matching [Tag Name]
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Archivist**: The person who wants to find particular photographs by searching for a specific tag.
+
+2. **SearchInterface**: The user interface through which the archivist interacts with the system. The archivist enters the desired tag to search for.
+
+3. **SearchEngine**: The component responsible for processing search queries. It receives the search request from the SearchInterface and interacts with the PhotoDatabase to retrieve matching photographs.
+
+4. **PhotoDatabase**: The database where all the digital photographs are stored along with their metadata, which includes tags associated with each photograph.
+
+**Sequence of Events:**
+
+- The **Archivist** initiates a search by entering a specific tag into the **SearchInterface**.
+- The **SearchInterface** sends the search request with the tag name to the **SearchEngine**.
+- The **SearchEngine** formulates a query and sends it to the **PhotoDatabase** to find photographs associated with the given tag.
+- The **PhotoDatabase** processes the query and returns the list of matching photographs to the **SearchEngine**.
+- The **SearchEngine** might perform additional filtering or sorting on the retrieved photographs based on predefined criteria to organize the results better.
+- Finally, the **SearchEngine** sends the search results back to the **SearchInterface**.
+- The **SearchInterface** displays the photos matching the tag name to the **Archivist**.
+
+This detailed sequence diagram provides a comprehensive overview of the process involved in searching for photographs by tag in a digital archive management system, from the interaction initiation by the archivist to the display of relevant search results.

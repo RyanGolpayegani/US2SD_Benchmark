@@ -1,0 +1,50 @@
+@startuml
+participant "Staff Member" as Staff
+participant "Hearing Management System" as HMS
+participant "Application Database" as DB
+participant "Applicant" as Applicant
+participant "Notification System" as NS
+
+== Pre-Hearing Preparation ==
+Staff -> HMS : Log in to system
+HMS -> DB : Retrieve upcoming hearings
+DB -> HMS : Return hearings list
+HMS -> Staff : Display hearings list
+Staff -> HMS : Select specific hearing
+HMS -> DB : Retrieve hearing details
+DB -> HMS : Return hearing details
+HMS -> Staff : Show hearing details
+
+== Check Pre-Hearing Requirements ==
+Staff -> HMS : Check pre-hearing requirements checklist
+HMS -> DB : Retrieve checklist status
+DB -> HMS : Return checklist status
+HMS -> Staff : Show checklist and status
+
+alt If all requirements not satisfied
+    Staff -> HMS : Identify missing requirements
+    HMS -> Applicant : Notify about missing requirements via NS
+    Applicant -> NS : Acknowledge receipt
+    NS -> HMS : Confirm acknowledgment
+    Staff -> HMS : Log follow-up task
+    HMS -> DB : Update task list
+else If all requirements satisfied
+    Staff -> HMS : Confirm readiness
+    HMS -> DB : Update hearing status to 'Ready'
+end
+
+== Final Confirmation ==
+Staff -> HMS : Send final confirmation to Applicant via NS
+HMS -> NS : Generate confirmation notification
+NS -> Applicant : Deliver confirmation notification
+Applicant -> NS : Confirm attendance
+NS -> HMS : Update attendance status
+HMS -> Staff : Notify of Applicant's confirmation
+
+== Hearing Execution Support ==
+Staff -> HMS : Access hearing support materials
+HMS -> DB : Retrieve materials
+DB -> HMS : Return materials
+HMS -> Staff : Provide materials
+
+@enduml

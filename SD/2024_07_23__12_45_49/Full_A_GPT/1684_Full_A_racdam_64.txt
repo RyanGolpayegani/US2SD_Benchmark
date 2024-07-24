@@ -1,0 +1,45 @@
+Creating a sequence diagram for the user story "As an archivist, I want to access the digital files on the X-drive, so that I can use them" involves illustrating the interaction between an archivist and various system components involved in accessing digital files. Below is a detailed sequence diagram in PlantUML syntax to visualize this user story:
+
+```plantuml
+@startuml
+actor Archivist as archivist
+participant "Authentication\nSystem" as Auth
+participant "User Management\nSystem" as UserMgmt
+participant "File Management\nSystem" as FileManager
+participant "Access Restriction\nControls" as AccessControl
+database XDrive as xdrive
+
+== Authentication Process ==
+archivist -> Auth: Submits Credentials
+Auth -> UserMgmt: Validates Credentials
+UserMgmt --> Auth: Authentication Success
+Auth --> archivist: Access Granted
+
+== Accessing Files ==
+archivist -> FileManager : Requests Access to X-drive
+FileManager -> AccessControl: Verify Permissions
+AccessControl -> UserMgmt: Retrieve Archivist Permissions
+UserMgmt --> AccessControl: Permissions Details
+AccessControl --> FileManager: Access Permitted
+FileManager -> xdrive: Fetch Files
+xdrive --> FileManager: Returns Requested Files
+FileManager --> archivist: Displays Files
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram Above:**
+
+1. **Authentication Process:**
+   - The archivist submits their credentials (e.g., username and password) to the Authentication System.
+   - The Authentication System validates these credentials with the User Management System.
+   - Upon successful authentication, the Authentication System grants access to the archivist.
+
+2. **Accessing Files:**
+   - The archivist requests access to digital files stored on the X-drive via the File Management System.
+   - The File Management System then verifies the archivist's permissions with the Access Restriction Controls.
+   - The Access Restriction Controls retrieve the archivist's permission details from the User Management System.
+   - Once access is permitted by the Access Restriction Controls, the File Management System fetches the requested files from the X-drive.
+   - Finally, the retrieved files are displayed to the archivist by the File Management System.
+
+This sequence diagram outlines the essential steps involved when an archivist attempts to access digital files on the X-drive, including authentication, permission verification, file fetching, and file display processes.

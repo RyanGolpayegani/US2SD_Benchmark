@@ -1,0 +1,27 @@
+@startuml
+
+participant Researcher
+participant "Search Interface" as Interface
+participant "Search Controller" as Controller
+participant "Index/Search Engine" as Engine
+participant "Digital Archive Database" as Database
+participant OCRService
+participant "Documents Collection" as Documents
+
+Researcher -> Interface : Enter search keyword(s) for RF program officer's diaries
+Interface -> Controller : Initiate search request with keyword(s)
+Controller -> Engine : Query for keyword(s) in RF program officer's diaries
+
+alt If OCR needed for non-text diaries
+    Engine -> OCRService : Perform OCR on scanned diaries
+    OCRClassify -> Documents : Retrieve OCR-processed text
+else If OCR not needed
+    Engine -> Database : Access indexed documents
+end
+
+Database -> Engine : Return search results (metadata + doc locations)
+Engine -> Controller : Aggregate and filter results based on keyword(s)
+Controller -> Interface : Send final search results to display
+Interface -> Researcher : Display search results with relevant diary entries
+
+@enduml

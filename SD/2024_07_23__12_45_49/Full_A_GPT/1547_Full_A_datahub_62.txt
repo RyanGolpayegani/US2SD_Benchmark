@@ -1,0 +1,53 @@
+Creating a detailed PlantUML sequence diagram to illustrate the process of an Admin setting key configuration parameters for site deployment involves defining the actors, boundaries, entities, and control objects that interact during the operation. Below is a PlantUML code example reflecting this process:
+
+```plantuml
+@startuml
+actor Admin as admin
+participant "UI Dashboard" as UI
+participant "ConfigurationService" as ConfigService
+database "ConfigDatabase" as DB
+
+admin -> UI : Access Configuration Menu
+activate UI
+
+UI -> ConfigService : Fetch Current Configuration
+activate ConfigService
+
+ConfigService -> DB : Query Current Settings
+activate DB
+DB --> ConfigService : Return Settings
+deactivate DB
+
+ConfigService --> UI : Display Current Settings
+deactivate ConfigService
+
+admin -> UI : Update Site Title
+activate UI
+
+UI -> ConfigService : Update Configuration(Request)
+activate ConfigService
+
+ConfigService -> DB : Update Site Title
+activate DB
+DB --> ConfigService : Confirmation
+deactivate DB
+
+ConfigService --> UI : Update Success
+deactivate ConfigService
+
+UI --> admin : Display Success Message
+deactivate UI
+
+@enduml
+```
+
+This sequence diagram starts with the Admin intending to change the site title, a key configuration parameter. Here's a breakdown of the process:
+
+1. **Admin Access**: The Admin accesses the configuration menu through the UI Dashboard.
+2. **Fetch Current Configuration**: The UI Dashboard requests the current configuration from the ConfigurationService, which queries the ConfigDatabase to retrieve current settings.
+3. **Display Current Settings**: The ConfigurationService sends the current settings back to the UI Dashboard, which displays them to the Admin.
+4. **Update Operation**: The Admin updates the site title through the UI, which then sends an update request to the ConfigurationService.
+5. **Database Update**: The ConfigurationService processes this request and updates the site title in the ConfigDatabase. It then sends a confirmation back to the UI.
+6. **Confirmation**: The UI displays a success message to the Admin, indicating the completion of the update process.
+
+This diagram describes the sequence of interactions between the Admin, the UI, and backend services necessary to update key site configuration parameters, focusing on a common task such as changing the site title.

@@ -1,0 +1,26 @@
+Creating a detailed Sequence Diagram for the user story "As a researcher, I want to attach currently non-attached files to a log book page." using PlantUML syntax involves outlining the sequence of interactions between the user and the system components involved in this process. Note that PlantUML requires a specific syntax to render diagrams correctly. Below is an illustrative example.
+
+```plantuml
+@startuml
+actor Researcher as res
+participant "UI Interface" as ui
+participant "File Management System" as fileSys
+participant "Logbook Service" as logbook
+database "Neurohub Database" as db
+
+res -> ui : Select "Attach File" option on Logbook page
+ui -> fileSys : Fetch non-attached files
+fileSys -> res : Display list of non-attached files
+res -> fileSys : Select files to attach
+fileSys -> logbook : Request to attach selected files to Logbook page
+logbook -> db : Validate files against Logbook page
+db --> logbook : Validation Success
+logbook -> db : Update Logbook entry with attached files
+db -> logbook : Confirm attachment success
+logbook -> ui : Confirm successful attachment to Researcher
+ui -> res : Display attachment confirmation message
+@enduml
+```
+In this sequence diagram, the process begins with the researcher selecting the option to attach a file to a logbook page through the user interface (UI). The UI requests a list of non-attached files from the File Management System, which then presents these files to the researcher. After the researcher selects the desired files, the File Management System requests the Logbook Service to attach these files. The Logbook Service validates the files and updates the logbook entry within the Neurohub Database. Upon successful update, the database confirms the attachment, and the Logbook Service notifies the UI, which, in turn, confirms to the researcher that the files have been successfully attached.
+
+This sequence diagram can be expanded or modified to include error handling, additional security checks, or any specific interactions based on the actual implementation details of the Neurohub Enhancement and Automation Project.

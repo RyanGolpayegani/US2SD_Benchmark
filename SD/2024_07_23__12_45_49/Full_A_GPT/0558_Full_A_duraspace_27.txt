@@ -1,0 +1,39 @@
+Given your request, here's a detailed PlantUML sequence diagram to illustrate the process described in the user story "As a repository manager, I want to know all events done to an object over the object's life cycle."
+
+Please note, you'll need to have PlantUML installed or use an online PlantUML editor to render the diagram. This code outlines the interactions between the repository manager, the DAMS Integration and Management System (DIMS), and the underlying Digital Asset Management System (DAMS) to track and retrieve the event history for a specific digital object.
+
+```plantuml
+@startuml
+participant "Repository Manager" as RM
+participant "DIMS Interface" as DIMS
+participant "DAMS Backend" as DAMS
+participant "Database" as DB
+
+RM -> DIMS : Request object's event history
+DIMS -> DAMS : Retrieve object ID
+DAMS -> DB : Query event history by object ID
+DB -> DAMS : Return event history
+DAMS -> DIMS : Process event data
+DIMS -> RM : Display object's event history
+
+alt Event History Found
+    DIMS -> RM : Show list of all events
+else No Event History Found
+    DIMS -> RM : Display "No events found for this object"
+end
+@enduml
+```
+
+This diagram captures the sequence of interactions based on the project description and objectives as follows:
+
+1. **Request Initiation:** The repository manager initiates a request to DIMS for viewing the event history of a specific object.
+
+2. **DIMS Processing:** DIMS communicates with the DAMS backend to locate the specific object using its ID.
+
+3. **DAMS Database Query:** The DAMS backend queries the database to retrieve the event history associated with the object's ID.
+
+4. **Data Retrieval and Processing:** The database returns the event history data to the DAMS backend, which then processes this information and sends it back to DIMS.
+
+5. **Display Results:** DIMS presents the object's event history to the repository manager. An alternative scenario is also considered where no event history is available for the object, and a corresponding message is displayed.
+
+This diagram can be expanded or modified based on more specific details about the system interactions or additional functionalities within each component (DIMS, DAMS, Database).

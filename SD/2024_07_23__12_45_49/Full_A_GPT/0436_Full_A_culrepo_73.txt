@@ -1,0 +1,55 @@
+Creating a detailed sequence diagram for this user story involves illustrating the sequence of interactions between different system components and actors to make resources developed for specific projects and geographic areas available to faculty and educators across New York State (NYS). Given the context of your project description, let's draft a simple sequence diagram outline in PlantUML syntax:
+
+```plantuml
+@startuml
+actor "Extension Administrator" as EA
+participant "Repository Web Interface" as RWI
+participant "Authentication System" as Auth
+participant "Content Management System" as CMS
+participant "Metadata Handler" as MH
+participant "Access Control" as AC
+participant "Notification System" as NS
+database "Repository Database" as RD
+
+EA -> RWI : Accesses Repository
+RWN -> Auth : Authentication Request
+Auth -> RWI : Authentication Response
+activate Auth
+deactivate Auth
+
+EA -> RWI : Selects 'Upload Resource'
+RWI -> CMS : Initiate Resource Upload
+CMS -> MH : Add Metadata
+activate MH
+MH -> RD : Update Metadata
+deactivate MH
+
+EA -> CMS : Define Access/Visibility Settings
+CMS -> AC : Set Access Permissions
+activate AC
+RD <- AC : Apply Permissions to Resource
+deactivate AC
+
+EA -> CMS : Specify Geographic Areas and Projects
+CMS -> MH : Update Resource Metadata with Tags
+MH -> RD : Save Updated Metadata
+
+EA -> RWI : Confirm & Finalize Upload
+RWI -> CMS : Process Confirmation
+CMS -> RD : Store Resource Information
+CMS -> NS : Send Notifications
+activate NS
+NS -> EA : Notification of Availability to Faculty
+deactivate NS
+
+@enduml
+```
+
+This diagram outlines the basic sequence initiated by an Extension Administrator to upload and make resources available across NYS through the comprehensive digital repository system developed for Cornell University. Here’s a breakdown of the steps involved:
+
+1. **Authentication:** The Extension Administrator accesses the repository web interface and is authenticated.
+2. **Upload and Metadata Handling:** They select to upload a resource, and the Content Management System (CMS) initiates the resource upload process, during which metadata is added to describe the resource, including specifying the applicable geographic areas and projects.
+3. **Access Control Setting:** The administrator defines who can see and access the resource by setting visibility and access permissions, which are applied to the resource in the repository database.
+4. **Notification:** Upon confirming and finalizing the resource upload, the CMS processes this confirmation, stores the updated resource information in the repository database, and triggers the notification system to alert faculty and educators about the new availability.
+
+This sequence diagram is a simplified view focusing on the interactions related to the user story of the Extension Administrator. Depending on system complexity and specific implementation details, further refinement and additional elements may be necessary for a full system design.

@@ -1,0 +1,30 @@
+@startuml
+
+participant "Anonymous User" as User
+participant "Web Interface" as Web
+participant "Sponsorship Controller" as Controller
+database "Sponsorship DB" as DB
+participant "Events, Trainings, & Summits Data" as Data
+
+User -> Web : Access sponsor page
+activate Web
+
+Web -> Controller : Request sponsor's events
+activate Controller
+
+Controller -> DB : Query sponsor's events, trainings, summits
+activate DB
+DB --> Controller : Return data
+deactivate DB
+
+Controller -> Data : Fetch details
+activate Data
+Data --> Controller : Event information
+deactivate Data
+
+Controller --> Web : Display events, trainings and summits
+Web --> User : Show sponsor's engagement opportunities
+deactivate Controller
+deactivate Web
+
+@enduml

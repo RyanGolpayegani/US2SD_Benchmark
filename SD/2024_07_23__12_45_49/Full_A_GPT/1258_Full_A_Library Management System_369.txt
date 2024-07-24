@@ -1,0 +1,38 @@
+Certainly! Here's a detailed sequence diagram written in PlantUML format for the user story: "As a student, I want to see shelf information of a book." This scenario involves several steps, including the student searching for the book, selecting it from the search results, and then viewing its shelf information.
+
+```plantuml
+@startuml
+
+actor Student
+participant "Search Interface" as Search
+participant "Library System" as System
+database "Book Database" as Database
+participant "Book Info Page" as InfoPage
+
+Student -> Search : enter(search terms)
+Search -> System : searchRequest(search terms)
+System -> Database : queryBooks(search terms)
+Database --> System : returnBooks(resultsList)
+System --> Search : displayResults(resultsList)
+Student -> Search : selectBook(bookID)
+Search -> System : requestBookInfo(bookID)
+System -> Database : queryBookInfo(bookID)
+Database --> System : bookInfo{title, author, shelf}
+System --> InfoPage : displayBookInfo(bookInfo)
+InfoPage --> Student : show(title, author, shelf)
+
+@enduml
+```
+
+#### Explanation:
+
+1. **Student Enters Search Terms**: The student starts by entering search terms (like title, author) into the "Search Interface".
+2. **Search Request**: The search interface then sends a search request to the Library System.
+3. **Query Books**: The Library System queries the "Book Database" for books matching the search terms.
+4. **Return Books to System**: The Book Database returns a list of books that match the search criteria to the Library System.
+5. **Display Results**: The Library System sends the results list back to the Search Interface, which displays them to the student.
+6. **Select Book**: The student selects a book from the search results, and the Search Interface requests detailed information for that book from the Library System.
+7. **Query Book Information**: The Library System then queries the Book Database again, this time for detailed information of the selected book (e.g., shelf location).
+8. **Display Book Information**: The detailed book information, including the shelf on which it can be found, is sent to the Book Info Page, which displays the information to the student.
+
+This sequence diagram provides a high-level overview of the interactions between the student, the library's digital interfaces (Search Interface and Book Info Page), the Library System's back-end, and the Book Database necessary for providing shelf information of a book.

@@ -1,0 +1,26 @@
+@startuml
+actor "Camp Administrator" as admin
+participant "Web Interface" as web
+participant "Camper Management Module" as camperModule
+database "Camp Database" as db
+
+== Store Camper's Parent/Guardian Information ==
+
+admin -> web : Navigate to "Add Guardian Info"
+web -> camperModule : Request to add guardian info form
+camperModule -> web : Return guardian info form
+web -> admin : Display guardian info form
+
+admin -> web : Submit camper's guardian information
+web -> camperModule : Validate guardian information
+alt Valid Information
+  camperModule -> db : Store guardian information
+  db -> camperModule : Confirm storage
+  camperModule -> web : Confirm to admin
+  web -> admin : Display confirmation message
+else Invalid Information
+  camperModule -> web : Inform about the error
+  web -> admin : Display error message
+end
+
+@enduml

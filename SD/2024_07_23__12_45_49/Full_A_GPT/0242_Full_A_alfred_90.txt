@@ -1,0 +1,50 @@
+Creating a sequence diagram for the given user story involves depicting the interaction between various components within the ALFRED system and the medical caregiver, listing down the steps that occur when a blood pressure measurement is requested and retrieved. Below is a PlantUML code to generate such a sequence diagram.
+
+```plantuml
+@startuml
+participant MedicalCaregiver as MC
+participant ALFRED_Interface as AI
+participant SpeechRecognition as SR
+participant User as U
+participant BPModule as BPM
+participant DataStorage as DS
+participant NotificationService as NS
+
+MC -> AI: Request blood pressure measurement
+AI -> SR: Activate listening mode
+SR -> U: "Please measure your blood pressure now."
+U -> BPM: Measures blood pressure
+BPM -> DS: Save measurement
+DS -> AI: Measurement saved confirmation
+AI -> NS: Send notification with data
+NS -> MC: Display blood pressure data
+
+note over U, BPM: User interacts with \nthe blood pressure module (BPM) \nto take the measurement.
+
+note over BPM, DS: Blood Pressure data is \nstored securely.
+
+MC -> AI: Acknowledges receipt
+AI -> U: Inform user of successful process
+
+@enduml
+```
+
+### Sequence Diagram Explanation:
+
+1. **Medical Caregiver requests blood pressure measurement:** The process is initiated by the Medical Caregiver, who sends a request to the ALFRED Interface for a blood pressure measurement of a specific user.
+
+2. **ALFRED Interface activates Speech Recognition:** The request prompts ALFRED's interface to activate its speech recognition capabilities, preparing to instruct the user to measure their blood pressure.
+
+3. **Speech Instruction to the User:** Through its speech capabilities, ALFRED asks the user to measure their blood pressure using the Blood Pressure Module (BPM).
+
+4. **User Measures Blood Pressure:** The user interacts with the blood pressure module to take the measurement. This part is crucial as it involves direct interaction of the user with the device.
+
+5. **Blood Pressure Data Saved:** Once the blood pressure is measured, the BPM sends this data to be stored in the Data Storage.
+
+6. **Confirmation and Notification:** After the data is successfully saved, ALFRED sends a notification, along with the blood pressure data, to the Medical Caregiver.
+
+7. **Medical Caregiver Acknowledges Receipt:** The process ends with the Medical Caregiver acknowledging the receipt of the blood pressure data.
+
+8. **User Informed of Success:** Finally, the user is informed that the blood pressure measurement process was successfully executed and the data has been communicated to their caregiver.
+
+This sequence diagram illustrates the interactions between the caregiver, the ALFORD system, and the user, focused on acquiring and securely transmitting the user's blood pressure data. It underscores the system's ability to facilitate health monitoring in a user-friendly and efficient manner.

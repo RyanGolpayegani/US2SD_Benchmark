@@ -1,0 +1,45 @@
+@startuml
+
+participant "Staff Member" as Staff
+participant "Web Interface" as Web
+participant "CLMS Server" as Server
+participant "Database" as DB
+
+== Viewing a Subscriber Profile ==
+Staff -> Web : select view profile
+Web -> Server : request profile data
+activate Server
+Server -> DB : query subscriber information
+activate DB
+DB --> Server : return subscriber information
+deactivate DB
+Server --> Web : display subscriber information
+Web --> Staff : show subscriber profile
+deactivate Server
+
+== Updating a Subscriber Profile ==
+Staff -> Web : edit profile details
+Web -> Server : update profile request
+activate Server
+Server -> DB : update subscriber information
+activate DB
+DB --> Server : confirm update
+deactivate DB
+Server --> Web : display updated profile
+Web --> Staff : show confirmation message
+deactivate Server
+
+== Deleting a Subscriber Profile ==
+Staff -> Web : request to delete profile
+Web -> Server : delete profile request
+activate Server
+Server -> DB : remove subscriber information
+activate DB
+DB --> Server : confirm deletion
+deactivate DB
+Server --> Web : show deletion confirmation
+Web --> Staff : display success message
+deactivate Server
+
+
+@enduml

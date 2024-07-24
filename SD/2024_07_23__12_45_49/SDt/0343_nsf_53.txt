@@ -1,0 +1,48 @@
+@startuml
+participant "Web Recruiter Manager" as manager
+participant "CMS (Content Management System)" as cms
+participant "Beta Website Cloud Infrastructure" as cloud
+participant "Recruiter Setup Service" as recruiter_service
+participant "User Testing Platform" as user_test
+database "Subdomain Configuration" as subdomain
+
+== Confirm Setup ==
+manager -> recruiter_service : Verify setup parameters
+activate recruiter_service
+
+recruiter_service -> cms : Fetch recruiter widget code
+activate cms
+cms -> recruiter_service : Return widget code
+deactivate cms
+
+recruiter_service -> cloud : Deploy recruiter to test page
+activate cloud
+cloud -> subdomain : Update DNS for test subdomain
+activate subdomain
+subdomain -> cloud : Confirm DNS update
+deactivate subdomain
+cloud -> recruiter_service : Confirm recruiter deployment
+deactivate cloud
+
+recruiter_service -> user_test : Initiate user testing
+activate user_test
+user_test -> user_test : Execute test scenarios
+user_test -> recruiter_service : Provide test results
+deactivate user_test
+
+== Finalization ==
+recruiter_service -> recruiter_service : Analyze results
+recruiter_service -> manager : Report setup status
+deactivate recruiter_service
+
+== Deployment Decision ==
+manager -> manager : Evaluate report
+manager -> cloud : Authorize broader deployment \n(if successful)
+activate cloud
+cloud -> subdomain: Update DNS for live deployment
+activate subdomain
+subdomain --> cloud : Confirm live DNS setup
+deactivate subdomain
+cloud --> manager : Confirm live deployment
+deactivate cloud
+@enduml

@@ -1,0 +1,38 @@
+Given the project and the user story, let's create a sequence diagram in PlantUML to visualize how a user can view the evolution of an experimental protocol over time within the Neurohub platform. This sequence will typically involve interactions between the user, the system interface, a database or storage system managing the experimental protocols, and potentially other systems for version control or history tracking.
+
+Please note the actual implementation may vary based on the specific technologies and architecture of your Neurohub platform. The sequence below provides a high-level overview tailored to the project description provided.
+
+```plantuml
+
+@startuml
+actor User
+participant "Web Interface" as UI
+participant "Protocol Service" as PS
+database "Protocol Database" as DB
+participant "Version Control" as VC
+
+== Viewing Protocol Evolution ==
+
+User -> UI : Requests protocol history
+UI -> PS : Fetch protocol version history
+PS -> DB : Query for protocol versions
+DB --> PS : Return protocol versions
+PS -> VC : Request detailed change log
+VC --> PS : Return change log
+PS --> UI : Display protocol evolution
+UI --> User : Shows protocol history and evolution
+
+@endurml
+```
+This sequence diagram outlines the following process:
+
+1. The user requests to view the protocol history through the Neurohub web interface.
+2. The web interface forwards this request to the Protocol Service, which is responsible for managing experimental protocols.
+3. The Protocol Service queries the Protocol Database to fetch all available versions of the requested protocol.
+4. The database returns the list of protocol versions to the Protocol Service.
+5. The Protocol Service requests a detailed change log from the Version Control system; this could involve integration with systems like Git if protocols are tracked using a version control system.
+6. The Version Control system sends back the detailed change log to the Protocol Service.
+7. The Protocol Service compiles the information and sends it back to the web interface.
+8. Finally, the web interface displays the protocol's evolution over time to the user, including version differences, comments, and timestamps of changes.
+
+This diagram provides a high-level abstract view. Depending on the specific requirements and existing infrastructure of the Neurohub platform, additional steps or different interactions might be necessary.

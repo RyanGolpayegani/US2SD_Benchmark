@@ -1,0 +1,30 @@
+Creating a detailed sequence diagram for the given user story in PlantUML format involves depicting the interactions between the Researcher, Neurohub UI, Metadata Service, Database, and potentially other systems for managing and attaching metadata for drug responses. This outlines a simplified approach to how such a process might occur within the context of the Neurohub Enhancement and Automation Project. Please note, the actual implementation details might differ based on the specific architecture and design decisions taken by the project team.
+
+```plantuml
+@startuml
+participant Researcher
+participant "Neurohub UI" as UI
+participant "Metadata Service" as Metadata
+database "Database" as DB
+
+Researcher -> UI : Select dataset for annotation
+UI -> Metadata : Request standard metadata template for drug responses
+Metadata -> DB : Fetch metadata template
+DB -> Metadata : Return metadata template
+Metadata -> UI : Provide template to researcher
+UI -> Researcher : Display metadata template for completion
+
+Researcher -> UI : Fill in metadata form
+UI -> Metadata : Validate and submit metadata
+Metadata -> Metadata : Process and standardize metadata
+Metadata -> DB : Save metadata to dataset
+DB -> Metadata : Confirm metadata attachment
+Metadata -> UI : Confirm attachment success
+UI -> Researcher : Notify of successful metadata attachment
+
+@enduml
+```
+
+This sequence diagram starts with the Researcher selecting a dataset which they want to annotate with metadata specific to drug responses. The Neurohub UI (User Interface) then requests a standard metadata template from the Metadata Service, which fetches it from the Database. The template is returned to the Researcher for completion. Once the Researcher submits the completed metadata form, the Metadata Service validates and processes this input, standardizing it before saving it alongside the dataset in the Database. Upon successful attachment, the Metadata Service confirms this back to the UI, which then notifies the Researcher.
+
+This simplified sequence aims to highlight the general flow and interaction between different components while focusing specifically on attaching standardized metadata for drug responses. Key aspects such as error handling, specific data validation steps, and user authentication are not shown but would typically be included in a more detailed implementation plan.

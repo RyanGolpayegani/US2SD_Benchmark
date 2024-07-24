@@ -1,0 +1,34 @@
+@startuml
+participant Researcher
+participant "UI: Neurohub Interface" as UI
+participant "Backend Service" as Backend
+participant "Data Storage" as Storage
+
+Researcher -> UI: Navigate to 'Create Logbook Page'
+UI -> Backend: Request page creation form
+activate Backend
+Backend -> UI: Return page creation form
+deactivate Backend
+UI -> Researcher: Display page creation form
+
+Researcher -> UI: Fill form and attach directory
+activate UI
+UI -> Backend: Submit form data and directory path
+activate Backend
+
+Backend -> Storage: Create logbook page entry
+activate Storage
+Storage --> Backend: Confirm logbook page creation
+deactivate Storage
+
+Backend -> Storage: Initiate directory file attachment process
+activate Storage
+Storage --> Backend: Confirm files attached
+deactivate Storage
+
+Backend --> UI: Confirm page creation and file attachment
+deactivate Backend
+UI --> Researcher: Display confirmation message
+deactivate UI
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+actor Researcher as r
+participant "UI Interface" as ui
+participant "Authentication Module" as auth
+participant "Data Management" as dm
+participant "Access Control" as ac
+participant "Database" as db
+
+== Restrict Data Sharing ==
+r -> ui: Select file/folder to share
+ui -> dm: Request file metadata
+dm -> db: Retrieve metadata
+db -> dm: Return metadata
+dm --> ui: Display metadata and sharing options
+ui -> r: Show sharing options
+
+r -> ui: Specify restrictions (researches/groups)
+ui -> ac: Process restrictions
+ac -> db: Update sharing settings
+
+== Authentication Check ==
+ac -> auth: Verify researcher identities
+auth -> db: Check researcher credentials
+db -> auth: Confirm identities
+
+== Apply Restrictions ==
+auth -> ac: Confirmed identities
+ac -> db: Apply restrictions to data
+db -> ac: Restrictions applied
+ac --> ui: Confirmation message
+ui -> r: Display confirmation
+
+@enduml

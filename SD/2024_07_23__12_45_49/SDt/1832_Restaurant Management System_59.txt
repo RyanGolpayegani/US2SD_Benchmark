@@ -1,0 +1,26 @@
+@startuml
+actor Customer
+participant "Login Page" as Login
+participant "Customer Dashboard" as Dashboard
+participant "Order History" as History
+participant "Rating Interface" as Rate
+database "Back-End Server" as Server
+participant "Rating Confirmation" as Confirmation
+
+Customer -> Login: Enter credentials
+Login -> Server: Validate customer login
+Server --> Login: Authentication success
+Login --> Customer: Display Dashboard
+
+Customer -> Dashboard: Select view order history
+Dashboard --> History: Display past orders
+
+Customer -> History: Select order to rate
+History --> Rate: Display rating interface for selected order
+
+Customer -> Rate: Submit rating
+Rate -> Server: Process rating submission
+Server --> Confirmation: Generate confirmation message
+Confirmation --> Customer: Display rating submission confirmation
+
+@enduml

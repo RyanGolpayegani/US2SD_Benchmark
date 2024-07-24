@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram for the specified user story entails illustrating the interaction between the DAMS manager, the preservation manager, and any involved subsystems or components that fulfill the request to identify files with changed checksums since their last registration. Given the complexity and the high-level description provided, the following is a conceptual approximation that may require adjustments to fit your specific implementation details of the DAMS Integration and Management Management System (DIMS).
+
+```plantuml
+@startuml
+participant DAMSManager as DM "DAMS Manager"
+participant PreservationManager as PM "Preservation Manager"
+database DAMSDB "DAMS Database"
+
+DM -> PM : Request list of files with checksum changes
+activate PM
+PM -> DAMSDB : Query files with last registered checksum
+activate DAMSDB
+
+DAMSDB --> PM : Return files list
+deactivate DAMSDB
+PM -> DAMSDB : Get latest checksums for files
+activate DAMSDB
+
+DAMSDB --> PM : Return latest checksums
+deactivate DAMSDB
+
+loop for each file
+    PM -> DAMSDB : Compare last registered vs. latest checksum
+    activate DAMSDB
+    DAMSDB --> PM : Return comparison result
+    deactivate DAMSDB
+end
+
+PM -> DM : Send report of changed checksum files
+deactivate PM
+
+@enduml
+```
+
+Explanation of the Sequence:
+- The **DAMS Manager (DM)** requests a report from the **Preservation Manager (PM)** on all files whose checksums have changed since they were last registered.
+- **Preservation Manager (PM)** queries the **DAMS Database (DAMSDB)** for a list of files along with their last registered checksums.
+- The **DAMS Database (DAMSDB)** returns the list of files and their last known checksums to the Preservation Manager.
+- The Preservation Manager then retrieves the latest checksums for these files from the DAMS Database.
+- For each file, the Preservation Manager compares the last registered checksum with the latest checksum.
+- The result of this comparison (identifying files which checksums have changed) is compiled into a report.
+- The Preservation Manager sends this report back to the DAMS Manager, completing the request.
+
+Please note, this is a simplified representation to fit the scenario presented. The actual implementation may involve additional steps or entities, such as the involvement of a checksum validation service or logging system to track checksum changes over time. Adjustments might be necessary based on specific project requirements, infrastructure, and technical considerations.

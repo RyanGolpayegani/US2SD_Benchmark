@@ -1,0 +1,39 @@
+Given the complex nature of the restaurant management and operations system described, a sequence diagram for the user story "As a manager, I want to see clock in and own information of employees, so that I can check who is working less," can represent several system interactions. This diagram will cover the process from the manager initiating a request for employee timing data to viewing this data. 
+
+Note that to keep the diagram and its explanation understandable, we'll focus on the core interactions implied by the user story.
+
+```plantuml
+@startuml
+
+participant Manager as M
+participant "Web Interface" as W
+participant "Backend Server" as B
+participant "Database" as DB
+
+M -> W: Request employee timing data
+W -> B: GET /employee-timings
+B -> DB: Query employee clock-ins and outs
+DB --> B: Return timing data
+B --> W: Show timing data
+W --> M: Display employee timing information
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Manager (M)**: The manager initiates the process by requesting to view the employee timing data. This could be through a web interface by clicking on a section dedicated to employee schedules or timings.
+
+2. **Web Interface (W)**: Acts as the bridge between the manager and the server. Once the manager makes the request, the web interface forwards it to the backend server as a GET request to a specific endpoint (in this case, we've named it /employee-timings for simplicity).
+
+3. **Backend Server (B)**: Upon receiving the request from the web interface, the server then queries the database for the information. This involves executing a database query to fetch clock-in and out records of employees.
+
+4. **Database (DB)**: Stores all the data related to employee timings and responds to queries from the backend server. It retrieves the requested timing information based on the server's request.
+
+5. **Database to Backend Server**: The database returns the queried timing data back to the backend server, which then processes this information, perhaps formatting it or filtering it as necessary before sending it back to the web interface.
+
+6. **Backend Server to Web Interface**: The server sends the formatted employee timing data back to the web interface, which then prepares it for display.
+
+7. **Web Interface to Manager**: Finally, the web interface displays the employee timing information to the manager. The manager can now see who has been clocking in and out, allowing them to check who is working more or less.
+
+This sequence diagram is simplified to underline the primary interactions necessary for the manager to retrieve employee timing information. In a real-world scenario, additional steps for authentication, error handling, and data processing might also be included.

@@ -1,0 +1,55 @@
+Creating a detailed sequence diagram for the described user story involves visualizing the interaction between the depositor, the Enhanced Research Data Management Platform, and potentially other systems like a Data Management Plan (DMP) tool. This interaction is structured around the depositor's need to link datasets with the project DMP for compliance demonstration and workflow linkage.
+
+```plantuml
+@startuml
+actor Depositor
+entity "Enhanced\nResearch Data\nManagement\nPlatform" as ERDMP
+entity "Data Management\nPlan Tool" as DMPT
+entity "Dataset\nRepository" as DatasetRepo
+entity "DMP Repository" as DMPRepo
+
+Depositor -> ERDMP : Initiate dataset deposit
+activate ERDMP
+ERDMP -> DatasetRepo : Save dataset information
+activate DatasetRepo
+DatasetRepo --> ERDMP : Confirm dataset saved
+deactivate DatasetRepo
+
+ERDMP --> Depositor : Prompt to link with DMP
+Depositor -> ERDMP : Provide DMP reference
+activate ERDMP
+
+ERDMP -> DMPT : Request DMP details
+activate DMPT
+DMPT -> DMPRepo : Query DMP by reference
+activate DMPRepo
+DMPRepo --> DMPT : Return DMP details
+deactivate DMPRepo
+DMPT --> ERDMP : Provide DMP details
+deactivate DMPT
+
+ERDMP -> DatasetRepo : Link dataset with DMP
+activate DatasetRepo
+DatasetRepo -> DMPRepo : Update DMP with dataset link
+activate DMPRepo
+DMPRepo --> DatasetRepo : Confirm linkage
+deactivate DMPRepo
+DatasetRepo --> ERDMP : Confirm dataset-DMP linkage
+deactivate DatasetRepo
+
+ERDMP --> Depositor : Confirm dataset linked with DMP
+deactivate ERDMP
+@enduml
+```
+
+**Explanation:**
+
+1. **Initiate dataset deposit:** The depositor starts by submitting their dataset to the Enhanced Research Data Management Platform (ERDMP).
+2. **Save dataset information:** ERDMP processes this information and saves the dataset details into the Dataset Repository, confirming the operation's success afterwards.
+3. **Prompt to link with DMP:** Once saved, ERDMP prompts the depositor to link the dataset with a specific DMP for compliance and workflow integration.
+4. **Provide DMP reference:** The depositor submits the reference information (e.g., DMP ID or title) for the ERDMP to locate the DMP details.
+5. **Request and provide DMP details:** ERDMP queries a Data Management Plan Tool (DMPT) to retrieve the details of the DMP using the provided reference. The DMPT interacts with its own DMP Repository to fetch and return the requested DMP details.
+6. **Link dataset with DMP:** With both the dataset saved and DMP details retrieved, ERDMP initiates and completes the linkage between the dataset and the DMP. This action may involve updating both the Dataset and DMP Repositories to reflect this linkage and ensure compliance is demonstrated.
+7. **Confirm dataset linked with DMP:** Finally, ERDMP confirms to the depositor that the dataset has been successfully linked with the DMP, completing the workflow.
+
+This sequence diagram abstractly outlines the interactions necessary to achieve the desired outcome of linking datasets with a project's DMP within an Enhanced Research Data Management Platform. Depending on specific implementation details, additional steps or systems might be involved.

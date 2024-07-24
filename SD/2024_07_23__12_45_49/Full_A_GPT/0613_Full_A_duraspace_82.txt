@@ -1,0 +1,72 @@
+To create a detailed Sequence Diagram in Plant UML format for the given user story, we first need to conceptualize the main activities and interactions that occur when a repository manager wants to know the hardware and software used to generate a content file within the DAMS Integration and Management System (DIMS). This scenario involves interactions with the digital asset management system to retrieve the source capture information of a content file.
+
+Below is a PlantUML code snippet that outlines a possible sequence of events for this user story. 
+
+Please note: This is a conceptual representation and might need adjustments based on specific system architectures or requirements.
+
+```plantuml
+@startuml
+!theme plain
+
+participant "Repository Manager" as manager
+participant "DIMS Interface" as interface
+participant "Asset Management Module" as assetModule
+participant "Metadata Storage" as metadata
+participant "Hardware/Software Info Module" as hwswModule
+database "DAMS Database" as DAMSdb
+
+manager -> interface: Request file info
+activate interface
+
+interface -> assetModule: Retrieve file metadata
+activate assetAodule
+
+assetModule -> metadata: Query metadata by file ID
+activate metadata
+
+metadata -> DAMSdb: Fetch metadata
+activate DAMSdb
+DAMSdb --> metadata: Return metadata
+deactivate DAMSdb
+
+metadata --> assetModule: Metadata response
+deactivate metadata
+
+assetModule -> hwswModule: Request HW/SW info
+activate hwswModule
+
+hwswModule -> DAMSdb: Query HW/SW info by file ID
+activate DAMSdb
+DAMSdb --> hwswModule: Return HW/SW data
+deactivate DAMSdb
+
+hwswModule --> assetModule: HW/SW info response
+deactivate hwswModule
+
+assetModule --> interface: Compile information
+deactivate assetModule
+
+interface --> manager: Display file HW/SW info
+deactivate interface
+
+@enduml
+```
+
+### Explanation and Steps:
+1. **Repository Manager Requests File Information:** The process begins with the repository manager making a request through the DIMS interface to retrieve information about the hardware and software used to generate a specific content file.
+
+2. **DIMS Interface Forwards the Request:** The DIMS interface receives the request and forwards it to the Asset Management Module to retrieve the required metadata for the content file.
+
+3. **Retrieving File Metadata:** The Asset Management Module queries the Metadata Storage for the metadata associated with the requested file ID.
+
+4. **Querying Metadata Storage:** The Metadata Storage component fetches the required metadata from the DAMS Database, including any source-capture information, which contains details about the hardware and software used.
+
+5. **Requesting HW/SW Information:** With the file metadata in hand, the Asset Management Module then requests detailed hardware and software information from the Hardware/Software Info Module, using identifiers obtained from the metadata.
+
+6. **Fetching HW/SW Information:** The Hardware/Software Info Module queries the DAMS Database for detailed information about the hardware and software (source capture info) based on the file ID.
+
+7. **Compiling Information:** The Asset Management Module receives the hardware and software information and compiles it along with the previously retrieved metadata.
+
+8. **Displaying HW/SW Information:** Finally, the DIMS Interface presents the compiled information to the repository manager, completing the request.
+
+This sequence diagram provides a simplified outline of the interactions and processes involved when a repository manager wishes to know the hardware and software used to generate a content file within the DIMS framework.

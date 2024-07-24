@@ -1,0 +1,42 @@
+The following sequence diagram in PlantUML format outlines how an anonymous user can check how many seats are left for a summit on the BADCamp Experience and Administration Enhancement Platform. This diagram considers the interactions between the user, the website interface, and the backend server/database managing summit registrations and capacity.
+
+```plantuml
+@startuml
+!theme plain
+
+participant User
+participant WebsiteInterface as "Website Interface"
+participant Server as "Backend Server"
+database DB as "Database"
+
+User -> WebsiteInterface : Accesses Summit Details
+activate Website Handler
+
+WebsiteInterface -> Server : Request Remaining Seats for Summit
+activate Server
+
+Server -> DB : Query Summit Capacity and Registrations
+activate DB
+DB --> Server : Return Capacity Data
+deactivate DB
+
+Server --> WebsiteInterface : Send Remaining Seats Information
+deactivate Server
+
+WebsiteInterface --> User : Display Seats Information
+deactivate Website Handler
+
+@enduml
+```
+
+In this sequence diagram:
+
+1. **User Interaction:** The process begins with the user accessing the summit details page on the website, indicating they want to find out how many seats are left for a specific summit.
+
+2. **Request Processing:** The website interface sends a request to the backend server to fetch the remaining seats for the specified summit.
+
+3. **Backend Server and Database Interaction:** The backend server queries the database to get the capacity of the summit and the number of registrations made so far. The database then returns the capacity data to the server.
+
+4. **Response to User:** Finally, the backend server calculates the remaining seats by subtracting the number of registered attendees from the total capacity and sends this information back to the website interface. The website interface then displays the number of remaining seats to the user, allowing them to decide whether to register immediately to reserve their spot.
+
+This sequence captures the high-level interactions necessary for an anonymous user to check seat availability for a summit on the BADCamp platform.

@@ -1,0 +1,37 @@
+Below is a detailed sequence diagram in PlantUML format for the user story of an anonymous user wanting to see a list of all summits to determine which they might be interested in and able to attend. This high-level representation outlines the interaction between the user (AnonymousUser), the system's frontend (Frontend), the server (Server), and the database (Database) where summit information is stored.
+
+```plantuml
+@startuml
+participant AnonymousUser
+participant Frontend
+participant Server
+participant Database
+
+AnonymousUser -> Frontend : Requests summit list
+Frontend -> Server : GET /summits
+activate Server
+Server -> Database : Query Summits
+activate Database
+Database --> Server : SummitData
+deactivate Database
+Server --> Frontend : SummitData Response
+deactivate Server
+Frontend -> AnonymousUser : Display Summits
+@enduml
+```
+
+**Explanation:**
+
+1. **AnonymousUser to Frontend:** This interaction initiates the process. The anonymous user accesses the platform and expresses the intent to view a list of all summits by navigating to the relevant section of the web application.
+
+2. **Frontend to Server (GET /summits):** The frontend of the platform translates the user's request into a GET request to the server, specifically targeting the endpoint related to summit information.
+
+3. **Server to Database (Query Summits):** Upon receiving the request from the frontend, the backend server queries the database to retrieve information about all available summits. This interaction is crucial as it involves fetching the latest, accurate data that might include dates, titles, descriptions, and registration links for various summits.
+
+4. **Database to Server (SummitData):** The database responds with the data for all summits, sent back to the server. This response includes all necessary details about each summit that the anonymous user needs to make an informed decision.
+
+5. **Server to Frontend (SummitData Response):** With the summit information retrieved, the server processes and formats the data if needed, then sends it back to the frontend. This step is where any server-side logic is applied to ensure the data is user-friendly and ready for display.
+
+6. **Frontend to AnonymousUser (Display Summits):** Finally, the frontend system takes the received data and renders it in a visually appealing and accessible manner for the anonymous user. The user can now browse through the list of summits, viewing essential information about each, and decide which they are interested in and might attend.
+
+This sequence realizes the user story by ensuring that any visitor to the BADCamp Experience and Administration Enhancement Platform can easily and quickly find information about available summits, promoting engagement and accessibility for potential attendees.

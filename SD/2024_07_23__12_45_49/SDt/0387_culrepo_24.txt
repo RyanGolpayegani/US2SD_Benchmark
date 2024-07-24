@@ -1,0 +1,28 @@
+@startuml
+actor FacultyMember as FM
+participant "User Interface" as UI
+participant "Authentication Service" as Auth
+participant "Content Management" as CM
+participant "Storage System" as SS
+participant "Metadata Service" as MS
+participant "Persistent URL Service" as PURL
+
+== Authentication ==
+FM -> UI: Access repository upload feature
+UI -> Auth: Authenticate user
+Auth --> UI: Confirmation
+UI --> FM: Show upload page
+
+== Uploading Process ==
+FM -> UI: Upload scholarly work
+UI -> CM: Process upload request
+CM -> SS: Store file
+SS --> CM: Confirm storage
+CM -> MS: Create/Update metadata
+MS --> CM: Metadata ID
+CM -> PURL: Generate persistent URL
+PURL --> CM: Persistent URL
+CM --> UI: Show success message with URL
+UI -> FM: Display persistent URL
+
+@enduml

@@ -1,0 +1,43 @@
+@startuml
+participant UserDevice as Device
+participant ALFREDCore as Core
+participant MonitoringService as Monitor
+participant DeveloperAPI as API
+participant DeveloperInterface as DevInterface
+
+Device -> Core : AppCrashSignal()
+activate Core
+
+Core -> Monitor : ReportCrashDetails(AppID, UserID, CrashLog)
+activate Monitor
+Monitor -> API : NotifyCrash(AppID, CrashLog)
+activate API
+
+API -> DevInterface : DisplayCrashInfo(UserID, CrashLog)
+activate DevInterface
+
+DevInterface -> Developer : AnalyzeCrash(CrashLog)
+activate Developer
+Developer -> DevInterface : RequestMoreInfo(UserID)
+deactivate Developer
+
+DevInterface -> API : QueryAdditionalData(UserID)
+deactivate DevInterface
+API -> Monitor : RequestUserConsent(UserID)
+deactivate API
+
+Monitor -> UserDevice : PromptUserConsent()
+activate UserDevice
+UserDevice -> Monitor : ConsentGranted()
+deactivate UserDevice
+
+Monitor -> API : UploadAdditionalData(UserID, ExtendedCrashLog)
+activate API
+API -> DevInterface : AdditionalDataAvailable(ExtendedCrashLog)
+activate DevInterface
+DevInterface -> Developer : UpdateCrashAnalysis(ExtendedCrashLog)
+deactivate DevInterface
+deactivate API
+deactivate Monitor
+
+@enduml

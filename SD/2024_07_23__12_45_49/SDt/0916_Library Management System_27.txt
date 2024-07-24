@@ -1,0 +1,17 @@
+@startuml
+participant Librarian as librarian
+participant "Library Management\nSystem" as system
+database "Database" as db
+
+librarian -> system : Enter return details\n(Book ID, Member ID)
+system -> db : Retrieve book information\n(Original due date)
+db -> system : Return book information
+system -> db : Retrieve current date
+db -> system : Return current date
+system -> system : Calculate overdue days\n(Current date - Original due date)
+system -> db : Retrieve fee per day
+db -> system : Return fee per day
+system -> system : Calculate total fee\n(Overdue days * Fee per day)
+system --> librarian : Display total fee
+
+@enduml

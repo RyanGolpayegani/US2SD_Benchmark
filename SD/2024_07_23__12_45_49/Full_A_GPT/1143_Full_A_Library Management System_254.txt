@@ -1,0 +1,65 @@
+Creating a detailed sequence diagram in PlantUML syntax for the user story "As a member, I want to get notification for due dates," involves depicting various system components and their interaction for sending due date notifications. Below is a step-by-step PlantUML script that outlines this interaction process:
+
+```plantuml
+@startuml
+participant Member_UI as Member
+participant CLMS_Backend as Backend
+participant Database as DB
+participant NotificationService as Notify
+participant EmailService as Email
+participant SMSService as SMS
+
+Member -> Backend: CheckDueDates()
+activate Backend
+
+Backend -> DB: QueryDueDate(MemberID)
+activate DB
+DB --> Backend: DueDateDetails
+deactivate DB
+
+Backend -> Notify: PrepareNotifications(DueDateDetails)
+activate Notify
+Notify -> Email: GenerateEmailNotification(MemberEmail, DueDateDetails)
+activate Email
+Email --> Notify: EmailQueued
+deactivate Email
+
+Notify -> SMS: GenerateSMSNotification(MemberPhone, DueDateDetails)
+activate SMS
+SMS --> Notify: SMSQueued
+deactivate SMS
+
+Notify --> Backend: NotificationsPrepared
+deactivate Notify
+
+Backend -> Email: SendEmailNotification()
+activate Email
+Email --> Member_UI: DisplayEmailNotification()
+deactivate Email
+
+Backend -> SMS: SendSMSNotification()
+activate SMS
+SMS --> Member_UI: DisplaySMSNotification()
+deactivate SMS
+
+deactivate Backend
+@enduml
+```
+
+### Explanation:
+- **Member_UI**: Represents the user interface through which the library member interacts.
+- **CLMS_Backend**: The core backend logic of the Comprehensive Library Management System where most of the processing happens.
+- **Database**: The system's database where all data, including member details and due dates, are stored.
+- **NotificationService**: A dedicated service or module within the system responsible for preparing and managing notifications.
+- **EmailService & SMSService**: Services responsible for handling the delivery of email and SMS notifications, respectively.
+
+### Workflow:
+1. **Member requests due date checks**: The process initiates with the Member checking for due dates through the user interface, which communicates with the CLMS Backend.
+2. **Query database for due dates**: The Backend then queries the Database for the due dates associated with the Member’s ID.
+3. **Prepare Notifications**: With the due date details, the Backend instructs the NotificationService to prepare notifications.
+4. **Generate Email and SMS Notifications**: The NotificationService generates the necessary Email and SMS notifications.
+5. **Queue Notifications**: These notifications are queued for dispatch by the respective services.
+6. **Send Notifications**: Finally, the EmailService and SMSService send out the notifications to the Member's email and phone number.
+7. **Display Notifications**: These notifications are then displayed to the member through the Member's UI, completing the process.
+
+This sequence diagram represents a simplified sequence of interactions for notifying members about due dates within the Comprehensive Library Management System.

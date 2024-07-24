@@ -1,0 +1,51 @@
+To create a sequence diagram for the provided user story using PlantUML, we follow the interactions between the user and the system components involved in navigating to and accessing the registration form. The actors and systems involved include the Anonymous User, the Web Platform (encompassing the frontend UI and backend server), and, finally, the Registration System where the registration form lives.
+
+Here's how you can represent this in PlantUML syntax:
+
+```plantuml
+@startuml
+!theme plain
+
+participant "AnonymousUser" as User
+participant "Web Platform UI" as UI
+participant "Web Platform Backend" as Backend
+participant "Registration System" as RegSys
+
+User -> UI : Navigates to BADCamp website
+activate UI
+
+UI -> Backend : Request to load homepage
+activate Backend
+
+Backend -> UI : Returns homepage data
+UI -> User : Displays homepage
+
+User -> UI : Selects "Register"
+UI -> Backend : Request registration link
+Backend -> RegSys : Queries for registration form link
+activate RegSys
+
+RegSys -> Backend : Returns registration form link
+Backend -> UI : Provides link to UI
+UI -> User : Displays registration link
+
+User -> UI : Clicks registration link
+UI --> User : Redirects to Registration System
+deactivate Backend
+
+User -> RegSys : Access Registration Form
+RegSys -> User : Displays Registration Form
+
+@enduml
+```
+
+### Explanation:
+
+- **Start**: The sequence begins with the anonymous user navigating to the BADCamp website with the intent to register for the camp.
+- **Homepage Load**: The user's request to access the homepage involves interactions between the UI and the backend of the web platform to retrieve and display the homepage content.
+- **Request Registration Link**: Upon deciding to register, the user finds and selects a registration option. The UI then requests the registration link from the backend.
+- **Query Registration System**: The backend, in turn, communicates with the Registration System to fetch the specific link for the registration form.
+- **Display Link and Redirect**: Once the backend retrieves the registration link, it's sent back through the UI to the user. The user will then be redirected to the Registration System upon clicking the link.
+- **Access Registration Form**: In the final steps, the user is presented with the registration form by the Registration System and can proceed to fill it out.
+
+This sequence diagram provides a detailed flow of interactions based on the given user story, emphasizing how an anonymous user navigates through the system to find and access the registration form for BADCamp.

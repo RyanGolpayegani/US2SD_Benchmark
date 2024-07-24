@@ -1,0 +1,41 @@
+To create a detailed Sequence Diagram in PlantUML format for the user story, let's focus on outlining the interactions between the Broker Team Member and the various system components involved in adding new Program Project (PP) Codes (00***** and 00FORGN) to the derivation logic.
+
+The sequence diagram will demonstrate the steps starting from the Broker Team Member's request to add new PP codes to their inclusion in the derivation logic, encompassing interactions with the Validation Rules Engine and Database.
+
+```plantuml
+@startuml
+actor "Broker Team Member" as member
+participant "Broker UI" as ui
+participant "Validation Rules API" as rulesApi
+database "Validation Rules DB" as rulesDb
+participant "Derivation Logic Module" as derivationLogic
+
+== Add New PPoPCode Cases to Derivation Logic ==
+
+member -> ui : Selects option to add PPoPCode cases
+ui -> rulesApi : Request to add new PPoPCode cases (00*****, 00FORGN)
+activate rulesApi
+
+rulesApi -> rulesDb : Update derivation rules
+activate rulesDb
+rulesDb -->> rulesApi : Confirmation of rule update
+deactivate rulesDb
+
+rulesApi -> derivationLogic : Integrate new PP codes into logic
+activate derivationLogic
+derivationLogic -> rulesDb : Retrieve updated rules
+activate rulesDb
+rulesDb -->> derivationLogic : Returns updated rules
+deactivate rulesDb
+
+derivationLogic -->> rulesApi : Confirmation of logic update
+deactivate derivationLogic
+rulesApi -->> ui : Display success message
+deactivate rulesApi
+
+ui -->> member : Show confirmation of PPoPCode addition
+
+@enduml
+```
+
+This PlantUML sequence diagram outlines the interactions for adding new PPoP Codes (00***** and 00FORGN) into the derivation logic by a Broker Team Member. The process involves the broker’s user interface (UI), the validation rules API, the rules database (DB), and the derivation logic module. The Broker Team Member initiates the process through the UI, which then communicates with the validation rules API to update the derivation rules in the database. The API then integrates these new PPoP Codes into the derivation logic, updating the system to accommodate these changes efficiently.

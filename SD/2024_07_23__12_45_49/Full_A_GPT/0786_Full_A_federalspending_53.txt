@@ -1,0 +1,48 @@
+Given your user story and the need for a sequence diagram in PlantUML format, let's create a sequence diagram that outlines the process involving a user submitting a record for DUNS validation, applying the specified conditions related to ActionTypes (B, C, or D) and checking if the DUNS is registered in SAM (System for Award Management), regardless of its expiration status.
+
+Below is the PlantUML code that represents this sequence diagram:
+
+```plantuml
+@startuml
+actor User as user
+participant "Broker UI" as ui
+participant "Validation Service" as validationService
+participant "SAM API" as samApi
+database "Broker Database" as db
+
+user -> ui : Submit record with DUNS and ActionType
+ui -> validationService : Request validation (DUNS, ActionType)
+validationService -> db : Check if ActionType is B, C, or D
+alt is B, C, or D
+  db --> validationService : ActionType valid
+  validationService -> samApi : Check if DUNS registered (ignore expiration)
+  samApi --> validationService : DUNS registered
+  validationService -> ui : Record Accepted
+  ui --> user : Show success message
+else ActionType invalid
+  db --> validationService : ActionType invalid
+  validationService -> ui : Record Rejected (Invalid ActionType)
+  ui --> user : Show error message
+end
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **User Action**: The process begins with the user submitting a record through the Broker UI (User Interface), which includes the DUNS number and ActionType.
+
+2. **Initial Validation Request**: The UI sends a request to the Validation Service to validate the submitted DUNS and ActionType.
+
+3. **ActionType Check**: The Validation Service then checks with the Broker Database to verify if the ActionType is B, C, or D.
+
+4. **ActionType Validation**:
+   - If the ActionType is valid (B, C, or D), the diagram proceeds with checking if the DUNS is registered in SAM.
+   - If the ActionType is not one of the valid values, the process skips to the end, where the record is rejected, and an error message is shown to the user.
+
+5. **DUNS Registration Check**: For valid ActionTypes, the Validation Service checks with the SAM API whether the DUNS is registered, ignoring the expiration status of the registration.
+
+6. **Finalisation**:
+   - If the DUNS is registered in SAM, the Validation Service marks the record as accepted, and a success message is shown to the user.
+   - If the ActionType is invalid (as handled in the else branch), the record is rejected, and an error message is displayed.
+
+This PlantUML code provides a structured overview of the process based on the requirements outlined in your user story. To visualize this diagram, you'll need to use a PlantUML environment or an online tool that can interpret and render PlantUML code.

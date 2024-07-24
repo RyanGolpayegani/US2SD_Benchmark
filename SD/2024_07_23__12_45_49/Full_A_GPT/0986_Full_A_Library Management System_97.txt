@@ -1,0 +1,32 @@
+To create a detailed Sequence Diagram for the user story "As a librarian, I want to see the total number of books" using PlantUML, we need to outline the process from the librarian's query to the system response with the total book count. This sequence involves interactions between the librarian (user interface), the system front end, the controller, the database access layer, and the database itself.
+
+Here's a basic representation in PlantUML format:
+
+```plantuml
+@startuml
+participant Librarian as L
+participant FrontEnd as FE
+participant Controller as C
+participant DatabaseAccessObject as DAO
+database LibraryDB as DB
+
+L -> FE : Request total book count
+FE -> C : GetTotalBooks()
+C -> DAO : fetchTotalBookCount()
+DAO -> DB : SELECT COUNT(*) FROM books
+DB --> DAO : totalBooksCount
+DAO --> C : Send totalBooksCount
+C --> FE : Show totalBooksCount
+FE --> L : Display totalBooksCount
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+- **Librian (L):** Initiates the request to see the total number of books. This is the starting point of the process.
+- **FrontEnd (FE):** Acts as the intermediary that captures the librarian's request and forwards it to the controller.
+- **Controller (C):** Handles incoming requests related to book counts (among other tasks). It will request the total book count from the Database Access Object (DAO).
+- **DatabaseAccessObject (DAO):** Acts as the layer that directly interacts with the database, sending queries and receiving data.
+- **LibraryDB (DB):** The physical database where book data is stored. It runs the SQL query to count the total number of books and returns this information.
+
+This sequence diagram illustrates a simple yet typical interaction within a software system, following the request from the librarian through the system and back. Remember, depending on specific project needs or technical details, the actual implementation might involve additional steps or components (like authentication, logging, etc.).

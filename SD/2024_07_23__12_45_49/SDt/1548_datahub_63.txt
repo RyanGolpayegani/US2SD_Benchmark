@@ -1,0 +1,34 @@
+@startuml
+actor Admin
+participant "UI Dashboard" as Dashboard
+participant "Metrics Service" as Metrics
+participant "Database" as DB
+
+Admin -> Dashboard: Request metrics (users, API usage, downloads)
+activate Dashboard
+
+Dashboard -> Metrics: Fetch requested metrics
+activate Metrics
+
+Metrics -> DB: Query users
+activate DB
+DB --> Metrics: Users data
+deactivate DB
+
+Metrics -> DB: Query API usage
+activate DB
+DB --> Metrics: API usage data
+deactivate DB
+
+Metrics -> DB: Query downloads
+activate DB
+DB --> Metrics: Downloads data
+deactivate DB
+
+Metrics --> Dashboard: Compiled metrics data
+deactivate Metrics
+
+Dashboard --> Admin: Display metrics data
+deactivate Dashboard
+
+@enduml

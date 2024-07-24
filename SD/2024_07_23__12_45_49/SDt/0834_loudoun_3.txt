@@ -1,0 +1,28 @@
+@startuml
+participant Applicant
+participant PortalInterface as "Portal Interface"
+participant ApplicationSystem as "Application System"
+participant AssistanceCoordinator as "Assistance Coordinator"
+
+Applicant -> PortalInterface : Navigate to Pre-Application Assistance
+PortalInterface -> ApplicationSystem : Request Form for Pre-Application Assistance
+activate ApplicationSystem
+ApplicationSystem -> PortalInterface : Display Pre-Application Assistance Form
+PortalInterface -> Applicant : Form Presented to Applicant
+Applicant -> PortalInterface : Submit Pre-Application Assistance Request\n(Fill form and submit)
+PortalInterface -> ApplicationSystem : Process Assistance Request
+activate ApplicationSystem
+
+ApplicationSystem -> AssistanceCoordinator : Assign Request
+deactivate ApplicationSystem
+activate AssistanceCoordinator
+
+AssistanceCoordinator -> AssistanceCoordinator : Review Request \n and Prepare Response
+AssistanceCoordinator -> ApplicationSystem : Notify of Response Prepared
+deactivate AssistanceCoordinator
+activate ApplicationSystem
+
+ApplicationSystem -> PortalInterface : Update Status & Notify Applicant
+PortalInterface -> Applicant : Notification of Response &\nInstruction for Next Steps
+
+@enduml

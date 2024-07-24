@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram for the user story, "As a manager, I want to view reports on product storage data," involves illustrating the specific interactions between the actors (in this case, the manager) and the system components to achieve this task. Below is a PlantUML code snippet that represents these interactions. This code describes the sequence starting from the manager requesting the inventory report to receiving and viewing the report, assuming an already authenticated manager within the system. 
+
+```plantuml
+@startuml
+actor Manager as manager
+participant ":Web Interface" as WebInterface
+participant ":Authentication Service" as AuthService
+participant ":Report Management" as ReportManager
+participant ":Inventory System" as Inventory
+participant ":Database" as Database
+
+manager -> WebInterface : Request Inventory Report
+WebInterface -> AuthService : Validate Session
+AuthService --> WebInterface : Session Valid
+WebInterface -> ReportManager : Get Inventory Report
+ReportManager -> Inventory : Request Inventory Data
+Inventory -> Database : Fetch Inventory Data
+Database --> Inventory : Return Data
+Inventory --> ReportManager : Inventory Data
+ReportManager -> WebInterface : Generate Report
+WebInterface -> manager : Display Inventory Report
+
+@enduml
+```
+
+### Explanation:
+- **Manager**: Initiates the process by requesting an inventory report through the web interface.
+- **Web Interface**: Acts as the front-end component where the manager interacts with the system. It forwards the inventory report request to the authentication service to verify the session.
+- **Authentication Service**: Validates the manager's session to ensure that the request is coming from an authenticated and authorized user.
+- **Report Management**: Once the session is validated, the report management module is responsible for handling report generation requests. It requests the necessary inventory data from the inventory system.
+- **Inventory System**: Interfaces with the database to retrieve the specific inventory data required for the report.
+- **Database**: Stores all inventory data and returns the requested information to the inventory system.
+- **Report Manager**: Upon receiving the inventory data, this module generates the inventory report and sends it back to the web interface.
+- **Web Interface → Manager**: Finally, the web interface displays the generated inventory report to the manager.
+
+This detailed sequence diagram effectively illustrates the process flow for a manager requesting and receiving reports on product storage data within a Restaurant Management and Operations System.

@@ -1,0 +1,30 @@
+Creating a detailed sequence diagram for the given user story in PlantUML format involves mapping out the interaction between the different entities involved when an Agency user uploads a file with the wrong extension. The entities typically include the User (Agency user), Frontend Interface, Validation Service, and User Notification Service. Here's how the interactions might be depicted in PlantUML:
+
+```plantuml
+@startuml
+participant AgencyUser as User
+participant "Frontend Interface" as UI
+participant "Validation Service" as Validator
+participant "User Notification Service" as Notifier
+
+User -> UI : Uploads file with wrong extension
+UI -> Validator : Sends file metadata
+alt File extension valid
+    Validator -> UI : Validation success
+else File extension invalid
+    Validator -> Notifier : Trigger error notification
+    Notifier -> UI : Display file-level error message
+    UI -> User : Shows helpful error "Unsupported file extension. Please upload [.allowed extensions]."
+end
+@enduml
+```
+
+Explanation:
+
+1. **AgencyUser (User)**: This is the actor initiating the sequence by attempting to upload a file with the wrong extension.
+2. **Frontend Interface (UI)**: The UI is the platform that the agency user interacts with. It's responsible for capturing and sending the file metadata (including the file extension) to the Validation Service for checking.
+3. **Validation Service (Validator)**: This service checks the file metadata sent by the UI. It determines if the file extension is valid or not according to the platform's allowed file formats.
+4. **User Notification Service (Notifier)**: In case of an invalid file extension, the Validation Service triggers the User Notification Service to inform the user about the error.
+5. **Conditional Logic (alt/else)**: The diagram includes a condition where if the file extension is valid, the process ends successfully. If invalid, the sequence continues to the Notifier service, resulting in displaying an error message to the user.
+
+This flow ensures that if an agency user uploads a file with the wrong extension, they receive immediate and clear feedback on the nature of the error, guiding them towards resolving the issue by uploading a file with an acceptable format.

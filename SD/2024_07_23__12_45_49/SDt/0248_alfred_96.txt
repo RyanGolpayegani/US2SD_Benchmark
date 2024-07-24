@@ -1,0 +1,22 @@
+@startuml
+participant SocialCaregiver as caregiver
+participant "ALFRED Device" as device
+participant "Skin Conduction Sensor" as sensor
+participant "Data Analysis Component" as analysis
+participant "Notification System" as notification
+
+caregiver -> device : Checks status of older adult
+device -> sensor : Activate sensor
+sensor -> analysis : Sends skin conductance data
+analysis -> analysis : Analyze data for stress or pain signals
+alt Stress or Pain Detected
+    analysis -> notification : Trigger alert
+    notification -> caregiver : Notify of stress/pain
+    caregiver -> device : Access detailed data
+    device -> caregiver : Provide analysis & suggestions
+else No Stress or Pain Detected
+    analysis -> device : Monitor continuously
+    device -> caregiver : Display "All is well" status
+end
+
+@enduml

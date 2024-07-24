@@ -1,0 +1,34 @@
+Below is a detailed Sequence Diagram in PlantUML format for the user story: As a Zooniverse admin, I want to remove background noise and distracting sounds from the audio files.
+
+```plantuml
+@startuml
+actor ZooniverseAdmin as admin
+participant "Media Upload Interface" as upload
+participant "Audio Processing Module" as audioProc
+participant "Noise Reduction Algorithm" as noiseRed
+database "Audio Storage" as storage
+
+admin -> upload : Upload audio file
+activate upload
+upload -> audioProc : Send audio file
+activate audioProc
+
+audioProc -> noiseRed : Analyze and identify noise
+activate noiseRed
+noiseRed --> audioProc : Noise profile
+deactivate noiseRed
+
+audioProc -> noiseMitigation Filter -> noiseRed : Apply noise reduction
+activate noiseFilter
+noiseFilter -> storage : Save processed audio
+activate storage
+storage --> admin : Updated audio file available
+deactivate storage
+deactivate noiseFilter
+deactivate audioProc
+deactivate upload
+
+@enduml
+```
+
+In this diagram, the sequence begins with the Zooniverse admin uploading an audio file through the Media Upload Interface. The uploaded audio file is then sent to the Audio Processing Module, which analyzes and identifies the background noise and distracting sounds using the Noise Reduction Algorithm. After identifying the noise, the Audio Processing Module applies a noise reduction filter to mitigate the identified noise, and the processed audio is then saved back to the Audio Storage. Finally, the updated audio file is made available to the Zooniverse admin, completing the process of removing background noise and distracting sounds from the audio files.

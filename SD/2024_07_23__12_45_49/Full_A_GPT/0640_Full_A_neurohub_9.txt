@@ -1,0 +1,64 @@
+Below is a detailed PlantUML code that outlines the sequence diagram for the user story: "As a researcher, I want to create a log book page for an experiment and attach a file to this Gates."
+
+```plantuml
+@startuml
+actor Researcher as researcher
+participant "Web Interface" as webInterface
+participant "Logbook Service" as logbookService
+participant "File Management\nService" as fileService
+participant "Database" as database
+
+researcher -> webInterface : Accesses Neurohub
+webInterface -> logbookService : Initiate Logbook Page Creation
+activate logbookService
+
+logbookService -> database : Create new logbook entry
+activate database
+database --> logbookService : Logbook Entry ID
+deactivate database
+
+logbookService --> webInterface : Display Logbook Page Editor
+deactivate logbookService
+researcher -> webInterface : Enters details and attaches file
+webInterface -> fileService : Upload File
+activate fileService
+
+fileService -> database : Store file metadata and path
+activate database
+database --> fileService : Confirmation
+deactivate database
+deactivate fileService
+
+fileService -> logbookService : Attach file to Logbook Page
+activate logbookService
+logbookService -> database : Update logbook entry with file details
+activate database
+database --> logbookService : Confirmation
+deactivate database
+
+logbookService --> webInterface : Display updated Logbook Page
+deactivate logbookService
+researcher -> webInterface : Confirms and Finalizes page
+webInterface -> logbookService : Finalize Logbook Page Creation
+activate loggameService
+
+logbookService -> database : Mark logbook page as complete
+activate database
+database --> logbookService : Confirmation
+deactivate database
+
+logbookService --> webInterface : Display confirmation message
+deactivate logbookService
+researcher -> webInterface : Logout or continue session
+
+@enduml
+```
+
+### Explanation:
+- **Researcher**: Initiates the process by accessing the Neurohub web interface to create a new logbook page for an experiment.
+- **Web Interface**: Acts as the frontend where the researcher inputs details and uploads files.
+- **Logbook Service**: Manages the creation and updating of a logbook page in the database.
+- **File Management Service**: Handles file uploads by storing file metadata and path in the database and then links the file to the relevant logbook page.
+- **Database**: Stores all information related to the logbook entries and uploaded files.
+
+The flow starts with the researcher accessing the Neurohub and ends with them either logging out or continuing their session after receiving a confirmation message that the logbook page and file attachment have been successfully created and stored.

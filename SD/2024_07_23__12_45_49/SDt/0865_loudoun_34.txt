@@ -1,0 +1,68 @@
+@startuml
+actor StaffMember as "Staff Member"
+participant WebPortal as "County Services\n& Property Information Portal"
+participant SystemBackend as "System Backend"
+database Database as "County Database"
+
+== Process Appeal ==
+
+StaffMember -> WebPortal : Log in to Portal
+activate WebPortal
+
+WebPortal -> SystemBackend : Authenticate Staff Member
+activate SystemBackend
+
+SystemBackend -> Database : Validate Credentials
+activate Database
+Database --> SystemBackend : Credentials Valid
+deactivate Database
+
+SystemBackend --> WebPortal : Authentication Success
+deactivate SystemBackend
+
+StaffMember -> WebPortal : Navigate to Appeals Section
+WebPortal -> SystemBackend : Request Pending Appeals List
+activate SystemBackend
+
+SystemBackend -> Database : Fetch Pending Appeals
+activate Database
+Database --> SystemBackend : Pending Appeals List
+deactivate Database
+
+SystemBackend --> WebPortal : Show Pending Appeals
+deactivate SystemBackend
+
+StaffMember -> WebPortal : Select Appeal to Process
+WebPortal -> SystemBackend : Fetch Appeal Details
+activate SystemBackend
+
+SystemBackend -> Database : Retrieve Appeal Details
+activate Database
+Database --> SystemBackend : Appeal Information
+deactivate Database
+
+SystemBackend --> WebPortal : Display Appeal Information
+deactivate SystemBackend
+
+StaffMember -> WebPortal : Update Outcome & Notes
+WebPortal -> SystemBackend : Process Appeal Outcome
+activate SystemBackend
+
+SystemBackend -> Database : Update Appeal Record
+activate Database
+Database --> SystemElements : Appeal Updated
+deactivate Database
+
+SystemBackend -> Database : Record Impact on Related Records
+activate Database
+Database --> SystemBackend : Related Records Updated
+deactivate Database
+
+SystemBackend --> WebPortal : Appeal Processed Successfully
+deactivate SystemBackend
+
+WebPortal --> StaffMember : Display Success Message
+
+== End ==
+
+@enduml

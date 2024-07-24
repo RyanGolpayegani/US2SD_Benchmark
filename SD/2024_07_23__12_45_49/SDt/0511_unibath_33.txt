@@ -1,0 +1,25 @@
+@startuml
+actor ExternalCoordinator as EC
+participant "Web Interface" as WI
+participant "Authentication System" as AS
+participant "Data Management\nSystem" as DMS
+participant "Access Control\nModule" as ACM
+database "Bath Data Archive" as BDA
+
+EC -> WI: Request access to specific dataset
+WI -> AS: Authenticate ExternalCoordinator
+AS --> WI: Authentication Success
+WI -> DMS: Request for dataset access(ExternalCoordinator)
+DMS -> ACM: Verify access rights for ExternalCoordinator
+ACM --> DMS: Access Granted
+DSC -> BDA: Fetch dataset details
+BDA --> DSC: Return dataset details
+DMS --> WI: Provide dataset details and access link
+WI --> EC: Display dataset details and download link
+EC -> WI: Download dataset
+WI -> DMS: Initiate download request
+DMS -> BDA: Fetch dataset and metadata
+BDA --> DMS: Return dataset and metadata
+DMS --> WI: Provide dataset and metadata
+WI --> EC: Download dataset and metadata
+@enduml

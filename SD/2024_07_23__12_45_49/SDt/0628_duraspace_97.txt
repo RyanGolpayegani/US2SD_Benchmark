@@ -1,0 +1,63 @@
+@startuml
+participant "DAMS Manager" as DM
+participant "DIMS Interface" as DI
+database "DIMS Core System" as DCS
+database "DAMS" as D
+
+DM -> DI : Request to view scheduled events
+activate DM
+activate DI
+
+DI -> DCS : Fetch all scheduled events
+activate DCS
+
+DCS -> D : Request event data
+activate D
+
+D --> DCS : Return event data
+deactivate D
+
+DCS --> DI : Return list of scheduled events
+deactivate DCS
+
+DI --> DM : Display scheduled events
+deactivate DI
+
+DM --> DI : Select an event to monitor
+activate DI
+
+DI -> DCS : Request specific event details
+activate DCS
+
+DCS -> D : Query specific event details
+activate D
+
+D --> DCS : Return event details
+deactivate D
+
+DCS --> DI : Provide detailed event information
+deactivate DCS
+
+DI --> DM : Display event details and options
+deactivate DI
+
+DM -> DI : Request to add a tracking or reminder
+activate DI
+
+DI -> DCS : Add tracking/reminder for the event
+activate DCS
+
+DCS -> D : Set up a tracking/reminder
+activate D
+
+D --> DCS : Confirmation of tracking setup
+deactivate D
+
+DCS --> DI : Confirm tracking/reminder setup
+deactivate DCS
+
+DI --> DM : Show setup confirmation
+deactivate DI
+deactivate DM
+
+@enduml

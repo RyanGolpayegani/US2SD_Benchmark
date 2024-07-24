@@ -1,0 +1,70 @@
+To create a sequence diagram for the user story provided, we will outline the interactions between various components of the County Services & Property Information Portal system as a Plan Review Staff member tracks the completion of required plan reviews. The sequence will include interactions with the Customer Portal, Application Management System, Payment System, and Notification System, detailing the flow from tracking completion to potentially initiating payment for permit issuance.
+
+This sequence diagram assumes that the system has predefined roles and permissions that allow the Plan Review Staff member to access specific functionalities relevant to tracking plan reviews and that there is a method for the system to determine when all reviews are complete.
+
+```plantuml
+@startuml
+actor "Plan Review Staff" as staff
+participant ":Customer Portal" as portal
+participant ":Application Management\nSystem" as appSystem
+participant ":Payment System" as paymentSystem
+participant ":Notification System" as notifySystem
+
+== Track Plan Review Completion ==
+
+staff -> portal : Log in to Portal
+activate portal
+
+portal -> appSystem : Authenticate &\nAuthorize User
+activate appStateSystem
+
+appSystem --> portal : Access Granted
+deactivate appSystem
+
+portal --> staff : Display Dashboard
+deactivate portal
+
+staff -> appSystem : Select Application to\nTrack Plan Review
+activate appSystem
+
+appSystem -> appSystem : Check Plan Review\nStatus
+note right: All plan reviews must be\ncompleted or approved
+
+appSystem --> staff : Show Plan Review\nCompletion Status
+
+== Initiate Downstream Steps ==
+
+alt If Plan Review Completed Successfully
+  staff -> appSystem : Initiate Final Review/Prepare for Permit Issuance
+  activate appSystem
+  
+  appSystem -> paymentSystem : Prompt Payment for Permit
+  activate paymentSystem
+  
+  paymentSystem --> staff : Display Payment Instruction
+  
+  staff -> notifySystem : Send Review Completion & Payment Instruction to Applicant
+  activate notifySystem
+  
+  notifySystem -> "Applicant" : Notify via Email/SMS
+  deactivate notifySystem
+  
+  deactivate paymentSystem
+  deactivate appSystem
+else If Review Incomplete or Issues Found
+  staff -> notifySystem : Send Feedback/Requests to Applicant
+  activate notifySystem
+  
+  notifySystem -> "Applicant" : Notify via Email/SMS about Review Status
+  deactivate notifySystem
+end
+
+@enduml
+```
+
+### Explanation:
+- **Log in and Authorization**: The Plan Review Staff member starts by logging into the Customer Portal, which then authenticates and authorizes the user through the Application Management System.
+- **Track Plan Review Completion**: The staff selects an application to track its plan review status. The Application Management System checks the status of all required plan reviews for the selected application.
+- **Initiate Downstream Steps**: If all plan reviews are completed successfully, the Plan Review Staff may initiate final review steps or prepare for permit issuance, which includes prompting payment for the permit through the Payment System. This step is followed by sending review completion and payment instructions to the applicant via the Notification System. If the review is incomplete or issues are found, feedback or requests are sent to the applicant for further action.
+
+This sequence diagram represents the flow of actions for tracking the completion of plan reviews and initiating downstream steps, including communication with the applicant, within the County Services & Property Information Portal system.

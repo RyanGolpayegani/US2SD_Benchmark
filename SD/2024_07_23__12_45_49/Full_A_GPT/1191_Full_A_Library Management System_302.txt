@@ -1,0 +1,46 @@
+To create a sequence diagram for the user story "As a member, I want to see the remaining time for returning books so that I don’t pass the deadline" using PlantUML format, we need to outline the interactions between the system components involved in this user action. This might involve the user, the front-end interface of the library management system, the back-end server, and the database management system that stores the book borrowing records.
+
+Here's how these interactions might unfold in a sequence diagram format:
+
+```plantuml
+@startuml
+actor Member
+participant "Frontend Interface" as Frontend
+participant "Backend Server" as Backend
+participant "Database" as DB
+
+Member -> Frontend : Request to view borrowed books with deadlines
+activate Frontend
+
+Frontend -> Backend : Fetch member's borrowed books and deadlines
+activate Backend
+
+Backend -> DB : Query borrowed books & calculate remaining times
+activate DB
+DB --> Backend : Return list of books with remaining time for return
+deactivate DB
+
+Backend --> Frontend : Provide borrowed books with remaining times
+deactivate Backend
+
+Frontend --> Member : Display books and remaining times
+deactivate Frontend
+
+@enduml
+```
+
+Explanation of the Sequence:
+
+1. **Member Initiates Request**: The member (library user) starts the process by requesting to view the borrowed books along with their return deadlines through the library system’s frontend interface. This could be through a web page or a mobile app designed for the library management system.
+
+2. **Frontend Processes Request**: The frontend interface, upon receiving the request, communicates with the backend server, asking for the specific information related to the member's borrowed books and their respective deadlines.
+
+3. **Backend Queries Database**: The backend server takes the request and queries the database for the member's borrowed book records. It also calculates the remaining time till the deadline for each borrowed book, based on the current date and the due dates stored in the records.
+
+4. **Database Responds**: The database processes the query, retrieves the requested information, and sends it back to the backend server, including the list of books borrowed and the calculated remaining time for their return.
+
+5. **Backend to Frontend**: The backend server processes the information received from the database and forwards it to the frontend interface, structuring it in a way that is user-friendly and informative for the member.
+
+6. **Member Receives Information**: Finally, the frontend interface displays the list of borrowed books along with the remaining times until their deadlines. This allows the member to see how much time is left for returning each book and helps avoid passing the deadline.
+
+This sequence diagram provides a high-level overview of the process involved in enabling a library member to view the remaining time for returning borrowed books, aiming to prevent overdue returns and potential fines.

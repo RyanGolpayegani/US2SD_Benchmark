@@ -1,0 +1,35 @@
+@startuml
+!theme amiga
+
+participant "Publisher" as Publisher
+participant "Web UI" as WebUI
+participant "API Gateway" as APIGateway
+participant "Authentication Service" as AuthService
+participant "Data Validation Service" as ValidationService
+participant "Data Storage" as DataStorage
+participant "Registry Database" as RegistryDB
+participant "CLI Tool" as CLITool
+
+== Authentication ==
+Publisher -> WebUI : Select "Import Data Package"
+WebUI -> APIGateway : Request to import data package
+APIGateway -> AuthService : Validates Publisher's credentials
+AuthService --> APIGateway : Authentication success
+
+== Data Package Import Flow ==
+Publisher -> CLITool : Executes import command with package details
+CLITool -> APIGateway : Sends data package information
+APIGateway -> ValidationService : Validates data package format and integrity
+ValidationBootstrapService -> DataStorage : Temporarily stores data for validation
+ValidationService --> APIGateway : Returns validation success or failure
+APIGateway --> CLITool : Shows validation status
+group Validation Success
+    CLITool -> APIGateway : Requests to finalize import
+    APIGateway -> RegistryDB : Records data package entry
+    APIGateway -> DataStorage : Moves data to permanent storage
+    DataStorage --> APIGateway : Confirms data storage
+    APIGateway --> CLITool : Confirms data package is successfully imported and available online
+    CLITool --> Publisher : Displays confirmation message
+end
+
+@enduml

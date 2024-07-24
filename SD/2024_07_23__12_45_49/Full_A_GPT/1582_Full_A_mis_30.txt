@@ -1,0 +1,50 @@
+Creating a sequence diagram for the given user story requires defining the interactions between the various components and actors involved in the process of granting embargo privileges to other repository administrators within the Enhanced Digital Repository Management System (EDRMS). Since the actual implementation details can vary greatly, the sequence diagram below illustrates a general approach based on the project description provided.
+
+```plantuml
+@startuml
+
+actor DigitalRecordsArchivist as archivist
+boundary AuthenticationSystem as auth
+control "EDRMS Core" as core
+database "User Management DB" as userDB
+boundary "Access Control Module" as accessControl
+
+== Grant Embargo Privileges ==
+
+archivist -> auth : Authenticate
+auth -> archivist : Authentication Success
+
+archivist -> core : Access User Management
+
+core -> userDB : Retrieve User List
+userDB -> core : Users Data
+
+core -> archivist : Display Users
+
+archivist -> core : Select Repository Administrator(s)
+core -> accessControl : Request to Update Privileges
+
+accessControl -> userDB : Grant Embargo Privileges
+userDB -> accessControl : Privileges Updated
+
+accessControl -> core : Update Confirmation
+core -> archivist : Display Confirmation
+
+@enduml
+```
+
+Explanation:
+
+1. **DigitalRecordsArchivist (Archivist)**: This actor starts the process by authenticating with the EDRMS to ensure that only authorized users can grant embargo privileges.
+
+2. **AuthenticationSystem (Auth)**: This boundary checks the credentials of the archivist to authenticate them before they can proceed with granting privileges.
+
+3. **EDRMS Core (Core)**: The central control entity through which all requests and data pass. After authentication, the archivist accesses the user management functionality through this component.
+
+4. **User Management DB (UserDB)**: This database contains information about the users, their roles, and their permissions within the EDRMS.
+
+5. **Access Control Module (AccessControl)**: This boundary handles the logic and implementation details of updating user privileges, including the granting of embargo privileges to selected repository administrators.
+
+The sequence starts with the archivist authenticating themselves, followed by accessing the user management functionality to select one or more repository administrators. These selections are then processed to grant the appropriate embargo privileges, with all changes being confirmed and communicated back to the archivist.
+
+This diagram provides a high-level overview, and actual implementations may require additional steps or components, such as detailed error handling, logging, or interaction with external systems for additional verifications or notifications.

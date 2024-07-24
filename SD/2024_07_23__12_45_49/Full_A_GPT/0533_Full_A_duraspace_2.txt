@@ -1,0 +1,63 @@
+Below is a detailed sequence diagram in PlantUML format, visualizing the interactions for the user story "As a repository manager, I want to be able to update repository information in one place and be assured updates will be propagated to all relevant places." This sequence diagram focuses on capturing the sequence of events that occur from the initiation of updating repository information by the repository manager, through the DIMS system processing this update, to the final stage where the update is propagated to all relevant areas of the DAMS.
+
+```plantuml
+@startuml
+actor "Repository Manager" as RM
+participant "DIMS Interface" as DI
+participant "Central Repository Info Management" as CRIM
+database "DAMS" as DAMS
+participant "DAMS Sync Service" as DSS
+
+== Update Repository Information ==
+RM -> DI : Initiate Update
+activate DI
+DI -> CRIM : Submit Update Request
+activate CRIM
+CRIM -> DAMS : Check Current Info
+activate DAMS
+DAMS --> CRIM : Current Repository Info
+deactivate DAMS
+CRIM -> DAMS : Update Repository Info
+activate DAMS
+DAMS --> CRIM : Update Confirmation
+deactivate DAMS
+CRIM --> DI : Update Success
+deactivate CRIM
+
+== Propagate Updates ==
+DI -> DSS : Trigger Sync
+activate DSS
+DSS -> DAMS : Retrieve Updated Info
+activate DAMS
+DAMS --> DSS : Provide Updated Info
+deactivate DAMS
+DSS -> DAMS : Propagate Updates to Relevant Areas
+activate DAMS
+DAMS --> DSS : Propagation Confirmation
+deactivate DAMS
+DSS --> DI : Sync Complete
+deactivate DSS
+DI --> RM : Update & Propagation Confirmation
+deactivate DI
+
+@enduml
+```
+
+### Explaining the Sequence Diagram Steps:
+1. **Initiate Update**: The sequence begins with a Repository Manager initiating an update to repository information through the DIMS Interface.
+   
+2. **Submit Update Request**: The DIMS Interface submits the repository manager's update request to the Central Repository Information Management (CRIM) component.
+
+3. **Check Current Info & Update Repository Info**: CRIM then interacts with the DAMS database to check current repository information and update it as per the request.
+
+4. **Update Confirmation**: Once the update is successful, CRIM informs the DIMS Interface about the successful update.
+
+5. **Trigger Sync**: The DIMS Interface then requests the DAMS Sync Service to start the propagation of the updated information to all relevant areas within the DAMS.
+
+6. **Retrieve Updated Info & Propagate Updates to Relevant Areas**: The DAMS Sync Service interacts with the DAMS to retrieve updated info and then ensures that this information is propagated to all relevant places as necessary.
+
+7. **Sync Complete**: After successful propagation, the DAMS Sync Service informs the DIMS Interface about the completion.
+
+8. **Update & Propagation Confirmation**: Finally, the DIMS Interface notifies the Repository Manager that the update and its propagation have been successfully completed.
+
+This sequence diagram illustrates how the DIMS facilitates the centralized management of repository information and ensures that updates are seamlessly propagated across the DAMS.

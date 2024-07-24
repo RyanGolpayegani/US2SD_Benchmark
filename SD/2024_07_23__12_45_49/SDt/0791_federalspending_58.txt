@@ -1,0 +1,39 @@
+@startuml
+participant AgencyUser as User
+participant "Broker UI" as UI
+participant "Validation Service" as Validation
+participant "Mapping Engine" as Mapper
+participant "Data Processing" as Processor
+participant "Atom Feed Generator" as AtomGen
+participant "Atom Feed" as AtomFeed
+
+User -> UI: Navigate to Data Submission
+UI -> Validation: Initiate Data Precheck
+activate Validation
+Validation -> Validation: Validate FederalActionObligation Format
+Validation --> UI: Validation Results
+deactivate Validation
+
+alt If Validation Fails
+    UI -> User: Show Error Messages
+    User -> UI: Correct Data Format
+    UI -> Validation: Re-validate Data
+    Validation -> Validation: Validate FederalActionObligation Format
+    Validation --> UI: Validation Passed
+    deactivate Validation
+end
+
+UI -> User: Validation Success Confirmation
+User -> UI: Confirm Submission
+UI -> Mapper: Map User Data to Internal Schema
+activate Mapper
+Mapper -> Processor: Process & Map FederalActionObligation to Atom
+deactivate Mapper
+
+Processor -> AtomGen: Generate Atom Feed Entry
+activate AtomGen
+AtomGen -> AtomFeed: Update Atom Feed with New Data
+deactivate AtomGen
+
+AtomFeed -> User: Notify Feed Update
+@enduml

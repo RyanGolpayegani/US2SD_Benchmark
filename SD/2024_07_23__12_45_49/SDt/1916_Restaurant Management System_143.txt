@@ -1,0 +1,30 @@
+@startuml
+actor Manager
+participant "Manager Interface" as MI
+participant "Authentication Service" as AS
+participant "Employee Management System" as EMS
+participant "Database" as DB
+
+Manager -> MI : Enter Employee ID & Clock-In/Out Info
+MI -> AS : Validate Manager's Session
+activate AS
+AS --> MI : Session Valid
+deactivate AS
+
+MI -> EMS : Submit Clock-In/Out Data [Employee ID, Timestamp, Type]
+activate EMS
+EMS -> DB : Query Employee Record
+activate DB
+DB --> EMS : Employee Record Found
+deactivate DB
+
+EMS -> DB : Update Employee Record with New Timestamp
+activate DB
+DB --> EMS : Record Updated Successfully
+deactivate DB
+
+EMS --> MI : Clock-In/Out Successfully Recorded
+deactivate EMS
+
+MI --> Manager : Confirmation Message
+@enduml

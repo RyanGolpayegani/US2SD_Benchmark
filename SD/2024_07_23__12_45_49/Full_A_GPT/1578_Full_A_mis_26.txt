@@ -1,0 +1,43 @@
+To illustrate how a visitor interacts with the Enhanced Digital Repository Management System (EDRMS) to see the embargo status and release date of a repository item, the following sequence diagram in PlantUML format provides a detailed visual representation of the process.
+
+```plantuml
+@startuml
+participant Visitor
+participant WebInterface
+participant RepositorySystem
+participant DataAccessLayer
+participant Database
+
+Visitor -> WebInterface : Request item details
+activate WebInterface
+
+WebInterface -> RepositorySystem : Fetch item details
+activate RepositorySystem
+
+RepositorySystem -> DataAccessLayer : Query embargo status & release date
+activate DataAccessLayer
+
+DataAccessLayer -> Database : Retrieve embargo info
+activate Database
+Database --> DataAccessLayer : Embargo details
+deactivate Database
+
+DataAccessLayer --> RepositorySystem : Embargo status & release date
+deactivate DataAccessLayer
+
+RepositorySystem --> WebInterface : Item details with embargo info
+deactivate RepositorySystem
+
+note over WebInterface
+Format embargo information
+end note
+
+WebInterface --> Visitor : Display item with embargo status highlighted
+deactivate WebInterface
+
+@enduml
+```
+
+This sequence diagram begins with the Visitor requesting details of an item through the Web Interface. The request is then passed down to the Repository System, which, in turn, communicates with the DataAccessLayer to query for the embargo status and release date from the Database. Once the Database retrieves the information, it is sent back up the chain: from Database to DataAccessLayer, then to the Repository System, and finally, the Web Interface formats and displays the embargo information by highlighting it for the Visitor. 
+
+This streamlined visual representation provides clear insight into the interaction flow and system architecture required for displaying embargo statuses and release dates to visitors in the EDRMS project.

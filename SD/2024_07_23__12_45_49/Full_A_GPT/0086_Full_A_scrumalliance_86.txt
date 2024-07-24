@@ -1,0 +1,37 @@
+To generate a detailed sequence diagram in PlantUML format for the described user story, we'll illustrate the interactions involved in sending a welcome email to a Certified Scrum Master (CSM) after their name has been added to the Scrum Alliance registry. This involves several systems and actors including the registry system, a membership service, and an email service.
+
+Below is a simple PlantUML script representing these interactions:
+
+```plantuml
+@startuml
+actor CSMRegistrySystem
+entity MembershipService
+database MemberDatabase
+control EmailService
+
+CSMRegistrySystem -> MembershipService : NotifyNewCSM(Name, Email)
+MembershipService -> MemberDatabase : AddCSM(Name, Email)
+MemberDatabase -> MembershipService : ConfirmAddition()
+MembershipService -> EmailService : RequestWelcomeEmail(Email)
+EmailService -> CSM : SendWelcomeEmail()
+@enduml
+```
+
+Here's an explanation of each step in the sequence represented in the PlantUML script:
+
+1. **CSMRegistrySystem -> MembershipService : NotifyNewCSM(Name, Email)**
+   - The system responsible for the Scrum Alliance registry notifies the membership service that a new CSM has been added, providing the necessary details like Name and Email.
+
+2. **MembershipService -> MemberDatabase : AddCSM(Name, Email)**
+   - The membership service requests the addition of the new CSM's details into the member database.
+
+3. **MemberDatabase -> MembershipService : ConfirmAddition()**
+   - The member database confirms the successful addition of the new CSM's details back to the membership service.
+
+4. **MembershipService -> EmailService : RequestWelcomeEmail(Email)**
+   - The membership service requests the email service to send a welcome email with registration or activation instructions to the new CSM.
+
+5. **EmailTier -> CSM : SendWelcomeEmail()**
+   - The email service sends the welcome email to the CSM's provided email address.
+
+This sequence diagram is a high-level representation. Depending on the specific requirements and technical architecture of the Scrum Alliance Community Platform, additional details and steps (such as error handling, authentication, and logging) may need to be included for a complete implementation.

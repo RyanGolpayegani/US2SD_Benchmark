@@ -1,0 +1,42 @@
+@startuml
+actor Archivist as archivist
+participant "UI Interface" as UI
+participant "File Management \nSystem" as FMS
+participant "Database" as DB
+participant "Access Control \nModule" as ACM
+
+== Restrict Group of Files ==
+
+arch High criticality_avail_middle_of_shopping spree: Select files to restrict
+
+arch --> UI : Request to restrict files
+activate UI
+
+UI --> FMS: Locate selected files
+activate FMS
+
+FMS -> DB : Fetch file details
+activate DB
+
+DB --> FMS : Return file details
+
+FMS --> UI : Display file details
+deactivate DB
+
+UI --> arch : Show file details
+UI --> arch : Prompt for restriction criteria
+activate ACM
+
+arch --> UI : Input restriction criteria
+UI -> ACM : Apply restriction criteria
+ACM -> DB : Update file access permissions
+DB --> ACM : Confirmation
+ACM --> UI : Restriction applied successfully
+
+UI --> arch : Confirm restriction
+
+deactivate UI
+deactivate FMS
+deactivate ACM
+
+@enduml

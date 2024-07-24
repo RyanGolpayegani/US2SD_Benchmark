@@ -1,0 +1,20 @@
+@startuml
+!theme plain
+
+participant ModeratorUI as Moderator
+participant "AEPT Web Server" as Server
+database "AEPT Database" as DB
+
+== Deletion Process ==
+Moderator -> ModeratorUI : Selects item for deletion
+ModeratorUI -> Server : Request to delete item
+activate Server
+Server -> DB : Query to remove item
+activate DB
+DB -> Server : Confirm item deleted
+deactivate DB
+Server -> ModeratorUI : Confirm deletion to Moderator
+deactivate Server
+ModeratorUI -> Moderator : Display item deletion confirmation
+
+@enduml

@@ -1,0 +1,40 @@
+Creating a detailed Sequence Diagram for the described user story requires capturing the interaction between different actors and components within the DIMS (DAMS Integration and Management System) as they collaborate to determine if an object or its component is restricted by a library policy. Here is a PlantUML code sketch that depicts this process:
+
+```plantuml
+@startuml
+actor DAMSManager as "DAMS Manager"
+participant DIMSInterface as "DIMS Web Interface"
+participant PolicyControlModule as "Policy Control Module"
+participant Database as "DIMS Database"
+participant Policy as "Library Policy"
+
+DAMSManager -> DIMSInterface : Request object/component info
+DIMSInterface -> PolicyControlModule : Query policy restrictions for object/component
+PolicyControlPanel -> Database : Fetch object/component details
+Database -> PolicyControlModule : Return details
+PolicyControlModule -> Policy : Check for policy restrictions
+Policy -> PolicyControlModule : Return restriction status
+PolicyControlModule -> DIMSInterface : Policy restriction result
+DIMSInterface -> DAMSManager : Display restriction information
+
+@enduml
+```
+
+Explanation of the Sequence Diagram steps:
+1. **DAMS Manager initiates the process** by requesting information about an object or object component through the DIMS Web Interface. This is the beginning of the interaction where the DAMS Manager is looking into the library policy status of a certain digital asset.
+
+2. **DIMS Web Interface forwards this request** to the Policy Control Module, indicating that it needs to retrieve whether there are any policy restrictions applied to the specified object/component.
+
+3. **Policy Control Module queries the DIMS Database** to get details about the mentioned object or component. This step involves fetching metadata, existing policies, and any other relevant details stored in the database.
+
+4. **The DIMS Database returns the object/component details** to the Policy Control Module. These details are necessary to understand the context and specifics of the digital asset, which may influence its policy status.
+
+5. **Policy Control Module then checks for policy restrictions** by consulting the Library Policy. At this stage, the module determines if any access restrictions are applied based on library policies, copyrights, licenses, or any other regulatory compliance measures.
+
+6. **The Library Policy provides the restriction status** to the Policy Control Module, detailing whether access is unrestricted, restricted, or conditionally available based on location, user type, or other criteria.
+
+7. **Policy Control Module sends this policy restriction result** back to the DIMS Web Interface. This encapsulates the core answer that the DAMS Manager is seeking: the access restriction status of the digital asset.
+
+8. **Finally, the DIMS Web Interface displays the restriction information** to the DAMS Manager. This could be shown in a detailed report, alert box, or part of the digital asset's metadata overview, informing the manager about any access limitations.
+
+This sequence diagram outlines the flow of operations initiated by a DAMS Manager with the goal of verifying library policy restrictions on a digital asset or its component, relying on the integrated functionalities of the DAMS Integration and Management System (DIMS).

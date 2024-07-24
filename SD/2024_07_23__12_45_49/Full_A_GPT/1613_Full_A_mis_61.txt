@@ -1,0 +1,46 @@
+Given the complexity of the Enhanced Digital Repository Management System (EDRMS) and the specific user story focusing on collection ownership and permission management, a detailed sequence diagram can illustrate the process involved when a collection owner wants to ensure that submitters to their collection are unable to modify existing items. This process involves multiple system components and interactions.
+
+Please note, the following PlantUML code is a simplified representation focusing on key interactions based on the provided user story. It assumes the presence of subsystems for user management, permissions handling, and collection management within the EDRMS.
+
+```plantuml
+@startuml
+participant CollectionOwner as Owner
+participant UserManagementSubsystem as UserManager
+participant CollectionManagementSubsystem as CollectionManager
+participant PermissionsSubsystem as Permissions
+participant Database as DB
+
+Owner -> UserManager : login(credentials)
+UserManager -> Owner : authenticationSuccess
+
+Owner -> CollectionManager : accessCollection(collectionID)
+CollectionManager -> DB : fetchCollectionDetails(collectionID)
+DB -> CollectionManager : collectionDetails
+CollectionManager -> Owner : displayCollectionDetails
+
+Owner -> Permissions : requestChangePermissions(collectionID)
+Permissions -> DB : getCurrentPermissions(collectionID)
+DB -> Permissions : currentPermissionsDetails
+Permissions -> Permissions : generateRestrictedPermissions(submitterRole)
+Permissions -> DB : updatePermissions(collectionID, newPermissions)
+DB -> Permissions : confirmation
+
+Permissions -> Owner : displayConfirmation(confirmation)
+@enduml
+```
+
+### Explanation of the Sequence Diagram Steps:
+
+1. **Collection Owner Logs In:** The Collection Owner (Owner) initiates the process by logging into the system, which involves interacting with the User Management Subsystem (UserManager) to authenticate their credentials.
+
+2. **Accessing Collection Details:** The Owner requests to access details of a specific collection. The Collection Management Subsystem (CollectionManager) retrieves these details from the Database (DB) and presents them to the Owner.
+
+3. **Requesting Permission Changes:** The Owner decides to change permissions to ensure submitters cannot modify existing items and communicates this to the Permissions Subsystem (Permissions).
+
+4. **Retrieving Current Permissions:** The Permissions Subsystem retrieves the current permissions settings for the collection from the DB.
+
+5. **Generating and Updating Restricted Permissions:** Based on the Owner's request, the Permissions Subsystem generates new permissions that restrict modification capabilities for submitters. These new permissions are then updated in the DB.
+
+6. **Confirmation:** The DB confirms the successful update of permissions, and the Permissions Subsystem notifies the Collection Owner of the confirmation.
+
+This sequence diagram is a blueprint and can be expanded or modified based on additional requirements or features of the EDRMS project. Also, implementation details might require adjustments for specific system architectures or technology stacks used in the EDRMS development.

@@ -1,0 +1,26 @@
+@startuml
+participant Administrator as admin
+participant "BADCamp Platform" as platform
+participant "Blog Module" as blog
+participant "Drupal Planet Aggregator" as drupalPlanet
+
+admin -> platform: Login
+activate platform
+
+platform -> admin: Authentication Successful
+admin -> blog: Access Blog Post Form
+activate blog
+
+admin -> blog: Create/Edit Blog Post
+admin -> blog: Tag for Drupal Planet
+blog -> platform: Save Blog Post with Tag
+platform -> drupalPlanet: Push Post to Drupal Planet
+activate drupalPlanet
+
+drupalPlanet -> platform: Confirm Receipt
+platform -> admin: Display Confirmation Message
+
+deactivate drupalPlanet
+deactivate blog
+deactivate platform
+@enduml

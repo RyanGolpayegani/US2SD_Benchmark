@@ -1,0 +1,24 @@
+Creating a sequence diagram for the user story: "As a member, I want to see maximum page numbers of books," involves delineating the interactions between the system components to fulfill this request. Below, you’ll find a basic sketch of how these interactions might be laid out in PlantUML syntax. This assumes that the member is already logged in and interacts with the system to view the maximum page numbers of books available in the library.
+
+```plantuml
+@startuml
+actor Member
+boundary SystemInterface
+control LibraryController
+entity AuthenticationSystem
+database LibraryDatabase
+
+Member -> SystemInterface : Request to view books' maximum page numbers
+SystemInterface -> LibraryController : Validate member request
+LibraryController -> AuthenticationSystem : Confirm member's authenticity
+AuthenticationSystem -> LibraryController : Member authenticated
+LibraryController -> LibraryDatabase : Query for maximum page numbers among books
+LibraryDatabase -> LibraryController : Return books' data
+LibraryController -> SystemInterface : Display books with maximum page numbers
+SystemInterface -> Member : Shows books' maximum page numbers
+@enduml
+```
+
+This diagram starts by the member making a request to view the maximum page numbers of the books. The system interface then passes this request to the `LibraryController`, which in turn verifies the member's authenticity with the `AuthenticationSystem`. Once the member is authenticated, the `LibraryController` queries the `LibraryDatabase` for the information regarding the books with the maximum number of pages. The database returns this data to the `LibraryController`, which then instructs the `SystemInterface` to display the information to the member.
+
+Remember, sequence diagrams can quickly become complex depending on the level of detail you want to include, such as error handling, specific methods called on each actor, and the format of the data being passed around. This diagram provides a high-level overview, focusing on the core interactions necessary to fulfill the user's request.

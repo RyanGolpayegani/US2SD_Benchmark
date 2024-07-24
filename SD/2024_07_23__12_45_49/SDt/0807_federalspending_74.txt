@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+
+participant "Agency User" as User
+participant "Broker Platform" as Broker
+participant "Data Processing Service" as DPS
+participant "Validation Service" as VS
+participant "Format Conversion Service" as FCS
+participant "File Storage" as FS
+
+User -> Broker: Request File F
+Broker -> DPS: Initiate File F preparation
+DPS -> VS: Validate Data
+VS --> DPS: Validation Results
+alt if data is valid
+    DPS -> FCS: Convert to correct format
+    FCS --> DPS: File F in correct format
+    DPS -> FS: Store File F
+    FS --> DPS: Storage Confirmation
+    DPS --> Broker: File F ready
+    Broker -> FS: Retrieve File F
+    FS --> Broker: File F
+    Broker --> User: Provide File F
+else data is invalid
+    DPS --> Broker: Validation Error
+    Broker --> User: Error Message
+end
+
+@enduml

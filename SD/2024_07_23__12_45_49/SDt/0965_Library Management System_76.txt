@@ -1,0 +1,28 @@
+@startuml
+participant "Librarian" as librarian
+participant "Library Management\nSystem" as system
+participant "Email/Notification\nService" as emailService
+participant "Law Enforcement\nReporting System" as lawEnforcementSystem
+
+librarian -> system : ReturnBook(bookID, borrowerID)
+alt book condition assessment
+    librarian -> system : CheckCondition(bookID)
+    loop until condition assessed
+        librarian -> librarian: AssessCondition(book)
+    end
+    librarian -> system : RecordCondition(bookID, condition)
+    system -> system : DetermineReportingNecessity(condition)
+    alt condition requires reporting
+        system -> lawEnforcementSystem : ReportDamage(bookID, borrowerID)
+        lawEnforcementSystem -> lawEnforcementSystem : LogReport(bookID, borrowerID)
+        lawEnforcementSystem --> system : AcknowledgeReport(reportID)
+        system -> emailService : SendNotification(borrowerID, reportID)
+        emailService -> librarian : ConfirmNotificationSent()
+    else no reporting needed
+        system -> librarian : NoActionRequired()
+    end
+else book return without condition issues
+    system -> librarian : MarkAsReturned(bookID)
+end 
+
+@enduml

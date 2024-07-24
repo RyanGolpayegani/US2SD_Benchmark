@@ -1,0 +1,48 @@
+Creating a detailed sequence diagram for the specific user story “As a librarian, I want to update books' shelf information” requires outlining how different system components interact to achieve this functionality. Below is a basic PlantUML code representation of the sequence diagram for this process.
+
+```plantuml
+@startuml
+actor Librarian
+participant "Library Management\nSystem" as LMS
+database BooksDB
+
+== Update Book Shelf Information ==
+
+Librarian -> LMS : Login()
+activate LMS
+LMS -> BooksDB : ValidateLibrarian()
+activate BooksDB
+BooksDB --> LMS : AuthenticationSuccess()
+deactivate BooksDB
+
+Librarian -> LMS : SelectBookToUpdateShelfInfo(BookID)
+LMS -> BooksDB : FetchBookDetails(BookID)
+BooksDB --> LMS : BookDetails()
+LMS --> Librarian : DisplayBookDetails(BookDetails)
+
+Librarian -> LMS : InputNewShelfInfo(NewShelfInfo)
+LMS -> BooksDB : UpdateShelfInfo(BookID, NewShelfInfo)
+activate BooksDB
+BooksDB --> LMS : UpdateSuccess()
+deactivate BooksDB
+LMS --> Librarian : DisplayUpdateSuccessMessage()
+
+deactivate LMS
+@enduml
+```
+
+This sequence diagram follows these key steps:
+
+1. **Login:** The librarian logs into the Library Management System (LMS). The system verifies the librarian’s credentials against the Books Database (BooksDB).
+   
+2. **Book Selection:** Once authenticated, the librarian selects a book to update shelf information by providing the BookID.
+
+3. **Display Book Details:** The system retrieves and displays the book's current details, including its current shelf location, from BooksDB.
+
+4. **Input New Shelf Info:** The librarian inputs the new shelf information for the book.
+   
+5. **Update Database:** The LMS updates the book's shelf information in BooksDB with the new details provided by the librarian.
+
+6. **Confirmation:** The system confirms the successful update to the librarian.
+
+This diagram illustrates the interaction between the librarian, the Library Management System interface, and the backend Books Database during the process of updating a book’s shelf information.

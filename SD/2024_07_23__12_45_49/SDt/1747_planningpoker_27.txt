@@ -1,0 +1,39 @@
+@startuml
+participant Moderator as mod
+participant "Web Interface" as web
+participant "Estimation Game Service" as gameService
+participant "Database" as db
+
+mod -> web: Accesses AEPT
+activate mod
+activate web
+
+web -> gameService: Request existing game settings
+activate gameEnterprise
+gameService -> db: Query game settings
+activate db
+
+db --> gameService: Return game settings
+deactivate db
+gameService --> web: Show game settings with estimation options
+deactivate gameEnterprise
+
+web --> mod: Display estimation options\n(modified Fibonacci or powers of 2)
+deactivate web
+mod -> web: Selects estimation strategy
+activate web
+
+web -> gameService: Update game with selected strategy
+activate gameEnterprise
+gameService -> db: Save selected strategy
+activate db
+
+db --> gameService: Confirm strategy update
+deactivate db
+gameService --> web: Update confirmation
+deactivate gameEnterprise
+web --> mod: Display confirmation message
+deactivate web
+
+deactivate mod
+@enduml

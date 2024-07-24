@@ -1,0 +1,39 @@
+Creating a detailed sequence diagram for the user story involves depicting the interactions between the system components and the user when a request to access restricted objects is made. Since we're focusing on the interaction initiated by users to contact a collection curator directly from the repository, we'll include actors like the User, the Repository Interface, Access Control System, and potentially an Email Notification System. Note that specifics may vary depending on the technical architecture of the EDRMS.
+
+Let's draft a PlantUML sequence diagram for this scenario:
+
+```plantuml
+@startuml
+actor User
+participant "Repository Interface" as Interface
+participant "Access Control System" as ACS
+participant "Email Notification System" as Email
+participant "Collection Curator" as Curator
+
+User -> Interface: Search and Select Restricted Object
+Interface -> ACS: Request Access Details
+ACS -> Interface: Display "Contact Curator" Option
+User -> Interface: Click "Contact Curator"
+Interface -> Email: Generate Email Template
+User -> Email: Fill in and Send Request
+Email -> Curator: Forward User Request
+Curator -> Email: Review Request
+Curator -> ACS: Update Access Permissions (If approved)
+ACS -> Email: Notify User of Decision
+Email -> User: Display Access Decision Notification
+
+@enduml
+```
+
+Explanation:
+- **User**: This is the actor initiating the request, searching for and selecting a restricted object within the digital repository.
+
+- **Repository Interface** (Interface): The front-end system through which the user interacts. It displays the restricted object and, upon request, provides the option to contact the curator directly.
+
+- **Access Control System** (ACS): This system checks the access levels of objects and provides the appropriate response to the Interface, including whether an object is restricted and how to contact the curator in charge.
+
+- **Email Notification System** (Email): This component is responsible for facilitating direct communication between users and curators. It generates an email template when a user decides to contact a curator and handles the sending and receiving of these requests.
+
+- **Collection Curator** (Curator): The recipient of the access request. The curator can review requests received via email and decide whether to grant access. If access is granted, the curator will update the access permissions in the ACS, which then notifies the user through the Email system.
+
+This sequence diagram outlines the basic flow and interactions required to enable users to directly contact collection curators for access to restricted objects from within the Enhanced Digital Repository Management System (EDRMS). Keep in mind, the level of detail and specific components may need adjustment based on the actual technical specifications and capabilities of the EDRMS project.

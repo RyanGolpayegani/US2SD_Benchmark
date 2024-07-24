@@ -1,0 +1,28 @@
+@startuml
+actor Manager as M
+participant "Management Interface" as MI
+participant "Order Management System" as OMS
+participant "Database" as DB
+
+M -> MI : Request to edit order
+activate MI
+MI -> OMS : Retrieve order details
+activate OMS
+OMS -> DB : Query order info
+activate DB
+DB -> OMS : Return order info
+deactivate DB
+OMS -> MI : Display order details
+deactivate OMS
+M -> MI : Provides new order details
+MI -> OMS : Send updated order info
+activate OMS
+OMS -> DB : Update order in DB
+activate DB
+DB --> OMS : Confirmation of update
+deactivate DB
+OMS --> MI : Confirm order updated
+deactivate OMS
+MI --> M : Display success message
+deactivate MI
+@enduml

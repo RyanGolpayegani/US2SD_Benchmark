@@ -1,0 +1,42 @@
+Generating a detailed sequence diagram for the given user story, "As a supervisor, I want to view what my researchers were doing on a given date or period of episode," involves several steps and interactions between components. Below is a PlantUML representation of these interactions. This diagram assumes the existence of certain components and actions like authentication, request handling, data fetching, and presentation based on your project description. Adjustments may be required based on the actual architecture and functionality of your Neurohub platform.
+
+```plantuml
+@startuml
+
+actor Supervisor
+boundary WebUI
+control SystemController
+entity Database
+control Authentication
+boundary ReportModule
+database DataRepository
+
+Supervisor -> WebUI : Navigate to Activity Monitoring
+WebUI -> SystemController : Request Login
+System a: Supervisor is Logged in
+SystemController -> Authentication : Verify Supervisor Identification
+Authentication -> SystemController : Confirmation of Supervisor Role
+
+Supervisor -> WebUI : Selects View Researchers' Activity
+WebUI -> SystemController : Request for Date/Period
+SystemController -> Database : Fetch Activity Data
+Database -> DataRepository : Query by Date/Period
+DataRepository -> Database : Return Results
+
+Database -> SystemController : Activity Data
+SystemController -> ReportModule : Prepare Activity Report
+ReportModule -> SystemController : Activity Report
+
+SystemController -> WebUI : Display Activity Report
+WebUI -> Supervisor : Show Activity for Given Date/Period
+
+@enduml
+```
+
+This sequence diagram starts with the supervisor navigating to the Activity Monitoring page in the web interface (WebUI) and requesting to login (assuming authentication is necessary for access). The `SystemController` handles the request, verifying the supervisor's identity through an `Authentication` module. Upon successful authentication and confirmation of the supervisor's role, the supervisor can select to view researchers' activity.
+
+The supervisor inputs a date or range of dates to view activity within that period. The `SystemController` requests this data from a `Database`, which in turn queries a `DataRepository` to find all relevant activity logged in that timeframe. Once the query is resolved, the results are passed back up to the `SystemController`, which utilizes a `ReportModule` to prepare the activity report in a consumable format.
+
+Finally, the `SystemController` sends the prepared report back to the WebUI, which displays it to the supervisor. This allows the supervisor to see what their researchers were doing on the given date or period of time, fulfilling the user story requirement.
+
+Note: The actual implementation details and component names in your system may vary, so adjustments to this UML diagram might be needed to align with your platform's architecture and naming conventions.

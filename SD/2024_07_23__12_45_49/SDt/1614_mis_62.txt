@@ -1,0 +1,28 @@
+@startuml
+participant Superuser as user
+participant "Authentication System" as auth
+participant "Superuser Scope" as superScope
+participant "EDRMS Interface" as interface
+
+== Enter Superuser Scope ==
+user -> auth : Enter credentials
+auth -> superScope : Validate credentials
+activate superScope
+superScope --> user : Access Granted
+user -> interface : Access Superuser Functions
+activate interface
+interface -> superScope : Fetch Superuser Privileges
+superScope --> interface : Privileges Listed
+interface --> user : Display Superuser Interface
+
+== Exit Superuser Scope ==
+user -> interface : Exit Superuser Mode
+deactivate interface
+interface -> superScope : Logout
+deactivate superfittingScope
+superScope --> user : Confirmation
+user --> auth : Logout
+deactivate auth
+auth --> user : Logged Out
+
+@enduml

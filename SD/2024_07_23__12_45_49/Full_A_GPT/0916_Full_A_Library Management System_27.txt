@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram for calculating fees for late book returns in a library management system requires outlining the interaction between various system components and the librarian. Since PlantUML does not directly translate into graphic images here, I'll provide you with a textual representation of how this could be crafted in PlantUML syntax. This code can be used in a PlantUML environment or online editor to visualize the sequence diagram.
+
+```plantuml
+@startuml
+participant Librarian as librarian
+participant "Library Management\nSystem" as system
+database "Database" as db
+
+librarian -> system : Enter return details\n(Book ID, Member ID)
+system -> db : Retrieve book information\n(Original due date)
+db -> system : Return book information
+system -> db : Retrieve current date
+db -> system : Return current date
+system -> system : Calculate overdue days\n(Current date - Original due date)
+system -> db : Retrieve fee per day
+db -> system : Return fee per day
+system -> system : Calculate total fee\n(Overdue days * Fee per day)
+system --> librarian : Display total fee
+
+@enduml
+```
+
+#### Explanation:
+
+1. **Librarian to Library Management System:** The librarian initiates the process by entering the return details, including the Book ID and Member ID, into the Library Management System (LMS).
+
+2. **Library Management System to Database:** The LMS retrieves the book information, including the original due date for the book, from the database.
+
+3. **Database to Library Management System (Book Information):** The database returns the book information to the LMS.
+
+4. **Library Management System to Database (Current Date):** The LMS requests the current date from the database to determine if the book return is late.
+
+5. **Database to Library Management System (Return Current Date):** The database provides the current date to the LMS.
+
+6. **Library Management System Internal Calculation (Overdue Days):** The LMS calculates the number of overdue days by subtracting the original due date from the current date.
+
+7. **Library Management System to Database (Retrieve Fee Per Day):** The LMS asks the database for the fee charged per day for late returns.
+
+8. **Database to Library Management System (Return Fee Per Day):** The database returns the daily late fee information to the LMS.
+
+9. **Library Management System Internal Calculation (Total Fee):** The LMS calculates the total fee by multiplying the number of overdue days by the daily late fee.
+
+10. **Library Management System to Librarian (Display Total Fee):** Finally, the LMS displays the total fee due for the delayed book return to the librarian.
+
+This sequence diagram covers the interaction flow for calculating fees for late book returns from the librarian's perspective, highlighting the communication between the librarian, the Library Management System, and the underlying database.

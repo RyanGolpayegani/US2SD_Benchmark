@@ -1,0 +1,32 @@
+@startuml
+participant StaffMember as staff
+participant "Meeting Scheduler" as scheduler
+participant "Database" as db
+participant "Notification System" as notif
+participant Participant as participant
+
+== Schedule Meeting ==
+staff->scheduler: Access Meeting Scheduler
+activate scheduler
+
+scheduler->staff: Show Meeting Form
+staff->scheduler: Submit Meeting Details
+activate db
+
+scheduler->db: Save Meeting Information
+db->scheduler: Confirm Meeting Saved
+
+scheduler->notif: Prepare Meeting Invitations
+activate notif
+
+notif->participant: Send Meeting Invitation
+participant->notif: Confirm Receipt
+
+notif->scheduler: Confirm Invitations Sent
+scheduler->staff: Meeting Scheduled Successfully
+
+deactivate scheduler
+deactivate db
+deactivate notif
+
+@enduml

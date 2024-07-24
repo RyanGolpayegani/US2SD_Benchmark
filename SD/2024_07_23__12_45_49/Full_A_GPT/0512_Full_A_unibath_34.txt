@@ -1,0 +1,50 @@
+Creating a detailed Sequence Diagram for the user story provided involves various actors and systems. Since the actual implementation details might vary, the following PlantUML code is a generalized approach to visualize the process described in the user story.
+
+```plantuml
+@startuml
+actor "Research Facility Manager" as manager
+entity "Research Data \nManagement Platform" as platform
+database "Bath Data Archive" as archive
+entity "University IT \nInfrastructure" as IT
+entity "API" as api
+
+manager -> platform : Login to the platform
+activate platform
+
+platform -> platform : Authenticate and authorize manager
+platform <-- manager : Select 'Deposit Data' option
+
+manager -> platform : Fill in data submission form
+activate platform
+platform -> platform : Validate submission form
+
+platform -> api : Call API to deposit data
+activate api
+api -> archive : Store data in archive
+activate archive
+archive --> api : Confirm data stored
+deactivate archive
+api --> platform : Data deposit successful
+deactivate api
+
+platform -> IT : Sync with University systems
+activate IT
+IT --> platform : Sync complete
+deactivate IT
+
+platform -> archive : Generate DOI for dataset
+activate archive
+archive -> archive : Link DOI to data
+archive --> platform : DOI generated and linked
+deactivate archive
+
+platform <-- manager : Receive confirmation \nand DOI link
+deactivate platform
+
+manager -> platform : Logout
+@enduml
+```
+
+This sequence diagram starts with the research facility manager logging into the Enhanced Research Data Management Platform and proceeds through the steps of depositing data directly into the Bath Data Archive on behalf of researchers. The sequence includes validating the data submission form, calling the platform's API to store the data in the archive, syncing with the University's IT infrastructure for data integrity, and generating a DOI (Digital Object Identifier) for the dataset, which finalizes the deposit process. The manager then receives a confirmation along with the DOI link before logging out.
+
+The diagram assumes the existence of backend processes like API interactions, data validation, DOI generation, and IT infrastructure synchronization which would be essential components of such a platform as described in the project overview.

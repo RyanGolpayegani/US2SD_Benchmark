@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+actor ZooniverseAdmin as "Zooniverse Admin"
+participant "AMIDP Interface" as Interface
+participant "Content Management System" as CMS
+participant "AI Analysis Module" as AI
+participant "Database" as DB
+participant "User Notification System" as Notification
+
+== Automatic Detection of Plankton Characteristics ==
+
+ZooniverseAdmin -> Interface: Request automatic detection in Plankton Portal images
+Interface -> CMS: Fetch selected images
+CMS -> AI: Send images for analysis
+AI -> AI: Detect plankton size and orientation
+AI -> CMS: Return analysis results
+CMS -> DB: Store analysis results
+DB -> Interface: Confirm storage of results
+Interface -> ZooniverseAdmin: Display analysis results
+ZooniverseAdmin -> Interface: Request notification for volunteers
+Interface -> Notification: Prepare notification content
+Notification -> DB: Log notification activity
+Interface -> Notification: Send notification to relevant volunteers
+Notification -> ZooniverseAdmin: Confirm notifications sent
+
+@enduml

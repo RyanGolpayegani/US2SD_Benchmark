@@ -1,0 +1,48 @@
+@startuml
+
+participant Researcher as R
+participant "Web Interface" as WI
+participant "Backend System" as BS
+participant "Data Storage" as DS
+
+R->WI: Accesses Neurohub web interface
+activate WI
+
+WI->WI: Authenticate researcher
+note right of WI: Authentication process involved
+
+WI->BS: Request upload form
+activate BS
+BS->WI: Provide upload form
+deactivate BS
+
+R->WI: Submits files for upload
+WI->BS: Initiate file upload
+activate BS
+
+BS->DS: Store files temporarily
+activate DS
+DS->BS: Confirm files stored
+deactivate DS
+
+BS->WI: Generate upload confirmation
+deactivate BS
+WI->R: Display confirmation message
+deactivate WI
+
+R->WI: Requests to attach files to a logbook page
+activate WI
+WI->BS: Request file attachment process
+activate BS
+BS->DS: Attach files to logbook page
+activate DS
+DS->DS: Update metadata with logbook reference
+DS->BS: Confirm attachment successful
+deactivate DS
+
+BS->WI: Confirm attachment to R
+deactivate BS
+WI->R: Show success message
+deactivate WI
+
+@enduml

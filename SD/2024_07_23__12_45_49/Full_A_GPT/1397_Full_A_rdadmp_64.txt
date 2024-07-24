@@ -1,0 +1,38 @@
+Creating a detailed sequence diagram for the described user story involves outlining the various system interactions from the perspective of the data manager. The sequence diagram will depict the steps a data manager takes to verify if all necessary information for data re-use is available. This includes interactions with the Comprehensive Data Management Planning Tool (DMPTool) and potentially other components or actors like researchers, metadata tools, and repositories.
+
+```plantuml
+@startuml
+actor DataManager as "Data Manager"
+participant DMPTool as "DMPTool"
+participant MetadataTool as "Metadata Tool"
+participant Repository as "Repository"
+
+DataManager -> DMPTool : Request data re-use information
+activate DMPTool
+
+DMPTool -> MetadataTool : Fetch metadata details
+activate MetadataTool
+MetadataTool --> DMPTool : Metadata details
+deactivate MetadataTool
+
+DMPTool -> Repository : Query for data availability
+activate Repository
+Repository --> DMPTool : Data availability status
+deactivate Repository
+
+DMPTool -> DMPTool : Check for completeness of re-use information
+activate DMPTool
+DMPTool --> DataManager : Status of necessary information for data re-use
+deactivate DMPTool
+
+@enduml
+```
+
+### Explanation
+1. **Data Manager Request**: The sequence starts with the Data Manager making a request to the DMPTool to know which information is necessary for re-using the data. This initiates the process.
+2. **Fetch Metadata Details**: DMPTool then interacts with an external Metadata Tool (if such integration exists) to fetch detailed metadata about the dataset in question. This could involve extracting information like data formats, access conditions, and any necessary documentation that accompanies the data.
+3. **Query Repository for Availability**: Next, DMPTool queries the Repository to check the availability of the data set for re-use. This step ensures that the data indeed exists and is accessible for future researchers.
+4. **Check for Completeness**: DMPTool internally checks if all the necessary information for re-using the data is complete and available. This could involve verifying that all ethical approvals, consent forms (if applicable), and access details are fully documented.
+5. **Inform Data Manager**: Finally, the DMPTool provides feedback to the Data Manager regarding the status of the necessary information for data re-use. If any information is missing or incomplete, the Data Manager might take further steps to ensure compliance and completeness.
+
+This sequence diagram illustrates the basic interactions involved in verifying the availability and completeness of data re-use information. Depending on the specifics of the DMPTool and the organization's processes, additional steps or actors (e.g., IT Managers, Legal Officers) might also be involved in more complex scenarios.

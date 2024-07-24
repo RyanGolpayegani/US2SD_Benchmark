@@ -1,0 +1,33 @@
+Creating a detailed sequence diagram to outline the process where a researcher wants to promote or share their work through interactive maps involves multiple entities such as the researcher, the repository system's interface, the content management system (CMS), and possibly external services for map visualization. Given the complexity of such a feature, I'll provide a simplified PlantUML code sequence to illustrate a possible interaction.
+
+Please note, for a comprehensive implementation, the sequence could be more complex, involving additional authentication steps, error handling, and metadata enrichment processes. Here's a basic representation:
+
+```plantuml
+@startuml
+
+participant Researcher as res
+participant "Digital Repository System\nInterface" as ui
+participant CMS as cms
+participant "Map Visualization\nService" as mapSvc
+
+res -> ui : Access "Share Work" feature
+ui -> cms : Request to upload work with geographic data
+activate cms
+res -> cms : Upload work & metadata including geographic identifiers
+cms -> mapSvc : Send geographic data for map visualization
+activate mapSvc
+mapSvc -> mapSvc : Generate interactive map
+mapSvc -> cms : Return map visualization link
+deactivate mapSvc
+cms -> ui : Present confirmation with map link
+ui -> res : Display confirmation & interactive map link
+deactivate cms
+
+@enduml
+```
+
+This sequence diagram starts with the **Researcher** accessing the "Share Work" feature on the **Digital Repository System Interface**. The system's interface communicates with the **CMS** to initiate the upload process for the researcher's work, including any metadata that is pertinent to geographic data.
+
+The **Researcher** uploads their work and the necessary metadata through the CMS, which in turn sends the geographic data to a **Map Visualization Service**. This service is responsible for generating an interactive map based on the provided data. Once the map is generated, the visualization service sends a link back to the CMS, which then presents a confirmation to the researcher through the system's interface, including the link to the newly created interactive map.
+
+This simplification assumes direct interactions without considering the authentication and authorization processes, error handling, and the nuanced steps for metadata processing and mapping configuration. Depending on the specific requirements and existing infrastructure at Cornell, additional components or steps might be necessary, such as leveraging APIs for tighter integration with existing university systems or more detailed interactions to configure the specifics of the map visualization (e.g., setting zoom levels, defining map markers, or adding legends and other descriptive elements to the map).

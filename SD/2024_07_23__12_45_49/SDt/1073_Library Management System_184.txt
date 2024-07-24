@@ -1,0 +1,23 @@
+@startuml
+actor Visitor
+participant "Web Frontend" as WF
+participant "Recommendation Engine" as RE
+participant "Book Database" as BD
+
+Visitor -> WF: Access random book suggestion feature
+WF -> RE: Request random book
+RE -> BD: Fetch all book IDs
+BD --> RE: List of all book IDs
+RE -> RE: Select random book ID from list
+RE -> BD: Fetch details for random book ID
+BD --> RE: Book details
+
+alt Book Details Available
+    RE --> WF: Show book details to Visitor
+    WF --> Visitor: Display random book suggestion
+else No Book Details Available
+    RE --> WF: Show error message
+    WF --> Visitor: Display error message
+end
+
+@enduml

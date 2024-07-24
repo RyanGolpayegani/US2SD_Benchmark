@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the given user story involving a repository owner using the DMPTool involves several actors and components. Below is a PlantUML representation that encapsulates the process of checking data provenance and calculating submission fees.
+
+```plantuml
+@startuml
+
+actor RepositoryOwner as "Repository Owner"
+participant "DMPTool Interface" as Interface
+participant "DMP Database" as DMPDB
+participant "Provenance Checker" as Provenance
+participant "Fee Calculator" as Calculator
+
+== Checking Planned Provenance & Calculating Submission Fees ==
+
+RepositoryOwner -> Interface : Accesses DMPTool
+Interface -> DMPDB : Retrieve project DMP
+DMPDB --> Interface : Return DMP data
+Interface --> RepositoryOwner : Show DMP data including provenance
+
+RepositoryOwner -> Interface : Request provenance check
+Interface -> Provenance : Validate provenance data
+Provenance -> DMPDB : Access relevant metadata
+DMPDB --> Provenance : Provide metadata
+Provenance --> Interface : Return check results
+
+alt Provenance is Valid
+  Provenance --> RepositoryOwner : Confirm data is within target group
+  RepositoryOwner -> Interface : Request submission fee calculation
+  Interface -> Calculator : Calculate fees based on DMP data
+  Calculator -> DMPDB : Retrieve additional data if needed
+  DMPDB --> Calculator : Provide data
+  Calculator --> Interface : Return calculated fees
+  Interface --> RepositoryOwner : Display submission fees
+else Provenance is Invalid
+  Provenance --> RepositoryOwner : Data not within target group
+end
+
+@enduml
+```
+
+This sequence diagram starts with the Repository Owner accessing the DMPTool Interface to review a project's Data Management Plan (DMP). The Interface retrieves the DMP from the DMP Database. The Repository Owner can check the planned provenance of the data from the DMP data displayed. If the owner decides to validate the provenance, the Interface communicates with a Provenance Checker component, which validates the data against relevant metadata in the DMP Database and returns the results. If the provenance is confirmed, the Repository Owner may request a calculation of the necessary submission fees. The Interface communicates with a Fee Calculator component, which calculates the fees based on the DMP data and possibly additional data retrieved from the DMP Database, and then displays the fees to the Repository Owner.
+
+This representation is simplified to focus on the specific user story and may not cover all possible intricacies and error handling present in a real-world application.

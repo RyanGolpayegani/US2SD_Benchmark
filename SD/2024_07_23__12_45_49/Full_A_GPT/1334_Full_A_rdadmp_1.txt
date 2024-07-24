@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the described user story, "As a Principal Investigator (PI), I want to properly record all metadata so that I can ensure the proper running of the project in case of staff changes," involves illustrating the interactions between the PI, the DMPTool, and potentially other systems or stakeholders involved in the process of recording metadata. This sequence will capture the steps right from the initial login to the final confirmation of recorded metadata.
+
+Given the complexity and the wide range of features of the DMPTool as described in the project overview, the following is a simplified PlantUML sequence diagram that captures the essence of the user story:
+
+```plantuml
+@startuml
+actor PI
+participant "DMPTool Interface" as Interface
+participant "Metadata Recording Module" as MetadataModule
+participant "Institutional System" as InstitutionalSys
+participant "External Metadata Tools" as ExternalTools
+participant "Data Repository" as Repository
+
+== Metadata Recording Process ==
+PI -> Interface : Login
+activate Interface
+Interface -> MetadataModule : Initiate Metadata Recording
+activate MetadataModule
+MetadataModule -> InstitutionalSys : Fetch PI Project Information
+activate InstitutionalSys
+InstitutionalSys --> MetadataModule : Return Project Info
+deactivate InstitutionalSys
+MetadataModule -> ExternalTools : Import Existing Metadata
+activate ExternalTools
+ExternalTools --> MetadataModule : Return Imported Metadata
+deactivate ExternalTools
+MetadataModule -> MetadataModule : Merge Metadata
+PI -> MetadataModule : Enter/Update Metadata
+MetadataModule -> Repository : Verify Data Provenance
+activate Repository
+Repository --> MetadataModule : Provenance OK
+deactivate Repository
+MetadataModule --> Interface : Display Metadata Summary
+PI -> Interface : Submit Metadata
+Interface -> MetadataModule : Confirm Metadata Recording
+MetadataModule -> MetadataModule : Generate Metadata ID/Record
+MetadataModule --> PI : Confirm Metadata Recorded
+deactivate MetadataModule
+deactivate Interface
+@enduml
+```
+
+### Explanation:
+- **PI**: The Principal Investigator initiates the process by logging into the DMPTool Interface.
+- **DMPTool Interface**: Serves as the primary interaction point for the PI to start the metadata recording process.
+- **Metadata Recording Module**: This module facilitates the main functionalities related to capturing, merging, and validating metadata.
+- **Institutional System**: Might be used to fetch existing project information related to the PI to avoid redundancy and ensure accuracy.
+- **External Metadata Tools**: Represents any external systems from which existing metadata could be imported to enrich or complement the current project metadata.
+- **Data Repository**: Engaged to verify data provenance as part of ensuring the integrity and compliance of the recorded metadata.
+- **Process Flow**: The sequence starts with the PI logging in and progresses through initiating metadata recording, fetching, and importing existing data, merging metadata, validating data provenance, and finally, confirming the recording of metadata.
+
+This diagram represents a high-level interaction overview. Depending on the project requirements and technical specifics, more detailed interactions or steps might need to be added, such as handling errors, more intricate data validation processes, or detailed interactions between systems for metadata import and verification.

@@ -1,0 +1,47 @@
+To fulfill your request for a detailed sequence diagram for the user story "As a parent, I want to be able to enroll my children, so that they can be admitted to camp," using PlantUML syntax, see the example below. This example outlines the parent's interaction with the Camp Management & Communication Platform for enrolling a child into the camp, along with the system's internal processes for registration.
+
+```plantuml
+@startuml
+participant Parent as parent
+participant "Registration Interface" as regInterface
+participant "Camp Database" as db
+participant "Payment System" as paySys
+participant "Confirmation System" as confSys
+
+parent -> regInterface : Accesses Registration Portal
+regInterface -> db : Retrieve available slots/sessions
+db -> regInterface : Response with slots/sessions
+regInterface -> parent : Display available options
+
+parent -> regInterface : Selects session and enters child details
+regInterface -> db : Check for duplicate
+alt if duplicate found
+  db -> regInterface : Duplicate Error
+  regInterface -> parent : Show error, ask to modify details
+else no duplicate
+  db -> regInterface : Proceed to payment
+  regInterface -> parent : Redirect to Payment Gateway
+end
+
+parent -> paySys : Makes payment
+paySys -> db : Payment Confirmation
+db -> confSys : Trigger confirmation process
+
+confSys -> db : Generate enrollment record
+db -> confSys : Enrollment record saved
+
+confSys -> parent : Send enrollment confirmation email/SMS
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Parent and Registration Interface:** The sequence begins with the parent accessing the registration portal, which then queries the camp database for available slots or sessions. The options are presented to the parent.
+
+2. **Selection and Payment:** After the parent selects a session and enters the child's details, the system checks for duplicates. If none are found, the process moves forward to payment.
+
+3. **Payment Gateway:** The parent is redirected to the payment system where the payment is made. Upon successful payment, the payment system notifies the camp database.
+
+4. **Confirmation System:** The camp database triggers the confirmation system to generate an enrollment record, which is saved. The confirmation system then sends a confirmation message to the parent, indicating successful enrollment.
+
+This sequence diagram provides a straightforward representation of the enrollment process from the parent's perspective, highlighting interactions with the system's components essential for admitting a child to the camp.

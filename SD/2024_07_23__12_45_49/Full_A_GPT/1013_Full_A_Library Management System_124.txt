@@ -1,0 +1,46 @@
+Given the complexities involved in generating a fully detailed sequence diagram for the specified user story in the Comprehensive Library Management System (CLMS), we'll focus on the key interactions that would occur between various components of the system. This will illustrate how the request from a library manager for statistical information on book popularity flows through the system.
+
+Please note, this assumes familiarity with PlantUML syntax and represents a relatively high-level overview. For a real-world application, each of these interactions would likely be more complex.
+
+```plantuml
+@startuml
+actor "Library Manager" as manager
+participant "Web Interface" as web
+participant "Controller" as controller
+participant "StatisticsService" as stats
+database "LibraryDB" as db
+participant "ReportingTool" as report
+
+manager -> web : Request popularity statistics
+web -> controller : GetBookPopularityStats()
+controller -> stats : CalculatePopularity()
+stats -> db : Query book borrow history
+db --> stats : Return history data
+stats -> stats : Process data into statistics
+stats --> controller : Return statistics
+controller -> report : GeneratePopularityReport(statistics)
+report -> report : Create report format
+report --> controller : Report ready
+controller --> web : Display report
+web --> manager : Show book popularity report
+
+@enduml
+```
+
+### Explanation:
+
+1. **Library Manager Request:** The library manager requests book popularity statistics through the system's web interface (user-facing frontend).
+
+2. **Web Interface to Controller:** The request is sent from the web interface to the backend controller, which acts as an intermediary for processing the request.
+
+3. **Controller Initiates Calculation:** The controller requests the `StatisticsService` to calculate book popularity. This service is responsible for handling statistical calculations and analysis.
+
+4. **Data Query from Database:** The `StatisticsService` queries the LibraryDB for book borrow history, which serves as raw data for calculating popularity.
+
+5. **Processing Data:** Once the raw data is retrieved, `StatisticsService` processes it to generate meaningful statistics about book popularity.
+
+6. **Generate Report:** The processed statistics are sent to a `ReportingTool` component, which formats these statistics into a comprehensive report for the library manager.
+
+7. **Display Report:** Once the report is prepared, it's sent back through the chain to the web interface, which then displays the book popularity report to the library manager.
+
+This sequence diagram represents a simplified flow but captures the essence of how the CLMS could handle a request for book popularity statistics from the library manager, facilitating informed decisions regarding library arrangement and resource allocation.

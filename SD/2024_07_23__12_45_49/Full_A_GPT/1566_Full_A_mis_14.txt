@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram for the given user story "As a collection curator, I want to lift an embargo for an object in a simple way" involves illustrating the interactions between the curator, the digital repository management system (EDRMS), and possibly other systems or components involved in the process of lifting an embargo. Below is a simplified representation of this process in PlantUML format:
+
+```plantuml
+@startuml
+participant Curator
+participant "EDRMS Interface" as Interface
+participant "Authentication Module" as Auth
+participant "Embargo Management" as Embargo
+participant "Repository Database" as Database
+
+Curator -> Interface : Request to lift embargo\n[Object ID]
+Interface -> Auth : Validate Curator
+Auth --> Interface : Validation Success
+
+Interface -> Embargo : Check current embargo status\n[Object ID]
+Embargo -> Database : Retrieve object embargo details\n[Object ID]
+Database --> Embargo : Object details & embargo status
+Embargo --> Interface : Embargo details presented\nto Curator
+
+Curator -> Interface : Confirm lifting of embargo
+Interface -> Embargo : Initiate embargo lift\n[Object ID]
+Embargo -> Database : Update embargo status\n[Object ID, New Status: None]
+Database --> Embargo : Update confirmation
+Embargo --> Interface : Embargo lift successful
+Interface --> Curator : Confirmation of embargo lift
+@enduml
+```
+
+This sequence diagram demonstrates the basic steps a collection curator would follow to lift an embargo from an object within the Enhanced Digital Repository Management System (EDRMS). Here is a brief walkthrough:
+
+1. **Curator Request**: The curator requests to lift an embargo on an object by identifying it (e.g., through an Object ID) via the EDRMS user interface.
+
+2. **Authentication**: The system validates the curator's credentials to ensure that they have the necessary permissions to make changes to embargo statuses.
+
+3. **Embargo Status Check**: Before lifting the embargo, the current status of the object is checked to verify that it is indeed under embargo and to retrieve any relevant details necessary for the curator to make an informed decision.
+
+4. **Confirmation**: The curator confirms their intention to lift the embargo after reviewing its details.
+
+5. **Embargo Lift Process**: The system processes the request to lift the embargo, updating the object's status in the repository database to reflect that it is no longer under embargo.
+
+6. **Confirmation of Lift**: The curator receives confirmation that the embargo has been successfully lifted, completing the process.
+
+The sequence diagram is simplified and does not cover potential error handling or more sophisticated security checks that might be necessary in a real-world scenario. However, it does outline the primary interactions required to support the described user story within an Enhanced Digital Repository Management System.

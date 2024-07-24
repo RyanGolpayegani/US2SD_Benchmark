@@ -1,0 +1,42 @@
+@startuml
+participant Administrator as admin
+participant "Camp Management\nPlatform" as platform
+database Database
+
+admin -> platform : Access camper profiles
+platform -> Database : Fetch camper information
+Database -> platform : Camper details
+platform -> admin : Display camper profiles
+
+admin -> platform : Request submitted forms list
+platform -> Database : Query submitted forms by camper
+Database -> platform : List of forms per camper
+platform -> admin : Display submitted forms
+
+group Form Submission
+    participant Parent as parent
+    participant "Camper" as camper
+
+    alt If Parent submits
+        parent -> platform : Log in
+        platform -> parent : Authentication success
+        parent -> platform : Submit forms for camper
+        platform -> Database : Update form submission status
+        Database -> platform : Confirmation of submission
+        platform -> parent : Display submission success
+    else If Camper submits
+        camper -> platform : Log in
+        platform -> camper : Authentication success
+        camper -> platform : Submit forms
+        platform -> Database : Update form submission status
+        Database -> platform : Confirmation of submission
+        platform -> camper : Display submission success
+    end
+end
+
+admin -> platform : Request updated forms list
+platform -> Database : Query updated forms by camper
+Database -> platform : Updated list of forms per camper
+platform -> admin : Display updated forms
+
+@enduml

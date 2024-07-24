@@ -1,0 +1,34 @@
+@startuml
+actor Administrator
+participant "Feedback \n Module" as FeedbackModule
+participant "Scheduling \n System" as SchedulingSystem
+participant Database
+participant "Parent \n Portal" as ParentPortal
+actor Parent
+
+== Setup Bi-Weekly Feedback ==
+Administrator -> FeedbackModule : scheduleBiWeeklyFeedback()
+FeedbackModule -> SchedulingSystem : triggerIntervalSetups()
+SchedulingSystem --> FeedbackModule : confirmSchedule()
+FeedbackModule --> Administrator : scheduleConfirmation()
+
+== Generate Feedback ==
+loop Every Two Weeks
+    SchedulingSystem -> FeedbackModule : triggerFeedbackGenerationEvent()
+    FeedbackModule -> Administrator : promptFeedbackInput()
+    Administrator -> FeedbackModule : submitFeedbackDetails(camperId, feedbackText)
+    FeedbackModule -> Database : saveFeedback(camperId, feedbackText)
+    Database --> FeedbackModule : feedbackSavedConfirmation()
+
+    == Notify Parent about Feedback ==
+    FeedbackModule -> ParentPortal : notifyParent(camperId)
+    ParentPortal -> Parent : displayNotification()
+end
+
+Parent -> ParentPortal : login()
+Parent -> ParentPortal : viewFeedback(camperId)
+ParentPortal -> Database : fetchFeedback(camperId)
+Database --> ParentPortal : returnFeedbackDetails()
+ParentPortal --> Parent : displayFeedbackDetails()
+
+@enduml

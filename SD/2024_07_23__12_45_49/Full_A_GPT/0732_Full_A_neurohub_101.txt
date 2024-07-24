@@ -1,0 +1,47 @@
+To depict the user story of a researcher wanting to have a group-level repository for sharing papers, reviews, and comments with other researchers in the form of a sequence diagram using Plant UML, consider the following simplified example. This sequence diagram assumes an interaction where a researcher uploads a document, adds metadata/reviews, and then shares it with the group. Note that the actual implementation details can be more complex and may require authentication, error handling, and other considerations.
+
+```plantuml
+@startuml
+actor Researcher as res
+participant "Web Interface" as web
+participant "Neurohub API" as api
+database "Group Repository" as repo
+
+== Upload Document ==
+res -> web : Select document to upload
+web -> api : Upload request (document)
+api -> repo : Save document
+repo --> api : Acknowledgement
+api --> web : Upload success
+web --> res : Display success message
+
+== Add Metadata/Review ==
+res -> web : Add metadata/review
+web -> api : Submit metadata/review
+api -> repo : Update document details
+repo --> api : Acknowledgement
+api --> web : Update success
+web --> res : Display success message
+
+== Share with Group ==
+res -> web : Share document request
+web -> api : Share document (group ID)
+api -> repo : Update access control
+repo --> api : Acknowledgement
+api --> web : Sharing success
+web --> res : Display success message
+
+@enduml
+```
+
+This sequence diagram is a high-level representation. Here are some key aspects of it:
+
+1. **Researcher Actions (Actor)**: This is the user or actor initiating actions, such as uploading documents, adding metadata/reviews, and sharing documents with a group.
+
+2. **Web Interface (Participant)**: Acts as the intermediary for user interactions. It receives requests from the researcher and communicates with the Neurohub API.
+
+3. **Neurohub API (Participant)**: Processes requests from the web interface, handling the logic for uploading, updating, and sharing documents within the group repository.
+
+4. **Group Repository (Database)**: This is where documents, metadata, reviews, and access controls are stored. It responds to API requests to store, update, and manage documents.
+
+Remember, depending on the project specifics, you might need to adjust the diagram to include additional steps, such as authentication (login/logout), error handling mechanisms, and detailed interactions for metadata and review management. Also, elaborate on the integration points with other systems if such interactions are necessary for the project scenario described.

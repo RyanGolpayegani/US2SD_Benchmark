@@ -1,0 +1,49 @@
+@startuml
+participant OlderPerson
+participant ALFRED_UI as "ALFRED User Interface"
+participant ALFRED_System as "ALFRED System"
+participant GamesDatabase as "Games Database/Service"
+participant ContentProvider as "Sports Content Provider"
+
+== Initiate Request for Games Involving Favourite Sports ==
+
+OlderPerson -> ALFRED_UI: Request games featuring favourite sports
+activate ALFRED_UI
+
+ALFRED_UI -> ALFRED_System: Parse voice/text input for favourite sports
+activate ALFRED_System
+
+ALFRED_System -> GamesDatabase: Query available games with specified sports
+activate GamesDatabase
+
+GamesDatabase --> ALFRED_System: Return list of available games
+deactivate GamesDatabase
+
+ALFRED_System -> ContentProvider: Request additional content for specified sports (if necessary)
+activate ContentProvider
+
+ContentProvider --> ALFRED_System: Provide sports content and integration details
+deactivate ContentEmergency
+
+ALFRED_System --> ALFRED_UI: Compile and deliver game options with sports content
+ALFRED_UI --> OlderPerson: Display game options including favourite sports
+deactivate ALFRED_System
+
+== User Selection of a Game ==
+
+OlderPerson -> ALFRED_UI: Select a game from options
+ALFRED_UI -> ALFRED_System: Transmit game selection and user details for access/permissions setup
+activate ALFRED_System
+
+ALFRED_System -> GamesDatabase: Setup access and permissions for the selected game
+activate GamesDatabase
+
+GamesDatabase --> ALFRED_System: Confirm game access and permissions setup
+deactivate GamesDatabase
+
+ALFRED_System --> ALFRED_UI: Confirm setup and provide instructions/start game
+ALFRED_UI --> OlderPerson: Start selected game
+deactivate ALFRED_UI
+deactivate ALFRED_System
+
+@enduml

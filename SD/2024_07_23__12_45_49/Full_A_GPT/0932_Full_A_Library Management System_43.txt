@@ -1,0 +1,35 @@
+Creating a sequence diagram in PlantUML for the described user story involves depicting the interaction between various system components when a librarian wants to delete a book from the library. This process typically involves the librarian accessing the library management system, selecting a book to delete, and the system updating the database accordingly.
+
+Below is the PlantUML code that outlines these interactions:
+
+```plantuml
+@startuml
+actor Librarian as librarian
+participant "Library Management\nSystem" as system
+database "Library Database" as db
+
+librarian -> system : Access system
+note right: Librarian logs into the system\nand navigates to book management section.
+librarian -> system : Select "Delete Book"
+note right: Librarian searches and selects\nthe book to be deleted.
+system -> db : Query book existence
+note right: System checks if the book exists\nand is not currently borrowed.
+db --> system : Book data
+alt Book is eligible for deletion
+  librarian -> system : Confirm deletion
+  system -> db : Delete book record
+  db --> system : Confirm deletion
+  system --> librarian : Show success message
+else Book is not eligible for deletion
+  system --> librarian : Show error message (e.g., Book is borrowed)
+end
+
+@enduml
+```
+
+To visualize this PlantUML code:
+1. Copy the provided code.
+2. Use any PlantUML editor or an online tool like PlantText (https://www.planttext.com/) or PlantUML QEditor.
+3. Paste the code into the editor and generate the diagram.
+
+This sequence diagram represents a simplified interaction flow and can be expanded based on additional requirements or details such as error handling for situations where the book cannot be found or deletion is not allowed due to system constraints.

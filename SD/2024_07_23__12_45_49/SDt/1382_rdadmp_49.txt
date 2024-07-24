@@ -1,0 +1,37 @@
+@startuml
+participant Funder
+participant DMPTool
+database Repositories
+participant DMP
+participant ComplianceService
+
+== Funder Starts Compliance Check ==
+
+Funder -> DMPTool : Request repositories from DMP
+activate DMPTool
+
+DMPTool -> DMP : Fetch Repository Details
+activate DMP
+DMP --> DMPTool : Repository List
+deactivate DMP
+
+DMPTool -> Funder : Show Repository List
+Funder -> DMPTool : Select repositories for verification
+activate Repositories
+
+DMPTool -> Repositories : Query repositories data
+Repositories --> DMPTool : Repositories Data
+deactivate Repositories
+
+DMPTool -> ComplianceService : Verify compliance with funding rules
+activate ComplianceService
+ComplianceService -> Repositories : Check data against funding rules
+Repositories --> Compliance2005Service : Validation Response
+Deactivate ComplianceService
+
+ComplianceService --> DMPTool : Compliance Report
+DMPTool --> Funder : Show Compliance Report
+
+== End of Process ==
+
+@enduml

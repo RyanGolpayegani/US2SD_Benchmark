@@ -1,0 +1,32 @@
+@startuml
+participant User as RM
+participant "Dashboard UI" as UI
+participant "Collections Management Service" as CMS
+participant "Storage Service" as SS
+participant "Statistics Service" as STS
+
+RM -> UI: Request to view dashboard
+activate UI
+
+UI -> CMS: Get list of collections
+activate CMS
+CMS --> UI: Return list of collections
+deactivate CMS
+
+UI -> STS: Request statistics for each collection
+activate STS
+
+loop for each collection
+    STS -> CMS: Get number of items in collection
+    CMS --> STS: Return item count
+
+    STS -> SS: Get storage consumed by collection
+    SS --> STS: Return storage size
+end
+
+STS --> UI: Return statistics (items, storage, activity visualization)
+deactivate STS
+
+UI -> RM: Display dashboard with statistics
+deactivate UI
+@enduml

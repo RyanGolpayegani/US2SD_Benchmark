@@ -1,0 +1,48 @@
+To generate a detailed sequence diagram for the user story "As a member, I want to have a wish list" using PlantUML, we need to illustrate the interactions between different system components involved in adding a book to the member's wish list. Let's assume this functionality allows a member to search for books and add them to a personal wish list for future reference.
+
+```plantuml
+@startuml
+actor Member
+participant "User Interface" as UI
+participant "SearchController" as SC
+database "Database" as DB
+participant "WishListController" as WC
+participant "NotificationService" as NS
+
+== Search for Book ==
+Member -> UI : Searches for a book
+UI -> SC : searchBook("book details")
+SC -> DB : queryBook("book details")
+DB --> SC : return bookResults
+SC --> UI : displayResults(bookResults)
+UI --> Member : Show search results
+
+== Add Book to Wish List ==
+Member -> UI : Select book to add to wish list
+UI -> WC : addToWishList("selectedBookID", "memberID")
+WC -> DB : checkIfBookExists("selectedBookID")
+DB --> WC : bookExists = true
+WC -> DB : addToWishList("selectedBookID", "memberID")
+DB --> WC : wishListUpdated = true
+WC --> UI : displayConfirmation("Book added to wish list")
+
+== Notification for Wish List Update ==
+WC -> NS : sendWishListUpdateNotification("memberID", "selectedBookID")
+NS --> DB : getUserContact("memberID")
+DB --> NS : return contactDetails
+NS -> NS : prepareNotification("contactDetails", "Your wish list has been updated.")
+NS --> Member : sendNotification
+
+@enduml
+```
+
+This sequence diagram represents the process in which a member of the Comprehensive Library Management System searches for a book, selects a book to add to their wish list, and then receives a confirmation about the addition along with a notification update. 
+
+- The **Member** interacts with the **User Interface (UI)** to input their search request.
+- The **UI** communicates this request to the **SearchController (SC)**, which then queries the **Database (DB)** for the requested book(s).
+- The search results are returned to the **UI** and displayed to the **Member**.
+- Upon selecting a book to add to their wish list, the request is sent from the **UI** to the **WishListController (WC)**.
+- The **WC** checks with the **DB** if the selected book exists and then proceeds to add it to the member's wish list.
+- Upon successful updation, a notification process is triggered by the **WC** communicating with the **NotificationService (NS)**, which fetches the user's contact details from the **DB** and sends out a notification to the **Member** informing them of the update.
+
+This diagram is a high-level representation and can be extended or modified based on more specific requirements or system details not covered in the brief.

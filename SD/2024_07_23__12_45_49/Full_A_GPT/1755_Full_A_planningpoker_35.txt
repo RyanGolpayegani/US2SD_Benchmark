@@ -1,0 +1,42 @@
+Generating a detailed sequence diagram in PlantUML format for the user story specified requires understanding the interactions between various components of the system to fulfill the user's request. The sequence diagram below outlines the main steps involved when a participant wants to view each estimator's prior estimates for the currently discussed story. 
+
+This example assumes the following components:
+- **User Interface (UI)**: The front-end part where the participant interacts with the application.
+- **Controller**: The backend controller that handles UI requests.
+- **Service Layer**: The service managing business logic related to estimations.
+- **Database**: Persistent storage where estimation data is stored.
+
+```plantuml
+@startuml
+participant "Participant UI" as UI
+participant "Controller" as Controller
+participant "EstimationService" as Service
+database "Database" as DB
+
+UI -> Controller : requestEstimatorPreviousEstimates(storyId)
+Controller -> Service : getPreviousEstimates(storyId)
+Service -> DB : fetchEstimatesByStoryId(storyId)
+DB --> Service : return estimatesList
+Service --> Controller : estimatesData
+Controller --> UI : displayEstimates(estimatesData)
+
+note over UI : UI formats and shows each\nestimator's previous estimates
+@enduml
+```
+
+### Explanation of the Sequence Diagram Steps:
+1. **Interaction begins**: The participant, through the user interface (UI), makes a request to view previous estimates made by each estimator for a specific story (storyId is used as an identifier).
+
+2. **Controller receives request**: The request is sent to the backend controller which handles the action to retrieve previous estimates. 
+
+3. **Service layer processing**: The controller calls the appropriate service layer (`EstimationService`), responsible for managing business logic related to estimations, including retrieving past estimates.
+
+4. **Database query**: The service layer queries the database to fetch all estimates related to the specified story ID (storyId). 
+
+5. **Data retrieval**: The database returns a list of estimates (estimatesList) to the service layer.
+
+6. **Data preparation**: The service layer processes the estimates data as needed and then sends it back to the controller.
+
+7. **Displaying results**: Finally, the controller sends the formatted data back to the UI, which then displays each estimator's prior estimates for the story being estimated, allowing the participant to see how opinions have changed.
+
+This diagram and description represent a simplified view of the process to emphasize the main steps involved in fetching and displaying the estimators' previous estimates for a story. Adjustments might be needed based on the actual application architecture and specific implementation details.

@@ -1,0 +1,35 @@
+@startuml
+participant "DPC Interface" as DPC
+participant "Event Service" as ES
+database "Repository" as Repo
+entity "Audit Log" as Log
+
+== Publication Publishing ==
+DPC -> ES : publish(publicationId, userId, comment)
+activate ES
+ES -> Repo : createPublication(publicationId)
+activate Repo
+Repo --> ES : publicationCreated
+deactivate Repo
+ES -> Log : logEvent("PUBLISH", publicationId, userId, comment)
+activate Log
+Log --> ES : eventLogged
+deactivate Log
+ES --> DPC : publishSuccess
+deactivate ES
+
+== Publication Unpublishing ==
+DPC -> ES : unpublish(publicationId, userId, comment)
+activate ES
+ES -> Repo : removePublication(publicationId)
+activate Repo
+Repo --> ES : publicationRemoved
+deactivate Repo
+ES -> Log : logEvent("UNPUBLISH", publicationId, userId, comment)
+activate Log
+Log --> ES : eventLogged
+deactivate Log
+ES --> DPC : unpublishSuccess
+deactivate ES
+
+@enduml

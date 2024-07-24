@@ -1,0 +1,37 @@
+To create a detailed sequence diagram in PlantUML format for the user story "As a chef, I want to see the updated ordered items that are updated by waiters," we need to outline the interactions between different components of the system such as the waiter interface, the system backend, and the chef interface. The scenario starts with a waiter updating an order, which then gets processed by the backend and finally displayed to the chef. 
+
+Here's how a sequence diagram for this scenario could look in PlantUML syntax:
+
+```plantuml
+@startuml
+
+participant Waiter as waiter
+participant "Backend Server" as backend
+participant "Database" as db
+participant Chef as chef
+
+note right of waiter: Waiter updates\nordered items
+waiter -> backend: UpdateOrderItem(orderId, newItemDetails)
+activate backend
+
+backend -> db: QueryUpdateOrder(orderId, newItemDetails)
+activate db
+db --> backend: UpdateConfirmation
+deactivate db
+
+backend -> chef: NotifyOrderUpdate(orderId)
+activate chef
+chef -> backend: FetchUpdatedOrder(orderId)
+backend -> db: GetOrderDetails(orderId)
+db --> backend: OrderDetails
+backend --> chef: DisplayOrderDetails(OrderDetails)
+deactivate chef
+
+note over chef: Chef sees updated\nordered items
+
+@enduml
+```
+
+In this PlantUML sequence diagram, the process begins with the waiter updating the ordered items through the "UpdateOrderItem" action. The backend server receives this update and queries the database to update the order details. After the database confirms the update, the backend server notifies the chef of the order update. The chef then requests to see the updated order details. The backend fetches these details from the database and displays them to the chef, completing the scenario.
+
+This diagram assumes a simple flow where the update initiated by the waiter is directly reflected for the chef after a successful database update. In a real-world system, additional steps like validation, error handling, and real-time notifications might be included to ensure robustness and user-friendliness.

@@ -1,0 +1,23 @@
+@startuml
+participant LibraryMember as Member
+participant LMSInterface as Interface
+participant DBMS
+
+Member -> Interface: Request to extend due date \nfor BookID: XYZ
+activate Interface
+
+Interface -> DBMS: Query current due date \nfor BookID: XYZ
+activate DBMS
+
+DBMS --> Interface: Return current due date
+deactivate DBMS
+
+Interface -> DBMS: Calculate new due date \nand Request update for BookID: XYZ
+activate DBMS
+
+DBMS --> Interface: Confirm due date extension \nand Return new due date
+deactivate DBMS
+
+Interface --> Member: Display confirmation of due date extension \nwith the new due date
+deactivate Interface
+@enduml

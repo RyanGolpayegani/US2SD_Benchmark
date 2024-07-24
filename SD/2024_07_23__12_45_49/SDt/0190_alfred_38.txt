@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+
+participant OlderPerson as User
+participant "ALFRED\nVoice Interface" as VoiceInterface
+participant "ALFRED\nCore System" as Core
+participant "Transport\nAPI" as TransportAPI
+
+User -> VoiceInterface : "I want to go to the museum."
+VoiceInterface -> Core : Interpret voice command
+Core -> TransportAPI : Request public transport options\nto museum
+
+activate TransportAPI
+TransportAPI --> Core : Return transport options
+deactivate TransportAPI
+
+Core -> TransportAPI : Fetch detailed route
+activate TransportAPI
+TransportAPI --> Core : Return route details
+deactivate TransportAPI
+
+Core -> VoiceInterface : Relay options and\nrecommended route
+VoiceInterface -> User : Provides transport options\nand instructions
+
+User -> VoiceInterface : "Select option 1."
+VoiceInterface -> Core : Process selection
+Core -> Core : Finalize route details
+Core -> VoiceInterface : Confirm selection and\nnext steps
+VoiceInterface -> User : "Option 1 selected.\nYou will take Bus 42..."
+@enduml

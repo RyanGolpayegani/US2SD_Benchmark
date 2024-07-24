@@ -1,0 +1,47 @@
+Creating a sequence diagram for the user story "As an Admin, I want to invite someone to join the platform, so that they can start contributing or using data" entails detailing the interactions between the system components in a step-by-step format. Below is a PlantUML code snippet to represent these interactions:
+
+```plantuml
+@startuml
+
+actor Admin
+participant "Admin Interface" as AdminUI
+participant "Invitation Service" as InvitationService
+participant "Email Service" as EmailService
+database "User Database" as UserDB
+
+== Invitation Process ==
+Admin -> AdminUI : Access invitation feature
+AdminUI -> InvitationService : Input user email for invitation
+InvitationService -> UserDB : Check if email already exists
+alt Email exists
+    InvitationService -> AdminUI : Show error message
+    AdminUI -> Admin : Display "User already exists"
+else Email does not exist
+    InvitationService -> EmailService : Send invitation email
+    EmailService -> UserDB : Create user with status "Invited"
+    EmailService -> AdminUI : Confirmation of invitation sent
+    AdminUI -> Admin : Display "Invitation sent successfully"
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Admin Initiates Invitation**: The process begins with the Admin accessing the invitation feature through the Admin Interface.
+
+2. **Input User Email for Invitation**: The Admin inputs the prospective user's email into the Admin Interface, which is then sent to the Invitation Service.
+
+3. **Check for Existing Email**: The Invitation Service checks the User Database to see if the email address already exists in the system.
+
+4. **Email Exists Scenario**:
+    - If the email already exists, the Invitation Service sends an error message back to the Admin Interface.
+    - The Admin Interface then notifies the Admin that the user already exists.
+
+5. **Email Does Not Exist Scenario**:
+    - If the email does not exist in the system, the Invitation Service proceeds to send an invitation email via the Email Service.
+    - The Email Service creates a new user record with the status "Invited" in the User Database.
+    - Once the invitation email is sent, the Email Service confirms the action to the Admin Interface.
+    - Finally, the Admin Interface displays a success message to the Admin, indicating that the invitation was sent successfully.
+
+This sequence diagram illustrates the detailed interactions between different components of the system to accomplish the task of inviting a new user to the platform as per the admin's request.

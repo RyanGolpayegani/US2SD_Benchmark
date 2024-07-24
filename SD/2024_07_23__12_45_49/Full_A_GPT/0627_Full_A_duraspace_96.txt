@@ -1,0 +1,50 @@
+Creating a sequence diagram requires focusing on the interactions between system components and actors to visualize how a particular function or process is carried out. For the user story you mentioned, the system should ideally notify DAMS managers when permitted and restricted acts and/or their active dates are modified for digital assets within the DAMS. The sequence diagram will outline the interactions starting from detecting a modification to the notification process.
+
+Given the complexity and the nature of PlantUML syntax, below is a simplified version of what the sequence diagram could look like. This example assumes a system where changes to permissions or restrictions on digital assets trigger an event, which is then processed to notify the DAMS managers accordingly.
+
+```plantuml
+@startuml
+actor DAMSManager as "DAMS Manager"
+participant DAMSInterface as "DAMS Interface"
+participant PermissionService as "Permission Service"
+participant Database as "Database"
+participant NotificationService as "Notification Service"
+
+== Modification of Permissions or Restrictions ==
+
+DAMSManager -> DAMSInterface : Modify permissions/restrictions
+DAMSInterface -> PermissionService : Check modifications
+PermissionService -> Database : Update permissions/restrictions
+
+Database --> PermissionService : Confirm update
+PermissionService -> PermissionService : Detect modification
+
+== Notification Process ==
+PermissionService -> NotificationService : Prepare notification message
+PermissionService -> NotificationService : Identify affected DAMS managers
+PermissionService -> NotificationService : Set active dates for notification
+PermissionService -> NotificationService : Log notification event
+
+PermissionService -> NotificationService : Check for opt-out preferences
+alt Opted-out of notifications
+  PermissionService -> NotificationService : Skip notification
+else Not opted-out
+  PermissionService -> NotificationService : Process for sending
+  PermissionService -> NotificationService : Determine appropriate channel (e-mail, system alert)
+  PermissionService -> NotificationService : Send notification
+  NotificationService -> DAMSManager : Notify modification event
+end
+
+@enduml
+```
+
+### Explanation
+- The DAMS Manager initiates a modification through the DAMS Interface.
+- The DAMS Interface forwards this request to the Permission Service.
+- The Permission Service validates and processes the request, updating the permissions or restrictions in the Database.
+- Once the modification is confirmed by the Database, the Permission Service detects it as a notable event.
+- The Permission Service then prepares a notification message, identifies the affected DAMS managers, and initiates the notification process.
+- The notification logic includes checking for opt-out preferences. If a DAMS manager has opted out of receiving such notifications, the system skips sending a notification to them.
+- Otherwise, the system determines the appropriate notification channel, sends out the notification, and ensures the DAMS Manager is informed about the modification event.
+
+Please note that this sequence diagram is simplified for illustration purposes. You may need to adjust it based on your specific system architecture, the technologies you are using, and the detailed interactions that your system requires.

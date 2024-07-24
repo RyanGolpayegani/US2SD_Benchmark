@@ -1,0 +1,34 @@
+Creating a detailed sequence diagram for the user story "As a member, I want to find books by a unique ID" involves outlining the interactions between the user (member), the system interfaces, and the backend components of the Comprehensive Library Management System (CLMS) using PlantUML. The goal is to depict how the system processes a book search by a unique ID.
+
+```plantuml
+@startuml
+participant Member
+participant WebInterface
+participant Controller
+participant BookService
+database LibraryDB
+
+Member -> WebInterface : Enter unique ID for book search
+WebInterface -> Controller : Request book search(unique_id)
+Controller -> BookService : Search for book(unique_id)
+alt Book Found
+    BookService -> LibraryDB : Query book details by unique ID
+    LibraryDB -> BookService : Return book details
+    BookService -> Controller : Book details
+    Controller -> WebInterface : Display book details
+    WebInterface -> Member : Show book details
+else Book Not Found
+    BookService -> Controller : No book found message
+    Controller -> WebInterface : Display no book found
+    WebInterface -> Member : Show no book found message
+end
+@enduml
+```
+
+This sequence diagram starts with the Member interacting with the Web Interface of the CLMS to search for a book using a unique ID. The Web Interface then communicates this request to the system's Controller, which handles the request by invoking the BookService--the component responsible for all book-related operations. The BookService queries the Library Database (LibraryDB) using the provided unique ID.
+
+If the book is found in the LibraryDB, the database returns the book's details to the BookService, which in turn sends the information back to the Controller. The Controller passes these details to the Web Interface, concluding the process with the Web Interface displaying the book's details to the member.
+
+In the scenario where the book is not found, the BookService sends a "No book found" message back through the chain to inform the Member accordingly.
+
+This diagram is a high-level abstraction and may require adjustments based on the specific technical architecture and requirements of the CLMS project.

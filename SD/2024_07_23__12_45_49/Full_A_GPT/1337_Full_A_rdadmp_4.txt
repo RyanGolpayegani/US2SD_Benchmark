@@ -1,0 +1,70 @@
+Creating a detailed sequence diagram for a user story involving a data manager wanting to understand data usage for developing support scenarios requires identifying key interactions between the data manager, the DMPTool, various subsystems, and potentially external tools or databases. The sequence diagram below outlines these interactions in PlantUML syntax.
+
+```plantuml
+@startuml
+participant DataManager as "Data Manager"
+participant DMPTool as "DMPTool Interface"
+participant DataManagerPortal as "Data Manager Portal"
+participant UsageAnalytics as "Usage Analytics"
+participant MetadataTool as "External Metadata Tool"
+participant ResearchDatabase as "Research Database"
+
+DataManager -> DMPTool : Request data usage info
+DMPTool -> DataManagerPortal : Authenticate DataManager
+DataManagerPortal -> UsageAnalytics : Fetch usage data
+activate UsageAnalytics
+
+UsageAnalytics -> ResearchDatabase : Query detailed data logs
+activate ResearchDatabase
+ResearchDatabase --> UsageAnalytics : Return data logs
+
+deactivate ResearchDatabase
+UsageAnalytics --> DataManagerPortal : Process usage data
+DataManagerPortal --> DMPTool : Display summarized data usage
+
+DMPTool -> MetadataTool : Import metadata
+MetadataTool --> DMPTool : Metadata for corresponding data usage
+
+DMPTool --> DataManager : Present data usage and metadata
+DataManager -> DMPTool : Request development of support scenarios
+DMPTool -> DataManagerPortal : Initiate collaboration with researchers
+
+DataManagerPortal --> DataManager : Collaboration link
+DataManager -> DataManagerPortal : Develops scenarios with researchers
+DataManagerPortal -> UsageAnalytics : Update usage scenarios
+UsageAnalytics --> DataManagerPortal : Confirm update
+
+DataManagerPortal --> DPRTool : Update complete
+DMPTool --> DataManager : Acknowledge scenario development
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Initiation**: The Data Manager initiates the process by requesting data usage information from the DMPTool Interface.
+   
+2. **Authentication**: The DMPTool Interface directs the request to the Data Manager Portal, which authenticates the Data Manager.
+
+3. **Data Fetching**: The Data Manager Portal requests the usage data from the Usage Analytics component.
+
+4. **Data Processing**: 
+   - The Usage Analytics fetches detailed logs from the Research Database.
+   - Upon receiving the logs, it processes and summarizes the data.
+
+5. **Metadata Import**: The DMPTool Interface imports relevant metadata using an External Metadata Tool to provide context for the data usage.
+
+6. **Presentation**: The DMPTool Interface presents the data usage information, along with the metadata, to the Data Manager.
+
+7. **Support Scenario Development**:
+   - The Data Manager requests the development of detailed usage and support scenarios.
+   - The DMPTool initiates this process by providing collaboration links or tools within the Data Manager Portal.
+   - The Data Manager then collaborates with researchers to develop these scenarios.
+
+8. **Scenario Updating**: 
+   - Once the scenarios are developed, the Data Manager Portal updates these in the Usage Analytics.
+   - The Usage Analytics confirms the update.
+
+9. **Completion**: The Data Manager Portal notifies the DMPTool of the update completion, and the DMPTool acknowledges the development of support scenarios to the Data Manager.
+
+This sequence diagram simplifies complex interactions into a coherent flow, demonstrating how a data manager could interact with the DMPTool and other components to understand and utilize data usage information.

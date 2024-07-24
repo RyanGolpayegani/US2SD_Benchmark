@@ -1,0 +1,39 @@
+Below is a detailed sequence diagram in PlantUML format that outlines the process flow when a library member wants to view the amount of their fine within the Comprehensive Library Management System (CLMS). This sequence includes interactions between the library member, the system's interface, backend logic, and the database where fine information is stored and accessed.
+
+```plantuml
+@startuml
+autonumber
+
+actor Member
+participant "Web Interface" as UI
+participant "Backend System" as Backend
+database "Database" as DB
+
+Member -> UI : Requests to view fine amount
+UI -> Backend : GetFineAmount(memberID)
+activate Backend
+
+Backend -> DB : QueryFineAmount(memberID)
+activate DB
+DB --> Backend : FineAmount
+deactivate DB
+
+Backend --> UI : ShowFineAmount(FineAmount)
+UI --> Member : Display Fine Amount
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Member Request**: The sequence begins when the member (library user) requests to view the amount of their fine. This action is initiated through the user interface of the CLMS.
+
+2. **Interface to Backend**: The Web Interface (UI) then sends a request to the backend system to retrieve the fine amount. This is executed by calling a function like `GetFineAmount(memberID)`, where `memberID` uniquely identifies the member in question.
+
+3. **Backend System Processing**: Upon receiving the request, the backend system will query the database to find the fine amount associated with the given `memberID`. This interaction is crucial for accessing the most updated fines related to the member.
+
+4. **Database Query**: The Database (DB) receives a query for the fine amount (`QueryFineAmount(memberID)`) and searches its records for any fines tied to the memberID. After locating the information, it sends the fine amount back to the backend system.
+
+5. **Response to Member**: The backend system, having received the fine amount from the database, instructs the Web Interface to display this amount to the member. The UI processes this instruction and shows the fine amount to the member, concluding the process.
+
+This sequence diagram focuses on the process flow from the member's initial request to view their fine through to the display of this information. It encapsulates interactions across different components of the CLMS, highlighting how the system manages and presents fine data to library members.

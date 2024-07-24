@@ -1,0 +1,29 @@
+Below is a PlantUML sequence diagram detailing the interaction sequence for a data reuser examining and identifying deposited files to assess their usefulness without downloading the entire dataset. This diagram assumes the presence of a web interface, a backend service managing dataset information, and a database storing dataset details such as metadata and file information.
+
+```plantuml
+@startuml
+actor "Data Reuser" as reuser
+participant "Web Interface" as web
+participant "Backend Service" as backend
+database "Dataset Database" as db
+
+reuser -> web : Request dataset listings
+web -> backend : Fetch dataset summaries
+backend -> db : Query dataset metadata and file lists
+db --> backend : Return dataset metadata and file lists
+backend --> web : Display dataset summaries with file lists
+web --> reuser : Show datasets and downloadable files preview
+reuser -> web : Select dataset for preview
+web -> backend : Request dataset file structure and summary
+backend -> db : Query selected dataset details
+db --> backend : Return selected dataset details
+backend --> web : Send dataset file structure and summary
+web --> reuser : Display dataset structure and file summary\n(without downloading entire dataset)
+@enduml
+```
+
+This sequence diagram starts with the data reuser requesting dataset listings through a web interface. The web interface then communicates with a backend service to fetch dataset summaries, which includes making a query to the dataset database for metadata and file lists. The database returns this information to the backend service, which then provides the data to the web interface to display to the data reuser.
+
+Upon displaying the dataset summaries, the reuser can select a specific dataset for preview. The web interface sends a request for the dataset file structure and summary to the backend service, which queries the selected dataset details from the database. Once the backend service receives these details, it sends the dataset file structure and summary back to the web interface, which then displays it to the reuser, allowing them to make a preliminary assessment of the dataset's usefulness without the need to download the entire dataset.
+
+This diagram simplifies complex interactions into a straightforward sequence and assumes that error handling and security measures are in place but not explicitly shown for clarity.

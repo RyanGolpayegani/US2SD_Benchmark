@@ -1,0 +1,48 @@
+@startuml
+participant LibraryManager as LM
+participant "Frontend \nApplication" as Frontend
+participant BackendServer as Backend
+participant Database as DB
+
+LM -> Frontend: Access Asset Collection Management
+activate LM
+activate Frontend
+Frontend -> Backend: Request Current Asset Collections Data
+activate Backend
+Backend -> DB: Query Asset Collections
+activate DB
+DB --> Backend: Return Collections Data
+deactivate DB
+Backend --> Frontend: Display Collections Data
+deactivate Backend
+Frontend --> LM: Show Current Asset Collections
+deactivate Fronten
+
+LM -> Frontend: Request to Add/Edit/Delete Asset
+activate Frontend
+Frontend -> Backend: Add/Edit/Delete Asset Request
+activate Backend
+Backend -> DB: Update Asset Collection
+activate DB
+DB --> DB: Process Update
+DB --> Backend: Confirm Update Successful
+deactivate DB
+Backend --> Frontend: Update Success Message
+deactivate Backend
+Frontend --> LM: Display Success Message
+deactivate  Frontend
+
+LM -> Frontend: Request Detailed Asset Report
+activate Frontend
+Frontend -> Backend: Request Asset Report
+activate Backend
+Backend -> DB: Compile Asset Report Data
+activate DB
+DB --> Backend: Return Asset Report Data
+deactivate DB
+Backend --> Frontend: Display Asset Report
+deactivate Backend
+Frontend --> LM: Show Asset Report
+deactivate Frontend
+
+@enduml

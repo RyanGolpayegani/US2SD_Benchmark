@@ -1,0 +1,59 @@
+Below is a detailed PlantUML sequence diagram for the user story: "As a manager, I want to update the employee information" in the context of the Comprehensive Library Management System (CLMS). This scenario assumes the manager initiates the update process via a web-based interface, interacts with a backend server, which then updates the database.
+
+```plantuml
+@startuml
+actor Manager as manager
+participant "Web Interface" as webInterface
+participant "Server" as server
+database "Database" as database
+
+== Update Employee Information ==
+
+manager -> webInterface : Access employee update form
+webInterface -> server : Request current employee data
+
+server -> database : Retrieve employee data
+database -> server : Employee data
+
+server -> webInterface : Show employee data
+webInterface -> manager : Display employee data
+
+manager -> webInterface : Submit updated data
+webInterface -> server : UpdateEmployeeData(employeeID, newData)
+
+alt Validation Success
+    server -> server : Validate new data
+
+    server -> database : Update data in Employee table
+    database -> server : Confirmation(Updated)
+
+    server -> webInterface : Show success message
+    webInterface -> manager : Display update success
+else Validation Fail
+    server -> webInterface : Show failure message(Error)
+    webInterface -> manager : Display update failure
+end
+
+@enduml
+```
+
+### Explanation:
+
+- **Actor (Manager):** This represents the library manager who wishes to update employee information.
+
+- **Web Interface:** The user interface through which the manager interacts with the system. It displays the employee information update form and communicates with the server.
+
+- **Server:** This component handles the logic behind retrieving and updating the employee data. It communicates with both the web interface and the database.
+
+- **Database:** The repository where all employee data is stored. It processes queries to retrieve and update the specified employee's information.
+
+- **Process Flow:**
+
+    1. **Access Employee Update Form:** The manager starts the process by accessing the form designed to update employee information.
+    2. **Retrieve Current Employee Data:** The server fetches the current data of the employee from the database to be displayed to the manager.
+    3. **Display Employee Data:** The retrieved data is displayed to the manager, allowing them to see what info needs to be updated.
+    4. **Submit Updated Data:** After making the necessary changes, the manager submits the updated information.
+    5. **Validate New Data:** Before updating, the server validates the new data to ensure it adheres to the system’s requirements.
+    6. **Update Process:** If validation succeeds, the database updates the employee information; if it fails, the system alerts the manager.
+
+This sequence diagram highlights the standard flow of updating employee information in the system, with the server performing validation to ensure data integrity.

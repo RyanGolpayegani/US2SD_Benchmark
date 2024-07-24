@@ -1,0 +1,59 @@
+Creating a detailed sequence diagram for the given user story involves depicting the interaction between various components of the system when a Publisher imports a data package into the registry. Below is a PlantUML script that represents these interactions, from the moment the Publisher decides to import the data package to successfully publishing it on the platform.
+
+```plantuml
+@startuml
+!theme amiga
+
+participant "Publisher" as Publisher
+participant "Web UI" as WebUI
+participant "API Gateway" as APIGateway
+participant "Authentication Service" as AuthService
+participant "Data Validation Service" as ValidationService
+participant "Data Storage" as DataStorage
+participant "Registry Database" as RegistryDB
+participant "CLI Tool" as CLITool
+
+== Authentication ==
+Publisher -> WebUI : Select "Import Data Package"
+WebUI -> APIGateway : Request to import data package
+APIGateway -> AuthService : Validates Publisher's credentials
+AuthService --> APIGateway : Authentication success
+
+== Data Package Import Flow ==
+Publisher -> CLITool : Executes import command with package details
+CLITool -> APIGateway : Sends data package information
+APIGateway -> ValidationService : Validates data package format and integrity
+ValidationBootstrapService -> DataStorage : Temporarily stores data for validation
+ValidationService --> APIGateway : Returns validation success or failure
+APIGateway --> CLITool : Shows validation status
+group Validation Success
+    CLITool -> APIGateway : Requests to finalize import
+    APIGateway -> RegistryDB : Records data package entry
+    APIGateway -> DataStorage : Moves data to permanent storage
+    DataStorage --> APIGateway : Confirms data storage
+    APIGateway --> CLITool : Confirms data package is successfully imported and available online
+    CLITool --> Publisher : Displays confirmation message
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Authentication:** 
+   - The Publisher starts the process by selecting the option to import a data package through the Web UI.
+   - The Web UI sends a request to the API Gateway to initiate the import process.
+   - The API Gateway forwards the request to the Authentication Service to verify the Publisher's credentials.
+   - Upon successful authentication, the process continues.
+
+2. **Data Package Import Flow:**
+   - The Publisher uses the CLI Tool to execute the import command, including the data package details.
+   - The CLI Tool sends the data package information to the API Gateway.
+   - The API Gateway then instructs the Data Validation Service to validate the format and integrity of the data package.
+   - The Data Validation Service temporarily stores the data in Data Storage for validation purposes.
+   - Post-validation, the API Gateway receives a success or failure response.
+   - On validation success, the CLI tool requests the API Gateway to finalize the import.
+   - The API Gateway updates the Registry Database with the new data package entry and moves the data to permanent storage.
+   - Once the data is confirmed to be stored, the API Gateway sends a success message to the CLI Tool, which then informs the Publisher.
+
+This sequence diagram provides a detailed view of the interactions and flow of information between the Publisher, CLI Tool, Web UI, and backend services when importing a data package into the data registry.

@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the user story "As a customer, I want to remove ingredients," involves illustrating the interaction between various system components when a customer wishes to customize a dish by removing certain ingredients. Given the nature of the Restaurant Management and Operations System project, interactions between the customer, frontend UI, backend server, and database are paramount. Below is a sequence diagram in PlantUML format that outlines a potential scenario for this functionality.
+
+```plantuml
+@startuml
+participant Customer as C
+participant "Frontend UI" as F
+participant "Backend Server" as B
+participant "Database" as DB
+
+C -> F : Select dish
+C -> F : Click customize
+F -> B : Request available ingredients (dishId)
+B -> DB : Query ingredients (dishId)
+DB -> B : Return ingredients list
+B -> F : Show ingredients to customer
+C -> F : Unselect ingredients to remove
+F -> B : Submit customization request (dishId, removedIngredients[])
+B -> DB : Update dish customization
+DB -> B : Confirm update
+B -> F : Display updated dish
+F -> C : Confirmation message
+
+@enduml
+```
+
+The sequence starts when the customer selects a dish to customize and ends with a confirmation message indicating the dish has been updated with the requested ingredient removals.
+
+Explanation of steps:
+1. **Customer selects a dish to customize**: This initiates the process.
+2. **Customer clicks customize**: Indicates intention to modify the dish.
+3. **Frontend requests available ingredients for the selected dish**: This involves passing the dish ID to the backend.
+4. **Backend queries the database for the dish’s ingredients**: The backend uses the dish ID to fetch the current list of ingredients.
+5. **Database returns the ingredients list to the backend**, which then sends it to the frontend.
+6. **Customer unselects ingredients to remove from the dish**: This interaction happens on the frontend UI.
+7. **Frontend submits the customization request to the backend**: The request includes the dish ID and an array/list of ingredients to be removed.
+8. **Backend updates the dish customization in the database**: It processes the list of ingredients to be removed from the dish.
+9. **Database confirms the update to the backend**, which in turn informs the frontend.
+10. **Frontend displays the updated dish and shows a confirmation message to the customer**: This concludes the process, indicating success.
+
+This sequence diagram outlines a high-level interaction without delving into specific authentication or error-handing flows for simplicity and to focus on the main process. Adjustments might be needed based on actual system architecture, security requirements, and error management policies.

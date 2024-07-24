@@ -1,0 +1,58 @@
+To generate a detailed sequence diagram in PlantUML format covering the scenario where a moderator wants to accept the average of all estimates to move on to the next item, we need to showcase interactions between the moderator, the system (AEPT), potentially the database where information is stored, and the estimators who participate in the estimation process. 
+
+Focus will be placed on the key steps, including calculating the average estimate and updating the item's status to reflect that the moderation has been concluded.
+
+```
+@startuml
+participant Moderator
+participant "AEPT System" as System
+database "AEPT Database" as Database
+participant "Estimators" as Estimators
+
+Moderator -> System : selectItemToEstimate()
+activate System
+
+System -> Database : fetchItemDetails()
+activate Database
+Database --> System : returnItemDetails()
+deactivate Database
+
+System -> Estimators : requestEstimates()
+activate Estimators
+Estimators -> System : submitEstimates(estimates[])
+deactivate Estimators
+
+System -> System : calculateAverageEstimate(estimates[])
+System --> Moderator : displayAverageEstimate(average)
+
+Moderator -> System : acceptAverageEstimate()
+activate System
+System -> Database : updateItemWithAverage(average)
+activate Database
+Database --> System : confirmUpdate()
+deactivate Database
+
+System -> System : moveToNextItem()
+System -> Moderator : confirmMoveToNext()
+deactivate System
+
+@enduml
+```
+
+Explanation of the Sequence:
+
+1. **Moderator selects an item for estimation:** The interaction begins with a moderator selecting an item that needs to be estimated by the team.
+
+2. **System fetches item details:** The AEPT System fetches details of the selected item from the database to provide context for the estimators.
+
+3. **Estimators submit estimates:** The AEPT System requests estimates for the selected item from all the participating estimators. The estimators submit their estimates back to the system.
+
+4. **System calculates the average estimate:** Once all estimates are submitted, the AEPT System calculates the average of these estimates. This calculation is internal to the system.
+
+5. **Display and accept average estimate:** The calculated average is displayed to the moderator, who then has the option to accept this average as the final estimate for the item.
+
+6. **Update the item with the average estimate:** Upon acceptance by the moderator, the system updates the item's details in the database to reflect the accepted average estimate.
+
+7. **Move to the next item:** Finally, the system prepares to move on to the next estimation item, confirming this action with the moderator.
+
+This diagram and sequence of steps illustrate the process flow from item selection through estimate calculation and acceptance, encapsulating the interaction necessary to achieve the user story's objective.

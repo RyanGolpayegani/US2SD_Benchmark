@@ -1,0 +1,55 @@
+Creating a detailed sequence diagram for the specified user story in PlantUML format requires a good understanding of the interactions between various system components and the user. The following example outlines a simplified interaction process for an archivist who wants to select existing rights statuses and statements to easily create uniform rights statements. This sequence assumes the existence of a digital archive management system with user authentication, a rights management module, and a database of predefined rights statuses and statements.
+
+```plantuml
+@startuml
+participant Archivist as A
+participant AuthenticationModule as Auth
+participant RightsManagementInterface as RMI
+participant RightsDatabase as RD
+
+A -> Auth: Login()
+activate Auth
+Auth --> A: AuthenticationSuccess
+deactivate Auth
+
+A -> RMI: AccessRightsManagement()
+activate RMI
+RMI -> RD: FetchRightsStatusesAndStatements()
+activate RD
+RD --> RMI: RightsDetails
+deactivate RD
+
+RMI --> A: DisplayRightsStatusesAndStatements()
+deactivate RMI
+
+A -> RMI: SelectRightsDetails()
+activate RMI
+A -> RMI: CreateUniformRightsStatement()
+RMI -> RD: SaveNewRightsStatement()
+activate RD
+RD --> RMI: Confirmation
+deactivate RD
+
+RMI --> A: ConfirmationMessage()
+deactivate RMI
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram
+
+1. **Archivist (A) Logs In**: The archivist starts by logging into the system, interacting with the Authentication Module (Auth). The system verifies the archivist's credentials and grants access.
+
+2. **Access Rights Management Interface (RMI)**: After successful login, the archivist navigates to the Rights Management Interface to manage rights statuses and statements.
+
+3. **Fetch Rights Statuses and Statements**: The RMI requests the existing rights statuses and statements from the Rights Database (RD), which then retrieves and returns the requested details.
+
+4. **Display Rights Options**: The RMI displays the fetched rights statuses and statements to the archivist, allowing them to review the options available.
+
+5. **Select and Create Uniform Rights Statement**: The archivist selects the appropriate rights details from the options provided and requests to create a uniform rights statement, which might be a new combination or selection of the existing ones.
+
+6. **Save New Statement**: The RMI sends the new rights statement details to the RD to save it. The RD confirms the action after saving the new statement.
+
+7. **Confirmation Message**: The RMI displays a confirmation message to the archivist that the new uniform rights statement has been successfully created and saved.
+
+This sequence diagram simplifies the process and focuses on the main interactions for the given user story. Depending on the system's complexity, more details and steps might be needed for a comprehensive design.

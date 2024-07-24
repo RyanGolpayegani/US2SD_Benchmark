@@ -1,0 +1,47 @@
+Given the project description, here's a detailed sequence diagram in PlantUML format for the described user story of a donor representative supplying incremental accruals to new and existing collections:
+
+```plantuml
+@startuml
+actor DonorRepresentative as donor
+entity "Digital Archive\nManagement System" as archive
+database "Archive Database" as db
+
+activate donor
+donor -> archive : Log in via secure authentication
+activate archive
+archive -> db : Validate donor credentials
+activate db
+db -> archive : Credentials validated
+deactivate db
+archive -> donor : Authentication successful\nDisplay donor dashboard
+deactivate archive
+donor -> archive : Select "Supply Accruals" option
+activate archive
+archive -> donor : Display form to select\ncollection or create new one
+donor -> archive : Fill form with accrual details\nand select existing collection
+archive -> db : Check for existing collection details
+activate db
+db -> archive : Collection details retrieved
+archive -> donor : Confirm collection to supply accruals
+donor -> archive : Upload files and metadata
+archive -> db : Create/update record for incremental accrual\nGenerate unique identifiers for new files
+db -> archive : Accrual recorded in database
+archive -> donor : Display success message\n"Accrual added successfully"
+deactivate db
+deactivate archive
+donor -> archive : Log out
+@enduml
+```
+
+**Explanation of the Sequence:**
+1. **Donor Representative Log in:** The donor representative initiates the process by logging into the Digital Archive Management System using secure authentication.
+2. **Authentication:** The system validates the donor's credentials against the Archive Database.
+3. **Supply Accruals:** Once authenticated, the donor selects the option to supply accruals to a collection.
+4. **Form Filling:** The donor is presented with a form to either select an existing collection or create a new one for the accruals. The donor fills in the accrual details and chooses an existing collection.
+5. **Collection Verification:** The system checks the Archive Database for the details of the selected collection.
+6. **Accrual Upload:** The donor uploads the files and associated metadata for the accrual.
+7. **Record Creation/Update:** The system creates or updates the record for the incremental accrual in the Archive Database, including generating unique identifiers for new files.
+8. **Success Message:** Upon successful upload and record creation, the system displays a success message to the donor.
+9. **Log Out:** The donor logs out of the system.
+
+This sequence diagram outlines the steps involved when a donor representative wants to supply incremental accruals to new or existing collections in the Digital Archive Management System, focusing on interactions between the donor, the system, and the database.

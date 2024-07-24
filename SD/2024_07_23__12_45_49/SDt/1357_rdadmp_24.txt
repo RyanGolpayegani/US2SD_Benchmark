@@ -1,0 +1,20 @@
+@startuml
+actor Funder
+entity "DMPTool" as DMPTool
+entity "DMP Processor Module" as DMPProcessor
+entity "Cost Estimation Module" as CostEstimation
+entity "Repository Interface" as RepoInterface
+database "DMP Repository" as DMPRepo
+
+Funder -> DMPTool : Request DMP cost details
+DMPTool -> DMPProcessor : Retrieve DMP by ID/Name
+DMPProcessor -> DMPRepo : Query DMP data
+DMPRepo -> DMPProcessor : Return DMP data
+DMPProcessor -> CostEstimation : Extract cost details from DMP
+CostEstimation -> RepoInterface : Request additional cost info (if applicable)
+RepoInterface -> CostEstimation : Return additional cost info
+CostEstimation -> DMPProcessor : Compile cost details
+DMPProcessor -> DMPTool : Return comprehensive cost details
+DMPTool -> Funder : Display cost details
+
+@enduml

@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram for the user story "As a data curator, I want to upload a new version of an item that has changed, while still allowing old versions to be accessed" involves depicting the interactions among different system components and actors in PlantUML format. Below is a simplified representation of how this process might be modeled using PlantUML. This example assumes a basic flow where a data curator uploads a new version of an item to the digital repository system, which then handles versioning and ensures both the new and old versions are accessible.
+
+```plantuml
+@startuml
+participant DataCurator as DC
+participant WebInterface as UI
+participant AuthenticationSystem as AS
+participant VersionControlSystem as VCS
+participant Database as DB
+
+DC -> UI : Navigate to upload page
+UI -> DC : Request item details and file
+DC -> UI : Provide item details and new version file
+UI -> AS : Authenticate Data Curator
+AS --> UI : Authentication Success
+
+UI -> VCS : Check if item exists
+VCS -> DB : Query existing item details
+DB --> VCS : Return item details
+
+alt Item Exists
+    VCS --> UI : Prompt versioning options
+    UI -> DC : Display versioning options
+    DC -> UI : Select "Upload as new version"
+    UI -> VCS : Initiate new version upload
+    VCS -> DB : Store new version metadata
+    DB --> VCS : Confirm storage success
+    VCS -> VCS : Link new version with previous versions
+    VCS --> UI : Display success message
+else Item Does Not Exist
+    UI -> VCS : Initiate upload as new item
+    VCS -> DB : Store item and metadata as new entry
+    DB --> VCS : Confirm storage success
+    VCS --> UI : Display success message
+end
+
+UI --> DC : Confirm upload and provide access link
+
+@enduml
+```
+
+This sequence diagram outlines the key interactions involved in uploading a new version of an item by a data curator. The steps include:
+
+1. **Navigation and Upload Initiation:** The data curator navigates to the upload page and provides the necessary details and file for the new version.
+2. **Authentication:** The system authenticates the data curator to ensure they have the necessary permissions.
+3. **Version Check:** The system checks if the item already exists to determine if this upload will be a new item or a new version of an existing item.
+4. **Versioning Decision:** Based on whether the item exists, the curator is either prompted to upload the file as a new version or proceed with uploading a new item.
+5. **Metadata Storage:** The system stores metadata for the new version, ensuring that it is linked with previous versions for accessibility.
+6. **Confirmation:** A success message and access link are provided to the data curator, confirming that the new version has been uploaded and is accessible alongside previous versions.
+
+This diagram and the steps involved can be further refined or expanded based on specific requirements, such as handling file conflicts, version numbering conventions, or the integration with other systems within the university's digital infrastructure.

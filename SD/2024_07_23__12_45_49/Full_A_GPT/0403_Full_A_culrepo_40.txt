@@ -1,0 +1,37 @@
+Creating a detailed sequence diagram for the user story "As an academic researcher, I want to find the thesis paper of an influential judge or legal start to gain insight into how their initial scholarship got started" involves mapping out the interaction between the researcher (user), the digital repository system, and its components in the process of finding and accessing a thesis paper. Below is a foundation for the PlantUML code to visualize this process:
+
+```plantuml
+@startuml
+actor Researcher as "Academic Researcher"
+participant "Search Interface" as Search
+participant "Authentication System" as Auth
+participant "Repository Backend" as Backend
+participant "Database" as DB
+participant "Content Delivery" as Content
+
+Researcher -> Search: Enter search query\n("influential judge thesis")
+alt If user is not authenticated
+    Search -> Auth: Redirect to login
+    Researcher -> Auth: Provide credentials
+    Auth -> Search: Authentication successful
+end
+
+Search -> Backend: Send search query
+Backend -> DB: Query thesis papers
+DB -> Backend: Return search results
+Backend -> Search: Display search results
+Researcher -> Search: Select desired thesis
+Search -> Backend: Request thesis paper
+alt If access control required
+    Backend -> Auth: Check access rights
+    Auth -> Backend: Access granted
+end
+Backend -> Content: Retrieve thesis paper
+Content -> Researcher: Display thesis paper
+
+@enduml
+```
+
+This sequence diagram outlines the essential steps involved when an academic researcher is looking for a thesis paper within the digital repository system. The process starts with the researcher entering a search query, followed by the system's handling of authentication (if necessary), searching the repository, displaying the results, and finally, retrieving and displaying the selected thesis paper.
+
+Keep in mind, this is a basic outline. Depending on the specific features and requirements of Cornell University's digital repository system, additional details and interactions (like error handling, interaction with external databases, or the use of specific APIs) might need to be incorporated into the diagram.

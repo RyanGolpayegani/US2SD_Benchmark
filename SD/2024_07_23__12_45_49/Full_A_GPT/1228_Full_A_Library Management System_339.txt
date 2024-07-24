@@ -1,0 +1,44 @@
+Creating a sequence diagram for the user story "As a staff, I want to delete books that we don't have" involves outlining the interactions between different system components and the user (in this case, a staff member). Below, you will find a PlantUML sequence diagram that represents this process.
+
+Please note, the diagram assumes basic interactions such as the staff member logging in and navigating to the book management section. The focus is on the actions involved in deleting a book that the library no longer possesses.
+
+```plantuml
+@startuml
+actor Staff as staff
+participant "UI: Book Management" as ui
+participant "Controller: BookController" as controller
+participant "Service: BookService" as service
+database "Database: BookDB" as database
+
+== Delete Book Process ==
+staff -> ui: Select "Remove Book"
+ui -> controller: requestDeleteBook(bookId)
+controller -> service: deleteBook(bookId)
+service -> database: queryToDeleteBook(bookId)
+database --> service: confirmDeletion
+service --> controller: deletionSuccess
+controller --> ui: displaySuccessMessage
+ui --> staff: Show "Book Deleted Successfully"
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **Staff interacts with the UI:** The staff member initiates the process by selecting the option to remove a book from the library's catalog through the Book Management user interface (UI).
+
+2. **UI to Controller:** The UI sends a request to the backend to delete the book identified by `bookId`. This request is handled by `BookController`.
+
+3. **Controller to Service:** `BookController` forwards this request to `BookService`, which contains the logic to carry out the book deletion operation.
+
+4. **Service to Database:** `BookService` then communicates with `BookDB` (the database) to execute the deletion query for the specified `bookId`.
+
+5. **Database to Service:** The database confirms the deletion of the book record to `BookService`.
+
+6. **Service to Controller:** With the operation successful, `BookService` informs `BookController` of the successful deletion.
+
+7. **Controller to UI:** `BookController` sends the result back to the UI, prompting it to display a success message.
+
+8. **UI to Staff:** Finally, the staff member views a confirmation message indicating that the book has been successfully deleted from the system.
+
+This diagram provides a high-level overview of the interactions and does not delve into authentication, error handling, and other detailed validations that would also be important in a comprehensive system like the CLMS.

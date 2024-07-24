@@ -1,0 +1,50 @@
+To generate a detailed sequence diagram in PlantUML format for the user story "As a library member, I want to get notifications about due dates so that I can remember the due date," let's depict the interactions between the system components involved in sending a due date notification to a library member.
+
+```plantuml
+@startuml
+participant Member as M
+participant System as S
+participant Database as DB
+participant NotificationService as NS
+
+M -> S : Log in
+activate S
+S -> DB : Fetch member details
+activate DB
+DB --> S : Member details
+deactivate DB
+
+S -> DB : Get loaned items and due dates
+activate DB
+DB --> S : Loaned items with due dates
+deactivate DB
+S --> M : Show loaned items & due dates
+deactivate S
+
+loop Daily check for due dates
+    S -> DB : Check for due items
+    activate DB
+    DB --> S : List of due items and members
+    deactivate DB
+    S -> NS : Prepare notifications for due items
+    activate NS
+    NS -> M : Send due date notification
+    deactivate NS
+end
+@enduml
+```
+
+### Explanation:
+1. **Member (M)** logs into the system first. This sequence diagram starts from the point where a library member engages with the system to review or borrow items.
+   
+2. **System (S)** then fetches the member details from the **Database (DB)**, a crucial step to ensure that notifications are sent to the right user.
+
+3. **S** also retrieves a list of items the member has loaned out along with their due dates, enabling it to display this information to the member.
+
+4. Separately, the system has a loop that represents a daily scheduled task where **S** checks the **DB** for any loaned items that are due soon.
+
+5. For any found items, **S** then requests the **NotificationService (NS)** to prepare and send out due date notifications. 
+
+6. **NS** being the service responsible for managing how notifications are sent, whether it be through email, SMS, or push notifications, then sends a due date notification to the **Member (M)**.
+
+This sequence focuses on the interactions necessary for managing and sending notifications about due dates for loaned library items to members.

@@ -1,0 +1,54 @@
+Given the complexity and the multi-step processes involved in this user story for a Certified ScrumMaster (CSM) wishing to have their name listed in the registry without membership, let's outline the sequence diagram. This UML sequence will address the key interactions between the CSM (user), the Scrum Alliance Community Platform, and the underlying systems necessary for this feature.
+
+Here's a basic PlantUML sequence diagram that represents these interactions:
+
+```plantuml
+@startuml
+
+actor CSM as "Certified ScrumMaster"
+participant "Scrum Alliance Platform" as platform
+database "Certification Registry" as registry
+participant "Certification Verification System" as verification
+
+CSM -> platform : Request listing in registry
+activate platform
+
+platform -> registry : Check if CSM is already listed
+activate registry
+registry --> platform : CSM not listed
+deactivate registry
+
+platform -> platform : Generate unique listing request
+platform -> CSM : Send listing confirmation request
+CSM -> platform : Confirm listing request
+activate CSM
+
+platform -> verification : Verify CSM certification
+activate verification
+verification --> platform : Certification verified
+deactivate verification
+
+platform -> registry : Add CSM to registry without membership
+activate registry
+registry --> platform : CSM listed in registry
+deactivate registry
+
+platform -> CSM : Notify listing completion
+CSM --> platform : Acknowledge notification
+deactivate CSM
+
+deactivate platform
+
+@enduml
+```
+
+Explanation:
+1. **CSM (Certified ScrumMaster) initiates a request** to the Scrum Alliance Platform to be listed in the certification registry without becoming a member. This could be a web-based form submission on the Scrum Alliance Community Platform.
+2. The platform checks if the CSM is already listed in the **Certification Registry**.
+3. If not listed, the platform generates a unique listing request and sends a listing confirmation request back to the CSM.
+4. The CSM confirms the listing request.
+5. The platform then verifies the CSM's certification through a **Certification Verification System** to ensure authenticity.
+6. Once verified, the platform proceeds to add the CSM to the Certification Registry without requiring site membership.
+7. Finally, the platform notifies the CSM that their listing in the registry is complete, and the CSM acknowledges this notification.
+
+This sequence diagram is a starting point and can be expanded based on additional requirements or systems integration needs for the Scrum Alliance Community Platform project.

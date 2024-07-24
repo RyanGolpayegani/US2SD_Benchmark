@@ -1,0 +1,39 @@
+To describe the process of uploading files before attaching them to a logbook page, as outlined in the project description, a sequence diagram can be a powerful tool. Below is a PlantUML representation of this user story, detailed at a sequence level. This diagram assumes a web-based interaction from the researcher's perspective, involving a GUI (Graphical User Interface) for the Neurohub platform, a file handling service for managing uploads, and a logbook service for managing entries and attachments.
+
+```plantuml
+@startuml
+actor Researcher as res
+participant "Web GUI" as gui
+participant "File Handling Service" as fhs
+participant "Logbook Service" as lbs
+
+res -> gui : Select files for upload
+gui -> fhs : Initiate file upload
+activate fhs
+fhs -> fhs : Validate file types and sizes
+fhs -> fhs : Store files temporarily
+res <- fhs : Display upload progress and confirmation
+deactivate fhs
+res -> gui : Navigate to logbook page
+gui -> lbs : Request logbook page
+activate lbs
+lbs -> lbs : Retrieve logbook page details
+res <- lbs : Display logbook page
+deactivate lbs
+res -> gui : Attach uploaded files to logbook page
+gui -> lbs : Request file attach operation
+activate lbs
+lbs -> fhs : Retrieve files from temporary storage
+activate fhs
+fhs -> lbs : Provide files
+deactivate fhs
+lbs -> lbs : Attach files to logbook page
+res <- lbs : Confirm attachment
+deactivate lbs
+
+@enduml
+```
+
+This sequence diagram starts with the researcher selecting files for upload through the Neurohub's Web GUI. The files are then managed by the File Handling Service, which validates them and stores them temporarily. Once the files are uploaded successfully, the researcher can navigate to the desired logbook page, and with the GUI, attach the uploaded files to this page. The Logbook Service manages the retrieval of files from temporary storage and their attachment to the logbook page, confirming the operation to the researcher upon completion.
+
+This diagram simplifies the interaction to focus on the main steps related to the user story while abstracting away from the specifics of each system component's internal workings. Adjustments may be necessary based on the project's detailed requirements and technical architecture.

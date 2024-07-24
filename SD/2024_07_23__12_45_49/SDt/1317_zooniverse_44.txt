@@ -1,0 +1,17 @@
+@startuml
+participant "Zooniverse Admin" as admin
+participant "Image Prefiltering System" as prefilter
+participant "Artifact Detection Module" as artifactDetection
+participant "Image Database" as database
+
+admin -> prefilter : Initiate prefiltering process
+prefilter -> artifactDetection : Request artifact detection
+artifactDetection -> database : Retrieve images
+database --> artifactDetection : Return images
+artifactDetection -> artifactDetection : Detect and mark artifacts\n(bright stars, camera read errors)
+artifactDetection --> prefilter : Return detection results
+prefilter -> database : Request removal of marked artifacts
+database --> prefilter : Confirm removal
+prefilter --> admin : Prefiltering complete
+
+@enduml

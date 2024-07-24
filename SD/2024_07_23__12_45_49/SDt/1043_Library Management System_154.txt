@@ -1,0 +1,23 @@
+@startuml
+actor LibraryMember as member
+participant "CLMS Interface" as interface
+participant "Book Management" as books
+database "Database" as db
+
+== Check Book Availability ==
+member -> interface : Enter search criteria for book
+interface -> books : Query book availability
+books -> db : Check availability (title, author, etc.)
+db --> books : Book availability details
+books --> interface : Show book availability
+interface --> member : Display book availability
+
+== Reserve Book ==
+member -> interface : Requests to reserve book
+interface -> books : Initiate reservation process
+books -> db : Create reservation record
+db --> books : Reservation confirmation
+books --> interface : Reservation success message
+interface --> member : Display reservation confirmation
+
+@enduml

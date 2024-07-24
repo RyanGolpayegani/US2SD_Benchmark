@@ -1,0 +1,45 @@
+@startuml
+!theme plain
+
+participant "Repository Manager" as manager
+participant "DIMS Interface" as interface
+participant "Asset Management Module" as assetModule
+participant "Metadata Storage" as metadata
+participant "Hardware/Software Info Module" as hwswModule
+database "DAMS Database" as DAMSdb
+
+manager -> interface: Request file info
+activate interface
+
+interface -> assetModule: Retrieve file metadata
+activate assetAodule
+
+assetModule -> metadata: Query metadata by file ID
+activate metadata
+
+metadata -> DAMSdb: Fetch metadata
+activate DAMSdb
+DAMSdb --> metadata: Return metadata
+deactivate DAMSdb
+
+metadata --> assetModule: Metadata response
+deactivate metadata
+
+assetModule -> hwswModule: Request HW/SW info
+activate hwswModule
+
+hwswModule -> DAMSdb: Query HW/SW info by file ID
+activate DAMSdb
+DAMSdb --> hwswModule: Return HW/SW data
+deactivate DAMSdb
+
+hwswModule --> assetModule: HW/SW info response
+deactivate hwswModule
+
+assetModule --> interface: Compile information
+deactivate assetModule
+
+interface --> manager: Display file HW/SW info
+deactivate interface
+
+@enduml

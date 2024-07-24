@@ -1,0 +1,37 @@
+@startuml
+participant ResearchInformationManager as manager
+participant WebInterface as web
+participant DataManager as dataManager
+participant Database as database
+participant CitationTrackingSystem as citationSystem
+participant ExternalCitationDB as externalDB
+
+== Track Citation Counts for Published Datasets ==
+
+manager -> web : Access data management platform
+web -> dataManager : Request dataset list
+activate dataManager
+
+dataManager -> database : Query published datasets
+activate database
+database --> dataManager : Return dataset list
+deactivate database
+
+dataManager --> web : Display datasets with metadata
+deactivate dataManager
+web -> manager : Show datasets
+
+manager -> web : Select dataset for citation tracking
+web -> citationSystem : Request citation count
+activate citationSystem
+
+citationSystem -> externalDB : Query citations by DOI
+activate externalDB
+externalDB --> citationSystem : Return citation count
+deactivate externalDB
+
+citationSystem --> web : Display citation count
+deactivate citationSystem
+web -> manager : Show citation count for selected dataset
+
+@enduml

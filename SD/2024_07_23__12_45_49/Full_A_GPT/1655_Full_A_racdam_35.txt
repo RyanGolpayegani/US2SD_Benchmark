@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram to illustrate the process of sharing a link to a file on social media as described in your user story involves several steps and interactions between various system components and actors. Below is a PlantUML script that outlines these interactions, designed for the Digital Archive Management Enhancement Project's context.
+
+```plantuml
+@startuml
+
+actor Researcher
+participant "User Interface" as UI
+participant "Authentication Service" as Auth
+participant "File Management" as FileMgmt
+participant "Social Media Share Service" as SocialMedia
+participant "Database" as DB
+
+== Share a Link to a File on Social Media ==
+
+Researcher -> UI: Selects file to share
+UI -> Auth: Validate user session
+Auth --> UI: Session valid
+
+UI -> FileMgmt: Request file link
+FileMgmt -> DB: Query file metadata
+DB --> FileMgmt: Return file metadata
+
+FileMgmt --> UI: Display file link and social share options
+Researcher -> UI: Choose social media platform to share
+UI -> SocialMedia: Initiate share process with file link
+
+alt Social Media Platform Integrations
+    SocialMedia -> DB: Log share activity
+    DB --> SocialMedia: Confirm log entry
+    SocialMedia -> Researcher: Display share confirmation
+else Social Media Sharing via External Browser/Application
+    SocialMedia -> Researcher: Provide share link and instructions
+end
+
+SocialMedia --> UI: Update UI with share status
+UI --> Researcher: Confirm file has been shared
+
+@enduml
+```
+
+**Explanation**:
+
+1. **Researcher**: The actor interacting with the system, aiming to share a file link on social media.
+2. **User Interface (UI)**: The platform through which the researcher interacts with the archive's digital management system.
+3. **Authentication Service (Auth)**: This component checks if the researcher is currently logged in and has permission to access and share the file.
+4. **File Management (FileMgmt)**: Manages file metadata retrieval and presents the link to be shared.
+5. **Social Media Share Service (SocialMedia)**: A hypothetical service or API integration allowing the direct sharing of content to selected social media platforms.
+6. **Database (DB)**: Stores and manages file metadata, user sessions, and audit logs for shared activities.
+
+This sequence commences with the researcher selecting a file to share, proceeding through authentication, file metadata retrieval, selection of a social media platform, and finally, sharing the link, which can either happen through direct integration or via manual sharing using external browser/application instructions provided to the researcher.

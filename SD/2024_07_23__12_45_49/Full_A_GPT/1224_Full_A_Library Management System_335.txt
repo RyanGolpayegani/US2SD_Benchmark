@@ -1,0 +1,50 @@
+Creating a sequence diagram in PlantUML for the user story "As a staff, I want to create new subscriber profiles" involves defining the interactions between the system's components to achieve the goal of creating a new subscriber profile. Below is a detailed sequence diagram written in PlantUML syntax to illustrate these interactions.
+
+Please note, this diagram assumes the existence of a user interface (UI) for the library staff (a client-side application), a server-side application (Backend), and a database where subscriber information is stored. This is a simplified conceptual model focusing on the main interactions.
+
+```plantuml
+@startuml
+actor Staff as s
+participant "UI Application" as ui
+participant "Backend System" as backend
+database "Database" as db
+
+s -> ui : Selects "Create New Profile"
+ui -> backend : Request to create new profile
+activate backend
+
+backend -> db : Check if subscriber exists
+activate db
+db --> backend : No existing subscriber
+deactivate db
+
+backend -> db : Create new subscriber profile
+activate db
+db --> backend : Profile created successfully
+deactivate db
+
+backend --> ui : Subscriber profile creation successful
+ui --> s : Display success message
+
+@enduml
+```
+
+### Explanation:
+
+1. **Staff Interaction**: The sequence begins with the library staff selecting the option to create a new subscriber profile through the UI application.
+
+2. **UI to Backend**: The UI application sends a request to the backend system to create a new profile. This indicates that the staff has provided necessary information such as name, address, contact details, and any other required data for the new subscriber.
+
+3. **Backend Processing**:
+   - The backend system first checks in the database if a subscriber with the provided details already exists to avoid duplicates.
+   - If the subscriber does not exist, the backend proceeds to create a new subscriber profile by inserting the provided details into the database.
+
+4. **Database Interactions**:
+   - The database checks for an existing subscriber and returns the result to the backend.
+   - Upon receiving a confirmation to proceed with creating a new profile, the database creates a new subscriber profile and acknowledges the successful creation to the backend.
+
+5. **Success Confirmation**: After the backend system has successfully created the new subscriber profile in the database, it sends a success message back to the UI application.
+
+6. **Staff Notification**: Finally, the UI application displays a success message to the library staff, indicating that the subscriber profile has been created successfully.
+
+This sequence diagram provides a high-level overview of the process for creating a new subscriber profile in the Comprehensive Library Manager System (CLMS) as described.

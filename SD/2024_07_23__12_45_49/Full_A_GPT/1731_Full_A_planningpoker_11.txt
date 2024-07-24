@@ -1,0 +1,55 @@
+Creating a sequence diagram in PlantUML for the described user story, "As a moderator, I want to have the 'estimate' field filled in automatically if all estimators show the same card, so that I can accept it more quickly," requires breaking down the interaction into several steps. Here’s a detailed breakdown including the interaction between the moderator, the system (AEPT), and the estimators.
+
+```plantuml
+@startuml
+participant Moderator
+participant "AEPT System" as System
+participant Estimator1
+participant Estimator2
+participant EstimatorN
+database DB
+
+== Estimation Round Starts ==
+Moderator -> System: StartEstimationRound()
+System -> Estimator1: RequestEstimate()
+System -> Estimator2: RequestEstimate()
+System -> EstimatorN: RequestEstimate()
+
+== Estimators Submit Estimates ==
+Estimator1 -> System: SubmitEstimate(5)
+Estimator2 -> System: SubmitEstimate(5)
+EstimatorN -> System: SubmitEstimate(5)
+
+== Check if All Estimates Match ==
+System -> System: CheckEstimates()
+
+alt All Estimates Match
+    System -> System: AutomaticallyFillEstimateField(5)
+    System --> Moderator: NotifyAutoFilledEstimate(5)
+    Moderator -> System: AcceptEstimate()
+    System -> DB: SaveFinalEstimate(5)
+else Estimates Do Not Match
+    System --> Moderator: RequestManualAcceptance()
+    Moderator -> System: AcceptEstimateManually()
+    System -> DB: SaveFinalEstimate()
+end
+
+== Notification of Accepted Estimate ==
+System -> Estimator1: NotifyEstimateAccepted(5)
+System -> Estimator2: NotifyEstimateAccepted(5)
+System -> EstimatorN: NotifyEstimateAccepted(5)
+
+@enduml
+```
+
+This sequence diagram lays out the process:
+
+1. **Estimation Round Starts:** The moderator initiates an estimation round through the AEPT system.
+2. **AEPT System Requests Estimates:** System sends a request to all the estimators participating in the game to submit their estimates.
+3. **Estimators Submit Estimates:** Each estimator submits their estimate back to the system. 
+4. **Check if All Estimates Match:** The system checks if all submitted estimates match.
+   - If all estimates match, the system automatically fills the estimate field with the matching value and notifies the moderator of this action. The moderator can accept the estimate more quickly since it's automatically entered.
+   - If estimates do not match, the system notifies the moderator to manually accept or discuss further estimation.
+5. **Acceptance and Saving of Final Estimate:** The moderator's acceptance of the estimate leads to it being saved in the database. The sequence concludes with the system notifying all estimators about the accepted estimate.
+
+Note: `EstimatorN` denotes that there can be multiple estimators participating in the estimation round, and the actions between the system and each estimator are parallel/concurrent processes.

@@ -1,0 +1,47 @@
+Below is a detailed sequence diagram in PlantUML format for the user story: "As a Staff, I want to delete a book, so that I can update the library when a book is removed from the library." This sequence diagram encompasses interactions among system components like the User Interface (UI), Backend Controller, Authentication Service, Book Management Service, and Database.
+
+```plantuml
+@startuml
+actor Staff as staff
+participant "UI: Library Management" as ui
+participant "Backend Controller" as controller
+participant "Authentication Service" as authService
+participant "Book Management Service" as bookService
+database "Library Database" as db
+
+== Delete Book Flow ==
+
+staff -> ui : Selects Delete Book Option
+ui -> controller : Request to delete book (bookId)
+controller -> authService : Validate Staff Credentials
+alt Authentication Success
+    authService --> controller : Credentials Valid
+    controller -> bookService : Delete Book Request (bookid)
+    bookService -> db : Delete Book Record
+    db --> bookService : Confirm Deletion
+    bookService --> controller : Book Deleted Successfully
+    controller --> ui : Display Success Message
+    staff <-- ui : Views Confirmation Message
+else Authentication Failure
+    authService --> controller : Authentication Failed
+    controller --> ui : Display Error Message (Unauthorized)
+    staff <-- ui : Views Error Message
+end
+@enduml
+```
+
+Explanation of the Diagram:
+
+1. **Staff Interaction:** The staff (librarian/library employee) initiates the process by selecting the option to delete a book from the library's UI.
+
+2. **Request Forwarding:** The UI then forwards this request, along with the identification of the book to be deleted (bookId), to the backend controller.
+
+3. **Authentication Check:** The backend controller interacts with the authentication service to validate the credentials of the staffer to ensure only authorized persons can delete books.
+
+4. **Conditional Flow:**
+    - **Authentication Success**: If the authentication succeeds, the flow continues with the book management service, which then proceeds to delete the book's record from the database. Upon successful deletion, the confirmation is sent up the chain, and a success message is displayed to the staff.
+    - **Authentication Failure**: If the authentication fails, an error message indicating unauthorized access is displayed to the staff.
+
+5. **Deletion & Feedback:** Finally, upon successful deletion, the staff receives confirmation that the book has been removed from the library's catalog.
+
+This sequence diagram outlines a comprehensive flow for deleting a book, encompassing essential elements like authentication and direct manipulation of book records, ensuring that the operation is performed securely and efficiently.

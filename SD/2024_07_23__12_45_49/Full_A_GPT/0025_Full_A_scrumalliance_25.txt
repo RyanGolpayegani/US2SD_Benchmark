@@ -1,0 +1,66 @@
+To visualize the user story for a trainer creating an event or course with an associated listing fee in PlantUML, we'll need to outline the interactions between the user (trainer), the community platform's interface, and any backend services that handle course/event creation, fee processing, and final confirmation.
+
+Here is a sequence diagram in PlantUML format that captures these interactions:
+
+```plantuml
+@startuml
+actor Trainer
+participant "Course Creation Page" as Page
+participant "Backend System" as Backend
+participant "Payment Processing" as Payment
+database "Course Database" as DB
+
+Trainer -> Page: Navigate to Create Course/Event
+activate Trainer
+activate Page
+
+Page -> Trainer: Display Form
+
+Trainer -> Page: Fill in course/event details
+Trainer -> Page: Submit form
+activate Backend
+
+Page -> Backend: Validate course/event details
+Backend -> DB: Check for validity
+activate DB
+DB --> Backend: Validation Passed
+deactivate DB
+
+Backend --> Page: Prompt for listing fee
+Page --> Trainer: Display listing fee prompt
+Trainer -> Page: Confirm and proceed to payment
+Page -> Payment: Initiate payment process
+activate Payment
+
+Trainer -> Payment: Provide payment details
+Trainer -> Payment: Confirm payment
+Payment -> Payment: Process transaction
+Payment --> Backend: Payment Successful
+deactivate Payment
+
+Backend -> DB: Create course/event entry
+DB --> Backend: Entry Created
+
+Backend --> Page: Display confirmation message
+Page --> Trainer: Show success and course/event details
+deactivate Backend
+
+Trainer -> Page: Acknowledge confirmation
+deactivate Page
+deactivate Trainer
+
+@enduml
+```
+
+This diagram outlines the simplified process:
+
+1. The Trainer navigates to the Course Creation Page.
+2. The Course Creation Page prompts the Trainer to fill in the details of the course or event.
+3. Upon form submission, the Backend System validates these details with the Course Database.
+4. If the course/event details are valid, the Backend prompts for the listing fee via the Course Creation Page.
+5. The Trainer confirms and proceeds to the Payment Processing module to input payment details and confirm payment.
+6. The Payment Processing module processes the transaction and informs the Backend of the successful payment.
+7. The Backend System then creates a new course/event entry in the Course Database.
+8. Finally, the Course Creation Page displays a confirmation message to the Trainer.
+
+This sequence provides a high-level overview, focusing on major steps without delving into granular validation or error handling processes for simplicity.

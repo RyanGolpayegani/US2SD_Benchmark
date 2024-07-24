@@ -1,0 +1,46 @@
+Given the project description and focusing on the user story about generating reports on book genres to make decisions on collection expansion, below is a detailed sequence diagram in PlantUML format. This sequence diagram outlines the process from the perspective of a library manager who wants to generate these reports.
+
+```plantuml
+@startuml
+actor Manager
+participant "Web Interface" as Web
+database "Backend System" as Backend
+database "Database" as DB
+
+Manager -> Web : Request report generation on book genres
+activate Web
+Web -> Backend : Request book genre statistics
+activate Backend
+Backend -> DB : Query book genres and their statistics
+activate DB
+DB --> Backend : Return query results
+deactivate DB
+Backend -> Backend : Process and compile report data
+Backend --> Web : Send compiled report data
+deactivate Backend
+Web --> Manager : Display report on book genres
+deactivate Web
+@enduml
+```
+
+#### Explanation:
+
+- **Actor (Manager):** This is the library manager, who initiates the process by requesting a report on book genres.
+  
+- **Web Interface (Web):** Acts as the frontend through which the library manager interacts with the CLMS. It receives the request to generate a report on book genres.
+  
+- **Backend System (Backend):** This is the server-side application logic that processes the manager's request. It interacts with the database to fetch the required data and compiles it into a readable report.
+  
+- **Database (DB):** This stores all the data related to books, including genre information, borrowing statistics etc. It processes queries from the backend system and returns results.
+  
+**Flow:**
+
+1. The library manager requests a report on book genres via the web interface.
+2. The web interface forwards this request to the backend system.
+3. The backend system queries the database for book genres and their borrowing statistics or any other relevant metrics.
+4. The database returns the queried data to the backend system.
+5. The backend system then processes this data, compiling it into a report format suitable for the library manager's needs.
+6. This compiled report data is sent back through the web interface.
+7. Finally, the web interface displays the report to the library manager, who can use it to make informed decisions about expanding the library's collection. 
+
+This sequence diagram represents a simplification of what would likely be a more complex process involving authentication and authorization steps, error handling, and possibly interactions with other microservices or external APIs for comprehensive reporting capabilities.

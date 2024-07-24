@@ -1,0 +1,18 @@
+@startuml
+participant Participant as P
+participant "UI Interface" as UI
+participant "Server" as S
+participant "Timer Service" as TS
+participant "Broadcast Service" as BS
+participant "Client Browser" as CB
+
+P -> UI : Requests to start countdown
+UI -> S : Initiates start countdown command
+S -> TS : Triggers 2-minute timer
+activate TS
+TS -> TS : Counts down for 2 minutes
+deactivate TS
+TS -> BS : Timer ends, notify completion
+BS -> CB : Broadcasts timer completion to all connected clients
+CB -> CB : Displays timer to all Participants
+@enduml

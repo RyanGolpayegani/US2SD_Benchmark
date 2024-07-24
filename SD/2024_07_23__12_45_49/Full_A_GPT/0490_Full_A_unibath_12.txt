@@ -1,0 +1,54 @@
+To create a PlantUML sequence diagram for your user story, we will illustrate the interaction between the depositor, the Enhanced Research Data Management Platform (referenced as ERDMP for brevity), and other University systems such as Pure and Opus, which are used to manage research outputs and publications. This sequence will focus on the process of depositing a dataset with automatic metadata filling and remembering previous inputs.
+
+Please note, the actual implementation complexity and the systems involved might vary. This is a simplified representation based on the provided project description.
+
+```plantuml
+@startuml
+participant Depositor
+participant ERDMP
+participant "Pure/Opus" as PureOpus
+database "Metadata Store" as Metadata
+
+== Deposit Process Initiation ==
+Depositor -> ERDMP : Initiate Deposit
+note right of ERDMP: Display deposit form
+
+== Fetch Metadata from University Systems ==
+ERDMP -> PureOpus : Request Metadata for Depositor
+activate PureOpus
+PureOpus --> ERDMP : Return Metadata
+deactivate PureOpus
+note right of ERDMP: Fill deposit form with Metadata
+
+== Check for Previous Deposits ==
+ERDMP -> Metadata : Query for previous deposits by Depositor
+activate Metadata
+Metadata --> ERDMP : Return Metadata of previous deposits
+deactivate Metadata
+note right of ERDMP: Pre-fill additional information\nfrom previous deposits
+
+== Depositor Reviews Auto-filled Metadata ==
+ERDMP -> Depositor : Present auto-filled form
+Depositor -> ERDMP : Confirms/updates information
+note right of Depositor: User may modify\nauto-filled data
+
+== Finalize Deposit ==
+Depositor -> ERDMP : Submit final data
+ERDMP -> Metadata : Store final dataset metadata
+activate Metadata
+Metadata --> ERDMP : Confirm data stored
+deactivate Metadata
+
+note right of ERDMP: Generate DOI, apply licenses,\nand link to publication if applicable
+ERDMP -> Depositor : Deposit confirmation & DOI
+
+@enduml
+```
+
+To use this PlantUML script:
+
+1. You need a PlantUML environment, such as an online editor or an IDE with PlantUML integration.
+2. Copy and paste the provided script into your PlantUML editing environment.
+3. Generate the diagram. The script illustrates a sequence where the depositor initiates a dataset deposit, automatically fills the metadata from other systems like Pure and Opus, and possibly recalls metadata from previous deposits. This sequence ends with the dataset being successfully stored and confirmed to the depositor.
+
+This diagram represents a high-level view and can be customized further as needed, such as adding more specific steps, error handling routines, or interactions with additional systems.

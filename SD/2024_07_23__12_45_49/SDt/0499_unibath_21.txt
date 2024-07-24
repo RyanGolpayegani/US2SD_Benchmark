@@ -1,0 +1,46 @@
+@startuml
+participant Depositor
+participant "Web Interface" as UI
+participant "Data Management Service" as DMS
+participant "Version Control" as VC
+participant "Repository" as Repo
+
+Depositor -> UI: Access data management page
+UI -> DMS: Request to manage dataset versions
+activate DMS
+
+DMS -> VC: Check existing versions
+activate VC
+VC -> Repo: Fetch version history
+activate Repo
+Repo --> VC: Version history
+deactivate Repo
+
+VC --> DMS: Display versions
+DMS --> UI: Show version management options
+
+Depositor -> UI: Initiate new version upload
+UI -> DMS: Prepare for new version
+DMS -> VC: Initialize new version
+VC -> Repo: Store new dataset version
+activate Repo
+Repo --> VC: Version stored
+deactivate Repo
+
+VC --> DMS: Update version history
+DMS -> VC: Generate new DOI
+VC --> DMS: DOI generated
+
+DMS --> UI: Confirm version and DOI
+UI --> Depositor: Display confirmation & DOI
+
+alt Applying embargo or license
+    Depositor -> UI: Apply embargo/license to version
+    UI -> DMS: Update version settings
+    DMS -> Repo: Apply settings to version
+    Repo --> DMS: Settings applied
+    DMS --> UI: Confirm application
+    UI --> Depositor: Display confirmation
+end
+
+@enduml

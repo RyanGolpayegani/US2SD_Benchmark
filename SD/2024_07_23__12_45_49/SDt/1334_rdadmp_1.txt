@@ -1,0 +1,35 @@
+@startuml
+actor PI
+participant "DMPTool Interface" as Interface
+participant "Metadata Recording Module" as MetadataModule
+participant "Institutional System" as InstitutionalSys
+participant "External Metadata Tools" as ExternalTools
+participant "Data Repository" as Repository
+
+== Metadata Recording Process ==
+PI -> Interface : Login
+activate Interface
+Interface -> MetadataModule : Initiate Metadata Recording
+activate MetadataModule
+MetadataModule -> InstitutionalSys : Fetch PI Project Information
+activate InstitutionalSys
+InstitutionalSys --> MetadataModule : Return Project Info
+deactivate InstitutionalSys
+MetadataModule -> ExternalTools : Import Existing Metadata
+activate ExternalTools
+ExternalTools --> MetadataModule : Return Imported Metadata
+deactivate ExternalTools
+MetadataModule -> MetadataModule : Merge Metadata
+PI -> MetadataModule : Enter/Update Metadata
+MetadataModule -> Repository : Verify Data Provenance
+activate Repository
+Repository --> MetadataModule : Provenance OK
+deactivate Repository
+MetadataModule --> Interface : Display Metadata Summary
+PI -> Interface : Submit Metadata
+Interface -> MetadataModule : Confirm Metadata Recording
+MetadataModule -> MetadataModule : Generate Metadata ID/Record
+MetadataModule --> PI : Confirm Metadata Recorded
+deactivate MetadataModule
+deactivate Interface
+@enduml

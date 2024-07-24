@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the given user story in PlantUML format involves visualizing the interaction between different system components and the user when accessing content files. The user story focuses on a user wanting to access content files to decide on their download based on size. Note that PlantUML diagrams use a simple, text-based notation to describe the diagram. Below is a representation of how this interaction could be visualized using PlantUML syntax for a sequence diagram.
+
+```plantuml
+@startuml
+!theme plain
+
+actor User
+participant "User Interface" as UI
+participant "Access Control" as AC
+database "DAMS Repository" as DAMS
+participant "File Information" as FI
+
+== Access Content Files ==
+User -> UI : Request to view object's files
+UI -> AC : Verify user access level
+AC -> UI : Access Granted/Denied
+alt Access Granted
+    UI -> DAMS : Request file list for object
+    DAMS -> UI : Return file list
+    UI -> User : Display file list with sizes
+    User -> UI : Select file to inspect size
+    UI -> FI : Request file size
+    FI -> DAMS : Locate file
+    DAMS -> FI : Return file metadata (size)
+    FI -> UI : Return file size to UI
+    UI -> User : Show file size
+else Access Denied
+    UI -> User : Display access denied message
+end
+
+@enduml
+```
+
+### Explanation:
+1. **User Interaction**: The user interacts with the User Interface (UI) to request access to content files of a specific object.
+2. **Access Control Verification**: The UI then communicates with an "Access Control" component to verify whether the user has the appropriate access level to view the requested files.
+3. **Access Granted/Denied**:
+   - If access is granted, the workflow moves forward to retrieve the file list.
+   - If access is denied, the user is shown a message indicating they cannot access the files.
+4. **File List Retrieval (Access Granted Path)**: Upon access approval, the UI requests the file list for the chosen object from the DAMS Repository.
+5. **Display File List to User**: The repository returns the list of files, which the UI then displays to the user, including file sizes if available.
+6. **File Size Inquiry**: The user selects a file to inspect its size, triggering the UI to request detailed file size information from the "File Information" component.
+7. **File Metadata Retrieval**: The "File Information" component locates the file within the DAMS repository and retrieves its metadata, including file size.
+8. **File Size Display**: Finally, the file size is returned to the UI, which then shows it to the user, allowing them to decide whether to download it based on its size.
+
+This sequence diagram outlines a generic process flow and may need adjustments or extensions based on the specific implementation details of the DIMS system and its components.

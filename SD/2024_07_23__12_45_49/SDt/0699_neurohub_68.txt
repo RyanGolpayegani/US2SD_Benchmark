@@ -1,0 +1,23 @@
+@startuml
+autonumber
+actor User as U
+participant "UI File Browser" as UIFB
+participant "Server" as S
+database "File System" as FS
+
+== File Selection ==
+U -> UIFB: Selects multiple files
+UIFB -> S: Sends file identifiers and "start move" request
+S -> FS: Checks file status
+FS --> S: Returns file status (e.g., available)
+S --> UIFB: Confirms files are movable
+
+== File Moving ==
+U -> UIFB: Specifies new location and confirms move
+UIFB -> S: Requests move with file IDs & target path
+S -> FS: Executes move operation
+FS --> S: Move success confirmation
+S --> UIFB: Confirms move completion
+UIFB --> U: Displays files in new location
+
+@enduml

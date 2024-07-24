@@ -1,0 +1,46 @@
+To generate a detailed sequence diagram for the user story "As a library employee, I want to ban a member" using PlantUML syntax, follow the steps outlined below. This sequence diagram considers multiple system components such as the user interface (UI), backend server, authentication service, and the database management system.
+
+```plantuml
+@startuml
+actor Employee as emp
+participant ":UI" as ui
+participant ":Server" as server
+participant ":AuthService" as auth
+participant ":Database" as db
+
+emp -> ui : Selects member profile
+ui -> server : Request to fetch member details
+server -> db : Query member details
+db -> server : Return member details
+server -> ui : Display member details
+emp -> ui : Clicks on "Ban Member" button
+ui -> server : Request to ban member
+server -> auth : Validate employee credentials
+auth -> server : Credentials valid
+server -> db : Update member status to 'banned'
+db -> server : Confirmation of status update
+server -> ui : Display success message
+emp -> ui : Confirms acknowledgment
+ui -> emp : Member successfully banned
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Employee Interaction**: The process begins with the library employee selecting the member profile they intend to ban, through the User Interface (UI).
+ 
+2. **Fetching Member Details**:
+    - The UI requests the server to fetch the selected member's details.
+    - The server queries the Database to obtain these details.
+    - Upon obtaining the details from the Database, the server then returns these details to the UI where they are displayed to the employee.
+
+3. **Banning Process**:
+    - The employee, after reviewing the member's details, clicks on a "Ban Member" button in the UI.
+    - This action sends a request to the server to ban the member.
+    - The server calls the AuthenticationService (AuthService) to validate the employee's credentials to ensure they have the necessary permissions to ban a member.
+    - Upon successful validation, the server then updates the member's status to 'banned' in the Database.
+    - Once the Database confirms the update, the server instructs the UI to display a success message to the employee.
+    - The employee acknowledges the confirmation, completing the process.
+   
+This sequence diagram provides a comprehensive overview of the steps involved when a library employee wishes to ban a member from the library system, integrating various components such as the UI, server, authentication service, and the database.

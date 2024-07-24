@@ -1,0 +1,39 @@
+@startuml
+participant Repoadmin
+participant "Symplectic Elements" as Symplectic
+database "EDRMS" as Repository
+participant "Fedora 4" as Fedora
+participant "Database" as DB
+
+== Setup Integration ==
+Repoadmin -> Symplectic: Initiate Integration Setup
+activate Symplectic
+Symplectic -> Repository : Request Access Details
+activate Repository
+Repository --> Symplectic : Provide API Credentials
+deactivate Repository
+Symplectic -> Symplectic : Configure API Credentials
+Symplectic -> Repoadmin : Confirm Integration Setup
+deactivate Symplectic
+
+== Data Communication ==
+Repoadmin -> Symplectic: Request Data Sync
+activate Symplectic
+Symplectic -> Repository : Invoke API for Data Sync
+activate Repository
+Repository -> DB : Query Data
+activate DB
+DB --> Repository : Return Data Set
+deactivate DB
+
+Repository -> Fedora : Fetch Additional Metadata
+activate Fedora
+Fedora --> Repository : Return Metadata
+deactivate Fedora
+
+Repository --> Symplectic : Send Data & Metadata
+deactivate Repository
+Symplectic -> Repoadmin : Confirm Data Received
+deactivate Symplectic
+
+@enduml

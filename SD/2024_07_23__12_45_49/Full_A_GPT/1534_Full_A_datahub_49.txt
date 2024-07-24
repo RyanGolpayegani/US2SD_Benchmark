@@ -1,0 +1,60 @@
+Creating a detailed PlantUML sequence diagram for the given user story requires understanding the interactions between systems and users in the scenario described. Below is a PlantUML format sequence diagram that outlines the process where a Consumer is notified of changes to a data package of interest.
+
+```plantuml
+@startuml
+!theme cerulean
+
+participant "Consumer" as consumer
+participant "Platform Web Interface" as web
+participant "Notification Service" as notify
+participant "Data Registry" as registry
+database "Data Package DB" as db
+
+== Consumer Subscribes to Notifications ==
+consumer -> web : Subscribe to package updates
+web -> notify : Initiate subscription process
+notify -> db : Store subscription details
+db --> notify : Confirmation
+notify --> web : Subscription confirmed
+web --> consumer : Subscription success notification
+
+== Publisher Updates a Data Package ==
+group Data Package Update
+    participant "Publisher" as publisher
+    publisher -> web : Upload updated package
+    web -> registry : Validate and update package
+    registry -> db : Update package details
+    db --> registry : Update confirmation
+    registry --> web : Package updated successfully
+    web --> publisher : Update success notification
+end
+
+== Notification Service Checks for Subscribers ==
+registry -> notify : Trigger notification check
+notify -> db : Retrieve subscribed consumers for package
+db --> notify : List of subscribed consumers
+
+== Notification Service Notifies Subscribers ==
+loop for each Consumer
+    notify -> consumer : Notify of package update
+    consumer --> notify : Acknowledge notification
+end
+
+@enduml
+```
+
+This sequence diagram details the following steps:
+
+1. **Consumer Subscribes to Notifications:** 
+    - The Consumer subscribes to updates for a particular data package via the Platform's Web Interface. This action initiates the subscription process handled by a Notification Service, which then stores the subscription details in a database. Upon confirmation, the Consumer is notified of the successful subscription.
+
+2. **Data Package Update:** 
+    - In a separate process, a Publisher updates a data package through the Web Interface. This update is validated and processed by the Data Registry, with the details stored in the Data Package Database. The Publisher is then notified of the successful update.
+
+3. **Notification Service Checks for Subscribers:** 
+    - Following the update, the Data Registry triggers the Notification Service to check for any Consumers subscribed to notifications for the updated package. The Notification Service retrieves a list of subscribed Consumers from the database.
+
+4. **Notification Service Notifies Subscribers:** 
+    - The Notification Service then notifies each subscribed Consumer about the update. Consumers receive these notifications and acknowledge them, completing the interaction loop.
+
+This sequence diagram primarily illustrates the interactions from the perspective of subscribing to and receiving notifications for data package updates, based on the provided project description and user story.

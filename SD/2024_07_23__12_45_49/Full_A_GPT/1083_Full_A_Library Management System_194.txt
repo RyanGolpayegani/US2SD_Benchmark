@@ -1,0 +1,30 @@
+Creating a detailed sequence diagram for the specific user story "As a manager, I want to delete book categories" involves outlining the interactions between different system components and actors in the Comprehensive Library Management System (CLMS) when a manager decides to delete one or more book categories. Below is a PlantUML code that represents these interactions.
+
+```plantuml
+@startuml
+actor Manager as m
+participant "UI Interface" as ui
+participant "Authorization" as auth
+participant "Book Category Management" as bcm
+database "Database" as db
+
+m -> ui : Selects "Manage Book Categories"
+ui -> auth : Validate Manager Role
+alt Authorized
+    auth -> ui : Access Granted
+    ui -> m : Display Book Categories
+    m -> ui : Selects Categories to Delete
+    ui -> bcm : Request Category Deletion
+    bcm -> db : Delete Category Records
+    db -> bcm : Confirm Deletion
+    bcm -> ui : Display Success Message
+    ui -> m : Show Update
+else Unauthorized
+    auth -> ui : Access Denied
+    ui -> m : Display Error Message
+end
+@enduml
+```
+This sequence diagram starts with the manager selecting the option to manage book categories through the user interface (UI). The UI then requests authorization to check if the user (manager) has the necessary permissions to perform this action. If authorized, the system proceeds to display the book categories to the manager. The manager selects which categories to delete and confirms the action. The UI interface sends this deletion request to the Book Category Management component, which then interacts with the database to delete the specified category records. Upon successful deletion, a confirmation is sent back to the UI, which then displays a success message to the manager. If the authorization fails, an access denied message is displayed instead.
+
+This sequence diagram provides a high-level overview of the steps involved in the user story "As a manager, I want to delete book categories" within the CLMS project.

@@ -1,0 +1,18 @@
+@startuml
+actor User as user
+participant "Web Interface" as web
+participant "API Server" as api
+database "Metadata Database" as db
+
+user -> web : Select files from experimental run
+web -> api : Request to attach metadata
+api -> db : Fetch existing metadata templates
+db -> api : Return metadata templates
+api -> web : Display metadata templates
+user -> web : Input/select metadata for files
+web -> api : Send metadata and file identifiers
+api -> db : Save metadata for each file
+db -> api : Confirm save operation
+api -> web : Confirm metadata attached
+web -> user : Display success message
+@enduml

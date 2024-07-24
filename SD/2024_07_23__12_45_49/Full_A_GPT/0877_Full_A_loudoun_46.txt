@@ -1,0 +1,60 @@
+Given your request, below is a detailed sequence diagram in PlantUML format that illustrates the process for an Applicant looking to complete a building development project, with the goal of receiving any posted bond and/or obtaining occupancy. This sequence will cover the following steps: application submission, review, inspection scheduling, inspection completion, final review, and bond release/occupancy permit issuance.
+
+Please note that PlantUML code is designed to be used with a PlantUML interpreter or compatible online tool to visualize the sequence diagram.
+
+```plantuml
+@startuml
+!theme cerulean
+
+actor Applicant
+participant "Customer Portal" as Portal
+participant "Application System" as AppSystem
+participant "Review Team" as ReviewTeam
+participant "Inspection System" as InspectionSystem
+participant "Inspector" as Inspector
+participant "Zoning & Permitting" as ZoningPermitting
+participant "Bond Management" as BondManagement
+database "County Database" as Database
+
+== Application Submission ==
+Applicant -> Portal: Log in to user account
+Portal -> AppSystem: Initiate Application for Project Completion
+Applicant -> AppSystem: Submit Application\nwith Project Details and Request for Inspection
+AppSystem -> Database: Store Application/Project Details
+AppSystem --> Applicant: Acknowledge Submission\nProvide Application Number
+
+== Initial Review ==
+ReviewTeam -> AppSystem: Retrieve Application
+AppSystem -> ReviewTeam: Display Application Details
+ReviewTeam -> ReviewTeam: Evaluate Application & Documents
+ReviewTeam -> Database: Record Review Notes and Approval
+ReviewTeam --> AppSystem: Approval for Inspection
+
+== Inspection Scheduling ==
+Applicant -> Portal: Request Inspection Schedule
+Portal -> InspectionSystem: Forward Inspection Request
+InspectionSystem -> Inspector: Assign Inspection Task
+Inspector --> InspectionSystem: Confirm Schedule
+InspectionSystem --> Portal: Notify Applicant of Schedule
+Portal --> Applicant: Provide Inspection Schedule
+
+== Inspection Process ==
+Inspector -> InspectionSystem: Perform Inspection
+Inspector -> InspectionSystem: Submit Inspection Report
+InspectionSystem -> Database: Update Status and Report
+InspectionSystem --> AppSystem: Notify Completion of Inspection
+
+== Final Review for Bond Release and Occupancy Permit ==
+AppSystem -> ZoningPermitting: Request Final Review
+ZoningPermitting -> Database: Evaluate Final Compliance
+ZoningPermitting -> BondManagement: Verify Bond Release Conditions
+BondManagement -> ZoningPermitting: Confirm Bond Release Eligibility
+ZoningPermitting -> ZoningPermitting: Issue Occupancy Permit
+ZoningPermitting -> Database: Update Permit Status
+ZoningPermitting --> BondManagement: Release Bond
+BondManagement --> Applicant: Notify Bond Release
+ZoningPermitting --> Applicant: Provide Occupancy Permit
+
+@enduml
+```
+To visualize this diagram, you'll need to use a PlantUML interpreter or a compatible application that supports PlantUML code. This sequence diagram illustrates a series of interactions from the applicant initiating an application for project completion through to the release of any posted bond and issuance of an occupancy permit. It touches on interactions with the customer portal, application system, review team, inspection system, inspectors, zoning and permitting department, and bond management, culminating in the successful completion of the building development project.

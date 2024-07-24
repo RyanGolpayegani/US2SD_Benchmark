@@ -1,0 +1,44 @@
+Creating a detailed Sequence Diagram for the user story "As a chef, I want to update the status of menu items as 'out of'" in PlantUML format involves outlining the interactions between the system's components to perform this specific task. Below is an example of how this diagram could be structured, keeping in view the project's technology stack and outlined features:
+
+```plantuml
+@startuml
+actor Chef
+participant "Web Interface" as UI
+participant "Backend Service\n(Node.js/Express)" as Backend
+database "Database\n(MongoDB/PostgreSQL)" as DB
+
+Chef -> UI : Selects menu item to update
+UI -> Backend : Request to update menu item status
+Backend -> DB : Query to find menu item
+
+alt If menu item exists
+    DB -> Backend : Menu item details
+    Backend -> DB : Update status to "out of"
+    DB -> Backend : Confirm update
+    Backend -> UI : Update success message
+    UI -> Chef : Display success message
+else If menu item does not exist
+    DB -> Backend : Error message
+    Backend -> UI : Display error message
+    UI -> Chef : Show error "Menu item not found"
+end
+
+@enduml
+```
+
+This sequence diagram illustrates the following steps:
+1. The **Chef** initiates the action to update a menu item's status via the restaurant management system's **Web Interface**.
+2. The **Web Interface** then communicates this request to the **Backend Service**, which is built with **Node.js/Express**, indicating the need to update a specific menu item's status to "out of".
+3. The **Backend Service** queries the **Database** (which could be MongoDB or PostgreSQL, depending on the project's final database choice) to find the specific menu item.
+   - If the menu item is found in the database:
+     1. The **Database** responds back with the details of that menu item.
+     2. The **Backend Service** requests the **Database** to update the menu item's status to "out of".
+     3. Upon successful update, the **Database** confirms the update back to the **Backend Service**.
+     4. The **Backend Service** then informs the **Web Interface** of the successful update.
+     5. Finally, the **Web Interface** displays a success message to the **Chef**.
+   - If the menu item does not exist:
+     1. The **Database** sends an error message back to the **Backend Service**.
+     2. The **Backend Service** conveys this error message through the **Web Interface**.
+     3. The **Web Interface** displays an error message to the **Chef**, indicating that the menu item was not found.
+
+This sequence diagram is a simple representation and can be expanded or modified based on specific project requirements, such as handling concurrent updates, integrating with inventory management for automatic updates based on stock levels, or introducing notifications for relevant staff or systems.

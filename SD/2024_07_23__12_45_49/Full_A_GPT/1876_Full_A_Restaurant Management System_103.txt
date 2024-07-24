@@ -1,0 +1,54 @@
+To generate a detailed sequence diagram in PlantUML format for the user story "As a manager, I want to change the mean when necessary," let's structure the process. This sequence involves several systems and actors, including the manager, the restaurant management system's interface, and the backend database that reflects changes across the system.
+
+This scenario captures the steps a manager would take to update the menu, including logging into the system, accessing the menu management module, making changes to the menu items, and saving those changes. The diagram will demonstrate the interactions between the manager, frontend UI, and backend services to accomplish this task.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Manager as M
+participant "UI Dashboard" as UI
+participant "Menu Management\nModule" as MMM
+participant "Backend API" as BA
+database "Database" as DB
+
+== Menu Update Process ==
+M -> UI: Access system
+UI --> M: Display dashboard
+
+M -> UI: Select 'Menu Management'
+UI -> MMM: Request menu details
+MMM -> BA: Query current menu items
+BA -> DB: SELECT menu items
+DB --> BA: Return menu items
+BA --> MMM: Menu items data
+MMM --> UI: Display menu items
+UI --> M: Show menu items
+
+M -> UI: Initiate menu change
+UI -> MMM: Access menu edit mode
+MMM --> UI: Provide edit interface
+UI --> M: Display edit interface
+
+M -> UI: Update menu items
+UI -> MMM: Submit updated menu items
+MMM -> BA: Update menu items request
+BA -> DB: UPDATE menu items
+DB --> BA: Confirm changes
+BA --> MMM: Menu update confirmation
+MMM --> UI: Display success message
+UI --> M: Confirm menu updated
+
+@enduml
+```
+
+This PlantUML sequence diagram breaks down the interaction flow for a manager to update the menu in the restaurant management system:
+
+1. **Manager Accesses System**: The manager begins by logging into the system and being presented with the dashboard through the UI.
+2. **Navigate to Menu Management**: The manager selects the option to manage the menu, prompting the system to fetch and display current menu items.
+3. **Initiate Menu Change**: Once the existing menu items are displayed, the manager chooses to make changes, entering an interface where these updates can be made.
+4. **Update Menu Items**: The manager makes necessary changes to the menu items, which are then submitted to the system.
+5. **System Processes Changes**: The updated menu items are processed by the backend API, which interacts with the database to apply these changes.
+6. **Confirmation**: After the database has been updated, a confirmation message is displayed to the manager, indicating that the menu has been successfully updated.
+
+This diagram provides a high-level view of the process involved when a manager decides to update the restaurant menu using the proposed Restaurant Management and Operations System.

@@ -1,0 +1,37 @@
+@startuml
+participant "Librarian" as librarian
+participant "CLMS Interface" as interface
+participant "Database" as db
+participant "Notification Service" as notifier
+
+librarian -> interface : Log in to CLMS
+activate interface
+
+librarian -> interface : Request overdue subscribers list
+activate db
+
+db -> db : Retrieve overdue subscribers
+db --> interface : Return overdue list
+deactivate db
+
+interface --> librarian : Display overdue subscribers
+deactivate interface
+
+loop for each overdue subscriber
+    librarian -> notifier : Initiate warning call to subscriber
+    activate notifier
+
+    notifier -> subscriber : Automated Warning Call
+    deactivate notifier
+end
+
+librarian -> interface : Log overdue call actions
+activate interface
+interface -> db : Update subscriber record with call log
+activate db
+db --> interface : Confirm update
+deactivate db
+interface --> librarian : Display update confirmation
+deactivate interface
+
+@enduml

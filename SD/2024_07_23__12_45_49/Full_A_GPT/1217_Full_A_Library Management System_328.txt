@@ -1,0 +1,65 @@
+To generate a detailed Sequence Diagram in PlantUML format for the user story "As a staff, I want to add borrowed books to the system with their user information", we need to consider the interactions between different components of the Comprehensive Library Management System (CLMS). Below is the PlantUML sequence diagram code that outlines the sequence of actions when a staff member adds a borrowed book to the system along with the user information.
+
+```plantuml
+@startuml
+actor Staff as staff
+participant "UI Interface" as UI
+participant "Server" as server
+participant "Database" as db
+
+staff -> UI : Select option to add borrowed book
+UI -> server : Request to add borrowed book
+activate server
+server -> db : Check if book is available
+activate db
+db --> server : Book availability status
+deactivate db
+
+alt If book is available
+    server -> db : Update book status to borrowed
+    activate db
+    db --> server : Confirm book status updated
+    deactivate db
+    
+    server -> db : Retrieve user information
+    activate db
+    db --> server : User information
+    deactivate db
+    
+    server -> db : Associate book with user
+    activate db
+    db --> server : Confirmation of association
+    deactivate db
+    
+    server --> UI : Display success message
+    UI --> staff : Show confirmation of book borrowed
+else If book is not available
+    server --> UI : Display book not available message
+    UI --> staff : Show book not available message
+end
+
+deactivate server
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Start**: The sequence begins with the 'Staff' actor deciding to add a borrowed book to the system.
+
+2. **Interaction with UI**: The staff interacts with the UI Interface, selecting the option to add a borrowed book.
+
+3. **Server Request**: The UI Interface sends a request to the server to add a borrowed book.
+
+4. **Availability Check**: The server then checks with the Database whether the book is available for borrowing.
+
+    - If the book is available, the database updates the book's status to "borrowed," and then the server retrieves the user's information from the database.
+    
+    - The server associates the book with the user in the database and confirms the operation.
+    
+    - The server sends a success message back to the UI, which then displays a confirmation to the staff.
+
+    - If the book is not available, the server sends a message back to the UI indicating that the book is not available, and the UI displays this message to the staff.
+
+5. **End**: The sequence concludes once the staff receives the confirmation message or the book not available message.
+
+This sequence diagram assumes an abstract view of the system components and operations involved in adding a borrowed book to the system. Depending on the actual implementation, additional steps or components might be necessary.

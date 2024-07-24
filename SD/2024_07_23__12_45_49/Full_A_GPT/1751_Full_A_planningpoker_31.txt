@@ -1,0 +1,45 @@
+Given your request, below is a detailed sequence diagram written in PlantUML format. This diagram will visualize the interaction sequence involved when an estimator wants to view all the items set for estimation in a session within the Agile Estimation and Planning Tool (AEPT).
+
+Please note, this is a basic outline. Depending on your specific implementation details, you might need to adjust it accordingly.
+
+```plantuml
+@startuml
+participant Estimator
+participant Browser
+participant "AEPT Web Server" as WebServer
+database "Database" as DB
+
+== Estimator Requests Estimation Items ==
+Estimator -> Browser: Navigate to estimation session
+Browser -> WebServer: Request session details
+WebServer -> DB: Query for estimation items
+DB --> WebServer: Return estimation items
+WebServer --> Browser: Display estimation items
+Browser --> Estimator: Show estimation session with items
+
+== Estimator Views Estimation Items ==
+alt Estimation Items Available
+    Estimator -> Browser: Scroll through items
+    Browser -> Estimator: Visual feedback on items
+else No Estimation Items
+    Browser -> Estimator: Show "No items available"
+end
+
+@enduml
+```
+
+In this scenario:
+
+1. **Estimator Requests Estimation Items**: The Estimator expresses the intent to view all estimation items for the current session by navigating to the specific session on their browser.
+   - The Browser forwards this request to the AEPT Web Server.
+   - The AEPT Web Server then queries the Database for all the estimation items related to this session.
+   - The Database returns the list of estimation items to the Web Server.
+   - The Web Server sends this information back to the Browser, which displays the list of estimation items for the estimator.
+
+2. **Estimator Views Estimation Items**: Depending on if estimation items are available:
+   - If there are items available, the Estimator can scroll through the items, with the Browser providing visual feedback.
+   - If no items are available, the Estimator is informed through a message stating "No items available."
+
+This sequence ensures that the Estimator is aware of the estimated workload and complexity of the tasks in the upcoming session, facilitating better preparation and informed estimation.
+
+Note: This diagram assumes a simple request-response pattern. Real-world implementations might involve more complex interactions depending on your architecture, such as authentication, web sockets for real-time updates, and error handling mechanisms.

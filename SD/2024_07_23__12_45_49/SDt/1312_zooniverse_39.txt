@@ -1,0 +1,23 @@
+@startuml
+participant "Zooniverse Admin" as admin
+participant "Admin Dashboard" as dashboard
+participant "Media Identification \n& Discovery Platform" as AMIDP
+participant "AI Classification Engine" as AIengine
+participant "Plankton Image Database" as database
+participant "Result Presenter" as presenter
+
+admin -> dashboard : Initiates Preclassification
+dashboard -> AMIDP : Requests Plankton Image Batch
+AMIDP -> database : Fetches Unprocessed Images
+database --> AMIDP : Returns Images
+AMIDP -> AIengine : Sends Images for Classification
+note right of AIengine: AI Engine analyzes images \nusing Machine Learning models
+AIengine -> database : Stores Preliminary Classification Results
+database --> AMIDP : Confirms Storage
+AMIDP -> presenter : Prepares Classification Summary
+presenter --> dashboard : Displays Summary
+dashboard --> admin : Shows Preclassification Results
+
+note over admin, presenter: Admin reviews \npreclassification results
+
+@enduml

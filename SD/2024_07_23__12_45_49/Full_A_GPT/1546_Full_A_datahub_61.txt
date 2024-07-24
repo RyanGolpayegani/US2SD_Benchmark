@@ -1,0 +1,44 @@
+Given the specific details of the project description and the requirement for a sequence diagram in PlantUML format, below is a detailed sequence diagram that corresponds to the user story "As an owner, I want to remove a user as an owner, so that they are just a member and no longer have full control."
+
+Please note, PlantUML code requires an appropriate environment or editor to visualize. The following sequence diagram outlines the process an Owner might go through to demote another Owner to a Member status in the Data Registry and Publishing Platform, covering the steps from initiating the demotion to the system updating the user's role and confirming the changes.
+
+```plantuml
+@startuml
+actor Owner as o
+participant "User Account Management" as uam
+participant "Role Management Module" as rmm
+participant "Data Registry System" as drs
+participant "Notification Service" as ns
+database "Data Registry DB" as db
+
+o -> uam : select Remove Owner
+uam -> rmm : verify Owner credentials
+activate rmm
+
+rmm -> drs : request role change for User X
+activate drs
+drs -> db : query current role of User X
+activate db
+db --> drs : User X is an Owner
+drs -> db : update User X role to Member
+db --> drs : confirmation of role update
+deactivate db
+
+drs -> ns : send notification to User X
+activate ns
+ns --> drs : notification sent
+deactivate ns
+
+drs --> rmm : role updated to Member
+deactivate drs
+
+rmm --> uam : confirm role update to Owner
+deactivate rmm
+
+uam --> o : display confirmation of demotion
+@enduml
+```
+
+This diagram initiates with the Owner deciding to demote another Owner to Member status. The process involves the Owner interacting with the User Account Management interface, which then engages the Role Management Module to verify the credentials and authority of the Owner to make such a change. Following this, the Role Management Module communicates with the Data Registry System to request a role change for the specified user. The system checks the current role from the Data Registry Database and updates it upon validation. Once the role update is complete, the Data Registry System instructs the Notification Service to inform the demoted user of their new role. Finally, the Owner is shown a confirmation of the demotion action having been successfully completed.
+
+This sequence diagram provides a basic visualization and should be adapted according to the specific implementations and technologies used in the Data Registry and Publishing Platform project.

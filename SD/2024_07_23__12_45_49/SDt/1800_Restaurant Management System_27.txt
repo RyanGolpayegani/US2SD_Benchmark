@@ -1,0 +1,27 @@
+@startuml
+
+participant Waiter as waiter
+participant "Backend Server" as backend
+participant "Database" as db
+participant Chef as chef
+
+note right of waiter: Waiter updates\nordered items
+waiter -> backend: UpdateOrderItem(orderId, newItemDetails)
+activate backend
+
+backend -> db: QueryUpdateOrder(orderId, newItemDetails)
+activate db
+db --> backend: UpdateConfirmation
+deactivate db
+
+backend -> chef: NotifyOrderUpdate(orderId)
+activate chef
+chef -> backend: FetchUpdatedOrder(orderId)
+backend -> db: GetOrderDetails(orderId)
+db --> backend: OrderDetails
+backend --> chef: DisplayOrderDetails(OrderDetails)
+deactivate chef
+
+note over chef: Chef sees updated\nordered items
+
+@enduml

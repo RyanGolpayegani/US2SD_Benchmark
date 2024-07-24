@@ -1,0 +1,57 @@
+Creating a detailed sequence diagram for the specified user story involves defining the interactions between the user and the DIMS system, particularly for querying information about collections, objects, or object components. Here’s a breakdown of a sequence diagram in PlantUML format that aligns with the user story mentioned.
+
+```plantuml
+@startuml
+participant User
+participant "UI Interface" as UI
+participant "Search Manager" as Search
+participant "Collection Management" as CM
+participant "Object Management" as OM
+participant "Rights Management" as RM
+participant Database
+
+User -> UI : Request information\n(search parameters)
+UI -> Search : Initiate search
+Search -> CM : Query Collection
+activate CM
+CM -> Database : Fetch Collection details
+Database --> CM : Collection details
+deactivate CM
+
+Search -> OM : Query Object
+activate OM
+OM -> Database : Fetch Object details
+Database --> OM : Object details
+deactivate OM
+
+Search -> OM : Query Object Components
+activate OM
+OM -> Database : Fetch Component details
+Database --> OM : Component details
+deactivate OM
+
+Search -> RM : Check Access/Use Conditions
+activate RM
+RM -> Database : Fetch Rights and Conditions
+Database --> RM : Rights Conditions
+deactivate RM
+
+RM --> Search : Rights and Conditions details
+OM --> Search : Object & Component details
+CM --> Search : Collection details
+Search --> UI : Aggregate Information
+UI --> User : Display Information
+
+@enduml
+```
+
+### Explanation:
+- **User**: Initiates the process by searching for information through the UI Interface, based on specific parameters (e.g., title, identifier, scope and content).
+- **UI Interface**: Acts as the intermediary, receiving the user's request and forwarding it to the Search Manager.
+- **Search Manager**: Coordinates the search across various subsystems (Collection Management, Object Management, Rights Management) to gather the requested information.
+- **Collection Management (CM)**: Manages queries related to collections, fetching details such as scope and content, collection identifiers, and other collection-specific information from the Database.
+- **Object Management (OM)**: Handles queries related to specific objects and their components within collections, retrieving object/component identifiers, conditions governing use/access, and other pertinent details from the Database.
+- **Rights Management (RM)**: Manages access to details about conditions governing the use and access of collections, objects, or components, determining what information can be shared with the user based on copyright and licensing from the Database.
+- **Database**: Serves as the source of all information, responding to queries from different management systems with relevant details about collections, objects/components, and rights conditions.
+
+This diagram provides a high-level overview of how the system could process a user's request to learn about various facets of a collection, an object, or object components such as scope and content, identifiers, and conditions governing use/access, within the DAMS Integration and Management System (DIMS).

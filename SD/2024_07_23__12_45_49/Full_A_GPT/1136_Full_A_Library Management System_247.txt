@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the given user story "As a member, I want to create a reservation so that I can take the book after it is returned" involves representing the interactions between different system components in the CLMS project. To illustrate this process in PlantUML format, we first define the actors, boundaries, control, and entities involved in the reservation process. For this scenario, the primary actors and components include the Member, Reservation System, Book Management System, and Database.
+
+Below is a simple PlantUML representation focusing on this specific user story:
+
+```plantuml
+@startuml
+actor Member
+boundary "Reservation System"
+control "Book Management"
+entity Database
+
+Member -> "Reservation System" : requestReservation(bookID)
+"Reservation System" -> "Book Management" : checkAvailability(bookID)
+"Book Management" -> Database : queryBookStatus(bookID)
+Database --> "Book Management" : bookStatus
+alt Book is already borrowed
+    "Book Management" --> "Reservation System" : isBorrowed
+    "Reservation System" -> Database : createReservationRecord(memberID, bookID)
+    Database --> "Reservation System" : reservationSuccess
+    "Reservation System" --> Member : reservationConfirmed
+else Book is available
+    "Book Management" --> "Reservation System" : isAvailable
+    "Reservation System" --> Member : bookAvailableNoReservationNeeded
+end
+@enduml
+```
+
+### Explanation:
+
+1. **Member requests a reservation**: The sequence starts with a member requesting to reserve a book through the Reservation System, providing the book ID as the input.
+
+2. **Check book availability**: The Reservation System then communicates with the Book Management component to check the current status of the requested book by querying the Database.
+
+3. **Database returns book status**: The Database processes the query and returns the book's status (either borrowed or available) to the Book Management.
+
+4. **Decision making**:
+   - **If the book is already borrowed**: Book Management informs the Reservation System that the book is currently borrowed. The Reservation System proceeds to create a reservation record in the Database with the member ID and book ID. The Database confirms the successful reservation, and the Reservation System then confirms the reservation to the Member.
+   - **If the book is available**: Book Management informs the Reservation Year System that the book is available, suggesting there's no need for a reservation. The Reservation System communicates this directly to the Member.
+
+This sequence diagram provides a high-level overview of the interactions between system components for creating a book reservation in the Comprehensive Library Management System (CLMS).

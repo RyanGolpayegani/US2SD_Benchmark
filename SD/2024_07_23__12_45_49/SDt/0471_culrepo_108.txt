@@ -1,0 +1,27 @@
+@startuml
+actor "Library Staff" as staff
+participant "Repository Interface" as interface
+participant "Content Management System" as cms
+participant "Link Preservation Service" as linkService
+participant "Database" as db
+
+staff -> interface : Access Repository System
+interface -> cms : Navigate to Law School Scholarship
+activate cms
+cms -> linkService : Request Generate Sustainable Link
+activate linkService
+linkService -> db : Retrieve Scholarship Content
+activate db
+db --> linkService : Return Content
+deactivate db
+linkService -> linkService : Generate Sustainable Links
+linkService --> cms : Return Sustainable Links
+deactivate linkService
+cms -> db : Save Sustainable Link Metadata
+activate db
+db --> cms : Confirm Save
+deactivate db
+cms --> interface : Confirm Preservation Success
+deactivate cms
+interface --> staff : Display Preservation Confirmation
+@enduml

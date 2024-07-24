@@ -1,0 +1,58 @@
+To create a detailed sequence diagram for the user story mentioned, we will assume a typical workflow involving the key actors and systems. Given the complexity and the potential for introducing specific technical details based on the County Services & Property Information Portal's underlying architecture, the following sequence diagram represents a generalized flow.
+
+This diagram in PlantUML format outlines the steps a staff member would take to assign a hearing date for an application:
+
+```plantuml
+@startuml
+participant "Staff Member" as staff
+participant "Portal Dashboard" as dashboard
+participant "Application System" as appSystem
+participant "Hearing Scheduler" as scheduler
+participant "Database" as db
+participant "Calendar System" as calendar
+participant "Applicant" as applicant
+
+== Assign Hearing Date for Application ==
+
+staff -> dashboard: Login
+dashboard -> staff: Display Dashboard
+
+staff -> appSystem: Select Application
+appSystem -> db: Query Application Details
+db -> appSystem: Return Application Details
+appSystem -> staff: Show Application Details
+
+staff -> scheduler: Access Hearing Scheduler
+scheduler -> db: Fetch Available Dates
+db -> scheduler: Return Dates
+
+staff -> scheduler: Select Date
+scheduler -> calendar: Request to Schedule Hearing
+calendar -> db: Check for Conflicts
+db -> calendar: No Conflicts
+calendar -> scheduler: Hearing Scheduled
+
+scheduler -> db: Update Application with Hearing Date
+db -> scheduler: Confirmation
+
+scheduler -> applicant: Notify Hearing Date
+scheduler -> staff: Display Success Message
+
+@enduml
+```
+
+### Explanation
+
+- **Staff Member and Portal Dashboard**: The process begins with the staff member logging into the portal dashboard. The dashboard then shows the relevant interface based on the staff member's role and permissions.
+  
+- **Application System**: The staff member selects an application to assign a hearing date. The system queries and returns the application details from the database.
+
+- **Hearing Scheduler**: The staff accesses a hearing scheduler module, which fetches available hearing dates from the database. With these dates presented, the staff member selects an appropriate date for the hearing.
+
+- **Calendar System**: Once a date is selected, the system checks for scheduling conflicts and, finding none, schedules the hearing. The application in the database is updated accordingly with the new hearing date.
+
+- **Notification**: The applicant is notified of the hearing date, ensuring they are aware and can prepare for the hearing.
+
+- **Confirmation**: The staff member receives a success message confirming the hearing date has been assigned and recorded.
+
+This sequence diagram is simplified and assumes the existence of system components like the Portal Dashboard, Application System, Hearing Scheduler, Database, and Calendar System, which together facilitate the assignment of a hearing date. In a real-world implementation, additional steps and system interactions (such as error handling and user authentication verification) would likely be necessary.

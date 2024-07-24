@@ -1,0 +1,57 @@
+Creating a detailed sequence diagram for the described user story "As a member of the library, I want to reserve books so that I can borrow it when it is available" in PlantUML format involves outlining the interactions between the system components and the user. Below is a representation of the sequence of actions in a reservation process.
+
+```plantuml
+@startuml
+!theme cerulean
+
+actor Member
+
+participant "LibraryWebApp" as WebApp
+participant "ReservationSystem" as Reservation
+database "Database" as DB
+participant "NotificationSystem" as Notification
+
+Member -> WebApp : searchForBook(bookDetails)
+WebApp -> Reservation : checkAvailability(bookDetails)
+Reservation -> DB : queryBookDetails(bookDetails)
+DB --> Reservation : bookStatus
+alt If book is available
+    Reservation --> WebApp : bookAvailable
+    Web/Reservation -> Member : displayBookAvailableMessage()
+else If book is reserved
+    Reservation --> WebApp : bookReserved
+    WebApp -> Member : displayBookReservedMessage()
+    Member -> WebApp : requestToReserveBook(bookId)
+    WebApp -> Reservation : reserveBook(bookId, memberId)
+    Reservation -> DB : updateBookStatus(reserved)
+    DB --> Reservation : reservationSuccessful
+    Reservation --> WebApp : displayReservationSuccess()
+    WebApp -> Member : displayReservationSuccessMessage()
+    Reservation -> Notification : sendReservationNotification(memberId, bookId)
+    Notification -> Member : email/SMSNotification
+end
+
+@enduml
+```
+
+This sequence diagram demonstrates a simplified process of reserving a book through the Comprehensive Library Management System (CLMS). Here's a step-by-step breakdown:
+
+1. **Member initiates a search**: The library member starts the process by searching for a book through the Library Web Application interface based on various filters like book details.
+
+2. **Availability check**: The Web Application then interacts with the Reservation System to check the availability status of the requested book.
+
+3. **Database query**: The Reservation System queries the database for the book's details and current status (available or reserved).
+
+4. **Book status response**: Based on the book's availability, different paths are followed:
+   - If the book is immediately available, the member is informed accordingly.
+   - If the book is already reserved or checked out, the Web Application displays a message indicating the book is currently unavailable and offers an option to reserve the book when it returns.
+
+5. **Reservation request**: If the member decides to reserve the book, the Web Application sends a reservation request to the Reservation System with the member's details and book identifier.
+
+6. **Database update**: The Reservation System updates the book’s status in the database to reflect that it's been reserved by the member, ensuring no other member can reserve it during this period.
+
+7. **Reservation confirmation**: Upon successful reservation, the member is notified of the success through the Web Application interface. Additionally, the Reservation System triggers the Notification System.
+
+8. **Notification dispatched**: The Notification System sends an email or SMS to the member, confirming the reservation and possibly providing details on when the book is expected to be available for pick-up.
+
+This sequence ensures a straightforward, user-friendly process for library members wishing to reserve books, incorporating real-time updates and notifications to enhance the user experience.

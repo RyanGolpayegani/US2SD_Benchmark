@@ -1,0 +1,31 @@
+@startuml
+participant "Archivist" as A
+participant "Web Interface" as WI
+participant "Backend Server" as BS
+participant "Database" as DB
+
+A -> WI : Selects files for restriction
+activate WI
+
+WI -> BS : Sends restriction details request ([FileIDs], [RestrictionParams])
+activate BS
+
+BS -> DB : Queries to check files status ([FileIDs])
+activate DB
+
+DB --> BS : Returns files status
+deactivate DB
+
+BS -> DB : Updates files with new restrictions ([FileIDs], [RestrictionParams])
+activate DB
+
+DB --> BS : Confirmation of update
+deactivate DB
+
+BS --> WI : Returns success message
+deactivate BS
+
+WI --> A : Displays success confirmation
+deactivate WI
+
+@enduml

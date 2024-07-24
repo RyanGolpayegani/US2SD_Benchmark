@@ -1,0 +1,56 @@
+Given the complexity of the project and the detailed activities outlined in your description, creating a Sequence Diagram for a specific user story involves several stakeholders and systems. Below is a PlantUML code that sketches a sequence diagram for the user story "As a user, I want to add a video to my article."
+
+This diagram assumes the user accesses the CMS, uploads a video, and then the system processes the video before it becomes part of the article on the beta site.
+
+```plaintext
+@startuml
+!theme cerulean
+
+participant User
+participant "CMS Interface" as CMS
+participant "Content Management System" as System
+participant "Video Processing Service" as VideoService
+participant "Database" as DB
+
+User -> CMS: Navigate to article editor
+CMS -> User: Display article editor UI
+
+User -> CMS: Choose to add video
+CMS -> User: Display video upload option
+
+User -> CMS: Upload video file
+CMS -> System: Request to add video to article
+
+activate System
+System -> VideoService: Send video for processing
+activate VideoService
+VideoService -> VideoService: Process video
+VideoService -> System: Return processed video link
+deactivate VideoService
+
+System -> DB: Save video link to article
+activate DB
+DB -> System: Confirm video link saved
+deactivate DB
+
+System -> System: Update article with video
+System -> CMS: Confirm video added to article
+degenerate CMS
+
+CMS -> User: Display article with video
+deactivate System
+
+@enduml
+```
+
+This Sequence Diagram depicts a simplified process, focusing on the interactions between the user, the CMS interface, the backend content management system, a video processing service, and the database.
+
+In this scenario:
+- The user navigates to the article editor within the CMS interface.
+- The user chooses to add a video, triggering the CMS to present a video upload option.
+- Upon uploading the video file, the CMS communicates with the backend system to add the video to the article.
+- The video is sent to a processing service, which, after processing, returns a link to the processed video.
+- The system saves this video link to the article's data in the database, updates the article to include the video, and confirms the addition to the CMS.
+- Finally, the CMS reflects the updated article, now with the video, to the user.
+
+This detailed visualization aids in understanding the specific interactions across different components necessary for a user to add a video to an article on the NSF's beta website.

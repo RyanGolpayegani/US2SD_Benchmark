@@ -1,0 +1,38 @@
+@startuml
+!theme plain
+
+actor LibraryMember as member
+participant "Library\nWebsite/App" as webApp
+participant "Reservation\nSystem" as reservationSys
+database Database
+participant "Notification\nService" as notifService
+
+== Reservation Process ==
+member -> webApp : Request to reserve book for 2 days
+webApp -> reservationSys : Check book availability
+reservationSys -> Database : Query book status
+Database -> reservationSys : Return book status
+
+alt If book is available
+    reservationSys --> webApp : Book is available
+    webApp -> member : Show success message & reservation details
+    webApp -> reservationSys : Make reservation
+    reservationSys -> Database : Update book status & reservation details
+    Database --> reservationSys : Confirmation
+    reservationSys -> notifService : Send reservation confirmation
+    notifService -> member : Email/SMS confirmation
+else If book is not available
+    reservationSys --> webApp : Book not available
+    webApp -> member : Show unavailable message & offer alternatives
+end
+
+alt If reservation is made
+    member -> webApp : Confirm reading and pick-up dates
+    webApp -> reservationSys : Update reservation with dates
+    reservationSys -> Database : Log reservation dates
+    Database --> reservationSys : Confirmation
+    reservationSys -> notifService : Send reservation date confirmation
+    notifService -> member : Email/SMS date confirmation
+end
+
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+actor Visitor as V
+participant "UI: Community Platform" as UI
+participant "Server: Content Management System" as Server
+participant "Database/File Storage" as DB
+
+V -> UI: Access resources section
+UI -> Server: Request available resources
+Server -> DB: Query for resources (presentations, PDFs)
+DB -> Server: Return list of available resources
+Server -> UI: Display resources to Visitor
+activate V
+V -> UI: Select a resource to download
+activate UI
+UI -> Server: Request download for selected resource
+activate Server
+Server -> DB: Verify resource availability and permissions
+activate DB
+DB -> Server: Confirm resource is available
+deactivate DB
+Server -> UI: Provide resource download link
+deactivate Server
+UI -> V: Offer resource download
+activate V
+V -> UI: Initiate download
+UI -> V: Download resource
+deactivate UI
+deactivate V
+
+@enduml

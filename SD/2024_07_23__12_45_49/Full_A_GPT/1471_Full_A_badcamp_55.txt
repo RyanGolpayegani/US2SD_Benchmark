@@ -1,0 +1,31 @@
+Creating a detailed sequence diagram in PlantUML for the specified user story—where an anonymous user wants to access the schedule to plan their day and find out where to go—requires outlining all interactions between the user, the system, and any involved subsystems or components. Here is a conceptual breakdown, translated into PlantUML syntax:
+
+```plantuml
+@startuml
+!theme plain
+actor AnonymousUser as User
+participant "Web Interface" as Web
+participant "Session Scheduler" as Scheduler
+database "Event Database" as DB
+
+User -> Web : Access BADCamp website
+Web -> Scheduler : Request event schedule
+Scheduler -> DB : Query schedule details
+DB -> Scheduler : Return schedule data
+Scheduler -> Web : Display schedule with locations
+Web -> User : Show event schedule and map
+
+note over User, Web : User can browse \n events without logging in
+
+@enduml
+```
+
+This diagram describes the following flow:
+1. The anonymous user accesses the BADCamp website through a generic web interface. This is the user's entry point into the system.
+2. The web interface, upon receiving a request for the event schedule, communicates with the Session Scheduler component. This component is responsible for managing and organizing session information.
+3. The Session Scheduler queries the Event Database for the details of the schedule, including session times, locations, and any other relevant information.
+4. The Event Database returns this data to the Session Scheduler.
+5. The Session Scheduler processes this information and sends it back to the web interface, now formatted for display.
+6. The web interface then presents the schedule, along with a map or instructions for locations, to the user.
+
+In this setup, the sequence diagram highlights not just the direct interaction between the user and the system but also the internal data flows that enable this feature. Implementing this diagram into a development workflow would require detailed specifications for each component, especially for the Session Scheduler and the Event Database, to ensure they can handle the queries and data structuring needed to present a comprehensive event schedule. Additionally, the web interface needs to be user-friendly and designed to accommodate users who may not be familiar with BADCamp's layout or schedule.

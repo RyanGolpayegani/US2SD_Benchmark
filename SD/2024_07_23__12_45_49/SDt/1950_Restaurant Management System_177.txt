@@ -1,0 +1,19 @@
+@startuml
+!theme plain
+
+actor Manager
+participant "Web Interface" as Web
+participant "Backend Service" as Backend
+database "Sales Database" as DB
+
+Manager -> Web: Request daily total sales history
+Web -> Backend: Get sales data
+activate Backend
+Backend -> DB: Query daily sales totals
+activate DB
+DB --> Backend: Return sales
+deactivate DB
+Backend --> Web: Sales data
+deactivate Backend
+Web --> Manager: Display sales history
+@enduml

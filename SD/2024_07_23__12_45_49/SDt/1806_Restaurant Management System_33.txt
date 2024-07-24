@@ -1,0 +1,27 @@
+@startuml
+
+participant ChefInterface as Chef
+participant MenuManagementSystem as MenuSystem
+participant Database as DB
+
+Chef -> MenuSystem : SelectItem(ItemID)
+activate MenuSystem
+
+MenuSystem -> DB : FetchItem(ItemID)
+activate DB
+DB --> MenuSystem : ReturnItemDetails
+deactivate DB
+
+MenuSystem --> Chef : ShowItemDetails
+Chef -> MenuSystem : UpdateAllergyWarnings(NewAllergenInfo)
+activate MenuSystem
+
+MenuSystem -> DB : UpdateItemAllergenInfo(ItemID, NewAllergenMsg)
+activate DB
+DB --> MenuSystem : ConfirmUpdate
+decativate DB
+
+MenuSystem --> Chef : DisplayUpdateConfirmation
+deactivate MenuSystem
+
+@enduml

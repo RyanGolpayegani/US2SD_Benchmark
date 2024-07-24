@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the given user story involves depicting interactions between actors and the system components to achieve the objective of determining the intellectual value of an asset at the time of deposit. Below is a PlantUML sequence diagram that captures this scenario.
+
+Please note, PlantUML code can be rendered using PlantUML tools or integrations available in various IDEs or online editors.
+
+```plantuml
+@startuml
+!theme plain
+participant AssetManager as AM
+participant "Digital Repository System" as DRS
+participant "Value Assessment Module" as VAM
+participant "Institutional Value Database" as IVD
+participant "Notification Service" as NS
+
+AM -> DRS : DepositAsset(assetDetails)
+DRS -> VAM : AssessValue(assetDetails)
+activate VAM
+VAM -> IVD : RetrieveHistoricalValueData(assetType)
+activate IVD
+IVD -> VAM : HistoricalValueData
+deactivate IVD
+VAM -> VAM : CalculateCurrentIntellectualValue(historicalData, assetDetails)
+VAM -> DRS : IntellectualValueAssessmentResult
+deactivate VAM
+DRS -> AM : DisplayValueAssessmentResult(IntellectualValue)
+DRS -> NS : SendValueAssessmentNotification(AM, IntellectualValue)
+activate NS
+NS -> AM : Notification(ValueAssessment)
+deactivate NS
+@enduml
+```
+
+**Explanation:**
+1. **Asset Manager (AM) Deposits Asset:** The asset manager initiates the process by depositing an asset and providing its details to the Digital Repository System (DRS).
+2. **DRS Requests Value Assessment:** The DRS forwards the asset's details to the Value Assessment Module (VAM) to assess its value.
+3. **VAM Retrieves Historical Data:** The VAM queries the Institutional Value Database (IVD) to fetch historical value data related to the asset's type or similar assets.
+4. **IVD Provides Historical Data:** The IVD sends the requested historical value data back to the VAM.
+5. **VAM Calculates Current Intellectual Value:** Using the historical data and the details of the current asset, the VAM calculates the asset's current intellectual value.
+6. **VAM Returns Value Assessment Result:** The VAM sends the intellectual value assessment result to the DRS.
+7. **DRS Displays Value Assessment Result to AM:** The DRS presents the value assessment result to the asset manager, enabling them to understand the asset's intellectual value.
+8. **DRS Sends Notification through NS:** Optionally, the DRS can instruct the Notification Service (NS) to send a notification to the asset manager, confirming the value assessment's completion and its outcome.
+
+This sequence diagram illustrates the high-level interactions required to assess and communicate the intellectual value of an asset at the time of deposit within the digital repository system framework.

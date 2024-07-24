@@ -1,0 +1,55 @@
+Below is a detailed sequence diagram in PlantUML format for the user story: "As a librarian, I want to update bibliographical information for books." This user story focuses on the process involved when a librarian updates book details in the Comprehensive Library Management System (CLMS).
+
+Please note, the sequence diagram assumes a basic flow where the librarian accesses the system, navigates to the specific book record, updates the necessary information, and then the system saves these changes to the database. 
+
+```plantuml
+@startuml
+!theme plain
+
+participant Librarian as librarian
+participant "Web Interface" as webInterface
+participant "Server" as server
+participant "Database" as db
+
+== Update Bibliographical Information for a Book ==
+librarian -> webInterface : Access update book feature
+web_wf: Authenticate librarian role
+alt authentication success
+  webInterface -> server : Request book details
+  server -> db : Query book information
+  db --> server : Return book information
+  server --> webInterface : Display book information
+  webInterface -> librarian : Show book details form
+
+  librarian -> webInterface : Update and submit book details
+  web_wf: Validate updated information
+  alt validation success
+      webInterface -> server : Send updated book details
+      server -> db : Update book information in database
+      db --> server: Confirm update
+      server --> webOut WF : Acknowledge successful update
+      webInterface -> librarian : Show success message
+  else validation failure
+      webArgumentError Tanemo Error:Show error message
+      webInterface -> librarian : Show error message and ask for re-submission
+  end
+else authentication failure
+  webInterface -> librarian : Deny access, prompt for login
+end
+
+@enduml
+```
+
+Key Points in the Sequence Diagram:
+
+1. **Authentication**: The first step is authenticating the librarian to ensure that they have the permissions needed to update book records.
+
+2. **Book Information Retrieval**: The librarian accesses the feature to update book information, which sends a request to the server to fetch the current book details from the database.
+
+3. **Display and Update**: The web interface displays the book's current information, allowing the librarian to make changes. After updating, the librarian submits the updated details.
+
+4. **Validation**: The updated information goes through a validation process. If it's valid, the process moves forward; otherwise, an error message prompts the librarian to correct the data.
+
+5. **Confirmation**: Upon successful validation and update in the database, the librarian receives a confirmation message. If anything goes wrong, an error message is displayed.
+
+This diagram outlines the general flow and interactions within the system for the specified user story. It is simplified for clarity and may need adjustments to reflect specific business rules, error handling, and technical architecture of the CLMS project.

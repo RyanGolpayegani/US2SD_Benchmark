@@ -1,0 +1,72 @@
+Creating a detailed sequence diagram for the described user story in PlantUML format involves mapping out the interactions between the researcher and the comprehensive digital repository system, alongside any other participating actors or systems. Here is how this could be outlined based on the provided project description:
+
+```plantuml
+@startuml
+participant "Researcher" as researcher
+participant "Repository System" as system
+participant "Notification Service" as notification
+participant "Content Database" as database
+participant "External Systems" as external
+
+researcher -> system : Search research by topic
+activate system
+
+system -> database : Query topic
+activate database
+database --> system : Return results
+deactivate database
+
+system --> researcher : Display research materials
+deactivate system
+
+researcher -> system : Subscribe to topic updates
+activate system
+
+system -> notification : Create subscription
+activate notification
+notification --> system : Confirmation
+deactivate notification
+
+system --> researcher : Subscription confirmed
+deactivate system
+
+loop Periodic Updates
+    system -> database : Check for new materials
+    activate database
+    database --> system : New materials on topic
+    deactivate database
+
+    system -> notification : Prepare update notification
+    activate notification
+    notification -> researcher : Send update notification
+    deactivate notification
+end
+
+loop On New Publication
+    external -> system : Notify new publication
+    activate system
+
+    system -> notification : Verify topic relevance
+    activate notification
+    notification -> researcher : Send relevant notification
+    deactivate notification
+
+    deactivate  system
+end
+
+@enduml
+```
+
+This PlantUML sequence diagram outlines the following process:
+
+1. **Search Initialization**: The researcher initiates a search within the repository system for research materials related to a specific topic, including materials from other departments or schools.
+   
+2. **Subscription**: Following the discovery of relevant materials, the researcher subscribes to updates on this topic to stay informed about new research.
+
+3. **Periodic Updates**: The system periodically checks for new materials matching the subscription criteria and notifies the researcher through the notification service when such materials are available. 
+
+4. **New Publication Notification**: Additionally, when new publications are added to the repository that match the topic of interest, the system receives a notification (possibly from external systems or through internal processes), verifies the relevance to the subscribed topics, and sends a notification to the researcher.
+
+5. **Interaction with External Systems**: The diagram also suggests the possibility of interaction with external systems (like digital management tools or academic databases) that could trigger notifications of new publications relevant to the researcher’s interests.
+
+This diagram is a high-level representation and can be expanded with more specific interactions, error handling, and system responses to provide a more detailed blueprint for system development and integration.

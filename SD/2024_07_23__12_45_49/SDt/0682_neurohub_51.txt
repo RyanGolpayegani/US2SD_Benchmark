@@ -1,0 +1,22 @@
+@startuml
+autonumber
+actor User
+participant "Web Interface" as UI
+participant "File Upload Service" as UploadService
+participant "Database" as DB
+participant "Logbook Service" as Logbook
+database "File Storage" as Storage
+
+User -> UI: Selects multiple files
+UI -> UploadService: Initiates file upload
+loop for each file
+    UploadService -> Storage: Stores file
+    Storage --> UploadService: Confirm file stored
+end
+UploadService -> Logbook: Attaches files to logbook page
+Logbook -> DB: Updates logbook metadata
+DB --> Logbook: Confirm update
+Logbook --> UploadService: Attachments successful
+UploadService --> UI: Display upload success message
+UI --> User: Shows success message & updated logbook page
+@enduml

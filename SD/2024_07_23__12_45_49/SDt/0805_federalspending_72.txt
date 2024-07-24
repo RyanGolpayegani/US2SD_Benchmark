@@ -1,0 +1,23 @@
+@startuml
+participant AgencyUser as AU
+participant BrokerPlatform as BP
+participant ValidationService as VS
+participant DataService as DS
+participant FPDS as F
+
+== Load Historical FPDS Data Request ==
+AU -> BP : Requests historical FPDS data load
+BP -> VS : Validates request\n(Agency credentials, date range)
+alt Validation Success
+    VS -> BP : Validation success response
+    BP -> DS : Request to load\nhistorical FPDS data
+    DS -> F : Fetch historical FPDS data\nbased on request
+    F -> DS : Returns requested data
+    DS -> BP : Historical FPDS data loaded\nUpdate status
+    BP -> AU : Confirmation message\n(Historical FPDS data loaded)
+else Validation Failure
+    VS -> BP : Validation failure response\n(Error details)
+    BP -> AU : Error message\n(Invalid request details)
+end
+
+@enduml

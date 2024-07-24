@@ -1,0 +1,24 @@
+@startuml
+!theme cerulean
+
+actor Manager as mgr
+participant "Frontend\n(React/Angular)" as frontend
+participant "Backend Server\n(Node.js + Express)" as backend
+database "Database\n(MongoDB/PostgreSQL)" as db
+
+mgr -> frontend : Request delete worker's work time
+frontend -> backend : Delete work time request\n(workerId, timeId)
+backend -> db : Validate manager permissions
+alt permissions valid
+    db -> backend : Permissions confirmed
+    backend -> db : Delete worker's work time entry
+    db -> backend : Confirm deletion
+    backend -> frontend : Deletion succeeded
+    frontend -> mgr : Show confirmation message
+else permissions invalid
+    db -> backend : Permissions denied
+    backend -> frontend : Error: insufficient permissions
+    frontend -> mgr : Show error message
+end
+
+@enduml

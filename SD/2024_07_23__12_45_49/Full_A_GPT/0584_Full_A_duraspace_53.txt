@@ -1,0 +1,53 @@
+Creating a detailed Sequence Diagram for the user story provided involves depicting the sequence of interactions between actors (such as the DAMS manager and preservation managers) and the system modules/components to achieve the goal of indicating the checksum and checksum method for each master file of a given object. Here's a PlantUML script to illustrate these interactions in a sequence diagram.
+
+```
+@startuml
+
+participant "DAMS Manager" as DAMSManager
+participant "DIMS User Interface" as UI
+participant "Digital Asset\nManagement System" as DAMS
+participant "Preservation\nManagement Module" as Preservation
+participant "Repository Database" as Database
+
+DAMSManager -> UI: Accesses preservation details form
+activate UI
+
+UI -> DAMS: Request to retrieve master file data for an object
+activate DAMS
+
+DAMS -> Database: Fetch master file information
+activate Database
+Database --> DAMS: Return master file information
+deactivate Database
+
+DAMS --> UI: Display master file details
+deactivate DAMS
+
+UI --> DAMSManager: Shows master file details and input form for checksum and method
+deactivate UI
+
+DAMSManager -> UI: Inputs checksum and checksum method
+activate UI
+
+UI -> Preservation: Send checksum information
+activate Preservation
+
+Preservation -> Database: Update master file with checksum details
+activate Database
+Database --> Preservation: Confirm checksum update
+deactivate Database
+
+Preservation --> UI: Display success message
+deactivate Preservation
+
+UI --> DAMSManager: Confirm checksum indication to preservation managers
+deactivate UI
+
+@enduml
+```
+
+This sequence diagram starts with the DAMS Manager accessing the preservation details form through the DIMS User Interface (UI). The UI requests the Digital Asset Management System (DAMS) to retrieve master file data for a specified object. The DAMS fetches this information from the Repository Database and displays it to the DAMS Manager through the UI.
+
+The DAMS Manager inputs the checksum and checksum method for each master file into the UI, which sends this information to the Preservation Management Module. The Preservation Management Module updates the master file details with the checksum information in the Repository Database and confirms the update. A success message is then displayed to the DAMS Manager, confirming that the checksum and its method have been indicated to the preservation managers.
+
+To visualize this diagram, you would need to use a PlantUML environment or an online PlantUML editor.

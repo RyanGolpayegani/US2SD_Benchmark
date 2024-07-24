@@ -1,0 +1,17 @@
+@startuml
+actor Member
+participant "Frontend Interface" as Frontend
+participant "Controller" as Controller
+participant "Checkout Service" as Service
+database "Library Database" as Database
+
+Member -> Frontend : Request to view previous checkouts
+Frontend -> Controller : GET /member/checkouts
+Controller -> Service : fetchMemberCheckouts(memberId)
+Service -> Database : Query previous checkouts
+Database --> Service : Return checkout data
+Service --> Controller : Checkout data
+Controller --> Frontend : Display checkouts
+Frontend --> Member : Show previous checkouts
+
+@enduml

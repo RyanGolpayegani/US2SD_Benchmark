@@ -1,0 +1,34 @@
+@startuml
+actor Moderator
+participant "Web Interface" as UI
+participant "Game Controller" as Controller
+participant "Database" as DB
+
+Moderator -> UI: Access previous games
+UI -> Controller: Request list of previous games
+Controller -> DB: Query previous games for user
+DB --> Controller: Return list of previous games
+Controller --> UI: Display previous games
+UI --> Moderator: Shows list of previous games
+
+Moderator -> UI: Scroll/Filter games
+UI -> Controller: Request filtered/next set of games
+Controller -> DB: Query based on filter/scroll
+DB --> Controller: Return filtered/next set of games
+Controller --> UI: Update game list
+UI --> Moderator: Shows updated list
+
+Moderator -> UI: Select a previous game
+UI -> Controller: Request selected game details
+Controller -> DB: Query for game details by ID
+DB --> Controller: Return game details
+Controller --> UI: Display game details
+UI --> Moderator: Shows game details
+
+alt Successful Retrieval
+  Moderator -> UI: Interacts with game details
+else Retrieval Error
+  UI -> Moderator: Show error message
+end
+
+@enduml

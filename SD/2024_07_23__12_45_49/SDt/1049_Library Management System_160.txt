@@ -1,0 +1,46 @@
+@startuml
+participant Member
+participant "Search Interface" as Search
+participant "Library Database" as Database
+participant "Reservation System" as Reservation
+
+Member -> Search : enter search criteria
+activate Search
+Search -> Database : query books by criteria
+activate Database
+Database --> Search : return book results
+deactivate Database
+Search --> Member : display results
+deactivate Search
+
+Member -> Search : select book
+activate Search
+Search -> Reservation : request reservation details
+activate Reservation
+Reservation -> Database : check availability
+activate Database
+Database --> Reservation : book status (available/reserved)
+deactivate Database
+
+alt If Book is Available
+    Reservation --> Search : show available status
+    Member -> Reservation : place reservation
+    Reservation -> Database : create reservation entry
+    activate Database
+    Database --> Reservation : reservation confirmed
+    deactivate Database
+    Reservation --> Member : reservation confirmation
+else If Book is Reserved or on Loan
+    Reservation --> Search : show next available date
+    Member -> Reservation : reserve for next available date
+    Reservation -> Database : create reservation queue entry
+    activate Database
+    Database --> Reservation : queue confirmation
+    deactivate Subscription
+    Reservation --> Member : queue confirmation
+end
+
+deactivate Reservation
+deactivate Search
+
+@enduml

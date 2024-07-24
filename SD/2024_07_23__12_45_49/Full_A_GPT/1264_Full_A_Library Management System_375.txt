@@ -1,0 +1,57 @@
+To create a sequence diagram for the user story "As a user, I want to see other users profiles" using PlantUML, follow these steps. The diagram outlines the interaction between a User and the Comprehensive Library Management System (CLMS) specifically for viewing other users' profiles. 
+
+```plantuml
+@startuml
+actor User
+participant "UI" as UI
+participant "UserController" as UserController
+participant "UserService" as UserService
+participant "UserRepository" as UserRepository
+
+User -> UI : Selects 'View Profiles'
+UI -> UserController : viewOtherUserProfiles()
+activate UserController
+
+UserController -> UserService : getOtherUserProfileDetails()
+activate UserService
+
+UserService -> UserRepository : findUserProfiles()
+activate UserRepository
+
+UserRepository --> UserService : userProfileData
+deactivate UserRepository
+
+UserService --> UserController : userProfileDetails
+deactivate UserService
+
+UserController --> UI : displayUserProfiles(userProfileDetails)
+deactivate UserController
+
+UI --> User : Shows User Profiles
+deactivate UI
+
+@enduml
+```
+
+### Explanation:
+
+1. **User**: The actor who wishes to view other users' profiles in the library management system.
+
+2. **UI (User Interface)**: The graphical interface where the user interacts with the system. It's the initial point of contact for the user's request.
+
+3. **UserController**: This controller receives the request from the UI to view other users' profiles and forwards the request to service layer (UserService) for further processing.
+
+4. **UserService**: The service layer that handles the business logic for the user's request. It asks the UserRepository to fetch the necessary data.
+
+5. **UserRepository**: Represents the data access layer that queries the database for user profile information and returns the data to the UserService.
+
+6. **Sequence of Events**:
+   - The User selects the option to view profiles on the UI.
+   - The UI sends this request to the UserController.
+   - UserController forwards the request to UserService to process this action.
+   - UserService requests UserProfile data from UserRepository.
+   - UserRepository sends the user profile data back to the UserService.
+   - UserService then returns this information to the UserController.
+   - UserController sends the data back to the UI to be displayed to the User.
+
+This PlantUML sequence diagram provides a high-level overview of the interactions required to fulfill the user story of viewing other users' profiles in the Comprehensive Library Management System (CLMS).

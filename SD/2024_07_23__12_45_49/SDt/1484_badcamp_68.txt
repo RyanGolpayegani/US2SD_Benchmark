@@ -1,0 +1,43 @@
+@startuml
+!theme plain
+
+participant "Anonymous User" as User
+participant "Website UI" as UI
+participant "Server" as Server
+participant "Database" as DB
+
+User -> UI : Access registration page
+activate UI
+UI -> Server : Request registration form
+activate Server
+Server -> UI : Return registration form
+UI -> User : Display registration form
+
+User -> UI : Submit filled registration form
+activate UI
+UI -> Server : Send registration data
+activate Server
+Server -> DB : Check if user exists
+activate DB
+
+alt User exists
+    DB -> Server : User exists error
+    deactivate DB
+    Server -> UI : Error: User already exists
+    deactivate Server
+    UI -> User : Show "user exists" message
+    deactivate UI
+else User does not exist
+    DB -> Server : User does not exist confirmation
+    deactivate DB
+    Server -> DB : Create user account
+    activate DB
+    DB -> Server : Account creation confirmation
+    deactivate DB
+    Server -> UI : Account created successfully
+    deactivate Server
+    UI -> User : Display "account created" message and login prompt
+    deactivate UI
+end
+
+@enduml

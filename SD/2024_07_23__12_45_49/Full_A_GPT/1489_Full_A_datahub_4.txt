@@ -1,0 +1,56 @@
+To generate a detailed sequence diagram in PlantUML format that aligns with your user story of a Visitor signing up via GitHub or Google, we will outline the steps involved in this process from initiating the signup to the successful account creation. Note that this example presupposes basic flows for OAuth-based authentication with GitHub or Google.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Visitor as visitor
+participant "Signup Page" as signupPage
+participant "GitHub/Google" as oauthProvider
+participant "OAuth Service" as oauthService
+participant "Platform Backend" as backend
+database "User Database" as userDatabase
+
+== Signup Process ==
+visitor -> signup=>signupPage : Choose to Sign Up
+
+signupPage -> oauthProvider : Select GitHub or Google
+oauthProvider -> visitor : Request authentication
+
+visitor -> oauthProvider : Authenticate
+oauthProvider -> oauthService : Confirm identity
+
+oauthService -> backend : Provide token
+backend -> backend : Validate token
+
+alt Successful Validation
+    backend -> userDatabase : Create new user account
+    userDatabase -> backend : Return confirmation
+    backend -> visitor : Display success & redirect to dashboard/profile setup
+else Validation Failure
+    backend -> visitor : Display error & suggest retry
+end
+
+@enduml
+```
+This sequence diagram outlines the key steps a Visitor would take to sign up for the Data Registry and Publishing Platform using OAuth providers like GitHub or Google. Here’s a brief explanation of each step:
+
+1. **Visitor Chooses to Sign Up:** The visitor navigates to the signup page and chooses the option to sign up via GitHub or Google.
+
+2. **Select OAuth Provider:** The visitor selects their preferred OAuth provider from the options provided on the signup page.
+
+3. **Request Authentication:** The selected OAuth provider asks the visitor to authenticate themselves.
+
+4. **Visitor Authenticates:** The visitor authenticates with their chosen OAuth provider by providing the necessary credentials.
+
+5. **Confirm Identity:** Upon successful authentication, the OAuth provider confirms the visitor's identity to the OAuth service integrated with the platform.
+
+6. **Provide Token:** The OAuth service then provides a token to the platform backend as proof of successful authentication.
+
+7. **Validate Token:** The platform backend validates the provided token.
+
+8. **Create New User Account:** If the token validation is successful, the platform backend creates a new user account in the user database.
+
+9. **Display Success & Redirect:** Lastly, the visitor is notified of their successful signup and is redirected to their dashboard or profile setup page. Should the token validation fail, an error is displayed, and the visitor is suggested to retry the process.
+
+This diagram and explanation simplify the complexity involved in signing up via OAuth providers but capture the essential steps in the process for the user story provided.

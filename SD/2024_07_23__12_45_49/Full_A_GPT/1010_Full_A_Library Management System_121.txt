@@ -1,0 +1,50 @@
+Creating a sequence diagram for the user story: "As a library manager, I want to keep track of interactions with their patrons" involves identifying the key actors, components, and the sequence of interactions between them. Here's how you can represent this in PlantUML syntax:
+
+```plantuml
+@startuml
+actor LibraryManager as Manager
+participant "Library Management\n System" as System
+database "Database" as DB
+
+== Track Interactions with Patrons ==
+
+Manager -> System : Login()
+activate System
+
+System -> DB : FetchManagerCredentials()
+activate DB
+DB --> System : CredentialsValidated()
+deactivate DB
+
+System --> Manager : ShowDashboard()
+Manager -> System : SelectTrackInteractions()
+System -> DB : RetrieveInteractions()
+activate DB
+DB --> System : InteractionsData()
+deactivate DB
+
+System --> Manager : DisplayInteractions(InteractionsData)
+Manager -> System : InputFilterCriteria()
+System -> DB : ApplyFilters(FilterCriteria)
+activate DB
+DB --> System : FilteredInteractionsData()
+deactivate DB
+
+System --> Manager : DisplayFilteredInteractions(FilteredInteractionsData)
+
+@enduml
+```
+
+Explanation:
+
+1. **Login Process**: The library manager (Manager) initiates the login process by interacting with the Library Management System (System). The system then verifies the manager's credentials against the stored data in the Database (DB).
+
+2. **Dashboard Display**: Upon successful validation, the system presents the main dashboard to the manager. The manager selects the option to track interactions with patrons.
+
+3. **Retrieve Interactions**: The system fetches all recorded interactions between the library and its patrons from the database. This data is then presented to the manager.
+
+4. **Filtering Interactions**: The manager may decide to filter these interactions based on specific criteria (for instance, date, type of interaction, patron ID, etc.). The manager inputs these criteria into the system, which in turn applies these filters on the database to retrieve the relevant, filtered interactions.
+
+5. **Display Filtered Interactions**: Finally, the system displays these filtered interactions to the manager, providing them with the desired insight into patron interactions.
+
+This sequence diagram outlines a simplified process flow focusing on the tracking of patron interactions by a library manager within the Comprehensive Library Management System (CLMS). It assumes basic interaction steps and simplifies the process for clarity. Remember, depending on the system's complexity and additional features, more steps or actors (like security layers, third-party services, etc.) could be involved in real-world scenarios.

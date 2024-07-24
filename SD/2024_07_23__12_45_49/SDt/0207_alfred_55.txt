@@ -1,0 +1,27 @@
+@startuml
+participant MedicalCaregiver as MC
+participant ALFRED as A
+database MedicationDatabase as MD
+participant PatientDevice as PD
+participant Patient as P
+
+MC -> A: Request medication adherence status for patient
+A -> MD: Query medication adherence record
+activate MD
+MD --> A: Return medication adherence status
+deactivate MD
+A --> MC: Show medication adherence status
+MC -> A: Request detailed medication intake timeline
+A -> MD: Query detailed medication intake records
+activate MD
+MD --> A: Return detailed intake timeline
+deactivate MD
+A --> MC: Show detailed medication intake timeline
+
+note right of PD: In parallel, the patient interacts\nwith their device to manage medication
+P -> PD: Confirm medication intake
+PD -> MD: Update medication intake record
+activate MD
+MD --> PD: Confirm update
+deactivate MD
+@enduml

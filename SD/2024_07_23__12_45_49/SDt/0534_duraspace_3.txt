@@ -1,0 +1,35 @@
+@startuml
+participant "Repository Manager" as RM
+participant "DIMS Interface" as Interface
+participant "Access Control Module" as ACM
+participant "Database" as DB
+participant "DAMS Manager" as DM
+
+RM -> Interface: Request access control settings
+activate Interface
+Interface -> ACM: Load access control settings form
+activate ACM
+ACM --> Interface: Display form
+Interface --> RM: Show form
+deactivate Interface
+RM -> Interface: Submit access control specifics\n(for unit staff and DAMS managers)
+activate Interface
+Interface -> ACM: Process access control rules
+activate ACM
+
+ACM -> DB: Update access control settings
+activate DB
+DB --> ACM: Confirm update
+deactivate DB
+ACM --> Interface: Confirm access control update
+deactivate ACM
+
+Interface -> DM: Notify of access change
+activate DM
+DM --> Interface: Acknowledge notification
+deactivate DM
+
+Interface --> RM: Show success message
+deactivate Interface
+
+@enduml

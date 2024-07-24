@@ -1,0 +1,45 @@
+Creating a detailed sequence diagram for the user story "As a user, I want to download multiple files from the search results in one go" involves depicting interactions between the user, the front-end interface of Neurohub, and possibly some backend services like a file management system and a data server. Given the complexity and the high-level nature of this project description, the diagram below is a simplified representation that captures the main interactions without delving into implementation-specific details that would depend on the actual architecture of Neurohub.
+
+```plantuml
+@startuml
+participant User
+participant "Web Interface" as WebInt
+participant "Search Service" as SearchServ
+participant "File Management" as FileMan
+participant "Data Server" as DataServ
+
+User -> WebInt : Request file download from search results
+activate WebInt
+WebInt -> SearchServ : Query selected files info
+activate SearchServ
+SearchServ -> FileMan : Request file details/locations
+activate FileMan
+FileMan -> SearchServ : Return file details/locations
+deactivate FileMan
+SearchServ --> WebInt : Return selected files info
+deactivate SearchServ
+WebInt -> DataServ : Request files download
+activate DataServ
+DataServ -> DataServ : Package requested files
+DataServ -> WebInt : Provide download link/package
+deactivate DataServ
+WebInt -> User : Display download link/package
+deactivate WebInt
+User -> WebInt : Clicks download
+WebInt -> DataServ : Initiate files download
+activate DataServ
+DataServ -> User : Transfer files
+deactivate DataServ
+@enduml
+```
+
+In this diagram:
+
+- The **User** initiates a download request for multiple files from the search results.
+- The **Web Interface** processes this request, interfacing with the **Search Service** to retrieve details about the selected files.
+- The **Search Service** communicates with the **File Management** system to get the necessary details or locations of these files.
+- Once the information is retrieved and sent back to the Web Interface, it requests the actual files from the **Data Request** system.
+- The **Data Server** might package or prepare these files in some manner for download (e.g., by zipping them) and then provides a link or direct transfer to the Web Interface or User.
+- Finally, the **User** receives the download link or package and initiates the actual download, concluding the process.
+
+Note: The actual implementation might involve additional steps or processes depending on the specific architecture, security requirements, and data handling policies of Neurohub.

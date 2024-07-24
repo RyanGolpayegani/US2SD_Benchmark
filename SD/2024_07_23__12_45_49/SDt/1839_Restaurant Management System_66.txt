@@ -1,0 +1,36 @@
+@startuml
+actor Customer
+participant "Mobile App\n/ Website UI" as UI
+participant "Backend Server" as Backend
+participant "Payment Service" as PaymentService
+participant "Database" as DB
+
+Customer -> UI : Select items and choose 'Make Payment'
+UI -> Backend : Request to initiate payment
+Backend -> DB : Fetch total amount
+DB -> Backend : Return total amount
+
+alt If customer opts for online payment
+    Backend -> PaymentService : Request payment processing
+    loop Until payment is confirmed
+        PaymentService -> Customer : Request payment authorization
+        Customer -> PaymentService : Authorize payment
+    end
+    PaymentService -> Backend : Confirm payment
+    Backend -> DB : Update order status to 'Paid'
+    DB -> Backend : Confirm update
+    Backend -> UI : Show payment confirmation
+    UI -> Customer : Display payment confirmation message
+else If customer chooses to pay at the counter
+    Backend -> UI : Direct to counter payment
+    UI -> Customer : Show instructions for counter payment
+    Customer -> UI : Acknowledges and proceeds to the counter
+    note right of Customer : Pays at the counter
+    UI -> Backend : Update order as 'Pending counter payment'
+    Backend -> DB : Log counter payment requirement
+    DB -> Backend : Confirm entry
+    Backend -> UI : Confirm waiting for counter payment
+    UI -> Customer : Display waiting for counter payment message
+end
+
+@enduml

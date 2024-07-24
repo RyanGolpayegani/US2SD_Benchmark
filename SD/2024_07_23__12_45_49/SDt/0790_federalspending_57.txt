@@ -1,0 +1,32 @@
+@startuml
+participant AgencyUser as User
+participant "UI Interface" as UI
+participant "Validation Service" as Validation
+participant "Database" as DB
+participant "FABS Processor" as Processor
+participant "Historical Data Loader" as Loader
+
+User -> UI : Upload FABS file with v1.1 headers
+UI -> Validation : Validate file format and headers
+alt Validation Success
+    Validation --> UI : File validation successful
+    UI -> Processor : Process FABS file
+    Processor -> DB : Update submission with v1.1 data
+    DB --> Processor : Confirmation
+    Processor --> UI : FABS file processed successfully
+    UI -> User : Display success message
+else Validation Failure
+    Validation --> UI : Error in file format/headers
+    UI -> User : Display error message
+end
+User -> UI : Request submission status
+UI -> DB : Query submission status
+DB --> UI : Return status
+UI --> User : Display submission status
+
+User -> Loader : Request loading of historical data
+Loader -> DB : Load historical data with correct FREC derivations
+DB --> Loader : Confirmation
+Loader --> User : Historical data loaded
+
+@enduml

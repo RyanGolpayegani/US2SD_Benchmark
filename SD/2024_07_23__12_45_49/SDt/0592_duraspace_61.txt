@@ -1,0 +1,21 @@
+@startuml
+participant "Repository Manager" as RM
+participant "DIMS Web Interface" as WebInterface
+participant "Authorization Service" as AuthService
+participant "Metadata Update Module" as MetadataModule
+participant "DAMS Database" as DAMSDB
+
+RM -> WebInterface : Access the object/component update form
+WebInterface -> AuthService : Authenticate & Authorize User
+AuthService --> WebInterface : Authorization Granted
+
+RM -> WebInterface : Submit update request \n(place, publisher, edition)
+WebInterface -> MetadataModule : Parse update data
+MetadataModule -> MetadataModule : Validate data consistency
+
+MetadataModule -> DAMSDB : Update metadata for object/component
+DAMSDB --> MetadataModule : Confirm metadata update
+MetadataModule --> WebInterface : Update successful
+WebInterface --> RM : Display update confirmation
+
+@enduml

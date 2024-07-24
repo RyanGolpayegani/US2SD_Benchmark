@@ -1,0 +1,18 @@
+@startuml
+actor User
+participant FrontendInterface as FI
+participant BackendServer as BS
+database Database as DB
+
+User -> FI : Select to create a new booklist
+FI -> BS : Request to create a new booklist (name, book IDs)
+alt Valid Request
+    BS -> DB : Query to save the new booklist
+    DB --> BS : Confirm booklist saved
+    BS --> FI : Return success message
+    FI --> User : Display success message
+else Invalid Request
+    BS --> FI : Return error message
+    FI --> User : Display error message
+end
+@enduml

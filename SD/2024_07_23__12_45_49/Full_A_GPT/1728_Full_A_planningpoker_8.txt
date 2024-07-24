@@ -1,0 +1,36 @@
+To generate a detailed sequence diagram in Plant UML format for the user story specified, let's outline the interactions between the moderator and the various components involved in deleting an estimation item from the AEPT system.
+
+Below is the PlantUML code that embodies this process:
+
+```plantuml
+@startuml
+!theme plain
+
+participant ModeratorUI as Moderator
+participant "AEPT Web Server" as Server
+database "AEPT Database" as DB
+
+== Deletion Process ==
+Moderator -> ModeratorUI : Selects item for deletion
+ModeratorUI -> Server : Request to delete item
+activate Server
+Server -> DB : Query to remove item
+activate DB
+DB -> Server : Confirm item deleted
+deactivate DB
+Server -> ModeratorUI : Confirm deletion to Moderator
+deactivate Server
+ModeratorUI -> Moderator : Display item deletion confirmation
+
+@enduml
+```
+
+Explanation of the Sequence Diagram Steps:
+1. **Moderator Selection**: The moderator selects an item for deletion through the Agile Estimation and Planning Tool's user interface (ModeratorUI).
+2. **Deletion Request**: The ModeratorUI sends a request to the AEPT Web Server to delete the selected item.
+3. **Query Execution**: The AEPT Web Server processes this request and queries the AEPT Database to remove the specified estimation item.
+4. **Database Confirmation**: The database executes the deletion query and confirms the successful removal of the item back to the web server.
+5. **Deletion Confirmation**: The AEPT Web Server then sends a confirmation of the item's deletion back to the ModeratorUI.
+6. **Feedback to Moderator**: Finally, the ModeratorUI displays a confirmation message to the moderator, indicating that the item has been successfully removed from the list of items to be estimated.
+
+This sequenced interaction ensures that the estimation item is properly removed from the system and that the moderator is notified of this change, allowing for a smooth and efficient estimation session management within the AEPT environment.

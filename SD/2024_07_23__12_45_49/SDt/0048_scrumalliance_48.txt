@@ -1,0 +1,39 @@
+@startuml
+actor "Site Admin" as admin
+participant "Job Management System" as jms
+database "Job Database" as db
+
+== Job Expiration Process ==
+
+activate admin
+admin -> jms : Schedule daily check for job expirations
+deactivate admin
+
+loop Every 24 hours
+    jms -> db : Query jobs posted 30 days ago
+    activate db
+    db --> jms : List of jobs to expire
+    deactivate db
+    jms -> db : Update job status to 'Unpublished'
+    activate db
+    db --> jms : Confirmation
+    deactivate db
+end
+
+== Manual Expiration Check (Optional) ==
+
+activate admin
+admin -> jms : Manually trigger job expiration check
+activate jms
+jms -> db : Query jobs posted 30 days ago
+activate db
+db --> jms : List of jobs to expire
+deactivate db
+jms -> db : Update job status to 'Unpublished'
+activate db
+db --> jms : Confirmation
+deactivate db
+deactivate jms
+@admin -> jms : Receive confirmation
+
+@enduml

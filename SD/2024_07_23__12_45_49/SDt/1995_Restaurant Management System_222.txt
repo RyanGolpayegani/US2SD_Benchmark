@@ -1,0 +1,26 @@
+@startuml
+
+actor Manager
+participant "Management \nInterface" as ManagementInterface
+participant "Backend Server" as Server
+participant "Database" as DB
+
+Manager -> ManagementInterface : Request report on customer orders
+activate ManagementInterface
+
+ManagementInsertface -> Server: GET /reports/customerOrders
+activate Server
+
+Server -> DB : Query Customer Orders
+activate DB
+
+DB --> Server : Return Order Data
+deactivate DB
+
+Server --> ManagementInterface : Report Data with recurring orders
+deactivate Server
+
+ManagementInterface --> Manager : Display Report with Trends
+deactivate ManagementInterface
+
+@enduml

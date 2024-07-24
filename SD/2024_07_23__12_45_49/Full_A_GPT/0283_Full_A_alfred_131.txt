@@ -1,0 +1,43 @@
+Creating a detailed Sequence Diagram in PlantUML for the described user story involves depicting the interactions between various system components and actors when a developer intends to define new questions that the ALFRED system can recognize and respond to. This involves interactions with the ALFRED platform, possibly a developer API, and the system's speech recognition and response handling services.
+
+Below is a simplified PlantUML sequence diagram illustrating this process. It assumes the existence of a Developer Portal where developers can input new questions and responses, an API that processes these inputs, and the ALFRED system components that handle speech recognition and responses.
+
+```plantuml
+@startuml
+actor Developer
+participant "Developer Portal" as DP
+participant "ALFRED API" as API
+participant "Speech Recognition" as SR
+participant "Response Handling" as RH
+participant "Database" as DB
+
+Developer -> DP : Input new question-response pair
+DP -> API : Send question-response data
+API -> DB : Store new data
+activate DB
+DB --> API : Confirmation
+deactivate DB
+API --> DP : Show success message
+DP --> Developer : Display success confirmation
+
+alt Speech Recognition Process
+    Developer -> SR : Test new question via speech
+    SR -> DB : Query for response
+    DB -> SR : Return response data
+    SR -> RH : Provide response data
+    RH -> Developer : Output new response
+end
+
+@enduml
+```
+
+### Explanation:
+1. **Developer**: Initiates the process by inputting a new question-response pair in the Developer Portal.
+2. **Developer Portal (DP)**: A UI where developers can manage their contributions.
+3. **ALFRED API**: Processes data from the Developer Portal and interacts with the system's backend.
+4. **Database (DB)**: Stores all the question-response pairs.
+5. **Speech Recognition (SR)**: Component responsible for recognizing speech inputs from users.
+6. **Response Handling (RH)**: Fetches the appropriate response based on the recognized question and delivers it to the user.
+7. **Alternative Sequence (alt)**: This block represents the testing phase where the developer tests the new question through ALFRED's Speech Recognition, demonstrating how the system looks up the newly added response in the Database and how the Response Handling component then processes and outputs the response.
+
+This diagram is an abstract representation. Real implementations would likely involve more steps/details, like authentication, data validation, error handling, and interaction with more systems or services.

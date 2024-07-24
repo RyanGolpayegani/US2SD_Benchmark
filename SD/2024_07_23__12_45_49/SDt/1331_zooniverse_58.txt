@@ -1,0 +1,32 @@
+@startuml
+actor ZooniverseAdmin as "Zooniverse Admin"
+participant "UI Dashboard" as Dashboard
+participant "Grouping Service" as Grouping
+participant "Database" as DB
+participant "AI/ML Engine" as AI
+
+== Group Subjects by Similarity ==
+
+ZooniverseAdmin -> Dashboard : Selects "Group by Similarity"
+Dashboard -> Grouping : Request to group subjects
+activate Grouping
+
+Grouping -> DB : Fetch subjects metadata
+activate DB
+DB --> Grouping : Subjects metadata
+deactivate DB
+
+Grouping -> AI : Analyze similarity
+activate AI
+AI --> Grouping : Grouped subjects data
+deactivate AI
+
+Grouping -> DB : Update subjects with group IDs
+activate DB
+DB --> Grouping : Confirmation
+deactivate DB
+
+Grouping --> Dashboard : Display grouped subjects
+Dashboard --> ZooniverseAdmin : Show confirmation & grouped subjects view
+
+@enduml

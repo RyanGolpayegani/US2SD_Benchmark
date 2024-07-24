@@ -1,0 +1,53 @@
+Creating a detailed sequence diagram in PlantUML for the user story "As a librarian, I want to enter details about books and their shelf number" involves illustrating the interaction between the librarian, the front-end of the Comprehensive Library Management System (CLMS), and the backend database. This diagram will show the sequence of messages and actions that occur from the moment the librarian decides to enter or update a book's details until these new details are successfully stored in the system.
+
+```plantuml
+@startuml
+actor Librarian
+participant "CLMS Frontend" as Frontend
+participant "CLMS Backend" as Backend
+database "Database" as DB
+
+Librarian -> Frontend : Access book management page
+activate Frontend
+
+Frontend -> Backend : Request current book details (if editing)
+activate Backend
+
+Backend -> DB : Fetch current book details
+activate DB
+DB --> Backend : Return book details
+deactivate DB
+
+Backend --> Frontend : Show current book details
+deactivate Backend
+
+Frontend --> Librarian : Display book details/edit form
+deactivate Frontend
+
+Librarian -> Frontend : Enter/update book details & shelf number
+activate Frontend
+
+Frontend -> Backend : Send new book details & shelf number
+activate Backend
+
+Backend -> DB : Update/Add book details in database
+activate DB
+DB --> Backend : Confirmation of update
+deactivate DB
+
+Backend --> Frontend : Update successful
+deactivate Backend
+
+Frontend --> Librarian : Display success message
+deactivate Frontend
+
+@enduml
+```
+
+### Explanation:
+- **Librarian**: Initiates the process by deciding to add a new book or update an existing book's details, then interacting with the CLMS frontend interface.
+- **CLMS Frontend**: Serves as the interface through which the librarian accesses and interacts with the book management functionality.
+- **CLMS Backend**: Processes the request from the front end, fetching current book details if editing (not shown for adding), and later, updating the database with the new book details and shelf number.
+- **Database**: Stores all the book details and handles queries to fetch and update these details as per requests from the backend system.
+
+This sequence diagram represents a simplified flow focused on the core actions related to this user story. Additional details like authentication, error handling, and data validation, which are essential for a comprehensive system, are implied but not explicitly detailed in this diagram.

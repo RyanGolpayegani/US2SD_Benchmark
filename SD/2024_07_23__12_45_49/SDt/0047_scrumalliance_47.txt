@@ -1,0 +1,30 @@
+@startuml
+actor Admin as "Site Admin"
+participant "Admin Interface" as AdminInterface
+participant "Ad Management System" as AdSystem
+participant "Database" as DB
+
+== Edit Help Wanted Ad ==
+Admin -> AdminInterface: Accesses Help Wanted Ads section
+AdminInterface -> AdSystem: Fetches selected ad details
+AdSystem -> DB: Query ad details
+DB --> AdSystem: Returns ad details
+AdSystem --> AdminInterface: Shows ad details
+AdminInterface --> Admin: Displays ad information
+
+Admin -> AdminInterface: Submits edited ad details
+AdminInterface -> AdSystem: Request ad update
+AdSystem -> DB: Update ad details in database
+DB --> AdSystem: Confirm ad update
+AdSystem --> AdminInterface: Update confirmation
+AdminInterface --> Admin: Shows update success message
+
+== Delete Help Wanted Ad ==
+Admin -> AdminInterface: Requests to delete an ad
+AdminInterface -> AdSystem: Send delete ad request
+AdSystem -> DB: Deletes ad from database
+DB --> AdSystem: Confirm deletion
+AdSystem --> AdminInterface: Deletion confirmation
+AdminInterface --> Admin: Shows deletion success message
+
+@enduml

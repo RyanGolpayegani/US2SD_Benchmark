@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the user story "As a customer, I want to update my comments" involves illustrating the interactions between the customer, the system's user interface, and various back-end components that handle the comment updating process. This process could involve the customer accessing their past orders, selecting a specific order to comment on, updating their comment, and the system saving this updated comment into the database. Here's how these interactions can be described in PlantUML syntax to generate a sequence diagram:
+
+```plantuml
+@startuml
+actor Customer
+participant "UI: Web/App Interface" as UI
+participant "Server: Comments Controller" as Controller
+database "DB: Comments Storage" as DB
+
+activate Customer
+Customer -> UI: Select "My Orders"
+activate UI
+UI -> Controller: Request past orders
+activate Controller
+Controller -> DB: Fetch orders for customer
+activate DB
+DB --> Controller: Return orders
+deactivate DB
+Controller --> UI: Display orders
+deactivate Controller
+UI --> Customer: Show past orders
+
+Customer -> UI: Select order to comment
+UI -> Controller: Request comment form
+activate Controller
+Controller --> UI: Provide comment form
+deactivate Controller
+UI --> Customer: Display comment form
+
+Customer -> UI: Update comment
+UI -> Controller: Submit updated comment
+activate Controller
+Controller -> DB: Update comment in DB
+activate DB
+DB --> Controller: Confirm update
+deactivate DB
+Controller --> UI: Update confirmation
+deactivate Controller
+UI --> Customer: Display confirmation message
+deactivate UI
+
+@enduml
+```
+
+This diagram starts with the Customer interacting with the User Interface (Web/App Interface) to select their past orders. The UI then communicates with the Server's Comments Controller to fetch and display the orders. The Customer chooses an order to comment on, triggering the UI to request a comment form from the Controller, which is displayed to the Customer. The Customer submits their updated comment through the UI, which then sends the information to the Controller. The Controller updates the comment in the Comments Storage database and sends a confirmation back to the UI, which finally informs the Customer that their comment has been successfully updated.
+
+This sequence ensures a clear visualization of the processes involved from the moment the customer decides to update a comment until the system confirms the action has been completed successfully.

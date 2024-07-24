@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the given user story involves illustrating how different system components and actors interact when a database/information retrieval (DB/IR) administrator wants to mark a report/dataset as not to be emailed or viewable due to an error being discovered. Below is an example of how this could be represented in Plant UML format. This sequence will cover the major steps involved, from the administrator identifying the error to the system updating the item's status and metadata accordingly.
+
+```plantuml
+@startuml
+actor "DB/IR Administrator" as admin
+participant "Web Interface" as web
+participant "Authentication System" as auth
+participant "Report/Dataset Management Module" as manage
+participant "Database" as db
+
+== Authentication ==
+admin -> web: Access dashboard
+web -> auth: Request authentication
+auth -->> web: Authentication successful
+
+== Report/Dataset Error Marking ==
+admin -> web: Select report/dataset with error
+web -> manage: Retrieve item details
+manage -> db: Query item details
+db -->> manage: Return item details
+manage -->> web: Display item details
+admin -> web: Mark as not email/viewable due to error
+web -> manage: Update item status & metadata
+manage -> db: Save updated status and metadata
+db -> manage: Confirm save
+manage -> web: Update confirmation
+web -> admin: Display confirmation message
+
+@enduml
+```
+
+Explanation of Steps:
+1. **Authentication:** The DB/IR administrator accesses the web interface's dashboard and is required to authenticate. This ensures that only authorized personnel can make changes to the visibility and emailability of reports and datasets.
+   
+2. **Report/Dataset Error Marking:** Once authenticated, the administrator navigates to the specific item (report or dataset) that has an error.
+   
+   - The system retrieves the details of the selected item for review by querying the database and displaying those details through the web interface. 
+   - The administrator marks the item as not to be emailed or viewable due to the discovered error.
+   - This action triggers the system to update the item's status and metadata to reflect that it should neither be emailed nor be viewable.
+   - The database saves these updates, and a confirmation of the updates is sent back to the administrator through the web interface.
+
+This sequence diagram illustrates a simplified interaction flow and can be expanded to include error handling, more detailed user interactions, or integration points with other systems like notification services if required.

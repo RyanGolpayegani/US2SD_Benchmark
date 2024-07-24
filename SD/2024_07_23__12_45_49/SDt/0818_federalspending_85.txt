@@ -1,0 +1,23 @@
+@startuml
+actor FABSUser as "FABS User"
+participant SystemInterface as "Broker Platform Interface"
+participant ValidationService as "Data Validation Service"
+participant DatabaseService as "Database Service"
+participant HistoricalDataService as "Historical Data Loader"
+database FABSData as "FABS Database"
+
+FABSUser -> SystemInterface : Request historical data review
+SystemInterface -> ValidationService : Validate request
+alt Data Request is Valid
+    Validation/Service -> HistoricalDataService : Fetch necessary columns for historical data
+    HistoricalDataService -> FABSData : Query for historical columns
+    FABSData --> HistoricalDataService : Return data schema
+    HistoricalDataService --> ValidationService : Confirm data columns presence
+    ValidationService --> SystemInterface : Report data validation status
+    SystemInterface --> FABSUser : Display data status and missing columns if any
+else Data Request is Invalid
+    ValidationService --> SystemInterface : Report validation error
+    SystemInteface --> FABSUser : Display error message
+end
+
+@enduml

@@ -1,0 +1,47 @@
+@startuml
+actor Trainer
+participant "Course Creation Page" as Page
+participant "Backend System" as Backend
+participant "Payment Processing" as Payment
+database "Course Database" as DB
+
+Trainer -> Page: Navigate to Create Course/Event
+activate Trainer
+activate Page
+
+Page -> Trainer: Display Form
+
+Trainer -> Page: Fill in course/event details
+Trainer -> Page: Submit form
+activate Backend
+
+Page -> Backend: Validate course/event details
+Backend -> DB: Check for validity
+activate DB
+DB --> Backend: Validation Passed
+deactivate DB
+
+Backend --> Page: Prompt for listing fee
+Page --> Trainer: Display listing fee prompt
+Trainer -> Page: Confirm and proceed to payment
+Page -> Payment: Initiate payment process
+activate Payment
+
+Trainer -> Payment: Provide payment details
+Trainer -> Payment: Confirm payment
+Payment -> Payment: Process transaction
+Payment --> Backend: Payment Successful
+deactivate Payment
+
+Backend -> DB: Create course/event entry
+DB --> Backend: Entry Created
+
+Backend --> Page: Display confirmation message
+Page --> Trainer: Show success and course/event details
+deactivate Backend
+
+Trainer -> Page: Acknowledge confirmation
+deactivate Page
+deactivate Trainer
+
+@enduml

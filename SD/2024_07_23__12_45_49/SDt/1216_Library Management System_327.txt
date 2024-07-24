@@ -1,0 +1,22 @@
+@startuml
+participant Staff
+participant "Borrowing Interface" as BInterface
+participant "Validation System" as Validator
+participant "Database" as DB
+
+Staff -> BInterface: Enter book and borrower details
+BInterface -> Validator: Validate book and borrower details
+activate Validator
+Validator --> BInterface: Validation Status
+deactivate Validator
+
+alt If details are valid
+    BInterface -> DB: Add borrowing details \n(Book ID, Borrower ID, Due Date)
+    activate DB
+    DB --> BInterface: Operation Status (Success/Failure)
+    deactivate DB
+    BInterface --> Staff: Show operation status (Book borrowed successfully)
+else If details are invalid
+    BInterface --> Staff: Show error (Invalid details)
+end
+@enduml

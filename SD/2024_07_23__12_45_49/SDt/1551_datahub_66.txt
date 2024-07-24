@@ -1,0 +1,23 @@
+@startuml
+participant Publisher
+participant "UI Interface" as UI
+participant "Authentication Service" as Auth
+participant "Pricing Plan Service" as Pricing
+participant "Payment Gateway" as Payment
+participant "Subscription Service" as Subscription
+
+Publisher -> UI : Select Sign Up
+UI -> Auth : Initiate Authentication Process
+Auth --> Publisher : Provide Authentication Options (GitHub, Google)
+Publisher -> Auth : Authenticate via GitHub/Google
+Auth --> UI : Authentication Success
+
+UI -> Pricing : Display Pricing Plans
+Publisher -> UI : Selects Pricing Plan
+UI -> Payment : Initiate Payment Process for Selected Plan
+Publisher -> Payment : Provide Payment Details
+Payment -> Subscription : Activate Subscription
+Subscription --> UI : Confirmation & Subscription Details
+UI --> Publisher : Display Confirmation & Next Steps
+
+@enduml

@@ -1,0 +1,48 @@
+Given your requirements, here is a PlantUML sequence diagram code that illustrates the sequence of events when a Digital Preservation Curator (DPC) wants to record events for the publication being published and unpublished. This includes who performed the action and any comments related to why it was made unavailable.
+
+Please note, this is a high-level overview and could be adjusted based on the specific implementation details of your system, such as the names of the components, methods, and the exact flow of actions.
+
+```plantuml
+@startuml
+participant "DPC Interface" as DPC
+participant "Event Service" as ES
+database "Repository" as Repo
+entity "Audit Log" as Log
+
+== Publication Publishing ==
+DPC -> ES : publish(publicationId, userId, comment)
+activate ES
+ES -> Repo : createPublication(publicationId)
+activate Repo
+Repo --> ES : publicationCreated
+deactivate Repo
+ES -> Log : logEvent("PUBLISH", publicationId, userId, comment)
+activate Log
+Log --> ES : eventLogged
+deactivate Log
+ES --> DPC : publishSuccess
+deactivate ES
+
+== Publication Unpublishing ==
+DPC -> ES : unpublish(publicationId, userId, comment)
+activate ES
+ES -> Repo : removePublication(publicationId)
+activate Repo
+Repo --> ES : publicationRemoved
+deactivate Repo
+ES -> Log : logEvent("UNPUBLISH", publicationId, userId, comment)
+activate Log
+Log --> ES : eventLogged
+deactivate Log
+ES --> DPC : unpublishSuccess
+deactivate ES
+
+@enduml
+```
+To visualize this sequence diagram:
+1. You'll need to have PlantUML installed or use an online PlantUML editor.
+2. Copy and paste the provided code into the PlantUML environment to generate the diagram.
+
+This diagram illustrates the basic interactions between the Digital Preservation Curator interface, an Event Service component, the Repository for creating or removing publications, and an Audit Log system for logging the events. The sequence starts with a request to publish or unpublish a publication, followed by the creation or removal of the publication in the repository, logging the event, and then confirming the action back to the DPC interface.
+
+This diagram assumes a basic level of interaction and can be expanded with more detailed steps, depending on your system's complexity and requirements.

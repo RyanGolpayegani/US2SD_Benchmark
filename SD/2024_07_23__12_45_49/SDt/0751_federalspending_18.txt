@@ -1,0 +1,27 @@
+@startuml
+actor Developer
+participant "Broker System" as Broker
+database Cache
+database "Database" as DB
+
+== D Files Generation Request Management ==
+
+Developer -> Broker : Request D Files generation with parameters
+Broker -> Cache : Check if request result is cached
+alt Cache Miss
+    Cache --> Broker : No cached result
+    Broker -> DB : Check historical requests
+    alt Historical Request Found
+        DB --> Broker : Return historical data
+        Broker -> Cache : Cache the result
+    else No Historical Data
+        DB --> Broker : No historical data
+        Broker -> Broker : Process D Files generation
+        Broker -> Cache : Cache new result
+    end
+else Cache Hit
+    Cache --> Broker : Return cached result
+end
+Broker -> Developer : Return D Files generation results
+
+@enduml

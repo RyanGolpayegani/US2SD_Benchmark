@@ -1,0 +1,29 @@
+@startuml
+actor Librarian as L
+participant "Library Management\nSystem" as LMS
+participant Database as DB
+
+== Add New Book Process ==
+
+L -> LMS : Access Add Book Section
+activate LMS
+LMS -> DB : Validate Librarian Access
+activate DB
+DB --> LMS : Access Granted
+deactivate DB
+
+LMS <-- L : Enters Book Details\n(Title, Author, Category, etc.)
+LMS -> DB : Check if Book Already Exists
+activate DB
+DB --> LMS : Book Not Found
+deactivate DB
+
+LMS -> DB : Save New Book Details
+activate DB
+DB --> LMS : Book Added Successfully
+deactivate DB
+
+LMS --> L : Display Success Message\n(Book Added)
+deactivate LMS
+
+@enduml

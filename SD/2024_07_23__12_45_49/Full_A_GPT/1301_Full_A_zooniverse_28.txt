@@ -1,0 +1,44 @@
+Given the complexity and depth of the Advanced Media Identification & Discovery Platform (AMIDP), this user story focuses on a scenario where a Zooniverse admin wants the system to automate the detection of moments when a scientist's review of a subject is necessary, relying on both annotations made by volunteers and discussions within the platform's Talk comments section. Below is a sequence diagram in PlantUML syntax that details the process from the point a comment or annotation triggers the decision process, to the eventual notification of a scientist.
+
+```
+@startuml
+!theme plain
+
+participant "Volunteer" as volunteer
+participant "AMIDP System" as system
+participant "Annotation Module" as annotation
+participant "Discussion Forum (Talk)" as talk
+participant "Analysis Engine" as engine
+participant "Notification Service" as notification
+participant "Scientist" as scientist
+
+== New Annotation / Talk Comment ==
+
+volunteer -> system: Submit Annotation
+volunteer -> talk: Post Comment in Talk
+
+alt Annotation meets criteria
+  system -> annotation: Analyse Annotation
+  annotation -> engine: Evaluate Need for Review
+else Comment indicates need
+  talk -> engine: Detect Key Phrases
+  engine -> engine: Evaluate Need for Review
+end
+
+engine -> notification: Determine Notification Need
+notification -> scientist: Send Prompt to Review Subject
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram Components:
+
+- **Volunteer:** Volunteers are users of the AMIDP who make annotations on subjects or engage in discussions about them in the Talk forums.
+- **AMIDP System:** This represents the main interface where the volunteers interact with the content. It processes submissions of annotations.
+- **Annotation Module:** A subsystem within AMIDP dedicated to handling, analyzing, and storing annotations made by volunteers on subjects.
+- **Discussion Forum (Talk):** The platform feature where volunteers can discuss subjects, sharing insights or raising questions that might necessitate a scientist's review.
+- **Analysis Engine:** This component analyzes annotations and Talk comments to determine if they meet predefined criteria for flagging a subject for review. It uses AI and ML algorithms for this analysis.
+- **Notification Service:** Once the Analysis Engine determines a review is needed, this service is responsible for notifying scientists about the need to review a particular subject.
+- **Scientist:** Scientists receive notifications and are prompted to review subjects that the system flags based on volunteer annotations and Talk comments.
+
+In this scenario, the AMIDP system efficiently coordinates between volunteers' inputs, annotation analysis, and discussion content to facilitate timely review of subjects by scientists, ensuring high-quality control and engaging scientific inquiry.

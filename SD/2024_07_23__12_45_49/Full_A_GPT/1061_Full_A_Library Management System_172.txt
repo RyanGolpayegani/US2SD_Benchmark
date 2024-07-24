@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the user story "As a library member, I want to reserve more than one book" involves illustrating the interaction between different components of the Comprehensive Library Management System (CLMS) when a library member reserves multiple books. Given the complexity and depth of the system described, the following sequence diagram example focuses on key interactions:
+
+```plantuml
+@startuml
+actor Member as M
+participant "UI: Library Portal" as UI
+participant "Book Reservation Controller" as BRC
+participant "Books Service" as BS
+participant "Database" as DB
+
+== Reserve Multiple Books ==
+
+M -> UI : Selects books & clicks on "Reserve"
+UI -> BRC : initiateReservation([bookIDs])
+loop for each book in bookIDs
+    BRC -> BS : checkAvailability(bookID)
+    BS -> DB : query(bookID)
+    DB --> BS : availabilityStatus
+    alt If book is available
+        BS --> BRC : isAvailable
+        BRC -> BS : reserveBook(bookID, memberID)
+        BS -> DB : updateReservation(bookID, memberID)
+        DB --> BS : reservationConfirmed
+        BS --> BRC : reservationSuccess
+        BRC --> UI : displayReservationSuccess(bookID)
+        M <- UI : Views confirmation message
+    else If book is not available
+        BS --> BRC : isNotAvailable
+        BRC --> UI : displayNotAvailableMessage(bookID)
+        M <- UI : Sees not available message
+    end
+
+end
+
+@enduml
+```
+
+This sequence diagram illustrates the process of a library member reserving more than one book through the Comprehensive Library Management System. Here's a step-by-step explanation:
+
+1. **Member Action**: The library member (M) selects multiple books for reservation and confirms the action on the Library Portal (UI).
+
+2. **Initiate Reservation**: The UI communicates to the Book Reservation Controller (BRC) to start the reservation process, passing the list of selected book IDs.
+
+3. **Loop through Books**: For each book the member wants to reserve:
+   - The BRC asks the Books Service (BS) to check the availability of each book by its ID.
+   - BS queries the Database (DB) to find the book's availability status.
+   - If the book is available, the DB confirms, and BS updates the book's status as reserved for the member in the DB, and confirms the reservation to BRC. The BRC then notifies the UI, which in turn displays a success message to the member.
+   - If a book is not available, BS informs BRC, which triggers a message on the UI indicating the unavailability to the member.
+
+This diagram provides a simplified overview of the interactions within the CLMS for reserving multiple books. Implementing this functionality in a real system would likely involve additional complexity, such as handling transactional integrity (e.g., ensuring all or no reservations are made in cases of partial availability), member authentication, error handling, and potentially parallel processing of book availability checks to improve performance.

@@ -1,0 +1,57 @@
+Given the complexity of the scenario and the requirements for detail, below is an example of a PlantUML sequence diagram that aligns with your request. Keep in mind that the following is a simplified example and specific implementation details may vary depending on actual system architecture and technology stack used at Cornell University.
+
+```plantuml
+@startuml
+!theme plain
+
+participant "LibraryStaff" as staff
+participant "WebInterface" as web
+participant "AuthenticationService" as auth
+participant "UploadService" as upload
+participant "MetadataService" as meta
+participant "DOIService" as doi
+participant "RepositoryDatabase" as db
+
+== Authentication ==
+staff -> web: Access Upload Page
+web -> auth: Request Authentication
+activate auth
+auth --> web: Authentication Successful
+deactivate auth
+web --> staff: Display Upload Form
+
+== Upload Work ==
+staff -> web: Submit Work with Files
+web -> upload: Initiate Upload Process
+activate upload
+upload -> meta: Extract Metadata
+activate meta
+meta --> upload: Metadata Extracted
+deactivate meta
+upload -> doi: Request DOIs for Files
+activate doi
+doi --> upload: DOIs Assigned
+deactivate doi
+upload -> db: Save Work and Files with Metadata & DOIs
+activate db
+db --> upload: Confirmation
+deactivate db
+upload --> web: Upload Successful
+deactivate upload
+web --> staff: Display Success Message
+
+@enduml
+```
+
+This diagram illustrates the high-level interactions between the library staff member (acting as the user) and various system components involved in including supplementary files such as datasets and slideshows with DOIs when uploading a given work. 
+
+**Explanation of Each Step:**
+
+1. **Authentication:** The library staff member accesses the upload page, and the system authenticates the user.
+2. **Upload Work:** The staff member submits the work along with its supplementary files via the web interface.
+3. **Extract Metadata:** The upload service extracts metadata from the submitted information.
+4. **Request DOIs:** The upload service requests DOIs for the supplementary files to ensure they are appropriately referenced and can be independently cited.
+5. **Save to Database:** The system, with all necessary information including metadata and DOIs, saves the work and its related files in the repository database.
+6. **Success Message:** The library staff member is shown a message indicating the successful upload of the work and its supplementary informational files.
+
+**Note:** This general sequence can be elaborated with more detailed error handling, more precise individual steps for each service interaction, and specific considerations for file processing, version control, and embargo management as needed to fulfill Cornell’s specific requirements and existing systems integrations.

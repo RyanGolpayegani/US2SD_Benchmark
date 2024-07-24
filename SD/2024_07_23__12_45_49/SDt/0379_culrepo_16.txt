@@ -1,0 +1,25 @@
+@startuml
+actor FacultyMember as FM
+participant "Repository UI" as UI
+participant "Shibboleth IdP" as IDP
+participant "Repository Backend" as RB
+
+== Authentication Process ==
+FM -> UI : Navigate to Login Page
+UI -> FM : Display Login Options
+FM -> UI : Select Shibboleth Login
+UI -> IDP : Redirect to Shibboleth IdP
+IDP -> FM : Request Credentials
+FM -> IDP : Provide Credentials
+IDP -> UI : Authenticate and Redirect with Token
+UI -> RB : Validate Token
+RB -> UI : Authentication Confirmation
+
+== Content Access ==
+UI -> FM : Display Remote Access Content Options
+FM -> UI : Request Campus-Only Content
+UI -> RB : Check Access Permissions
+RB -> UI : Grant Access to Requested Content
+UI -> FM : Display Campus-Only Content
+
+@enduml

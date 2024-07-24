@@ -1,0 +1,47 @@
+Below is a PlantUML script representing a sequence diagram for the User Story: "As a Data User, I want to have the 12-19-2017 deletions processed." This script demonstrates the interactions that might occur between the Data User, the Broker Platform, and other components involved in processing deletions from December 19, 2013.
+
+```plantuml
+@startuml
+
+!define RectangleParticipant(participantAlias, participantLabel) participant participantAlias as participantLabel << (R,#ADD1B2) >>
+
+actor "Data User" as User
+RectangleParticipant(DB, "Broker Database")
+RectangleParticipant(ValEngine, "Validation Engine")
+RectangleParticipant(Logging, "Logging System")
+RectangleParticipant(NotificationSys, "Notification System")
+
+== Deletion Request by Data User ==
+
+User -> BrokerPlatform : Request deletions\nfrom 12-19-2017
+BrokerPlatform -> ValEngine : Initiate data validation\nfor deletion date
+activate ValEngine
+ValEngine -> DB : Query deletions\nwith specified date
+activate DB
+DB --> ValEngine : Return deletion\nentries
+deactivate DB
+
+ValEngine -> ValEngine : Validate deletion\nentries criteria
+ValEngine --> BrokerPlatform : Validated deletions
+
+== Processing Deletions ==
+BrokerPlatform -> DB : Process validated\ndeletions
+activate DB
+DB --> BrokerPlatform : Confirm deletions processed
+deactivate DB
+
+BrokerPlatform -> Logging : Log deletion\nactivity
+activate Logging
+Logging --> BrokerPlatform : Log entry created
+deactivate Logging
+
+== Notification ==
+BrokerPlatform -> NotificationSys : Notify User of\nsuccessful deletions
+activate NotificationSys
+NotificationSys -> User : Deletions processed\nemail/notification
+deactivate NotificationSys
+
+@enduml
+```
+
+This diagram outlines the steps taken when a Data User requests deletions for a specific date (12-19-2017 in this case). It includes interactions with a validation engine to ensure the requested deletions meet specific criteria before processing, a logging system for auditing purposes, and a notification system to inform the user of successful processing. The diagram assumes a simplified view; depending on the complexity of the Broker Platform, more components or steps might be involved.

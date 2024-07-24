@@ -1,0 +1,54 @@
+Creating a detailed sequence diagram for your specific user story in PlantUML format requires a clear understanding of several components, actors involved, and interactions between systems and users based on the project description of the Comprehensive Data Management Planning Tool (DMPTool). The user story focuses on the functionality for researchers to identify mandatory and similar topics across all Data Management Plans (DMPs) to streamline the writing process.
+
+Below is a sequence diagram in PlantUML code format that outlines the process a researcher would go through to find out which topics are mandatory and similar in all DMPs using the DMPTool.
+
+```plantuml
+@startuml
+
+participant Researcher
+participant "DMPTool Interface" as Interface
+participant "Metadata Management" as Metadata
+participant "DMP Templates" as Templates
+participant "DMP Database" as Database
+
+Researcher -> Interface : login()
+activate Interface
+
+Interface -> Database : fetchUserDetails()
+activate Database
+Database --> Interface : userDetails
+deactivate Database
+
+Interface --> Researcher : showDashboard()
+Researcher -> Interface : requestMandatoryTopics()
+activate Interface
+
+Interface -> Templates : fetchDMPGuidelines()
+activate Templates
+Templates -> Database : getMandatorySimilarTopics()
+activate Database
+Database --> Templates : mandatorySimilarTopics
+deactivate Database
+
+Templates --> Interface : displayTopics(mandatorySimilarTopics)
+deactivate Templates
+
+Interface --> Researcher : showMandatorySimilarTopics(mandatorySimilarTopics)
+deactivate Interface
+
+Researcher -> Researcher : reviewTopics()
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **Researcher logs into the DMPTool Interface**: The researcher accesses the DMPTool and logs in to their account.
+2. **DMPTool Interface fetches user details**: Upon login, the DMPTool interface requests the user’s details from the DMP Database to personalize the session.
+3. **Researcher requests information on mandatory topics**: The researcher queries the interface about mandatory topics and similarities across all DMPs to streamline their data management planning process.
+4. **DMPTool Interface fetches DMP guidelines from DMP Templates**: The interface sends a request to the component responsible for managing DMP templates, which defines the structure, mandatory fields, and suggested content.
+5. **DMP Templates queries the DMP Database for mandatory and similar topics**: The templates component queries the database to retrieve information on topics which are mandatory and similar across various DMP templates.
+6. **DMP Templates return the list of mandatory and similar topics to the DMPTool Interface**: This information is then displayed to the researcher.
+7. **Researcher reviews the provided topics**: Finally, the researcher reviews the mandatory and similar topics provided, helping them to quickly identify the necessary insights to focus on when writing their DMP, thus saving time.
+
+This sequence diagram outlines the steps involved for a researcher to identify mandatory and similar topics in all DMPs using the DMPTool, facilitating an efficient planning process.

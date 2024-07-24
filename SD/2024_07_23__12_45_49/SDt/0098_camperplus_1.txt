@@ -1,0 +1,32 @@
+@startuml
+participant CampAdministrator as admin
+participant "Camp Management\nSystem" as system
+participant Database as db
+
+== Add Camper Process ==
+
+admin -> system: Select "Add Camper"
+activate system
+
+system -> system: Display "Add Camper" Form
+system <-- admin: Enter camper information\n[Name, DOB, Emergency Contact, etc.]
+activate admin
+
+admin -> system: Submit Camper Information
+deactivate admin
+
+system -> db: Validate Input
+activate db
+db --> system: Validation Success
+deactivate db
+
+system -> db: Save Camper Information
+activate db
+db -> db: Store Information
+db --> system: Confirmation
+deactivate db
+
+system --> admin: Display "Camper Added" Confirmation
+deactivate system
+
+@enduml

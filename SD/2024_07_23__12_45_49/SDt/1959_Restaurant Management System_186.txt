@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+
+participant Manager as manager
+participant "Inventory\nManagement System" as IMS
+participant "Supplier\nManagement System" as SMS
+
+manager -> IMS : Request current\ninventory data
+activate IMS
+IMS -> IMS : Retrieve inventory\ndetails
+IMS --> manager : Display current\ninventory items
+deactivate IMS
+
+loop for each item with low stock
+    manager -> IMS : Check item\nstock level
+    activate IMS
+    IMS --> manager : Display stock\nlevel
+    deactivate IMS
+
+    alt If stock is below threshold
+        manager -> SMS : Initiate order\nfor item
+        activate SMS
+        SMS -> SMS : Process order\nrequest
+        SMS --> manager : Confirm order\nstatus
+        deactivate SMS
+    else If stock is sufficient
+        manager -> manager : Skip ordering\nprocess
+    end
+end
+
+@enduml

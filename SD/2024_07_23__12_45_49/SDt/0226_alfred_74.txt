@@ -1,0 +1,35 @@
+@startuml
+!theme cerulean
+
+participant OlderPerson as OP
+participant ALFRED as ALF
+participant "Social Events API" as SEA
+participant "Database" as DB
+
+== Request for Social Activities ==
+OP -> ALF : "What social events are happening this week?"
+ALF -> SEA : GetEventsByDateAndInterest()
+SEA --> ALF : ReturnsListOfEvents
+ALF -> DB : GetUserPreferences(OP)
+DB --> ALF : ReturnsOPPreferences
+ALF -> ALF : MatchEventsWithPreferences(ReturnsListOfEvents, ReturnsOPPreferences)
+
+== Generate Personalized Invitation ==
+ALF -> DB : GetPersonalDetails(OP)
+DB --> ALF : ReturnsPersonalDetails
+ALF -> ALF : CreatePersonalizedInvitation(ReturnsListOfEvents, ReturnsPersonalDetails)
+ALF --> OP : ShowsPersonalizedInvitation()
+
+== User Confirmation ==
+OP -> ALF : ConfirmAttendance(EventID)
+ALF -> DB : SaveEventAttendance(OP, EventID)
+DB --> ALF : ConfirmationStatus
+ALF --> OP : NotifyConfirmationStatus(ConfirmationStatus)
+OP -> ALF : "Thank you, remind me a day before"
+
+== Reminder Setup ==
+ALF -> DB : SetReminder(OP, EventID, -1day)
+DB --> ALF : ReminderSetConfirmation
+ALF --> OP : AcknowledgeReminderSetup(ReminderSetConfirmation)
+
+@enduml

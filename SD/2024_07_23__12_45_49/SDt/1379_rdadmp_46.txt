@@ -1,0 +1,46 @@
+@startuml
+actor "Research Centre\nDirector" as director
+participant "Reporting\nSystem" as reportSystem
+participant "Data Usage\nTracking System" as trackingSystem
+participant "Data Storage\nSystem" as storage
+participant "Email\nService" as emailService
+
+== Regular Summary Report Generation and Delivery ==
+
+director -> reportSystem : Request summary report
+activate reportSystem
+
+reportSystem -> trackingSystem : Retrieve data usage statistics
+activate trackingSystem
+trackingSystem --> reportSystem : Data usage statistics
+deactivate trackingSystem
+
+reportSystem -> storage : Access historical data trends
+activate storage
+storage --> reportSystem : Historical data trends
+deactivate storage
+
+reportSystem -> reportSystem : Generate summary report
+activate reportSystem #FFAAAA
+
+reportSystem --> director : Display preliminary report
+deactivate reportFactory
+
+director -> reportSystem : Schedule regular email delivery
+activate reportSystem
+reportSystem -> emailService : Configure report delivery settings
+activate emailService
+emailService --> reportSystem : Confirmation
+deactivate emailService
+
+reportSystem --> director : Schedule confirmation
+deactivate reportSystem
+
+alt Every Scheduled Period
+    emailService -> director : Email summary report
+    activate emailService
+    director -> emailService : Open/Download Report
+    deactivate emailService
+end
+
+@enduml

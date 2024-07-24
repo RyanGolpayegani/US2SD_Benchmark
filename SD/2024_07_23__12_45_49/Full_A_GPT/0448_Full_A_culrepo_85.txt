@@ -1,0 +1,37 @@
+To create a detailed sequence diagram in PlantUML for the given user story "As a DB/IR (Database/Information Repository) administrator, I want to login to my personal account with access to authorized functions", follow the framework below. This PlantUML code outlines the sequence of actions that occur when a DB/IR administrator attempts to login to their account and access authorized functions within the digital repository system.
+
+```plantuml
+@startuml
+
+participant User as user
+participant "Login Page" as login
+participant "Authentication Service" as auth
+participant "Database" as db
+participant "Session Manager" as session
+participant "Functionality Access Manager" as func
+
+user -> login: Accesses Login Page
+login -> user: Displays Login Form
+user -> login: Submits credentials (username, password)
+login -> auth: Validate credentials
+auth -> db: Retrieve user credentials/details
+db -> auth: User credentials/details
+auth -> login: Authentication Result
+alt Successful Authentication
+    login -> user: Authentication Success
+    login -> session: Create User Session
+    session -> func: Request Access to Admin Functions
+    func -> db: Verify Access Permissions
+    db -> func: Access Permissions Details
+    func -> session: Grant/Deny Access to Functions
+    session -> user: Display Admin Dashboard with Functions
+else Authentication Failure
+    login -> user: Display Authentication Error
+end
+
+@enduml
+```
+
+This diagram starts with the user accessing the login page and submitting their credentials. The login page communicates with an authentication service to validate the credentials against stored details in the database. Upon successful authentication, the session manager will request access to admin functions from the functionality access manager, which checks the database for the user's access permissions. Depending on these permissions, the user is either granted or denied access to various administrative functions and is shown the admin dashboard accordingly. If authentication fails, the user is informed of the error.
+
+Note: This is a simplified view of the process and, depending on specific project requirements or additional security measures (like two-factor authentication, CAPTCHA verification, or logging), more steps or participants might be necessary.

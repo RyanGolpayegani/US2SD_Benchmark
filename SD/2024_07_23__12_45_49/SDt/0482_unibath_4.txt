@@ -1,0 +1,31 @@
+@startuml
+actor Depositor
+participant "Virtual Research\nEnvironment (VRE)" as VRE
+participant "Enhanced Research\nData Management\nPlatform" as Platform
+database "Data Archive" as Archive
+
+Depositor -> VRE : Initiate dataset deposit
+VRE -> VRE : Validate depositor\ncredentials
+VRE -> Platform : Request dataset deposit
+activate Platform
+Platform -> Platform : Generate deposit ID
+Platform -> Archive : Store dataset metadata and files
+activate Archive
+Archive --> Platform : Confirm dataset stored
+deactivate Archive
+Platform --> VRE : Deposit success\nwith deposit ID
+deactivate Platform
+VRE --> Depositor : Show success message\nand deposit ID
+
+Depositor -> VRE : Initiate dataset update
+VRE -> Platform : Request dataset update\nwith deposit ID
+activate Platform
+Platform -> Archive : Update dataset metadata\nand files
+activate Archive
+Archive --> Platform : Confirm dataset updated
+deactivate Archive
+Platform --> VRE : Update success
+deactivate Platform
+VRE --> Depositor : Show update success message
+
+@enduml

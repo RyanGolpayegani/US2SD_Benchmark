@@ -1,0 +1,44 @@
+Creating a detailed Sequence Diagram in PlantUML format for the specified user story involves illustrating the interactions between different system components and actors to realize the functionality of displaying overdue books to the librarian. Below is an example of a PlantUML sequence diagram for the user story: "As a librarian, I want to see books that are overdue so that I can warn library members."
+
+```plantuml
+@startuml
+actor Librarian
+participant "Library Management\nSystem" as LMS
+database BooksDB
+participant "Notification\nService" as NS
+
+Librarian -> LMS : request overdue books list
+activate LMS
+LMS -> BooksDB : query overdue books
+activate BooksDB
+BooksDB --> LMS : overdue books data
+deactivate BooksDB
+LMS --> Librarian : display overdue books
+deactivate LMS
+loop for each overdue book
+    Librarian -> LMS : select book/member to warn
+    activate LNS
+    LMS -> NS : prepare warning notice
+    activate NS
+    NS -> NS : format email/SMS
+    NS -> Librarian : send warning to member (email/SMS)
+    deactivate NS
+    Librarian --> LMS : confirmation of warning sent
+    deactivate LNS
+end
+@enduml
+```
+
+This diagram outlines the following steps:
+1. The librarian requests a list of overdue books from the Library Management System (LMS).
+2. The LMS queries the Books Database (BooksDB) for books that are overdue.
+3. The BooksDB returns the data of overdue books to the LMS.
+4. The LMS displays the list of overdue books to the Librarian.
+5. For each overdue book, the librarian decides to warn the associated library member.
+6. The librarian instructs the LMS to send a warning.
+7. The LMS communicates with the Notification Service (NS) to prepare the warning notice.
+8. The Notification Service formats the warning notice into an email or SMS.
+9. The Notification Service sends the warning to the library member.
+10. The librarian receives a confirmation that the warning has been sent.
+
+This sequence diagram illustrates the interactions involved in the process of identifying overdue books and sending warnings to library members from the perspective of the librarian.

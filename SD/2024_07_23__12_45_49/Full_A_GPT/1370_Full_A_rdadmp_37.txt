@@ -1,0 +1,43 @@
+Creating a detailed sequence diagram specifically tailored to the user story you've shared involves depicting an interaction scenario between multiple system components and stakeholders (e.g., researchers and institutional repository/CRIS systems) centered around the DMPTool. Note that the exact sequence and components might vary depending on the specific implementation details of the DMPTool and the institutional repository/Current Research Information System (CRIS) you're considering. Here's a simplified version to get started, highlighting an idealized data flow when a researcher wants to record research publications linked with DMP records in an institutional repository or CRIS for report generation.
+
+```plantuml
+@startuml
+actor Researcher
+participant "DMPTool" as DMP
+database "Institutional Repository or CRIS" as Repo
+participant "Reporting Module" as Report
+
+Researcher -> DMP: Log in
+Researcher -> DMP: Navigate to project DMP
+DMP -> DMP: Fetch DMP record details
+Researcher -> DMP: Select "Add Publication"
+Researcher -> DMP: Enter publication details
+DMP -> Repo: Check if publication is in Repo
+alt publication not in Repo
+  DMP -> Repo: Add publication to Repo
+  Repo -> DMP: Confirm publication added
+else publication exists
+  DMP -> Repo: Update publication record
+  Repo -> DMP: Confirm publication updated
+end
+DMP -> Repo: Link publication with DMP record
+Repo -> DMP: Confirm linkage
+Researcher -> DMP: Request research output report
+DMP -> Repo: Fetch all publications linked to DMP
+Repo -> DMP: Return publications data
+DMP -> Report: Generate report based on publications
+Report -> DMP: Report generated
+DMP -> Researcher: Display/download report
+
+@enduml
+```
+
+To use this PlantUML diagram:
+
+1. **Setup**: You need a PlantUML environment or an online PlantUML editor.
+2. **Code**: Copy and paste the above code into the PlantUML editor.
+3. **Generation**: Run the PlantUML process to generate the diagram.
+
+This sequence diagram illustrates the process steps from the researcher's action to log into the DMPTool and navigate to their project DMP record, through adding or updating a publication in the institutional repository or CRIS based on the DMP record, linking the publication to the DMP record, and finally requesting and receiving a report of research outputs from the project.
+
+Keep in mind, this is a simplification and a conceptional approach; your specific requirements, systems' APIs, and data flow might necessitate adjustments.

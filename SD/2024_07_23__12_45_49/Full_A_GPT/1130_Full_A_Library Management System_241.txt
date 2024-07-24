@@ -1,0 +1,53 @@
+Here's a detailed sequence diagram in PlantUML format that showcases the process flow when a library member chooses to pay a fine through the Comprehensive Library Management System (CLMS). This diagram is designed to cover typical interactions between the user (library member), the system interfaces, and the backend server components involved in processing a fine payment.
+
+```plantuml
+@startuml
+actor Member as member
+participant "UI Interface" as ui
+participant "Payment Service" as payment
+participant "Library Database" as db
+database "Financial System" as financial
+
+== Payment Process ==
+member -> ui : Access Fine Payment Section
+ui -> db : Retrieve Fine Details
+db --> ui : Display Fine Details
+
+member -> ui : Opt to Pay Fine
+ui -> payment : Initiate Payment Process
+
+group Payment Transaction
+    payment -> financial : Process Payment
+    alt successful transaction
+        financial --> payment : Confirm Payment
+        payment -> db : Update Fine Status
+        db --> payment : Confirmation
+        payment --> ui : Display Successful Payment Message
+        ui --> member : Show Payment Success & Receipt
+    else transaction failure
+        financial --> payment : Decline Payment
+        payment --> ui : Display Failure Message
+        ui --> member : Show Payment Failure & Options
+    end
+end
+
+@enduml
+```
+
+This diagram represents the following steps:
+1. **Access Fine Payment Section:** The member accesses the fine payment section through the system's UI Interface.
+2. **Retrieve Fine Details:** The UI Interface requests the member's fine details from the Library Database.
+3. **Display Fine Details:** The Library Database returns and displays the fine details to the member through the UI.
+4. **Opt to Pay Fine:** The member opts to pay the fine and the payment information is sent to the Payment Service.
+5. **Payment Transaction:** The sequence here branches into two possible outcomes:
+   - **Successful Transaction:**
+     - The Payment Service processes the payment with the Financial System.
+     - Upon successful payment, the Financial System sends a confirmation to the Payment Service.
+     - The Payment Service then updates the fine status in the Library Database and sends a success message to the UI Interface.
+     - The UI Interface finally displays a successful payment message and receipt to the member.
+   - **Transaction Failure:**
+     - If the transaction fails, the Financial System sends a decline message to the Payment Service.
+     - The Payment Service relays a failure message to the UI Interface.
+     - The UI Interface informs the member of the failure and presents available options.
+
+This sequence diagram simplifies complex processes into the critical interactions for fine payments within the Comprehensive Library Management System, making it clear and easy to understand for both technical and non-technical stakeholders.

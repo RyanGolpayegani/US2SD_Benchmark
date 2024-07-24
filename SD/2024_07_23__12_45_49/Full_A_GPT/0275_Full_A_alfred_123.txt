@@ -1,0 +1,32 @@
+Creating a detailed sequence diagram for the user story you've provided involves illustrating the sequence of interactions between the developer, the ALFRED system, and the billing system for managing the pricing modalities of their apps. Below is how you can represent this scenario in PlantUML format:
+
+```plantuml
+@startuml
+participant Developer
+participant ALFRED_API
+participant PricingModule
+participant BillingSystem
+
+Developer -> ALFRED_API : RequestAccess(API_Key)
+ALFRED_API -> Developer : ValidateAccess()
+Developer -> PricingModule : QueryPricingModels()
+PricingModule -> Developer : DisplayPricingModels()
+Developer -> PricingModule : SelectPricingModel(app_id, model_id)
+PricingModule -> BillingSystem : UpdatePricingModel(app_id, model_id)
+BillingSystem -> PricingModule : ConfirmUpdate()
+PricingModule -> Developer : NotifyUpdateSuccess()
+
+@enduml
+```
+
+Explanation:
+1. **RequestAccess(API_Key)**: The developer sends a request to access the ALFRED API using their API Key.
+2. **ValidateAccess()**: ALFRED API validates the provided API Key and proceeds if the key is valid.
+3. **QueryPricingModels()**: The developer requests to see the available pricing models.
+4. **DisplayPricingModels()**: The Pricing Module provides a list of available pricing models to the developer.
+5. **SelectPricingModel(app_id, model_id)**: Once the developer selects a pricing model, the selection along with the app identifier is sent to the Pricing Module.
+6. **UpdatePricingModel(app_id, model_id)**: The Pricing Module communicates with the Billing System to update the pricing model according to the developer's selection.
+7. **ConfirmUpdate()**: The Billing System updates the pricing model and confirms the successful update to the Pricing Module.
+8. **NotifyUpdateSuccess()**: Finally, the Pricing Module notifies the developer that the update was successful.
+
+This sequence diagram reflects a simplified view of the interactions for managing pricing modalities of apps on the ALFRED platform. Depending on the complexity and specific requirements of the ALFRED system, additional details and steps could be added, such as authentication procedures, error handling, and more detailed interactions with the Billing System.

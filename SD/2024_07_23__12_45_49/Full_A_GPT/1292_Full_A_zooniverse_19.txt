@@ -1,0 +1,48 @@
+Creating a detailed sequence diagram for the described user story "As an admin, I want to see, validate and edit segmentation of videos" involves describing the interactions between different system components and the administrator, to accomplish the task of video segmentation viewing, validation, and editing. Below is the PlantUML code that generates such a sequence diagram.
+
+The sequence starts with the admin requesting to view the segmented video, the system processes this request, fetches the segmented video, presents it to the admin, allows for validation and editing, and finally saves the updated segments.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Admin
+entity "Video Segmentation\nService" as VideoSegmentation
+database "Video Database" as VideoDB
+entity "Video Processing\nModule" as VideoProcessing
+entity "User Interface" as UI
+
+== Video Segment Viewing ==
+Admin -> VideoSegmentation: Request segmented video
+VideoSegmentation -> VideoDB: Fetch video segments
+VideoDB --> VideoSegmentation: Return video segments
+VideoSegmentation --> Admin: Show video segments
+
+== Validation and Editing ==
+Admin -> UI: Validate segments
+note right of Admin: Verify segment quality\nand content accuracy
+Admin -> UI: Edit segments
+note right of Admin: Adjust start/end,\nmerge, split segments
+UI -> VideoProcessing: Process edited segments
+VideoProcessing -> VideoDB: Update video segments
+VideoDB --> Admin: Confirm segment update
+
+@enduml
+```
+
+### Explanation:
+
+1. **Admin**: The user or administrator who wants to see, validate, and edit the video segmentation.
+2. **Video Segmentation Service**: This component is responsible for handling requests related to video segmentation, such as fetching and saving video segments.
+3. **Video Database (VideoDB)**: Stores all the video files and their respective segmented information. This is where segmented videos are fetched from and updated information is saved to.
+4. **Video Processing Module**: Handles the processing of video segments, including adjustments made during the validation and editing phase.
+5. **User Interface (UI)**: The interface through which the admin interacts with the video segments for validation and editing purposes.
+
+### How the Diagram Shows the Process:
+
+- The process begins with the admin requesting to see the video segments, which prompts the Video Segmentation Service to fetch the necessary segmented video from the Video Database.
+- The fetched segments are shown to the admin, who then validates and potentially edits them via the User Interface. Editing can include verifying content accuracy, adjusting segment start/end times, and merging or splitting segments.
+- Any edits made are processed by the Video Processing Module and updated in the Video Database.
+- The Database confirms the update to the admin, completing the process of segment viewing, validation, and editing.
+
+This sequence diagram illustrates the interaction flow required for an admin to see, validate, and edit video segments within the Advanced Media Identification & Discovery Platform.

@@ -1,0 +1,31 @@
+@startuml
+participant "Repository Manager" as RM
+participant "DIMS Interface" as UI
+participant "License Management Module" as LMM
+participant "Database" as DB
+
+RM -> UI : Access License Management option
+activate UI
+UI -> LMM : Request to indicate license for an object
+activate LMM
+LMM -> DB : Fetch object details
+activate DB
+DB --> LMM : Object details
+deactivate DB
+LMM --> UI : Display object and current license details
+deactivate LMM
+UI --> RM : Show object and license options
+deactivate UI
+RM -> UI : Selects/Enters new license details
+activate UI
+UI -> LMM : Update license details for object
+activate LMM
+LMM -> DB : Save new license details
+activate DB
+DB --> LMM : Confirmation of update
+deactivate DB
+LMM --> UI : Display confirmation message
+deactivate LMM
+UI --> RM : Show confirmation message
+deactivate UI
+@enduml

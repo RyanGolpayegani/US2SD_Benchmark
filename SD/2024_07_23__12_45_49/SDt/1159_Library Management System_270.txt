@@ -1,0 +1,29 @@
+@startuml
+participant Member
+participant "Frontend Application" as Client
+participant "Reservation System" as Reservation
+participant "Book Management System" as BookManagement
+participant "Notification Service" as Notification
+
+
+Member -> Client : Search for publication
+Client -> BookManagement : Request availability of publication
+alt Publication Unavailable
+    BookManagement -> Client : Show publication as unavailable
+    Member -> Client : Request to reserve publication
+    Client -> Reservation : Place reservation
+
+    Reservation -> BookManagement : Check Publication Details
+    BookManagement -> Reservation : Provide Publication Details
+
+    Reservation -> Notification: Schedule notification for availability
+    Notification -> Reservation : Confirmation
+
+    Reservation --> Client : Reservation confirmation
+    Client --> Member : Display reservation confirmation
+else Publication Available
+    BookManagement -> Client : Show publication as available
+    Client -> Member : Display availability status
+end
+
+@enduml

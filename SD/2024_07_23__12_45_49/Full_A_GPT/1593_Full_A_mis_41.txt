@@ -1,0 +1,54 @@
+Creating a detailed sequence diagram for the given user story involves representing objects or entities and the interactions between them. Since the focus is on viewing dashboard statistics about collections, we can identify the following entities as participants in the scenario:
+
+- **User (Repository Manager)**
+- **Dashboard UI**
+- **Collections Management Service**
+- **Storage Service**
+- **Statistics Service**
+
+Below is a PlantUML code that represents the sequence diagram for the specified user story:
+
+```plantuml
+@startuml
+participant User as RM
+participant "Dashboard UI" as UI
+participant "Collections Management Service" as CMS
+participant "Storage Service" as SS
+participant "Statistics Service" as STS
+
+RM -> UI: Request to view dashboard
+activate UI
+
+UI -> CMS: Get list of collections
+activate CMS
+CMS --> UI: Return list of collections
+deactivate CMS
+
+UI -> STS: Request statistics for each collection
+activate STS
+
+loop for each collection
+    STS -> CMS: Get number of items in collection
+    CMS --> STS: Return item count
+
+    STS -> SS: Get storage consumed by collection
+    SS --> STS: Return storage size
+end
+
+STS --> UI: Return statistics (items, storage, activity visualization)
+deactivate STS
+
+UI -> RM: Display dashboard with statistics
+deactivate UI
+@enduml
+```
+
+In this diagram:
+
+1. **User (Repository Manager)** initiates the request to view dashboard statistics about the collections.
+2. **Dashboard UI** acts as the interface that handles user requests and displays the data.
+3. **Collections Management Service** manages operations related to fetching collections and their metadata.
+4. **Storage Service** is responsible for providing information about the storage consumed by each collection.
+5. **Statistics Service** gathers and compiles statistics such as the number of items and the total storage consumed by each collection, as well as visualizations of deposit activity.
+
+This PlantUML sequence diagram illustrates a simplified view of the interactions needed to fulfill the user story. Complexities like error handling, authentication, and parallel data processing for efficiency are not represented in this high-level view.

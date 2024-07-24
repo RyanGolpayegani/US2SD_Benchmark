@@ -1,0 +1,39 @@
+Creating a detailed PlantUML sequence diagram for the user story involves representing the interaction between a collection curator and various components of the Enhanced Digital Repository Management System (EDRMS) to change permissions on one or more items simultaneously. Below is an example of how such a sequence might be visualized in PlantUML notation:
+
+```plantuml
+@startuml
+actor Curator as curator
+participant "User Interface" as UI
+participant "Authorization Service" as AuthService
+participant "Item Management" as ItemManage
+participant "Database" as DB
+
+== Change Permissions on Items ==
+
+curator -> UI: Select items for permission change
+UI -> AuthService: Validate curator's credentials
+AuthService --> UI: Credentials validated
+
+UI -> ItemManage: Request current permissions of selected items
+ItemManage -> DB: Query current permissions
+DB --> ItemManage: Return current permissions
+ItemManage --> UI: Display current permissions
+
+curator -> UI: Input new permissions for items
+UI -> ItemManage: Send new permissions request
+ItemManage -> AuthService: Checks if curator has rights to change permissions
+AuthService --> ItemManage: Authorization confirmed
+
+ItemManage -> DB: Update permissions
+DB --> ItemManage: Confirmation of permission update
+ItemManage --> UI: Display success message
+UI --> curator: Permissions changed successfully
+
+@enduml
+```
+
+This sequence diagram walks through the process from the perspective of a collection curator wanting to change permissions on multiple items within the EDRMS. It begins with the curator selecting the items for which they want to change permissions through a User Interface (UI). The UI interacts with an Authorization Service to validate the curator's credentials. Once validated, the UI requests the current permissions for the selected items from the Item Management system, which in turn fetches this information from the Database.
+
+The curator then decides on the new permissions and communicates these changes through the UI. The Item Management system, after checking the curator's authorization to make changes with the Authorization Service, updates the permissions in the Database. Once the Database confirms the updates, the Item Management system informs the UI, which then notifies the curator that the permissions have been successfully changed.
+
+This sequence highlights the interaction between various components of the EDRMS to facilitate a permission change request initiated by a collection curator.

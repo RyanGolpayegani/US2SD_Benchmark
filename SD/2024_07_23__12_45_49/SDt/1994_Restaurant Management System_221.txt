@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+
+actor Manager
+participant Browser
+participant WebServer as "Web Server"
+participant ApplicationServer as "Application Server"
+participant Database
+
+Manager -> Browser: Access menu management page
+Browser -> WebServer: Request menu management page
+WebServer -> ApplicationServer: Ask for page content
+ApplicationServer -> Database: Fetch current menu data
+Database -> ApplicationServer: Return menu data
+ApplicationServer -> WebServer: Generate HTML content
+WebServer -> Browser: Send HTML content
+Browser -> Manager: Display menu management interface
+
+Manager -> Browser: Perform updates (Add/Delete/Modify items)
+Browser -> WebServer: Submit update request
+WebServer -> ApplicationServer: Process request
+activate ApplicationServer
+ApplicationServer -> Database: Update menu records
+Database -> ApplicationServer: Confirm update
+deactivate ApplicationServer
+ApplicationServer -> WebServer: Acknowledge completion
+WebServer -> Browser: Show success message
+Browser -> Manager: Display update confirmation
+
+@enduml

@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the given user story requires a comprehensive understanding of the interactions between the depositor, the Enhanced Research Data Management Platform, external repositories, and associated systems. Below is an example sequence diagram in PlantUML format that outlines the possible interactions based on the project description provided:
+
+```plantuml
+@startuml
+actor Depositor
+boundary "Enhanced Research\nData Management Platform" as Platform
+database "External Repository" as ExtRepo
+database "University Repository" as UniRepo
+
+Depositor -> Platform : Request to link external data
+Platform -> Platform : Validate depositor's credentials
+Platform -> ExtRepo : Request external data details
+note right: Data details include\n- Metadata\n- DOI\n- Access policies
+ExtRepo --> Platform : Return data details
+Platform -> Platform : Generate metadata and DOI for linked data
+Platform -> UniRepo : Register external data reference
+note right of UniRepo: Store metadata\nand DOI reference without duplicating data
+UniRepo --> Platform : Confirm data registration
+Platform --> Depositor : Confirm external data linked\nProvide DOI and metadata link
+
+@enduml
+```
+
+### Walkthrough:
+
+1. **Depositor Requests to Link External Data**: The depositor initiates a request to the Enhanced Research Data Management Platform to link data stored in an external repository to ensure it's registered with the University without duplicating deposits.
+
+2. **Validation of Credentials**: The platform validates the depositor's credentials to ensure they have the authority to link external datasets to the University's repository.
+
+3. **Request External Data Details**: The platform then requests details of the external data from the external repository. This could include metadata, DOI (Digital Object Identifier), and information about access policies.
+
+4. **External Repository Responds**: The external repository sends back the requested data details, ensuring that the platform has all necessary information to create a reference.
+
+5. **Generate Metadata and DOI for Linked Data**: The platform generates or replicates necessary metadata for the external dataset and, if necessary, issues a DOI that links back to this dataset from the University's context.
+
+6. **Register External Data Reference in University Repository**: With this information, the platform registers a reference to the external data in the University Repository. This step involves storing the metadata and DOI reference without physically duplicating the dataset.
+
+7. **Confirmation of Data Registration**: After successful registration of the external data reference, the University Repository sends a confirmation back to the platform.
+
+8. **Confirmation to Depositor**: Finally, the depositor is informed that the external data has successfully been linked. They receive details such as the DOI and a link to view the metadata within the University's system, ensuring transparency and traceability.
+
+This diagram and walkthrough provide a high-level overview of how a depositor can link to data stored in external repositories through the Enhanced Research Data Management Platform, based on the objectives and features outlined in the project description.

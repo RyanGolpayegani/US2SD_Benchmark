@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the specified user story in PlantUML format involves illustrating the interactions between the Developer, the Broker platform, and other components to prevent double publishing of FABS submissions upon refresh. Please note that this diagram is an example and might need adjustments to align perfectly with your architecture or specific implementation details.
+
+Below is a PlantUML code snippet to depict the process:
+
+```plantuml
+@startuml
+participant User
+participant "Web Interface" as UI
+participant "Submission Controller" as Controller
+participant "Submission Service" as Service
+database "Submission Database" as DB
+
+User -> UI: Submit FABS\n(First Submission Attempt)
+UI -> Controller: Request to submit FABS
+Controller -> Service: Initiate submission process
+Service -> DB: Check if submission is in progress
+DB --> Service: Submission status: Not in Progress
+Service --> Controller: Proceed with submission
+Controller --> UI: Display submission in progress
+Service -> DB: Mark submission as in progress
+Service -> DB: Process FABS Submission
+Service -> DB: Mark submission as completed
+DB --> Service: Submission completed
+Service --> Controller: Return success response
+Controller --> UI: Display submission success
+UI --> User: Show success message
+
+User -> UI: Refresh/Submit FABS\n(Second Attempt)
+UI -> Controller: Request to submit FABS
+Controller -> Service: Initiate submission process
+Service -> DB: Check if submission is in progress
+DB --> Service: Submission status: In Progress/Completed
+Service --> Controller: Abort with message "Submission already in progress or completed"
+Controller --> UI: Display error to user
+UI --> User: Show "Already submitted or in progress" error
+@enduml
+```
+
+### Explanation:
+
+1. **User**: Initiates the first submission attempt of a FABS submission through the Web Interface (UI).
+2. **Web Interface/UI**: Sends the submission request to the Submission Controller.
+3. **Submission Controller**: Handles incoming requests and communicates with the Submission Service to initiate the submission process.
+4. **Submission Service**: Checks with the Submission Database if a submission is already in progress to prevent double submissions.
+5. **Submission Database**: Confirms the submission status (not in progress for the first attempt).
+6. For the first attempt, the process continues with the Submission Service marking the submission as "in progress", processing the submission, marking it as completed, and finally informing the UI to show a success message to the user.
+7. If the user refreshes or attempts to submit again while the first submission is still being processed or is completed, the Submission Service finds the submission already in progress or completed.
+8. The Submission Service then aborts the new attempt, and an error message "Already submitted or in progress" is shown to the user through the UI.
+
+This sequence diagram provides a conceptual view of how developers can implement functionality to prevent double publishing of FABS submissions after a refresh, thereby ensuring data integrity and system reliability.

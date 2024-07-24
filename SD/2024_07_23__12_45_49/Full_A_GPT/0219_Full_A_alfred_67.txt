@@ -1,0 +1,38 @@
+Below is a detailed sequence diagram in PlantUML format depicting the user story: "As an Older Person, I want to receive reminders on my appointments."
+
+```plantuml
+@startuml
+actor OlderPerson as user
+participant "ALFRED Interface" as ai
+participant "Reminder System" as rs
+participant "Appointment Database" as ad
+participant "Notification Service" as ns
+
+user -> ai : Request upcoming appointments
+ai -> rs : Fetch upcoming appointments
+rs -> ad : Retrieve appointments for User
+ad -> rs : Appointment details
+rs -> ns : Schedule reminder notifications
+ns -> user : Display reminders at scheduled times
+
+alt Appointment modification
+    user -> ai : Modify/Delete appointment
+    ai -> rs : Update appointment details
+    rs -> ad : Update/Delete appointment
+    ad -> rs : Confirmation of update
+    rs -> ns : Update/Delete scheduled reminder
+    ns -> user : Confirmation message
+end
+
+@enduml
+```
+
+Explanation:
+- The sequence begins with the **Older Person (user)** requesting to view their upcoming appointments through the **ALFRED Interface**.
+- The **ALFRED Interface** forwards this request to the **Reminder System** to fetch the upcoming appointments.
+- The **Reminder System** consults the **Appointment Database** to retrieve the appointments specifically for the user.
+- After retrieving the appointment details, the **Reminder System** commands the **Notification Service** to schedule reminder notifications for these appointments.
+- The **Notification Service** then periodically provides reminder notifications to the **Older Person** at the predefined reminder times.
+- There's also an alternative path included for if the older person decides to modify or delete an appointment through the **ALFRED Interface**. The changes are updated in the **Appointment Database** via the **Reminder System**, which in turn updates or deletes the scheduled reminders in the **Notification Service**. Finally, a confirmation of the changes is provided to the user.
+
+This sequence diagram is built to illustrate the process flow behind receiving reminders on appointments for an older person using the ALFRED system, highlighting interactions among different components of the system specific to managing and reminding about appointments.

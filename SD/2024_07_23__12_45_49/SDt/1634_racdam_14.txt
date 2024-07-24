@@ -1,0 +1,59 @@
+@startuml
+!theme plain
+
+actor Archivist as archivist
+participant "LicensingForm" as formPage
+participant "FormValidation" as formValidation
+participant "LicensingDB" as licensingDb
+participant "NotificationService" as notification
+participant "ArchiveManager" as archiveManager
+
+== Archivist Submits Licensing Request ==
+
+archist -> formPage: Access online form
+activate formPage
+
+formPage -> archist: Display form fields
+
+archist -> formPage: Fill in and submit form
+activate formValidation
+
+formPage -> formValidation: Validate inputs
+activate licensingDb
+
+formValidation --> formPage: Validation Success
+
+formPage -> licensingDb: Save licensing request
+activate archiveManager
+
+licensingDb --> formPage: Confirmation ID
+deactivate licensingDb
+
+formPage -> archist: Show success message and Confirmation ID
+deactivate formPage
+
+== Notification Process ==
+
+licensingDb -> notification: Trigger notification
+activate notification
+
+notification -> archiveManager: Email notification
+deactivate notification
+
+archiveManager -> archist: Approve/Request more info
+activate archist
+
+archist -> archiveManager: Provide/Amend info if required
+deactivate archist
+
+archiveManager -> licensingDb: Update licensing status
+activate licensingDb
+deactivate licensingDb
+
+archiveManager -> notification: Send final approval notification
+activate notification
+deactivate notification
+
+note right of archiveManager: Licensing Process Completed
+
+@enduml

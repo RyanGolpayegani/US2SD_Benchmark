@@ -1,0 +1,54 @@
+Certainly! To accommodate your request for a detailed sequence diagram in PlantUML format based on the user story, "As a content editor, I want to be able to add videos from Brightcove," we'll outline the process involved when a content editor adds a video through the CMS (Content Management System) that eventually gets displayed on the NSF Beta Site. This process involves interactions between the content editor, CMS, and potentially a video management subsystem (integrating with Brightcove API) and the site itself.
+
+Below is a basic sequence diagram in PlantUML format that captures the core steps in the process:
+
+```plantuml
+@startuml
+actor ContentEditor as "Content Editor"
+participant CMS as "Content Management System"
+participant VideoManagementSubsystem as "Video Management\nSubsystem (Brightcove API)"
+participant NSFDatabase as "NSF Beta Site Database"
+participant NSFBetaSite as "NSF Beta Site"
+
+ContentEditor -> CMS : Log in to CMS
+activate CMS
+
+CMS -> ContentEditor : Display dashboard
+ContentEditor -> CMS : Select option to \nadd new video content
+activate CMS 
+
+ContentEditor -> CMS : Upload Video information\n(Title, Description, Tags)
+
+CMS -> VideoManagementSubsystem : API Call: Upload video file
+activate VideoManagementSubsystem
+
+VideoManagementSubsystem --> CMS : Return Video ID from Brightcove
+deactivate VideoManagementSubsystem
+
+CMS -> NSFDatabase : Store video metadata\n(including Brightcove Video ID)
+activate NSFDatabase
+
+NSFDatabase --> CMS : Confirm video metadata stored
+deactivate NSFDatabase
+
+CMS --> ContentEditor : Display success message\n(Video added)
+deactivate CMS
+
+ContentEditor -> NSFBetaSite : Verify video appears on the site
+activate NSFBetaSite
+
+NSFBetaSite -> NSFDatabase : Query video details\nby Brightcove Video ID
+activate NSFDatabase
+
+NSFDatabase --> NSFBetaSite : Return video details
+deactivate NSFDatabase
+
+NSFBetaSite --> ContentEditor : Display the video content
+deactivate NSFBetaSite
+
+@enduml
+```
+
+This sequence diagram outlines the flow starting from the content editor's desire to add a new video to the NSF Beta Site, through to the process of uploading and storing video information in the system, and finally ensuring the content is properly displayed on the NSF Beta Site.
+
+Please keep in mind that this is a simplified view of the process and does not include error handling or security considerations such as authentication mechanisms beyond the initial login or specific interactions within the CMS or the Video Management Subsystem for brevity. Depending on the specific requirements and architecture of the NSF's video content management workflow, additional steps or systems might be involved.

@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+
+participant Coordinator as Coord
+participant Authentication as Auth
+participant Dashboard
+participant SummitForm as Form
+participant Database as DB
+
+== Authentication ==
+Coord -> Auth: Access Dashboard
+Auth --> Coord: Authentication Success
+
+== Access Summit Creation Form ==
+Coord -> Dashboard: Select Create/Edit Summit
+Dashboard --> Coord: Display Summit Form
+
+== Fill Summit Information ==
+Coord -> Form: Fill in Summit Details
+
+== Submit Summit Information ==
+Coord -> Form: Submit Summit Information
+Form -> Dashboard: Validate Information
+alt Validation Success
+  Dashboard -> DB: Store Summit Information
+  DB --> Dashboard: Confirmation
+  Dashboard --> Coord: Display Success Message
+else Validation Failure
+  Dashboard --> Coord: Display Error Message
+end
+
+@enduml

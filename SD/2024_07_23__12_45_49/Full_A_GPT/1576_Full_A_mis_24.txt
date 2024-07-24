@@ -1,0 +1,56 @@
+Creating a detailed sequence diagram for the described user story in PlantUML requires breaking down the interactions between the archivist, the batch ingest tool, and other components of the Enhanced Digital Repository Management System (EDRMS) such as the database or storage system and the permissions management subsystem. Below is a PlantUML code snippet that outlines these interactions.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Archivist as archivist
+participant "Batch Ingest Tool" as batchTool
+database "Repository Database" as repoDB
+participant "Permissions System" as permSystem
+participant "Storage System" as storage
+
+archivist -> batchTool : Upload files & metadata with embargo info
+activate batchTool
+
+batchTool -> repoDB : Check for existing records
+activate repoDB
+repoDB --> batchTool : Return results
+deactivate repoDB
+
+batchTool -> batchTool : Determine new entries
+batchTool -> storage : Store files
+activate storage
+storage --> batchTool : Confirm storage
+deactivate storage
+
+batchTool -> permSystem : Set metadata viewing to everyone
+activate permSystem
+permSystem --> batchTool : Metadata permissions set
+batchTool -> permSystem : Set file download perms for curators & admins
+permSystem --> batchTool : File permissions set
+deactivate permSystem
+
+batchTool -> repoDB : Update database with files, metadata, and permissions
+activate repoDB
+repoDB --> batchTool : Database updated
+deactivate repoDB
+
+batchTool --> archivist : Confirm ingest & embargo settings
+deactivate batchTool
+
+@enduml
+```
+
+### Explanation:
+
+- **Archivist to Batch Ingest Tool**: The digital records archivist uploads the files and corresponding metadata, including embargo information, to the batch ingest tool.
+- **Batch Ingest Tool to Repository Database**: The tool checks the repository database for existing records to avoid duplicates.
+- **Determination and Storage**: After determining the new entries, the batch ingest tool stores the files in the repository's storage system.
+- **Permissions Setting**: The tool sets up the permissions for the uploaded items based on the given requirements:
+  - Metadata viewing permissions are set to everyone.
+  - File download permissions are restricted to collection curators and repository administrators.
+- **Repository Database Update**: The batch ingest tool updates the repository database with the newly stored files, their metadata, and the configured permissions.
+- **Confirmation to Archivist**: Finally, the batch ingest tool confirms the successful ingest and embargo settings application to the archivist.
+
+This sequence diagram provides a high-level overview of how the batch ingest tool processes files and metadata with embargo restrictions, managing permissions accordingly within the EDRMS.

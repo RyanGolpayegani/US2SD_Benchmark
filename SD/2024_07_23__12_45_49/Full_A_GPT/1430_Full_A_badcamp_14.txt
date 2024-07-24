@@ -1,0 +1,40 @@
+Creating a detailed sequence diagram for the described user story requires understanding the actors, systems, and processes involved. The typical entities involved will be the Training Coordinator (TC), User Interface (UI), Server (Backend), Database (DB), and possibly an external Email Service if email notifications are part of the workflow.
+
+This PlantUML sequence diagram outlines the process from the point a Training Coordinator wants to view and filter trainee information for a specific training session.
+
+```plantuml
+@startuml
+actor TC as "Training Coordinator"
+participant UI as "User Interface"
+participant Server as "Backend Server"
+participant DB as "Database"
+
+TC -> UI : Selects "View Trainees"
+UI -> Server : GET /trainees
+Server -> DB : Fetch all trainees
+DB -> Server : Return all trainees
+Server -> UI : Trainees list
+UI -> TC : Display trainees
+
+TC -> UI : Select "Filter by Session"
+UI -> Server : POST /filterTrainees {sessionID}
+Server -> DB : Fetch trainees for sessionID
+DB -> Server : Return filtered trainees
+Server -> UI : Filtered trainees list
+UI -> TC : Display filtered trainees
+
+@enduml
+```
+
+### Explanation:
+1. **Training Coordinator (TC) Selects "View Trainees":** The training coordinator interacts with the User Interface to view the list of trainees. This could be through a dashboard or a specific admin view designed for them.
+2. **GET Request for All Trainees:** The User Interface makes a request to the Backend Server to retrieve all trainee information. This is symbolized by a GET request, typically to an API endpoint like `/trainees`.
+3. **Fetch and Return All Trainees:** The Server communicates with the Database to fetch all the trainees' details. The database returns this information to the Server, which then forwards it to the User Interface.
+4. **Display Trainees:** The User Interface displays the list of all trainees to the Training Coordinator.
+
+5. **Training Coordinator Selects "Filter by Session":** To narrow down the trainee list to a particular training session, the Training Coordinator uses a filter option, likely through a dropdown or search function within the User Interface.
+6. **POST Request with Session Filter:** The User Interface sends a request to the Backend Server with the specific session ID to filter the trainees. This is shown as a POST request, containing the `sessionID` to filter by.
+7. **Fetch and Return Filtered Trainees:** The Server requests the Database to return trainees specific to the given session ID. The Database returns the filtered list, which is then sent back to the Server, and finally to the User Interface.
+8. **Display Filtered Trainees:** The Training Coordinator is now presented with a filtered list of trainees associated with the selected training session.
+
+This sequence diagram outlines the basic interaction flow for the described user story within the BADCamp Experience and Administration Enhancement Platform project. Adjustments may be necessary based on the actual implementation details, such as the use of different HTTP methods or additional steps for error handling and validation.

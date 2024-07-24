@@ -1,0 +1,38 @@
+Creating a detailed sequence diagram for the user story, "As a manager, I want to check librarians and members," involves several entities such as the Manager, the Library Management System (LMS), the Database, and possibly other intermediate services like authentication. The sequence will illustrate the step-by-step interaction between these entities from the moment the manager initiates the check until the information is displayed.
+
+```plantuml
+@startuml
+actor Manager
+participant "Library Management System" as LMS
+database "Database" as DB
+
+== Authentication ==
+Manager -> LMS : Request to authenticate
+LMS -> DB : Validate manager credentials
+DB -> LMS : Credentials validation response
+LMS -> Manager : Authentication response
+
+== Check Librarians and Members ==
+alt Success Authentication
+    Manager -> LMS : Initiate check on librarians and members
+    activate LMS
+    LMS -> DB : Request librarians and members list
+    activate DB
+    DB -> LMS : Return librarians and members list
+    deactivate DB
+    LMS -> Manager : Display librarians and members list
+    deactivate LMS
+else Failed Authentication
+    LMS -> Manager : Display authentication failure message
+end
+
+@enduml
+```
+
+### Explanation:
+- **Authentication:** The process begins with the manager requesting access to check librarians and members. The LMS prompts for authentication, where the manager's credentials are validated against the database.
+- **Decision Making:** Upon successful authentication, the manager is granted access to initiate a check on librarians and members. If authentication fails, an error message is displayed.
+- **Data Retrieval:** The LMS requests a list of librarians and members from the database, which then provides the requested information.
+- **Result Display:** Finally, the LMS presents the list of librarians and members to the manager.
+
+This sequence diagram brings out the primary interactions for the user story in question, showcasing a simple flow of operations from authentication to data presentation. It's worth noting that, depending on the specific requirements and security protocols of the actual Comprehensive Library Management System (CLMS) project, additional steps or systems (such as logging or more granular access control checks) might be integrated into this flow.

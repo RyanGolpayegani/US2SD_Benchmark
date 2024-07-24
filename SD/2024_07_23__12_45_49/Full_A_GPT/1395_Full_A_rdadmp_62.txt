@@ -1,0 +1,41 @@
+To create a detailed sequence diagram for the user story mentioned, you would have to depict how different actors (systems, users, databases) interact with each other to fulfill the need of the IT staff member wanting to know which formats are used. This would involve the IT staff querying the system, the system performing actions like accessing the database or other systems to retrieve the format information, and then presenting this information back to the IT staff. Below is an example in PlantUML format:
+
+```plantuml
+@startuml
+!theme plain
+
+participant ITStaff as IT
+participant DMPToolInterface as Interface
+database DMPDatabase as DB
+participant MetadataManagementSystem as MMS
+participant FormatService as FS
+
+IT -> Interface : Request data formats used
+Interface -> DMPDatabase : Query for projects' data formats
+activate DMPDatabase
+DMPDatabase --> Interface : Return list of projects' formats
+deactivate DMPDatabase
+
+Interface -> MMS : Request additional format details
+activate MMS
+MMS --> Interface : Provide format specifications
+deactivate MMS
+
+Interface -> FS : Query for required services by format
+activate FS
+FS --> Interface : Return required technical services
+deactivate FS
+
+Interface -> IT : Display format and service requirements
+IT -> Interface : Acknowledge information
+@enduml
+```
+
+This sequence diagram demonstrates the overall process where:
+- The "ITStaff" initiates a request to know which data formats are used through the "DMPToolInterface".
+- The "DMPToolInterface" queries the "DMPDatabase" to retrieve a list of projects and their associated data formats.
+- Additionally, the "DMPToolInterface" requests the "MetadataManagementSystem" for specific details about the formats, which might include technical specifications or constraints.
+- To determine the necessary technical services for each format, the "DMPToolInterface" consults a "FormatService", which could be an internal functionality or an external API that provides information on what services or functionalities are necessary to handle different formats.
+- Finally, the "DMPToolInterface" compiles and presents the information back to the "ITStaff", including both the formats used and the required technical services for handling these formats.
+
+This diagram assumes the DMPTool has capabilities for integrating or communicating with various systems like a metadata management system or a format service, which might not be explicitly outlined in the original project description but are plausible extensions for such a comprehensive tool.

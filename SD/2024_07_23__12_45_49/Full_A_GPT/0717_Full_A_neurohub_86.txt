@@ -1,0 +1,52 @@
+Creating a detailed Sequence Diagram for the user story provided involves illustrating the interactions between various components in the system when a user moves a file to a new location, ensuring metadata is preserved. Below is the PlantUML code that outlines these interactions.
+
+```plantuml
+@startuml
+participant User
+participant "Web Interface" as Web
+participant "File Management Module" as FMM
+participant "Metadata Management Module" as MMM
+participant "Database" as DB
+
+User -> Web: Move file request
+activate Web
+
+Web -> FMM: Initiate file move
+activate FMM
+
+FMM -> MMM: Retrieve metadata for file
+activate MMM
+
+MMM -> DB: Get metadata
+activate DB
+DB --> MMM: Return metadata
+deactivate DB
+
+MMM --> FMM: Metadata retrieved
+deactivate MMM
+
+FMM -> FMM: Move file to new location
+FMM -> DB: Update file path
+activate DB
+DB --> FMM: Update successful
+deactivate DB
+
+FMM -> MMM: Update metadata with new file path
+activate MMM
+MMM -> DB: Update metadata record
+activate DB
+DB --> MMM: Metadata updated
+deactivate DB
+MMM --> FMM: Update successful
+deactivate MMM
+
+FMM --> Web: Move successful
+deactivate FMM
+
+Web -> User: Confirm move and metadata preservation
+deactivate Web
+@enduml
+```
+This sequence diagram starts with the user requesting a file move through the web interface. The sequence then covers the actions taken by the File Management Module (FMM) and the Metadata Management Module (MMM), including interactions with the database (DB) to ensure the file's metadata is retrieved, preserved, and updated in its new location.
+
+Note: The above sequence implies atomic transactions where necessary, ensuring consistency between the file's new location and its associated metadata in the database. Error handling mechanisms (not depicted) should also be in place to revert operations in case of any failure, preventing metadata loss or inconsistency.

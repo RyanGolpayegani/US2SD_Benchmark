@@ -1,0 +1,47 @@
+To illustrate the process of a collection curator creating user groups to manage permissions in the repository as outlined in your user story using a PlantUML sequence diagram, here's a detailed example:
+
+```plantuml
+@startuml
+participant Curator as C
+participant "EDRMS Interface" as UI
+participant "Permission Service" as PS
+participant "User Group Service" as UGS
+participant Database as DB
+
+C -> UI: Accesses EDRMS
+activate UI
+UI -> PS: Validates Curator Credentials
+activate PS
+PS -> UI: Credentials Valid
+deactivate PS
+
+UI -> C: Display User Group Management
+C -> UI: Requests to Create New Group
+activate UI
+UI -> UGS: Create Group
+activate UGS
+
+UGS -> DB: Save New Group Details
+activate DB
+DB -> UGS: Confirm Group Created
+deactivate DB
+
+UGS -> UI: Group Creation Success
+deactivate UGS
+UI -> C: Display Success Message
+deactivate UI
+@enduml
+```
+
+This sequence diagram covers the workflow for a collection curator (the actor) who wants to create groups of users to manage permissions within the Enhanced Digital Repository Management System (EDRMS). Here's a step-by-step explanation:
+
+1. **Curator Accesses EDRMS:** The curator initiates the process by accessing the EDRMS interface.
+2. **Validation:** The EDRMS interface communicates with the Permission Service to validate the curator's credentials.
+3. **Display User Group Management:** Once validated, the EDRMS interface shows the curator the User Group Management options.
+4. **Request to Create New Group:** The curator decides to create a new user group and makes a request via the EDRMS interface.
+5. **Group Creation Process:** The EDRMS interface forwards the creation request to the User Group Service.
+6. **Save New Group Details:** The User Group Service then processes the request and communicates with the database to save the new group's details.
+7. **Confirmation:** Once the new user group is successfully created, a confirmation is sent back from the database to the User Group Service and then to the EDRMS interface.
+8. **Display Success Message:** Finally, the curator is shown a success message, indicating that the new user group has been successfully created.
+
+This sequence diagram provides a clear view of the interactions between the curator, the EDRMS interface, and the backend services involved in managing user groups and permissions.

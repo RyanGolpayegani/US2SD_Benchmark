@@ -1,0 +1,24 @@
+@startuml
+participant Member as M
+actor "UI (Web Interface)" as UI
+entity "Reservation System" as RS
+database "Database" as DB
+entity "Email Notification Service" as ENS
+
+M -> UI : Request to log in
+UI -> M : Displays login form
+M -> UI : Submits login credentials
+UI -> RS : Validate credentials
+RS -> DB : Query credentials in DB
+DB -> RS : Returns user details
+RS -> UI : User authenticated
+UI -> M : Display Dashboard
+
+M -> UI : Selects "View Reservations"
+UI -> RS : Fetch reservations request
+RS -> DB : Query reservations for user
+DB -> RS : Return reservation details
+RS -> UI : Process and format reservations
+UI -> M : Display reservations
+
+@enduml

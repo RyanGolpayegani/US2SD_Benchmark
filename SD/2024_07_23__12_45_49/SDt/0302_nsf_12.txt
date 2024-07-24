@@ -1,0 +1,51 @@
+@startuml
+participant ResearchParticipant as RP
+participant "UI/UX Prototype" as Prototype
+participant UserResearchSystem as URS
+participant CMS
+
+actor Facilitator
+
+== Preparation ==
+Facilitator -> URS : Schedule usability session
+activate URS
+URS -> RP : Invite with session details
+activate RP
+RP -> URS : Confirm participation
+deactivate RP
+deactivate URS
+
+== Usability Testing Session ==
+Facilitator -> Prototype : Prepare prototype for testing
+activate Prototype
+Prototype -> CMS : Request necessary content
+activate CMS
+CMS --> Prototype : Provide content 
+deactivate CMS
+
+Facilitator -> RP : Introduce prototype
+activate RP
+
+loop Feedback Collection
+    RP -> Prototype : Navigate and interact
+    Prototype -> RP : Display workflow feature
+    RP -> URS : Provide feedback on distractions
+    deactivate Prototype
+    URS -> Facilitator : Log feedback
+    Facilitator -> URS : Adjust prototype based on feedback
+    URS -> Prototype : Update to reduce distractions
+    activate Prototype
+    note right of URS : Iterations for minimizing distractions
+end
+
+RP -> Prototype : Complete tasks
+Prototype -> RP : Confirm task completion
+RP -> URS : Submit final feedback
+URS -> Facilitator : Compile and analyze feedback
+Facilitator -> RP : Thank for participation
+
+deactivate RP
+deactivate Prototype
+deactivate URS
+
+@enduml

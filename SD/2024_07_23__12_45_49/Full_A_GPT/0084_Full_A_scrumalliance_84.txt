@@ -1,0 +1,29 @@
+Creating a detailed sequence diagram for the described user story involves outlining the interactions between different system components or objects in a specific sequence to accomplish the goal of viewing and approving classes in a pending state. Below is a PlantUML code snippet that represents these interactions:
+
+```plantuml
+@startuml
+participant Admin as A
+participant "Admin Dashboard" as AD
+participant "Database" as DB
+participant "Class Management System" as CMS
+
+A -> AD: Access class management section
+AD -> CMS: Request pending classes
+CMS -> DB: Query pending classes
+DB --> CMS: Return list of pending classes
+CMS --> AD: Display pending classes
+A -> AD: Select classes to approve
+AD -> CMS: Send approval for selected classes
+CMS -> DB: Update class status to 'approved'
+DB --> CMS: Confirm update
+CMS --> AD: Display approval confirmation
+AD --> A: Show success message
+
+@enduml
+```
+
+This sequence diagram starts with the site admin (Admin) accessing the class management section of the admin dashboard. The dashboard, upon this request, interacts with the Class Management System (CMS) to fetch all classes that are in a pending state. The CMS, in turn, queries the Database to retrieve this list of pending classes. Once the database returns the list, the CMS presents it to the admin dashboard, which then displays it to the admin.
+
+The admin selects the classes they want to approve from this list. The admin dashboard sends these selections as approvals to the CMS, which updates the class status from 'pending' to 'approved' in the database. Upon successful update, the database confirms back to the CMS, which then informs the admin dashboard to display a success message to the admin, indicating the classes have been approved.
+
+Note: To run this diagram, you'll need a PlantUML environment setup or use an online PlantUML editor to visualize the sequence diagram.

@@ -1,0 +1,46 @@
+Given the complexity of the task and the necessity to create a highly detailed sequence diagram for a specific process, the following is a basic representation in PlantUML format illustrating how a researcher might associate metadata to a group post-bulk upload. This example assumes the existence of several system components, including a User Interface (UI), a Metadata Management System (MMS), and a Database (DB), necessary for the operation. 
+
+```plantuml
+@startuml
+participant Researcher as res
+participant "UI" as ui
+participant "MMS" as mms
+participant "DB" as db
+
+== Bulk Upload Completion ==
+res -> ui: Access Neurohub
+ui -> mms: Open Bulk Upload Status
+mms -> db: Query Upload Status
+db -> mms: Return Status: Complete
+mms -> ui: Show Status: Complete
+ui -> res: Display Bulk Upload Completed
+
+== Metadata Association ==
+res -> ui: Request to Add Metadata
+ui -> mms: Fetch Metadata Template
+db -> mms: Return Metadata Template
+mms -> ui: Display Metadata Form
+res -> ui: Input Metadata Values
+ui -> mms: Validate Metadata Input
+alt Invalid Metadata
+    mms -> ui: Prompt Correction
+    res -> ui: Correct and Resubmit Metadata
+else Valid Metadata
+    mms -> db: Associate Metadata with Group
+    db -> db: Update Group Record
+    db -> mms: Confirmation of Metadata Association
+    mms -> ui: Confirm Metadata Update
+    ui -> res: Display Success Message
+end
+
+@enduml
+```
+
+### Explanation:
+- **Bulk Upload Completion**: This initial phase verifies if the bulk upload process has successfully completed. The researcher accesses Neurohub through the UI, which inquires the MMS to check the upload status from the DB. The DB confirms the completion, and the status is displayed to the researcher.
+- **Metadata Association**:
+  1. **Request and Template Fetching**: When the researcher wants to add metadata to the group post-upload, they make a request through the UI. The MMS retrieves a metadata template from the DB and displays it.
+  2. **Input and Validation**: The researcher inputs the metadata values into the UI. The MMS validates this input. If the input is invalid, the researcher is prompted to correct it. Otherwise, the process proceeds.
+  3. **Association and Confirmation**: Upon valid input, the MMS commands the DB to associate the entered metadata with the group, updating the group's record. Confirmation of this association is then passed back to the researcher through the UI.
+
+This diagram and sequence provide a simplified view of the process. The detailed implementation would require thorough system analysis and design considerations, including error handling, user authentication, and more sophisticated data integrity checks.

@@ -1,0 +1,38 @@
+To create a sequence diagram for the user story "As a member, I want to view my book borrowing history" using Plant UML, you must describe the interaction between different components of the Comprehensive Library Management System (CLMS) when a library member wants to view their borrowing history. Here is a simple representation of this process:
+
+```
+@startuml
+
+actor Member
+participant "Web Interface" as UI
+participant "API Controller" as Controller
+participant "Borrowing Service" as Service
+participant "Database" as DB
+
+Member -> UI : Request to view borrowing history
+UI -> Controller : GET /borrowingHistory
+Controller -> Service : getBorrowingHistory(memberId)
+Service -> DB : SELECT history FROM borrowing WHERE memberId = XXX
+DB -> Service : Return history data
+Service -> Controller : Return history data
+Controller -> UI : Display borrowing history
+UI -> Member : Show borrowing history
+
+@enduml
+```
+
+### Explanation of the Sequence
+
+1. **Member (Actor):** Initiates the process by requesting to view their book borrowing history through the web interface.
+
+2. **Web Interface (UI):** The graphical front end through which the member interacts. It sends the member's request to the API controller to get the borrowing history.
+
+3. **API Controller (Controller):** Acts as an intermediary that receives the request from the UI. It understands that the user wants to view their borrowing history and calls the appropriate service to handle this request.
+
+4. **Borrowing Service (Service):** This is the business logic layer that processes the borrowing history request. It knows how to fetch the user's borrowing history from the database.
+
+5. **Database (DB):** Stores all data related to books, borrowing records, members, etc. Upon receiving a query, it retrieves the borrowing history for the specific member and sends it back to the service.
+
+6. **Back to the User:** The data flows back from the database to the service, then to the controller, and finally, the UI takes this data and displays the member's borrowing history on their screen.
+
+This simplified sequence diagram illustrates the basic interactions for the user story provided. In a real-world application, there might be additional steps for authentication, error handling, and data formatting before presenting the history to the member.

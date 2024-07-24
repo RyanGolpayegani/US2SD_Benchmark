@@ -1,0 +1,23 @@
+@startuml
+participant Curator
+participant "EDRMS Interface" as Interface
+participant "Authentication Module" as Auth
+participant "Embargo Management" as Embargo
+participant "Repository Database" as Database
+
+Curator -> Interface : Request to lift embargo\n[Object ID]
+Interface -> Auth : Validate Curator
+Auth --> Interface : Validation Success
+
+Interface -> Embargo : Check current embargo status\n[Object ID]
+Embargo -> Database : Retrieve object embargo details\n[Object ID]
+Database --> Embargo : Object details & embargo status
+Embargo --> Interface : Embargo details presented\nto Curator
+
+Curator -> Interface : Confirm lifting of embargo
+Interface -> Embargo : Initiate embargo lift\n[Object ID]
+Embargo -> Database : Update embargo status\n[Object ID, New Status: None]
+Database --> Embargo : Update confirmation
+Embargo --> Interface : Embargo lift successful
+Interface --> Curator : Confirmation of embargo lift
+@enduml

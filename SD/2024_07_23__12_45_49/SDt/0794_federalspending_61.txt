@@ -1,0 +1,46 @@
+@startuml
+!theme plain
+
+participant "Agency User" as user
+participant "Broker Platform" as broker
+participant "FPDS Data Source" as fpds
+participant "Data Sync Scheduler" as scheduler
+participant "Data Processing Module" as processing
+participant "Validation Module" as validation
+participant "Notification Service" as notifier
+
+== Daily FPDS Data Update Request ==
+
+user -> broker: Request latest FPDS data
+activate broker
+
+broker -> scheduler: Check FPDS data update schedule
+activate scheduler
+
+scheduler -> fpds: Fetch latest data
+activate fpds
+
+fpds --> scheduler: Return latest FPDS data
+deactivate fpds
+
+scheduler -> processing: Send new FPDS data
+activate processing
+
+processing -> validation: Validate FPDS data
+activate validation
+
+validation -> processing: Return validation results
+deactivate validation
+
+processing --> broker: Updated and validated FPDS data
+deactivate processing
+
+broker -> notifier: Trigger data update notification
+activate notifier
+
+notifier -> user: Send update completion notification
+deactivate notifier
+
+deactivate broker
+
+@enduml

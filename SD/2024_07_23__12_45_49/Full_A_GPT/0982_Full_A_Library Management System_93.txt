@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram for the user story "As a librarian, I want to see the due dates of borrowed books so that I can initiate the return process" involves several actors, including the librarian and systems like the User Interface (UI), Library Management System (LMS) backend, Book Management Module, and Database. Below is a PlantUML code snippet that outlines this process.
+
+```plantuml
+@startuml
+actor Librarian as librarian
+participant "Library UI" as UI
+participant "LMS Backend" as Backend
+participant "Book Management\nModule" as BookModule
+database "Library Database" as DB
+
+librarian -> UI : Login
+activate UI
+UI -> Backend : Authentication request
+activate Backend
+Backend -> DB : Validate Librarian Credentials
+activate DB
+DB --> Backend : Credentials Valid
+deactivate DB
+Backend --> UI : Authentication Success
+deactivate Backend
+
+librarian -> UI : Selects 'View Borrowed Books'
+UI -> Backend : Fetch Borrowed Books Request
+activate Backend
+Backend -> BookModule : Request due dates of borrowed books
+activate BookModule
+BookModule -> DB : Query Borrowed Books with due dates
+activate DB
+DB --> BookModule : Return Borrowed Books Data
+deactivate DB
+BookModule --> Backend : Borrowed Books with due dates
+deactivate BookModule
+Backend --> UI : Display Borrowed Books with due dates
+deactivate Backend
+UI --> librarian : Shows list of borrowed books and due dates
+deactivate UI
+
+@enduml
+```
+
+**Explanation:**
+
+1. **Librarian Authentication:** The librarian interacts with the Library UI to log in. This step is crucial to ensure that only authorized personnel can view sensitive information related to borrowed books.
+
+2. **View Borrowed Books:** Once authenticated, the librarian selects an option to view borrowed books, triggering the UI to send a request to the LMS Backend.
+
+3. **Fetch Borrowed Books:** The LMS Backend then communicates with the Book Management Module to request the due dates of all borrowed books. This module, in turn, interacts with the Library Database to retrieve the relevant data.
+
+4. **Display Data:** The sequence concludes with the Book Management Module returning the information to the LMS Backend, which then sends it to the UI to be displayed to the librarian. 
+
+This diagram provides a high-level overview of the interactions involved in checking the due dates of borrowed books from a librarian's perspective, within the given Comprehensive Library Management System.

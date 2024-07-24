@@ -1,0 +1,43 @@
+Certainly! Below is a PlantUML code snippet that outlines the sequence diagram for the user story "As a manager, I want to create book categories" in the context of the Comprehensive Library Management System (CLMS). This diagram illustrates the sequence of interactions between different system components and objects (like the Manager, Library Management System, Database) to achieve the functionality of creating book categories.
+
+```plantuml
+@startuml
+participant Manager
+participant CLMS_UI as UI
+participant CLMS_Controller as Controller
+participant Database
+
+Manager -> UI: Access category management
+activate UI
+UI -> Controller: Request to create category
+activate Controller
+Controller -> Database: Check if category exists
+activate Database
+
+alt Category Exists
+    Database --> Controller: Category exists error
+    Controller --> UI: Show error message
+    UI --> Manager: Unable to create category
+else Category Does Not Exist
+    Database --> \nController: OK to create
+    Controller -> Database: Create new category
+    Database --> Controller: Confirmation
+    Controller --> UI: Show success message
+    UI --> Manager: Category created successfully
+end
+
+deactivate Database
+deactivate Controller
+deactivate UI
+@enduml
+```
+
+### Explanation:
+- **Manager to UI:** The sequence starts with the manager accessing the category management interface on the Comprehensive Library Management System (CLMS).
+- **UI to Controller:** Once the manager inputs the desired category name to be created, this information is sent from the UI to the system's controller.
+- **Controller to Database (Check):** The controller first checks with the database if the category already exists to prevent duplicates.
+- **Database Response:** The database sends back a response. If the category exists, it sends a message indicating so. If not, it approves the creation of the new category.
+- **Controller to Database (Create) and Back to UI:** Based on the database's response, if a new category creation is approved, the controller instructs the database to create the new category. Following this, it sends a success message back to the UI.
+- **UI to Manager:** Finally, the UI updates the manager with the outcome – either an error message if the category couldn't be created due to duplication or a success message indicating the category was created successfully.
+
+This sequence ensures that the system can avoid duplicate categories and provides feedback to the manager throughout the process of creating a new book category.

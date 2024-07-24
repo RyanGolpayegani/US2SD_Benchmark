@@ -1,0 +1,50 @@
+Creating a detailed Sequence Diagram for the given user story in Plant UML format involves illustrating how different system components interact with each other when a library member searches for books by an author. Below is a simplified sequence diagram in PlantUML code focusing on this functionality:
+
+```plantuml
+@startuml
+participant Member
+participant UISystem
+participant SearchController
+participant Database
+participant Book
+
+== Lookup Books by Author ==
+
+Member -> UISystem : Enters search query (Author name)
+UISystem -> SearchController : Initiate author search
+activate SearchController
+
+SearchController -> Database : Query books by author
+activate Database
+
+Database -> Book : Fetch books matching author
+activate Book
+
+Book -> Database : Return results
+deactivate Book
+
+Database -> SearchController : Send results
+deactivate Database
+
+SearchController -> UISystem : Display search results
+deactivate SearchController
+
+UISystem -> Member : Show list of books by author
+@enduml
+```
+
+### Explanation:
+
+1. **Member Interaction**: The sequence starts with the Member (library user) entering a search query for a book by an author's name in the User Interface System (UISystem).
+
+2. **UISystem to SearchController**: The UISystem forwards the search request to a backend controller, here named `SearchController`, responsible for handling book search operations.
+
+3. **Search in Database**: `SearchController` then formulates a query to retrieve books from the `Database` that match the specified author's name.
+
+4. **Book Object Response**: The `Database` processes the query, fetches the relevant `Book` instances that match the criteria, and sends a list of these books back to the `SearchController`.
+
+5. **Returning the Results**: The `SearchController` receives the search results and sends them back to the UISystem, which in turn displays the list of books written by the specified author to the Member.
+
+6. **Display Results to Member**: Finally, the Member views the results which could include details like book title, author, publication year, and availability status.
+
+This sequence diagram is a simplified representation focusing primarily on the search functionality. Actual implementations might involve additional steps or components such security checks, data caching, or user preference analysis for optimized results.

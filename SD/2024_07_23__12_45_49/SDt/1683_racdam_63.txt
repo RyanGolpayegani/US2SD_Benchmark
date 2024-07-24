@@ -1,0 +1,21 @@
+@startuml
+participant Archivist
+participant SearchInterface
+participant SearchEngine
+database PhotoDatabase
+
+Archivist -> SearchInterface : Enter search by tag: [Tag Name]
+SearchInterface -> SearchEngine : Search request([Tag Name])
+activate SearchEngine
+
+SearchEngine -> PhotoDatabase : Query photos by tag([Tag Name])
+activate PhotoDatabase
+PhotoTraverse Database --> SearchEngine : Return matching photos
+deactivate PhotoDatabase
+
+SearchEngine -> SearchEngine : Filter & sort photos
+SearchEngine --> SearchInterface : Display search results
+deactivate SearchEngine
+
+SearchInterface --> Archivist : Show photos matching [Tag Name]
+@enduml

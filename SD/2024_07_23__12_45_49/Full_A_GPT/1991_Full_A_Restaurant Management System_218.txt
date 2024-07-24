@@ -1,0 +1,59 @@
+Creating a detailed Sequence Diagram for the user story "As a manager, I want to update the inventory list so that I can fix problems in the list" involves mapping out the interaction among various system components involved in the inventory updating process. The main actors and components in this process would include the Manager (user), Frontend Interface (UI), Backend Server, Inventory Management System, and Database. Below is an example of how to represent this sequence in PlantUML syntax.
+
+```plantuml
+@startuml
+participant Manager
+participant "UI: Frontend" as Frontend
+participant "Backend Server" as Backend
+participant "Inventory Management\nSystem" as InventorySystem
+participant "Database" as DB
+
+Manager -> Frontend : Select Update Inventory
+activate Frontend
+
+Frontend -> Backend : Request Inventory List
+activate Backend
+
+Backend -> InventorySystem : Query Inventory Items
+activate InventorySystem
+
+InventorySystem -> DB : Fetch Current Inventory
+activate DB
+DB --> InventorySystem : Inventory Data
+deactivate DB
+
+InventorySystem --> Backend : Inventory Items
+deactivate InventorySystem
+
+Backend --> Frontend : Display Inventory Items
+deactivate Backend
+
+Manager -> Frontend : Update Inventory Item Details
+activate Frontend
+
+Frontend -> Backend : Submit Updated Inventory Item
+activate Backend
+
+Backend -> InventorySystem : Update Inventory Item
+activate InventorySystem
+
+InventorySystem -> DB : Update Item in Database
+activate DB
+DB --> InventorySystem : Update Confirmation
+deactivate DB
+
+InventorySystem --> Backend : Update Success
+deactivate InventorySystem
+
+Backend --> Frontend : Display Success Message
+deactivate Backend
+
+Frontend --> Manager : Show Update Confirmation
+deactivate Frontend
+
+@enduml
+```
+
+This PlantUML diagram illustrates the sequence of operations following a manager’s decision to update the inventory list. The sequence starts with the manager selecting the inventory update function on the user interface. The UI then interacts with the backend server to request the current list of inventory items. These items are fetched from the database via an inventory management system. With the current inventory visible, the manager proceeds to update item details through the UI, which in turn submits these updates back to the backend. The inventory management system processes this update request, making the necessary changes to the database. Once successful, a confirmation of the update propagates back through the system, eventually notifying the manager of the successful update via a success message on the UI.
+
+This sequence ensures that the manager's interaction with the system is streamlined and effective, enabling timely and accurate updates to the inventory list to address any issues or changes needed.

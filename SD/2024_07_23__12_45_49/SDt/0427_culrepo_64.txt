@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+
+actor Administrator as admin
+participant "Content Management\nSystem" as cms
+database "Digital Repository\nDatabase" as db
+participant "Version Control\nModule" as vcm
+participant "User Interface" as ui
+
+== Upload New Version of Report/Dataset ==
+
+admin -> cms : Select report/dataset for update
+cms -> db : Retrieve current version details
+db -> cms : Return current version details
+cms -> admin : Display current version details
+
+admin -> ui : Upload new version with metadata
+ui -> cms : Parse upload details
+cms -> vcm : Initiate version increment
+vcm -> db : Create new version entry\nRetain old versions
+db -> vcm : Confirm version creation
+vcm -> cms : Update successful
+cms -> admin : Display success message &\nnew version details
+
+@enduml

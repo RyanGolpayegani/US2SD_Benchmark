@@ -1,0 +1,28 @@
+@startuml
+participant Staff
+participant "Reservation System" as RS
+database "Database" as DB
+
+== Reserve a Book for a Member ==
+
+Staff -> RS: selectBookForMember(bookID, memberID)
+activate RS
+
+RS -> DB: checkBookAvailability(bookID)
+activate DB
+DB --> RS: bookAvailability(status)
+deactivate DB
+
+alt if book is available
+    RS -> DB: reserveBook(bookID, memberID)
+    activate DB
+    DB --> RS: reservationSuccess
+    deactivate DB
+    
+    RS --> Staff: displaySuccessMessage(reservationDetails)
+else book is not available
+    RS --> Staff: displayErrorMessage(bookUnavailableMessage)
+end
+
+deactivate RS
+@enduml

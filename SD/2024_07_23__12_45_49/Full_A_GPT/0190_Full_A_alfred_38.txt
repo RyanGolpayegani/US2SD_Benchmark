@@ -1,0 +1,40 @@
+To create a Sequence Diagram for the given user story: "As an OlderPerson, I want to receive support to use the public transport," using PlantUML, follow the steps outlined below. This setup illustrates interactions between the Older Person (user), ALFRED's system components, and external public transport interfaces.
+
+Let's assume the Older Person wants to use public transportation to go to a specific destination. The person interacts with ALFRED using voice commands. ALFRED processes the request, checks the available public transportation options by connecting to a Public Transport Service online, provides recommendations to the user, and finally assists in navigating the chosen public transport route.
+
+Below is the PlantUML code to depict this scenario:
+
+```plantuml
+@startuml
+!theme plain
+
+participant OlderPerson as User
+participant "ALFRED\nVoice Interface" as VoiceInterface
+participant "ALFRED\nCore System" as Core
+participant "Transport\nAPI" as TransportAPI
+
+User -> VoiceInterface : "I want to go to the museum."
+VoiceInterface -> Core : Interpret voice command
+Core -> TransportAPI : Request public transport options\nto museum
+
+activate TransportAPI
+TransportAPI --> Core : Return transport options
+deactivate TransportAPI
+
+Core -> TransportAPI : Fetch detailed route
+activate TransportAPI
+TransportAPI --> Core : Return route details
+deactivate TransportAPI
+
+Core -> VoiceInterface : Relay options and\nrecommended route
+VoiceInterface -> User : Provides transport options\nand instructions
+
+User -> VoiceInterface : "Select option 1."
+VoiceInterface -> Core : Process selection
+Core -> Core : Finalize route details
+Core -> VoiceInterface : Confirm selection and\nnext steps
+VoiceInterface -> User : "Option 1 selected.\nYou will take Bus 42..."
+@enduml
+```
+
+To render this diagram, you need to use a PlantUML processor, which you can find in various development tools and online platforms. This sequence diagram outlines the basic flow of interaction without getting into the specifics of the technological implementation underneath the ALFRED system or the external Public Transport API. It shows a simple and intuitive process from the perspective of the Older Person, aligning with ALFRED's objectives for ease of use and support for daily activities.

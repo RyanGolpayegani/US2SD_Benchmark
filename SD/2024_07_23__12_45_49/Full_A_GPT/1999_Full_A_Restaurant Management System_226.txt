@@ -1,0 +1,37 @@
+Creating a detailed sequence diagram for the described user story involves depicting the interactions between the restaurant employee user, the Restaurant Management and Operations System, and potentially other actors like the database or services involved in tracking table occupancy. Since PlantUML code is textual, here’s a designed sequence to represent the flow from the employee's request to fetch the total number of times customers sit at a table:
+
+```plantuml
+@startuml
+participant Employee as E
+participant Frontend as F
+participant Backend as B
+database DB
+
+E -> F : Request to view table occupancy
+activate F
+
+F -> B : Get table occupancy data
+activate B
+
+B -> DB : Query occupancy records
+activate DB
+DB --> B : Return records
+deactivate DB
+
+B --> F : Process data (count)
+deactivate B
+
+F --> E : Display total occupancy times
+deactivate F
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+- **Employee (E)** initiates the process by making a request to view the table occupancy information through the **Frontend (F)** system (e.g., through a web interface or a dedicated terminal in the restaurant).
+- The **Frontend (F)** then communicates this request to the **Backend (B)** server to fetch the required data. This illustrates a basic request-response model that occurs in user interactions within web applications.
+- The **Backend (B)** handles the logic of retrieving this information by querying the **Database (DB)** for the occupancy records of the tables. This step involves interaction with a database that stores all the transactional and operational data of the restaurant, including table occupancy information.
+- The **Database (DB)** returns the occupancy records back to the **Backend (B)**.
+- Upon receiving the data, the **Backend (B)** processes it to count the total number of times customers have occupied a table. This may involve filtering the data, summarizing it, or applying any other necessary logic to extract the information requested by the employee.
+- Finally, the **Backend (B)** sends this information back to the **Frontend (F)**, which then displays the total number of times tables have been occupied to the **Employee (E)**.
+
+This flow illustrates the general process of handling a data retrieval request within a management and operations system. Adjustments and additional steps might be needed depending on specific system designs or if more complex operations (like real-time updates or predictive analytics) are involved.

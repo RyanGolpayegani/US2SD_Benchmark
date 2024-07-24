@@ -1,0 +1,43 @@
+@startuml
+participant Member
+participant CLMS_Interface as Interface
+participant BookManagementSystem as BMS
+participant Database
+
+Member -> Interface : Requests to view new books
+activate Interface
+
+Interface -> BMS : Fetch new books list
+activate BMS
+
+BMS -> Database : Query new books
+activate Database
+
+Database --> BMS : New books data
+deactivate Database
+
+BMS --> Interface : Display new books list
+deactivate BMS
+
+Interface --> Member : Shows new books
+deactivate Interface
+
+Member -> Interface : Selects a book to borrow
+activate Interface
+
+Interface -> BMS : Request to borrow book
+activate BMS
+
+BMS -> Database : Check book availability
+activate Database
+
+Database --> BMS : Book is available
+deactivate Database
+
+BMS --> Interface : Confirm book can be borrowed
+deactivate BMS
+
+Interface --> Member : Confirm borrowing and due date
+deactivate Interface
+
+@enduml

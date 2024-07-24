@@ -1,0 +1,17 @@
+@startuml
+actor Developer
+participant "CLI Tool" as CLI
+database "Data Registry\nPlatform" as Registry
+database "Local Project\nRepository" as LocalRepo
+
+Developer -> CLI: request datapackage\n(version specific)
+CLI -> Registry: search for datapackage\n(particular version)
+Registry --> CLI: return datapackage metadata\n(URL, version, dependencies)
+CLI -> Developer: show datapackage metadata\n(confirmation)
+Developer -> CLI: confirm download
+CLI -> Registry: request datapackage download
+Registry --> CLI: provide datapackage file
+CLI -> LocalRepo: install datapackage\n(in project-specific version)
+LocalRepo --> CLI: confirm installation
+CLI --> Developer: display installation\nsuccess message
+@enduml

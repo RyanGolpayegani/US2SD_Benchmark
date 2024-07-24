@@ -1,0 +1,37 @@
+To illustrate the process described in the user story within the context of the DAMS Integration and Management System (DIMS) using PlantUML, we need to map out the interactions between the DAMS manager, the DIMS system, and potentially other components like a preservation subsystem and a file storage system. Below is a detailed sequence diagram in PlantUML format.
+
+```plantuml
+@startuml
+participant DAMSManager as "DAMS Manager"
+participant DIMSSystem as "DIMS System"
+participant PreservationSystem as "Preservation Subsystem"
+participant FileStorage as "File Storage"
+
+DAMSManager -> DIMSSystem : Indicate master file details
+activate DIMSSystem
+
+DIMSSystem -> FileStorage : Retrieve file metadata\n(file size, creation date)
+activate FileStorage
+FileStorage --> DIMSSystem : File metadata
+deactivate FileStorage
+
+DIMSSystem -> DIMSSystem : Validate format and version
+DIMSSystem -> PreservationSystem : Send file metadata\n+ format and version for monitoring
+activate PreservationSystem
+PreservationSystem --> DIMSSystem : Acknowledge receipt
+deactivate PreservationSystem
+
+DIMSSystem --> DAMSManager : Confirmation of update
+deactivate DIMSSystem
+@enduml
+```
+
+This sequence diagram captures the following steps:
+1. The **DAMS Manager** initiates the process by indicating to the DIMS system the need to update the preservation managers with details of a master file.
+2. The **DIMS System** then retrieves the required file metadata, including file size and creation date, from the **File Storage** system.
+3. Upon receiving this data, the DIMS System validates the file format and version.
+4. The DIMS System then forwards this information, including the file's format and version, to the **Preservation Subsystem** for monitoring its integrity and obsolescence.
+5. The Preservation Subsystem acknowledges receipt of this data.
+6. Finally, the DIMS System confirms the successful update back to the DAMS Manager.
+
+This sequence diagram assumes a simplified interaction flow for clarity and focus on the key steps involved in the process described in the user story. In a real-world scenario, interactions could be more complex, and additional steps or systems might be involved, such as authentication steps, detailed error handling, or notifications about the status of the request.

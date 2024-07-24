@@ -1,0 +1,34 @@
+Creating a detailed PlantUML sequence diagram for the given user story involves illustrating the interaction between various entities such as the archivist (user), the digital archive management system's frontend, the backend server, and potentially a database or external licensing/rights management service. This user story focuses on the functionality of adding restriction end dates to files.
+
+Below is a simple PlantUML sequence diagram illustrating the process:
+
+```plantuml
+@startuml
+participant Archivist
+participant WebInterface as "Frontend Web Interface"
+participant Server as "Backend Server"
+participant Database
+
+Archivist -> WebInterface: Request to add end date to file
+WebInterface -> Server: POST /addEndDateToFile {fileId, endDate}
+Server -> Database: Update file with end date
+Database --> Server: Confirm update
+Server --> WebInterface: Update successful
+WebInterface --> Archivist: Display success message
+@enduml
+```
+
+Explanation of Steps:
+1. **Archivist (User Interaction):** The archivist initiates the process by requesting to add an end date to a particular file. This is done through the frontend web interface of the digital archive management system, which serves as the primary interaction point for users.
+
+2. **Frontend Web Interface to Backend Server:** The request to add an end-date to a file is sent from the frontend web interface to the backend server. This request includes the file's identifier (`fileId`) and the desired restriction end date (`endDate`).
+
+3. **Backend Server to Database:** Upon receiving the request, the backend server interacts with the database (or another form of persistent storage) to update the specified file with the new end date. This step implies that the system has a structured way to store files and their associated metadata, including restriction information.
+
+4. **Database Confirmation:** The database confirms the successful update of the file with the backend server. This step ensures that the system has correctly applied the change before informing the user.
+
+5. **Backend Server to Frontend Web Interface:** Once the backend server receives confirmation from the database, it sends a success message to the frontend web interface. This message indicates that the restriction end date has been successfully added to the file.
+
+6. **Frontend Web Interface to Archivist:** Finally, the frontend web interface displays a success message to the archivist, confirming that the file's restriction end date has been updated. This confirmation is crucial for user trust and satisfaction, ensuring that the archivist is aware the operation was successful.
+
+This diagram is a simplified representation and assumes a straightforward direct communication pattern between components. Real-world implementations might involve additional complexities like authentication and authorization checks, input validation, error handling, and logging activities, which are not depicted here for clarity and brevity.

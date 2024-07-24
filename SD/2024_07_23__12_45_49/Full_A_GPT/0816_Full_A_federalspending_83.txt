@@ -1,0 +1,60 @@
+Creating a detailed Sequence Diagram in PlantUML syntax for the provided user story involves capturing the flow of actions when a Broker user encounters updated error codes that accurately reflect the logic in the system. This detail aims to assist them in fixing their submission errors efficiently.
+
+Here's how the sequence of interactions might unfold:
+
+```plantuml
+@startuml
+actor BrokerUser as "Broker User"
+participant BrokerUI as "Broker UI"
+participant ValidationService as "Validation Service"
+participant Database as "Database"
+participant ErrorHandler as "Error Handler"
+participant UserNotificationService as "User Notification Service"
+
+BrokerUser -> BrokerUI : Submits data for validation
+BrokerUI -> ValidationService : Validate submission
+activate ValidationService
+
+ValidationService -> Database : Fetch latest validation rules and error codes
+activate Database
+Database --> ValidationService : Return validation rules and error codes
+deactivate Database
+
+ValidationService -> ErrorHandler : Check submission against validation rules
+activate ErrorHandler
+ErrorHandler -> ErrorHandler : Identify errors and map to updated error codes
+ErrorHandler --> ValidationService : Return list of errors with updated error codes
+deactivate ErrorHandler
+
+ValidationService --> BrokerUI : Return validation results with errors and updated codes
+BrokerUI -> UserNotificationService : Notify user of submission errors with details
+activate UserNotificationService
+UserNotificationService --> BrokerUser : Display errors and error codes with descriptive messages
+
+BrokerUser -> BrokerUI : Adjusts submission based on error feedback
+BrokerUI -> ValidationService : Re-validate adjusted submission
+[...]
+ValidationService --> BrokerUI : Return validation success message
+BrokerUI -> UserNotificationService : Notify user of successful submission
+UserNotificationService --> BrokerUser : Display success message
+
+@enduml
+```
+
+### Explanation:
+1. **Broker User:** The initiator of the process who submits data to be validated.
+2. **Broker UI:** The user interface layer through which the submission is made.
+3. **Validation Service:** The back-end service responsible for validating the submission against the current rules and error codes.
+4. **Database:** Holds the latest validation rules and updated error codes.
+5. **Error Handler:** Part of the validation process, responsible for mapping discovered errors to their corresponding, updated error codes.
+6. **User Notification Service:** Handles notifications to the user, including errors detected during validation and success messages.
+
+In the sequence depicted above:
+- The **Broker User** submits data for validation through the **Broker UI**.
+- The submission is passed to the **Validation Service**, which fetches the latest validation rules and error codes from the **Database**.
+- The **Validation Service** uses the **Error Handler** to identify any errors in the submission and map them to the updated error codes.
+- The **Broker UI** uses the **User Notification Service** to display the errors and their descriptions based on updated codes to the **Broker User**.
+- The user makes necessary adjustments based on the error feedback and resubmits.
+- Upon successful validation, a success message is displayed to the user.
+
+This sequence ensures that users receive precise and informative error feedback, enabling them to correct their submissions effectively.

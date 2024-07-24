@@ -1,0 +1,42 @@
+Generating a detailed Sequence Diagram for the specified user story in PlantUML can provide a clear visualization of the sequence of interactions between the system components and the camp administrator when they attempt to view events for a specific group or groups. Below is a PlantUML code snippet that represents this process. 
+
+This code outlines the sequence from the administrator's action to view the events on the calendar, filtering the events by a specific group or groups, and displaying the filtered results.
+
+```plantuml
+@startuml
+participant "Camp Administrator" as admin
+participant "Web Interface" as web
+participant "Server" as server
+participant "Event Filter" as filter
+participant "Database" as db
+
+admin -> web : Requests to view events
+web -> server : Fetch all events
+server -> db : Query all events
+db -> server : Return all events
+server -> filter : Apply group filter(s)
+server -> web : Return filtered events
+web -> admin : Display events for specific group(s)
+
+alt events available for the selected group(s)
+    admin -> web : Views filtered events
+else no events available for the selected group(s)
+    web -> admin : Display no events message
+end
+
+@enduml
+```
+Explanation of the Sequence Diagram steps:
+1. **Camp Administrator requests to view events**: The camp administrator initiates the process by requesting to view events on the calendar through the web interface.
+2. **Web Interface requests Server to fetch all events**: The action is sent to the server asking for all available camp events.
+3. **Server queries the Database for all events**: The server makes a request to the database to retrieve information on all events.
+4. **Database returns all events to the Server**: The database provides the server with details of all the events.
+5. **Server applies the group filter(s)**: The server filters the events based on the specific group or groups the administrator wants to view.
+6. **Server returns the filtered events to the Web Interface**: The filtered list of events is sent back to the web interface.
+7. **Web Interface displays the events for the specific group(s) to the Administrator**: Finally, the web interface displays the events that match the administrator’s criteria.
+
+The `alt` clause in the diagram illustrates two possible outcomes:
+- If there are events available for the selected group(s), the camp administrator will be able to view the filtered events.
+- If no events are available for the chosen group(s), a message indicating that no events are found will be displayed.
+
+This sequence ensures that the camp administrator can efficiently access a streamlined and decluttered view of the camp's event calendar, enhancing the manageability and oversight of camp operations.

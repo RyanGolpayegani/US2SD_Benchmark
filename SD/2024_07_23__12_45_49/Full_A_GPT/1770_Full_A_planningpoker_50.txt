@@ -1,0 +1,51 @@
+To generate a sequence diagram for the user story "As a user, I want to see sensible and predictable URLs, so that the application feels logical and transparent" using PlantUML, you need to outline the interactions between the components involved in generating and managing URLs within the application. This involves the user, the front-end UI, the routing mechanisms, and potentially back-end services that handle sessions or user states to ensure URLs are generated in a predictable and sensible manner.
+
+Let's assume a scenario where a user navigates through the Agile Estimation and Planning Tool (AEPT) to join an estimation game.
+
+```plantuml
+@startuml
+participant User
+participant "Front-End UI" as FrontEnd
+participant "Router" as Router
+participant "Session Handler" as Session
+participant "URL Generator" as URLGen
+
+User -> FrontEnd : navigates to game via dashboard
+activate FrontEnd
+
+FrontEnd -> Router : request navigation to game
+activate Router
+
+Router -> Session : validate user session
+activate Session
+Session -> Session : check session validity
+Session --> Router : session valid
+deactivate Session
+
+Router -> URLGen : request URL for game
+activate URLGen
+URLGen -> URLGen : generate predictable URL
+URLGen --> Router : return generated URL
+deactivate URLGen
+
+Router --> FrontEnd : redirect to game URL
+FrontEnd -> FrontEnd : render game page
+FrontEnd --> User : display game at generated URL
+deactivate FrontEnd
+
+@enduml
+```
+
+In this diagram, the sequence involves the following steps:
+
+1. The **User** initiates the process by navigating to a game via the dashboard in the **Front-End UI**.
+2. The **Front-End UI** requests navigation to the game, passing the request to the **Router**.
+3. The **Router** requests session validation from the **Session Handler** to ensure the user's session is still valid.
+4. The **Session Handler** checks the validity of the user's session and returns a positive response to the **Router**.
+5. The **Router**, upon validating the session, requests a predictable URL for the game from the **URL Generator**.
+6. The **URL Generator** generates a sensible, predictable URL based on predefined rules or patterns.
+7. The **URL Generator** returns the generated URL to the **Router**.
+8. The **Router** then instructs the **Front-End UI** to redirect the user to the generated game URL.
+9. The **Front-End UI** renders the game page at the generated URL and displays it to the **User**.
+
+This sequence ensures that the URLs presented to the user are sensible and predictable, providing a logical and transparent navigation experience within the AEPT application.

@@ -1,0 +1,31 @@
+@startuml
+actor BrokerTeamMember as BTM
+participant "Content Management\nSystem (CMS)" as CMS
+participant "Validation Engine" as VE
+database "Broker Database" as DB
+participant "Policy & Procedures\n(P&P) Portal" as PPP
+
+BTM -> CMS : Request updates for\nFABS and DAIMS v1.1 launch
+activate CMS
+CMS -> DB : Retrieve existing\nresources and validations
+activate DB
+DB --> CMS : Provide current details
+deactivate DB
+CMS -> CMS : Edit resources,\nvalidations, and P&P content
+BTM -> VE : Initiate validation updates
+activate VE
+VE -> DB : Update validation rules for\nFABS and DAIMS v1.1
+activate DB
+DB --> VE : Confirmation of validation updates
+deactivate DB
+VE --> BTM : Confirm validation rules updated
+deactivate VE
+CMS -> PPP : Publish updated P&P content
+activate PPP
+PPP --> CMS : Confirm publication
+deactivate CMS
+BTM <- CMS : Confirm completion of updates
+BTM -> BTM : Review and validate\nupdated content
+deactivate BTM
+
+@enduml

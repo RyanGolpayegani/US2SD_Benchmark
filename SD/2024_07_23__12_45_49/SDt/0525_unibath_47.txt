@@ -1,0 +1,25 @@
+@startuml
+participant User as U
+participant WebInterface as WI
+participant APIGateway as API
+participant AuthenticationModule as AM
+participant LDAPSystem as LDAP
+
+U -> WI: Requests login
+activate WI
+WI -> API: Forwards login request
+activate API
+API -> AM: Requests user authentication
+activate AM
+AM -> LDAP: Queries user credentials
+activate LDAP
+LDAP --> AM: Returns authentication result
+deactivate LDAP
+AM --> API: Confirms user identity
+deactivate AM
+API --> WI: Authentication successful
+deactivate API
+WI --> U: Grants access to platform
+deactivate WI
+
+@enduml

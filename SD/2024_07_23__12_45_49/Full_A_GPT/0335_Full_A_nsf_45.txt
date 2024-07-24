@@ -1,0 +1,54 @@
+To create a detailed sequence diagram for the user story mentioned, here's a structured representation in PlantUML format. This diagram will outline the sequence of events that occur from the moment an NSF person expresses interest in attending user interviews to them receiving information about the interview schedule and user types.
+
+Please note, to render this diagram, you'll need to have PlantUML installed in your environment or use an online PlantUML editor.
+
+```plantuml
+@startuml
+!theme plain
+
+participant NSF_Person as NSF
+participant User_Research_Scheduler as Scheduler
+participant CMS as CMS
+participant Cloud_Storage as Storage
+participant Email_Service as Email
+
+== Expressing Interest in Attending User Interviews ==
+NSF -> Scheduler: Express interest in attending interviews
+activate Scheduler
+
+Scheduler -> CMS: Query upcoming interviews
+activate CMS
+
+CMS --> Scheduler: Return interview schedule
+deactivate CMS
+
+Scheduler -> Storage: Fetch user types information
+activate Storage
+
+Storage --> Scheduler: Return user types details
+deactivate Storage
+
+== Notifying the NSF Person ==
+Scheduler -> Email: Prepare notification email
+activate Email
+
+Email -> Email: Include interview schedule
+Email -> Email: Include user types details
+
+Email --> NSF: Send notification email
+deactivate Email
+
+NSF --> Scheduler: Confirm receipt
+deactivate Scheduler
+
+@enduml
+```
+
+### Explanation:
+- **NSF_Person (NSF)**: This actor represents the National Science Foundation person who is interested in attending user interviews. They initiate the process by expressing their interest to the User Research Scheduler.
+- **User_Research_Scheduler (Scheduler)**: This component manages the scheduling and logistics of user research activities, including interviews. It queries the CMS for upcoming interviews and fetches user types from cloud storage.
+- **CMS**: The Content Management System holds information about the scheduled user interviews and might also store details about the participants or types of users being interviewed.
+- **Cloud_Storage (Storage)**: Stores detailed data about the user types who will be interviewed, which can include demographics, areas of interest, or other relevant classification data.
+- **Email_Service (Email)**: This service is responsible for sending out notifications. It compiles the information into an email that includes both the interview schedule and details about the user types, which is then sent to the NSF person.
+
+This sequence starts with the NSF Person expressing interest in attending user interviews and concludes with them receiving a notification email containing all the relevant details. Note that in a real-world scenario, additional steps or different systems might be involved, and security or privacy considerations would play a crucial role in how data is handled and communicated.

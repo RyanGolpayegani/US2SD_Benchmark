@@ -1,0 +1,41 @@
+@startuml
+
+actor Manager as mgr
+participant "Web Interface" as web
+participant "Backend System" as backend
+database "Database" as db
+
+mgr -> web : Log in
+activate web
+
+web -> backend : Authenticate Manager
+activate backend
+
+backend -> db : Fetch Manager Credentials
+activate db
+
+db --> backend : Return Credentials
+deactivate db
+
+backend --> web : Authentication Success
+deactivate backend
+
+mgr -> web : Select Reports
+mgr -> web : Choose Item Order History
+
+web -> backend : Request Item Order Trends
+activate backend
+
+backend -> db : Query Ordered Items History
+activate db
+
+db --> backend : Return Items History Data
+deactivate db
+
+backend --> web : Generate Trends Graph
+deactivate backend
+
+web --> mgr : Display Trends Graph
+deactivate web
+
+@enduml

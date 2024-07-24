@@ -1,0 +1,39 @@
+Creating a detailed sequence diagram for the provided user story involves representing the interactions between different entities/systems/components within the DAMS Integration and Management System (DIMS) to fulfill the DAMS manager's need to know the dates for when a permission or restriction is active.
+
+Below is a PlantUML code representing a sequence diagram based on the mentioned user story. This diagram illustrates the interactions starting from the DAMS Manager querying the system for permission or restriction dates, and how the system responds to this inquiry, focusing on the Copyright and Rights Management feature mentioned in the key features of the project description.
+
+```plantuml
+@startuml
+actor DAMSManager as "DAMS Manager"
+participant DIMSInterface as "DIMS Interface"
+participant RightsManagementModule as "Rights Management \nModule"
+participant Database as "DIMS Database"
+
+== Query for Permission/Restriction Dates ==
+
+DAMSManager -> DIMSInterface : Query(permission/restriction dates)
+activate DIMSInterface
+
+DIMSInterface -> RightsManagementModule : GetDatesForPermissionOrRestriction()
+activate RightsManagementModule
+
+RightsManagementModule -> Database : Fetch(permission/restriction dates)
+activate Database
+
+Database --> RightsManagementModule : ReturnDates()
+deactivate Database
+
+RightsManagementModule --> DIMSInterface : DatesInfo(permission/restriction dates)
+deactivate RightsManagementModule
+
+DIMSInterface --> DAMSManager : DisplayDates(permission/restriction dates)
+deactivate DIMSInterface
+
+@enduml
+```
+
+This sequence diagram starts with the DAMS Manager initiating a query through the DIMS Interface to obtain information about the active dates for permissions or restrictions. The DIMS Interface, which acts as the primary interaction layer for users, communicates this request to the Rights Management Module. This module is responsible for handling the specifics of copyright and rights management, including permissions and restrictions.
+
+Upon receiving the request, the Rights Management Module queries the DIMS Database to fetch the requested dates. The database responds with the dates, which are then relayed back through the Rights Management Module and DIMS Interface, finally reaching the DAMS Manager.
+
+To visualize this diagram, you need a tool supporting PlantUML syntax or use an online PlantUML editor. This representation is a simplified view focusing on the process flow as described in the user story. Depending on the complexity and requirements of the actual DIMS implementation, additional components or steps may be included.

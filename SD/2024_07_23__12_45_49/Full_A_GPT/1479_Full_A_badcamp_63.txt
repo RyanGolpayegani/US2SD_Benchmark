@@ -1,0 +1,41 @@
+To generate a detailed sequence diagram for your user story using PlantUML, you'll follow these steps. This example assumes you're familiar with basic PlantUML syntax and how to run PlantUML scripts to generate diagrams. If not, I recommend checking out the PlantUML documentation for basics.
+
+Your user story: **As an authenticated user, I want to submit a session at BADCamp, so that it can get evaluated.**
+
+Here's an illustrative PlantUML script for the sequence diagram for this user story:
+
+```plantuml
+@startuml
+actor AuthenticatedUser as user
+participant "Web Interface" as web
+database "Session Database" as db
+entity "Session Review System" as review
+participant "Notification Service" as notify
+
+user -> web : Navigate to 'Submit Session'
+web -> user : Display 'Session Submission Form'
+user -> web : Fill in and Submit Form
+web -> db : Save Session Details
+db -> review : Trigger Session Review Process
+review -> db : Session Status: Under Review
+db -> notify : Trigger Notification to User
+notify -> user : Email Notification: 'Session Submitted'
+user -> notify : Refresh/Check Email
+review -> db : Update Session Status: Approved/Rejected
+db -> notify : Trigger Notification to User: 'Session Evaluated'
+notify -> user : Email Notification: 'Session Approved' or 'Session Rejected'
+
+@enduml
+```
+
+This sequence diagram captures the following steps:
+1. **User Navigation:** The authenticated user navigates to the "Submit Session" area.
+2. **Form Display:** The web interface displays the session submission form.
+3. **Form Submission:** The authenticated user fills in the details and submits the form.
+4. **Session Saving:** The web interface saves the session details to the database.
+5. **Review Trigger:** The session submission triggers an internal review process.
+6. **Under Review Notification:** The system updates the session status to "Under Review" and notifies the user.
+7. **Evaluation:** The session review system evaluates the submitted session.
+8. **Final Decision Notification:** Once evaluated, the system updates the session status and notifies the user of the decision (approved or rejected).
+
+This script is a high-level representation and can be expanded with more detailed actions, decision points, or alternative workflows based on the complexity of your session submission and evaluation process at BADCamp.

@@ -1,0 +1,22 @@
+@startuml
+actor RepositoryManager as RM "Repository Manager"
+participant DIMS as sys "DAMS Integration and Management System"
+database EventsDB as DB "Events Database"
+
+== Track Component Lifecycle Events ==
+
+RM -> sys : Request events for component
+activate sys
+
+sys -> DB : Query component events
+activate DB
+
+DB --> sys : Return events list
+deactivate DB
+
+sys --> RM : Show events list
+deactivate sys
+
+note right of RM : Events could include\ncreation, modification,\naccess, and deletion
+
+@enduml

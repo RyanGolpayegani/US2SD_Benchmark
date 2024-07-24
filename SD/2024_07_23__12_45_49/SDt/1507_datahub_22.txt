@@ -1,0 +1,18 @@
+@startuml
+actor Consumer as consumer
+participant "UI/Website" as ui
+participant "API Gateway" as api
+participant "Data Package Service" as dps
+database "Data Registry DB" as db
+
+== View Data Package Online ==
+consumer -> ui : Navigate to Data Package Viewer
+ui -> api : Request to view Data Package (ID)
+api -> dps : Retrieve Data Package Details (ID)
+dps -> db : Query Data Package Info (ID)
+db -> dps : Return Data Package Info
+dps -> api : Data Package Details (Metadata, Preview)
+api -> ui : Display Data Package Details
+ui -> consumer : Show Data Package (Name, Description, Preview)
+
+@enduml

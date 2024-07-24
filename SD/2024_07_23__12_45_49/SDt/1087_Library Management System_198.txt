@@ -1,0 +1,21 @@
+@startuml
+participant Manager as M
+participant "UI (User Interface)" as UI
+participant "Server" as S
+participant "Database" as D
+
+M -> UI : Request to view employee information
+UI -> S : API call to get employee data
+S -> D : Query employee information
+
+alt If employee data is found
+    D --> S : Return employee data
+    S --> UI : Response with employee data
+    UI --> M : Display employee information
+else If no data found
+    D --> S : Return "Data not found" message
+    S --> UI : Response with "No data" message
+    UI --> M : Show "Information not available"
+end
+
+@enduml

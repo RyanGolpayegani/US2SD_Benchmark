@@ -1,0 +1,50 @@
+@startuml
+participant Visitor as V
+participant "Web Interface" as WI
+participant "Subscription Service" as SS
+participant "Courses & Events System" as CES
+participant "RSS Feed Generator" as RFG
+participant "Database" as DB
+
+V->WI: Access RSS Feed Subscription Page
+activate WI
+WI->SS: Request Subscription Form
+activate SS
+SS->WI: Return Subscription Form
+WI->V: Display Subscription Form
+deactivate SS
+
+V->WI: Submit email & preferences
+WI->SS: Process Subscription Request(email, preferences)
+activate SS
+SS->DB: Check if email already subscribed
+activate DB
+DB->SS: Return check result
+deactivate DB
+
+alt If email not subscribed
+    SS->DB: Save subscription details
+    activate DB
+    DB->SS: Confirm subscription saved
+    deactivate DB
+    SS->CES: Retrieve upcoming courses & events based on preferences
+    activate CES
+    CES->DB: Query upcoming courses & events
+    activate DB
+    DB->CES: Return courses & events data
+    deactivate DB
+    CES->RFG: Generate RSS Feed
+    activate RSC
+    RFG->CES: Return RSS Feed URL
+    deactivate RSC
+    CES->SS: Send RSS Feed URL
+    deactivate CES
+    SS->WI: Send confirmation with RSS Feed URL
+    WI->V: Display confirmation with RSS Feed URL
+else If email already subscribed
+    SS->WI: Inform already subscribed
+    WI->V: Display already subscribed message
+end
+
+deactivate SS
+@enduml

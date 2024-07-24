@@ -1,0 +1,23 @@
+@startuml
+participant Admin
+participant "AMIDP System" as AMIDP
+database "Volunteer Data" as VolunteerDB
+database "Educational Content" as EducDB
+database "Project Management" as ProjectDB
+
+Admin -> AMIDP : Request suitable education for volunteer
+AMIDP -> VolunteerDB : Retrieve volunteer's history and profile
+AMIDP <-- VolunteerDB : Volunteer history and preferences
+AMIDP -> ProjectDB : Get current project details and requirements
+AMIDP <-- ProjectDB : Project specifics
+AMIDP -> AMIDP : Analyze volunteer history, project requirements
+AMIDP -> EducDB : Query for matching educational content
+EducDB --> AMIDP : List of suitable educational contents
+AMIDP -> AMIDP : Select optimal educational content
+AMIDP --> Admin : Provide selected educational content details
+Admin -> Admin : Review and decide on the education to provide
+Admin -> AMIDP : Log decision and any customizations
+AMIDP -> VolunteerDB : Update volunteer profile with education provided
+Admin -> Volunteer : Deliver educational content
+
+@enduml

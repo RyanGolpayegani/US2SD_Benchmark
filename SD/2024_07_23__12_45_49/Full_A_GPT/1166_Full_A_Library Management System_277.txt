@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram for the user story "As a member, I want to reserve a book" involves representing the sequence of operations between objects or components as you interact with the Comprehensive Library Management System (CLMS). The actors and systems involved typically include the Member (User), Frontend Interface, Reservation System, Database, and Notification System.
+
+We'll outline the steps for this specific user story in PlantUML format, focusing on interactions from searching for a book to successfully reserving it.
+
+```plantuml
+@startuml
+actor Member as member
+participant "Frontend Interface" as frontend
+participant "Reservation System" as reservationSystem
+database "Database" as database
+participant "Notification System" as notification
+
+== Search for Book ==
+member -> frontend : Search(bookDetails)
+frontend -> reservationSystem: Query(bookDetails)
+reservationSystem -> database: Fetch(bookDetails)
+database --> reservationSystem: BookResults
+reservationSensitiveArea --> frontend: DisplayResults(BookResults)
+frontend --> member: ShowBookResults
+
+== Select Book to Reserve ==
+member -> frontend : SelectBook(BookID)
+frontend -> reservationSystem: CheckAvailability(BookID)
+reservationSystem -> database: GetAvailability(BookID)
+database --> reservationSystem: AvailabilityStatus
+
+alt If Book is Available
+    reservationSystem --> frontend: ShowAvailable
+    frontend --> member: PromptReserveOption
+    member -> frontend : ConfirmReserve(BookID)
+    frontend -> reservationSystem: ReserveBook(MemberID, BookID)
+    reservationSystem -> database: UpdateReservation(MemberID, BookID)
+    database --> reservationSystem: ReservationSuccess
+    reservationSystem --> notification: SendReservationNotification(MemberID, BookID)
+    notification --> member: DisplayNotification(ReservationConfirmed)
+
+else If Book is Not Available
+    reservationSystem --> frontend: ShowNotAvailable
+    frontend --> member: ShowWaitlistOption
+    member -> frontend : ConfirmWaitlist(BookID)
+    frontend -> reservationSystem: AddToWaitlist(MemberID, BookID)
+    reservationSystem -> database: UpdateWaitlistStatus(MemberID, BookID)
+    database --> reservationSystem: WaitlistSuccess
+    reservationSystem --> notification: SendWaitlistNotification(MemberID, BookID)
+    notification --> member: DisplayNotification(AddedToWaitlist)
+end
+
+@enduml
+```
+
+This diagram outlines the fundamental sequence from the member's perspective of reserving a book through the CLMS, considering both cases: when the book is available and when it's not, leading to a waitlist scenario. Each interaction is captured in sequence, showing how the user's actions trigger system processes and how the system responds at each step.

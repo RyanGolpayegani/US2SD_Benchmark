@@ -1,0 +1,32 @@
+Creating a detailed Sequence Diagram for the user story "As a staff, I want to add borrowed books to the system with their due dates" involves laying out the interactions between the system components involved in this process. This sequence will include interactions from the staff member's initiation of the book borrowing process, to the system updating the database with the borrow details including book ID, borrower's ID, and due dates.
+
+Here's how you could represent this in PlantUML format:
+
+```plantuml
+@startuml
+participant Staff
+participant "Borrowing Interface" as BInterface
+participant "Validation System" as Validator
+participant "Database" as DB
+
+Staff -> BInterface: Enter book and borrower details
+BInterface -> Validator: Validate book and borrower details
+activate Validator
+Validator --> BInterface: Validation Status
+deactivate Validator
+
+alt If details are valid
+    BInterface -> DB: Add borrowing details \n(Book ID, Borrower ID, Due Date)
+    activate DB
+    DB --> BInterface: Operation Status (Success/Failure)
+    deactivate DB
+    BInterface --> Staff: Show operation status (Book borrowed successfully)
+else If details are invalid
+    BInterface --> Staff: Show error (Invalid details)
+end
+@enduml
+```
+
+This sequence diagram starts with the staff member entering details of the borrowed book and the borrower into the Borrowing Interface. The entered details are then validated by the Validation System. If the details are valid, the Borrowing Interface sends a request to add the borrowing details to the Database. The Database returns an operation status indicating success or failure back to the Borrowing Interface, which then informs the staff member about the outcome. In case the input details are found to be invalid during validation, the Borrowing Interface directly notifies the staff member of the error.
+
+Remember, the above PlantUML diagram assumes a simple and straightforward process flow and might need adjustments and enhancements to match the specific requirements and intricacies of the Comprehensive Library Management System (CLMS) as described in your project.

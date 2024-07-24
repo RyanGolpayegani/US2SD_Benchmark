@@ -1,0 +1,25 @@
+@startuml
+actor ZooniverseAdmin as admin
+participant "AMIDP Platform" as platform
+participant "Image Database" as db
+participant "AI Classification Model" as ai
+participant "Notification Service" as notify
+
+== Automatic Detection of Non-classifiable Plankton Images ==
+admin -> platform : requests detection of\nnon-classifiable images
+platform -> db : retrieves plankton images
+loop for each image
+    db -> ai : send image for classification
+    activate ai
+    ai -> ai : analyze image
+    alt image without classifiable planklon
+        ai -> db : mark image as non-classifiable
+        deactivate ai
+        db -> notify : trigger alert for admin
+    else image with classifiable plankton
+        ai -> db : confirm image as classifiable
+        deactivate ai
+    end
+end
+notify -> admin : notify about non-classifiable images
+@enduml

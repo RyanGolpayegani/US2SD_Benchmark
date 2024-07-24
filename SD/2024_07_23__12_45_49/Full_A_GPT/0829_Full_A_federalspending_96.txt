@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the described user story involves several actors and systems interacting to provide the start and end times of submission periods to an agency user. Here's how you can represent this scenario using PlantUML syntax:
+
+```plantuml
+@startuml
+participant "Agency User" as user
+participant "Broker Platform" as platform
+participant "Database" as db
+participant "Notification Service" as notify
+participant "Calendar Service" as calendar
+
+== User Query for Submission Period ==
+user -> platform : requests submission period info
+activate platform
+
+platform -> db : query submission period start/end
+activate db
+db --> platform : return period data
+deactivate db
+
+platform -> calendar : request formatted dates
+activate calendar
+calendar --> platform : return formatted start/end dates
+deactivate calendar
+
+== Notification ==
+platform -> notify : prepare notification
+activate notify
+notify -> user : send start/end dates info
+deactivate notify
+
+deactivate platform
+@enduml
+```
+
+### Explanation:
+
+1. **Agency User requests submission period info:** The process starts with the agency user requesting information about the submission periods from the Broker Platform.
+
+2. **Broker Platform queries Database:** The Broker Platform then queries its database to fetch the start and end dates of the submission periods.
+
+3. **Database returns period data:** The database retrieves and sends back the requested dates to the Broker Platform.
+
+4. **Broker Platform requests formatted dates:** To make sure the dates are user-friendly, the Broker Platform sends the raw dates to a Calendar Service for formatting.
+
+5. **Calendar Service returns formatted dates:** The Calendar Service processes and sends back the formatted start and end dates to the Broker Platform.
+
+6. **Broker Platform prepares notification:** With the information ready, the Broker Platform prepares a message/notification detailing the submission period dates.
+
+7. **Notification Service sends dates info to the Agency User:** Finally, the Notification Service delivers the start and end dates information to the Agency User, completing the request.
+
+
+This PlantUML sequence diagram provides a high-level visualization of the interactions and data flow between the agency user, the Broker Platform, and associated services to fulfill the user's request for submission period information.

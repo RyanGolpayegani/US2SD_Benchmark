@@ -1,0 +1,46 @@
+Given the complexity of the Advanced Media Identification & Discovery Platform (AMIDP) and focusing on the specific user story about automatically detecting Snapshot Serengeti images with no classifiable animals in them, here's a detailed sequence diagram in PlantUML format. This user story involves image upload, automatic analysis for detecting animals (or the absence thereof), and potentially notifying the Zooniverse admin upon detection of images with no classifiable animals.
+
+```plantuml
+@startuml
+participant "Zooniverse Admin" as admin
+participant "AMIDP Platform" as platform
+participant "Image Upload Module" as upload
+participant "Image Analysis Engine" as analysis
+participant "Animal Detection AI" as ai
+participant "Data Storage" as storage
+participant "Notification System" as notify
+
+admin -> platform: Upload Snapshot Serengeti images
+platform -> upload: Process upload request
+upload -> analysis: Invoke automatic image analysis
+analysis -> ai: Apply animal detection algorithms
+ai -> analysis: Return detection results
+analysis -> storage: Store analysis results
+analysis -> analysis: Check for images with no classifiable animals
+analysis --> notify: Trigger notification for non-classifiable images
+notify -> admin: Notify about images with no classifiable animals
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Zooniverse Admin → AMIDP Platform:** The process begins when a Zooniverse admin uploads Snapshot Serengeti images to be analyzed by the AMIDP platform.
+
+2. **AMIDP Platform → Image Upload Module:** The platform processes the admin's upload request, handling the incoming batch of images.
+
+3. **Image Upload Module → Image Analysis Engine:** After the images are uploaded, they are forwarded to the Image Analysis Engine for automatic processing.
+
+4. **Image Analysis Engine → Animal Detection AI:** The core analysis involves applying animal detection algorithms. This AI component attempts to identify and classify animals within the images.
+
+5. **Animal Detection AI → Image Analysis Engine:** The AI returns its findings to the Image Analysis Engine, including information on detected animals.
+
+6. **Image Analysis Engine → Data Storage:** Results from the image analysis, including detected animals or the lack thereof, are stored in a data repository for record-keeping and further reference.
+
+7. **Image Analysis Engine (Double Role):** The Image Analysis Engine also evaluates the AI's findings to identify images that lack classifiable animals.
+
+8. **Image Analysis Engine → Notification System:** If non-classifiable images are found (i.e., images without detectable animals), the platform triggers a notification process.
+
+9. **Notification System → Zooniverse Admin:** The Zooniverse admin receives a notification about the images with no classifiable animals, completing the cycle and allowing for appropriate action, such as review or deletion of said images.
+
+This sequence diagram abstracts some details but gives a high-level overview of the process for automatically detecting Snapshot Serengeti images with no classifiable animals within the Advanced Media Identification & Discovery Platform context.

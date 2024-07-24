@@ -1,0 +1,51 @@
+Creating a detailed sequence diagram for the user story "As a restaurant employee, I want to get a notification when the biggest order of the day arrives so that I can motivate other employees." involves illustrating the interactions between the system components and the users for the specific scenario. Considering the complexity and the inclusion of various interacting parties such as the order management system, employee management system, notification service, and the employees themselves, let's break this down into a sequence diagram using PlantUML syntax.
+
+Please note that sequence diagrams focus on the interaction and exchange of messages between components over time, making them particularly useful for detailing the dynamic behavior of systems in response to particular scenarios.
+
+```plantuml
+@startuml
+participant "Employee" as E
+participant "Order Management\nSystem" as OMS
+participant "Employee Management\nSystem" as EMS
+participant "Notification Service" as NS
+
+== New Order Entry ==
+E -> OMS : Enter new order details
+OMS -> OMS : Validate & Record Order
+OMS -> OMS : Analyze if biggest order of the day
+
+alt is Biggest Order
+    OMS -> EMS : Request list of employees
+    EMS -> OMS : Return list of employees
+    loop for Each Employee
+        OMS -> NS : Trigger Notification for Employee
+    end
+    NS -> E : Display Notification
+else not Biggest Order
+    OMS -> OMS : Continue without action
+end
+
+E -> E : Motivate other employees
+
+@enduml
+```
+
+Explanation of the sequence diagram:
+
+1. **New Order Entry**: The interaction is initiated by an employee entering the details of a new order into the Order Management System (OMS).
+
+2. **Validate & Record Order**: The OMS validates the order details and records the order.
+
+3. **Analyze if Biggest Order of the Day**: The OMS evaluates whether this is the biggest order of the day based on the order value or other criteria predefined in the system.
+
+4. **Request List of Employees**: If the order is determined to be the biggest of the day, the OMS requests a list of current employees from the Employee Management System (EMS).
+
+5. **Return List of Employees**: The EMS returns the list of employees to the OMS.
+
+6. **Trigger Notification for Employee**: For each employee in the list, the OMS triggers a notification through the Notification Service (NS).
+
+7. **Display Notification**: The Notification Service delivers the notification to the employees, in this case, notifying them about the biggest order of the day.
+
+8. **Motivate Other Employees**: Upon receiving the notification, the employee (who initially entered the order) takes it as an opportunity to motivate other employees.
+
+This sequence diagram abstractly outlines the interactions between the key components of the Restaurant Management and Operations System for this specific user story. Adjustments and extensions may be necessary depending on the detailed requirements and technical specifications of the project.

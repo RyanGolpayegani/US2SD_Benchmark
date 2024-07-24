@@ -1,0 +1,22 @@
+@startuml
+participant Researcher as researcher
+participant "Mendeley Client" as mendeley
+participant "Neurohub Platform" as neurohub
+participant "Group-Wide Shared\nRepository" as sharedRepo
+
+== Pointing the Mendeley Client to the Shared Repository ==
+
+researcher -> mendeley : Point to Shared Repository
+mendeley -> neurohub : Request Access to Shared Repository
+neurohub -> sharedRepo : Validate Access Request
+sharedRepo -> neurohub : Access Granted
+neurohub -> mendeley : Provide Repository URL/Access
+mendeley -> researcher : Access Setup Complete
+
+== Receiving Notifications on New Content Addition ==
+
+sharedRepo -> neurohub : New Content Added Notification
+neurohub -> mendeley : Push Notification
+mendeley -> researcher : Display Notification
+
+@enduml

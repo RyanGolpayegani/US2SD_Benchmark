@@ -1,0 +1,66 @@
+Creating a detailed PlantUML sequence diagram for the user story "As an Older Person, I want to have games that include my favorite sports" involves illustrating the interactions between the user (Older Person), the ALFRED system, and potentially other systems or services that support game functionalities based on the user's preferences. This sequence diagram will show the process from the user expressing interest in games featuring their favorite sports, through ALFRED's processing of this request, to the delivery of the game options to the user.
+
+```plantuml
+@startuml
+participant OlderPerson
+participant ALFRED_UI as "ALFRED User Interface"
+participant ALFRED_System as "ALFRED System"
+participant GamesDatabase as "Games Database/Service"
+participant ContentProvider as "Sports Content Provider"
+
+== Initiate Request for Games Involving Favourite Sports ==
+
+OlderPerson -> ALFRED_UI: Request games featuring favourite sports
+activate ALFRED_UI
+
+ALFRED_UI -> ALFRED_System: Parse voice/text input for favourite sports
+activate ALFRED_System
+
+ALFRED_System -> GamesDatabase: Query available games with specified sports
+activate GamesDatabase
+
+GamesDatabase --> ALFRED_System: Return list of available games
+deactivate GamesDatabase
+
+ALFRED_System -> ContentProvider: Request additional content for specified sports (if necessary)
+activate ContentProvider
+
+ContentProvider --> ALFRED_System: Provide sports content and integration details
+deactivate ContentEmergency
+
+ALFRED_System --> ALFRED_UI: Compile and deliver game options with sports content
+ALFRED_UI --> OlderPerson: Display game options including favourite sports
+deactivate ALFRED_System
+
+== User Selection of a Game ==
+
+OlderPerson -> ALFRED_UI: Select a game from options
+ALFRED_UI -> ALFRED_System: Transmit game selection and user details for access/permissions setup
+activate ALFRED_System
+
+ALFRED_System -> GamesDatabase: Setup access and permissions for the selected game
+activate GamesDatabase
+
+GamesDatabase --> ALFRED_System: Confirm game access and permissions setup
+deactivate GamesDatabase
+
+ALFRED_System --> ALFRED_UI: Confirm setup and provide instructions/start game
+ALFRED_UI --> OlderPerson: Start selected game
+deactivate ALFRED_UI
+deactivate ALFRED_System
+
+@enduml
+```
+
+This sequence diagram follows these steps:
+
+1. **Initiate Request:** The Older Person requests games featuring their favorite sports through the ALFRED user interface (UI), which could be through voice or text input.
+2. **Process Request:** ALFRED UI forwards the request to the ALFRED system, which then parses the input to understand the user's favorite sports.
+3. **Query Games Database:** The ALFRED system queries an internal or external Games Database or Service to find available games that match the specified sports.
+4. **Request Additional Content:** If necessary, the ALFRED system might request additional sports content from a Content Provider to enrich the gaming experience or offer more tailored options.
+5. **Compile and Deliver Options:** The ALFRED system compiles the game options, possibly enriched with additional content, and delivers them to the ALFRED UI.
+6. **User Selection:** The Older Person views the options on the ALFRED UI and makes a selection.
+7. **Setup Access:** The ALFRED system processes this selection, setting up access and permissions for the game through the Games Database.
+8. **Confirm and Start Game:** The system confirms the setup to the ALFRED UI, which then provides the Older Person with instructions or directly starts the game.
+
+This demonstrates a seamless integration of ALFRED's components to provide personalized, engaging content based on the user's preferences, ensuring an enhanced user experience tailored to older adults.

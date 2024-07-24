@@ -1,0 +1,39 @@
+Given the context of the project description and focusing on creating a detailed PlantUML sequence diagram for the specific user story, we will break down the actions and interactions that take place when a user navigates forwards and backwards between logbook pages without depending on the browser's back or forward buttons. Note that the actual implementation details might vary based on the project's architecture and design decisions. 
+
+Here is a simplified representation of the sequence in PlantUML format:
+
+```plantuml
+@startuml
+autonumber
+actor User as user
+participant "UI Navigation Controls" as controls
+participant "Navigation Handler" as handler
+participant "Session Manager" as session
+participant "Data Store" as datastore
+
+user -> controls: Request to navigate (forward/backward)
+controls -> handler: Trigger navigation with direction
+handler -> session: Check current page and direction
+alt if forward navigation is requested
+  session -> datastore: Query for next page data based on current state
+  datastore --> session: Next page data
+  session -> handler: Increment page state; Forward next page data
+else if backward navigation is requested
+  session -> datastore: Query for previous page data based on current state
+  datastore --> session: Previous page data
+  session -> handler: Decrement page property; Return previous page data
+end
+handler -> controls: Provide data for next/previous page
+controls -> user: Display the requested page
+@enduml
+```
+
+**Explanation:**
+
+- **User:** Initiates the action to navigate through logbook pages without utilizing browser navigation buttons.
+- **UI Navigation Controls:** Represents the forward and backward buttons (or any other navigation mechanism) provided by the Neurohub UI for navigating logbook pages.
+- **Navigation Handler:** The component responsible for managing the navigation logic, including determining the direction of navigation (forward or backward) and communicating with other components to retrieve the needed logbook page data.
+- **Session Manager:** Manages user session state, including keeping track of the current logbook page the user is viewing. It determines what the next or previous page is, based on the current page and the direction of navigation.
+- **Data Store:** Represents the backend system or database that stores logbook pages. The session manager queries it to fetch the required page data depending on the navigation direction.
+
+This sequence outlines a straightforward process where the user interacts with UI elements to navigate through the logbook pages. The Navigation Handler and Session Manager work together to ensure the appropriate page data is fetched from the Data Store and presented to the user, providing a seamless navigation experience that does not rely on the browser's navigation controls.

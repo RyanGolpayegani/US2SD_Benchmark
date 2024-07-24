@@ -1,0 +1,57 @@
+@startuml
+participant Customer_UI as "Customer Interface"
+participant Ordering_Service as "Ordering Service"
+database Order_DB as "Order Database"
+participant Kitchen_Display as "Kitchen Display System"
+participant Cook
+
+activate Customer_UI
+Customer_UI -> Ordering_Service : PlaceOrder(orderDetails)
+activate Ordering_Service
+
+Ordering_Service -> Order_DB : SaveOrder(orderDetails)
+activate Order_DB
+Order_DB --> Ordering_Service : Confirmation(orderID)
+deactivate Order_DB
+
+Ordering_Service --> Customer_UI : OrderPlaced(orderID)
+deactivate Ordering_Service
+Customer_UI --> Cook : DisplayNewOrder(orderID)
+deactivate Customer_UI
+
+activate Cook
+Cook -> Kitchen_Display : FetchOrderDetails(orderID)
+activate Kitchen_Display
+Kitchen_Display -> Order_DB : QueryOrder(orderID)
+activate Order_DB
+Order_DB --> Kitchen_Display : OrderDetails
+deactivate Order_DB
+Kitchen_Display --> Cook : ShowOrderDetails
+deactivate Kitchen_Display
+
+Cook -> Kitchen_Display : UpdateOrderStatus(orderID, "In Preparation")
+activate Kitchen_Display
+Kitchen_Display -> Order_DB : SetOrderStatus(orderID, "In Preparation")
+activate Order_DB
+Order_DB --> Kitchen_Display : StatusUpdated
+deactivate Order_DB
+Kitchen_Display --> Cook : ConfirmationStatusUpdated
+decover Kitchen_Display
+
+Cook -> Kitchen_Display : UpdateOrderStatus(orderID, "Ready")
+activate Kitchen_Display
+Kitchen_Display -> Order_DB : SetOrderStatus(orderID, "Ready")
+activate Order_DB
+Order_DB --> Kitchen_Display : StatusUpdated
+deactivate Order_DB
+Kitchen_Display --> Cook : ConfirmationStatusUpdated
+deactivate Kitchen_Display
+
+Cook -> Ordering_Service : NotifyOrderReady(orderID)
+activate Ordering_Service
+Ordering_Service -> Customer_UI : UpdateCustomer(orderStatus)
+Ordering_Service -> Server_UI : NotifyServerOrderReady(orderID)
+deactivate Cook
+deactivate Ordering_Service
+
+@enduml

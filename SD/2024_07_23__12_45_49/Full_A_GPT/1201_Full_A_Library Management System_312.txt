@@ -1,0 +1,50 @@
+Certainly! Below is a sequence diagram in PlantUML format that outlines the process of a library member updating their online reservations for books within the Comprehensive Library Management System (CLMS). This includes interactions between the user, the system interface, and the backend components necessary to facilitate the reservation update.
+
+```plantuml
+@startuml
+actor Member as member
+participant "UI Interface" as ui
+participant "Reservation System" as reservationSystem
+participant "Database" as db
+
+== Update Online Reservation ==
+
+member -> ui : Selects option to update reservation
+ui -> reservation <u>reservations</u>
+
+reservation -> db : Fetch current reservation details\n(MemberID, BookID)
+db -> reservation : Current reservation details
+reservation -> ui : Display current reservation details
+ui -> member : Shows current reservation details
+
+member -> ui : Inputs new reservation details\n(New dates, Book etc.)
+ui -> reservation : Sends updated reservation info\n(MemberID, NewDetails)
+
+alt If update is valid
+    reservation -> db : Update reservation details in DB\n(MemberID, NewDetails)
+    db -> reservation : Confirm reservation update
+    reservation -> ui : Display update success message
+    ui -> member : Shows reservation update success
+else If update is invalid
+    reservation -> ui : Display error message\n(Conflicting dates/Unavailable book)
+    ui -> member : Show error (Conflict/Book Unavailable)
+end
+
+@enduml
+```
+
+### Explanation:
+- **Member**: The library member or user who wants to update their book reservation.
+- **UI Interface**: Represents the frontend interface through which the member interacts with the CLMS.
+- **Reservation System**: The part of the system that handles reservations including updating them based on member requests.
+- **Database**: Where all data related to reservations, books, and members are stored and managed.
+
+### Workflow Steps:
+1. **Selects option to update reservation**: The member initiates the process by choosing to update an existing reservation through the system interface.
+2. **Fetch current reservation details**: The Reservation System queries the Database to retrieve the current details of the member's reservation.
+3. **Display current reservation details**: Current reservation details are shown to the member for confirmation or modification.
+4. **Inputs new reservation details**: The member inputs new details for the reservation, such as new dates or a different book.
+5. **Update reservation in DB**: The new reservation details are validated and updated in the Database if there's no conflict or issue.
+6. **Confirmation or Error Handling**: The system either confirms the successful update of the reservation or displays an error if the update cannot be made due to conflicts or unavailability.
+
+Please note, to run or render PlantUML diagrams, you might need to use specific tools or integrations available in your development environment or through online PlantUML editors.

@@ -1,0 +1,27 @@
+@startuml
+participant StaffMember as Staff
+participant BookManagementInterface as Interface
+participant Database as DB
+
+== Deletion of Old Books ==
+
+Staff -> Interface : requestBookDeletion(uniqueID)
+activate Interface
+
+Interface -> DB : checkBookExists(uniqueID)
+activate DB
+
+DB --> Interface : bookExistsConfirmation
+deactivate DB
+
+alt If book exists
+    Interface -> DB : deleteBookByID(uniqueID)
+    activate DB
+    DB --> Interface : deletionSuccess
+    deactivate DB
+    Interface --> Staff : showSuccessMessage
+else If book does not exist
+    Interface --> Staff : showErrorBookNotFound
+end
+
+@enduml

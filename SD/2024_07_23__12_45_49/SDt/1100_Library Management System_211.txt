@@ -1,0 +1,32 @@
+@startuml
+participant Manager
+participant Authentication
+participant "Book Management Interface" as BookInterface
+participant Database
+participant "Financial System" as FinancialSystem
+
+Manager -> Authentication: Provide Credentials
+Authentication -> Manager: Credentials Validated
+
+Manager -> BookInterface: Access Book Management
+BookInterface -> Manager: Book Management Dashboard
+
+Manager -> Book V: Initiate Add Book Process
+BookInterface -> Database: Check for Duplicate
+alt If Book Exists
+    Database -> BookInterface: Notify Duplicate
+    BookInterface -> Manager: Show Duplicate Error
+else If New Book
+    Database -> BookInterface: Confirm Unique Entry
+    Manager -> BookInterface: Enter Book Details \n(Title, Author, ISBN, Purchase Price, etc.)
+    BookInterface -> Database: Save New Book Details
+    
+    Database -> BookInterface: Book Added Successfully
+    BookInterface -> Manager: Display Success Message
+    
+    Manager -> FinancialSystem: Record Purchase Details
+    FinancialSystem -> FinancialSystem: Update Financial Records
+    FinancialSystem -> Manager: Display Transaction Success
+end
+
+@enduml

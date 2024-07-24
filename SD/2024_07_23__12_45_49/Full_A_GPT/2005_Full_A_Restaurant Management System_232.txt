@@ -1,0 +1,48 @@
+Creating a detailed Sequence Diagram for the user story "As a restaurant employee, I want to keep track of customer orders" involves outlining the interactions among different system components involved in handling and tracking customer orders. Here’s how you can represent this process in PlantUML format:
+
+Please note that this example simplifies the process to focus on key interactions. Depending on the complexity of your actual system, you might need to add more elements like authentication, error handling, or other specific business logic.
+
+```plantuml
+@startuml
+!theme plain
+
+participant "Employee" as employee
+participant "Restaurant Management\nSystem" as system
+database "Database" as db
+
+== Track Customer Orders ==
+
+employee -> system : View/Update Order Status
+activate system
+system -> db : Fetch Order Details
+activate db
+db -> system : Return Order Details
+deactivate db
+
+system -> employee : Display Order Details
+deactivate system
+employee -> system : Update Order if Necessary
+activate system
+system -> db : Update Order Records
+activate db
+db -> system : Confirm Update
+deactivate db
+
+system -> employee : Display Update Confirmation
+deactivate system
+
+@enduml
+```
+
+This sequence diagram outlines the basic interaction flow:
+
+1. The restaurant employee initiates a request to view or update an order status through the Restaurant Management System interface.
+2. The system sends a query to fetch the order details from the database.
+3. The database returns the order details to the system.
+4. The system displays the order details to the employee.
+5. If necessary, the employee updates the order (the nature of the update isn't specified but can include changes in order status, adding special instructions, etc.).
+6. The system then updates the order records in the database based on the instructions provided by the employee.
+7. The database confirms the update to the system.
+8. The system displays a confirmation of the update to the employee.
+
+This sequence is quite simplistic and could be elaborated with more specific interactions based on the restaurant's operation needs or to incorporate error handling, security measures (like authentication), and other features like notifications or real-time updates.

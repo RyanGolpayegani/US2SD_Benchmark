@@ -1,0 +1,30 @@
+@startuml
+actor Developer
+participant "FABS Update System" as FABS
+participant "Sample File Repository" as Repository
+participant "Version Control System" as VCS
+database "Update Log" as Log
+
+Developer -> FABS: Check if FABS header updated 
+activate FABS
+FABS --> Developer: Confirm header no longer requires FundingAgencyCode
+deactivate FABS
+
+Developer -> Repository: Access existing FABS sample file
+activate Repository
+Repository --> Developer: Provide FABS sample file
+deactivate Repository
+
+Developer -> Developer: Remove FundingAgencyCode from sample file
+
+Developer -> VCS: Push updated sample file
+activate VCS
+VCS --> Developer: Confirm file updated
+deactivate VCS
+
+Developer -> Log: Log update action
+activate Log
+Log --> Developer: Confirm action logged
+deactivate Log
+
+@enduml

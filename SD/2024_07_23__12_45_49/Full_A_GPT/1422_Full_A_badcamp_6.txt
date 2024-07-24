@@ -1,0 +1,41 @@
+Given the project description provided and your request, here's a detailed PlantUML sequence diagram for the user story: "As a trainee, I want to limit to one registration per day per authenticated user, so that we don't have duplicate spaces." This sequence diagram outlines the interaction among different components of the system when an authenticated user attempts to register for a training session.
+
+```plantuml
+@startuml
+!theme plain
+participant UserInterface as UI
+participant AuthenticationSystem as Auth
+participant RegistrationController as RegCtrl
+participant Database as DB
+
+UI -> Auth: Authenticate user
+Auth -> UI: Authentication successful
+
+UI -> RegCtrl: Request to register for a session
+RegCtrl -> DB: Check existing registrations for the user
+DB -> RegCtrl: Return user's registrations for the day
+
+alt If no existing registration for the day
+    RegCtrl -> DB: Add new registration
+    DB -> RegCtrl: Registration added
+    RegCtrl -> UI: Display success message
+else If already registered for a session on the day
+    RegCtrl -> UI: Display error message (Limit exceeded)
+end
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **User Interface (UI):** Where the authenticated user initiates the registration request for a training session.
+   
+2. **Authentication System (Auth):** This component is responsible for authenticating the user to ensure that the registration request is coming from a valid and authenticated user.
+
+3. **Registration Controller (RegCtrl):** This is the main logic handler that processes the user's registration request. It checks whether the user is already registered for a session on the requested day.
+
+4. **Database (DB):** The database is queried to check for existing registrations for the authenticated user on the specified day. It stores all information related to users and their registrations.
+
+5. **Conditional Logic:** The diagram includes conditional logic where if the user has no existing registration for the day, the system proceeds to add the new registration and display a success message. If the user is already registered for another session on the same day, the system displays an error message indicating the limit is exceeded.
+
+This sequence ensures that duplicate registrations are prevented, thereby aligning with the user story's goal to limit registrations to one per day per authenticated user.

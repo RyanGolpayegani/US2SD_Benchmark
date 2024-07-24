@@ -1,0 +1,48 @@
+Creating a detailed Sequence Diagram for the given user story in PlantUML format involves illustrating how various system components interact with each other to achieve the functionality of uploading a new version of an item while keeping the old versions accessible. Here's a basic PlantUML sequence diagram to represent this process.
+
+```plantuml
+@startuml
+participant "Data Curator" as curator
+participant "Web Interface" as web
+participant "Authentication Service" as auth
+database "Repository System" as repo
+participant "Versioning Controller" as versioning
+participant "Metadata Management" as metadata
+participant "Preservation System" as preservation
+
+curator -> web : Request to upload new version
+web -> auth : Validate curator credentials
+auth -> web : Credentials valid
+
+alt If new item
+    web -> repo : Check item exists
+    repo -> web : Item does not exist
+    web -> curator : Show error message
+else If updating existing item
+    web -> repo : Check item exists
+    repo -> web : Item exists
+    web -> versioning : Create new version
+    versioning -> metadata : Update metadata with new version info
+    metadata -> preservation : Preserve old version
+    preservation -> versioning : Confirmation of old version preserved
+    versioning -> repo : Save new version
+    repo -> web : New version uploaded successfully
+    web -> curator : Show success message
+end
+
+@enduml
+```
+
+### Explanation:
+1. **Data Curator starts the process:** The Data Curator initiates the upload process for a new version of an item through the Web Interface.
+2. **Authentication:** The Web Interface requests the Authentication Service to validate the curator's credentials to ensure that only authorized personnel can upload new versions.
+3. **Check if item exists:** Before uploading a new version, the system checks if the item already exists in the Repository System.
+4. **Version control flow:**
+   - If the item does not exist, an error message is shown to the Curator.
+   - If the item exists, the system proceeds with creating a new version.
+5. **Creating a new version:**
+   - The Versioning Controller handles the creation of a new version. It interacts with Metadata Management to update the item's metadata with information about the new version.
+   - The old version of the item is preserved by the Preservation System. Confirmation that the old version has been securely stored is sent back to the Versioning Controller.
+   - The new version of the item is saved in the Repository System, and a success message is displayed to the Curator.
+
+This sequence diagram is an abstraction and might need adjustments based on the specific technical architecture and requirements of Cornell University's digital repository system.

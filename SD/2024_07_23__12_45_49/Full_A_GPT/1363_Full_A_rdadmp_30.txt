@@ -1,0 +1,73 @@
+Creating a detailed sequence diagram for the described user story in PlantUML format involves illustrating the communication process between different actors (the Rector, DMPTool, Data Managers, Repository Owners, IT Managers) and systems to fulfill the rector's request. We will assume the DMPTool already has integrated functionalities to interact with various stakeholders and their systems.
+
+Here's a conceptual PlantUML sequence diagram for the said user story:
+
+```plantuml
+@startuml
+actor Rector
+participant "DMPTool" as DMP
+participant "Data Manager" as DataManager
+participant "Repository Owner" as RepoOwner
+participant "IT Manager" as ITManager
+database "Storage Database" as StorageDB
+
+Rector -> DMP: Requests data storage forecasts
+activate DMP
+
+DMP -> DataManager: Queries current and future data storage metrics
+activate DataManager
+
+DataManager -> StorageDB: Retrieves data metrics
+activate StorageDB
+StorageDB --> DataManager: Data metrics
+deactivate StorageDB
+
+DataManager --> DMP: Returns data metrics
+deactivate DataManager
+
+DMP -> RepoOwner: Requests repository capacity forecasts
+activate RepoOwner
+
+RepoOwner -> StorageDB: Retrieves capacity forecasts
+activate StorageDB
+StorageDB --> RepoOwner: Capacity details
+deactivate StorageDB
+
+RepoOwner --> DMP: Returns capacity forecasts
+deactivate RepoOwner
+
+DMP -> ITManager: Queries IT infrastructure and capacity plans
+activate ITManager
+
+ITManager -> StorageDB: Fetches IT resource projections
+activate StorageDB
+StorageDB --> ITManager: IT resource data
+deactivate StorageDB
+
+ITManager --> DMP: Returns IT capacity plans
+deactivate ITManager
+
+DMP --> Rector: Provides comprehensive data and storage report
+deactivate DMP
+@enduml
+```
+
+**Explanation:**
+
+1. **Rector Requests Data Storage Forecasts:** The sequence starts with the Rector asking the DMPTool for projections on how much data will be stored to plan long-term resources.
+
+2. **Querying Current and Future Data Storage Metrics:** DMPTool requests information from Data Managers to gather current and future data storage metrics.
+
+3. **Retrieving Data Metrics:** Data Managers access the Storage Database to fetch the required data metrics.
+
+4. **Requesting Repository Capacity Forecasts:** DMPTool also inquires about repository capacity forecasts from Repository Owners.
+
+5. **Fetching Capacity Forecasts:** Repository Owners retrieve this capacity information from the Storage Database.
+
+6. **Querying IT Infrastructure and Capacity Plans:** To ensure that long-term resources are adequately planned, DMPTool asks IT Managers for their input on IT infrastructure and capacity plans.
+
+7. **Fetching IT Resource Projections:** IT Managers access projections concerning IT resources from the Storage Database.
+
+8. **Providing Comprehensive Data and Storage Report:** Finally, DMPTool consolidates all collected information and provides a comprehensive report to the Rector, aiding in the planning of long-term resources.
+
+This sequence diagram serves as a high-level conceptual guide. Specific implementations may introduce further steps or streamline processes depending on system architecture, available APIs, and other integrations within the institution's technical environment.

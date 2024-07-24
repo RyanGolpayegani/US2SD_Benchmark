@@ -1,0 +1,50 @@
+Below is a detailed PlantUML sequence diagram that represents the process a trainer would follow to load an Excel file into the site so that the course participants are added to the Scrum Alliance records. This sequence includes interaction between the trainer, the web interface, a file processing system, and the database. Note that this diagram assumes a simplified process for readability and understanding.
+
+```plantuml
+@startuml
+participant Trainer
+participant "Web Interface" as Web
+participant "File Processing System" as FPS
+participant "Database" as DB
+
+Trainer -> Web : Upload Excel File
+activate Web
+
+Web -> FPS : Send file for processing
+activate FPS
+
+FPS -> FPS : Validate file format
+alt file format is valid
+    FPS -> FPS : Extract data
+    note right: Data includes\nparticipant details
+    FPS -> DB : Insert participant records
+    activate DB
+    DB --> FPS : Acknowledge record addition
+    deactivate DB
+    
+    FPS --> Web : Confirm upload success
+else file format is invalid
+    FPS --> Web : Error: Invalid file format
+end
+deactivate FPS
+
+alt upload success
+    Web --> Trainer : Display success message
+else upload failure
+    Web --> Trainer : Display error message
+end
+
+deactivate Web
+@enduml
+```
+
+### Explanation:
+- **Trainer uploads an Excel file:** The sequence begins with the Trainer uploading an Excel file through the Web Interface. This file contains the details of course participants that need to be added to the Scrum Alliance records.
+- **File processing:** The Web Interface sends the file to the File Processing System (FPS) for processing. The FPS first validates the file format to ensure it's in Excel format (or whatever format is expected). If the format is valid, it proceeds to extract data from the file. This data extraction involves pulling participant details contained within the Excel file.
+- **Database interaction:** Once the data is extracted, the FPS interacts with the Database (DB) to insert the participant records. The DB acknowledges this insertion.
+- **Success or error feedback:** Following the DB's acknowledgment, the FPS informs the Web Interface whether the upload was successful or not. The Web Interface then displays a corresponding success or error message to the Trainer.
+- **Alternative paths:** The diagram includes alternative paths for both the file validation step (valid vs. invalid format) and the final upload outcome (success vs. failure), ensuring clarity on how different scenarios are handled.
+
+This sequence diagram outlines a clear process flow for the described user story, showing the interactions between different system components to achieve the functionality of adding course participants to the Scrum
+
+Alliance records via an Excel file upload.

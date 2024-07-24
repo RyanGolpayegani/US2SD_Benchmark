@@ -1,0 +1,46 @@
+@startuml
+!theme cerulean
+
+participant CampAdministrator as Admin
+participant "Camp Management\n& Communication Platform" as Platform
+database "Rules Database" as DB
+
+== Create Rule ==
+Admin -> Platform : Access Rules Management
+activate Platform
+
+Platform -> DB : Query existing rules
+activate DB
+DB --> Platform : Return existing rules
+deactivate DB
+
+Platform --> Admin : Show existing rules
+Admin -> Platform : Submit new rule details
+Platform -> DB : Save new rule
+activate DB
+DB --> Platform : Confirm rule saved
+deactivate DB
+
+Platform --> Admin : Confirm rule creation
+deactivate Platform
+
+== Modify Rule ==
+Admin -> Platform : Access Rules Management
+activate Platform
+
+Platform -> DB : Query rule to modify
+activate DB
+DB --> Platform : Return rule details
+deactivate DB
+
+Platform --> Admin : Display rule details
+Admin -> Platform : Submit modified rule details
+Platform -> DB : Update rule in database
+activate DB
+DB --> Platform : Confirm rule updated
+deactivate DB
+
+Platform --> Admin : Confirm rule updated
+deactivate Platform
+
+@enduml

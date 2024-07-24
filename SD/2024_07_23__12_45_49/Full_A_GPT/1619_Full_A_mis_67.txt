@@ -1,0 +1,48 @@
+Certainly! Below is a sample PlantUML sequence diagram code focused on the user story: "As a non-Duke researcher, I want to describe my team and mine's objects in the repository after they've been deposited if we've been assigned permission to edit metadata." This scenario assumes interaction with systems and roles within the Enhanced Digital Repository Management System (EDRMS).
+
+```plantuml
+@startuml
+actor Researcher as res
+entity "EDRMS System" as edrms
+database "Repository Database" as repo
+
+res -> edrms : Login()
+activate edrms
+edrms -> edrms : Authenticate()
+edrms --> res : Authentication Success
+
+res -> edrms : Navigate to My Deposited Items
+activate edrms
+edrms -> repo : Fetch Items(res.ID)
+activate repo
+repo --> edrms : Deposited Items
+deactivate repo
+edrms --> res : Display Items
+deactivate edrms
+
+res -> edrms : Select Item to Edit
+activate edrms
+edrms -> edrms : Check Edit Permission(res.ID, Item.ID)
+edrms --> res : Permission Granted
+
+res -> edrms : Edit Metadata(Form Data)
+activate edrms
+edrms -> repo : Update Metadata(Item.ID, New Metadata)
+activate repo
+repo --> repo : Save Changes
+repo --> edrms : Update Success
+deactivate repo
+edrms --> res : Confirmation Message
+deactivate edrms
+
+@enduml
+```
+
+### Explanation:
+
+- **Login Process:** The non-Duke researcher (Researcher) starts the interaction by logging into the EDRMS System, which authenticates the user.
+- **Navigation and Item Fetching:** Once logged in, the Researcher navigates to their deposited items. The EDRMS System fetches these items from the Repository Database.
+- **Permission Check:** When the Researcher selects an item to edit, the EDRMS System checks if the user has the permission to edit the metadata of the selected item.
+- **Metadata Editing:** Upon permission confirmation, the Researcher submits the form data to update the metadata. The EDRMS System then updates this information in the Repository Database, and a confirmation message is sent back to the Researcher.
+
+This diagram is a high-level representation focused on the main interactions within the EDRMS related to editing metadata for deposited items by a researcher with the necessary permissions. Depending on the complexity of the EDRMS architecture and the specific implementation details, additional steps or systems might be involved.

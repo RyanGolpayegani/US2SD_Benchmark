@@ -1,0 +1,23 @@
+@startuml
+participant Manager as M
+participant "Authorization Service" as Auth
+database "Order Database" as DB
+participant "Order Management System" as OMS
+
+M -> Auth : Request to edit order [Order ID]
+Auth -> Auth : Verify manager permissions
+Auth --> M : Permissions Granted
+
+M -> OMS : Edit Order Request [Order ID]
+OMS -> DB : Fetch Order Details [Order ID]
+DB --> OMS : Order Details
+
+OMS --> M : Display Order Details
+M -> M : Modify Order Details
+M -> OMS : Save Updated Order [Updated Details]
+
+OMS -> DB : Update Order [Updated Details]
+DB --> OMS : Confirmation
+
+OMS --> M : Order Updated Successfully
+@enduml

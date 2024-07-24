@@ -1,0 +1,61 @@
+To address your request for a sequence diagram in PlantUML format that describes the user story of a site admin wanting to stop publishing jobs on the site 30 days after being posted, the following is a detailed example:
+
+Please note: This diagram assumes a basic workflow where a job posting's status is automatically checked, and its visibility is updated based on the elapsed time since posting. This assumes there's a scheduled task or a background service that runs daily to update the status of job postings.
+
+```plantuml
+@startuml
+actor "Site Admin" as admin
+participant "Job Management System" as jms
+database "Job Database" as db
+
+== Job Expiration Process ==
+
+activate admin
+admin -> jms : Schedule daily check for job expirations
+deactivate admin
+
+loop Every 24 hours
+    jms -> db : Query jobs posted 30 days ago
+    activate db
+    db --> jms : List of jobs to expire
+    deactivate db
+    jms -> db : Update job status to 'Unpublished'
+    activate db
+    db --> jms : Confirmation
+    deactivate db
+end
+
+== Manual Expiration Check (Optional) ==
+
+activate admin
+admin -> jms : Manually trigger job expiration check
+activate jms
+jms -> db : Query jobs posted 30 days ago
+activate db
+db --> jms : List of jobs to expire
+deactivate db
+jms -> db : Update job status to 'Unpublished'
+activate db
+db --> jms : Confirmation
+deactivate db
+deactivate jms
+@admin -> jms : Receive confirmation
+
+@enduml
+```
+
+### Explanation:
+
+1. **Initialization**: The "Site Admin" schedules or triggers a job expiration check within the "Job Management System". This can be done via a user interface or a command.
+
+2. **Automatic Loop**: The diagram includes a loop to represent the daily task (this loop's timing can be configured as needed). This task checks for jobs that were posted 30 days ago.
+
+3. **Manual Trigger (Optional)**: Site admin has an option to manually trigger the job expiration check. This could be useful for immediately cleansing the job listings without waiting for the scheduled task.
+
+4. **Database Interactions**:
+    - Querying jobs: The "Job Management System" requests from the "Job Database" all jobs that were posted exactly 30 days ago.
+    - Updating job status: Based on the query results, the "Job Management System" sends an update request to change the status of the identified job postings to 'Unpublished'.
+
+5. **Confirmation**: The "Job Database" sends a confirmation back to the "Job Management System" after the update operation is successfully completed.
+
+This sequence diagram assumes a basic flow without error handling or authentication steps for simplicity. Adjustments may be required based on the actual architecture and requirements of the Scrum Alliance Community Platform project.

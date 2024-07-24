@@ -1,0 +1,32 @@
+@startuml
+actor Member as M
+participant "UI: Library Portal" as UI
+participant "Book Reservation Controller" as BRC
+participant "Books Service" as BS
+participant "Database" as DB
+
+== Reserve Multiple Books ==
+
+M -> UI : Selects books & clicks on "Reserve"
+UI -> BRC : initiateReservation([bookIDs])
+loop for each book in bookIDs
+    BRC -> BS : checkAvailability(bookID)
+    BS -> DB : query(bookID)
+    DB --> BS : availabilityStatus
+    alt If book is available
+        BS --> BRC : isAvailable
+        BRC -> BS : reserveBook(bookID, memberID)
+        BS -> DB : updateReservation(bookID, memberID)
+        DB --> BS : reservationConfirmed
+        BS --> BRC : reservationSuccess
+        BRC --> UI : displayReservationSuccess(bookID)
+        M <- UI : Views confirmation message
+    else If book is not available
+        BS --> BRC : isNotAvailable
+        BRC --> UI : displayNotAvailableMessage(bookID)
+        M <- UI : Sees not available message
+    end
+
+end
+
+@enduml

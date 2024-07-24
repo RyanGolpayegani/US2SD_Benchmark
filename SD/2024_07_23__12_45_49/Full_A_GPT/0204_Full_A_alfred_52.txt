@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the user story "As an OlderPerson, I want to receive a message when my home care nurse is on her way" involves depicting the interaction between the system components involved in notifying an older person when their home care nurse is on their way. Here's a PlantUML code snippet designed to represent these interactions:
+
+```plantuml
+@startuml
+participant OlderPerson as OP
+participant ALFREDSystem as ALFRED
+participant NurseSchedulingSystem as NS
+participant NotificationService as NSvc
+
+== Home Care Nurse Dispatch Sequence ==
+
+NS -> ALFRED: Notify(ALFRED, NurseStatusUpdate)
+activate ALFRED
+
+ALFRED -> NSvc: GenerateMessage("Your home care nurse is on the way")
+activate NSvc
+
+NSvc -> ALFRED: MessageCreated(Success)
+deactivate NSvc
+
+ALFRED -> OP: SendMessage(HomeNurseArrivalNotification)
+activate OP
+OP -> ALFRED: AcknowledgeMessage(Received)
+deactivate OP
+
+deactivate ALFRED
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **NurseSchedulingSystem to ALFREDSystem:** The sequence starts with the `NurseSchedulingSystem (NS)` notifying the `ALFREDSystem (ALFRED)` about the home care nurse's status update. This indicates that the nurse has started their journey towards the older person's location.
+
+2. **ALFREDSystem to NotificationService:** Next, `ALFRED` requests the `NotificationService (NSvc)` to generate a message intended for the older person. The message content is "Your home care nurse is on the way."
+
+3. **NotificationService Response:** The `NotificationService` processes the request, creates the message, and then acknowledges the successful creation of the message by sending a success response back to `ALFRED`.
+
+4. **ALFREDSystem to OlderPerson:** Following that, `ALFRED` sends the message to the older person (`OP`), informing them that their home care nurse is on the way.
+
+5. **OlderPerson Acknowledges:** The older person receives the message and sends an acknowledgment back to `ALFRED`, signaling that they have received the notification.
+
+This diagram lays out a simplified view of the sequence of interactions for notifying an older person about their home care nurse's imminent arrival, showing the communication between systems and the older person.

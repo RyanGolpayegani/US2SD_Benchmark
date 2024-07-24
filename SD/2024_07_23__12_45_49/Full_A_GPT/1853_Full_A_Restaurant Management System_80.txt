@@ -1,0 +1,32 @@
+Creating a detailed sequence diagram for the user story "As a customer, I want to update my orders through the screen, so that I can get a quick and correct service" involves illustrating the interactions between the system components involved in updating an order. This sequence will include interactions between the customer, frontend UI, backend server, and the database.
+
+Here is a PlantUML code snippet to visualize this process:
+
+```plantuml
+@startuml
+actor Customer
+participant "Frontend UI" as UI
+participant "Backend Server" as Server
+participant "Database" as DB
+
+Customer -> UI : Select "Update Order"
+UI -> Server : Request order update (orderId, newDetails)
+alt Order exists and can be modified
+    Server -> DB : Query to update order (orderId, newDetails)
+    DB -> Server : Order updated successfully
+    Server -> UI : Display order updated confirmation
+    UI -> Customer : Show success message
+else Order cannot be modified
+    Server -> UI : Display error message (Order cannot be modified)
+    UI -> customer : Show failure message
+end
+
+@enduml
+```
+
+This diagram starts with the Customer initiating an order update through the frontend UI. The UI then sends this update request to the backend server, specifying the order ID and the new details of the order. The backend server checks with the database if the order exists and can be modified. 
+
+- If the order can be modified, the database updates the order with the new details and confirms the update to the server, which in turn informs the UI to display a success message to the customer.
+- If the order cannot be modified (e.g., due to it being in a late stage of preparation), the server sends an error message back to the UI, which then shows a failure message to the customer.
+
+This diagram presents a simplified view of the process and can be expanded to include error handling, authentication steps, and more detailed interactions based on the system's complexity and requirements.

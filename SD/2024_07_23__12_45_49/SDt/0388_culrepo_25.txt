@@ -1,0 +1,44 @@
+@startuml
+!theme plain
+
+participant LibraryStaffMember as Staff
+participant AuthenticationSystem as Auth
+participant CollectionManagementSystem as CMS
+participant Database as DB
+
+== Authentication ==
+Staff -> Auth: Enter credentials
+Auth -> Staff: Authentication successful
+
+== Creating a Collection ==
+Staff -> CMS: Select "Create New Collection"
+activate CMS
+
+CMS -> CMS: Display collection creation form
+
+Staff -> CMS: Enter collection details\n(Specialized fields for rare/archival material)
+CMS -> DB: Save new collection details
+DB --> CMS: Confirmation of creation
+CMS --> Staff: Display success message
+
+== Uploading Content to Collection ==
+Staff -> CMS: Select created collection
+CMS -> CMS: Display collection dashboard
+
+Staff -> CMS: Choose "Upload Item"
+CMS -> CMS: Display upload form
+
+Staff -> CMS: Provide item details\n(Include rarity/archival indicators)
+CMS -> DB: Store item metadata
+DB --> CMS: Confirmation of item addition
+CMS --> Staff: Display success message
+
+== Finalizing Collection ==
+Staff -> CMS: Choose "Finalize Collection"
+CMS -> DB: Update collection status to 'Active'
+DB --> CMS: Confirmation of update
+CMS --> Staff: Display collection is now active and accessible
+
+deactivate CMS
+
+@enduml

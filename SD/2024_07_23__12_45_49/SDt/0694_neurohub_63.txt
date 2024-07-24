@@ -1,0 +1,36 @@
+@startuml
+
+participant User
+participant "Workflow Execution Engine" as Engine
+participant "Logbook Module" as Logbook
+database "Logbook Database" as DB
+
+User -> Engine: Initiate workflow execution
+activate Engine
+
+Engine -> Logbook: Start workflow execution log
+activate Logbook
+
+Logbook -> DB: Record start of execution
+activate DB
+DB --> Logbook: Confirmation
+deactivate DB
+
+Engine -> Engine: Execute workflow steps
+... // Workflow Execution Steps
+
+Engine --> User: Workflow execution result
+deactivate Engine
+
+Engine -> Logbook: End workflow execution log
+activate Logbook
+
+Logbook -> DB: Record end of execution details
+activate DB
+DB --> Logbook: Confirmation
+deactivate DB
+
+Logbook --> Engine: Log update confirmation
+deactivate Logbook
+
+@enduml

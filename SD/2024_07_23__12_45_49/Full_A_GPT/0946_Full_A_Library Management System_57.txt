@@ -1,0 +1,41 @@
+Creating a sequence diagram for the described user story involves detailing the interactions between the librarian, the system interface, and the backend operations. Here's a PlantUML sequence diagram that outlines the user story: "As a librarian, I want to edit the due date of loaned books so that I can change the date if the borrower informs in advance."
+
+This sequence diagram assumes the existence of a web-based library management system interface where the librarian can interact with loan records.
+
+```plantuml
+@startuml
+participant Librarian
+participant "Library Management\nSystem Interface" as System
+participant "Loan Management\nModule" as LoanModule
+participant Database
+
+Librarian -> System: Access loan record
+System -> LoanModule: Retrieve loan record details
+LoanModule -> Database: Query loan record by book & borrower
+Database --> LoanModule: Return loan record details
+LoanModule --> System: Show loan record details
+System --> Librarian: Display loan record details
+
+Librarian -> System: Request to edit due date
+System -> LoanModule: Initiate due date edit process
+LoanModule -> System: Prompt for new due date
+
+Librarian -> System: Enter new due date
+System -> LoanModule: Update due date in system
+LoanModule -> Database: Update loan record with new due date
+Database --> LoanModule: Confirm update
+LoanModule --> System: Confirm due date update to Librarian
+System --> Librarian: Display update confirmation message
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+1. **Librarian Access**: The librarian initiates the process by accessing the loan record in the library management system interface.
+2. **Retrieve Loan Record**: The system then communicates with the loan management module to retrieve details of the loan record, which queries the database for the specific record based on the book and borrower.
+3. **Display Loan Record**: The system displays the loan record details to the librarian.
+4. **Edit Request**: The librarian requests to edit the due date of the loaned book.
+5. **Edit Process**: The system, through the loan management module, begins the edit process, prompting the librarian to enter a new due date.
+6. **Update Database**: The new due date is input by the librarian and transmitted to the database via the loan management module, updating the existing loan record.
+7. **Confirmation**: Successful update of the due date is confirmed to the librarian through the system interface.
+
+This flow assumes direct interactions with a modern web technologies-based interface, utilizing backend modules for specific tasks and a relational database for storing and retrieving information. The diagram outlines a straightforward process for changing the due date of loaned books, emphasizing the simplicity and efficiency of task completion for library staff.

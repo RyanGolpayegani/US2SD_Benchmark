@@ -1,0 +1,46 @@
+Given the specific request for a detailed sequence diagram in PlantUML format for the user story described, I'll create a sequence diagram focusing on the process a collection curator might go through in setting an embargo date for certain collections at the time of deposit. This translates the user interaction and system processes into a visual workflow.
+
+Please be aware that due to text limitations, this representation might not cover all possible elements exhaustively but will provide a structural overview to guide development or further documentation.
+
+```plantuml
+@startuml
+actor Curator as curator
+participant "Deposit Interface" as depositInterface
+participant "Validation Service" as validationService
+participant "EDRMS Database" as database
+participant "Notification Service" as notificationService
+
+curator -> depositInterface : select collection
+curator -> depositInterface : initiate deposit
+depositInterface -> curator : request deposit details
+curator -> depositInterface : provides deposit details\n(including embargo date)
+depositInterface -> validationService : validate details\n(including embargo date)
+alt validation success
+    validationService --> depositInterface : validation passed
+    depositInterface -> database : save deposit details
+    database --> depositInterface : confirm save
+    depositInterface -> notificationService : send confirmation to curator
+    notificationService -> curator : deposit successful
+else validation failure
+    validationService --> depositInterface : validation failed
+    depositInterface -> curator : show validation error
+end
+@enduml
+```
+
+### Explanation
+1. **Curator Interaction**: The Curator starts the process by selecting the specific collection for the deposit on the Deposit Interface.
+
+2. **Initiate Deposit**: The Curator initiates the deposit process, and the Deposit Interface asks for the deposit details, including the option to set an embargo date.
+
+3. **Provide Deposit Details**: The Curator inputs the deposit details into the system, specifying if an embargo date is needed.
+
+4. **Validation Service**: These details, including the embargo date, are sent to the Validation Service to ensure that all provided details meet the repository's requirements and policies.
+
+5. **Outcome Paths**:
+   - **Validation Success**: If the details, including the embargo date, are validated successfully, the deposit details are saved to the EDRMS Database, and a confirmation is sent back to the Deposit Interface. Subsequently, a confirmation notification is sent to the Curator.
+   - **Validation Failure**: If there's a failure in validation (e.g., an incorrect embargo date), the Validation Service sends a failure response to the Deposit Interface, which then prompts the Curator with a validation error.
+
+6. **Confirmation to Curator**: Once the process is successfully completed, the Curator is notified of the successful deposit and the embargo date setting through a Notification Service.
+
+This sequence diagram focuses on the process flow from the perspective of the collection curator wanting to set an embargo date at the point of depositing items into the collection, interacting with various system components to ensure the process is validated and completed successfully.

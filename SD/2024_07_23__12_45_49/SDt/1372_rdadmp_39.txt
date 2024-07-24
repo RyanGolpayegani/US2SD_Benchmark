@@ -1,0 +1,44 @@
+@startuml
+actor Researcher
+participant "DMPTool Interface" as DMP
+database "Metadata Repository" as MetaRepo
+participant "External Metadata Tool" as ExtMeta
+participant "Legal Compliance Module" as LegalModule
+
+Researcher -> DMP: Access DMPTool
+activate DMP
+
+DMP -> DMP: Authenticate Researcher
+DMP -> Researcher: Display Dashboard
+
+Researcher -> DMP: Select Project
+DMP -> Researcher: Request Agreement Details
+Researcher -> DMP: Inputs Agreement Information\n(Including Third-Party Data References)
+
+DMP -> ExtMeta: Fetch External Metadata
+activate ExtMeta
+ExtMeta -> MetaRepo: Query Metadata
+activate MetaRepo
+MetaRepo -> ExtMeta: Return Metadata
+deactivate MetaRepo
+ExtMeta -> DMP: Return Metadata
+deactivate ExtMeta
+
+DMP -> LegalModule: Validate Agreement Compliance
+activate LegalModule
+LegalModule -> LegalModule: Check Legal Requirements\n and Data Usage Policies
+LegalModule -> DMP: Compliance Status
+deactivate LegalModule
+
+alt If Agreement is Compliant
+    DMP -> MetaRepo: Store Agreement Metadata
+    activate MetaRepo
+    MetaRepo -> DMP: Confirmation
+    deactivate MetaRepo
+    DMP -> Researcher: Display Success Message\n(Agreement Stored & Compliant)
+else If Agreement not Compliant
+    DMP -> Researcher: Display Error Message\n(Non-Compliance Issues)
+end
+
+deactivate DMP
+@enduml

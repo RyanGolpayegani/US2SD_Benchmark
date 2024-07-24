@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram for the User Story provided involves outlining the interactions between different system components and actors involved in detecting important features in satellite images for a Zooniverse admin. Below is the PlantUML code to visualize this process.
+
+```plantuml
+@startuml
+!theme plain
+
+actor ZooniverseAdmin as admin
+participant "Web Interface" as web
+participant "API Gateway" as api
+participant "Image Analysis Service" as analysis
+participant "AI/ML Model" as aiModel
+participant "Database" as db
+
+== Detect Features in Satellite Images ==
+admin -> web: Accesses platform
+web -> api: Requests feature detection
+api -> analysis: Sends satellite images
+analysis -> aiModel: Initiates feature analysis
+note right of aiModel: Floods,\nDamages,\nShelters,\nBlocked Roads
+aiModel -> analysis: Returns analysis results
+analysis -> db: Stores analysis results
+db -> analysis: Confirms storage
+analysis -> api: Sends results
+api -> web: Displays feature details
+web -> admin: Shows analysis results
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Zooniverse Admin Interaction**: The Zooniverse admin (or user) initiates the process by accessing the web interface of the Advanced Media Identification & Discovery Platform (AMIDP). This is the entry point for the admin's request to detect important features in satellite images.
+
+2. **Web Interface to API Gateway**: The web interface forwards the admin's request to the platform's API Gateway. This gateway serves as the connector between the frontend user interface and the backend services.
+
+3. **API Gateway to Image Analysis Service**: The API Gateway directs the request to the Image Analysis Service. This service is responsible for managing and initiating the analysis of satellite images based on the set criteria (flooding, damage, temporary shelters, blocked roads, etc.).
+
+4. **Image Analysis Service to AI/ML Model**: The core of the operation lies here where the Image Analysis Service interacts with a sophisticated AI/ML Model. This model is trained to recognize and classify various features within the satellite images, such as areas of flooding, damage, the presence of temporary shelters, and identifying blocked roads.
+
+5. **AI/ML Model Analysis**: Upon receiving the satellite images, the AI/ML Model processes them to detect the features of interest. The model uses advanced algorithms in image recognition and feature detection to analyze the images thoroughly.
+
+6. **Storing Results in Database**: Once the analysis is complete, the results are sent back to the Image Analysis Service, which then proceeds to store them in a Database. This database maintains a record of the analysis, including the identified features within the satellite images.
+
+7. **Displaying the Analysis Results**: After the results are stored, they are sent back through the chain—API Gateway to the Web Interface—to be displayed to the Zooniverse admin. The admin can then view the detailed analysis, including the locations and extents of detected features such as flooding, damage, and other critical points of interest.
+
+By following this process, the AMIDT platform efficiently allows a Zooniverse admin to detect and analyze important features within satellite images, thereby facilitating informed decision-making and action planning based on the analysis results.

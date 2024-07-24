@@ -1,0 +1,56 @@
+To provide a detailed sequence diagram for the described user story "As an Older Person, I want to have ALFRED to detect falls and send an emergency message to a specific contact" using PlantUML format, we will outline the interactions involving the user (Older Person), the ALFRED device, and the emergency contact notification process. The sequence will display how the fall detection and subsequent notification sequence is enacted.
+
+```plantuml
+@startuml
+actor OlderPerson as "Older Person"
+participant "ALFRED's Sensor" as Sensor
+participant "ALFRED's Core" as Core
+participant "ALFRED's Communication Module" as CommModule
+participant "Emergency Contact" as Contact
+
+== Fall Detection Sequence ==
+OlderPerson -> Sensor: Fall
+activate Sensor
+
+Sensor -> Core: Detects fall
+activate Core
+
+Core -> Core: Assess fall severity
+alt severity high
+    Core -> CommModule: Trigger emergency protocol
+    activate CommModule
+
+    CommModule -> Contact: Send emergency notification
+    activate Contact
+    deactivate Contact
+    
+    CommModule -> Core: Confirmation of notification sent
+    deactivate CommModule
+
+    Core -> OlderPerson: Notify: "Emergency contact alerted"
+    deactivate Core
+else severity low or uncertain
+    Core -> OlderPerson: Notify: "Detected a fall, are you okay?"
+    deactivate Core
+    
+    OlderPerson -> Core: Response: "Need help"
+    activate Core
+
+    Core -> CommModule: Trigger emergency protocol (upon user's request)
+    activate CommModule
+
+    CommModule -> Contact: Send emergency notification (user confirmed)
+    activate Contact
+    deactivate Contact
+
+    CommModule -> Core: Confirmation of notification(sent)
+    deactivate CommModule
+
+    Core -> OlderPerson: Notify: "Emergency contact notified per your request"
+    deactivate Core
+end
+
+@enduml
+```
+
+This diagram highlights the process starting from the fall detection by ALFRED's sensor, assessment of the fall severity, and then either automatically sending an emergency notification to a predefined contact in cases of high severity or asking the user for confirmation if the fall's severity is low or uncertain. Upon user confirmation, an emergency notification is sent. This ensures that help is dispatched promptly when needed while also allowing the user to confirm or cancel the alert in less severe situations, reducing false alarms.

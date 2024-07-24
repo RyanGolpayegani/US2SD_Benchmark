@@ -1,0 +1,37 @@
+Creating a detailed sequence diagram for the User Story "As a collection curator, I want to have a tool to perform author authority control" involves outlining the interactions between different system components and actors to achieve the functionality related to author authority control. Here's how this can be represented in PlantUML format:
+
+```plantuml
+@startuml
+
+actor Curator as curator
+participant "Author Authority \n Control Tool" as tool
+database "EDRMS Database" as db
+participant "External Authority \n Database" as extDb
+
+== Authority Control Process ==
+curator -> tool : Request author verification
+tool -> db : Query existing author records
+alt Author record exists
+    db -> tool : Return author details
+    tool -> curator : Display author details
+else No record found
+    tool -> extDb : Query external author authority
+    extDb -> tool : Return external author details
+    alt Author details found
+        db -> tool : Create/Update author record
+        tool -> curator : Display new/updated author details
+    else No details found
+        tool -> curator : Prompt to create new author record
+    end
+end
+
+@enduml
+```
+
+This sequence diagram starts with the collection curator initiating a request for author verification through an "Author Authority Control Tool," a component of the Enhanced Digital Repository Management System (EDRMS). The tool first queries the EDRMS Database for existing author records. If an author record exists, the details are returned to the curator. If no record is found, the tool queries an external authority database.
+
+If the external database returns author details, the EDRMS Database either creates or updates an author record with these details, which are then displayed to the curator. If no details are found in the external database, the curator is prompted to create a new author record.
+
+This sequence aims to illustrate how author authority control can be automated and streamlined within the EDRMS, ensuring accuracy and efficiency in managing author-related metadata.
+
+Please note: To run this PlantUML code and generate the sequence diagram, you'll need access to a PlantUML environment or an online tool that supports PlantUML diagrams.

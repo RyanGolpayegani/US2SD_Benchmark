@@ -1,0 +1,54 @@
+To create a detailed sequence diagram in PlantUML format for the described user story, follow the steps outlined in the diagram below. This sequence diagram illustrates the process a staff member would follow to perform a completeness review, ensuring that an application is complete and eligible for further technical review.
+
+```plantuml
+@startuml
+actor StaffMember as Staff
+entity "Customer Portal" as Portal
+database "Application Database" as Database
+
+== Perform Completeness Review ==
+
+Staff -> Portal : Log in to staff account
+Portal -> Database : Validate staff credentials
+Database -> Portal : Access granted
+
+Staff -> Portal : Select pending applications
+Portal -> Database : Fetch pending applications
+Database -> Portal : Display list of pending applications
+
+Staff -> Portal : Choose application for review
+Portal -> Database : Fetch application details
+Database -> Portal : Display application details
+
+Staff -> Portal : Review application details
+Staff -> Portal : Check for required documents
+Staff -> Portal : Validate application information
+
+alt All Required Information and Documents Submitted
+    Staff -> Portal : Mark application as "Complete"
+    Portal -> Database : Update application status to "Complete"
+    Database -> Portal : Confirmation of status update
+    Portal -> Staff : Notify completion of completeness review
+else Missing or Incomplete Information/Document
+    Staff -> Portal : Mark application as "Incomplete"
+    Portal -> Database : Update application status to "Incomplete"
+    Database -> Portal : Confirmation of status update
+    Portal -> Portal : Generate request for additional information
+    Portal -> Staff : Notify staff to communicate with applicant
+    Staff -> Portal : Send communication to applicant
+    Portal -> Database : Log communication and request for additional information
+    Database -> Portal : Confirmation of communication logged
+    Portal -> Staff : Confirmation of request sent to applicant
+end
+
+@enduml
+```
+
+This diagram follows these steps:
+1. **Staff Login and Application Selection**: The staff member logs into their account on the Customer Portal. They select from pending applications, for which the details are then fetched and displayed.
+2. **Review Process**: The staff member reviews the application's details, including checking for the required documents and validating the information provided.
+3. **Decision Making**:
+   - If all necessary information and documents are submitted, the application is marked as "Complete," updating the application's status in the database.
+   - If there is missing or incomplete information, the application is marked as "Incomplete," and the database is updated accordingly. A request for additional information is generated, and the staff member communicates with the applicant for submission of the required details.
+
+This sequence diagram adequately covers the steps a staff member would take to perform a completeness review on an application using the County Services & Property Information Portal.

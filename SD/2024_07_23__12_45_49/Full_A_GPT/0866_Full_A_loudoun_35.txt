@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram for the user story described involves illustrating the interaction between different entities such as the Plan Review Staff member, the County Services & Property Information Portal system, potential databases, and the Plan Reviewer entity. This interaction is showcased within the PlantUML language, presenting a step-by-step process from the moment the Plan Review Staff member decides to assign plans for review until the assignment is acknowledged by the Plan Reviewer. 
+
+Below is the PlantUML code that represents these interactions tailored to your user story:
+
+```plantuml
+@startuml
+actor "Plan Review Staff" as staff
+participant "Portal Interface" as portal
+database "Application Database" as db
+participant "Assignment Module" as assignment
+actor "Plan Reviewer" as reviewer
+
+== Assign Plans for Review ==
+staff -> portal : Select Application to Assign
+portal -> db : Query Application Details
+db --> portal : Return Application Details
+portal --> staff : Display Application Details
+
+staff -> portal : Initiate Assignment Process
+portal -> assignment : Invoke Assignment Module
+note over assignment : Determine Eligible Reviewers
+
+assignment -> db : Retrieve Reviewers List
+db --> assignment : Return Reviewers List
+assignment --> portal : Display Reviewers for Selection
+
+staff -> portal : Select Plan Reviewer
+portal -> assignment : Assign Reviewer to Application
+assignment -> db : Update Application with Reviewer Info
+db --> assignment : Confirm Update
+
+assignment --> portal : Confirm Assignment
+portal --> staff : Show Assignment Success Message
+staff -> portal : Notify Plan Reviewer
+portal -> reviewer : Send Assignment Notification
+note over reviewer : Reviewer Receives Assignment
+
+@enduml
+```
+This sequence diagram begins with the Plan Review Staff selecting an application to assign and ends with the Plan Reviewer being notified of the assignment. The steps detail interactions between the staff member, portal interface, database, assignment module, and finally, the Plan Reviewer. It is made with the assumption that there's a centralized system (the portal) that facilitates these interactions, a database that stores application and reviewer information, and an assignment module/logic within the system dedicated to managing the assignment of reviewers to specific applications.
+
+Remember, this is a simplified representation focusing on the main steps outlined in your user story. Depending on the system's complexity and specific implementation details, additional steps or entities (like authentication processes, more detailed notification systems, or error handling mechanisms) might be needed for a comprehensive design.

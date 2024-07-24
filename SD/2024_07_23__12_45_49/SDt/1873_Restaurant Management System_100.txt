@@ -1,0 +1,25 @@
+@startuml
+actor Manager
+participant "Management Interface" as MI
+participant "Server/Backend" as Backend
+participant "Database" as DB
+
+Manager -> MI : Initiate price change
+activate MI
+
+MI -> Backend : Request price update (itemID, newPrice)
+activate Backend
+
+Backend -> DB : Update item price
+activate DB
+
+DB -> Backend : Confirm price update
+deactivate DB
+
+Backend -> MI : Price update successful
+deactivated Backend
+
+MI -> Manager : Display success message
+deactivate MI
+
+@enduml

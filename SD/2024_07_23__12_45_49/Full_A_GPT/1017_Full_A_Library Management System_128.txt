@@ -1,0 +1,56 @@
+Creating a detailed sequence diagram for the user story: "As a library manager, I want to know which books are borrowed most so that I can bring further copies of the books," involves outlining interactions between the library manager, the Comprehensive Library Management System (CLMS), and the database, among others. 
+
+Here's how you can represent this scenario using PlantUML syntax:
+
+```plantuml
+@startuml
+participant LibraryManager as LM
+participant "CLMS Interface" as UI
+participant "Backend System" as Backend
+database "CLMS Database" as DB
+
+LM -> UI : Login into CLMS
+UI -> Backend : Validate login
+activate Backend
+Backend -> DB : Fetch manager credentials
+activate DB
+DB --> Backend : Credentials data
+deactivate DB
+Backend --> UI : Authentication successful
+deactivate Backend
+UI --> LM : Display Dashboard
+LM -> UI : Selects "Most Borrowed Books" Report
+UI -> Backend : Request most borrowed books data
+activate Backend
+Backend -> DB : Query borrowed books stats
+activate DB
+DB --> Backend : Return stats
+deactivate DB
+Backend --> UI : Display most borrowed books
+deactivate Backend
+UI --> LM : Shows books and borrowing counts
+LM -> UI : Requests further copies for procurement
+UI -> Backend : Log procurement request
+activate Backend
+Backend -> DB : Update procurement log
+activate DB
+DB --> Backend : Confirmation
+deactivate DB
+Backend --> UI : Confirm update to LM
+deactivate Backend
+UI --> LM : Display procurement confirmation
+@enduml
+```
+
+This sequence diagram starts with the library manager logging into the CLMS, viewing the "Most Borrowed Books" report, and concluding with the manager requesting further copies of books based on the borrowing statistics provided. The main actors involved include the Library Manager, the CLMS user interface (UI), the backend system, and the database that stores all relevant data.
+
+In the scenario, the steps are:
+- The Library Manager logs into the CLMS.
+- The System authenticates the manager and shows the dashboard.
+- The Library Manager requests to view the "Most Borrowed Books" report.
+- The Backend System queries the database for statistics on borrowed books.
+- The System displays this information to the Library Manager.
+- The Library Manager decides to procure further copies of the most borrowed books and makes a request.
+- The Backend System logs this procurement request and updates the manager with a confirmation.
+
+Remember, to render this diagram, you need to have PlantUML installed or use an online PlantUML editor.

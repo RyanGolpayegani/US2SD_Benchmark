@@ -1,0 +1,35 @@
+Given the user story's requirements, below is a detailed sequence diagram in PlantUML format. This diagram outlines the process when a user wants to scope their searches by name to a specific role such as illustrator, photographer, etc., within the context of the DAMS Integration and Management System (DIMS). The diagram assumes the system has a frontend UI through which the user interacts, and a backend system that processes queries and interacts with the digital assets database.
+
+```plantuml
+@startuml
+actor User as user
+participant "UI" as ui
+participant "SearchController" as controller
+database "DAMS Database" as db
+
+user -> ui : Enter search terms and role (Illustrator, Photographer, etc.)
+ui -> controller : Send search request (name, role)
+activate controller
+
+controller -> db : Query digital assets by name and role
+activate db
+db -> db : Filter assets by specific role
+db --> controller : Return search results
+deactivate db
+
+controller -> ui : Display search results
+ui --> user : Show search results (assets by illustrator, photographer, etc.)
+deactivate controller
+
+@enduml
+```
+
+This sequence diagram follows these steps:
+1. The user inputs their search terms along with a specific role (e.g., Illustrator, Photographer) into the UI.
+2. The UI sends this search request to the SearchController.
+3. The SearchController processes this request and queries the DAMS Database for digital assets that match the name and specified role.
+4. The DAMS Database filters assets based on the provided criteria and returns the relevant search results to the SearchController.
+5. The SearchController sends these results back to the UI.
+6. The UI then displays these search results to the user.
+
+This sequence ensures that the user's search is scoped specifically to their interest, considering the role associated with digital assets, thereby enhancing the search functionality within the DAMS Integration and Management System (DIMS).

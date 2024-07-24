@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+
+actor Visitor as visitor
+participant "Signup Page" as signupPage
+participant "GitHub/Google" as oauthProvider
+participant "OAuth Service" as oauthService
+participant "Platform Backend" as backend
+database "User Database" as userDatabase
+
+== Signup Process ==
+visitor -> signup=>signupPage : Choose to Sign Up
+
+signupPage -> oauthProvider : Select GitHub or Google
+oauthProvider -> visitor : Request authentication
+
+visitor -> oauthProvider : Authenticate
+oauthProvider -> oauthService : Confirm identity
+
+oauthService -> backend : Provide token
+backend -> backend : Validate token
+
+alt Successful Validation
+    backend -> userDatabase : Create new user account
+    userDatabase -> backend : Return confirmation
+    backend -> visitor : Display success & redirect to dashboard/profile setup
+else Validation Failure
+    backend -> visitor : Display error & suggest retry
+end
+
+@enduml

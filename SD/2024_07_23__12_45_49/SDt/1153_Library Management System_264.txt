@@ -1,0 +1,34 @@
+@startuml
+!theme cerulean
+
+participant Member
+participant "Search Interface" as Search
+participant "Reservation System" as Reservation
+database "CLMS Database" as Database
+
+Member -> Search : Enter search criteria\n(title, author, category)
+activate Search
+Search -> Database : Query book information\nand availability status
+activate Database
+Database --> Search : Return book results\nand availability status
+deactivate Database
+
+Search --> Member : Display book results\nand availability status
+deactivate Search
+Member -> Reservation : Requests to reserve a book
+activate Reservation
+Reservation -> Database : Check availability\nand reservation status
+activate Database
+Database --> Reservation : Provide current\nreservation status
+deactivate Database
+
+alt If book is available
+    Reservation --> Member : Confirm reservation\nProvide pickup details
+else If book is reserved/waitlisted
+    Reservation --> Member : Inform\nWaitlist position
+else
+    Reservation --> Member : Book unavailable
+end
+
+deactivate Reservation
+@enduml

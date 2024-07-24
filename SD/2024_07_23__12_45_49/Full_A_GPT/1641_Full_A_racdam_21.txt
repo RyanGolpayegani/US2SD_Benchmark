@@ -1,0 +1,51 @@
+Given the user story and project description, below is a high-level PlantUML code to create a sequence diagram that outlines the process an archivist follows to distinguish between digital objects digitized to preservation standards and those created for access purposes only. This involves the archivist interacting with a Digital Archive Management System to categorize and apply appropriate preservation actions.
+
+Please note, this PlantUML code assumes a basic flow and utilizes a simplified approach to focus on the main actions relevant to the user story. Adjustments may be necessary to match specific implementation details or to add complexity.
+
+```plantuml
+@startuml
+actor Archivist as archivist
+participant "Digital Archive\nManagement System" as DAMS
+participant "Database" as db
+
+== Identify Digitization Standards ==
+archivist -> DAMS : Upload digital object
+activate DAMS
+
+DAMS -> DAMS : Evaluate digitization quality
+note right of DAMS : Algorithms assess if digitization \nmeets preservation standards
+
+DAMS -> db : Retrieve digitization standards
+activate db
+db --> DAMS : Digitization standards data
+deactivate db
+
+DAMS --> archivist : Display digitization standards met
+deactivate DAMS
+
+== Categorize Digital Object ==
+archivist -> DAMS : Categorize digital object
+activate DAMS
+
+alt If Preservation Standards Met
+    DAMS -> db : Mark as "Preservation"
+    activate db
+    db --> DAMS : Confirmation
+    deactivate db
+    DAMS --> archivist : Digital object marked for preservation
+else If Only for Access
+    DAMS -> db : Mark as "Access Only"
+    activate db
+    db --> DAMS : Confirmation
+    deactivate db
+    DAMS --> archivist : Digital object marked for access only
+end
+
+deactivate DAMS
+
+@enduml
+```
+
+This sequence diagram begins with the archivist uploading the digital object to the Digital Archive Management System (DAMS). The DAMS then evaluates the digitization quality to determine if the digital object meets the preservation standards using predefined criteria (this could involve algorithms that assess resolution, file format, etc.). After evaluating, the DAMS interacts with the database to mark the digital object either for "Preservation" if it meets the required standards or "Access Only" if it does not. This decision is then communicated back to the archivist.
+
+Keep in mind that this outline is simplified. Real-world applications might involve additional steps, such as error handling, more complex decision trees, and further interactions with other systems or databases for comprehensive metadata management and user access rights settings.

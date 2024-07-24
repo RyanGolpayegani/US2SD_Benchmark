@@ -1,0 +1,22 @@
+@startuml
+actor CST as "Certified Scrum Trainer"
+participant WebInterface as "Community Platform Web Interface"
+participant SubscriptionManagement as "Subscription Management System"
+participant PaymentGateway
+
+CST -> WebInterface: Navigate to 'Renew Membership' page
+WebInterface -> SubscriptionManagement: Retrieve CST due fees
+SubscriptionManagement -> WebInterface: Display due fees to CST
+WebInterface -> CST: Display renewal fee and payment options
+alt if payment details are saved
+  CST -> WebInterface: Choose to pay with saved payment method
+else if new payment method
+  CST -> WebInterface: Enter payment details
+end
+WebInterface -> PaymentGateway: Process payment request
+PaymentGateway --> WebInterface: Payment confirmation
+WebInterface -> SubscriptionManagement: Update CST status to 'active'
+SubscriptionNanagement -> WebInterface: Confirm status update
+WebInterface -> CST: Display renewal success message
+
+@enduml

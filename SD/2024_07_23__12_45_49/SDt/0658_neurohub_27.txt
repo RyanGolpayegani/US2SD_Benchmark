@@ -1,0 +1,39 @@
+@startuml
+participant User as u
+participant "Web Interface" as web
+participant "API Server" as api
+participant "Link Management" as link
+participant "Metadata Service" as metadata
+participant "Database" as db
+
+u -> web : Clicks on 'Link Files'
+activate web
+
+web -> api : Request to link files with predicate
+activate api
+
+api -> link : Validates link request
+activate link
+
+link -> metadata : Fetch related metadata
+activate metadata
+
+metadata -> db : Query existing links and metadata
+activate db
+db --> metadata : Return results
+deactivate db
+
+metadata --> link : Metadata validated
+deactivate metadata
+
+link -> link : Generate predicated link
+link --> api : Link creation success
+deactivate link
+
+api --> web : Display success message
+deactivate api
+
+web --> u : Show link creation confirmation
+deactivate web
+
+@enduml

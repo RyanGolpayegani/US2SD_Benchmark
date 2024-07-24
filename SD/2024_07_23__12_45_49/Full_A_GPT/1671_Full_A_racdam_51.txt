@@ -1,0 +1,69 @@
+To create a detailed Sequence Diagram for the user story you've provided, given the context of the Digital Archiveiqué Management Enhancement Project, I'll outline the process step-by-step. The user story involves an archivist providing access to digital copies of unprocessed material for donors. I'll assume there's an existing digital archive system into which these features need to be integrated.
+
+**Sequence Diagram in PlantUML Format:**
+
+```plantuml
+@startuml
+participant "Archivist" as Archivist
+participant "DigitalArchiveSystem" as System
+participant "AuthenticationService" as Auth
+participant "Database" as DB
+participant "DonorPortal" as Portal
+participant "EmailService" as Email
+
+== Provide Access to Unprocessed Material ==
+Archivist -> System : Login()
+activate Archivist
+activate System
+System -> Auth : ValidateCredentials()
+activate Auth
+Auth --> System : CredentialsValid()
+deactivate Auth
+System --> Archivist : LoginSuccess()
+deactivate System
+
+Archivist -> System : SelectUnprocessedMaterial(materialID)
+activate System
+System -> DB : QueryMaterialDetails(materialID)
+activate DB
+DB --> System : MaterialDetails()
+deactivate DB
+
+Archivist -> System : SetAccessPermissions(donorID)
+System -> DB : UpdateAccessPermissions(materialID, donorID)
+DB --> System : PermissionsUpdated()
+deactivate DB
+
+System -> Portal : UpdateDonorAccess(materialID, donorID)
+activate Portal
+Portal --> System : AccessUpdated()
+
+System --> Archivist : AccessProvided()
+deactivate System
+
+Archivist -> System : NotifyDonorByEmail(donorID, materialID)
+System -> Email : SendAccessNotification(donorEmail, materialLink)
+activate Email
+Email --> System : EmailSent()
+System --> Archivist : NotificationSent()
+deactivate Email
+deactivate Archivist
+
+@enduml
+```
+
+**Explanation:**
+
+1. **Login:** The Archivist logs into the Digital Archive System, which validates their credentials through an AuthenticationService.
+
+2. **Select Unprocessed Material:** The Archivist selects the unprocessed material that needs to be made accessible to a donor.
+
+3. **Set Access Permissions:** The Archivist updates the access permissions for the material, targeting the specific donor. This involves the system updating the database with the new permissions.
+
+4. **Update Donor Access:** The system then communicates with the Donor Portal, updating it to reflect the new permissions so the donor can access the specified material.
+
+5. **Notify Donor:** Finally, the Archivist instructs the system to notify the donor via email about the access. The system sends an email through the EmailService, including a link to the material if appropriate.
+
+This sequence ensures that each step in providing access to unprocessed materials for donors is captured, from login to notification, following the capabilities outlined in the Digital Archive Management Enhancement Project description.
+
+

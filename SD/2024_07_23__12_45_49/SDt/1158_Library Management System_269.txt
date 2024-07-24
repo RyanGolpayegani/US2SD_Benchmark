@@ -1,0 +1,23 @@
+@startuml
+actor Member
+participant "Search Interface" as Search
+database "CLMS Database" as DB
+participant "Reservation System" as Reservation
+participant "Notification Service" as Notify
+
+== Reservation Process ==
+Member -> Search: Enter search criteria (title, author, etc.)
+Search -> DB: Query available books
+DB --> Search: Return search results
+Member -> Search: Select book to reserve
+Search -> Reservation: Check book availability
+Reservation -> DB: Query book status
+DB --> Reservation: Book not available (but can be reserved)
+Member -> Reservation: Request to reserve book
+Reservation -> DB: Create reservation record
+DB --> Reservation: Reservation confirmed
+Reservation -> Member: Show reservation confirmation
+Reservation -> Notify: Schedule notification for availability
+Notify -> DB: Store notification request
+DB --> Notify: Notification scheduled
+@enduml

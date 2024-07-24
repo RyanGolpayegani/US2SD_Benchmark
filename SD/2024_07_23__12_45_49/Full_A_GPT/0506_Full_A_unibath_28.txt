@@ -1,0 +1,29 @@
+Creating a detailed sequence diagram for the user story **"As a data reuser, I want to get a persistent URL for a dataset, so that I can get back to the data in future."** involves illustrating the interaction between the data reuser and the Enhanced Research Data Management Platform (ERDMP), including systems and processes like searching for the dataset, viewing dataset details, and obtaining a persistent URL (DOI). Below is how this can be represented in PlantUML format:
+
+```plantuml
+@startuml
+actor DataReuser as "Data Reuser"
+participant WebInterface as "Web Interface"
+participant SearchModule as "Search Module"
+participant DatasetManagement as "Dataset Management"
+participant DOIService as "DOI Service"
+
+DataReuser -> WebInterface: Search for dataset
+WebInterface -> SearchModule: Initiate search query
+SearchModule -> DatasetManagement: Retrieve dataset list
+SearchModule <-- DatasetManagement: Dataset list
+WebInterface <-- SearchAddon: Display datasets
+DataReuser -> WebInterface: Select dataset
+
+WebInterface -> DatasetManagement: Request dataset details
+DatasetManagement -> DOIService: Request DOI for Dataset
+DatasetManagement <-- DOIService: DOI
+WebInterface <-- DatasetManagement: Dataset details with DOI
+
+DataReuser <- WebInterface: Show DOI and dataset details
+@enduml
+```
+
+This PlantUML sequence diagram starts with the Data Reuser searching for a dataset through the web interface. The query goes through a Search Module that retrieves a list of datasets from the Dataset Management system. Once the data reuser selects a dataset, the Dataset Management system is queried for more details on the chosen dataset, including requesting its DOI (Digital Object Identifier) from the DOI Service (presumably this step could involve checking if a DOI has already been assigned or if it needs to be issued). The DOI along with the dataset details are then presented to the data reuser.
+
+This diagram is a simplified version of the interaction focusing on the critical steps to fulfill the user story of acquiring a persistent URL (DOI) for future reference to the dataset. Depending on the platform's architecture, there might be additional layers or steps involved, such as authentication and authorization checks, logging, or interactions with external systems not detailed here.

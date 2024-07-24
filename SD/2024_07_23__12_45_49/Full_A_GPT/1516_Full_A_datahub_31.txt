@@ -1,0 +1,51 @@
+To illustrate the user story "As a Consumer, I want to download the data package in one file, so that I don't have to download the descriptor and each resource by hand" in a sequence diagram, we can depict a sequence of interactions between the consumer, the system (Data Registry and Publishing Platform), and potentially other subsystems that facilitate the download process.
+
+Below is a sequence diagram in PlantUML format capturing these interactions:
+
+```plantuml
+@startuml
+participant Consumer
+participant "UI Interface" as UI
+participant "API Gateway" as API
+participant "Data Storage" as Storage
+participant "Data Processing Service" as Processing
+
+Consumer -> UI: Requests download page for a specific data package
+UI -> API: Requests data package details
+API -> Storage: Retrieves data package metadata
+Storage -> API: Returns data package metadata
+API -> UI: Displays download options
+UI -> Consumer: Shows download options including single file download
+Consumer -> UI: Selects single file download option
+UI -> API: Requests single file data package
+API -> Processing: Invokes data package compilation
+Processing -> Storage: Fetches descriptor and resources
+Storage -> Processing: Returns descriptor and resources
+Processing -> Storage: Compiles into single file
+Storage -> Processing: Stores single file and returns download link
+Processing -> API: Returns download link for single file
+API -> UI: Provides download link
+UI -> Consumer: Presents download link
+Consumer -> UI: Initiates download
+UI -> Storage: Requests single file via download link
+Storage -> UI: Streams single file
+UI -> Consumer: Downloads single file
+
+@enduml
+```
+
+This PlantUML sequence diagram illustrates the following steps:
+1. The consumer requests the download page for a specific data package through the UI interface.
+2. The UI then queries the API for the details of the data package.
+3. The API retrieves the package metadata from the Data Storage.
+4. The API returns package details to the UI, which shows the consumer download options, including downloading the package as a single file.
+5. The consumer selects the single file download option.
+6. The UI requests the API to compile the data package into a single file.
+7. The API instructs the Data Processing Service to compile the package, which fetches the descriptor and resources from Data Storage.
+8. Once the resources are fetched, the Data Processing Service compiles them into a single file and saves it in Storage, obtaining a download link.
+9. The download link is passed back through the API to the UI.
+10. The UI presents the download link to the consumer, who initiates the download.
+11. The UI requests the single file through the download link from Storage, which then streams the file.
+12. The consumer successfully downloads the data package as a single file, avoiding the need to manually download the descriptor and each resource.
+
+This sequence establishes a simplified interaction flow and may be adjusted based on the platform's specific architecture and requirements.

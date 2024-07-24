@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+participant Manager as M
+participant WebInterface as W
+participant BackendSystem as B
+participant Database as DB
+
+M -> W: Request to delete member
+activate W
+W -> B: Validate request
+activate B
+B -> B: Check manager permissions
+B -> DB: Request member data
+activate DB
+DB --> B: Member data
+deactivate DB
+B -> DB: Delete member request
+activate DB
+DB --> B: Confirmation of deletion
+deactivate DB
+B --> W: Display deletion success message
+deactivate B
+W --> M: Display confirmation message
+deactivate W
+
+@enduml

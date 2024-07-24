@@ -1,0 +1,37 @@
+Creating a detailed sequence diagram for the user story mentioned can be a bit complex, but I'll provide an outline of how this could be represented in PlantUML format. Remember, the actual implementation might require adjustments based on the full system architecture and specific requirements.
+
+This diagram assumes there's a functionality where the manager can request real-time data on tables being served, which interacts with the restaurant's management system to fetch the necessary information.
+
+```plantuml
+@startuml
+actor Manager
+participant "Management\nInterface" as Interface
+participant "Operational\nSystem" as System
+participant "Database" as DB
+
+Manager -> Interface : requestCurrentTableStatus()
+activate Interface
+Interface -> System : getCurrentTableStatus()
+activate System
+System -> DB : queryServedTables()
+activate DB
+DB --> System : returnTableData()
+deactivate DB
+System --> Interface : tableStatusData()
+deactivate System
+Interface --> Manager : showTableStatus(tableStatusData)
+deactivate Interface
+
+@enduml
+```
+
+Explanation of the sequence:
+
+1. **Manager**: Initiates the process by requesting the current status of tables being served.
+2. **Management Interface**: This could be a web interface or an application through which the manager interacts with the system. It receives the request and forwards it to the operational system for processing.
+3. **Operational System**: The core logic that handles business operations of the restaurant. Upon receiving the request, it queries the database for the current status of tables being served.
+4. **Database**: Stores all data relevant to the restaurant's operations, including table status, reservations, and more. It processes the query from the operational system and returns the data.
+5. **Operational System**: Receives the table status data from the database.
+6. **Management Interface**: Formats and displays the table status data to the manager.
+
+In practice, the steps might include more detailed interactions, especially if the system handles complex querying, error handling, or real-time data updates. Also, depending on system architecture, there may be API layers or service microservices involved in the process.

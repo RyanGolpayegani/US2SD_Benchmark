@@ -1,0 +1,43 @@
+@startuml
+participant Member_UI as Member
+participant CLMS_Backend as Backend
+participant Database as DB
+participant NotificationService as Notify
+participant EmailService as Email
+participant SMSService as SMS
+
+Member -> Backend: CheckDueDates()
+activate Backend
+
+Backend -> DB: QueryDueDate(MemberID)
+activate DB
+DB --> Backend: DueDateDetails
+deactivate DB
+
+Backend -> Notify: PrepareNotifications(DueDateDetails)
+activate Notify
+Notify -> Email: GenerateEmailNotification(MemberEmail, DueDateDetails)
+activate Email
+Email --> Notify: EmailQueued
+deactivate Email
+
+Notify -> SMS: GenerateSMSNotification(MemberPhone, DueDateDetails)
+activate SMS
+SMS --> Notify: SMSQueued
+deactivate SMS
+
+Notify --> Backend: NotificationsPrepared
+deactivate Notify
+
+Backend -> Email: SendEmailNotification()
+activate Email
+Email --> Member_UI: DisplayEmailNotification()
+deactivate Email
+
+Backend -> SMS: SendSMSNotification()
+activate SMS
+SMS --> Member_UI: DisplaySMSNotification()
+deactivate SMS
+
+deactivate Backend
+@enduml

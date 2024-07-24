@@ -1,0 +1,21 @@
+@startuml
+actor ZooniverseAdmin as admin
+participant "AMIDP Interface" as interface
+participant "Content Management System" as CMS
+participant "Audio Analysis Service" as analysis
+database "Media Database" as db
+
+admin -> interface: Upload audio file
+interface -> CMS: Verify admin and file format
+CMS -> analysis: Send audio file for processing
+activate analysis
+
+analysis -> db: Request previous audio analysis data
+db --> analysis: Return analysis data (if any)
+
+analysis -> analysis: Analyze audio to identify whale sounds
+analysis --> CMS: Return number of whale sounds identified
+CMS --> interface: Display analysis results
+interface --> admin: Show number of whales identified in audio
+
+@enduml

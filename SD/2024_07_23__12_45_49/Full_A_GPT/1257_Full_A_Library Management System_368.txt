@@ -1,0 +1,39 @@
+Given the specific requirement, I'll provide a basic idea of how you can create a PlantUML sequence diagram for the user story: "As a student, I want to find books by genre." This diagram will illustrate the interactions between components such as the User Interface (UI), Business Logic Layer (BLL), Database Access Layer (DAL), and the Database itself when a user searches for books by their genre.
+
+```plantuml
+@startuml
+participant "UI: Web Interface" as UI
+participant "BLL: Search Manager" as BLL
+participant "DAL: Data Access" as DAL
+participant "Database" as DB
+
+UI -> BLL : searchBooksByGenre(genre)
+activate BLL
+
+BLL -> DAL : getBooksByGenre(genre)
+activate DAL
+
+DAL -> DB : SELECT * FROM Books WHERE genre=:genre
+activate DB
+DB --> DAL : booksData
+deactivate DB
+
+DAL --> BLL : return booksData
+deactivate DAL
+
+BLL --> UI : displayBooks(booksData)
+deactivate BLL
+
+@enduml
+```
+
+This sequence diagram starts with a student using the UI of the library management system to search for books by a specific genre. Upon receiving this request:
+
+1. The UI forwards the search request, including the genre, to the Business Logic Layer (BLL).
+2. The BLL then processes this request and calls a method in the Database Access Layer (DAL) to retrieve books that match the specified genre.
+3. The DAL constructs and executes a SQL query to fetch the relevant books from the database.
+4. Once the DAL retrieves the data, it returns this list of books to the BLL.
+5. The BLL finally returns the search results back to the UI.
+6. The UI then displays the list of books that belong to the specified genre to the student.
+
+Remember, this is a simplified diagram. The actual implementation might involve more complexity, such as error handling, authentication, and more detailed interaction. Also, the sequence might vary based on actual business logic and architectural decisions.

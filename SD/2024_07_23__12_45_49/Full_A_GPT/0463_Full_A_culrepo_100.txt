@@ -1,0 +1,52 @@
+To visualize how the described functionality in the user story might operate from a technical perspective, below is a detailed UML sequence diagram represented in PlantUML syntax. Note that specific implementation details such as methods' names and certain processes may vary depending on the actual system architecture and development decisions.
+
+This sequence diagram focuses on the redundancy and integrity monitoring process, including how the system confirms the integrity of redundant copies, detects any unwanted changes, and initiates restoration from an original, verified source.
+
+```plantuml
+@startuml
+actor AssetManager as AM
+participant "Redundant\nCopy Handler" as RCH
+participant "Integrity\nMonitor" as IM
+database "Original\nContent Repository" as OCR
+database "Redundant\nContent Storage" as RCS
+
+== Monitoring Process Initialization ==
+AM -> RCH: RequestIntegrityCheck()
+RCH -> IM: InitiateIntegrityMonitoring()
+IM -> RCS: RetrieveAllRedundantCopies()
+
+== Continuous Integrity Monitoring ==
+loop Every Scheduled Time
+    IM -> RCS: CheckIntegrityOfEachCopy()
+    alt If Unwanted Change Detected
+        IM -> OCR: VerifyWithOriginal()
+        alt If Mismatch Confirmed
+            IM -> OCR: FetchOriginalCopy()
+            IM -> RCS: InitiateRestorationProcess(originalCopy)
+            RCS -> IM: ConfirmRestorationComplete()
+            IM -> AM: NotifyChangeAndAction()
+        else No Change or False Positive
+            IM -> AM: NotifyNoActionNeeded()
+        end
+    else If No Change Detected
+        IM -> AM: LogRegularIntegrityCheck()
+    end
+end
+
+@enduml
+```
+
+**Explanation of the Sequence Diagram Components:**
+
+- **Asset Manager (AM):** Initiates the request for the integrity check process. Later, receives notifications about the integrity checks, including when unwanted changes are detected and actions have been taken.
+- **Redundant Copy Handler (RCH):** Interfaces between the asset manager's request and the system's deeper integrity monitoring functionalities. It initiates the monitoring process when prompted.
+- **Integrity Monitor (IM):** The core component responsible for continuously checking the integrity of redundant copies stored across various locations. It compares these copies against the original contents to detect any unwanted modifications.
+- **Original Content Repository (OCR):** The primary storage for the original versions of all digital assets, used as a reference point for integrity checks.
+- **Redundant Content Storage (RCS):** Represents the storage locations for all redundant copies of the digital assets. It is the focus of the integrity monitoring process.
+
+**Key Processes:**
+
+- **Monitoring Process Initialization:** Starts with the asset manager requesting an integrity check, leading to the activation of the integrity monitoring process.
+- **Continuous Integrity Monitoring:** A loop representing continuous or scheduled checks, including detection of unwanted changes, verification against originals, potential restoration processes, and notifications/loggings of actions taken. 
+
+This diagram outlines the high-level interaction between different components essential for ensuring the redundancy and integrity of digital assets in the described digital repository system for Cornell University.

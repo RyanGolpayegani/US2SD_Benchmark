@@ -1,0 +1,24 @@
+@startuml
+participant "Admin Interface" as UI
+participant "System Backend" as Backend
+database "Database" as DB
+
+== Attendance Logging ==
+
+UI -> Backend : logAttendance(camperId, date, status)
+activate Backend
+
+Backend -> DB : getCamperProfile(camperId)
+activate DB
+DB --> Backend : camperProfile
+deactivate DB
+
+Backend -> DB : updateAttendanceRecord(camperId, date, status)
+activate DB
+DB --> Backend : confirmation
+deactivate DB
+
+Backend --> UI : displayConfirmation(confirmation)
+deactivate Backend
+
+@enduml

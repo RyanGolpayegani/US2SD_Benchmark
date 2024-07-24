@@ -1,0 +1,40 @@
+To visualize the sequence diagram for the user story "As a manager, I want to edit contact information of employees" in a Plant UML format, it's essential to outline the interaction between the various components of the system involved in this process. The following sequence diagram assumes the manager has proper authentication and authorization to perform the action.
+
+```plantuml
+@startuml
+actor Manager as manager
+participant "UI Interface" as ui
+participant "API Gateway" as api
+participant "Employee Management Service" as empService
+database "Database" as db
+
+manager -> ui : Select Employee Profile
+ui -> api : Request Employee Data
+api -> empService : Get Employee Data
+empService -> db : Query Employee Data
+db -> empService : Return Employee Data
+empService -> api : Employee Data Response
+api -> ui : Display Employee Data
+manager -> ui : Edit Contact Information
+ui -> api : Update Employee Data Request
+api -> empService : Update Employee Contact Info
+empService -> db : Update Employee Record
+db -> empService : Update Confirmation
+empService -> api : Update Success Response
+api -> ui : Confirmation Message
+ui -> manager : Display Update Success
+@enduml
+```
+
+In this sequence diagram, we illustrate the steps taken from the moment the manager decides to edit an employee's contact information, through the various layers of technology involved, and finally to the confirmation of the successful update. Here's a breakdown of the depicted process:
+
+1. **Manager Initiates Action**: The manager selects the employee profile they wish to edit within the UI Interface.
+2. **Fetch Current Employee Data**: Before making any edits, the current employee data is fetched and displayed for review.
+   - The UI sends a request to the API Gateway.
+   - The API Gateway forwards this request to the Employee Management Service.
+   - The Employee Management Service queries the Database for the specific employee's data and returns it back up the chain to the UI, where it's displayed to the manager.
+3. **Manager Edits Contact Information**: Upon reviewing, the manager inputs the new contact information within the UI.
+4. **System Updates Employee Data**: The updated data is sent back through the layers (UI -> API Gateway -> Employee Management Service) and ultimately updates the employee's record in the Database.
+5. **Confirmation of Update**: Once the update is successful, a confirmation is sent back to the manager.
+
+It's important to mention that in an actual system, there would be additional considerations like authentication, authorization, and validation steps involved in the process, especially for sensitive operations such as editing employee information. This sequence diagram aims to capture the essential interactions for the specific task of updating an employee's contact info within a Restaurant Management and Operations System context.

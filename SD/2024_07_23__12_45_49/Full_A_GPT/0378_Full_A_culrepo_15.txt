@@ -1,0 +1,40 @@
+To create a detailed sequence diagram for the given user story using PlantUML, we need to envision the interactions among different objects/system components involved in the process of searching the repository and browsing its contents on a mobile device. The key actors and components could include the `FacultyMember` (the user), a `MobileApp` interface, the `SearchService`, and the `RepositorySystem`.
+
+Given your request, here is a suggested sequence diagram in PlantUML format that illustrates these interactions:
+
+```plantuml
+@startuml
+actor FacultyMember as F
+participant MobileApp as MA
+participant SearchService as SS
+participant RepositorySystem as RS
+
+F -> MA : Opens App
+MA -> MA : Authenticate User\n(Shibboleth integration)
+MA -> SS : Enter search keywords
+SS -> RS : Query Repository\n(with Keywords)
+RS -> RS : Search Contents
+RS --> SS : Return Results
+SS --> MA : Display Search Results
+MA --> F : Browse Results on Phone
+
+F -> MA : Select Item to View Details
+MA -> RS : Request Item Details
+RS -> RS : Retrieve Item Details
+RS --> MA : Send Item Details
+MA --> F : Display Item Details
+
+@enduml
+```
+
+This sequence diagram outlines the basic flow of actions when a Cornell faculty member wants to search the repository and browse its content using their mobile phone. Here's a quick summary of the steps:
+
+1. **Authentication:** The faculty member opens the mobile app, which authenticates the user, possibly through Shibboleth for secure access.
+
+2. **Search:** The faculty member enters search keywords into the mobile app, which then interacts with a `SearchService` component. The search service forwards the query to the main `RepositorySystem`.
+
+3. **Query Processing and Result Retrieval:** The Repository System searches its contents based on the provided keywords and returns the search results to the Search Service, which then displays the results on the mobile app.
+
+4. **Browsing and Detail Viewing:** The faculty member can browse the list of search results and select an item to view more details. The mobile app requests detailed information about the item from the Repository System, which retrieves and sends back the item details to be displayed on the mobile app.
+
+This sequence is a high-level representation meant to capture the key interactions without delving into the specifics of each component's internal processing or the data structures involved. It's flexible enough to be expanded with more detailed sub-processes or technical specifications as needed for the actual system design and development phases.

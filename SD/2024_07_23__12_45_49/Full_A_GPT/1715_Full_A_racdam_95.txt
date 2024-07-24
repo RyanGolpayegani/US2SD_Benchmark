@@ -1,0 +1,51 @@
+To create a detailed sequence diagram in PlantUML format for the user story where an administrator wants to create user roles to group users, follow the outlined syntax. This sequence diagram will illustrate the flow starting from the administrator deciding to create new roles, interacting with the system's user interface, the system processing the request, to the database updating with the new roles.
+
+Make sure you have PlantUML installed or use an online PlantUML editor to visualize the diagram.
+
+```plantuml
+@startuml
+actor Administrator
+participant "User Management System" as UMS
+database "User Roles Database" as DB
+
+== Create User Roles ==
+
+Administrator -> UMS : Access Role Management
+
+alt Role Creation Form Displayed
+    UMS --> Administrator : Display Role Creation Form
+else Error Loading Form
+    UMS --> Administrator : Display Error Message
+end
+
+Administrator -> UMS : Submit New Role Details
+activate UMS
+
+alt Valid Role Details
+    UMS -> DB : Create New Role in Database
+    activate DB
+    alt Role Successfully Created
+        DB --> UMS : Confirm Role Creation
+        UMS --> Administrator : Display Success Message
+    else Role Creation Failed
+        DB --> UMS : Error Message
+        UMS --> Administrator : Display Error Message
+    end
+    deactivate DB
+else Invalid Role Details
+    UMS --> Administrator : Display Validation Error
+end
+
+deactivate UMS
+@enduml
+```
+
+This sequence diagram follows a simple flow where:
+
+1. The administrator accesses the role management functionality provided by the User Management System (UMS).
+2. The UMS attempts to display a role creation form to the administrator.
+3. The administrator, after reviewing the form, submits the new role details back to the UMS.
+4. The UMS processes these details. If the details are valid, it will then request the User Roles Database (DB) to create a new role.
+5. Depending on the outcome (success or failure of role creation), respective messages are displayed back to the administrator.
+
+Please, adjust the diagram according to specific requirements or details of your project's architecture or desired workflow nuances. This basic template can be expanded with more alternatives, user interactions, or system responses to match the complexity of the Digital Archive Management Enhancement Project's context.

@@ -1,0 +1,19 @@
+@startuml
+actor Trainee as trainee
+participant "Web Interface" as web
+participant "Authentication\nService" as auth
+database "Database" as db
+participant "Schedule\nManagement" as schedule
+
+trainee -> web : Select session to add
+web -> auth : Validate User Session
+auth --> web : Session Valid
+web -> schedule : Add session to "My Schedule"
+schedule -> db : Check if session exists
+db --> schedule : Session data
+schedule -> db : Update User's Schedule
+db --> schedule : Confirmation
+schedule --> web : Display Success Message
+web --> trainee : Confirmation: Session Added
+
+@enduml

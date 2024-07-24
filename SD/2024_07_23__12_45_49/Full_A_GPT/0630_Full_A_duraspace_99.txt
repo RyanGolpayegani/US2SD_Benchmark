@@ -1,0 +1,30 @@
+Creating a detailed sequence diagram for the described use case involves illustrating the interactions between different actors and the system components when a DAMS manager wants to know when an event occurred. Below is a sequence diagram written in PlantUML format that represents this process.
+
+```plantuml
+@startuml
+actor DAMSManager as "DAMS Manager"
+participant DIMSInterface as "DIMS Interface"
+participant EventManagementModule as "Event Management\nModule"
+database DAMSDatabase as "DAMS Database"
+
+DAMSManager -> DIMSInterface : Requests event information
+DIMSInterface -> EventManagementModule : Fetch event details
+EventManagementModule -> DAMSDatabase : Query event data
+DAMSDatabase -> EventManagementModule : Return event data
+EventManagementModule -> DIMSInterface : Process and format event details
+DIMSInterface -> DAMSManager : Display event details (including date and time)
+@enduml
+```
+
+### Explanation
+1. **DAMS Manager**: This actor initiates the process by requesting information on a specific event or a series of events. This could be through a graphical user interface or a command-line input in the DIMS.
+
+2. **DIMS Interface**: Acts as the initial point of interaction for the DAMS Manager. It receives the request for event information and passes the query to the appropriate module, in this case, the Event Management Module.
+
+3.get **Event Management Module**: This is a core component of DIMS that handles event-related queries. When it receives a request from the DIMS Interface, it proceeds to fetch the necessary details from the DAMS Database.
+
+4. **DAMS Database**: This database stores all the data related to digital assets, including event logs, timestamps, and other relevant metadata. It processes the query from the Event Management Module and returns the requested event data.
+
+5. The process of fetching event details is sequential, starting from the DAMS Manager making a request, going through various system components, and ending when the event details are displayed back to the DAMS Manager.
+
+This sequence diagram is a simplified representation focusing on the key interactions for the user story "As a DAMS manager, I want to know when the event occurred." Depending on the complexity and specific requirements of the DIMS, more actors and interactions could be added, such as security checks, additional formatting and processing steps, and error handling mechanisms.

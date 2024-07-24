@@ -1,0 +1,30 @@
+@startuml
+
+actor Researcher as res
+participant "Web Interface" as web
+participant "Authentication Service" as auth
+participant "Access Control" as ac
+participant "Media Server" as ms
+participant "Database" as db
+
+res -> web: Request media page
+web -> auth: Validate session
+auth -> web: Session active
+web -> ac: Check access for media
+ac -> db: Retrieve user access level
+db -> ac: Access level data
+ac -> web: Access granted
+web -> res: Display media options
+res -> web: Select video to stream
+web -> ac: Check specific video access
+ac -> db: Retrieve video access info
+db -> ac: Video access info
+ac -> web: Access to video granted
+web -> ms: Request video stream URL
+ms -> db: Lookup video location
+db -> ms: Video location
+ms -> ms: Prepare video stream
+ms -> web: Video stream URL
+web -> res: Embed video stream in browser
+
+@enduml

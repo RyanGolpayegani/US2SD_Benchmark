@@ -1,0 +1,28 @@
+@startuml
+actor LibraryStaff as "Library Staff"
+participant WebInterface as "Web Interface"
+participant ValidationService as "Validation Service"
+participant MetadataService as "Metadata Service"
+participant StorageService as "Storage Service"
+participant NotificationService as "Notification Service"
+
+== Upload Batch Items Process ==
+
+LibraryStaff -> WebInterface : Upload batch items & metadata
+WebInterface -> ValidationService : Validate files & metadata
+ValidationService --> WebInterface : Validation Results
+
+alt if validation fails
+  ValidationService --> LibraryStaff : Error message(s)
+else if validation succeeds
+
+  WebInterface -> MetadataService : Process metadata
+  loop for each item
+    MetadataService -> StorageService : Store item & metadata
+  end
+  StorageService --> MetadataService : Confirmation of Stored Items
+  MetadataService --> NotificationService : Notify of New Uploads
+  NotificationService --> LibraryStaff : Confirmation & Summary Email
+end
+
+@enduml

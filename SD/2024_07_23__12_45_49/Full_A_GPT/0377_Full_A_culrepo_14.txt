@@ -1,0 +1,47 @@
+Given the complexity of such a system, a detailed sequence diagram can illustrate the interaction flow for a patron who wishes to view or upload content, including support for multiple formats. Please note that due to the nature of PlantUML and the simplified context here, this diagram will focus on key interactions rather than comprehensive system integration. For older formats like Lotus Works, it is assumed there's a conversion or compatibility layer to handle them appropriately.
+
+Below is a PlantUML source to generate the sequence diagram for the given user story:
+
+```plantuml
+@startuml
+!theme plain
+
+actor Patron
+participant "Web Interface" as Web
+database "Digital Repository" as Repo
+participant "Content Management System" as CMS
+participant "Format Compatibility Layer" as FCL
+
+== View Content ==
+Patron -> Web: Search for content
+Web -> Repo: Query content
+Repo -> Web: Return search results
+Web -> Patron: Display content links
+
+Patron -> Web: Select content to view
+Web -> CMS: Request content item
+CMS -> Repo: Retrieve content metadata
+Repo -> CMS: Provide metadata and location
+CMS -> FCL: Request format check/conversion
+FCL -> CMS: Provide content in viewable format
+CMS -> Web: Deliver content
+Web -> Patron: Display content
+
+== Upload Content ==
+Patron -> Web: Access upload interface
+Web -> Patron: Provide upload form
+
+Patron -> Web: Submit content (incl. Lotus Works files)
+Web -> CMS: Send content data
+CMS -> FCL: Check/Convert format to compatible type
+FCL -> CMS: Return converted content
+CMS -> Repo: Store converted content
+Repo -> CMS: Confirm storage
+CMS -> Web: Confirm upload to user
+Web -> Patron: Display success message
+
+@enduml
+```
+This PlantUML diagram outlines the process steps for both viewing and uploading content, including handling of older formats through a Format Compatibility Layer (FCL), which is crucial for supporting files such as Lotus Works. The system's modular approach, with components like the Web Interface, Content Management System (CMS), and the Digital Repository itself, facilitates flexibility and scalability. The FCL acts as an intermediary to ensure the digital repository system remains future-proof and inclusive of various content formats.
+
+Remember, this is a simplified view focusing on core interactions related to the user story. In a real-world scenario, additional considerations such as authentication, authorization, error handling, and user feedback loops would be essential parts of the diagram.

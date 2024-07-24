@@ -1,0 +1,53 @@
+Creating a detailed UML sequence diagram for the specified user story involves illustrating the interactions between various objects or components in a system for the specific scenario where an archivist wants to rotate images to orient them correctly. The following UML sequence diagram, written in PlantUML code, aims to capture the process flow from the perspective of an archivist using the Digital Archive Management System to rotate an image file.
+
+```plantuml
+@startuml
+participant Archivist as archivist
+participant Interface as ui
+participant "Image Management System" as ims
+participant Database as db
+participant "File Storage" as storage
+
+archivist -> ui : Selects image to rotate
+ui -> ims : Request image rotation\n(imageID, rotationDegree)
+activate ims
+ims -> db : Fetch image metadata\n(imageID)
+activate db
+db --> ims : Return metadata
+deactivate db
+ims -> storage : Retrieve image file\n(imageID)
+activate storage
+storage --> ims : Return image file
+deactivate storage
+ims -> ims : Rotate image\n(rotationDegree)
+ims -> storage : Save rotated image
+activate storage
+storage --> ims : Confirm save
+deactivate storage
+ims -> db : Update metadata\n(imageID, newOrientation)
+activate db
+db --> ims : Confirm metadata update
+deactivate db
+ims --> ui : Notify rotation success
+deactivate ims
+ui --> archivist : Display success message\nand updated image
+@enduml
+```
+
+### Explanation
+- **Archivist**: The user who wants to rotate an image to correct its orientation.
+- **Interface (UI)**: The graphical user interface through which the archivist interacts with the Digital Archive Management System.
+- **Image Management System (IMS)**: A component of the Digital Archive Management System responsible for handling requests related to image files, including rotations.
+- **Database (DB)**: Stores metadata about the digital files, including information necessary for accessing and modifying image files.
+- **File Storage**: The physical or cloud storage where digital images are saved.
+
+### Sequence of Events
+1. **Initiation**: The archivist selects the image they wish to rotate via the system's interface (UI).
+2. **Request Processing**: The UI forwards the rotation request to the Image Management System, specifying the image ID and the degree of rotation.
+3. **Metadata Retrieval**: The Image Management System fetches the necessary metadata for the image from the database.
+4. **Image Retrieval**: The Image Management System retrieves the actual image file from storage.
+5. **Image Rotation**: The system rotates the image according to the specified degree of rotation.
+6. **Save and Update**: The rotated image is saved back to the File Storage, and the database metadata is updated to reflect any changes resulting from the rotation (e.g., new orientation).
+7. **Notification**: The Image Management System notifies the UI of the successful rotation, which in turn informs the archivist with a success message and displays the updated image.
+
+This sequence ensures a systematic process for rotating images within the digital archive, emphasizing the importance of both the metadata and the actual image file in completing the operation successfully.

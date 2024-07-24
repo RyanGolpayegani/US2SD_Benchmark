@@ -1,0 +1,61 @@
+Creating a detailed sequence diagram for the process a Consumer goes through to check the age of a downloaded data package before deciding on an update involves multiple steps and interactions between the Consumer, the UI (User Interface), possibly some CLI (Command Line Interface) interactions, the Platform's web server, and the Data Package Registry. Below is a PlantUML code snippet describing such a sequence:
+
+```plantuml
+@startuml
+participant Consumer
+participant "UI/CLI" as UI
+participant "Web Server" as WS
+participant "Data Package Registry" as DPR
+
+Consumer -> UI: Request age of downloaded data package
+activate UI
+
+UI -> WS: Send request to check data package age
+activate WS
+
+WS -> DPR: Query data package metadata including version and publish date
+activate DPR
+
+DPR --> WS: Return metadata for data package
+deactivate DPR
+
+WS --> UI: Translate data package age from metadata and send response
+deactivate WS
+
+UI --> Consumer: Display age of data package
+deactivate UI
+
+Consumer -> UI: Decide to update or not based on age
+activate UI
+
+alt if Consumer decides to update
+    UI -> WS: Request latest data package version
+    activate WS
+    
+    WS -> DPR: Query for latest data package version
+    activate DPR
+    
+    DPR --> WS: Return latest version data
+    deactivate DPR
+    
+    WS --> UI: Provide download link for latest version
+    deactivate WS
+    
+    UI --> Consumer: Offer latest version download
+    deactivate UI
+    Consumer -> UI : Download latest version
+    UI -> WS: Initiate download process
+    WS -> DPR: Request data package download
+    DPR --> WS: Stream data package to Web Server
+    WS --> UI: Provide data package to Consumer
+    Consumer -> UI: Receive and save updated data package
+else if Consumer decides not to update
+    UI --> Consumer: Ends process
+    deactivate UI
+end
+@enduml
+```
+
+This sequence diagram starts with the Consumer requesting the age of a previously downloaded data package through the platform's UI or CLI. The request is then processed by the platform's web server, which queries the data package registry for the metadata of the requested data package, including its version and publish date. The data package registry responds with the package's metadata, from which the web other server calculates the age of the data package and responds to the Consumer. Based on the age information, the Consumer decides whether to update the data package. If the Consumer decides to update, the process for querying the latest version and initiating its download starts; otherwise, if the Consumer decides not to update, the sequence ends.
+
+This code adequately models the interaction based on the user story provided, detailing steps involved in checking the age of a data package and deciding whether to proceed with an update.

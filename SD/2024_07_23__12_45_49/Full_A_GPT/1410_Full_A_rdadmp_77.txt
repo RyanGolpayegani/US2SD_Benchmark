@@ -1,0 +1,36 @@
+Creating a detailed sequence diagram for the user story provided in PlantUML format involves representing interactions between different entities/system components for a scenario where a faculty data steward wants to see the sections on roles within the DMPTool. This example focuses on the interactions needed for the user to view data management roles.
+
+Please note, to view the generated diagram, you'll need to render this PlantUML code using a PlantUML environment or an online tool like PlantText.com.
+
+```plantuml
+@startuml
+actor "Faculty Data Steward" as steward
+participant "UI Interface" as UI
+participant "Authentication Service" as Auth
+participant "Role Management Module" as Roles
+participant "Data Management Planning Tool (DMPTool)" as DMPTool
+participant "Database" as DB
+
+== Authentication ==
+steward -> UI : Access DMPTool
+UI -> Auth : Request login
+Auth -->> UI : Authentication Success
+
+== View Roles ==
+steward -> UI : Select "View Roles"
+UI -> Roles : Fetch Roles data
+Roles -> DMPTool : Request Roles information
+DMPTool -> DB : Query Roles data
+DB -->> DMPTool : Roles data
+DMPTool -->> Roles : Return Roles info
+Roles -->> UI : Display Roles
+UI -->> steward : Shows Roles sections
+
+@enduml
+```
+
+This sequence diagram describes the following steps:
+1. **Authentication:** The faculty data steward accesses the DMPTool through its UI (User Interface). The UI requests authentication from the Authentication Service. Once authenticated successfully, the sequence proceeds.
+2. **View Roles:** The steward selects an option to "View Roles." The UI then requests roles data from the Role Management Module, which in turn requests this information from the DMPTool core. The DMPTool queries its database for the roles data, receives this data back, and passes it through the modules back to the UI, which ultimately displays the roles sections to the faculty data steward.
+
+This example aims to capture the essence of the interactions for the specific user story provided. Depending on the actual complexity and specific requirements of DMPTool, additional details and components could be represented in a more detailed design document.

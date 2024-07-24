@@ -1,0 +1,48 @@
+Creating a detailed Sequence Diagram for the user story "As a customer, I want to create my borrows" in PlantUML format involves illustrating the interactions between the Customer, Frontend Interface, Backend Server, Database, and potentially other systems involved in the process of borrowing books. Below is a basic sequence diagram in PlantUML syntax that captures the process of a customer creating a book borrowing request.
+
+```plantuml
+@startuml
+actor Customer
+participant "Frontend Interface" as Frontend
+participant "Backend Server" as Backend
+database "Database" as DB
+
+Customer -> Frontend: Selects book(s) to borrow
+Frontend -> Backend: Requests to create borrow transaction(s)
+activate Backend
+Backend -> DB: Checks availability of book(s)
+activate DB
+DB --> Backend: Returns availability status
+deactivate DB
+
+alt If book(s) available
+    Backend -> DB: Create borrow record(s) with due date
+    activate DB
+    DB --> Backend: Confirm borrow record(s) creation
+    deactivate DB
+    
+    Backend -> DB: Update book(s) status to borrowed
+    activate DB
+    DB --> Backend: Confirm book(s) status updated
+    deactivate DB
+    
+    Backend --> Frontend: Borrow transaction success
+    Frontend -> Customer: Display success message & borrow details
+else If book(s) not available
+    Backend --> Frontend: Borrow transaction failed - Book(s) not available
+    Frontend -> Customer: Display error message
+end
+
+@enduml
+```
+
+This diagram illustrates the crucial steps when a customer attempts to borrow books using the Comprehensive Library Management System (CLMS):
+
+1. **Selecting Books:** The customer starts the process by selecting one or more books they wish to borrow through the frontend interface.
+2. **Borrow Request:** The frontend interface communicates this request to the backend server to initiate the borrowing process.
+3. **Availability Check:** The backend server checks the book(s)' availability in the library's database.
+4. **Transaction Record:** If the books are available, the backend server creates borrow records in the database, including setting the due dates for the return of the books. It then updates the book status to 'borrowed'.
+5. **Success or Failure Response:** The backend server sends a response back to the frontend interface indicating whether the borrow transaction was successful or not.
+6. **Notification to Customer:** Finally, the customer is notified through the frontend interface with either a success message and borrow details or an error message if the book(s) are not available.
+
+Remember, this is a simplified representation and can be elaborated based on the actual complexities, such as handling multiple books, checking user borrowing limits, and integrating with payment gateways for handling fines for previous late returns, before allowing new borrows.

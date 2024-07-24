@@ -1,0 +1,40 @@
+@startuml
+participant OlderPerson as user
+participant "ALFRED Interface" as AI
+participant "Game Library" as GL
+participant "Game" as G
+
+user -> AI : Request to play an imaginative game
+activate AI
+
+AI -> GL : Retrieve list of imaginative games
+activate GL
+GL --> AI : List of games
+deactivate GL
+
+AI --> user : Show list of games
+user -> AI : Select a game
+AI -> GL : Request game details for selection
+activate GL
+GL --> AI : Provide game details
+deactivate GL
+
+AI -> G : Initialize game with settings
+activate G
+G --> AI : Game ready
+AI --> user : Start game
+deactivate AI
+
+user -> G : Play game
+activate G
+G -> user : Provide game feedback
+deactivate G
+
+user -> AI : End game/session
+activate AI
+AI -> G : Terminate game session
+deactivate G
+
+AI --> user : Confirm game session end
+deactivate AI
+@enduml

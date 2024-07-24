@@ -1,0 +1,25 @@
+@startuml
+participant UserUI as "User Interface"
+participant NeurohubSystem as "Neurohub System"
+participant TwitterAPI as "Twitter API"
+database TwitterDB as "Twitter Database"
+
+UserUI -> NeurohubSystem : PostContentWithShareOption(content, shareOnTwitter=true)
+activate NeurohubSystem
+
+alt shareOnTwitter is true
+    NeurohubSystem -> TwitterAPI : ShareContentToTwitter(content)
+    activate TwitterAPI
+    TwitterAPI -> TwitterDB : SaveTweet(content)
+    activate TwitterDB
+    TwitterDB --> TwitterAPI : Confirmation
+    deactivate TwitterDB
+    TwitterAPI --> NeurohubSystem : ShareConfirmation
+    deactivate TwitterAPI
+else shareOnTwitter is false
+    NeurohubSystem -> NeurohubSystem : SaveContentLocally(content)
+end
+
+NeurohubSystem --> UserUI : PostConfirmation
+deactivate NeurohubSystem
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+participant Administrator as A
+participant "Camp Management System" as CMS
+participant Database as DB
+participant NotificationSystem as NS
+participant Counselor as C
+
+A -> CMS : Request to view all camp groups and events
+CMS -> DB : Fetch camp groups and events
+DB --> CMS : Return camp groups and events
+CMS --> A : Display camp groups and events
+
+loop for each Camp Group
+    A -> CMS : Select camp group to notify
+    CMS -> DB : Fetch selected camp group details
+    DB --> CMS : Return camp group data (including counselors)
+    CMS --> A : Display camp group details
+    A -> CMS : Request to notify counselors
+    CMS -> NS : Prepare notification
+    CMS -> DB : Fetch counselor contact info
+    DB --> CMS : Return counselor contact info
+    NS -> C : Send notification to counselors
+    C --> NS : Acknowledge receipt
+    NS --> CMS : Confirm notification sent
+    CMS --> A : Display notification status
+end
+
+@enduml

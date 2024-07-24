@@ -1,0 +1,33 @@
+@startuml
+actor "Camp Administrator" as admin
+participant "UI: Administration Dashboard" as UI
+participant "Server: Camp Management" as Server
+database "Camp Database" as DB
+
+admin -> UI : Accesses Task Scheduling Module
+activate UI
+UI -> Server : Requests current groups and schedules
+activate Server
+Server -> DB : Retrieve group information
+activate DB
+DB --> Server : Group details
+deactivate DB
+Server --> UI : Displays groups and schedules
+deactivate Server
+UI --> admin : Shows existing schedules
+deactivate UI
+admin -> UI : Selects specific camp group
+activate UI
+admin -> UI : Inputs new task/activity details
+UI -> Server : Submit new task/activity for group
+activate Server
+Server -> DB : Update group schedule with new task
+activate DB
+DB --> Server : Confirm schedule update
+deactivate DB
+Server --> UI : Confirm update to admin
+deactivate Server
+UI --> admin : Display success message
+deactivate UI
+
+@enduml

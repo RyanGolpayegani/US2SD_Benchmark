@@ -1,0 +1,44 @@
+@startuml
+
+actor "Repository Manager" as RM
+participant "DIMS Interface" as DI
+participant "Object Management Module" as OMM
+participant "Rights and Licenses Module" as RLM
+participant "Database" as DB
+
+== Indicate Statutes for an Object ==
+
+RM -> DI : Select Object
+activate DI
+DI -> OMM : Request Object Details
+activate OMM
+OMM -> DB : Query Object Information
+activate DB
+DB --> OMM : Object Details
+deactivate DB
+OMM --> DI : Display Object Details
+DI --> RM : Show Object Details Screen
+deactivate OMM
+
+RM -> DI : Click on 'Indicate Statutes'
+activate DI
+DI -> RLM : Invoke Statutes Form
+activate RLM
+RLM --> DI : Display Statutes Form
+DI --> RM : Show Statutes Form
+deactivate RLM
+
+RM -> DI : Fill and Submit Statutes Form
+activate DI
+DI -> RLM : Parse Statutes Data
+activate RLM
+RLM -> DB : Update Object with Statutes
+activate DB
+DB --> RLM : Confirm Update
+deactivate DB
+RLM --> DI : Confirmation of Update
+deactivate RLM
+DI --> RM : Show Success Message
+deactivate DI
+
+@enduml

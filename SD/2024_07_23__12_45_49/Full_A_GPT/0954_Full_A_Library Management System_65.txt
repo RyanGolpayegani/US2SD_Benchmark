@@ -1,0 +1,54 @@
+Below is a detailed PlantUML sequence diagram description which illustrates the process of how a librarian can keep track of the most read authors, aiming to facilitate the procurement of more popular author books based on reader preferences. This diagram includes interactions among system components like the Librarian, Library Management System (LMS), Database, and Reporting Tool necessary for achieving the described functionality.
+
+Please note, to view or generate diagrams with PlantUML, you will need to use a PlantUML environment (like an integrated development environment that supports PlantUML, the official PlantUML web server, or local tools that can parse and display PlantUML diagrams).
+
+```plantuml
+@startuml
+autonumber
+
+actor Librarian
+participant "Library Management\nSystem (LMS)" as LMS
+database "Database" as DB
+participant "Reporting\nTool" as RT
+
+== Track Most Read Authors ==
+
+Librarian -> LMS: Request report on most read authors
+activate LMS
+
+LMS -> DB: Retrieve borrowing statistics
+activate DB
+
+DB -> DB: Aggregate data by author\n(Calculate total borrows per author)
+DB --> LMS: Return aggregated data
+deactivate DB
+
+LMS -> RT: Request generation of\nmost read authors report
+activate RT
+
+RT -> RT: Generate report based on\naggregated data
+RT --> LMS: Return report
+deactivate RT
+
+LMS --> Librarian: Display report
+deactivate LMS
+
+Librarian -> LMS: Request to purchase more books\nfrom popular authors
+activate LMS
+
+LMS -> DB: Update book purchase requests
+activate DB
+DB --> LMS: Confirm update
+deactivate DB
+
+LMS --> Librarian: Confirm books requested
+deactivate LMS
+
+@enduml
+```
+
+This sequence diagram starts with the Librarian requesting a report on the most read authors from the Library Management System (LMS). The LMS then retrieves borrowing statistics from the Database, which aggregates the data by author to determine total borrows per author. This aggregated data is sent to a Reporting Tool to generate the desired report. Once the report is prepared and sent back to the LMS, it's displayed to the Librarian.
+
+Following the analysis, if the librarian decides to purchase more books from popular authors, a new request is made through the LMS to update book purchase requests in the Database. The Database confirms this update, and the LMS then confirms to the Librarian that the books have been requested, closing the loop.
+
+This scenario outlines a crucial workflow for library collection management, enabling librarians to make informed decisions based on readers' preferences.

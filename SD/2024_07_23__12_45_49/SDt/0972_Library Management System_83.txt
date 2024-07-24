@@ -1,0 +1,26 @@
+@startuml
+actor Librarian
+participant "Library Management\nSystem" as LMS
+database BooksDB
+participant "Notification\nService" as NS
+
+Librarian -> LMS : request overdue books list
+activate LMS
+LMS -> BooksDB : query overdue books
+activate BooksDB
+BooksDB --> LMS : overdue books data
+deactivate BooksDB
+LMS --> Librarian : display overdue books
+deactivate LMS
+loop for each overdue book
+    Librarian -> LMS : select book/member to warn
+    activate LNS
+    LMS -> NS : prepare warning notice
+    activate NS
+    NS -> NS : format email/SMS
+    NS -> Librarian : send warning to member (email/SMS)
+    deactivate NS
+    Librarian --> LMS : confirmation of warning sent
+    deactivate LNS
+end
+@enduml

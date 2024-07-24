@@ -1,0 +1,40 @@
+@startuml
+participant OlderPerson
+participant Interface
+participant SettingsModule
+participant DisplayController
+
+== Adjusting Interface for Well-Visible Buttons ==
+
+OlderPerson -> Interface : RequestsAccessibilityOptions
+activate Interface
+
+Interface -> SettingsModule : FetchCurrentSettings
+activate SettingsModule
+
+SettingsModule -> SettingsModule : CheckVisibilityPreferences
+SettingsModule --> Interface : CurrentSettings
+deactivate SettingsModule
+
+Interface -> OlderPerson : DisplayCurrentSettings
+OlderPerson -> Interface : SelectLargeButtonsOption
+activate Interface
+
+Interface -> SettingsModule : UpdateVisibilitySettings(LargeButtonsEnabled)
+activate SettingsModule
+
+SettingsModule -> SettingsModule : SaveNewSettings
+SettingsModule --> Interface : Confirmation
+deactivate SettingsModule
+
+Interface -> DisplayController : AdjustButtonSize
+activate DisplayController
+DisplayController -> DisplayController : ApplyLargeButtonSettings
+DisplayController --> Interface : UpdateComplete
+deactivate DisplayController
+
+Interface --> OlderPerson : DisplayConfirmation
+
+== End ==
+
+@enduml

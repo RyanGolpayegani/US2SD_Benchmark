@@ -1,0 +1,34 @@
+@startuml
+actor Owner
+participant "UI SME" as UI_SME
+participant "Project Manager" as PM
+participant "Development Team" as DevTeam
+participant "QA Team" as QATeam
+database "Project Schedule" as Schedule
+
+Owner -> UI_SME : Request UI improvements timeline
+activate UI_SME
+
+UI_SME -> PM : Consult on UI improvements scope
+activate PM
+PM -> DevTeam : Assess UI improvements effort
+activate DevTeam
+DevTeam -> PM : Effort estimated
+
+DevTeam -> QATeam : Estimate QA effort for UI changes
+activate QATeam
+QATeam -> DevTeam : QA effort estimated
+deactivate QATeam
+
+DevTeam -> PM : Combine development and QA efforts
+PM -> UI_SME : Provide preliminary timeline
+deactivate DevTeam
+UI_SME -> Schedule : Draft UI improvements schedule
+activate Schedule
+Schedule -> UI_SME : Schedule confirmed
+deactivate Schedule
+
+UI_SME -> Owner : Present UI improvements schedule
+deactivate UI_SME
+
+@enduml

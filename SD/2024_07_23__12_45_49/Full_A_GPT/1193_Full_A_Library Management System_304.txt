@@ -1,0 +1,49 @@
+To create a detailed sequence diagram for the user story "As a member, I want to see the shelf number of the books that are available so I can go to the necessary location and take it," using PlantUML, you need to map out the interactions between the different components of the Comprehensive Library Management System (CLMS). These components typically include the User Interface (UI), the Controller, the Business Logic layer, and the Database.
+
+Here’s a basic PlantUML sequence diagram that outlines these interactions:
+
+```plantuml
+@startuml
+actor Member as M
+participant "UI: Library Portal" as UI
+participant "Controller: BookSearchController" as Controller
+participant "Service: BookService" as Service
+participant "Database" as DB
+
+M -> UI: Access library portal
+activate UI
+
+UI -> Controller: Request available books with shelf numbers
+activate Controller
+
+Controller -> Service: Get available books with shelf numbers
+activate Service
+
+Service -> DB: Query available books with details
+activate DB
+
+DB --> Service: Return book details with shelf numbers
+deactivate DB
+
+Service --> Controller: Book details with shelf numbers
+deactivate Service
+
+Controller --> UI: Show book details with shelf numbers to member
+deactivate Controller
+
+UI --> M: Display available books with shelf numbers
+deactivate UI
+
+@enduml
+```
+
+Explanation of the sequence diagram:
+
+1. **Member (Actor)**: Starts the process by accessing the library portal.
+2. **UI: Library Portal**: The user interface through which the member interacts with the system.
+3. **Controller: BookSearchController**: Manages the incoming request and forwards it to the appropriate service layer.
+4. **Service: BookService**: Contains the business logic to process the request, such as gathering available book details, including shelf numbers.
+5. **Database**: Stores all data related to books, including availability and shelf locations.
+6. **Steps**: The member requests through the UI to see available books along with their shelf numbers. This request is passed to the controller, which then retrieves this information through the service layer, which in turn queries the database. The information is then passed back through the layers to the UI, which displays the available books with their shelf numbers to the member.
+
+This sequence allows the member to find out where available books are located physically in the library so they can easily locate and borrow them.

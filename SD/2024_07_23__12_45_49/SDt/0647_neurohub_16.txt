@@ -1,0 +1,22 @@
+@startuml
+actor Researcher as researcher
+participant "Web Browser" as browser
+participant "Neurohub Interface" as interface
+participant "Authentication System" as auth
+database "Database" as db
+entity "File Storage System" as storage
+
+researcher -> browser: Requests experiment files 
+browser -> interface: Fetch file request
+interface -> auth: Validate user session
+auth -> interface: Session valid
+interface -> db: Retrieve file metadata
+db -> interface: File metadata
+interface -> storage: Request files
+storage -> interface: Return files
+interface -> browser: Serve files to researcher
+browser -> researcher: Download files prompt
+researcher -> browser: Confirm download
+browser -> researcher: Download files
+
+@enduml

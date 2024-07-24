@@ -1,0 +1,71 @@
+Creating a detailed sequence diagram for the given user story "As a researcher, I want to browse through files in a collection." using PlantUML notation involves outlining the interaction between the user (researcher) and the system components involved in browsing files within a collection. The sequence diagram will include the steps taken from the moment the researcher initiates the action to browse files until the system displays the desired content.
+
+```plantuml
+@startuml
+actor Researcher as Res
+participant "UI: Web Interface" as UI
+participant "SearchController" as SC
+participant "CollectionService" as CS
+participant "FileService" as FS
+database "DigitalArchiveDB" as DB
+
+Res -> UI: Access digital archive
+activate UI
+
+UI -> SC: Request to browse collection
+activate SC
+
+SC -> CS: Retrieve collection list
+activate CS
+
+CS -> DB: Query available collections
+activate DB
+
+DB --> CS: Return collections
+deactivate DB
+
+CS --> SC: Collections list
+deactivate CS
+
+SC -> FS: Request files in collection
+activate FS
+
+FS -> DB: Query files in specified collection
+activate DB
+
+DB --> FS: Return files
+deactivate DB
+
+FS --> SC: Collection files
+deactivate FS
+
+SC --> UI: Display files to researcher
+deactivate SC
+
+UI --> Res: Show files in UI
+deactivate UI
+
+@enduml
+```
+
+### Explanation:
+
+1. **Researcher (Actor)**: Initiates the browsing process by accessing the digital archive's web interface.
+2. **UI: Web Interface (Participant)**: The front-end through which the researcher interacts with the system.
+3. **SearchController (Participant)**: Manages the requests related to searching and browsing functionalities.
+4. **CollectionService (Participant)**: Handles operations related to collections such as retrieving the list of available collections.
+5. **FileService (Participant)**: Manages the retrieval and processing of files within a specified collection.
+6. **DigitalArchiveDB (Database)**: The database where the collections and files data are stored.
+
+### Flow:
+
+- The **Researcher** accesses the digital archive through the **Web Interface**.
+- The researcher requests to browse a collection, and this request is passed to the **SearchController**.
+- The **SearchController** asks the **CollectionService** to retrieve a list of available collections.
+- The **CollectionService** queries the **DigitalArchiveDB** for the available collections and returns the list to the **SearchController**.
+- Once the researcher selects a collection, the **SearchController** requests the **FileService** to retrieve the files within the selected collection.
+- The **FileService** queries the **DigitalArchiveDB** to return the files belonging to the specified collection.
+- The **SearchController** then receives the collection files' details and instructs the **UI** to display these files to the researcher.
+- The **Researcher** is presented with the files in the collection through the **Web Interface** for browsing.
+
+This sequence diagram focuses on the interaction and flow of data between the system's components specifically for browsing files within a digital archive collection from a researcher’s perspective.

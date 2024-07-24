@@ -1,0 +1,23 @@
+@startuml
+participant UserInterface as UI
+participant ValidationSystem as VS
+participant BrokerPlatform as BP
+participant Developer
+
+actor User
+
+User -> UI : Submit Data
+UI -> BP : Request Data Validation
+BP -> VS : Validate Data
+VS -> BP : Return Validation Results
+activate BP
+note right of BP : Identify CFDA Error Codes
+BP -> Developer : Report CFDA Errors
+Developer -> BP : Provide Clarification Rules
+Developer -> VS : Update CFDA Error Logic
+note over VS : Adjust Validation \n for CFDA Error Codes
+VS -> BP : Updated CFDA Logic Available
+deactivate BP
+BP -> UI : Display CFDA Error Clarifications
+UI -> User : Show Updated CFDA Errors & Clarifications
+@enduml

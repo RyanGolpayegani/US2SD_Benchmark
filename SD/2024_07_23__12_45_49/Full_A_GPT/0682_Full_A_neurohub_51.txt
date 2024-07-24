@@ -1,0 +1,30 @@
+Creating a detailed sequence diagram for the user story "As a user, I want to attach multiple files at once to a log book page" involves showing the interactions between the user, user interface, and backend systems that enable the bulk uploading of files. Below is a sequence diagram represented in PlantUML format, which describes the process.
+
+```plantuml
+@startuml
+autonumber
+actor User
+participant "Web Interface" as UI
+participant "File Upload Service" as UploadService
+participant "Database" as DB
+participant "Logbook Service" as Logbook
+database "File Storage" as Storage
+
+User -> UI: Selects multiple files
+UI -> UploadService: Initiates file upload
+loop for each file
+    UploadService -> Storage: Stores file
+    Storage --> UploadService: Confirm file stored
+end
+UploadService -> Logbook: Attaches files to logbook page
+Logbook -> DB: Updates logbook metadata
+DB --> Logbook: Confirm update
+Logbook --> UploadService: Attachments successful
+UploadService --> UI: Display upload success message
+UI --> User: Shows success message & updated logbook page
+@enduml
+```
+
+This sequence diagram illustrates the steps from when a user selects multiple files for attachment until the process is completed and a success message is displayed. The interactions include storing the files in a file storage system, updating the database with new logbook metadata, and notifying the user of the status of their action. This view provides a basic outline, and specifics may vary based on the actual implementation details of the Neurohub Enhancement and Automation Project.
+
+Note: To visualize this diagram, you will need access to a PlantUML processor, which can be found in various online tools or integrated development environments (IDEs) that support PlantUML.

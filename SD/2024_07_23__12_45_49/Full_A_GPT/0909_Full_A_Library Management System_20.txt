@@ -1,0 +1,44 @@
+Creating a sequence diagram for the said user story involves outlining the interactions between the librarian, the system interface, the backend server, and the database. This diagram illustrates the process from the point where the librarian decides to add a new book to the system, through the system processing the request, to the book being successfully added to the database.
+
+Here is a PlantUML code snippet that represents the sequence diagram for the described user story:
+
+```plantuml
+@startuml
+participant Librarian
+participant "Library Management\nSystem Interface" as Interface
+participant "Backend Server" as Backend
+database Database
+
+Librarian -> Interface : Initiates "Add New Book"
+activate Interface
+
+Interface -> Backend : Request to add book(details)
+activate Backend
+
+Backend -> Database : Insert book details
+activate Database
+Database --> Backend : Confirm book added
+deactivate Database
+
+Backend --> Interface : Confirm book addition success
+deactivate Backend
+
+Interface --> Librarian : Display book addition success message
+deactivate Interface
+
+@enduml
+```
+
+This diagram breaks down the process as follows:
+
+1. The **Librarian** initiates the action to add a new book by interacting with the **Library Management System Interface**. This could be through a form where the librarian enters details about the new book, such as title, author, ISBN, category, and publication date.
+
+2. The **Library Management System Interface** takes the input and sends a request to the **Backend Server** to add the new book with the provided details. This step encapsulates the process of validating the data on the frontend before sending it further.
+
+3. The **Backend Server** receives the request and processes it by adding the book details into the **Database**. This involves interacting with the database system to insert a new record in the books table or collection.
+
+4. The **Database** system confirms the addition of the new book back to the **Backend Server**. This acknowledgment indicates that the operation was successful and the book has been added to the library's catalog.
+
+5. Finally, the **Backend Server** informs the **Library Management System Interface** about the successful addition, which in turn notifies the **Librarian** with a success message or confirmation. This feedback loop is crucial for ensuring that the user is aware of the outcome of their action.
+
+This sequence diagram provides a clear overview of the interactions involved in adding a new book to the library's collection from the librarian's perspective within the Comprehensive Library Management System.

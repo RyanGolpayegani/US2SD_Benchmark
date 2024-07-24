@@ -1,0 +1,45 @@
+Creating a sequence diagram in PlantUML for the described user story involves designing a flow that shows the interaction between components for sending automatic email and SMS notifications to a customer when a book's due date has passed. Below is an example of how this could be structured:
+
+```plantuml
+@startuml
+participant "Library Management System" as LMS
+participant "Database" as DB
+participant "Notification Service" as NS
+participant "Email Service" as ES
+participant "SMS Service" as SS
+participant "Customer" as Cust
+
+LMS -> DB: Check overdue books
+activate DB
+DB --> LMS: List of overdue loans
+deactivate DB
+
+loop for each overdue loan
+  LMS -> NS : Prepare notification message
+  activate NS
+  
+  NS -> ES: Send Email Notification
+  activate ES
+  ES --> Cust: Email about overdue book
+  deactivate ES
+  
+  NS -> SS: Send SMS Notification
+  activate SS
+  SS --> Cust: SMS about overdue book
+  deactivate SS
+  
+  deactivate NS
+end
+
+@enduml
+```
+
+This sequence diagram starts with the Library Management System checking the database for any overdue books. Once identified, it initiates a notification service loop for each overdue loan to prepare the necessary notification message(s). The Notification Service then sends out both an email and an SMS notification regarding the overdue book to the customer through respective services.
+
+- **Library Management System (LMS)**: Represents the core system that checks for overdue books.
+- **Database (DB)**: Holds data regarding loans, including due dates and customer information.
+- **Notification Service (NS)**: A service layer responsible for preparing and sending out notifications.
+- **Email Service (ES)** and **SMS Service (SS)**: Separate services that handle the sending of email and SMS notifications, respectively.
+- **Customer (Cust)**: The end recipient of the notifications.
+
+By implementing this, the librarian ensures customers are automatically informed when the due date for a borrowed book has passed, prompting them to return it. This maintains an efficient book return system and enhances the user experience by keeping the customers informed.

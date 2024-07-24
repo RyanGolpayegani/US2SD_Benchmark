@@ -1,0 +1,47 @@
+@startuml
+participant Manager as manager
+participant "Management Interface" as managementInterface
+participant "Inventory Service" as inventoryService
+participant "Database" as database
+participant "Supplier Management" as supplierManagement
+
+manager -> managementInterface : initiateAddStoreOrder()
+activate managementInterface
+
+managementInterface -> inventoryService : checkInventoryLevels()
+activate inventoryService
+
+inventoryService -> database : queryInventory()
+activate database
+
+database --> inventoryService : inventoryData
+deactivate database
+
+inventoryService -> supplierManagement : suggestReorderQuantities(inventoryData)
+deactivate inventoryService
+
+supplierManagement -> managementInterface : displaySuggestedOrders()
+activate supplierManagement
+
+managementInterface -> manager : showSuggestedReorders()
+deactivate suppliermore
+
+manager -> managementInterface : confirmOrderDetails(orderDetails)
+activate managementInterface
+
+managementInterface -> inventoryService : updatePendingOrders(orderDetails)
+activate inventoryService
+
+inventoryService -> database : saveOrder(orderDetails)
+activate database
+
+database --> inventoryService : confirmationStatus
+deactivate database
+
+inventoryService --> managementInterface : orderUpdateStatus(confirmationStatus)
+deactivate inventoryService
+
+managementInterface --> manager : displayOrderConfirmation(confirmationStatus)
+deactivate managementInterface
+
+@enduml

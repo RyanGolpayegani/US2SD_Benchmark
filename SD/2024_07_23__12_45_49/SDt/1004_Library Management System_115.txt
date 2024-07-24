@@ -1,0 +1,35 @@
+@startuml
+
+participant LibraryManager as LM
+participant LibrarySystem as LS
+participant Database as DB
+
+note over LM: Wants to add new book record
+LM -> LS: Access book management module
+activate LM
+activate LS
+
+LS -> DB: Validate access rights
+activate DB
+DB --> LS: Access granted
+deactivate DB
+
+LM -> LS: Provide book details\n(Title, Author, Category, Publication Date, etc.)
+LS -> DB: Check if book already exists
+activate DB
+DB --> LS: Book does not exist
+deactivate DB
+
+LS --> LM: Prompt for confirmation to add book
+LM -> LS: Confirm addition
+
+LS -> DB: Create new book record with details
+activate DB
+DB --> LS: Book record created successfully
+deactivate DB
+
+LS --> LM: Display success message\n(Book added successfully)
+deactivate LS
+deactivate LM
+
+@enduml

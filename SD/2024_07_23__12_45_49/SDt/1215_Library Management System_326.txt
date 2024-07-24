@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+
+participant Staff as staff
+participant WebInterface as web
+participant BackendSystem as backend
+database LibraryDB as db
+
+staff -> web : Access add book interface
+activate web
+
+web -> backend : Request to add book details
+activate backend
+
+backend -> db : Check if unique ID exists
+activate db
+db --> backend : ID does not exist
+deactivate db
+
+backend -> db : Insert new book details with unique ID
+activate db
+db --> backend : Book added successfully
+deactivate db
+
+backend --> web : Confirm book addition
+deactivate backend
+
+web --> staff : Display success message
+deactivate web
+
+@enduml

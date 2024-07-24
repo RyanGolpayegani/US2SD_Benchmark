@@ -1,0 +1,42 @@
+Given the complexity and functionality described in the project description, the following is a detailed sequence diagram in PlantUML format that depicts the interactions involved when an investigator wants to view the acceptance test results. This diagram assumes a web interface for Neurohub, where results are stored and can be queried through the interface.
+
+```plantuml
+@startuml
+actor Investigator as inv
+participant "Web Interface" as web
+participant "Authentication Service" as auth
+database "Test Results DB" as db
+participant "Report Generator" as report
+
+== Authentication Process ==
+inv -> web : Access Web Interface
+web -> auth : Authenticate Request
+auth -> web : Authentication Success
+
+== View Acceptance Test Results ==
+inv -> web : Selects "View Test Results"
+web -> db : Query Test Results
+db -> web : Return Results
+web -> report : Generate Test Report
+report -> web : Test Report
+web -> inv : Display Test Results
+
+@enduml
+```
+
+This sequence diagram follows these steps:
+
+1. **Authentication Process:**
+   - The investigator accesses the Neurohub web interface.
+   - The web interface requests authentication from the Authentication Service.
+   - The Authentication Service confirms authentication and informs the web interface.
+
+2. **View Acceptance Test Results:**
+   - After being authenticated, the investigator selects the option to view test results on the web interface.
+   - The web interface queries the Test Results Database for the relevant acceptance test results.
+   - The Test Results Database returns the results to the web interface.
+   - The web interface then requests the Report Generator to create a readable and comprehensive report from these results.
+   - The Report Generator processes this request and returns the report to the web interface.
+   - Finally, the web interface displays the test results to the investigator.
+
+This sequence diagram abstracts some complexities and assumes direct interactions with a database and a generic authentication service for simplicity. Depending upon the real architecture of Neurohub, interactions might pass through more layers, or involve APIs and microservices, especially for functionalities like report generation and authentication.

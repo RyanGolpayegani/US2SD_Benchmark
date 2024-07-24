@@ -1,0 +1,36 @@
+@startuml
+participant AgencyUser as user
+participant "UI Interface" as UI
+participant "Validation Module" as Validator
+participant "Error Handling Module" as ErrorHandler
+participant "Database" as DB
+participant "Error Log" as ErrorLog
+
+user -> UI : Request Error Details
+UI -> Validator : Trigger Error Check
+activate Validator
+
+Validator -> DB : Fetch Submission Data
+activate DB
+DB --> Validator : Submission Data
+deactivate DB
+
+Validator -> ErrorHandler : Validate Data
+activate ErrorHandler
+
+ErrorHandler -> DB : Query Error Details
+activate DB
+DB --> ErrorHandler : Error Metadata
+deactivate DB
+
+ErrorHandler -> ErrorLog : Log Errors/details
+activate ErrorLog
+ErrorLog --> ErrorHandler : Logging Confirmation
+deactivate ErrorLog
+
+ErrorHandler --> Validator : Error Info
+deactivate ErrorHandler
+
+Validator --> UI : Validation Results with Errors
+UI --> user : Display Error Details
+@enduml

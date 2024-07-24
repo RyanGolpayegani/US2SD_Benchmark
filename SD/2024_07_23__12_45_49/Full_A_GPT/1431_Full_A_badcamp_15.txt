@@ -1,0 +1,32 @@
+Creating a detailed sequence diagram for the user story mentioned involves laying out the interaction between the system components (like the web server, database, and external services) from the perspective of an anonymous user who wants to learn about a particular training class. Given the requirements and the tool (PlantUML) specified, below is a representation of how the sequence of actions could be illustrated.
+
+Please note, the syntax provided here is for illustrative purposes and aims to provide a starting framework; adjustments may be needed based on specific server configurations, database structures, and external API calls (for map services, etc.) you intend to use.
+
+```plantuml
+@startuml
+actor AnonymousUser as AU
+participant WebServer as WS
+participant Database as DB
+participant MapService as MS
+
+AU -> WS : Request /training/training-title
+WS -> DB : Query details for training-title
+DB -> WS : Return training details
+WS -> MS : Request map view for location
+MS -> WS : Return map view
+WS -> AU : Display class page
+
+note over AU : Page shows:\n- Logo\n- Title\n- Trainers\n- Location\n- Datetime\n- Skill level\n- Registrations remaining\n- Map view\n- Registration link
+
+@enduml
+```
+
+Explanation of the Sequence Diagram Steps:
+1. **Anonymous User Request**: The anonymous user (AU) requests the dedicated page for a specific training title by navigating to `/training/training-title` on the web server (WS).
+2. **Web Server Queries Database**: The WS sends a query to the database (DB) to retrieve details specific to the training title requested.
+3. **Database Returns Training Details**: The DB fetches and returns the relevant details about the class, such as the logo, title, trainers, locations, datetime, skill level, and the number of registrations remaining to the WS.
+4. **Web Server Requests Map View**: For enhancing the user experience, the WS requests a map view for the class location from an external Map Service (MS).
+5. **Map Service Returns Map View**: The MS processes the request and returns a map view corresponding to the location of the class.
+6. **Display Class Page to User**: Finally, the WS combines all fetched information and presents it in a structured manner on the class page to the AU. This page includes interaction elements like the registration link.
+
+Each step elucidates how different system components interact to fulfil the anonymous user's request in a seamless manner, emphasizing efficiency and user-friendliness of the platform's architecture for delivering detailed information about each class, including a visual representation of the location.

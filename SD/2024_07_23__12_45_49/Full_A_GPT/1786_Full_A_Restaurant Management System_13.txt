@@ -1,0 +1,35 @@
+Creating a detailed sequence diagram for the user story: "As a chef, I want to delete expiry dates," involves outlining the interactions between the system components and the actions taken by the chef to delete expired ingredients from the inventory. This process typically includes authentication, navigation to inventory management, selecting an item, and confirming the deletion of its expiry date. Below is a PlantUML code representation of this sequence.
+
+```plantuml
+@startuml
+!theme plain
+
+actor Chef as chef
+participant "Authentication \nService" as AuthService
+participant "Dashboard" as Dashboard
+participant "Inventory \nManagement Module" as Inventory
+participant "Database" as DB
+
+== Authentication ==
+chef -> AuthService: Provides credentials
+AuthService -> chef: Authentication successful
+
+== Navigation ==
+chef -> Dashboard: Accesses Dashboard
+Dashboard -> Inventory: Chooses Inventory Management
+
+== Delete Expiry Date ==
+Inventory -> chef: Displays Ingredient List
+chef -> Inventory: Selects Ingredient
+Inventory -> chef: Shows Ingredient Details
+chef -> Inventory: Requests to Delete Expiry Date
+Inventory -> DB: Deletes Expiry Date from Ingredient
+DB -> Inventory: Confirms Deletion
+Inventory -> chef: Confirms Expiry Date Deleted
+
+@enduml
+```
+
+This diagram starts with the Chef logging in through an Authentication Service, then accessing the Dashboard to navigate to the Inventory Management Module. The Chef selects an ingredient to view its details and requests to delete its expiry date. The Inventory Management Module then communicates with the Database to remove the expiry date, and upon successful deletion, it confirms the action to the Chef.
+
+Remember, this is a simplified view focusing on the main interactions for deleting expiry dates. Depending on the system's complexity, additional steps or services (like logging or error handling) might be involved.

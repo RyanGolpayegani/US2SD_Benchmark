@@ -1,0 +1,33 @@
+To illustrate the sequence of operations described in the user story "As a library manager, I want to track the due dates so that I can remind the members to return the books that they borrow" using PlantUML, we will create a sequence diagram. This diagram will cover the library manager initiating the process to track due dates, the system checking the database for overdue books, and then sending reminders to the corresponding members.
+
+Given the nature of PlantUML and the complexity of library systems, this sequence will be a simplified representation focusing on key interactions:
+
+```plantuml
+@startuml
+participant LibraryManager as LM
+participant CLMSSystem as CLMS
+participant Database as DB
+participant NotificationService as NS
+participant Member as Mem
+
+LM -> CLMS: Request overdue books list
+CLMS -> DB: Query overdue books
+DB -> CLMS: Return overdue books list
+CLMS -> LM: Display overdue books list
+LM -> CLMS: Initiate reminder process for overdue books
+CLMS -> DB: Get member contact details for overdue books
+DB -> CLMS: Return member contact details
+CLMS -> NS: Prepare reminders for members
+NS -> Mem: Send reminders via email/SMS
+Mem -> NS: Acknowledge receipt
+NS -> CLMS: Confirm reminders sent
+CLMS -> LM: Confirm reminders processed
+
+@enduml
+```
+
+This sequence diagram starts with the Library Manager (LM) requesting a list of overdue books from the Comprehensive Library Management System (CLMS). The CLMS then queries its Database (DB) to find overdue books and returns a list to the Library Manager. The Library Manager instructs the CLMS to initiate a reminder process for returning those overdue books.
+
+The CLMS fetches the contact details of members associated with the overdue books from the Database and then interacts with the NotificationService (NS) to prepare and send reminders via email or SMS to the members (Mem). Members acknowledge the receipt of reminders, and the Notification Service confirms this back to the CLMS. Finally, the CLMS informs the Library Manager that the reminder process is complete.
+
+This diagram simplifies the interactions and assumes successful operations at each step. In a real-world scenario, error handling and more complex logic (such as batching reminders, member preferences for notification methods, or handling members with blocked statuses) would need to be integrated into the process.

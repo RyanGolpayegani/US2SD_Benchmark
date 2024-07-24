@@ -1,0 +1,17 @@
+@startuml
+actor "Data Reuser" as reuser
+participant "Web Interface" as web
+participant "API Gateway" as api
+participant "Dataset Management Service" as service
+database "Data Storage" as db
+
+== Viewing Dataset Versions ==
+reuser -> web : Request dataset details
+web -> api : Fetch details for dataset X
+api -> service : Get versions for dataset X
+service -> db : Query versions of dataset X
+db -> service : Return versions
+service -> api : Respond with dataset versions
+api -> web : Display dataset versions
+web -> reuser : Show dataset versions and metadata
+@enduml

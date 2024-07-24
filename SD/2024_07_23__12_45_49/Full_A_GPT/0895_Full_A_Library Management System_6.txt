@@ -1,0 +1,49 @@
+To create a detailed sequence diagram for the user story "As a customer, I want to delete a book recommendation" using PlantUML, you would need to consider the various components and actors involved in this process. The following is an example of how you might model this interaction:
+
+```
+@startuml
+actor Customer as cust
+participant "Web Interface" as web
+participant "Recommendation Controller" as recCtrl
+database "Database" as db
+
+cust -> web : Choose to delete recommendation
+activate web
+
+web -> recCtrl : Request to delete recommendation(ID)
+activate recCtrl
+
+recCtrl -> db : Query to check recommendation exists
+activate db
+
+db --> recCtrl : Recommendation details
+deactivate db
+
+recCtrl -> db : Delete recommendation by ID
+activate db
+
+db --> recCtrl : Confirmation of deletion
+deactivate db
+
+recCtrl --> web : Show success message
+deactivate recCtrl
+
+web --> cust : Display deletion success message
+deactivate web
+
+@enduml
+```
+
+Explanation:
+
+1. **Customer (Actor):** Initiates the process by choosing to delete a book recommendation through the web interface.
+   
+2. **Web Interface (Participant):** Acts as the intermediary between the customer and the recommendation controller, receiving the customer's request.
+
+3. **Recommendation Controller (Participant):** Handles the logic for deleting a recommendation. It first checks to see if the recommendation exists in the database.
+
+4. **Database (Participant):** Stores all the data related to recommendations. It is queried to find and then delete the specified recommendation.
+
+The sequence starts with the customer opting to delete a recommendation and ends with the customer being shown a success message after the recommendation has been successfully deleted from the database.
+
+This diagram outlines the main steps and the flow of information between different system components for the process of deleting a book recommendation. Adjustments might be needed based on the specific architecture and requirements of your Comprehensive Library Management System (CLMS).

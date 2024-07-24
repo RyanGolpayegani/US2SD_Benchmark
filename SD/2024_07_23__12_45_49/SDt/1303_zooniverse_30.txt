@@ -1,0 +1,40 @@
+@startuml
+participant "Zooniverse Admin" as admin
+participant "Admin Dashboard" as dashboard
+participant "Image Preclassification Module" as preclassify
+participant "Image Processing" as ip
+participant "Feature Extraction" as fe
+participant "Classification Algorithm" as ca
+participant "Image Database" as db
+
+admin -> dashboard : Selects preclassify option
+activate dashboard
+
+dashboard -> preclassify : Initiates preclassification process
+activate preclassify
+
+preclassify -> ip : Sends image data
+activate ip
+
+ip -> fe : Extracts low-level features\n(e.g., texture, color, edges)
+activate fe
+
+fe -> ca : Sends extracted features
+activate ca
+
+ca -> db : Queries similar features
+activate db
+
+db --> ca : Returns matching images
+deactivate db
+
+ca --> preclassify : Sends preclassified images\ndata with confidence levels
+deactivate ca
+
+preclassify --> dashboard : Displays preclassification results
+deactivate preclassify
+
+dashboard --> admin : Shows results & allows\nfine-tuning or confirmation
+deactivate dashboard
+
+@enduml

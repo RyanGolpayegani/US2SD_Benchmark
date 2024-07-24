@@ -1,0 +1,22 @@
+@startuml
+
+participant Researcher as R
+participant "Web Interface" as WI
+participant "Archive System" as AS
+participant "Database" as DB
+participant "Export Service" as ES
+participant "File System" as FS
+
+R->WI: Request to export descriptive data
+WI->AS: Initiate export request
+AS->DB: Query searchable metadata
+DB->AS: Return metadata results
+
+AS->ES: Prepare data in common format
+ES->FS: Fetch relevant files and metadata
+FS->ES: Return files and metadata
+ES->AS: Compile files and metadata
+AS->WI: Provide download link for compiled data
+WI->R: Display download link
+
+@enduml

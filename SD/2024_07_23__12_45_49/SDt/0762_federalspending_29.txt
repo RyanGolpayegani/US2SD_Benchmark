@@ -1,0 +1,35 @@
+@startuml
+
+actor "Data User" as dataUser
+participant "Web Interface" as webInterface
+participant "Data Submission Service" as dataSubmission
+participant "Validation Service" as validationService
+participant "Data Processor" as dataProcessor
+database "Database" as db
+
+== FABS Record Update Request ==
+
+dataUser -> webInterface : Request FABS record updates
+webInterface -> dataSubmission : Initiate FABS update process
+activate dataSubmission
+
+dataSubmission -> validationService : Validate FABS data
+activate validationService
+validationService -> dataProcessor : Process validated FABS data
+deactivate validationService
+
+activate dataProcessor
+dataProcessor -> db : Update FABS records
+activate db
+db -> dataProcessor : Confirm FABS updates
+deactivate db
+
+dataProcessor -> dataSubmission : Confirm FABS data processed
+deactivate dataProcessor
+
+dataSubmission -> webInterface : Confirm update completion
+deactivate dataSubmission
+
+webInterface -> dataUser : Display FABS update confirmation
+
+@enduml

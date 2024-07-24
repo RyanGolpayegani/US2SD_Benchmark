@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the given user story "As a MedicalCaregiver, I want to be sure that the user can decide who has access to her data" in PlantUML format involves outlining the interactions between the user (older adult), the ALFRED system, and the caregiver regarding data access permissions. Here's how you can structure this sequence:
+
+```plantuml
+@startuml
+actor User as user
+participant "ALFRED System" as alfred
+participant "Database" as db
+actor MedicalCaregiver as caregiver
+
+== User Sets Data Access Permissions ==
+user -> alfred: Opens data privacy settings
+activate alfred
+
+alfred -> db: Retrieve current settings
+activate db
+db --> alfred: Display settings
+deactivate db
+
+alfred --> user: Show data privacy settings
+user -> alfred: Modify permissions \nfor MedicalCaregiver
+activate alfred
+
+alfred -> db: Update permissions
+activate db
+db --> alfred: Confirm update
+deactivate db
+
+alfred --> user: Display update confirmation
+deactivate alfred
+
+== MedicalCaregiver Access Attempt ==
+caregiver -> alfred: Request user data access
+activate alfred
+
+alfreed -> db: Check permissions for MedicalCaregiver
+activate db
+db --> alfreed: Return access status
+deactivate db
+
+alt If Access Granted
+    alfred --> caregiver: Provide requested user data
+else If Access Denied
+    alfred --> caregiver: Deny access with \nreason "Insufficient Permissions"
+end
+deactivate alfred
+
+@enduml
+```
+
+This sequence diagram breaks down the steps involved in ensuring that a user can decide who has access to their data from the perspective of medical caregivers using the ALFRED system. It includes the user accessing and modifying their data privacy settings in the ALFRED system, the system updating these preferences in its database, and the subsequent attempt by a medical caregiver to access the user's data. Based on the user's settings, access is either granted or denied, with the ALFRED system facilitating the entire exchange.

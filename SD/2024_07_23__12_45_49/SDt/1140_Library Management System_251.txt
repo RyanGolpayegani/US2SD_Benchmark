@@ -1,0 +1,41 @@
+@startuml
+participant MemberUI
+participant AuthenticationController
+participant ProfileController
+participant Database
+
+== Edit Profile Sequence ==
+
+MemberUI -> AuthenticationController : isMemberAuthenticated()
+activate AuthenticationController
+AuthenticationController -> Database : validateMemberCredentials()
+activate Database
+Database --> AuthenticationController : AuthenticationStatus
+deactivate Database
+AuthenticationController --> MemberUI : AuthenticationResult
+deactivate AuthenticationController
+
+alt Authentication Success
+    MemberUI -> ProfileController : requestEditProfileForm()
+    activate ProfileController
+    ProfileController -> Database : fetchMemberDetails()
+    activate Database
+    Database --> ProfileController : MemberDetails
+    deactivate Database
+    ProfileController --> MemberUI : displayEditProfileForm(MemberDetails)
+    deactivate ProfileController
+
+    MemberUI -> ProfileController : submitProfileChanges(ProfileData)
+    activate ProfileController
+    ProfileController -> Database : updateMemberProfile(ProfileData)
+    activate Database
+    Database --> ProfileController : UpdateStatus
+    deactivate Database
+    ProfileEvent -\ ProfileController : notifyChanges()
+    ProfileController --> MemberUI : displaySuccessMessage()
+    deactivate ProfileController
+else Authentication Failure
+    AuthenticationController --> MemberUI : displayErrorMessage()
+    deactivate AuthenticationController
+end
+@enduml

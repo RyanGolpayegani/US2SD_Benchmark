@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the user story: "As a library manager, I want to track the reserved books, so that I will not give these books to other members," involves representing the interactions between different entities within the Comprehensive Library Management System (CLMS). Given the complexity of the system, we'll focus on the key interactions that would occur when the library manager accesses the system to track reserved books.
+
+Below is a simplified representation of the process in PlantUML format. This sequence diagram outlines the flow from the library manager initiating a query to the system responding with the list of currently reserved books.
+
+```
+@startuml
+!theme plain
+
+actor "Library Manager" as Manager
+participant ":Web Interface" as WebInterface
+participant ":CLMS Controller" as Controller
+participant ":Reservation Service" as ReservationService
+participant ":Database" as DB
+
+== Track Reserved Books ==
+
+Manager -> WebInterface : Request reserved books list
+WebInterface -> Controller : Fetch reserved books
+Controller -> ReservationService : Query reserved books
+ReservationService -> DB : Retrieve reserved books data
+DB -> ReservationService : Reserved books list
+ReservationService -> Controller : Return reserved books list
+Controller -> WebInterface : Show reserved books list
+WebInterface -> Manager : Display reserved books list
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **Library Manager Initiates Request**: The sequence begins with the library manager requesting a list of reserved books through the web interface.
+
+2. **Web Interface to CLMS Controller**: The request is forwarded to the core system controller (CLMS Controller), which handles the logic and processing of requests.
+
+3. **CLMS Controller to Reservation Service**: The controller consults the Reservation Service, a system component dedicated to managing book reservations, including tracking, updating, and querying booked reservations.
+
+4. **Reservation Service to Database**: The Reservation Service then interacts with the Database to retrieve the data about currently reserved books. This involves querying the Database with specific criteria to identify all books that are presently reserved.
+
+5. **Database Response**: The Database returns the list of reserved books to the Reservation Service.
+
+6. **Reservation Service to CLMS Controller**: The Reservation Service processes the data (if necessary) and sends the information back to the CLMS Controller.
+
+7. **CLMS Controller to Web Interface**: The CLMS Controller, having received the detailed list of reserved books, sends this information to the web interface.
+
+8. **Web Interface Displays List**: Finally, the web interface presents the list of reserved books to the library manager, who can then ensure these books are not allocated to other members until they become available.
+
+This diagram provides a high-level overview of the interactions involved in tracking reserved books in the system. Implementation details, such as specific data structures or database schema, are abstracted to focus on the sequence of operations.

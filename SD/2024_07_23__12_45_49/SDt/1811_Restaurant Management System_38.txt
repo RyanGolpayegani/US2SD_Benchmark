@@ -1,0 +1,21 @@
+@startuml
+participant Cook as cook
+participant "UI" as ui
+participant "Backend Service" as backend
+participant "Database" as db
+
+cook -> ui : Selects "Edit Product Availability"
+ui -> backend : Request to fetch current product data
+backend -> db : Query product availability
+db -> backend : Return product data
+backend -> ui : Display current availability
+ui -> cook : Show current product availability
+
+cook -> ui : Updates availability
+ui -> backend : Submit updated availability
+backend -> db : Update product availability in database
+db -> backend : Confirm update success
+backend -> ui : Confirm update to cook
+ui -> cook : Show success message
+
+@enduml

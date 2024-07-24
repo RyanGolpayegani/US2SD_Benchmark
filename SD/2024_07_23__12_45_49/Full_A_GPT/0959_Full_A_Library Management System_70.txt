@@ -1,0 +1,42 @@
+Creating a detailed sequence diagram in PlantUML format for the user story "As a librarian, I want to know which books have not returned" involves displaying the interaction between the librarian, the Comprehensive Library Management System (CLMS), and the database system. Here's how this interaction could be illustrated in PlantUML code:
+
+```plantuml
+@startuml
+actor Librarian
+participant "CLMS Web Interface" as Web
+participant "CLMS Backend System" as Backend
+database "Library Database" as DB
+
+Librarian -> Web : Access Unreturned Books Section
+activate Web
+Web -> Backend : Request List of Unreturned Books
+activate Backend
+
+Backend -> DB : Query Unreturned Books
+activate DB
+DB --> Backend : Return Unreturned Books Data
+deactivate DB
+
+Backend --> Web : Display Unreturned Books List
+deactivate Backend
+Web --> Librarian : Show Unreturned Books Information
+deactivate Web
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Librarian** starts the process by accessing the section of the Comprehensive Library Management System (CLMS) that lists unreturned books. This interaction happens through the CLMS Web Interface.
+
+2. The **CLMS Web Interface** receives the request and forwards it to the **CLMS Backend System** to retrieve the list of books that have not been returned.
+
+3. The **CLMS Backend System** then queries the **Library Database** for books that have been borrowed but not yet returned by the due date.
+
+4. The **Library Database** processes the query and returns the data concerning unreturned books back to the CLMS Backend System.
+
+5. The **CLMS Backend System** receives the data and responds to the CLMS Web Interface by sending the information of unreturned books.
+
+6. Finally, the **CLMS Web Interface** displays the list of unreturned books to the Librarian, completing the interaction.
+
+This sequence diagram is a high-level representation. Actual implementation details might require additional steps, including authentication and authorization steps to ensure that the request is made by a legit librarian, error handling mechanisms for dealing with potential system failures, and possibly paginating the results if the list of unreturned books is extensive.

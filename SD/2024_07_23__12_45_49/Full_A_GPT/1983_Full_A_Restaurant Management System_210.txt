@@ -1,0 +1,42 @@
+Generating a detailed Sequence Diagram for this specific user story in PlantUML format requires illustrating the interactions between different entities such as the Manager, Menu Management System, Inventory System, and potentially the Database. Here's how this could be structured:
+
+```plantuml
+@startuml
+participant Manager
+participant MenuManagementSystem
+participant InventorySystem
+participant Database
+
+Manager -> MenuManagementSystem : Request to view current menu
+MenuManagementSystem -> Database : Fetch menu items
+Database -> MenuManagementSystem : Menu items data
+MenuManagementSystem -> Manager : Display menu items
+
+Manager -> MenuManagementSystem : Select item(s) to be removed
+MenuManagementSystem -> InventorySystem : Check item stock
+InventorySystem -> Database : Query stock levels
+Database -> InventorySystem : Stock levels data
+InventorySystem -> MenuManagementSystem : Stock status (Out of stock)
+
+MenuManagementSystem -> Database : Update item status (Disable/Mark as out of stock)
+Database -> MenuManagementSystem : Confirmation of update
+MenuManagementSystem -> Manager : Confirm item removal/update
+@enduml
+```
+This sequence diagram illustrates the process a manager might undertake to remove or temporarily disable items from the digital menu because they are out of stock or not available. The steps involved include the Manager initiating the process, interfacing with the Menu Management System to select items, checking these items against the Inventory System for stock levels, and then updating the item's status in the Database, so they no longer appear available to customers.
+
+Explanation of the Sequence Diagram Steps:
+
+1. **Manager to Menu Management System**: The manager starts by requesting to view the current menu from the Menu Management System.
+2. **Menu Management System to Database**: The Menu Management System retrieves the current menu items from the Database.
+3. **Database to Menu Management System**: The Database returns the list of menu items.
+4. **Menu Management System to Manager**: The retrieved list of menu items is presented to the Manager.
+5. **Manager Selection**: The Manager selects specific items to be removed or temporarily disabled due to stock issues.
+6. **Menu Management System to Inventory System**: To ensure the accuracy of this operation, the Menu Management System checks the stock status of these items with the Inventory System.
+7. **Inventory System to Database**: The Inventory System queries the Database for the current stock levels of the selected items.
+8. **Database to Inventory System**: The Database returns the stock levels to the Inventory System.
+9. **Stock Status**: The Inventory System informs the Menu Management System of the stock status (e.g., out of stock), prompting an update.
+10. **Menu Management System to Database**: The Menu Management System updates the status of these items in the Database (marking them as unavailable or out of stock).
+11. **Confirmation**: Finally, the Database confirms the update, and the Menu Management System notifies the Manager that the menu has been successfully updated.
+
+This sequence ensures that menu item availability accurately reflects inventory levels, preventing customers from ordering items that are not in stock.

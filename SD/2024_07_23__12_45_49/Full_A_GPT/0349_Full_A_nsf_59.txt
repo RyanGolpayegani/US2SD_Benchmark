@@ -1,0 +1,30 @@
+Creating a detailed sequence diagram for the user story "As an author, I want to be able to indent / outdent content" using PlantUML requires breaking down the interaction between the user (in this case, the author), the interface they interact with (perhaps a CMS within the beta.nsf.gov website), and any relevant backend components that facilitate the indenting/outdenting functionality.
+
+Please note, the sequence diagram below assumes a web-based CMS and simplifies some steps to focus on the main interactions for indenting/outdenting content. The actual implementation may vary based on the specific CMS and technologies used.
+
+```plantuml
+@startuml
+participant Author
+participant CMS_UI as "CMS Interface"
+participant CMS_Backend as "CMS Backend"
+participant Database as "Database"
+
+Author -> CMS_UI : Selects text to indent/outdent
+CMS_UI -> CMS_Backend : Request to indent/outdent content
+alt if indent
+    CMS_Backend -> Database : Increase indent level
+else if outdent
+    CMS_Backend -> Database : Decrease indent level
+else
+    CMS_Backend -> Database : No change
+end
+Database --> CMS_Backend : Confirm change
+CMS_Backend --> CMS_UI : Update display
+CMS_UI --> Author : Display updated content
+
+@enduml
+```
+
+In this scenario, the author interacts with the CMS Interface (CMS_UI) to select the desired text they want to indent or outdent. The CMS UI then sends a request to the backend system (CMS_Backend) indicating whether the text should be indented or outdented. The backend decides on the action to take—either increasing or decreasing the indent level of the selected content, which is stored in a database (Database). Once the Database confirms the action, the updated content is sent back through the stack to the CMS Interface, which then updates the display for the Author.
+
+This sequence highlights the fundamental interactions for the indent/outdent functionality but omits detailed error handling, authentication, and other system interactions for clarity. Additional complexities, such as updating the page's HTML structure and handling permissions, would likely be part of a full implementation.

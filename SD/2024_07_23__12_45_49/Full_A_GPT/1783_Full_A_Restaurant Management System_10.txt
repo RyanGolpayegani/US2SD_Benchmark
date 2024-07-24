@@ -1,0 +1,56 @@
+To create a sequence diagram for the user story "As a chef, I want to create dishes so that I can follow customer comments" using PlantUML, we will visualize the interaction between the system's components required for a chef to create a dish and then view customer comments on those dishes. The components involved in this process might include the Chef interface, Menu Management system, Database, and the Feedback system. 
+
+**PlantUML Code:**
+
+```plantuml
+@startuml
+actor Chef
+participant "Menu Management System" as Menu
+database "Database" as DB
+participant "Feedback System" as Feedback
+
+note over Chef, Feedback : Chef creates dishes and follows up on customer comments
+
+Chef -> Menu : select "Create New Dish"
+activate Menu
+
+Menu -> DB : save new dish details
+activate DB
+DB --> Menu : confirm dish creation
+deactivate DB
+
+Menu --> Chef : show creation success message
+deactivate Menu
+
+... time passes ...
+
+Chef -> Menu : request to view dishes
+activate Menu
+Menu -> DB : query dish details
+activate DB
+DB --> Menu : return dish details
+deactivate DB
+Menu --> Chef : display dishes
+deactivate Menu
+
+Chef -> Feedback : select dish to view comments
+activate Feedback
+Feedback -> DB : query comments for dish
+activate DB
+DB --> Feedback : return comments
+deactivate DB
+Feedback --> Chef : display comments
+deactivate Feedback
+
+@enduml
+```
+
+**Explanation of the Sequence:**
+1. **Chef initiates the creation of a new dish:** The chef accesses the Menu Management System to create a new dish, which involves inputting details about the dish such as name, ingredients, price, and any other relevant information.
+2. **Saving the new dish:** The Menu Management System communicates with the Database to save the new dish's details. Upon successful saving, the system confirms the dish creation back to the Menu Management System.
+3. **Confirmation to the Chef:** The Menu Management System then notifies the chef that the dish has been successfully created.
+4. **Time passes as the dish becomes available to customers and they start giving feedback.**
+5. **Chef requests to view dishes:** Later, the chef uses the system again to view dishes, possibly to update them or check on their performance.
+6. **Viewing customer comments:** The chef selects a dish to view customer comments, which prompts the Feedback System to retrieve comments from the Database. The comments are then displayed to the chef.
+
+This sequence diagram outlines the key interactions and steps involved as a chef creates a dish and later views customer comments on that dish within the Restaurant Management and Operations System.

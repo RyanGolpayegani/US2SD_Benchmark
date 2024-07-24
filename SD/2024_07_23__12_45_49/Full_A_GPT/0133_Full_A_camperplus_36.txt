@@ -1,0 +1,42 @@
+Below is an example of a sequence diagram in PlantUML format, outlining the interactions involved for a parent to view submitted consent forms as per the provided user story. This sequence diagram assumes the presence of a web-based platform interface that the parent interacts with, as well as a backend system comprising a server that handles requests and a database where camper and consent forms data is stored.
+
+```plantuml
+@startuml
+actor Parent as P
+participant "Web Interface" as UI
+participant "Server" as S
+database "Database" as DB
+
+== Parent Views Submitted Consent Forms ==
+P -> UI : Navigate to consent forms section
+activate P
+activate UI
+
+UI -> S : Request to fetch submitted consent forms
+activate S
+
+S -> DB : Query submitted consent forms for Parent's child(ren)
+activate DB
+
+DB --> S : Return list of submitted consent forms
+deactivate DB
+
+S --> UI : Show submitted consent forms
+deactivate S
+
+UI --> P : Display submitted consent forms
+deactivate UI
+deactivate P
+
+@enduml
+```
+
+This sequence diagram starts with the Parent (actor) navigating to the consent forms section of the web interface. The interaction then flows as follows:
+1. **Parent navigates to the consent forms section:** The Parent interacts with the web interface by navigating to the specific section where consent forms are managed.
+2. **Web Interface requests data from the Server:** The web interface sends a request to the server to fetch the list of submitted consent forms associated with the Parent's child or children.
+3. **Server queries the Database:** The server processes this request and queries the database to retrieve the information regarding the consent forms that have been submitted by the Parent.
+4. **Database returns data to the Server:** The database responds with the list of submitted consent forms.
+5. **Server sends data back to the Web Interface:** The server then sends this information back to the web interface, where it is formatted appropriately.
+6. **Web Interface displays the submitted consent forms to the Parent:** Finally, the web interface presents the information about submitted consent forms to the Parent, successfully completing the interaction.
+
+This sequence diagram provides a high-level view of the interactions involved in allowing a Parent to view which consent forms they have submitted. The main components involved in this process are the Parent (user), the Web Interface (frontend layer), the Server (application logic layer), and the Database (data storage layer).

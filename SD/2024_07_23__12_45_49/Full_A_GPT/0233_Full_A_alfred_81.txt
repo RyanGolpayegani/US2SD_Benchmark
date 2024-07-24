@@ -1,0 +1,39 @@
+Creating a detailed sequence diagram in PlantUML requires specifying the interactions between various components in a request-response pattern to implement the desired user story. For the specified user story, "As an OlderPerson, I want ALFRED to enable me to have face-to-face contacts as well, so that I do not just have virtual contacts over ALFRED", we need to consider several key components of the ALFRED system, such as the User Interface (UI), the Speech Recognition Service, the Contact Management System, and potentially an external Calendar or Event Scheduling service.
+
+The sequence diagram below illustrates a possible scenario where an OlderPerson uses ALFRED to schedule a face-to-face meeting with a friend or family member. This scenario assumes that ALFRED has internet connectivity and access to an external service for managing calendars or schedules.
+
+```puml
+@startuml
+actor OlderPerson as user
+participant "Speech Recognition" as SR
+participant "ALFRED UI" as UI
+participant "Contact Management" as CM
+participant "Calendar/Scheduling Service" as Calendar
+participant "Friend/Family Member Device" as FriendDevice
+
+user -> SR: "Schedule a meeting with [Friend]"
+SR -> UI: Convert voice to text
+UI -> CM: Search for [Friend]'s contact details
+CM -> UI: Display [Friend]'s contact information
+UI -> Calendar: Request available times for meeting
+Calendar -> UI: Show available times
+UI -> user: Present available times
+user -> SR: "Select [time/date]"
+SR -> UI: Convert selection to command
+UI -> Calendar: Schedule meeting for [time/date]
+Calendar -> UI: Confirm meeting scheduled
+UI -> FriendDevice: Send meeting invitation
+FriendDevice -> UI: Receive confirmation
+UI -> user: "Meeting with [Friend] scheduled for [time/date]"
+@enduml
+```
+
+### Explanation
+1. **OlderPerson (user)**: Initiates the process by voicing out the desire to schedule a meeting through the ALFRED system.
+2. **Speech Recognition (SR)**: Interprets the voice command and transmits the intention to the ALFRED UI.
+3. **ALFRED UI**: Acts as the intermediary, converting voice commands into actions, displaying information, and receiving user confirmations.
+4. **Contact Management (CM)**: Searches for and displays the contact details of the person the OlderPerson wishes to meet with.
+5. **Calendar/Scheduling Service (Calendar)**: Interacts with the ALFRED UI to provide available times and dates for the meeting and schedules the meeting upon receiving confirmation.
+6. **Friend/Family Member Device (FriendDevice)**: Receives the meeting invitation and sends back a confirmation that is relayed to the OlderPerson.
+
+This sequence diagram simplifies the communication process involved in scheduling a face-to-face meeting through the ALFRED assistive technology, focusing on the major interactions and components. Adjustments may be needed based on actual system architecture and service availability.

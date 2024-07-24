@@ -1,0 +1,58 @@
+Given the specific request and the nature of the user story involving a library manager wanting to access a library member's contact information, the following is a detailed sequence diagram outlined in PlantUML format. This sequence will envision the process from the perspective of initiating the request through the system interface, processing the request, interacting with the database, and finally displaying the information to the manager.
+
+To illustrate this, a simple scenario is considered where the library manager logs into the system, navigates to the member management section, searches for a specific member, and requests to view their contact information.
+
+```plantuml
+@startuml
+actor Manager
+participant "UI Interface" as UI
+participant "Server" as Server
+participant "Database" as DB
+
+== Request Member Contact Information ==
+Manager -> UI : Login(credentials)
+UI -> Server : Validate Manager Login
+Server -> DB : Query Manager Credentials
+DB -> Server : Return Credentials Validation
+Server -> UI : Authentication Status
+UI --> Manager : Display Authentication Result
+
+alt Authentication Successful
+    Manager -> UI : Navigate to Member Management
+    UI -> Server : Request Member List
+    Server -> DB : Query Member Data
+    DB -> Server : Return Member Data
+    Server -> UI : Display Members
+    UI --> Manager : Show Member List
+
+    Manager -> UI : Select Member
+    UI -> Server : Request Member Contact Info
+    Server -> DB : Query Contact Info for Member
+    DB -> Server : Return Member Contact Info
+    Server -> UI : Display Member Contact Info
+    UI --> for Manager : Show Member Contact Info
+else Authentication Failure
+    UI --> Manager : Show Login Error
+end
+
+@enduml
+```
+
+### Explanation:
+1. **Authentication Phase:**
+   - The sequence begins with the 'Manager' initiating a login request through the 'UI Interface' by providing their credentials.
+   - The 'UI Interface' sends these credentials to the 'Server' for validation.
+   - The 'Server' queries the 'Database' with the credentials to validate the manager's identity.
+   - Based on the response from the 'Database', the 'Server' informs the 'UI Interface' of the authentication status.
+   - The 'UI Interface' displays the result of the authentication attempt to the 'Manager'. If the authentication fails, an error is displayed and the process ends.
+
+2. **Viewing Member Contact Information (Post-Authentication):**
+   - Upon successful authentication, the manager navigates to the member management section.
+   - The 'UI Interface' requests the list of library members from the 'Server', which in turn queries the 'Database' for member information.
+   - The 'Database' returns the member data to the 'Server', which forwards it to the 'UI Interface' for display.
+   - The manager selects a member whose contact info they wish to view.
+   - The 'UI Interface' requests the selected member's contact information from the 'Server'.
+   - The 'Server' queries the 'Database' for the requested contact info, which returns the data.
+   - Finally, the 'Server' sends the contact information to the 'UI Interface', which displays it to the manager.
+
+This sequence diagram provides a high-level overview of the steps involved in retrieving a library member's contact information from the system from the perspective of a library manager.

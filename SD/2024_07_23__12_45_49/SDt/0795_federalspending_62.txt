@@ -1,0 +1,28 @@
+@startuml
+participant UserUI as "User Interface"
+participant BrokerSystem as "Broker System"
+participant ValidationService as "Validation Service"
+participant DataProcessing as "Data Processing Service"
+participant USAspendingAPI as "USAspending API"
+participant FABSModule as "FABS Module"
+participant USAspendingDB as "USAspending Database"
+
+UserUI -> BrokerSystem: Request raw agency files
+BrokerSystem -> ValidationService: Validate User Request
+ValidationService -> BrokerSystem: Validation Response
+
+alt if Request is valid
+    BrokerSystem -> DataProcessing: Process Request for raw files
+    DataProcessing -> FABSModule: Request raw files from FABS
+    FABSModule -> USAspendingAPI: Call for raw agency files
+    USAspendingAPI -> USAspendingDB: Retrieve raw files
+    USAspendingDB -> USAspendingAPI: Raw files data
+    USAspendingAPI -> FABSModule: Raw files response
+    FABSModule -> DataProcessing: Raw files processed
+    DataProcessing -> BrokerSystem: Data ready for User
+    BrokerSystem -> UserUI: Provide access to raw files
+else Request is invalid
+    BrokerSystem -> UserUI: Error Message (Invalid Request)
+end
+
+@enduml

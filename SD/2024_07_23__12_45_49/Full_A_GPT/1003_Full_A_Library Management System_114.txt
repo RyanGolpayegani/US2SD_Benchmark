@@ -1,0 +1,41 @@
+Below is a detailed sequence diagram in PlantUML format depicting the process of calculating fines for delayed returns from the perspective of a library manager within the Comprehensive Library Management System (CLMS). Please note, in a real implementation, some steps could be simplified or more detailed based on actual system design and requirements.
+
+```plantuml
+@startuml
+!theme plain
+
+participant "Library Manager" as LM
+participant "Library Management\nSystem Interface" as LMS
+participant "Database" as DB
+participant "Fines Calculator" as FC
+
+LM -> LMS : Request to calculate fines
+activate LM
+activate LMS
+
+LMS -> DB : Get Return Details\n(Book ID, User ID, Due Date)
+activate DB
+
+DB -> DB: Fetch details
+DB --> LMS : Return Details
+
+LMS -> FC : Calculate fines based on\nDue Date and Current Date
+activate FC
+
+FC -> FC : Compute fines
+FC --> LMS : Fines Information
+
+LMS -> DB : Update User Account\nwith fines
+DB -> DB : Update operation
+DB --> LMS : Update Confirmation
+
+LMS --> LM : Display fines information and\nConfirmation of update
+deactivate DB
+deactivate FC
+deactivate LMS
+deactivate LM
+
+@enduml
+```
+
+This sequence diagram illustrates the process flow from the library manager's request to calculate fines for delayed returns, going through the system interface, involving data retrieval and update from the database, and utilizing a fines calculator component to compute fines based on due dates and current dates. Afterwards, it shows the update of the user's account with the calculated fines and the confirmation of this update to the library manager.

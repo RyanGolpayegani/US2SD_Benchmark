@@ -1,0 +1,50 @@
+Given the requirements of your user story, I'll provide a PlantUML sequence diagram that outlines the process a moderator would follow to create a new game, with an optional description, before inviting estimators using the Agile Estimation and Planning Tool (AEPT).
+
+Please note, since the sequence diagram is textual, you'll need to use a PlantUML processor (available in many development environments or online editors) to visualize the diagram.
+
+```plantuml
+@startuml
+actor Moderator
+participant "Web Interface" as UI
+participant "Game Management System" as GMS
+database "Database" as DB
+
+Moderator -> UI : Access Create Game Page
+activate UI
+
+UI -> GMS : Render Create Game Form
+activate GMS
+
+GMS -> UI : Display Form
+activate UI
+deactivate GMS
+
+Moderator -> UI : Enter Game Name and Description
+activate UI
+
+UI -> GMS : Submit Game Creation Request (Name, Description)
+activate GMS
+
+GMS -> DB : Store Game Information
+activate DB
+DB --> GMS : Confirmation
+deactivate DB
+GMS -> UI : Game Created Successfully
+deactivate GMS
+
+UI --> Moderator : Display Success Message & Shareable URL
+deactivate UI
+@enduml
+```
+This sequence diagram describes the following steps for the user story:
+
+1. The Moderator accesses the game creation page through the web interface.
+2. The Web Interface requests the game management system to render the form for creating a new game.
+3. The Game Management System sends the form to the Web Interface, which is then displayed to the Moderator.
+4. The Moderator inputs the required game name and an optional description and submits this information via the Web Interface.
+5. The Web Interface forwards this information to the Game Management System to process the game creation request.
+6. The Game Management System subsequently stores this information in the database.
+7. Once the information is successfully stored, the Game Management System notifies the Web Interface of the successful game creation.
+8. The Web Interface displays a success message to the Moderator, along with a shareable URL that can be used to invite estimators to the game.
+
+For actual implementation, this diagram can be refined further based on specific technologies used and additional functionalities or constraints of the Agile Estimation and Planning Tool.

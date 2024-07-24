@@ -1,0 +1,25 @@
+@startuml
+actor Administrator
+participant "Digital Repository \nSystem Admin Panel" as AdminPanel
+participant "Authentication \nService" as AuthService
+participant "Integration \nModule" as IntegrationModule
+participant "External Systems \n(Symplectic Elements, \nActivity Insight)" as ExternalSystems
+participant "Data Aggregation \nService" as AggregationService
+participant "Reporting Tool" as ReportingTool
+
+== Track Faculty Scholarly Output ==
+
+Administrator -> AdminPanel: Initiate tracking request
+AdminPanel -> AuthService: Validate admin credentials
+AuthService -> AdminPanel: Confirmation
+
+AdminPanel -> IntegrationModule: Request faculty output data
+IntegrationModule -> ExternalSystems: Query data
+ExternalSystems -> IntegrationModule: Return data
+IntegrationModule -> AggregationService: Combine data
+AggregationService -> ReportingTool: Generate reports
+
+ReportingTool -> AdminPanel: Display reports
+AdminPanel -> Administrator: Review reports for personnel decisions
+
+@enduml

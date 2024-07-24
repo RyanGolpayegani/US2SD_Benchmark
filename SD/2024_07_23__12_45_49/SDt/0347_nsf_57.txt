@@ -1,0 +1,31 @@
+@startuml
+participant UserResearcher as researcher
+participant "UI for Drafting Plan" as ui
+participant "Project Management Team" as pmTeam
+participant "Participant Management System" as participantSys
+
+researcher -> ui: Access UI
+ui -> researcher: Show Plan Template
+
+researcher -> ui: Draft Research Plan
+ui -> researcher: Confirm Draft Completion
+
+researcher -> pmTeam: Submit Draft for Review
+pmTeam -> researcher: Review Feedback
+
+alt Approval
+    pmTeam -> researcher: Approve Plan
+    researcher -> participantSys: Initiate Participant Recruitment
+    participantSys -> researcher: Confirmation & Recruitment Details
+else Revision Needed
+    pmTeam -> researcher: Request Revisions
+    researcher -> ui: Revise Draft
+    repeat
+        researcher -> pmTeam: Resubmit Draft
+        pmTeam -> researcher: Review Feedback
+    until (Approval)
+    researcher -> participantSys: Initiate Participant Recruitment
+    participantSys -> researcher: Confirmation & Recruitment Details
+end
+
+@enduml

@@ -1,0 +1,33 @@
+Creating a detailed sequence diagram with PlantUML for the user story you provided involves depicting the interactions between different components of the AEPT system as it handles a participant's request to change their estimate before the draw is completed. Below is a simplified version of what this might look like.
+
+```plantuml
+@startuml
+participant Participant as user
+participant "Web Interface" as web
+participant "Game Server" as server
+database "Estimation Database" as db
+
+user -> web : Request to change estimate
+alt if draw not completed
+  web -> server : Verify draw status
+  server -> db : Fetch current draw status
+  db --> server : draw = ongoing
+  server --> web : Allow estimate change
+  web -> user : Display estimate change UI
+
+  user -> web : Submit new estimate
+  web -> server : Update estimate
+  server -> db : Save new estimate
+  db --> server : Estimate updated
+  server --> web : Confirm update
+  web -> user : Display success message
+else if draw completed
+  server --> web : Deny estimate change
+  web -> user : Display error message(draw completed)
+end
+@enduml
+```
+
+This diagram illustrates the basic flow when a participant wants to change their estimate, given the condition that the draw has not been completed. The process begins with the participant's request and goes through verification of the draw's status. If the draw is still ongoing, the system allows the estimate to be changed and updated in the database. If the draw has been completed, the system denies the change and informs the participant accordingly.
+
+Please note, this sequence diagram represents a simplified view focusing on the main interactions for the specific user story. Implementing this in a real project might involve more detailed checks, error handling, and security considerations.

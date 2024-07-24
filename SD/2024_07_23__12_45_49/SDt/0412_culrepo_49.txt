@@ -1,0 +1,26 @@
+@startuml
+actor Student as st
+participant "Web UI" as ui
+participant "Authentication System" as auth
+participant "Search Controller" as search
+database "Content Database" as db
+
+st -> ui : Access the repository
+ui -> auth : Authenticate request
+auth -> ui : Authentication success
+
+st -> ui : Enter search query for topic
+ui -> search : Initiate search for topic
+search -> db : Query research related to topic
+db -> search : Return search results
+search -> ui : Display research results
+ui -> st : Show research information, investigators
+
+st -> ui : Select specific research details
+ui -> search : Request detailed information
+search -> db : Retrieve detailed information
+db -> search : Return detailed information
+search -> ui : Display detailed information
+ui -> st : Show details (researchers, papers, etc.)
+
+@enduml

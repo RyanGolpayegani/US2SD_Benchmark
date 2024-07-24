@@ -1,0 +1,57 @@
+@startuml
+actor Depositor
+participant "Web Interface" as Web
+participant "Authentication Service" as Auth
+participant "Dataset Management System" as DMS
+participant "Permissions Database" as Permissions
+
+== Allow Delegation for Data Deposit ==
+
+Depositor -> Web: Accesses permission settings
+activate Web
+
+Web -> Auth: Request authentication
+activate Auth
+
+Auth --> Web: Authentication successful
+deactivate Auth
+
+Web -> Depositor: Show permission settings form
+Depositor -> Web: Specifies delegate
+Web -> Permissions: Update permissions
+activate Permissions
+
+Permissions --> Web: Permissions updated
+deactivate Permissions
+
+Web -> Depositor: Confirm delegation success
+deactivate Web
+
+== Delegation Attempt by Delegate ==
+
+actor Delegate
+Delegate -> Web: Attempts to deposit data
+activate Web
+
+Web -> Auth: Request authentication
+activate Auth
+
+Auth --> Web: Authentication successful
+deactivate Auth
+
+Web -> Permissions: Check permissions for Delegate
+activate Permissions
+
+Permissions --> Web: Permission granted
+deactivate Permissions
+
+Web -> DMS: Initiate deposit process
+activate DMS
+
+DMS --> Web: Data deposit successful
+deactivate DMD
+
+Web -> Delegate: Confirm data deposit success
+deactivate Web
+
+@enduml

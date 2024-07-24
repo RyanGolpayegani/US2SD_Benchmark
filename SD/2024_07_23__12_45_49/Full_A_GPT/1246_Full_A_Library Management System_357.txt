@@ -1,0 +1,41 @@
+Creating a detailed sequence diagram for the described user story in PlantUML format involves illustrating the interactions between different system components as a staff member assigns a unique ID number to a book. Here is how the sequence could be represented in PlantUML syntax:
+
+```plantuml
+@startuml
+participant Staff as S
+participant "Library Management\nSystem" as LMS
+database "Database" as DB
+
+== Assign Unique ID to a Book ==
+
+S -> LMS : Request to assign unique ID
+activate LMS
+
+LMS -> DB : Check last assigned ID
+activate DB
+DB --> LMS : Last ID = X
+deactivate DB
+
+LMS -> LMS : Generate unique ID (X+1)
+LMS -> DB : Save new ID with book details
+activate DB
+DB --> LMS : Confirmation
+deactivate DB
+
+LMS --> S : Unique ID (X+1) assigned
+deactivate LMS
+@enduml
+```
+
+Explanation of the Sequence Diagram Steps:
+1. **Activation of the Library Management System**: The interaction begins with the staff initiating a request to assign a unique ID to a book. This step activates the Library Management System (LMS), which will handle this process.
+
+2. **Database Query for Last Assigned ID**: The LMS then communicates with the Database to check for the last assigned unique ID number. The Database returns the last ID value (X) it has on record.
+
+3. **Generation of a New Unique ID**: With the information from the Database, the LMS calculates the next unique ID by incrementing the last one (X+1).
+
+4. **Saving New ID with Book Details**: The new unique ID is then paired with the book's details and saved back in the Database. The Database confirms the operation.
+
+5. **Confirmation to Staff**: Finally, the LMS informs the staff that the unique ID has been successfully assigned to the book. At this point, the process is complete.
+
+This sequence diagram depicts a simplified interaction flow for assigning unique IDs to books in the Comprehensive Library, Management System (CLMS), keeping track of all operations centrally through the LMS and Database components.

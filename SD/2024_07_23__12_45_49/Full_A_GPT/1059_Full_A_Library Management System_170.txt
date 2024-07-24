@@ -1,0 +1,61 @@
+To fulfill the request, I'll provide a PlantUML sequence diagram detailing the process for sending a due date notification to a library member. This sequence involves interactions between the library member (user), the library management system (CLMS), and possibly a notification service that sends out the email or SMS. 
+
+Given the broad description of the Comprehensive Library Management System (CLMS), the diagram will reflect a simplified view focusing on the key components relevant to sending a due date notification.
+
+Please note: PlantUML syntax is straightforward, but interpreting the diagram requires basic knowledge of sequence diagrams.
+
+```plantuml
+@startuml
+participant LibraryMember as member
+participant "CLMS" as system
+participant "Notification Service" as notifyService
+participant "Database" as database
+
+member -> system : Logs in to the Library System
+activate system
+
+system -> database : Verifies member login
+activate database
+database --> system : Login Success
+deactivate database
+
+system -> system : Checks if any borrowed books are due soon
+activate system
+
+system -> database : Fetch member's borrowed books with due dates
+activate database
+database --> system : Returns list of books and due dates
+deactivate database
+
+loop for each book with due date approaching
+    system -> notifyService : Prepare due date notification
+    activate notifyService
+    notifyService -> system : Notification prepared
+    system -> notifyService : Send due date notification to member
+    notify.
+
+
+
+    notifyService -> member : Sends due date Email/SMS
+    deactivate notifyService
+end
+
+member --> system : Acknowledges notification
+deactivate system
+
+@enduml
+```
+
+This diagram focuses on the critical steps from the member's perspective when they're set to receive a due notification for borrowed books. The sequence illustrates interactions primarily between the user, the CLMS backend system, a notification service subsystem (which could be an internal module or an integrated third-party service), and the system's database.
+
+**Key Steps:**
+
+1. **Member Login:** A library member logs into the CLMS, and their login is verified against the system's database.
+2. **Check Due Dates:** The system checks if the member has any borrowed books with approaching due dates.
+3. **Fetch Borrowed Books:** The system fetches details on the member's borrowed books and their due dates from the database.
+4. **Prepare Notification:** For each book with a due date approaching, the system instructs the notification service to prepare a due date notification.
+5. **Send Notification:** The notification service sends an email or SMS notification to the library member about the due date.
+6. **Acknowledgment:** The member acknowledges the receipt of the notification, completing the interaction.
+
+**Assumptions:**
+- The library system automatically checks for approaching due dates at regular intervals or upon user login.

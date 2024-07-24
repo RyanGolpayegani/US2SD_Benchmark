@@ -1,0 +1,37 @@
+Given the requirement, below is a high-level sequence diagram in PlantUML format to represent the process where a participant starts a two-minute countdown timer that all participants can see during an estimation session in the Agile Estimation and Planning Tool (AEPT). This sequence diagram focuses on key interactions between the system components to accomplish this user story.
+
+```plantuml
+@startuml
+participant Participant as P
+participant "UI Interface" as UI
+participant "Server" as S
+participant "Timer Service" as TS
+participant "Broadcast Service" as BS
+participant "Client Browser" as CB
+
+P -> UI : Requests to start countdown
+UI -> S : Initiates start countdown command
+S -> TS : Triggers 2-minute timer
+activate TS
+TS -> TS : Counts down for 2 minutes
+deactivate TS
+TS -> BS : Timer ends, notify completion
+BS -> CB : Broadcasts timer completion to all connected clients
+CB -> CB : Displays timer to all Participants
+@enduml
+```
+
+### Explanation:
+1. **Participant (P) requests to start the countdown:** This represents the action of the user (participant) initiating the timer. This could be through a button click or a similar action in the application's user interface (UI).
+
+2. **UI Interface forwards the request:** The UI Interface takes the participant's request and forwards it to the server to handle the logic of starting a countdown timer.
+
+3. **Server (S) triggers the Timer Service (TS):** Upon receiving the request, the server invokes the Timer Service, which is responsible for managing the countdown.
+
+4. **Timer Service counts down:** The Timer Service actively counts down for two minutes. During this countdown, it is assumed to manage the time internally until completion.
+
+5. **Broadcast Service notification:** When the Timer Service concludes the countdown, it notifies the Broadcast Service that the timer has ended.
+
+6. **Broadcast Service to Client Browser:** The Broadcast Service then communicates with all connected client browsers (CB), ensuring every participant sees the timer's completion simultaneously.
+
+By structuring the sequence in this manner, the diagram highlights the primary flow of interactions required to enable a participant to start a two-minute countdown visible to all participants in the session. Note that for simplicity, error handling, and detailed internal processes (such as authentication or message formatting) are not depicted in this overview.

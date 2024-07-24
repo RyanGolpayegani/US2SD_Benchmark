@@ -1,0 +1,29 @@
+@startuml
+participant WorkshopAttendee as attendee
+participant WorkshopFacilitator as facilitator
+participant CMS
+participant "SummaryTool" as tool
+
+note over attendee, facilitator: Workshop Ends
+
+facilitator -> CMS : Update content with workshop details
+activate CMS
+CMS --> facilitator : Confirm update
+deactivate CMS
+
+group Optional: Generate Summary
+    facilitator -> tool : Initiate summary generation
+    activate tool
+    tool -> CMS : Fetch content
+    activate CMS
+    CMS --> tool : Provide content
+    deactivate CMS
+    tool -> tool : Generate summary
+    tool --> facilitator : Provide summary link
+    deactivate tool
+end
+
+facilitator -> attendee : Provide access to workshop summary
+note over attendee: Reviews summary
+
+@enduml

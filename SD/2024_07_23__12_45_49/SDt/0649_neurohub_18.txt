@@ -1,0 +1,37 @@
+@startuml
+actor Researcher
+participant "Web Interface" as Web
+participant "Logbook Service" as LogService
+database "Neurohub Database" as DB
+
+Researcher -> Web : Access Logbook Section
+activate Web
+
+Web -> LogService : Request logbook creation page
+activate LogService
+
+LogService -> Web : Provides logbook creation form
+deactivate LogService
+
+Web -> Researcher : Display logbook creation form
+deactivate Web
+
+Researcher -> Web : Submit filled form
+activate Web
+
+Web -> LogService : Process logbook page creation
+activate LogService
+
+LogService -> DB : Store logbook page data
+activate DB
+
+DB -> LogService : Confirm data stored
+deactivate DB
+
+LogService -> Web : Confirm logbook page creation
+deactivate LogService
+
+Web -> Researcher : Display confirmation message
+deactivate Web
+
+@enduml

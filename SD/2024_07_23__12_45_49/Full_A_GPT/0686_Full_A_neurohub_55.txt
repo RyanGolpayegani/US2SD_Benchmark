@@ -1,0 +1,58 @@
+Given the scope of your project description for the Neurohub Enhancement and Automation Project, I'll outline a sequence diagram in PlantUML format that captures the workflow for a user story focused on storing worm behavior videos with specific encoding requirements. This example assumes involvement from the user, the system interface, a file conversion service, and an analysis module written by Christopher James.
+
+Please note that PlantUML code may need adjustments based on your precise system architecture and the specifics of how users interact with Neurohub, the file conversion service, and the analysis tools developed by Christopher James.
+
+```plantuml
+@startuml
+participant User
+participant "Neurohub Interface" as Interface
+participant "File Conversion Service" as Converter
+participant "Worm Analysis Tool \nby Christopher James" as AnalysisTool
+database "Neurohub Database" as Database
+
+User -> Interface : Upload worm video
+activate Interface
+Interface -> Interface : Validate file type
+alt If file type is supported
+  Interface -> Converter : Request encoding conversion
+  activate Converter
+  Converter -> Converter : Convert to compatible format
+  Converter -> Interface : Return encoded file
+  deactivate Converter
+  Interface -> Database : Store encoded video
+  activate Database
+  Database --> Interface : Confirm storage
+  deactivate Database
+  Interface -> AnalysisTool : Analyse video with worm analysis tool
+  activate AnalysisTool
+  AnalysisTool -> AnalysisTool : Perform analysis
+  AnalysisTool -> Interface : Return analysis results
+  deactivate AnalysisTool
+  Interface -> User : Display analysis results
+else If file type not supported
+  Interface -> User : Error: Unsupported file type
+end
+deactivate Interface
+
+@enduml
+```
+
+### Explanation of the Workflow:
+
+1. **User Uploads Video**: The user initiates the process by uploading a worm behavior video through the Neurohub interface.
+   
+2. **Validate File Type**: The Neurohub interface validates the uploaded file to ensure it's in a supported format for conversion.
+
+3. **Request Encoding Conversion**: If the file type is supported, the Neurohub interface sends the video to a File Conversion Service to be encoded in a format that's compatible with Christopher James's worm analysis software.
+
+4. **Convert to Compatible Format**: The File Conversion Service processes the video, converting it to the required encoding format.
+
+5. **Store Encoded Video**: The converted video is then stored in the Neurohub Database, with a confirmation of storage sent back to the interface.
+
+6. **Perform Analysis**: The Neurohub interface calls on the Worm Analysis Tool developed by Christopher James to analyze the stored video.
+
+7. **Display Analysis Results**: Finally, the results from the analysis tool are displayed to the user through the Neurohub interface.
+
+8. **Error Handling**: If at any point a file is found to be in an unsupported format, an error message is displayed to the user.
+
+This diagram captures the key interactions within the Neurohub system for handling and analyzing worm behavior videos as per the user story. Adjustments and expansions may be needed depending on additional requirements or changes in project scope.

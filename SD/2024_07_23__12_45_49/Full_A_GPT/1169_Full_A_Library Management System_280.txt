@@ -1,0 +1,51 @@
+To visualize the sequence of operations involved when a library system member wants to search for a book by publication date, we'll create a PlantUML sequence diagram. This diagram will detail the interaction between the system components starting from the user (Member) initiating a search to the system displaying the search results.
+
+Here's a detailed PlantUML code snippet to represent this user story:
+
+```
+@startuml
+actor Member
+participant "UI: Library Interface" as UI
+participant "Controller" as Controller
+participant "BookService" as BookService
+participant "BookRepository" as BookRepository
+database "LibraryDB" as LibraryDB
+
+Member -> UI: Enter publication date search criteria
+UI -> Controller: Request to search books by publication date
+Controller -> BookService: SearchBooksByDate(publicationDate)
+BookSanitize -> BookService: Verify and sanitize date input
+activate BookService
+BookService -> BookRepository: FindBooksByPublicationDate(publicationDate)
+activate BookRepository
+BookRepository -> LibraryDB: Query books with specific publication date
+activate LibraryDB
+LibraryDB --> BookRepository: Return book results
+deactivate LibraryDB
+BookRepository --> BookService: Book data
+deactivate BookRepository
+BookService -> BookService: Process results (if required)
+BookService --> Controller: Return search results
+deactivate BookService
+Controller --> UI: Display books matching the publication date
+UI --> Member: Show search results
+@enduml
+```
+
+**Explanation of the Sequence Diagram:**
+
+1. **Member initiates the search**: The library system member (user) starts the sequence by searching for books based on a specific publication date using the library's user interface (UI).
+
+2. **UI to Controller**: The UI forwards the search request, including the publication date criteria, to the system's controlling entity for further processing.
+
+3. **Controller handling**: The controller receives the request and calls the `BookService` layer responsible for handling book-related operations, passing along the publication date parameter.
+
+4. **BookService processes the request**: Upon receiving the publication date, the `BookService` initiates a procedure to locate books matching the provided date. It calls the `BookRepository` layer, where the actual querying of the database occurs.
+
+5. **BookRepository querying the LibraryDB**: The `BookRepository` interacts with the `LibraryDB` to execute a database query that retrieves books published on the specified date.
+
+6. **Results are returned back to the Member**: The search results then propagate back through the layers (`LibraryDB` to `BookRepository` to `BookService`, then to the `Controller`, and finally to the UI), where they are presented to the member.
+
+7. **Member views the results**: The sequence concludes with the user interface displaying the list of books that match the publication date search criteria to the member.
+
+This sequence diagram simplifies the interaction into discrete steps, highlighting how the various components of the Comprehensive Library Management System (CLMS) work together to fulfill a member's request to search for books by publication date.

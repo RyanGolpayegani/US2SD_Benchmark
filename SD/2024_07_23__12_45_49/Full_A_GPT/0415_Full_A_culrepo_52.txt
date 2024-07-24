@@ -1,0 +1,52 @@
+Certainly! Below is a detailed sequence diagram in PlantUML format for the user story: "As a patron, I want to view multiple versions of a report/dataset to get both timely and historical information." This sequence diagram outlines the steps involved when a patron interacts with the comprehensive digital repository system to access different versions of a specific report or dataset.
+
+```plaintext
+@startuml
+actor Patron as P
+participant "Search Interface" as SI
+participant "Authentication System" as AS
+participant "Content Management System" as CMS
+participant "Version Control" as VC
+participant "Database" as DB
+
+P -> SI: Enter search query for report/dataset
+activate SI
+SI -> DB: Retrieve relevant items
+activate DB
+DB --> SI: List of items
+deactivate DB
+SI --> P: Display results
+P -> SI: Select specific report/dataset
+deactivate SI
+SI -> AS: Request access verification
+activate AS
+P -> AS: Provide authentication details
+AS --> SI: Access granted
+deactivate AS
+SI -> CMS: Request selected report/dataset
+activate CMS
+CMS -> VC: Fetch all versions
+activate VC
+VC -> DB: Retrieve versions metadata
+activate DB
+DB --> VC: Versions metadata
+deactivate DB
+VC --> CMS: List of versions
+deactivate VC
+CMS --> SI: Display all versions to patron
+SI --> P: Present versions for selection
+P -> SI: Choose version to view
+SI -> CMS: Retrieve selected version
+CMS -> DB: Get selected version data
+activate DB
+DB --> CMS: Report/dataset version data
+deactivate DB
+CMS --> SI: Display selected version
+SI --> P: Show report/dataset version
+deactivate CMS
+@enduml
+```
+
+This diagram starts with the patron entering a search query for a specific report or dataset using the search interface. The search interface then retrieves a list of relevant items from the database. After displaying the results to the patron, the selected report or dataset is requested from the content management system, which in turn fetches all available versions from the version control system. This system retrieves version metadata from the database, which is used to present all available versions to the patron. After the patron selects a specific version, the corresponding data is fetched from the database and displayed.
+
+Note: This diagram assumes that the patron is authenticated when attempting to access certain reports or datasets, considering that some materials might be restricted. The sequence focuses on the interaction flow for accessing multiple versions of a specific report or dataset.

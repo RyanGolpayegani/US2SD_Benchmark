@@ -1,0 +1,46 @@
+To illustrate the sequence of events for updating dishes in the Restaurant Management and Operations System as described in your project, we will create a detailed Sequence Diagram in PlantUML syntax. This diagram will follow the user story: "As a chef, I want to update dishes."
+
+In this scenario, we imagine the flow starts with the Chef interacting with the User Interface (UI), proceeding to the Backend where the update logic resides, and finally, interactions with the Database for persisting the changes.
+
+```plantuml
+@startuml
+autonumber
+actor Chef as chef
+participant "UI: Restaurant Management System" as UI
+participant "Backend Server" as backend
+database "Database" as db
+
+== Update Dish Sequence ==
+
+chef -> UI: Selects dish to update
+UI -> backend: Request to fetch dish details (GET /api/dishes/{id})
+backend -> db: Query dish details
+db -> backend: Return dish details
+backend -> UI: Display dish details
+UI -> chef: Show dish details
+
+chef -> UI: Updates dish information
+UI -> backend: Request to update dish (PUT /api/dishes/{id}, dishData)
+backend -> db: Update dish record
+db -> backend: Confirm update success
+backend -> UI: Acknowledge update success
+UI -> chef: Show success message
+
+@enduml
+```
+
+#### Explanation of the Sequence Diagram
+1. **Start**: The sequence begins with the Chef deciding to update a dish's information.
+2. **Fetching Dish Details**:
+   - The Chef selects a dish to update, triggering the UI to request the current dish details from the Backend Server, using a GET request to the dish-specific endpoint.
+   - The Backend Server queries the Database for the dish's data and retrieves it.
+   - The dish details are then sent back to the UI, where they are displayed to the Chef.
+3. **Updating Dish Information**:
+   - After viewing the current details, the Chef makes the desired changes and submits the updated information via the UI.
+   - The UI forwards this updated data to the Backend Server using a PUT request, including the dish's ID and the new data (`dishData`).
+   - The Backend Server processes the update by modifying the dish's record in the Database.
+   - Once the update is successful, the Database confirms this back to the Backend Server.
+   - The Backend Server then notifies the UI about the successful update.
+   - Finally, the UI displays a success message to the Chef, indicating that the dish has been updated.
+   
+This sequence diagram outlines the essential steps and components involved when a chef aims to update dish information in the system. It assumes a basic RESTful approach to server communication and highlights interactions between the Chef, the UI, the Backend Server, and the Database.

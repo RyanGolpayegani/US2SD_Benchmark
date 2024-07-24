@@ -1,0 +1,56 @@
+To create a detailed sequence diagram in PlantUML format, illustrating the user story: "As a chef, I want to keep due dates of ingredients so that I can use them before the due date," we must break down the interactions between different components of the system. This sequence diagram will cover the key steps including the chef's action to check and update ingredient due dates, alerts for upcoming due dates, and the inventory system's response.
+
+Here's a PlantUML code snippet to illustrate this user story:
+
+```plantuml
+@startuml
+actor Chef as chef
+participant "Inventory System" as inventory
+participant "Database" as db
+
+== Check Ingredient Due Dates ==
+chef -> inventory : Check ingredient due dates
+inventory -> db : Query ingredient dates
+db -> inventory : Return due dates
+inventory -> chef : Display due dates
+
+== Update Ingredient Due Dates ==
+chef -> inventory : Update due dates for ingredients
+activate inventory
+inventory -> db : Update due dates in DB
+db --> inventory : Confirm update
+deactivate inventory
+inventory --> chef : Confirm due dates updated
+
+== Daily Due Date Alert ==
+activate inventory
+inventory -> db : Query ingredients near due date
+activate db
+db -> inventory : Return near due date ingredients
+deactivate db
+inventory -> chef : Alert near due date ingredients
+deactivate inventory
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Check Ingredient Due Dates**: 
+   - The chef initiates the process by checking the due dates of ingredients through the inventory system.
+   - The inventory system queries the database for the due dates of ingredients.
+   - The database returns the due dates to the inventory system.
+   - Finally, the inventory system displays these due dates to the chef.
+
+2. **Update Ingredient Due Dates**:
+   - The chef decides to update the due dates for some ingredients.
+   - The inventory system receives the update request and updates the due dates in the database.
+   - The database confirms the update.
+   - The inventory system confirms to the chef that the due dates have been updated.
+
+3. **Daily Due Date Alert**:
+   - The inventory system performs a daily check in the database for ingredients that are near their due date.
+   - The database returns the list of ingredients near their due dates.
+   - The inventory system alerts the chef about these ingredients, allowing the chef to plan the use of these ingredients effectively.
+
+This sequence diagram captures the chef's interaction with the inventory system for managing and staying updated on the due dates of ingredients, ensuring their optimal use before expiration.

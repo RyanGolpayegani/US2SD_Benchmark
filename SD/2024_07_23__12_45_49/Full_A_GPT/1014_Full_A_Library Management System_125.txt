@@ -1,0 +1,37 @@
+Creating a sequence diagram for the described user story—where a library manager wants to know the due dates to announce fines to members who delay returns—requires illustrating the interactions between different system components in PlantUML format. Below is a simplified version focused on achieving this specific task within the Comprehensive Library Management System (CLMS).
+
+This sequence diagram outlines the process from the library manager initiating a check for due dates to the system calculating fines based on those due dates, and finally, notifying the members who have overdue books.
+
+```plantuml
+@startuml
+participant LibraryManager as LM
+participant CLMSSystem as CLMS
+participant Database as DB
+participant FinancialModule as FM
+participant NotificationService as NS
+
+LM -> CLMS: Request overdue books
+CLMS -> DB: Fetch overdue book details
+DB -> CLMS: Return overdue book details
+CLMS -> LM: Display overdue books list
+LM -> FM: Calculate fines for overdue books
+FM -> DB: Retrieve member details and book due dates
+DB -> FM: Return member details and due dates
+FM -> FM: Compute fines based on due dates
+FM -> CLMS: Return computed fines
+CLMS -> NS: Prepare notification messages with fines
+NS -> DB: Fetch member contact information
+DB -> NS: Return member contact information
+NS -> NS: Send notifications to members
+NS -> LM: Confirm notification delivery
+@enduml
+```
+
+### Breakdown:
+- **Library Manager (LM)**: Initiates the process by requesting a list of overdue books from the CLMS.
+- **CLMS System (CLMS)**: Acts as the central processor, interfacing with the Library Manager, Database, Financial Module, and Notification Service.
+- **Database (DB)**: Stores all data related to books, borrowing records, member details, and so on. It retrieves details of overdue books and member contact information when requested.
+- **Financial Module (FM)**: Responsible for calculating fines based on the due dates of the borrowed books and the library's fine policy.
+- **Notification Service (NS)**: Handles the generation and delivery of notification messages to members who have not returned books by their due dates.
+
+This sequence diagram provides a high-level overview and could be expanded or modified based on additional requirements, such as handling exceptions (e.g., members with special considerations), integrating payment services for fine collection, or updating book availability status upon return.

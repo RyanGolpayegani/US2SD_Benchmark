@@ -1,0 +1,48 @@
+To create a detailed sequence diagram for the specified user story using PlantUML, we need to outline the steps involved in notifying a member to return a book on time. Let’s consider the main actors and components of the system for this scenario:
+
+- **Member** (the library member)
+- **NotificationService** (handles the logic to send notifications)
+- **Database** (to retrieve book and loan details)
+- **EmailService/SmsService** (to send out the actual notification via email or SMS)
+
+Now, we will translate these steps into a PlantUML sequence diagram. For simplicity, I'm using EmailService, though SmsService could be employed in a similar manner.
+```plantuml
+@startuml
+!theme cerulean
+
+participant Member as member
+participant "Database" as db
+participant "NotificationService" as notif
+participant "EmailService" as email
+
+== Notifying a Member to Return a Book On Time ==
+
+member -> db: Request book loan details
+activate db
+db --> member: Book loan details
+deactivate db
+
+member -> notif: Checks if near due date
+activate notif
+notif -> db: Retrieve member contact info
+activate db
+db --> notif: Member contact details
+deactivate db
+
+notif -> email: Send return reminder
+activate email
+email --> member: Email notification to return book
+deactivate email
+deactivate notif
+
+@enduml
+```
+
+This diagram visualizes the flow where:
+1. The **Member** initiates a check (this could be automated) for their book loan details.
+2. The **Database** is queried to retrieve these details.
+3. Assuming it’s near the due date (logic within **NotificationService**), the **NotificationService** then queries the **Database** again to get the member's contact information.
+4. The **NotificationService** instructs the **EmailService** (or **SmsService**) to send out a notification to the member.
+5. The **EmailService** sends an email to the member to remind them to return the book by the due date.
+
+This sequence emphasizes the backend logic for sending timely notifications to library members to return books, an essential feature of the Comprehensive Library Management System (CLMS).

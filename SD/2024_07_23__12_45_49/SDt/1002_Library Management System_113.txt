@@ -1,0 +1,29 @@
+@startuml
+participant LibraryManager as LM
+participant "LMS Interface" as LMS
+database "Library Database" as DB
+
+LM -> LMS : Assign unique ID to book
+activate LMS
+LMS -> LMS : GenerateUniqueID()
+activate LMS
+
+LMS -> DB : CheckIfIDExists(uniqueID)
+activate DB
+alt ID exists
+    DB -> LMS : IDExists
+    LMS -> LMS : GenerateNewUniqueID()
+    LMS -> DB : CheckIfIDExists(newUniqueID)
+    DB -> LMS : IDAvailable
+else ID does not exist
+    DB -> LMS : IDAvailable
+end
+
+LMS -> DB : AssignIDToBook(uniqueID, bookDetails)
+DB -> DB : UpdateBookRecord()
+
+DB -> LMS : Confirmation(BookIDAssigned)
+LMS -> LM : DisplayConfirmation(BookIDAssigned)
+deactivate DB
+deactivate LMS
+@enduml

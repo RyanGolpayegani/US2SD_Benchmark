@@ -1,0 +1,30 @@
+@startuml
+
+participant ModeratorUI as UI
+participant BackendServer as Server
+participant FileSystem as FS
+participant Database as DB
+
+UI -> Server: RequestExport(gameId)
+activate Server
+
+Server -> DB: GetGameData(gameId)
+activate DB
+DB --> Server: ReturnGameData(gameData)
+deactivate DB
+
+Server -> Server: ProcessDataToHTML(gameData)
+Server -> FS: SaveHTMLFile(exportHTML)
+activate FS
+FS --> Server: FileSaved(filePath)
+deactivate FS
+
+Server -> FS: GetDownloadLink(filePath)
+FS --> Server: ReturnDownloadLink(downloadLink)
+
+Server --> UI: SendDownloadLink(downloadLink)
+deactivate Server
+
+UI -> Moderator: DisplayDownloadLink(downloadLink)
+
+@enduml

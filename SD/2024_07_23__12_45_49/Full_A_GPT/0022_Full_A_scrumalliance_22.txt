@@ -1,0 +1,54 @@
+Given the requirement, here's a PlantUML sequence diagram that outlines the interactions between the user (Site Visitor), the system components, and the database for viewing and paging through a list of upcoming other courses.
+
+```plantuml
+@startuml
+actor SiteVisitor as Visitor
+participant "UI Interface" as UI
+participant "Course Controller" as Controller
+participant "Course Service" as Service
+participant "Course Repository" as Repository
+database "Course Database" as Database
+
+Visitor -> UI: Access upcoming courses page
+UI -> Controller: Request to view courses
+Controller -> Service: Get upcoming courses(list, pagination)
+Service -> Repository: Fetch paginated courses
+Repository -> Database: Query for courses\nwith future dates
+Database -> Repository: Return courses data
+Repository -> Service: Process courses data
+Service -> Controller: Return paginated result
+Controller -> UI: Display courses list with pagination options
+UI -> Visitor: Show list of courses\nand paging controls
+
+alt Page Through Courses
+    Visitor -> UI: Select page (next/previous)
+    UI -> Controller: Request page change
+    Controller -> Service: Get next/previous page of courses
+    Service -> Repository: Fetch courses for requested page
+    Repository -> Database: Query for next/previous\nbatch of courses
+    Database -> Repository: Return next/previous courses data
+    Repository -> Service: Process next/previous courses data
+    Service -> Controller: Return paginated courses for requested page
+    Controller -> UI: Update courses list to new page
+    UI -> Visitor: Show updated list of courses\nand paging controls
+end
+
+@enduml
+```
+
+**Explanation:**
+1. **Visitor -> UI:** The site visitor accesses the upcoming courses page on the user interface.
+2. **UI -> Controller:** The user's request to view the courses list is handled by the UI, which sends it to the backend controller.
+3. **Controller -> Service:** The controller, responsible for processing HTTP requests, asks the service layer for a list of upcoming courses, possibly including pagination details.
+4. **Service -> Repository:** The service layer, which contains the business logic, instructs the repository to fetch the required courses from the database.
+5. **Repository -> Database:** The repository, responsible for data access, queries the database for courses with future start dates.
+6. **Database -> Repository:** The database returns the data for the courses to the repository.
+7. **Repository -> Service:** The repository sends the courses data back to the service layer.
+8. **Service -> Controller:** The service layer processes the data (if necessary) and returns the result (including pagination information) back to the controller.
+9. **Controller -> UI:** The controller sends the courses data back to the UI.
+10. **UI -> Visitor:** The UI updates the courses list and displays it to the visitor, complete with paging controls if the number of courses exceeds the page limit.
+
+**Alternate Flow (Paging through courses):**
+If the visitor decides to page through the courses (e.g., view the next page), they interact with the UI's paging controls, causing a series of similar interactions focused on fetching and displaying the courses for the requested page.
+
+This diagram captures an abstract view of the data flow for viewing and paging through a list of courses on a theoretical Scrum Alliance Community Platform project.

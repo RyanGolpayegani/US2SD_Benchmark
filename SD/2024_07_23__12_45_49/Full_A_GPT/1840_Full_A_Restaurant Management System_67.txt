@@ -1,0 +1,40 @@
+To create a detailed Sequence Diagram for the user story "As a customer, I want to make a reservation" using PlantUML, we'll outline the typical flow from the customer deciding to make a reservation through the system's processing of that request. Here is the PlantUML code to represent this process:
+
+```plantuml
+@startuml
+actor Customer
+participant "Reservation System" as RS
+participant "Database" as DB
+
+== Customer Makes a Reservation ==
+Customer -> RS : Request Reservation Page
+RS -> Customer : Display Reservation Form
+
+Customer -> RS : Submit Reservation Details\n(date, time, number of people)
+RS -> DB : Check Availability
+alt If space is available
+    DB -> RS : Confirm Availability
+    RS -> Customer : Show Confirmation Message
+    RS -> DB : Save Reservation Details
+    DB -> RS : Confirmation Status
+    RS -> Customer : Display Reservation ID and Details
+else Space Not Available
+    DB -> RS : Show Unavailability Message
+    RS -> Customer : Suggest Different Time/Date
+end
+
+@enduml
+```
+
+### Explanation:
+1. **Customer interacts with the Reservation System**: The sequence starts with the Customer requesting the reservation page from the Reservation System, which then sends back the form to the Customer to fill out.
+2. **Submission of reservation details**: The Customer submits their reservation details including the desired date, time, and number of guests.
+3. **Checking availability**: The Reservation System queries the Database to check for table availability at the requested time.
+4. **Paths following availability check**:
+   - **If space is available**: The Database confirms availability to the Reservation System, which in turn informs the Customer and proceeds to save the reservation details in the Database. Finally, the Customer is presented with a reservation ID and specifics of their booking.
+   - **If no space is available**: The Database reports unavailability, prompting the Reservation System to inform the Customer, possibly suggesting alternative dates or times.
+
+### Notes:
+- The scenario described above assumes basic interactions. Many more details and steps (such as login/authentication, handling input errors, sending reservation reminders) can be included depending on the system's complexity.
+- Adjustments might be necessary based on the specific requirements, technology stack, and how the components of the system are architectured.
+- The "Database" in this diagram is a simplified representation. In a real-world scenario, interactions with the database would likely be mediated through a backend service or server-side application handling business logic, authentication, validation, etc.

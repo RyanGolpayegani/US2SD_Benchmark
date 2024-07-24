@@ -1,0 +1,51 @@
+Given your requirement, let's define a sequence diagram in PlantUML that outlines the steps a library staff member might take to access usage statistics and analytics, including altmetrics, at various levels within the digital repository system.
+
+Please note that this sequence diagram is a high-level outline focusing on interactions between components such as the UI (User Interface), Access Control, Analytics Module, and the Database. The implementation detail can vary based on specific technology decisions and system architecture.
+
+```plantuml
+@startuml
+actor StaffMember as "Library Staff"
+participant UI as "User Interface"
+participant AccessControl as "Access Control System"
+participant AnalyticsModule as "Analytics Module"
+database DB as "Database"
+
+== Access Usage Statistics and Analytics ==
+
+StaffMember -> UI: Request usage statistics
+activate UI
+
+UI -> AccessControl: Validate Permissions
+activate AccessControl
+
+AccessControl --> UI: Grant Access
+deactivate AccessControl
+
+UI -> AnalyticsModule: Fetch Analytics
+activate AnalyticsModule
+
+AnalyticsModule -> DB: Query Usage Data
+activate DB
+
+DB --> AnalyticsModule: Return Results
+deactivate DB
+
+AnalyticsModule --> UI: Analytics Data (Repository, Collection, Author, Item Level)
+deactivate AnalyticsModule
+
+UI --> StaffMember: Display Usage Statistics & Altmetrics
+deactivate UI
+
+@enduml
+```
+
+This sequence highlights a straightforward process:
+
+1. The **Library Staff** member initiates a request for accessing usage statistics through the **User Interface**.
+2. The **User Interface** forwards this request to the **Access Control System** to validate the library staff member's permissions.
+3. Once access is granted, the **User Interface** requests the needed analytics from the **Analytics Module**.
+4. The **Analytics Module** then queries the **Database** for detailed usage data, including views, downloads, and altmetrics scores, across the specified dimensions (such as the repository level, collection level, author level, and item level).
+5. The **Database** provides this information back to the **Analytics Module**, which processes and formats the data.
+6. Finally, the processed analytics data is sent back to the **User Interface**, which presents the comprehensive usage statistics and altmetrics to the library staff member.
+
+This diagram is an abstraction intended to represent system interactions focused on the scenario you've outlined. Adjustments might be necessary to align with the system's actual architecture and capabilities.

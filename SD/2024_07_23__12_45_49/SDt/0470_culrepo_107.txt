@@ -1,0 +1,36 @@
+@startuml
+participant DataCurator as DC
+participant WebInterface as UI
+participant AuthenticationSystem as AS
+participant VersionControlSystem as VCS
+participant Database as DB
+
+DC -> UI : Navigate to upload page
+UI -> DC : Request item details and file
+DC -> UI : Provide item details and new version file
+UI -> AS : Authenticate Data Curator
+AS --> UI : Authentication Success
+
+UI -> VCS : Check if item exists
+VCS -> DB : Query existing item details
+DB --> VCS : Return item details
+
+alt Item Exists
+    VCS --> UI : Prompt versioning options
+    UI -> DC : Display versioning options
+    DC -> UI : Select "Upload as new version"
+    UI -> VCS : Initiate new version upload
+    VCS -> DB : Store new version metadata
+    DB --> VCS : Confirm storage success
+    VCS -> VCS : Link new version with previous versions
+    VCS --> UI : Display success message
+else Item Does Not Exist
+    UI -> VCS : Initiate upload as new item
+    VCS -> DB : Store item and metadata as new entry
+    DB --> VCS : Confirm storage success
+    VCS --> UI : Display success message
+end
+
+UI --> DC : Confirm upload and provide access link
+
+@enduml

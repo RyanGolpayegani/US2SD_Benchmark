@@ -1,0 +1,52 @@
+Creating a detailed sequence diagram for the described user story in PlantUML format involves outlining the sequence of interactions between the Zooniverse admin, the Advanced Media Identification & Discovery Platform (AMIDP), and the underlying services that facilitate the grouping of subjects by similarity. Below is an example PlantUML code that illustrates these interactions:
+
+```plantuml
+@startuml
+actor ZooniverseAdmin as "Zooniverse Admin"
+participant "UI Dashboard" as Dashboard
+participant "Grouping Service" as Grouping
+participant "Database" as DB
+participant "AI/ML Engine" as AI
+
+== Group Subjects by Similarity ==
+
+ZooniverseAdmin -> Dashboard : Selects "Group by Similarity"
+Dashboard -> Grouping : Request to group subjects
+activate Grouping
+
+Grouping -> DB : Fetch subjects metadata
+activate DB
+DB --> Grouping : Subjects metadata
+deactivate DB
+
+Grouping -> AI : Analyze similarity
+activate AI
+AI --> Grouping : Grouped subjects data
+deactivate AI
+
+Grouping -> DB : Update subjects with group IDs
+activate DB
+DB --> Grouping : Confirmation
+deactivate DB
+
+Grouping --> Dashboard : Display grouped subjects
+Dashboard --> ZooniverseAdmin : Show confirmation & grouped subjects view
+
+@enduml
+```
+
+This PlantUML sequence diagram script visualizes the steps involved when a Zooniverse admin wants to group subjects by similarity using the AMIDP platform. Here's a breakdown of the steps illustrated in the diagram:
+
+1. **Action Initiation**: The Zooniverse Admin initiates the process by selecting the option to group subjects by similarity through the user interface (UI) dashboard.
+
+2. **Request Handling**: The dashboard forwards the request to a specialized Grouping Service responsible for handling such tasks.
+
+3. **Metadata Fetching**: The Grouping Service then retrieves the necessary subjects' metadata from the database (DB) to understand the content that needs to be analyzed and grouped.
+
+4. **Similarity Analysis**: With the metadata at hand, the Grouping Service leverages an AI/ML (Artificial Intelligence/Machine Learning) Engine to analyze the subjects' similarity based on predefined criteria or models.
+
+5. **Data Updating**: Once the grouped subjects data is received from the AI/ML Engine, the Grouping Service updates the subjects in the database with their respective group IDs or labels.
+
+6. **Confirmation and Display**: Finally, the dashboard receives the updated grouped subjects information, displays a confirmation to the Zooniverse Admin, and shows the new organized view of grouped subjects.
+
+This sequence diagram provides a high-level overview of the interactions and processes involved in grouping subjects by similarity, highlighting the role of AI and database operations in facilitating this feature of the AMIDP platform.

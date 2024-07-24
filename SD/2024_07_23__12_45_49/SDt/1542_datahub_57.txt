@@ -1,0 +1,32 @@
+@startuml
+!theme plain
+
+participant Owner
+participant "UI/API Interface" as Interface
+participant "Account Management Service" as AMS
+participant "Email Service" as Email
+database "Data Store" as DS
+
+== Invitation Process ==
+Owner -> Interface: Select "Invite Member"
+Interface -> AMS: Request to invite new member
+AMS -> DS: Check Owner Permissions
+DS --> AMS: Permissions Validated
+
+alt Member already exists in system
+  AMS -> DS: Check if email is associated with an existing user
+  DS --> AMS: User exists
+  AMS -> Owner: Display Error: User already a member
+else Member not in system
+  AMS -> Email: Send invitation email to new member
+  Email -> NewMember: Invitation Email Sent
+  NewMember -> Email: Clicks on invitation link
+  Email -> Interface: Redirect to Sign-up page
+  NewOwner -> Interface: Completes Sign-up
+  Interface -> AMS: Create new member account and associate with Publisher
+  AMS -> DS: Store new member details
+  DS --> AMS: Confirmation of member addition
+  AMS --> Interface: Display success message to Owner
+end
+
+@enduml

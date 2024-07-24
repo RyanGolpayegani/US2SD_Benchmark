@@ -1,0 +1,70 @@
+To represent the user story "As an external coordinator, I want to have guarantees that my IP rights will not be breached, so that the risk of collaborating with Bath is acceptable to me." in the context of the Enhanced Research Data Management Platform, we need to focus on the interactions that ensure the protection of intellectual property rights (IP rights) for external collaborators. The sequence diagram below captures the process from an external coordinator's request for guarantees on their IP protection, through to the system's mechanisms to enforce these guarantees.
+
+This sequence involves the external coordinator interacting with the system to specify IP protection requirements, the system processing these requirements, and then implementing the necessary restrictions and notifications to uphold these IP rights.
+
+Please note that in PlantUML syntax, "->" denotes a call from one participant to another, while "<--" indicates a return action.
+
+```plantuml
+@startuml
+participant "External Coordinator" as EC
+participant "Enhanced RDMP Web Interface" as WebInterface
+participant "IP Rights Management Module" as IPRights
+participant "Data Archive System" as Archive
+participant "Notification Service" as Notify
+
+EC -> WebInterface: Submit IP protection request
+activate WebInterface
+
+WebInterface -> IPRights: Evaluate IP protection requirements
+activate IPRights
+
+IPRights --> WebInterface: IP protection plan
+deactivate IPRights
+
+WebInterface -> Archive: Apply IP protection settings
+activate Archive
+
+Archive --> WebInterface: Confirmation & DOI
+deactivate Archive
+
+WebInterface --> EC: Confirm IP protection & provide DOI
+deactivate WebInterface
+
+EC -> WebInterface: Access data under IP protection
+activate WebInterface
+
+WebInterface -> IPRights: Verify access rights
+activate IPRights
+
+IPRights --> WebInterface: Access granted/denied
+deactivate IPRights
+
+WebInterface -> Archive: Request data access
+activate Archive
+
+Archive --> WebInterface: Data access response
+deactivate Archive
+
+WebInterface --> EC: Deliver data/Access denied message
+deactivate WebInterface
+
+alt If Access Violation Detected
+    Archive -> IPRights: Report violation
+    activate IPRights
+    IPRights -> Notify: Trigger violation notification
+    activate Notify
+    Notify -> EC: Send IP violation alert
+    deactivate Notify
+    deactivate IPRights
+end
+@enduml
+```
+
+Explanation of the steps:
+- **Submit IP protection request:** The external coordinator submits a request via the platform's web interface to ensure their IP rights are protected when collaborating with the University of Bath.
+- **Evaluate and apply IP protection requirements:** The system assesses the request and implements the necessary IP protection measures, such as data access restrictions.
+- **Confirm IP protection & provide DOI:** Once the protection measures are in place, the system confirms this back to the external coordinator and provides a DOI for the dataset, enhancing traceability and citation.
+- **Access data under IP protection:** Procedures to ensure that any access to data by the coordinator or others respects the established IP rights, including verification of access rights and detection of any access violations.
+- **Report violation:** In case of an access violation, the system has mechanisms to alert the external coordinator, maintaining transparency and trust.
+
+This sequence diagram outlines the critical interactions and processes designed to protect the intellectual property rights of external coordinators engaging with the Enhanced Research Data Management Platform.

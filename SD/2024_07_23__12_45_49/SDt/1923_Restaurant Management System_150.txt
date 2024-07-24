@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+
+participant Manager as M
+participant WebInterface as UI
+participant Server as S
+participant ReportModule as RM
+participant Database as DB
+
+M -> UI : Request Report Generation
+activate M
+activate UI
+
+UI -> S: Initiate Report Generation
+activate S
+
+S -> RM: Fetch Report Data
+activate RM
+
+RM -> DB: Query Data
+activate DB
+
+DB --> RM: Return Data
+deactivate DB
+
+RM --> S: Report Data Compiled
+deactivate RM
+
+S --> UI: Generate Report View
+deactivate S
+
+UI --> M: Display Report
+deactivate UI
+deactivate M
+
+@enduml

@@ -1,0 +1,62 @@
+Creating a sequence diagram in PlantUML for the user story "As a librarian, I want to delete members" involves outlining the interactions between various system components when a librarian initiates the process to delete a member from the Comprehensive Library Management System (CLMS). Below is a detailed sequence diagram in PlantUML format depicting this scenario:
+
+```plantuml
+@startuml
+participant LibrarianUI
+participant Authentication
+participant LibrarianController
+participant MemberService
+participant Database
+
+LibrarianUI -> Authentication : Authenticate(librarianCredentials)
+Authentication --> LibrarianUI : AuthenticationSuccess
+
+LibrarianUI -> LibrarianController : initiateDeleteMember(memberId)
+activate LibrarianController
+
+LibrarianController -> MemberService : requestMemberDeletion(memberId)
+activate MemberService
+
+MemberService -> Database : verifyMemberExistence(memberId)
+activate Database
+Database --> MemberService : MemberExists
+
+MemberService -> Database : deleteMember(memberId)
+Database --> MemberService : MemberDeleted
+
+MemberService --> LibrarianController : deletionSuccess
+deactivate MemberService
+
+LibrarianController --> LibrarianQI : displaySuccessMessage
+deactivate LibrarianController
+
+@enduml
+```
+
+### Explanation:
+
+1. **LibrarianUI** represents the user interface through which the librarian interacts with the system.
+
+2. **Authentication**: Before performing any administrative actions, the librarian must be authenticated. The system checks the librarian's credentials.
+
+3. **LibrarianController**: This acts as an intermediary between the UI and service layer (MemberService), handling the request to delete a member.
+
+4. **MemberService**: This service contains the business logic for managing members, including deleting a member's profile. It first verifies if the member exists in the database.
+
+5. **Database**: The central repository where member information is stored. It performs operations such as verifying if a member exists and deleting a member's record.
+
+6. The process starts with the librarian authenticating themselves to ensure secure access to administrative functionalities.
+
+7. The librarian initiates the deletion of a member by sending the member's ID to the LibrarianController.
+
+8. The LibrarianController forwards the request to MemberService to handle the deletion.
+
+9. MemberService checks with the Database to ensure the member exists. If the member exists, it proceeds to delete the member from the database.
+
+10. The Database confirms the deletion of the member to the MemberService.
+
+11. MemberService informs the LibrarianController of the successful deletion.
+
+12. Finally, the LibrarianController instructs the Librarian UI to display a success message to the librarian, indicating that the member has been successfully deleted. 
+
+This sequence ensures that the process of deleting a member is handled systematically, with checks and confirmations at each step to maintain data integrity and security.

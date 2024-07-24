@@ -1,0 +1,43 @@
+Creating a detailed PlantUML sequence diagram based on the given user story involves representing the interactions between various components in the system when an archivist searches for images by uploading an image. This process, typically known as "reverse image search" or "image-based search," would leverage image recognition or similarity search technologies. Let's outline the steps and an example PlantUML code snippet to represent them:
+
+1. **User Interface (UI)**: Where the archivist uploads an image for searching.
+2. **Web Server**: Receives the upload and passes it to the image search service.
+3. **Image Search Service**: Processes the image, possibly using an AI/ML model for image recognition or similarity checks.
+4. **Database/Index**: Where indexed images or image features are stored for query matching.
+5. **Results Handler**: Gathers search results and prepares them for display.
+6. **UI**: Displays the search results to the archivist.
+
+Let's translate this flow into a PlantUML sequence diagram:
+
+```plantuml
+@startuml
+actor Archivist as A
+participant UI as UI
+participant WebServer as WS
+participant "Image Search\nService" as ISS
+participant Database as DB
+participant "Results\nHandler" as RH
+
+A -> UI : Uploads search image
+UI -> WS : Sends image data
+WS -> ISS : Initiates image search
+ISS -> DB : Queries for similar images
+DB -> ISS : Returns matching images
+ISS -> RH : Prepares search results
+RH -> UI : Sends results back
+UI -> A : Displays search results
+
+@enduml
+```
+
+### Explanation:
+
+- **Archivist (A)**: The user, in this case, an archivist, who initiates the action by uploading an image they want to find similar images to, within the digital archive.
+- **UI (User Interface)**: The front-end interface where the image upload happens.
+- **Web Server (WS)**: Acts as a middleman that receives the uploaded image from the UI and forwards it to the image search service for processing.
+- **Image Search Service (ISS)**: This could entail an AI/ML-driven service capable of processing the uploaded image, understanding its content, and searching for similar images.
+- **Database (DB)**: Stores the archives' digital images or representations of those images (like feature vectors for image similarity comparison) against which the uploaded image will be compared.
+- **Results Handler (RH)**: Collects the search results (similar images), formats them, and prepares them to be sent back to the UI.
+- **Back to UI**: With the results prepared, they are sent back to the UI, which displays them to the archivist, completing the search process.
+
+This sequence diagram abstracts the detailed interactions that might happen internally, especially within the "Image Search Service", which is where the most complex processing occurs, such as feature extraction, vector matching, or even deep neural network inference, depending on the implementation.

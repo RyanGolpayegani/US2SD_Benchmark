@@ -1,0 +1,38 @@
+@startuml
+actor Manager
+participant "UI: Manager Dashboard" as Dashboard
+participant "Controller: LibraryManagement" as Controller
+participant "Service: CheckoutService" as CheckoutService
+participant "Database: SubscriptionDB" as SubscriptionDB
+participant "Service: SubscriberService" as SubscriberService
+participant "Database: ProfileDB" as ProfileDB
+
+== Track Book Checkouts ==
+Manager -> Dashboard: Access Checkouts Report
+Dashboard -> Controller: Request Checkouts Data
+Controller -> CheckoutService: GetRecentCheckouts()
+CheckoutSource -> Database: Query Checkouts
+Database --> CheckoutService: Return Checkouts Data
+CheckoutService --> Controller: CheckoutData
+Controller --> Dashboard: Display Checkouts
+Dashboard --> Manager: Show Checkouts Report
+
+== Track Subscriptions ==
+Manager -> Dashboard: Access Subscriptions Report
+Dashboard -> Controller: Request Subscriptions Data
+Controller -> SubscriptionDB: GetActiveSubscriptions()
+SubscriptionDB --> Controller: SubscriptionDetails
+Controller --> Dashboard: Display Subscriptions
+Dashboard --> Manager: Show Subscriptions Report
+
+== Track Subscriber Profiles ==
+Manager -> Dashboard: Access Profiles Report
+Dashboard -> Controller: Request Profile Data
+Controller -> SubscriberService: GetSubscriberProfiles()
+SubscriberService -> ProfileDB: Query Profiles
+ProfileDB --> SubscriberService: Return Profiles List
+SubscriberService --> Controller: ProfileData
+Controller --> Dashboard: Display Profiles
+Dashboard --> Manager: Show Profiles Report
+
+@enduml

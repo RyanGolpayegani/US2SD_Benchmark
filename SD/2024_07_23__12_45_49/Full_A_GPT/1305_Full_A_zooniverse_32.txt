@@ -1,0 +1,38 @@
+Below is a detailed sequence diagram in PlantUML format for the user story you provided. This sequence diagram depicts the process that a Zooniverse admin might go through to perform automatic image series detection when there is a timestamping malfunction in Snapshot Serengeti images within the context of the Advanced Media Identification & Discovery Platform (AMIDP).
+
+Please note that to render this PlantUML sequence diagram, you will need to use a PlantUML processor or an online tool that supports PlantUML.
+
+```plantuml
+@startuml
+participant Admin
+participant "AMIDP Interface" as Interface
+participant "Content Analysis Module" as Analysis
+participant "Image Series Detection" as Detection
+participant "Metadata Repair Tool" as MetaRepair
+participant Database
+
+Admin -> Interface : selects malfunctioning image series
+Interface -> Analysis : initiate image analysis
+Analysis -> Detection : send images for series detection
+Detection -> MetaRepair : detect sequence and infer timestamps
+MetaRepair -> Database : query related images by content & inferred time
+Database --> MetaRepair : return related images
+MetaRepair --> Detection : compile corrected series with timestamps
+Detection --> Analysis : send corrected image series
+Analysis --> Interface : display corrected timestamps & series
+Interface --> Admin : show image series with fixed timestamps
+
+@enduml
+```
+
+Explanation of the Sequence Diagram:
+
+1. **Admin**: The Zooniverse administrator initiates the process by selecting the image series that have malfunctioning timestamps.
+2. **AMIDP Interface**: This is the user interface of the Advanced Media Identification & Discovery Platform where the admin interacts with the system.
+3. **Content Analysis Module**: This module receives the initial request and is responsible for coordinating various tasks, including sending images to the Image Series Detection module.
+4. **Image Series Detection**: Specialized in detecting sequences of images that belong together based on content, even when timestamps are missing or incorrect.
+5. **Metadata Repair Tool**: Infers correct timestamps and any other missing metadata for the series of images based on content analysis and comparison with known data points.
+6. **Database**: Contains existing metadata, images, and sequences, which is queried by the Metadata Repair Tool to assist in the repair and validation of the malfunctioning timestamps.
+7. **Process Flow**: The admin selects the problematic series through the interface, prompting an automatic analysis and detection process that leads to the querying and correction of timestamps, culminating in the display of the corrected image series back to the admin.
+
+This sequence diagram is a high-level representation and can be expanded with more specific details, such as error handling, user feedback, and more intricate processing steps, depending on the technological and functional complexities of the AMIDP.

@@ -1,0 +1,33 @@
+Creating a detailed sequence diagram for the user story, "As an Older Person, I want to be able to zoom into visual content," involves illustrating the interactions between the user (OlderPerson), and the ALFRED system, potentially including its User Interface (UI), Speech Interaction System, and Content Management System to execute the zoom in functionality. Below is a PlantUML representation of how these interactions might be sequenced:
+
+```plantuml
+@startuml
+participant OlderPerson
+participant UI
+participant SpeechInteractionSystem
+participant ContentManagementSystem
+
+OlderPerson -> UI : Tap "Zoom In" or Say "Zoom In"
+UI -> SpeechInteractionSystem : InterpretZoomInCommand()
+alt Voice Command Recognized
+    SpeechInteractionSystem -> UI : ConfirmCommand()
+    UI -> ContentManagementSystem : RequestZoomInContent()
+    ContentManagementSystem -> UI : ProvideZoomedContent()
+    UI -> OlderPerson : DisplayZoomedContent()
+else Manual Command
+    UI -> ContentManagementSystem : RequestZoomInContent()
+    ContentManagementSystem -> UI : ProvideZoomedContent()
+    UI -> OlderPerson : DisplayZoomedContent()
+end
+@enduml
+```
+
+### Explanation of the Sequence Diagram
+
+- **OlderPerson**: This represents the older adult using ALFRED. The interaction starts with them wanting to zoom into visual content, which they can initiate either by tapping a "Zoom In" button on the UI or by using a voice command such as "Zoom In."
+- **UI (User Interface)**: Acts as the interface layer where the older person interacts with ALFRED. It receives the input from the older person and, depending on the mode of input (manual or voice), proceeds with the command.
+- **SpeechInteractionSystem**: This subsystem is crucial when the user chooses to interact with ALFRED via voice commands. It interprets voice inputs and sends respective commands to the UI for action.
+- **ContentManagementSystem**: This system manages the actual content (text, images, videos) that ALFRED displays to the user. Upon receiving a request from the UI to zoom in on specific content, it processes the request to provide a zoomed-in version of the content.
+- **Displaying Zoomed Content**: Whether the zoom command is initiated by voice or manual input, the process results in the content being zoomed in and displayed to the user through the UI component of ALFRED.
+
+This sequence diagram abstracts over specific implementation details like the actual recognition algorithms for voice commands or the technical specifics of how content is zoomed and managed within ALFRED. It provides a high-level overview of the interaction flow for enabling a user to zoom in on visual content.

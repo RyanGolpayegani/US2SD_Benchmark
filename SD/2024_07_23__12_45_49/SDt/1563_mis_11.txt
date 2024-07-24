@@ -1,0 +1,42 @@
+@startuml
+participant Curator as curator
+participant "Staff Interface" as UI
+participant "Ingest Service" as ingest
+participant "Replication Queue" as queue
+participant "Remote Storage" as remoteStorage
+participant "Replication Service" as replicationService
+participant "Database" as DB
+
+curator -> UI: Select collection for ingestion
+UI -> ingest: Initiate ingest with replication request
+activate ingest
+
+ingest -> queue: Queue collection for replication
+activate queue
+queue --> ingest: Acknowledge queueing
+
+ingest -> DB: Update collection status to "Queued for Replication"
+DB --> ingest: Status updated
+
+deactivate ingest
+ingest -> UI: Ingest initiated and queued for replication
+UI --> curator: Display ingest and queue status
+
+...
+
+queue -> replicationService: Start replication process
+activate replicationService
+
+replicationService -> remoteStorage: Replicate collection data
+activate remoteSteel
+remoteSteel --> replicationService: Replication success
+
+replicationService -> DB: Update replication status
+DB --> replicationService: Status updated
+
+deactivate replicationService
+
+replicationService -> UI: Update replication status display
+UI -> curator: Show updated replication status on item/component page
+
+@enduml

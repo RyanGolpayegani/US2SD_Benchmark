@@ -1,0 +1,46 @@
+Creating a detailed sequence diagram in PlantUML format for the given user story involves outlining the interactions between the Owner, the Platform (which can include the User Management System and the Database), and potentially the invited User. This interaction will showcase the process from the Owner deciding to invite an existing user to the confirmation of the user's addition to the publisher's group. 
+
+Given your request, below is a simplified PlantUML code that represents these interactions. This diagram assumes that the user already exists in the system, and the owner has the authority to add users to their publisher group.
+
+```plantuml
+@startuml
+participant Owner
+participant "User Management System" as UMS
+participant "Database" as DB
+participant User
+
+Owner -> UMS: Select "Invite User"
+UMS -> Owner: Display User Search Interface
+Owner -> UMS: Input User Details & Submit
+UMS -> DB: Validate User Exists
+alt User exists
+    DB -> UMS: User Validated
+    UMS -> Owner: Display "Confirm Invitation"
+    Owner -> UMS: Confirm
+    UMS -> DB: Create Publisher Membership
+    DB -> UMS: Confirmation
+    UMS -> Owner: Display "User Invited Successfully"
+    UMS -> User: Send Invitation Notification
+else User does not exist
+    DB -> UMS: User Not Found
+    UMS -> Owner: Display "User Not Found Error"
+end
+@enduml
+```
+
+**Explanation of the Sequence:**
+
+1. The **Owner** initiates the process by selecting the option to "Invite User" within the platform.
+2. The **User Management System (UMS)** provides the Owner with a user search interface.
+3. The Owner inputs the details of the user they wish to invite and submits this information to the UMS.
+4. The UMS requests the **Database (DB)** to validate if the user exists within the system.
+5. If the user exists, the DB confirms this to the UMS.
+   - The UMS then presents the Owner with a confirmation screen to confirm the invitation.
+   - Upon confirmation by the Owner, the UMS requests the DB to create a new publisher membership for the user.
+   - The DB confirms the creation of the publisher membership back to the UMS.
+   - The UMS notifies the Owner that the user has been successfully invited.
+   - Additionally, the UMS sends an invitation notification to the User.
+6. If the user does not exist in the DB, the DB informs the UMS of this.
+   - The UMS then displays an error message to the Owner indicating that the user was not found.
+
+This sequence diagram is simplified for clarity and understanding. In a real-world implementation, there would likely be more layers of interaction, including error handling, authentication checks (to ensure the Owner has authority to invite users), and possibly integration with external notification systems for sending the invitation to the User.

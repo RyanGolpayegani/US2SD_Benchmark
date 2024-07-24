@@ -1,0 +1,56 @@
+To accommodate your request for a detailed sequence diagram in PlantUML format for the user story "As a manager, I want to keep accounts for purchased books," the following outlines a sequence involving the key interactions between a library manager and the Comprehensive Library Management System (CLMS) for adding purchased books to the library's inventory and accounting for them financially.
+
+Please note, due to the complexity and textual limitations, the sequence diagram describes the core steps in a simplified manner. This includes initiating the process of adding a purchased book, validating manager credentials, entering book details, updating the inventory, and recording the financial transaction.
+
+```plantuml
+@startuml
+participant Manager
+participant Authentication
+participant "Book Management Interface" as BookInterface
+participant Database
+participant "Financial System" as FinancialSystem
+
+Manager -> Authentication: Provide Credentials
+Authentication -> Manager: Credentials Validated
+
+Manager -> BookInterface: Access Book Management
+BookInterface -> Manager: Book Management Dashboard
+
+Manager -> Book V: Initiate Add Book Process
+BookInterface -> Database: Check for Duplicate
+alt If Book Exists
+    Database -> BookInterface: Notify Duplicate
+    BookInterface -> Manager: Show Duplicate Error
+else If New Book
+    Database -> BookInterface: Confirm Unique Entry
+    Manager -> BookInterface: Enter Book Details \n(Title, Author, ISBN, Purchase Price, etc.)
+    BookInterface -> Database: Save New Book Details
+    
+    Database -> BookInterface: Book Added Successfully
+    BookInterface -> Manager: Display Success Message
+    
+    Manager -> FinancialSystem: Record Purchase Details
+    FinancialSystem -> FinancialSystem: Update Financial Records
+    FinancialSystem -> Manager: Display Transaction Success
+end
+
+@enduml
+```
+
+### How to Read the Diagram:
+
+- **Participants/Actors:** Different entities involved in the process are represented as participants, e.g., Manager, Authentication, etc.
+- **Interactions:** The arrows show the sequence of interactions between the entities.
+- **Decisions (alt/else):** This denotes a decision point in the process, where different actions are taken based on the condition (e.g., if the book already exists in the database).
+
+### Explanation:
+
+1. **Authentication:** The manager provides their credentials, which are validated by the system.
+2. **Book Management Dashboard:** Upon successful login, the manager accesses the book management interface.
+3. **Add Book Process:** The manager initiates the process to add a new book.
+4. **Duplicate Check:** The system checks if the book already exists in the library's database.
+5. **Enter Book Details:** If it's a new book, the manager enters all relevant details, which are then saved to the database.
+6. **Success Message:** The manager receives confirmation that the book has been successfully added.
+7. **Record Purchase Details:** The manager records the purchase details in the financial system, which updates the financial records accordingly.
+
+This sequenced interaction ensures that new book purchases are systematically added to the CLMS inventory and accounted for financially, aligning with the library manager's responsibilities and goals.

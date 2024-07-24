@@ -1,0 +1,27 @@
+@startuml
+actor Librarian as L
+participant "UI:Library Management" as UI
+participant "Controller" as C
+participant "BookService" as BS
+participant "Database" as DB
+
+L -> UI: Accesses add book form
+UI -> L: Returns add book form
+L -> UI: Submits book details
+UI -> C: AddBook(details)
+C -> BS: VerifyBook(details)
+alt If book details are incomplete or incorrect
+    BS -> BS: Validate details
+    BS --> C: Return error
+    C --> UI: Show error message
+    UI --> L: Requests correct details
+else If details are complete and correct
+    BS --> C: Book verified
+    C -> DB: SaveBook(details)
+    deactivate C
+    DB --> C: Confirm save
+    C --> UI: Show success message
+    UI --> L: Displays success
+end
+
+@enduml

@@ -1,0 +1,50 @@
+Creating a detailed sequence diagram for the described user story "As a data manager, I want to know whether the DMP (Data Management Plan) was approved, so that I can proceed with the required next steps" involves outlining the interaction between the system components involved in checking the approval status of a Data Management Plan. For this scenario, we will focus on the interactions between the Data Manager, the DMPTool system, and potentially other subsystems involved in the approval process within the system's ecosystem.
+
+This sequence diagram is visualized in PlantUML format and highlights the necessary steps from the moment the Data Manager requests the DMP approval status until they receive the confirmation. 
+
+Please note, to visualize this PlantUML diagram, you would need to use a PlantUML environment or an online editor that supports PlantUML.
+
+```plantuml
+@startuml
+
+participant DataManager as DM
+participant "DMPTool System" as DMPTool
+entity "Approval Module" as ApprovalMod
+database "DMP Database" as DMPDB
+
+DM -> DMPTool : Request DMP approval status
+DMPTool -> ApprovalMod : Check approval status
+ApprovalMod -> DMPDB : Retrieve DMP details/Status
+DMPDB --> ApprovalMod : Return DMP details/Status
+ApprovalMod --> DMPTool : Approval status (Approved/Not Approved)
+DMPTool -> DM : Display approval status
+
+alt If DMP is Approved
+    DM -> DMPTool : Initiate next steps based on approval
+    DMPTool -> ApprovalMod : Log initiation of next steps
+    ApprovalMod -> DMPDB : Update DMP status with next steps begun
+    DMPDB --> ApprovalMod : Confirm update success
+    ApprovalMod --> DMPTool : Next steps initiated success
+    DMPTool --> DM : Confirm next steps initiated
+else If DMP is Not Approved
+    DMPTool --> DM : Display reasons/feedback for non-approval
+    DM -> DMPTool : Request/Perform adjustments
+    DMPTool -> ApprovalMod : Process adjustments
+    ApprovalMod -> DMPDB : Update DMP with adjustments
+    DMPDB --> ApprovalMod : Confirm update success
+    ApprovalMod --> DMPTool : Adjustments processed
+    DMPTool --> DM : Adjustments completed notification
+end
+
+@enduml
+```
+
+In this diagram:
+- **DataManager (DM)** starts the process by requesting the DMP's approval status from the DMPTool System.
+- The **DMPTool System** forwards this request to its **Approval Module**.
+- The **Approval Module** checks the **DMP Database** for the DMP's details and current approval status.
+- Based on the retrieved status, the response is sent back to the DataManager.
+- If the DMP is approved, the DataManager can initiate the required next steps within the system; these steps are logged and updated in the DMP Database.
+- If the DMP is not approved, the DMPTool provides feedback, and the DataManager can request or perform necessary adjustments. Once adjustments are made, their status is updated in the database.
+
+This sequence diagram template provides a structured way to visualize the process flow but can be adapted based on the specific implementation details or system architecture of the DMPTool.

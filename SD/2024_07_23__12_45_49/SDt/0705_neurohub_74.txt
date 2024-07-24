@@ -1,0 +1,24 @@
+@startuml
+participant Researcher as R
+participant "Remote Access\nPortal" as RAP
+participant Authentication as Auth
+participant "Neurohub\nPlatform" as NP
+participant "Data Storage" as DS
+
+R -> RAP: Request remote access
+RAP -> Auth: Authenticate user
+Auth -> RAP: Authentication Successful
+
+activate RAP
+RAP -> NP: Request access to data
+activate NP
+NP -> DS: Fetch requested data
+activate DS
+DS -> NP: Return requested data
+deactivate DS
+NP -> RAP: Return data to portal
+deactivate NP
+RAP -> R: Display data
+deactivate RAP
+
+@enduml

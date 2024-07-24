@@ -1,0 +1,31 @@
+@startuml
+actor LibraryStaff as "Library Staff"
+participant WebInterface as "Web UI"
+participant AuthenticationModule as "Auth Module"
+participant UploadService as "Upload Service"
+participant Database as "Database"
+participant NotificationService as "Notification Service"
+
+LibraryStaff -> WebInterface: Access Upload Material Page
+WebInterface -> AuthenticationModule: Request Authentication
+AuthenticationModule -> LibraryStaff: Authenticate
+LibraryStaff -> AuthenticationModule: Provide Credentials
+AuthenticationModule -> WebInterface: Authentication Successful
+
+LibraryStaff -> WebInterface: Select Material to Upload
+WebInterface -> UploadService: Initiate Upload Process
+UploadService -> Database: Check Author Permission
+Database -> UploadService: Permission Granted
+UploadService -> LibraryStaff: Display Upload Form
+LibraryStaff -> WebInterface: Input Material Details & Files
+WebInterface -> UploadService: Submit Material Details & Files
+
+UploadService -> Database: Save Material Information
+Database -> UploadService: Confirmation
+UploadService -> NotificationService: Send Notification to Author
+NotificationService -> Database: Log Notification
+Database -> NotificationMore Service: Confirmation Sent
+
+UploadService -> LibraryStaff: Display Success Message
+
+@enduml

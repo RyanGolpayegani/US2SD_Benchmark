@@ -1,0 +1,23 @@
+@startuml
+participant "Zooniverse Admin" as Admin
+participant "Admin Dashboard" as Dashboard
+participant "Education Content Decision System (ECDS)" as ECDS
+participant "Volunteer Profile Database" as VPDB
+participant "Content Recommendation Engine" as CRE
+participant "Content Database" as CDB
+
+== Determine Education Content Format for Volunteer ==
+Admin->Dashboard: Request education content format
+Dashboard->ECDS: Fetch volunteer preferences & interaction history
+ECDS->VPDB: Query volunteer data
+VPDB-->ECDS: Return volunteer preferences & history
+ECDS->CRE: Analyze preferences, history, & content type
+CRE-->ECDS: Suggest content format (Text, Image, Video)
+note right of ECDS: Decision based on:\n1. Volunteer's preferred learning mode\n2. Engagement level with past content formats\n3. Complexity of information to be conveyed
+ECDS->CDB: Retrieve suggested content format
+CDB-->ECDS: Return content samples
+ECDS-->Dashboard: Display content format suggestion & samples
+Dashboard-->Admin: Show suggestion (Text, Image, Video) & samples
+note over Admin: Admin can review the content format suggestion\nand choose the most appropriate content\nto educate the volunteer.
+
+@enduml

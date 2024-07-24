@@ -1,0 +1,26 @@
+@startuml
+participant MedicalCaregiver as MC
+participant ALFRED_Interface as AI
+participant SpeechRecognition as SR
+participant User as U
+participant BPModule as BPM
+participant DataStorage as DS
+participant NotificationService as NS
+
+MC -> AI: Request blood pressure measurement
+AI -> SR: Activate listening mode
+SR -> U: "Please measure your blood pressure now."
+U -> BPM: Measures blood pressure
+BPM -> DS: Save measurement
+DS -> AI: Measurement saved confirmation
+AI -> NS: Send notification with data
+NS -> MC: Display blood pressure data
+
+note over U, BPM: User interacts with \nthe blood pressure module (BPM) \nto take the measurement.
+
+note over BPM, DS: Blood Pressure data is \nstored securely.
+
+MC -> AI: Acknowledges receipt
+AI -> U: Inform user of successful process
+
+@enduml

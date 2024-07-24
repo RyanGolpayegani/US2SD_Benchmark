@@ -1,0 +1,59 @@
+Creating a detailed Sequence Diagram for the specified user story in PlantUML format requires defining the interactions between the User (OlderPerson) and the ALFRED system, focusing specifically on the scenario where the OlderPerson wants to use only well-visible buttons. Let's build a sequence diagram that illustrates this process.
+
+```plantuml
+@startuml
+participant OlderPerson
+participant Interface
+participant SettingsModule
+participant DisplayController
+
+== Adjusting Interface for Well-Visible Buttons ==
+
+OlderPerson -> Interface : RequestsAccessibilityOptions
+activate Interface
+
+Interface -> SettingsModule : FetchCurrentSettings
+activate SettingsModule
+
+SettingsModule -> SettingsModule : CheckVisibilityPreferences
+SettingsModule --> Interface : CurrentSettings
+deactivate SettingsModule
+
+Interface -> OlderPerson : DisplayCurrentSettings
+OlderPerson -> Interface : SelectLargeButtonsOption
+activate Interface
+
+Interface -> SettingsModule : UpdateVisibilitySettings(LargeButtonsEnabled)
+activate SettingsModule
+
+SettingsModule -> SettingsModule : SaveNewSettings
+SettingsModule --> Interface : Confirmation
+deactivate SettingsModule
+
+Interface -> DisplayController : AdjustButtonSize
+activate DisplayController
+DisplayController -> DisplayController : ApplyLargeButtonSettings
+DisplayController --> Interface : UpdateComplete
+deactivate DisplayController
+
+Interface --> OlderPerson : DisplayConfirmation
+
+== End ==
+
+@enduml
+```
+
+### Explanation:
+1. **OlderPerson Requests Accessibility Options**: The sequence starts with the OlderPerson interacting with the ALFRED interface to request accessibility options.
+
+2. **Interface Fetches and Displays Current Settings**: The Interface component communicates with the SettingsModule to fetch the current settings, which checks for existing visibility preferences (like button size or contrast settings). These settings are then displayed back to the OlderPerson through the Interface.
+
+3. **OlderPerson Selects Large Buttons Option**: After reviewing the current settings, the OlderPerson decides to adjust the settings to enable large, well-visible buttons. This preference is sent back to the Interface.
+
+4. **SettingsModule Updates Visibility Settings**: The Interface sends the new setting (large buttons enabled) to the SettingsModule, which then saves these new settings.
+
+5. **DisplayController Adjusts Button Size**: The Interface instructs the DisplayController to apply the new settings by adjusting the button size to be larger, making them more visible and accessible to the OlderPerson.
+
+6. **Confirmation to OlderPerson**: Once the adjustments are made, the Interface provides a confirmation to the OlderPerson that the buttons have been adjusted as per their preference.
+
+This sequence diagram demonstrates how an older adult user interacts with the ALFORD system to customize the UI to use only well-visible buttons, enhancing the accessibility and usability of the system.

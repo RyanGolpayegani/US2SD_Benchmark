@@ -1,0 +1,27 @@
+@startuml
+actor "Repository Support\nTeam Member" as support
+participant "User Interface" as UI
+participant "Collection Management\nService" as CMS
+participant "Database" as DB
+participant "Notification\nService" as NS
+
+support -> UI: Select collection move option
+UI -> CMS: Initiate move collection request
+CMS -> DB: Validate collection ID\nand ownership
+alt Collection ID and Ownership Valid
+  DB -> CMS: Validation successful
+  support -> UI: Specify new location \nfor collection
+  UI -> CMS: Submit new location details
+  CMS -> DB: Update collection location
+  DB -> CMS: Confirm update
+  CMS -> NS: Trigger notification to collection owner
+  NS -> DB: Log notification
+  DB -> NS: Confirmation
+  NS -> support: Display success message\n(Collection moved)
+else Collection ID or Ownership Invalid
+  DB -> CMS: Validation failed
+  CMS -> UI: Display error message\n(Invalid collection or ownership)
+  UI -> support: Show error message
+end
+
+@enduml

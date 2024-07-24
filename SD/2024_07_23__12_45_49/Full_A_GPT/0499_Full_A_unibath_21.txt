@@ -1,0 +1,59 @@
+Certainly! Generating a sequence diagram for managing multiple versions of the same dataset in PlantUML format involves detailing the interactions between the depositor and various components of the Enhanced Research Data Management Platform, including user interfaces, data management services, and the repository itself. Below is a simplified sequence diagram representing this process.
+
+```plantuml
+@startuml
+participant Depositor
+participant "Web Interface" as UI
+participant "Data Management Service" as DMS
+participant "Version Control" as VC
+participant "Repository" as Repo
+
+Depositor -> UI: Access data management page
+UI -> DMS: Request to manage dataset versions
+activate DMS
+
+DMS -> VC: Check existing versions
+activate VC
+VC -> Repo: Fetch version history
+activate Repo
+Repo --> VC: Version history
+deactivate Repo
+
+VC --> DMS: Display versions
+DMS --> UI: Show version management options
+
+Depositor -> UI: Initiate new version upload
+UI -> DMS: Prepare for new version
+DMS -> VC: Initialize new version
+VC -> Repo: Store new dataset version
+activate Repo
+Repo --> VC: Version stored
+deactivate Repo
+
+VC --> DMS: Update version history
+DMS -> VC: Generate new DOI
+VC --> DMS: DOI generated
+
+DMS --> UI: Confirm version and DOI
+UI --> Depositor: Display confirmation & DOI
+
+alt Applying embargo or license
+    Depositor -> UI: Apply embargo/license to version
+    UI -> DMS: Update version settings
+    DMS -> Repo: Apply settings to version
+    Repo --> DMS: Settings applied
+    DMS --> UI: Confirm application
+    UI --> Depositor: Display confirmation
+end
+
+@enduml
+```
+This diagram outlines a sequence where:
+
+1. The depositor accesses the data management page to manage dataset versions.
+2. The Data Management Service (DMS) checks for existing versions using the Version Control system, which fetches version history from the Repository.
+3. The depositor initiates a new version upload, and the DMS prepares for this by storing the new dataset version with the help of Version Control and the Repository.
+4. The new version's DOI is generated, and the depositor is informed about the successful upload and the new version's DOI.
+5. An optional step includes applying an embargo or license to the new version, which is managed by updating the version settings in the repository.
+
+Please note, this is a simplified representation to fit the user story's requirements and could be extended with more detailed interactions, error handling, and other system components as needed for a complete implementation.

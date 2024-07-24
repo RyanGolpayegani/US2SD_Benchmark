@@ -1,0 +1,26 @@
+@startuml
+participant User
+participant WebInterface
+participant SearchService
+participant Database
+participant FileManager
+participant FileStorage
+
+User -> WebInterface : Enter search criteria for protocols
+WebInterface -> SearchService : Query protocols based on criteria
+SearchSpringService -> Database: Fetch metadata matching criteria
+Database -> SearchService : Return results metadata
+SearchService -> WebInterface : Display search results
+User -> WebInterface : Selects protocol to download
+WebInterface -> FileManager : Request file download URL (protocol ID)
+FileManager -> Database : Validate file access permissions
+Database -> FileManager : Permissions validated
+FileManager -> FileStorage : Request download URL
+FileStorage -> FileManager : Provide download URL for the protocol
+FileManager -> WebInterface : Provide download link to user
+WebInterface -> User : Offer download link
+User -> WebInterface : Clicks download link
+WebInterface -> FileStorage : Initiate download through URL
+FileStorage -> User : Starts file download
+
+@enduml

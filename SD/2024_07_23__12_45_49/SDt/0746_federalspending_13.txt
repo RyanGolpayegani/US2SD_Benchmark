@@ -1,0 +1,23 @@
+@startuml
+actor BrokerUser as User
+participant "Broker Platform" as Broker
+participant "Data Validation Service" as Validation
+participant "FPDS System" as FPDS
+participant "File Generation Service" as FileGen
+
+== Check for FPDS Data Updates ==
+User -> Broker: Request D1 file generation
+Broker -> FPDS: Check for data updates since last D1 file
+alt Data has been updated
+    FPDS -> Broker: Confirm data update
+    Broker -> Validation: Validate new FPDS data
+    Validation -> Broker: Validation complete
+    Broker -> FileGen: Generate D1 file with new data
+    FileGen -> Broker: D1 file generation complete
+    Broker -> User: Provide D1 file
+else No data update
+    FPDS -> Broker: No data update
+    Broker -> User: Inform no D1 file generation needed
+end
+
+@enduml

@@ -1,0 +1,59 @@
+Creating a detailed Sequence Diagram for the specified User Story: "As a chef, I want to create status for dishes so that waitors can follow better," involves illustrating the interactions between different components of the Restaurant Management and Operations System involved in this process. This sequence will follow the flow from the chef updating a dish status to this update being visible to the waiters.
+
+The following is a PlantUML code snippet that represents the sequence diagram for this specific user story. This code models the sequence of events starting from the chef deciding to update the dish status, interacting with the system (through a user interface), the system processing the request, updating the database, and finally, the updated status being made available to the waiters.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Chef_UI as Chef
+participant Backend_System as Backend
+database DB
+participant Waiter_UI as Waiter
+
+== Update Dish Status ==
+Chef -> Backend : Update dish status (dishID, newStatus)
+activate Chef
+activate Backend
+
+Backend -> DB : Query to update status (dishID, newStatus)
+activate DB
+
+DB --> Backend : Confirm status updated
+deactivate DB
+
+Backend --> Chef : Display success message
+deactivate Backend
+
+== Notify Waiters ==
+Backend -> DB : Query to get waiters list
+activate Backend
+activate DB
+
+DB --> Backend : Return waiters list
+deactivate DB
+
+Backend -> Waiter : Update available to waiters UI
+activate Waiter
+
+Waiter --> Backend : Acknowledge update
+deactivate Waiter
+
+Backend --> Chef : Notify update completion to Chef
+deactivate Backend
+
+deactivate Chef
+@enduml
+```
+
+**Explanation of Steps:**
+
+1. **Update Dish Status:** The Chef, through the user interface (Chef_UI), sends a request to update the status of a dish (identified by `dishID`) to a new status (e.g., "Ready for Serving", "Out of Stock").
+2. **Backend Processing:** The Backend_System receives the request and processes it by communicating with the database (DB) to update the status of the specified dish.
+3. **Database Update:** The Database updates the dish status based on the request and confirms the update to the Backend_System.
+4. **Confirmation to Chef:** The Backend_System then sends a success message to the Chef_UI, indicating that the dish status has been successfully updated.
+5. **Notify Waiters:** Following the update, the Backend_System queries the database to get a list of waiters and then updates the Waiter_UI to reflect the new status of the dish. This ensures that waiters are aware of the current status of dishes in real-time.
+6. **Waiters Acknowledge:** Waiters, through their UI (Waiter_UI), acknowledge the update.
+7. **Completion Notification:** Finally, the Backend_System sends a notification back to the Chef_UI, confirming that the waiters have been notified of the dish status update.
+
+This sequence diagram provides a clear representation of the interactions involved in updating and notifying relevant stakeholders about a dish's status within the Restaurant Management and Operations System.

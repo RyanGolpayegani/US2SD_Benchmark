@@ -1,0 +1,31 @@
+@startuml
+participant LibraryMember as member
+participant CLMSWebInterface as web
+participant SubscriptionService as subService
+participant Database as db
+participant NotificationService as notifService
+participant EmailService as email
+
+== New Book Registration ==
+librarian -> web : Register new book details
+web -> db : Save new book information
+db --> web : Acknowledge save
+web --> librarian : Display success message
+
+== Notification Process ==
+activate subService
+
+librarian -> subService : Trigger notification process for new book
+
+loop for each member subscribed to notifications
+    subService -> db : Retrieve subscriber list
+    db -> subService : Return list of subscribers
+
+    subService -> notifService : Prepare notification for new book
+    notifService -> email : Compile email content
+    email -> member : Send email notification
+end
+
+member -> email : Receive notification & check new book
+deactivate subService
+@enduml

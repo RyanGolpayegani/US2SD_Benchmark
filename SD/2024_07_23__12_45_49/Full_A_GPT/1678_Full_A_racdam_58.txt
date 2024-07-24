@@ -1,0 +1,48 @@
+To create a detailed sequence diagram for the specific user story "As a researcher, I want to see common material across collections, so that I can prepare a comprehensive analysis," we will use PlantUML code. This diagram will illustrate how the system enables a researcher to find and access common material across various collections. Please note that this is a high-level design and might not cover all possible exceptions and error handling for simplicity.
+
+```plantuml
+@startuml
+actor Researcher as r
+participant "SearchInterface" as ui
+participant "SearchService" as ss
+database "DigitalArchiveDB" as db
+participant "AccessControl" as ac
+participant "MaterialsManagement" as mm
+
+r -> ui : Enter search criteria\n(including keywords/tags)
+ui -> ss : Initiate search
+ss -> db : Retrieve matching items across collections
+db --> ss : Return results
+ss -> ac : Check access permissions for Researcher
+ac --> ss : Access permissions details
+ss -> mm : Compile accessible materials
+mm --> ss : Compiled materials
+ss -> ui : Display searchable materials with\n common elements across collections
+r -> ui : Select materials for analysis
+ui -> mm : Request detailed view
+mm -> ac : Validate access for detailed materials
+ac --> mm : Access granted
+mm -> db : Fetch detailed material information
+db --> mm : Detailed material information
+mm -> ui : Display detailed material to Researcher
+r -> ui : Analyze and download materials\nfor comprehensive analysis
+
+@enduml
+```
+
+This sequence diagram outlines the process as follows:
+
+1. **Researcher Input**: The researcher enters their search criteria (like keywords or tags) that would identify common material across collections within the search interface.
+2. **Search Initiation**: The search interface communicates with the search service to begin the query based on the provided criteria.
+3. **Data Retrieval**: The search service interacts with the digital archive database to retrieve matching items across different collections.
+4. **Access Permission Checks**: The search service checks with the access control module to determine what materials the researcher is permitted to access.
+5. **Materials Compilation**: Based on access permissions, the materials management module compiles the materials that the researcher is allowed to access.
+6. **Results Display**: The search service then sends the compiled list of accessible materials back to the user interface, which displays them to the researcher.
+7. **Material Selection for Analysis**: The researcher selects the materials they are interested in for a more detailed view.
+8. **Detailed View Request**: The user interface requests detailed information for the selected materials from the materials management module.
+9. **Validation of Access for Detailed Materials**: The materials management module checks with the access control module to ensure the researcher has access to the detailed materials.
+10. **Detailed Material Fetching**: Upon access validation, the materials management module fetches detailed information about the materials from the database.
+11. **Detailed Materials Display**: This information is sent back to the user interface, where it is displayed to the researcher for analysis.
+12. **Analysis and Download**: The researcher analyzes and, if permitted, downloads the materials for comprehensive analysis.
+
+This sequence diagram provides a visual representation of the interactions between the researcher, the system's user interface, and backend services to fulfill the user story.

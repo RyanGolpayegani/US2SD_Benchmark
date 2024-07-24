@@ -1,0 +1,26 @@
+@startuml
+actor UnivITService as UnivIT
+entity ValidationService as Validate
+entity StorageService as Storage
+database StorageSystem as DB
+entity LoggingService as Log
+entity MetadataService as Metadata
+
+UnivIT -> Validate : Validate dataset
+Validate -> Storage : Request to check storage availability
+Storage -> DB : Check available space
+DB -> Storage : Confirm available space
+Storage -> UnivIT : Storage space confirmed
+
+UnivIT -> Storage : Archive and store dataset
+Storage -> DB : Store archived data
+DB -> Storage : Confirm data stored
+Storage -> Log : Log storage operation
+Log -> Storage : Confirm operation logged
+
+Storage -> Metadata : Update dataset metadata
+Metadata -> Storage : Metadata updated
+
+Storage -> UnivIT : Confirm data stored successfully
+
+@enduml

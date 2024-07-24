@@ -1,0 +1,57 @@
+@startuml
+participant User as u
+participant WebInterface as web
+participant SpreadsheetService as ss
+database DataStore as ds
+
+== User Initiates Spreadsheet Editing ==
+u -> web: Access proposal project
+activate web
+
+web -> ss: Initialize Spreadsheet
+activate ss
+
+ss -> ds: Retrieve Spreadsheet Data
+activate ds
+ds --> ss: Return Data
+deactivate ds
+
+ss --> web: Spreadsheet Ready
+deactivate ss
+
+web --> u: Display Spreadsheet
+deactivate web
+
+== Collaborative Editing ==
+u -> web: Edit Spreadsheet
+activate web
+
+web -> ss: Update Data
+activate ss
+
+ss -> ds: Save Changes
+activate ds
+ds --> ss: Confirm Save
+deactivate ds
+
+ss --> web: Update Success
+deactivate ss
+
+web -> web: Notify Collaborators
+activate web
+
+web -> ss: Push Update
+activate ss
+
+ss -> ds: Retrieve Updated Data
+activate ds
+ds --> ss: Return Updated Data
+deactivate ds
+
+ss --> web: Updated Spreadsheet Ready
+deactivate ss
+
+web --> u: Display Updated Spreadsheet
+deactivate web
+
+@enduml

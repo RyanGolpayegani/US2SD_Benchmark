@@ -1,0 +1,51 @@
+Given the complexity and multifaceted nature of the EDRMS project, the sequence diagram would aim to illustrate the process through which a "repoadmin" can update the repository index while ensuring the public interface remains accessible. Below is a detailed sequence diagram written in PlantUML format.
+
+---
+```plantuml
+@startuml
+participant UserInterface as UI
+participant Repoadmin as RA
+participant RepositoryIndex as RI
+participant PublicInterface as PI
+database BackupIndex as BI
+
+RA -> RI : checkCurrentIndexStatus()
+alt Index is busy
+    RI -> RA : IndexBusyMessage()
+    RA -> BI : initiateIndexBackup()
+    BI -> RI : copyCurrentIndexState()
+    RA -> RI : scheduleIndexUpdate(duringOffPeakHours)
+else Index is available
+    RA -> RI : lockIndexForUpdate()
+    RI -> RA : confirmIndexLocked()
+    RA -> PI : displayMaintenanceNotice()
+    RI -> BI : backupCurrentIndexState()
+    BI -> RI : confirmBackupComplete()
+    RA -> RI : updateIndex()
+    alt Update Successful
+        RI -> RA : confirmUpdateSuccess()
+        RA -> RI : unlockIndex()
+        RI -> PI : resumeNormalOperation()
+        RA -> PI : removeMaintenanceNotice()
+    else Update Failed
+        RI -> RA : rollbackToPreviousState()
+        RA -> RI : unlockIndex()
+        RI -> PI : resumeNormalOperation()
+        RA -> PI : notifyUpdateFailure()
+    end
+end
+
+@enduml
+```
+---
+
+### Explanation
+
+- **Repoadmin (RA)**: Represents the repository administrator responsible for managing the index update.
+- **RepositoryIndex (RI)**: The component representing the digital repository's indexing system.
+- **PublicInterface (PI)**: The user-facing component of the repository, which remains accessible during the update.
+- **BackupIndex (BI)**: A temporary storage area for backing up the current state of the index before the update.
+
+The process starts with the repoadmin checking the current status of the repository index. If the index is busy, a backup is initiated, and the update is scheduled for a later time (during off-peak hours) to minimize the impact on end-users. If the index is available for an update, it's locked to prevent changes, a maintenance notice is displayed on the public interface, and a backup of the current index state is made. After the backup, the index update proceeds. Upon a successful update, the repoadmin confirms the success, unlocks the index, and normal operations resume, with the maintenance notice being removed. If the update fails, the system attempts to roll back to the previous state, unlock the index, and notify the repoadmin of the failure while resuming normal operations.
+
+This sequence diagram aims to capture the key steps involved in updating the repository index without disrupting access to the public interface, highlighting the importance of maintaining service continuity and minimizing user impact during maintenance activities.

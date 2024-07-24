@@ -1,0 +1,41 @@
+To create a detailed sequence diagram for the specified user story — "As an attendee, I want to be added to a training waitlist, so that I can be considered for a class," — you will use PlantUML syntax. This diagram will cover the interactions between the system components starting from the attendee's request to be added to a waitlist until the confirmation of their waitlist status. Let's break down the process.
+
+Please note, the sequence diagram outlined below assumes that you are familiar with the basics of PlantUML syntax and how to render it in a supporting application or environment.
+
+```plantuml
+@startuml
+participant Attendee
+participant TrainingModule as Training
+database BADCampDB as DB
+participant EmailSystem as Email
+
+Attendee -> Training: Request to join waitlist
+Training -> DB: Check if waitlist available
+alt Waitlist is available
+    DB -> Training: Confirm availability
+    Training -> Attendee: Show waitlist form
+    Attendee -> Training: Submit waitlist form
+    Training -> DB: Add to waitlist
+    DB -> Training: Waitlist confirmation
+    Training -> Email: Send confirmation email to Attendee
+    Email -> Attendee: Waitlist confirmation email
+else Waitlist not available/full
+    DB -> Training: Inform waitlist full
+    Training -> Attendee: Show waitlist full message
+end
+@enduml
+```
+
+### Explanation:
+
+1. **Attendee to TrainingModule:** The Attendee initiates the process by requesting to join a training waitlist, which is received by the Training Module (representing the part of the system handling training sessions and waitlist logic).
+
+2. **TrainingModule to BADCampDB:** The system checks with the database (BADCampDB) to determine if the waitlist for the desired training is available or if there is room to add the Attendee.
+
+3. **Decision Point - Availability:**
+   
+   - **If the waitlist is available**, the database confirms availability back to the Training Module, which in turn asks the Attendee to fill out a form to join the waitlist. After submission, the Attendee's information is added to the waitlist in the database, confirmation is sent back to the Training Module, which then instructs the EmailSystem to send out a confirmation email to the Attendee.
+   
+   - **If the waitlist is full or not available**, the database sends a negative response to the Training Module, which then communicates to the Attendee that the waitlist is full or unavailable.
+
+This sequence diagram outlines a straightforward process for an Attendee to be added to a waitlist for training at BADCamp, accounting for both scenarios where adding the Attendee to the waitlist is possible and when it is not due to capacity issues.

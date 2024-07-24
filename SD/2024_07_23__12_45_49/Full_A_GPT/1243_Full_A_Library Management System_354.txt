@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the user story outlined requires outlining the interaction between various system components when a staff member searches for a book by name. Below is a representation in PlantUML format, visualizing how this process might work within the Comprehensive Library Management System (CLMS).
+
+```plantuml
+@startuml
+participant Staff as staff
+participant WebInterface as web
+participant SearchController as controller
+participant BookDatabase as database
+
+staff -> web : inputs book name in search
+activate web
+
+web -> controller : initiateSearch(bookName)
+activate controller
+
+controller -> database : queryBookByName(bookName)
+activate database
+
+alt book found
+    database --> controller : return book details
+    controller --> web : display book details
+else book not found
+    database --> controller : return not found message
+    controller --> web : display not found message
+end
+
+web --> staff : show search results
+deactivate database
+deactivate controller
+deactivate web
+
+@enduml
+```
+
+This sequence diagram demonstrates the following steps:
+
+1. **Initiating Search**: The process begins with a staff member entering a book name into the search field within the web interface of the Comprehensive Library Management System (CLMS).
+   
+2. **Search Request**: The web interface sends the search request, including the book name, to the `SearchController`.
+
+3. **Query Database**: The `SearchController` forwards the query to the `BookDatabase`, where the system looks for the book by its name.
+
+4. **Response Handling**: Depending on whether the book is found or not, the `BookDatabase` returns the book details or a not found message to the `SearchController`.
+
+5. **Display Results**: The `SearchController` then sends the information back to the web interface, which finally presents the search results to the staff member.
+
+Please note, this diagram assumes a simplified interaction flow and does not account for potential complexities such as authentication, error handling, or the intricacies of communication between the database and controller. In a real-world scenario, additional details and steps might be needed to fully capture the nuances of such a system.

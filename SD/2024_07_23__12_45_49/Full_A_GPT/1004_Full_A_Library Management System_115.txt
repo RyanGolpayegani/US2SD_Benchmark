@@ -1,0 +1,59 @@
+To illustrate the process of a library manager creating a book record to add new books to the library as described in your project, we can use PlantUML language to define the sequence diagram. Below is an example of how the sequence of interactions can be mapped out.
+
+```plantuml
+@startuml
+
+participant LibraryManager as LM
+participant LibrarySystem as LS
+participant Database as DB
+
+note over LM: Wants to add new book record
+LM -> LS: Access book management module
+activate LM
+activate LS
+
+LS -> DB: Validate access rights
+activate DB
+DB --> LS: Access granted
+deactivate DB
+
+LM -> LS: Provide book details\n(Title, Author, Category, Publication Date, etc.)
+LS -> DB: Check if book already exists
+activate DB
+DB --> LS: Book does not exist
+deactivate DB
+
+LS --> LM: Prompt for confirmation to add book
+LM -> LS: Confirm addition
+
+LS -> DB: Create new book record with details
+activate DB
+DB --> LS: Book record created successfully
+deactivate DB
+
+LS --> LM: Display success message\n(Book added successfully)
+deactivate LS
+deactivate LM
+
+@enduml
+```
+
+### Explanation:
+
+1. **Library Manager (LM) Accesses Book Management Module:** The library manager starts the process by accessing the book management module of the Comprehensive Library Management System (CLMS).
+
+2. **Validation:** The system checks the library manager's access rights to ensure they have the necessary permissions to add new books.
+
+3. **Provide Book Details:** The library manager inputs the book details such as the title, author, category, and publication date.
+
+4. **Check for Existing Record:** Before adding the book, the system checks if a record for the same book already exists to prevent duplicates.
+
+5. **Confirmation Prompt:** The system prompts the library manager for confirmation to proceed with adding the new book.
+
+6. **Confirm Addition:** The library manager confirms the addition of the new book.
+
+7. **Create New Book Record:** Upon confirmation, the system creates a new record in the database with the provided book details.
+
+8. **Success Message:** The library manager receives a success message indicating that the book has been added successfully to the library.
+
+This sequence ensures a structured and validated process for adding new books to the library, leveraging the capabilities of the Comprehensive Library Management System (CLMS) and enhancing the library's collection.

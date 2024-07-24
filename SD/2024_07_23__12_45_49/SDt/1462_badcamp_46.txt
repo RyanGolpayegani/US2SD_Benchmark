@@ -1,0 +1,28 @@
+@startuml
+actor AnonymousUser as User
+participant "UI: Summit List" as UI1
+participant "Summit Controller" as Controller
+database "Summit Database" as DB
+participant "Registration System" as RegSys
+participant "Navigation System" as NavSys
+
+User -> UI1: Browse summits
+UI1 -> Controller: Request summit details
+Controller -> DB: Query summit details
+DB -> Controller: Return summit details
+Controller -> UI1: Display summits & details
+User -> UI1: Select a summit
+UI1 -> Controller: Request registration & location details
+Controller -> RegSys: Query registration info
+RegSys -> Controller: Return registration status & link
+Controller -> NavSys: Request location details
+NavSys -> Controller: Return location info & map
+Controller -> UI1: Display registration info & map
+User -> RegSys: Follow registration link
+RegSys -> User: Provide registration form
+User -> RegSys: Submit registration data
+RegSys -> User: Confirm registration
+User -> NavSys: Request directions
+NavSys -> User: Provide directions & tips
+
+@enduml

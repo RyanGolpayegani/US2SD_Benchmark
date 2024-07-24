@@ -1,0 +1,33 @@
+@startuml
+participant Admin as A
+participant "Content Management System" as CMS
+participant "Database" as DB
+participant "Prefilter Service" as PS
+participant "Asset Information" as AI
+
+A -> CMS : Initiates prefilter search
+activate A
+activate CMS
+CMS -> DB : Retrieve content metadata
+activate DB
+DB --> CMS : Metadata List
+deactivate DB
+
+CMS -> PS : Send metadata list for prefiltering
+activate PS
+PS -> AI : Analyze low-level asset info
+activate AI
+AI --> PS : Analysis Results
+deactivate AI
+
+PS -> DB : Query based on analysis
+activate DB
+DB --> PS : Filtered Content
+deactivate DB
+PS --> CMS : Return Filtered Content
+deactivate PS
+
+CMS --> A : Display Filtered Content
+deactivate CMS
+deactivate A
+@enduml

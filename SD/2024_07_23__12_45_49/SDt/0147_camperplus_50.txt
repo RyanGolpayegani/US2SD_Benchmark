@@ -1,0 +1,20 @@
+@startuml
+actor CampWorker as CW
+participant "Worker UI" as UI
+participant "Backend System" as Backend
+database "Task Database" as DB
+
+CW -> UI : Selects assigned task
+UI -> Backend : Request task details
+Backend -> DB : Query task details
+DB -> Backend : Return task details
+Backend -> UI : Display task details
+
+CW -> UI : Submit completion report
+UI -> Backend : Update task status to "Completed"
+Backend -> DB : Update task record
+DB -> Backend : Confirmation of record update
+Backend -> UI : Display success message
+UI -> CW : Display completion confirmation
+
+@enduml

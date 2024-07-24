@@ -1,0 +1,46 @@
+To generate a detailed Sequence Diagram for the provided user story using PlantUML, we follow the standard syntax for representing the sequence of interactions between actors and the system in question. This particular sequence diagram exhibits how a repository manager can add external versions or descriptions of an object in the DAMS Integration and Management System (DIMS).
+
+Please note, to convert the following PlantUML code into a visual sequence diagram, you will need to use a PlantUML editor or an integration within a development environment that supports PlantUML.
+
+```plantuml
+@startuml
+actor RepositoryManager as RM
+participant "DIMS Portal" as Portal
+participant "Object Management Module" as OMM
+participant "External Links API" as ELAPI
+participant Database as DB
+
+RM -> Portal: Access DIMS
+Portal -> RM: Show Object Management Options
+
+RM -> Portal: Select Object to Update
+Portal -> OMM: Load Object Details
+
+OMM -> RM: Display Object Details
+RM -> OMM: Choose to Add External Version/Description
+OMM -> RM: Request External Version/Description Details
+
+RM -> OMM: Provide External Version/Description Details
+OMM -> ELAPI: Process External Version/Description
+ELAPI -> DB: Update Object with External Info
+
+DB -> ELAPI: Confirm Update
+ELAPI -> OMM: External Version/Description Added
+OMM -> RM: Confirm Update to Repository Manager
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram:
+
+1. **Repository Manager Interaction**: The diagram starts with the Repository Manager (RM) accessing the DIMS Portal, looking to update an object with external versions or descriptions.
+
+2. **Object Management Module (OMM)**: After selecting an object to update, the Object Management Module presents the details of the object and provides options to add new information.
+
+3. **Adding External Versions/Descriptions**: The RM provides the necessary details for the external versions or descriptions of the object, which are then processed by the External Links API.
+
+4. **Database Update**: The External Links API updates the database (DB) with the new external information associated with the specified object.
+
+5. **Confirmation**: Upon successful update, the database confirms the transaction back through the chain, ultimately notifying the RM of the successful addition.
+
+This sequence diagram abstracts the process into core interactions for clarity. Each of the participant modules and actors can have more detailed interactions and processes, depending on the specific implementation details of the DAMS Integration and Management System (DIMS).

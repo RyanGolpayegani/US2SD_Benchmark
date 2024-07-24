@@ -1,0 +1,30 @@
+@startuml
+actor Manager
+participant "Web Interface" as WebUI
+participant "Backend Server\n(Node.js + Express)" as Backend
+database "Database\n(MongoDB/PostgreSQL)" as DB
+participant "Report Generation\nService" as ReportGen
+
+Manager -> WebUI : Request Employee Data Report
+activate WebUI
+
+WebUI -> Backend : Fetch Report(Data Request)
+activate Backend
+
+Backend -> DB : Query Employee Data
+activate DB
+DB --> Backend : Return Data
+deactivate DB
+
+Backend -> ReportGen : Generate Report(Request Data)
+activate ReportGen
+Report0.3 +- Backend : Guidance on Report Format
+ReportGen --> Backend : Report File
+deactivate ReportGen
+
+Backend --> WebUI : Report File
+deactivate Backend
+
+WebUI --> Manager : Display/Download Report
+deactivate WebUI
+@enduml

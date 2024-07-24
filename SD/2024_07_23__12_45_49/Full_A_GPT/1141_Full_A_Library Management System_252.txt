@@ -1,0 +1,47 @@
+Creating a detailed sequence diagram for the user story where a member wants to filter the specific author's books in the library involves several components such as the User (Library Member), the Web Interface, the Controller, the Search Service, and the Database. Here’s how these components interact in PlantUML syntax:
+
+```plantuml
+@startuml
+participant User as U
+participant "Web Interface" as W
+participant "Controller" as C
+participant "Search Service" as S
+participant "Database" as D
+
+U -> W : Enter search criteria\n[Author Name]
+W -> C : Request to search by author
+activate C
+
+C -> S : Query author's books
+activate S
+
+S -> D : SELECT books FROM library\nWHERE author = ?
+activate D
+D --> S : Return results
+deactivate D
+
+S --> C : Search results
+deactivate S
+
+C --> W : Display books by author
+deactivate C
+
+W --> U : Show author's books list
+@enduml
+```
+
+This sequence diagram illustrates the following steps for filtering books by a specific author:
+
+1. **User Interaction:** The library member (User) starts by entering the search criteria (in this case, an author's name) into the Web Interface.
+
+2. **Request Handling:** The Web Interface sends this request to the Controller, which is responsible for processing user requests.
+
+3. **Query Execution:** The Controller passes the search request to the Search Service. The Search Service then formulates a database query to find books that match the author's name provided in the search criteria.
+
+4. **Database Access:** The Search Service sends the query to the Database, which searches its records for books by the specified author.
+
+5. **Result Processing:** The Database returns the search results to the Search Service, which then passes these results back to the Controller.
+
+6. **Response:** Finally, the Controller sends the list of books found to the Web Interface, which displays the author's books to the User.
+
+This sequence assumes the system uses a layered architecture, separating concerns for better maintainability and scalability. Each component plays a crucial role in handling the user's request and providing the desired outcome.

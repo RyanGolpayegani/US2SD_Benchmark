@@ -1,0 +1,41 @@
+To create a sequence diagram for the user story where a librarian wants to block unwanted members in the Comprehensive Library Management System (CLMS) using PlantUML, we need to consider several components involved in this process:
+
+- **Librarian Interface/UI:** Where the librarian interacts with the system.
+- **Authentication System:** To ensure that the librarian is authorized to block members.
+- **User Management Service:** The backend service responsible for managing user profiles, including blocking operations.
+- **Database:** The persistent storage where user data, including their block status, is maintained.
+
+Here's how these components interact in this process:
+
+```plantuml
+@startuml
+
+participant LibrarianUI as UI
+participant AuthenticationSystem as Auth
+participant UserManagementService as UM
+database Database as DB
+
+UI -> Auth : Authenticate librarian
+Auth --> UI : Authentication success
+
+UI -> UM : Request to block a member (memberID)
+UM -> DB : Validate librarian's privileges
+DB --> UM : Validation success
+
+UM -> DB : Update block status of member
+DB --> UM : Block status updated successfully
+UM --> UI : Member successfully blocked
+
+@enduml
+```
+
+In this diagram:
+
+1. The **Librarian UI** sends an authentication request to ensure that the person attempting to block a member is indeed a librarian. This step is crucial for maintaining the integrity and security of user operations.
+2. Upon successful authentication, the librarian uses the **Librarian UI** to initiate a request to block an unwanted member, identified by their `memberID`. This request is sent to the **User Management Service**.
+3. The **User Management Service** first validates the librarian's privileges to make sure they have the authority to block members. This involves a query to the **Database**.
+4. Once the validation is successful, the **User Management Service** issues a command to update the block status of the specified member in the **Database**.
+5. The **Database** updates the member's status and confirms the operation's success back to the **User Management Service**.
+6. Finally, the **User Management Service** notifies the **Librarian UI** that the member has been successfully blocked, and this information is presented to the librarian.
+
+This sequence ensures that the action of blocking a member is performed securely and efficiently, with appropriate checks and balances to prevent unauthorized or accidental misuse of the functionality.

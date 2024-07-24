@@ -1,0 +1,66 @@
+Given your request, below is a detailed sequence diagram in PlantUML format for the user story: "As a content editor, I want to be able to easily find content, so that I can edit it." This scenario involves interaction with a content management system (CMS) where the content editor searches and finds content for editing within the NSF Beta Site Development context.
+
+```plantuml
+@startuml
+actor ContentEditor as "Content Editor"
+participant SearchInterface as "CMS Search Interface"
+database CMSDatabase as "CMS Database"
+participant ContentPage as "Content Page"
+
+ContentEditor -> SearchInterface : enters search query\n(keywords/tags)
+activate SearchInterface
+
+SearchInterface -> CMSDatabase : query for content
+activate CMSDatabase
+
+CMSDatabase --> SearchInterface : search results
+deactivate CMSDatabase
+
+SearchInterface --> ContentEditor : display search results
+deactivate SearchInterface
+
+ContentEditor -> SearchInterface : select content from results
+activate SearchInterface
+
+SearchInterface -> CMSDatabase : request selected content
+activate CMSDatabase
+
+CMSDatabase --> SearchInterface : retrieve content details
+deactivate CMSDatabase
+
+SearchInterface --> ContentPage : display content in editor
+deactivate SearchInterface
+activate ContentPage
+
+ContentEditor -> ContentPage : edits content
+ContentPage --> CMSDatabase : save changes
+activate CMSDatabase
+
+CMSDatabase --> ContentPage : confirm changes saved
+deactivate CMSDatabase
+
+ContentEditor <-- ContentPage : display confirmation\n(edit successful)
+deactivate ContentPage
+
+@enduml
+```
+
+This PlantUML sequence diagram describes the series of interactions between a content editor and the content management system, starting from entering a search query to editing and saving changes to content within the NSF Beta Site's CMS. The steps are broadly as follows:
+
+1. **Content Editor inputs a search query**: The editor uses the CMS Search Interface to find specific content by entering keywords or tags.
+
+2. **CMS Search Interface queries the CMS Database**: The search interface queries the CMS Database with the input from the content editor.
+
+3. **CMS Database returns search results**: The database retrieves and returns the search results to the CMS Search Interface, which in turn displays them to the content editor.
+
+4. **Content Editor selects content to edit**: From the displayed search results, the editor selects the content they want to edit.
+
+5. **CMS Search Interface requests and retrieves content details**: The interface requests the selected content’s details from the CMS Database and retrieves them.
+
+6. **Content Editor edits the content**: The selected content is displayed in the Content Editor / Page, where the editor makes the desired changes.
+
+7. **Content Page saves changes to the CMS Database**: The edited content is then saved back to the database.
+
+8. **CMS Database confirms the changes**: The database confirms that the changes have been successfully saved.
+
+9. **Content Editor receives confirmation of successful edit**: Finally, the content editor receives a confirmation message that the edit was successful, confirming the completion of the process.

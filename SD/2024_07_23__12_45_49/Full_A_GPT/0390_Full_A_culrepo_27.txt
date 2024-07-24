@@ -1,0 +1,71 @@
+To generate a detailed sequence diagram for the described user story in PlantUML format, consider the following steps and interactions within the hypothetical Comprehensive Digital Repository System for Cornell University. The sequence will outline the process from a faculty member's perspective to upload and manage versions of documents like Extension brochures and FAQs.
+
+```plantuml
+@startuml
+!theme plain
+
+participant FacultyMember as FM
+participant "Digital Repository System\nInterface" as DRS
+participant ContentManagementService as CMS
+participant VersionControlService as VCS
+participant Database as DB
+
+FM -> DRS: Login
+activate DRS
+
+DRS -> FM: Display Dashboard
+FM -> DRS: Select "Upload Materials"
+DRS -> FM: Display Upload Form
+
+FM -> DRS: Submit "Extension brochure"\nwith metadata and file
+DRS -> CMS: Process New Upload
+activate CMS
+
+CMS -> VCS: Check for Existing Versions
+activate VCS
+VCS -> DB: Lookup Document
+activate DB
+
+alt Document Exists
+    DB -> VCS: Return Document Info
+    VCS -> CMS: Respond with Version Details
+    CMS -> DRS: Prompt for New Version Confirmation
+    DRS -> FM: Display Version Conflict\nAsk to Create New Version
+    FM -> DRS: Confirm New Version Upload
+    DRS -> CMS: Update Document with New Version
+else Document Does Not Exist
+    DB -> VCS: No Existing Versions Found
+    VCS -> CMS: No Version Conflict
+    CMS -> DRS: Continue Upload Process
+end
+
+CMS -> DB: Upload/Update Document Entry
+DB -> CMS: Confirm Document Saved
+CMS -> VCS: Update Version Control
+VCS -> CMS: Version Control Updated
+CMS -> DRS: Upload Success Message
+DRS -> FM: Display "Upload Successful"\nwith version details
+
+deactivate DB
+deactivate VCS
+deactivate CMS
+deactivate DRS
+
+@enduml
+```
+
+**Explanation:**
+
+- **Faculty Member (FM) interacts with the Digital Repository System (DRS) interface**: This interaction begins with the faculty member logging into the system and navigating to the upload materials section.
+
+- **Digital Repository System Interface (DRS) processes requests**: The DRS interfaces with the Content Management Service (CMS) to process new uploads, which includes handling file uploads and metadata input.
+
+- **Content Management Service (CMS) coordinates version checks**: The CMS consults the Version Control Service (VCS) to determine if the document being uploaded already exists and in which version.
+
+- **Version Control Service (VCS) and Database (DB) interactions**: The VCS checks with the database for existing records and version information of the document. Depending on the outcome, the process may prompt the faculty member to confirm the upload as a new version if conflicts are detected.
+
+- **Handling Uploads**: The diagram reflects both paths: uploading a new document (where no existing version is found) and updating an existing document by adding a new version.
+
+- **End Result**: Finally, the CMS updates the database with either the new document entry or the updated version information, and the Faculty Member is notified of the successful upload and given details about the version.
+
+This sequence diagram provides a streamlined view focusing on version management for documents uploaded by a faculty member within a comprehensive digital repository system like the one proposed for Cornell University.

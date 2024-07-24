@@ -1,0 +1,39 @@
+Creating a detailed sequence diagram for the specified user story ("As a repository manager, I want to have metadata in additional languages, so that I can allow for multilingual data archive.") involves showing interactions among various system components and roles to achieve the goal of adding metadata in additional languages for a multilingual data archive.
+
+Since the narrative doesn't provide explicit names for system components involved in managing and translating metadata, generic terms will be used. You can adapt the names based on your specific project architecture.
+
+Below is a basic PlantUML format sequence diagram example that focuses on this user story. This diagram illustrates the process initiations from the repository manager's request to add metadata in additional languages, interactions with the translation service, and the system's internal processes to update and store the translated metadata.
+
+```plantuml
+@startuml
+participant "Repository Manager" as RM
+participant "DMPTool Interface" as Interface
+participant "Metadata Management System" as MMS
+participant "Translation Service" as TS
+database "Data Repository" as DR
+
+RM -> Interface : Request metadata translation\n(select metadata, target languages)
+Interface -> MMS : Validate request\n(verify access, metadata ID)
+alt Validation Success
+    MMS -> TS : Send metadata\n(specify target languages)
+    TS --> MMS : Return translated metadata\n(in all target languages)
+    MMS -> DR : Update metadata\n(store translations)
+    MMS -> RM : Notify success\n(metadata updated)
+else Validation Failure
+    MMS -> RM : Notify failure\n(invalid metadata ID or access rights)
+end
+
+@enduml
+```
+
+Explanation:
+1. **Repository Manager (RM)**: Initiates the process by requesting metadata translation through the DMPTool Interface. This includes selecting the specific metadata and the target languages for translation.
+2. **DMPTool Interface**: Acts as the user interface where the repository manager submits their request.
+3. **Metadata Management System (MMS)**: Validates the request (e.g., checks if the repository manager has the necessary rights and if the metadata ID is valid).
+   - If the validation is successful, it proceeds to send the metadata for translation.
+   - If the validation fails, it notifies the manager about the failure.
+4. **Translation Service (TS)**: A component responsible for translating the metadata into the specified target languages. It receives the metadata and target languages, translates, and returns the translated metadata to the MMS.
+5. **Data Repository (DR)**: The database or storage system where the metadata and its translations are updated and stored.
+6. **Notifications**: The repository manager is kept informed about the status of their request, whether successful or not.
+
+This sequence diagram provides a high-level overview. Depending on the complexity and specific requirements of the DMPTool project, you may need to add more details or incorporate additional steps and interactions.

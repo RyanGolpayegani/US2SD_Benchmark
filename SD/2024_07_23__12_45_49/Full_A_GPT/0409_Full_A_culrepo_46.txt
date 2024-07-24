@@ -1,0 +1,29 @@
+Given the scope of your request, let's create a sequence diagram in PlantUML format that illustrates the workflow for a library staff member to make digital items, held in a trusted external system, searchable within Cornell University's digital repository system. This process involves multiple system interactions, including authenticating the library staff, fetching the digital item metadata from the external system, and indexing this information in the local repository for seamless access.
+
+```plantuml
+@startuml
+participant UserInterface as "Library Staff Interface"
+participant AuthenticationSystem as "Authentication System"
+participant ExternalSystemService as "External System API"
+participant RepositorySystem as "Repository System"
+participant IndexingService as "Indexing Service"
+
+actor LibraryStaff as "Library Staff Member"
+
+LibraryStaff -> UserInterface : Request to add external item
+UserInterface -> AuthenticationSystem : Authenticate request
+AuthenticationSystem -> UserInterface : Authentication successful
+
+UserInterface -> ExternalSystemService : Fetch digital item metadata
+ExternalSystemService -> UserInterface : Return metadata
+
+UserInterface -> RepositorySystem : Submit metadata for addition
+RepositorySystem -> IndexingService : Index metadata for searching
+IndexingService -> RepositorySystem : Confirm indexing successful
+RepositorySystem -> UserInterface : Confirm item addition successful
+UserInterface -> LibraryStaff : Display success message
+
+@enduml
+```
+
+This sequence diagram begins with the library staff member requesting to add an external digital item through the library staff interface. The system then authenticates the request for security purposes. Once authenticated, the interface communicates with the external system's API to fetch metadata of the digital item in question. After receiving the metadata, the system submits this metadata to the internal repository system, where it is then indexed by the indexing service to make it searchable within Cornell University's digital repository. A confirmation of successful indexing and addition is sent back to the user interface, which then displays a success message to the library staff member.

@@ -1,0 +1,18 @@
+@startuml
+participant Researcher as researcher
+participant "Digital Archive System" as DAS
+participant "Notification System" as NS
+
+researcher -> DAS: Request item in reading room / for duplication
+activate DAS
+DAS -> DAS: Check if item is digitized
+alt item is digitized
+    DAS -> NS : Trigger notification to Researcher
+    activate NS
+    NS -> researcher: Send "Item Already Digitized" notification
+    deactivate NS
+else item not digitized
+    DAS -> DAS: Proceed with request
+end
+deactivate DAS
+@enduml

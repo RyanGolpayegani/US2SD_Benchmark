@@ -1,0 +1,50 @@
+To generate a detailed sequence diagram for the user story: "As a moderator, I want to delete my account, so that account information and games are no longer stored," let's break down the process into key interactions between the system components and the moderator. I'll describe the scenario in steps and then provide the PlantUML code to visualize the interactions.
+
+### Scenario Steps:
+
+1. **Moderator decides to delete their account**: The moderator logs in and navigates to the account settings page.
+
+2. **Request to delete account**: The moderator selects the "Delete Account" option, which triggers a confirmation dialog.
+
+3. **Confirmation**: The moderator confirms the account deletion request.
+
+4. **System validates request**: The system checks if the request is valid and if the moderator is authenticated to perform this action.
+
+5. **Delete games and user data**: The system proceeds to delete all games associated with the moderator's account and then the account itself.
+
+6. **Confirmation of deletion**: The system confirms that the deletion has been successful.
+
+7. **Logout**: The session is terminated, and the moderator is logged out.
+
+### PlantUML Code:
+
+```plantuml
+@startuml
+!theme plain
+actor Moderator
+boundary SystemUI
+control AccountService
+database AccountDB
+
+Moderator -> SystemUI: Navigate to account settings
+Moderator -> SystemUI: Selects "Delete Account"
+SystemUI -> Moderator: Display confirmation dialog
+Moderator -> SystemUI: Confirms deletion
+
+SystemUI -> AccountService: Request account deletion
+AccountService -> AccountDB: Validate moderator authentication
+AccountDB --> AccountService: Authentication confirmed
+
+AccountService -> AccountDB: Delete associated games
+AccountDB --> AccountService: Games deletion confirmed
+AccountService -> AccountDB: Delete moderator account
+AccountDB --> AccountService: Account deletion confirmed
+
+AccountService --> SystemUI: Deletion success message
+SystemUI --> Moderator: Show deletion confirmation
+Moderator -> SystemUI: Acknowledge & Logout
+
+@enduml
+```
+
+This sequence diagram outlines the interactions for a moderator wishing to delete their account, covering the steps from initial deletion request to system confirmation of account and associated data deletion. It's important to tailor the diagram based on the specific implementation details and technologies used in the AEPT project.

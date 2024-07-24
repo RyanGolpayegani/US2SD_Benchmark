@@ -1,0 +1,41 @@
+Below is a PlantUML sequence diagram to illustrate the flow for a library staff member uploading an item to the repository with an embargo period. In this scenario, the library staff member interacts with the digital repository system to upload an item and set an embargo period. Once the embargo period expires, the item becomes visible to the user.
+
+Please note, the sequence diagram assumes a basic understanding of interaction with a digital repository system and simplifies the process for readability.
+
+```plantuml
+@startuml
+participant StaffMember as "Library Staff Member"
+participant UploadInterface as "Upload Interface"
+participant RepositorySystem as "Repository System"
+participant Database as "Database"
+participant EmbargoService as "Embargo Service"
+participant CalendarService as "Calendar Service"
+
+== Upload Process ==
+StaffMember -> UploadInterface : select item for upload
+UploadInterface -> RepositorySystem : initiate upload process
+RepositorySystem -> Database : save item metadata\n(set visibility to 'embargoed')
+Database --> RepositorySystem : confirm metadata saved
+RepositorySystem -> EmbargoService : set embargo details
+activate EmbargoService
+EmbargoService -> CalendarService : schedule visibility change
+CalendarService --> EmbargoService : confirm schedule set
+deactivate EmbargoService
+EmbargoService --> RepositorySystem : embargo details confirmed
+RepositorySystem --> UploadInterface : upload and embargo set successfully
+UploadInterface --> StaffMember : display confirmation message
+
+== Embargo Expiry ==
+CalendarService -> EmbargoService : trigger at embargo end date/time
+activate EmbargoService
+EmbargoService -> RepositorySystem : update item visibility
+RepositorySystem -> Database : change item visibility to 'visible'
+Database --> RepositorySystem : confirm visibility updated
+deactivate EmbargoService
+RepositorySystem --> CalendarService : item now visible
+@enduml
+```
+
+This diagram illustrates the process from the perspective of the library staff member registering an item for upload, setting the embargo period through the system's user interface, and the sequence of system and service interactions that follow. The `Embargo Service` and `Calendar Service` are conceptual components that manage the embargo details and scheduling, respectively. Once the embargo period expires, the item's visibility is automatically updated in the system, making it accessible to other users based on the predefined conditions.
+
+Keep in mind, sequence diagrams can be more detailed or simplified based on the specific requirements of the project and the level of granularity needed for the development or documentation process.

@@ -1,0 +1,47 @@
+Given the project and the user story, we will design a Sequence Diagram in PlantUML format to illustrate the interactions involved when a researcher wants to view the costing sections by other researchers in their department to explore possibilities for sharing data manager posts. Please note, PlantUML code is written for use in an environment where PlantUML is installed or on an online PlantUML editor.
+
+This diagram will encompass the necessary entities, such as the researcher (user), the DMPTool system (centralized platform), the data management planning repository, and perhaps an internal authorization or user management service if sharing such sensitive information as costing requires permission checks.
+
+Here's a possible sequence diagram in PlantUML format:
+
+```plantuml
+@startuml
+!theme plain
+
+actor Researcher as r
+entity "DMPTool System" as sys
+database "DMP Repository" as db
+control "Authorization Service" as auth
+
+r -> sys : Request access to costing sections in department
+activate sys
+
+sys -> auth : Validate researcher's credentials and permissions
+activate auth
+auth --> sys : Authorization granted
+deactivate auth
+
+sys -> db : Query costing sections by department researchers
+activate db
+db --> sys : Returns costing sections data
+deactivate db
+
+sys --> r : Display costing information
+deactivate sys
+
+@enduml
+```
+
+Explanation of the diagram:
+
+1. The **Researcher** initiates the process by requesting access to view costing sections related to data manager posts within their department through the **DMPTool System**.
+   
+2. The **DMPTool System** then communicates with an **Authorization Service** to validate the researcher's credentials and permissions to ensure that they are authorised to view the requested costing information. This reflects the system's adherence to security and privacy standards.
+   
+3. Upon receiving authorization, the **DMPTool System** then makes a query to the **DMP Repository** to fetch the relevant costing sections from data management plans (DMPs) created by other researchers within the same department.
+   
+4. The **DMP Repository** retrieves and returns the requested information to the **DMPTool System**.
+   
+5. Finally, the **DMPTool System** displays the costing information to the researcher, allowing them to assess the feasibility of sharing data manager posts.
+
+This sequence illustrates a simplified workflow focusing on user interactions with the system for the specific task of viewing costing sections by other researchers within a department. It incorporates considerations for security and authorization, crucial for accessing potentially sensitive or restricted information.

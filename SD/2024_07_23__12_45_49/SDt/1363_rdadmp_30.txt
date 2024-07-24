@@ -1,0 +1,47 @@
+@startuml
+actor Rector
+participant "DMPTool" as DMP
+participant "Data Manager" as DataManager
+participant "Repository Owner" as RepoOwner
+participant "IT Manager" as ITManager
+database "Storage Database" as StorageDB
+
+Rector -> DMP: Requests data storage forecasts
+activate DMP
+
+DMP -> DataManager: Queries current and future data storage metrics
+activate DataManager
+
+DataManager -> StorageDB: Retrieves data metrics
+activate StorageDB
+StorageDB --> DataManager: Data metrics
+deactivate StorageDB
+
+DataManager --> DMP: Returns data metrics
+deactivate DataManager
+
+DMP -> RepoOwner: Requests repository capacity forecasts
+activate RepoOwner
+
+RepoOwner -> StorageDB: Retrieves capacity forecasts
+activate StorageDB
+StorageDB --> RepoOwner: Capacity details
+deactivate StorageDB
+
+RepoOwner --> DMP: Returns capacity forecasts
+deactivate RepoOwner
+
+DMP -> ITManager: Queries IT infrastructure and capacity plans
+activate ITManager
+
+ITManager -> StorageDB: Fetches IT resource projections
+activate StorageDB
+StorageDB --> ITManager: IT resource data
+deactivate StorageDB
+
+ITManager --> DMP: Returns IT capacity plans
+deactivate ITManager
+
+DMP --> Rector: Provides comprehensive data and storage report
+deactivate DMP
+@enduml

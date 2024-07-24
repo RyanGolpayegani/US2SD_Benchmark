@@ -1,0 +1,26 @@
+@startuml
+actor Advertiser
+entity "Email System" as Email
+control "Ad Management System" as AdSys
+database "Database" as DB
+
+== Ad Expiry Reminder Process ==
+
+AdSys -> DB: Query upcoming ad expirations
+activate DB
+DB --> AdSys: List of ads expiring in 7 days
+deactivate DB
+
+loop for each Ad expiring
+    AdSys -> DB: Get Advertiser Contact Info
+    activate DB
+    DB --> AdSys: Advertiser Email
+    deactivate DB
+
+    AdSys -> Email: Send Expiry Reminder(Advertiser Email)
+    activate Email
+    Email --> Advertiser: Email Reminder
+    deactivate Email
+end
+
+@enduml

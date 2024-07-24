@@ -1,0 +1,31 @@
+@startuml
+participant User
+participant "Web Interface" as UI
+participant "Submission Controller" as Controller
+participant "Submission Service" as Service
+database "Submission Database" as DB
+
+User -> UI: Submit FABS\n(First Submission Attempt)
+UI -> Controller: Request to submit FABS
+Controller -> Service: Initiate submission process
+Service -> DB: Check if submission is in progress
+DB --> Service: Submission status: Not in Progress
+Service --> Controller: Proceed with submission
+Controller --> UI: Display submission in progress
+Service -> DB: Mark submission as in progress
+Service -> DB: Process FABS Submission
+Service -> DB: Mark submission as completed
+DB --> Service: Submission completed
+Service --> Controller: Return success response
+Controller --> UI: Display submission success
+UI --> User: Show success message
+
+User -> UI: Refresh/Submit FABS\n(Second Attempt)
+UI -> Controller: Request to submit FABS
+Controller -> Service: Initiate submission process
+Service -> DB: Check if submission is in progress
+DB --> Service: Submission status: In Progress/Completed
+Service --> Controller: Abort with message "Submission already in progress or completed"
+Controller --> UI: Display error to user
+UI --> User: Show "Already submitted or in progress" error
+@enduml

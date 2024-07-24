@@ -1,0 +1,48 @@
+Creating a detailed sequence diagram for the user story "As a Publisher, I want to have private data packages, so that I can share just with my team" involves outlining the interactions between the Publisher, the Data Registry and Publishing Platform (hereafter referred to as "the Platform"), and potential internal components of the Platform such as the User Account Management, Dataset Publishing service, and perhaps even an Access Control component. Below is a basic Plant UML format sequence diagram representing these interactions.
+
+Please note that for brevity and simplicity, this diagram focuses on key steps and abstracts some details. The implementation can vary significantly based on the actual architecture and requirements of the Platform.
+
+```plantuml
+@startuml
+actor Publisher
+participant "User Account Management" as UAM
+participant "Dataset Publishing" as DP
+database "Access Control" as AC
+
+Publisher -> UAM : log in via GitHub or Google
+activate UAM
+UAM --> Publisher : authentication successful
+deactivate UAM
+
+Publisher -> DP : initiate data package creation
+activate DP
+DP -> DP : prepare package metadata
+DP -> AC : set package visibility to private
+activate AC
+AC --> DP : visibility set
+deactivate AC
+
+DP -> DP : import dataset
+DP -> DP : validate dataset
+DP -> DP : save dataset package
+
+Publisher -> DP : publish package to team
+DP -> AC : verify team access rights
+activate AC
+AC --> DP : access verified
+deactivate AC
+
+DP -> DP : notify team members
+DP --> Publisher : package published successfully
+deactivate DP
+@enduml
+```
+
+This diagram assumes a simplified process where:
+1. A Publisher logs in through an integrated external login system (GitHub or Google).
+2. The Publisher initiates the creation of a data package.
+3. The dataset publishing service prepares the metadata, sets the visibility to private within an access control database, imports, and validates the dataset.
+4. Once validated, the Publisher proceeds to publish the package, at which point the system verifies the team's access rights.
+5. After successful verification, the dataset is made available to the team, and team members are notified.
+
+Each step in this process might involve more detailed interactions not represented in this simplified view. The specifics of implementation would also depend heavily on how the access rights are managed, the database technologies used, and how notifications are handled.

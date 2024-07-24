@@ -1,0 +1,39 @@
+@startuml
+participant Staff as S
+participant "Web Interface" as W
+participant "Backend System" as B
+participant "Database" as D
+
+S->W: Selects book to update
+W->B: Request book details
+activate B
+B->D: Query book details
+activate D
+D-->B: Return book details
+deactivate D
+B-->W: Show book details
+deactivate B
+W-->S: Display book details
+
+S->W: Update availability status
+W->B: Submit availability update
+activate B
+B->D: Update book record
+activate D
+D-->D: Validate update
+
+alt If update successful
+    D-->B: Confirm update
+    B-->W: Display success message
+    deactivate D
+    deactivate B
+    W-->S: Show success notification
+else If update failed
+    D-->B: Error message
+    deactivate D
+    B-->W: Display error message
+    deactivate activated B
+    W-->S: Show failure notification
+end
+
+@enduml

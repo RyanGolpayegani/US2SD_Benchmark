@@ -1,0 +1,23 @@
+@startuml
+actor LibraryMember as member
+participant "Search Interface" as search
+participant "Book Controller" as controller
+database "Book Database" as db
+participant "Results Page" as results
+
+== Book Search Sequence ==
+
+member -> search : Enter book name
+search -> controller : Request book search("book name")
+activate controller
+
+controller -> db : Query book by name("book name")
+activate db
+db -> db : Fetch matching books
+deactivate db
+
+db -> controller : Return search results
+controller -> results : Display available books
+results -> member : Show search results and availability
+
+@enduml

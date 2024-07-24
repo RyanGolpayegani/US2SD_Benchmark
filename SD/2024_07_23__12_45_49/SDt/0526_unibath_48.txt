@@ -1,0 +1,30 @@
+@startuml
+participant "UnivIT service" as univIT
+participant "Data Management Platform" as platform
+participant "HCP Object Store" as HCP
+database "Metadata Database" as metadataDB
+
+== Store Archived Data ==
+univIT -> platform : Request to Archive Data
+activate platform
+
+platform -> metadataDB : Validate Data & Metadata
+activate metadataDB
+return Validated Data & Metadata
+deactivate metadataDB
+
+platform -> HCP : Store Data
+activate HCP
+HCP -> HCP : Write Data to Storage
+HCP -> platform : Confirm Storage & Generate URI
+deactivate HCP
+
+platform -> metadataDB : Update Metadata with URI
+activate metadataDB
+metadataDB -> platform : Confirm Update
+deactivate metadataDB
+
+platform --> univIT : Confirmation & Data URI
+deactivate platform
+
+@enduml

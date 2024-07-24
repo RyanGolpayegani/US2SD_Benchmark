@@ -1,0 +1,60 @@
+To visualize the process as per the user story in a Sequence Diagram using PlantUML, we would need to depict the interactions between the camp administrator, the platform (with its backend database), and potentially the parents/campers who are submitting the forms. 
+
+Note: Since actual code can be quite extensive and customized, the following is a simplified version to illustrate the core interactions for tracking form submissions by campers as desired by a camp administrator.
+
+```plantuml
+@startuml
+participant Administrator as admin
+participant "Camp Management\nPlatform" as platform
+database Database
+
+admin -> platform : Access camper profiles
+platform -> Database : Fetch camper information
+Database -> platform : Camper details
+platform -> admin : Display camper profiles
+
+admin -> platform : Request submitted forms list
+platform -> Database : Query submitted forms by camper
+Database -> platform : List of forms per camper
+platform -> admin : Display submitted forms
+
+group Form Submission
+    participant Parent as parent
+    participant "Camper" as camper
+
+    alt If Parent submits
+        parent -> platform : Log in
+        platform -> parent : Authentication success
+        parent -> platform : Submit forms for camper
+        platform -> Database : Update form submission status
+        Database -> platform : Confirmation of submission
+        platform -> parent : Display submission success
+    else If Camper submits
+        camper -> platform : Log in
+        platform -> camper : Authentication success
+        camper -> platform : Submit forms
+        platform -> Database : Update form submission status
+        Database -> platform : Confirmation of submission
+        platform -> camper : Display submission success
+    end
+end
+
+admin -> platform : Request updated forms list
+platform -> Database : Query updated forms by camper
+Database -> platform : Updated list of forms per camper
+platform -> admin : Display updated forms
+
+@enduml
+```
+
+**Explanation:**
+
+1. **Administrator initiates process**: The camp administrator accesses the platform to review camper profiles and request a list of submitted forms.
+
+2. **Platform fetches data**: The platform interacts with its backend database to fetch and return information on camper profiles and the status of form submissions.
+
+3. **Form submission process by Parent or Camper**: This segment illustrates how either a parent or the camper can log in to the platform, submit necessary forms, and receive confirmation of their submissions. The platform updates the database accordingly to reflect the new submission status.
+
+4. **Final request for updated forms**: The camp administrator requests an updated list of submitted forms to ensure that all required legal documents have been properly submitted.
+
+This sequence diagram is a high-level representation of the desired functionalities related to tracking form submissions within the Camp Management & Communication Platform. Keep in mind, depending on the platform's complexity, additional details and steps might be required for a complete implementation.

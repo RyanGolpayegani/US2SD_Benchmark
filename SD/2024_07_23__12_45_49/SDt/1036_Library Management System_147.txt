@@ -1,0 +1,22 @@
+@startuml
+actor "Library Member" as member
+participant "Authentication System" as auth
+participant "User Profile Service" as userService
+participant "Database" as db
+
+== Edit Profile Process ==
+member -> userService : Request to Edit Profile
+alt Not Authenticated
+  userService -> auth : Authenticate User
+  auth -- userService : Authentication Success
+end
+userService -> db : Retrieve Current Profile Details
+db -- userService : Profile Details
+userService -> member : Display Profile Details
+
+member -> userService : Submit Updated Profile Details
+userService -> db : Validate and Save Updates
+db -- userService : Confirmation of Update
+userService -> member : Display Update Confirmation
+
+@enduml

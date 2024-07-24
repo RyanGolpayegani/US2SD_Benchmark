@@ -1,0 +1,35 @@
+@startuml
+actor Manager
+participant "Management UI" as UI
+participant "Backend Server" as Server
+database "Database" as DB
+
+Manager -> UI : Access management portal
+UI -> Server : Request authentication
+Server -> DB : Validate credentials
+DB -> Server : Authentication successful
+Server -> UI : Authentication response (success)
+UI <-- Manager : Authenticated session begins
+
+Manager -> UI : Navigate to "Create Menu Item"
+UI -> Server : Request ingredient, category, and pricing data
+Server -> DB : Query required data
+DB -> Server : Respond with data
+Server -> UI : Display data forms with options
+UI <-- Manager : Fill in new menu item details
+
+Manager -> UI : Submit new menu item
+UI -> Server : Send new item data
+Server -> DB : Store new menu item
+DB -> Server : Confirm item stored
+Server -> UI : Confirm item creation
+UI <-- Manager : Display creation success message
+
+Manager -> UI : Publish/update menu
+UI -> Server : Request menu publish
+Server -> DB : Update menu status
+DB -> Server : Confirm menu updated
+Server -> UI : Confirm menu publication
+UI <-- Manager : Display publication success message
+
+@enduml

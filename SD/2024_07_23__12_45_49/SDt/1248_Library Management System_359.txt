@@ -1,0 +1,40 @@
+@startuml
+!theme plain
+
+participant Staff as staff
+participant "Frontend Interface" as frontend
+participant "Backend Server" as backend
+participant "Subscription Management\nService" as subscriptionService
+participant Database as db
+
+title Update Subscriber's Subscription Type Sequence
+
+staff -> frontend: Select 'Manage Subscriptions'
+frontend -> backend: Request subscription details
+activate backend
+backend -> subscriptionService: Get subscription details
+activate subscriptionService
+subscriptionService -> db: Query subscription info
+activate db
+db --> subscriptionService: Return subscription info
+deactivate db
+subscriptionService --> backend: Subscription details
+deactivate subscriptionService
+backend --> frontend: Show subscription details
+deactivate backend
+frontend --> staff: Display subscription types
+staff -> frontend: Select new subscription type
+frontend -> backend: Send update request with\nnew subscription type
+activate backend
+backend -> subscriptionService: Update subscription type
+activate subscriptionService
+subscriptionService -> db: Update subscription type in DB
+db --> subscriptionService: Confirm update
+deactivate db
+subscriptionService --> backend: Subscription update confirmation
+deactivate subscriptionService
+backend --> frontend: Update successful
+deactivate backend
+frontend --> staff: Display success message
+
+@enduml

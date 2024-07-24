@@ -1,0 +1,39 @@
+To generate a detailed sequence diagram for the user story "As a manager, I want to edit the menu so that the best selling items will remain in the menu", we need to map the interactions between different components within the Restaurant Management and Operations System. This scenario includes accessing sales data, identifying best-selling items, and updating the menu.
+
+Here's how you can write it in PlantUML:
+
+```plantuml
+@startuml
+participant ManagerUI as M
+participant BackendServer as B
+participant Database as DB
+participant AnalyticsService as AS
+
+M -> B : Request best selling items data
+B -> AS : Fetch sales data
+activate AS
+AS -> DB : Query sales records
+DB --> AS : Sales data response
+deactivate AS
+AS --> B : Process best selling items
+B --> M : Display best selling items
+
+M -> M : Select items to remain on menu
+M -> B : Update menu request with selected items
+B -> DB : Update menu items
+DB --> B : Confirmation of update
+B --> M : Display update confirmation
+
+@enduml
+```
+
+This sequence diagram describes the process a manager goes through to edit the menu by ensuring the best-selling items remain featured. Here's a quick breakdown of the steps:
+
+1. **Request best selling items data**: The Manager (via the ManagerUI) requests the data for the best-selling items.
+2. **Fetch sales data**: The BackendServer requests sales data from the AnalyticsService, which queries the Database for sales records.
+3. **Process best selling items**: The AnalyticsService processes the queried data to determine the best-selling items and sends this information back to the BackendServer.
+4. **Display best selling items**: The BackendServer sends the best-selling items data to the ManagerUI, where it is displayed for the manager.
+5. **Select items to remain on menu**: The Manager reviews the best-selling items and selects which ones should remain on the menu.
+6. **Update menu request with selected items**: The Manager sends an update request to the BackendServer with the selected items to be kept on the menu.
+7. **Update menu items**: The BackendServer updates the menu items in the Database.
+8. **Confirmation of update**: The Database sends a confirmation of the update to the BackendServer, which then communicates it back to the ManagerUI.

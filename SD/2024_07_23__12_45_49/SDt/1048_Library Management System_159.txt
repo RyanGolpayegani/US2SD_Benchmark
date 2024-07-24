@@ -1,0 +1,16 @@
+@startuml
+actor LibraryMember as member
+participant "UI" as UI
+participant "SearchController" as controller
+participant "BookService" as service
+database "Database" as db
+
+member -> UI : Search for books by author
+UI -> controller : Request(bookSearchByAuthor)
+controller -> service : SearchBooksByAuthor(authorName)
+service -> db : QueryBooksByAuthor(authorName)
+db -> service : ReturnBooksList
+service -> controller : BooksList
+controller -> UI : ShowBooksList
+UI -> member : DisplayBooksList
+@enduml

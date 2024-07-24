@@ -1,0 +1,43 @@
+To generate a detailed sequence diagram for the specified user story, we'll illustrate the interaction between the depositor, the Virtual Research Environment (VRE), the Enhanced Research Data Management Platform, and any other necessary components. Below is a simplified example in PlantUML format that captures the key steps involved when a depositor wants to deposit and maintain datasets through VREs and other workflow tools.
+
+```plantuml
+@startuml
+actor Depositor
+participant "Virtual Research\nEnvironment (VRE)" as VRE
+participant "Enhanced Research\nData Management\nPlatform" as Platform
+database "Data Archive" as Archive
+
+Depositor -> VRE : Initiate dataset deposit
+VRE -> VRE : Validate depositor\ncredentials
+VRE -> Platform : Request dataset deposit
+activate Platform
+Platform -> Platform : Generate deposit ID
+Platform -> Archive : Store dataset metadata and files
+activate Archive
+Archive --> Platform : Confirm dataset stored
+deactivate Archive
+Platform --> VRE : Deposit success\nwith deposit ID
+deactivate Platform
+VRE --> Depositor : Show success message\nand deposit ID
+
+Depositor -> VRE : Initiate dataset update
+VRE -> Platform : Request dataset update\nwith deposit ID
+activate Platform
+Platform -> Archive : Update dataset metadata\nand files
+activate Archive
+Archive --> Platform : Confirm dataset updated
+deactivate Archive
+Platform --> VRE : Update success
+deactivate Platform
+VRE --> Depositor : Show update success message
+
+@enduml
+```
+
+This diagram starts with the depositor initiating the dataset deposit process through a Virtual Research Environment (VRE). The VRE validates the depositor's credentials and sends a request to the Enhanced Research Data Management Platform to deposit the dataset. The platform then generates a deposit ID, stores the dataset's metadata and files in the Data Archive, and returns a success message with the deposit ID to the VRE, which in turn informs the depositor of the successful deposit.
+
+For dataset maintenance, including updates, the depositor initiates the update process through the VRE, which requests the update from the platform using the deposit ID. The platform updates the dataset in the Data Archive and confirms the update to the VRE, which then informs the depositor.
+
+This sequence diagram provides a high-level overview of the interaction flow. Depending on the project's complexity, you might need to add detailed error handling, additional steps for managing large file uploads, specifying embargoes, or generating DOIs.
+
+Remember, this example illustrates the general process. Your actual implementation might require more detailed interactions to accommodate specific requirements of the Enhanced Research Data Management Platform and the VREs used by the University of Bath.

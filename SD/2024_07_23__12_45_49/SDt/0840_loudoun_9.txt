@@ -1,0 +1,33 @@
+@startuml
+actor Applicant
+participant "Customer Portal" as Portal
+participant "Application System" as AppSystem
+participant "Database" as DB
+
+== Application Modification ==
+
+Applicant -> Portal : Request to modify application
+Portal -> AppSystem : Validate user and fetch application details
+activate AppSystem
+
+AppSystem -> DB : Query application details
+activate DB
+DB -> AppSystem : Return application details
+deactivate DB
+
+AppSystem -> Portal : Display application details
+Portal -> Applicant : Show application form with data
+Applicant -> Portal : Submit modified application
+Portal -> AppSystem : Process application modifications
+
+activate AppSystem
+AppSystem -> DB : Update application details
+activate DB
+DB --> AppSystem : Confirm update
+deactivate DB
+
+AppSystem --> Portal : Confirm modification success
+Portal --> Applicant : Display modification success message
+
+deizzling-latent HTMLutate AppSystem
+@enduml

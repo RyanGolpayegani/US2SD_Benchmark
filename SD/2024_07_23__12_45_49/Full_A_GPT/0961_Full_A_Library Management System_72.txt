@@ -1,0 +1,50 @@
+To create a detailed sequence diagram for the specific user story — lining up the borrowers by the request dates for book allocation — we will represent the interactions between various elements of the Comprehensive Library Management System (CLMS) using PlantUML syntax. 
+
+This diagram will involve several components: the `Librarian`, the `ReservationSystem`, the `Database`, and potentially a `NotificationService` to inform the next borrower in line that the book is available for pick up.
+
+Please note the sequence here is simplified and conceptual. Adjustments may be needed depending on the specific technical architecture of your CLMS.
+
+```plantuml
+@startuml
+!theme plain
+
+participant Librarian
+participant ReservationSystem
+participant Database
+participant NotificationService
+
+activate Librarian
+Librarian -> ReservationSystem : CheckPendingReservations()
+activate ReservationSystem
+
+ReservationSystem -> Database : FetchReservationByBook()
+activate Database
+Database --> ReservationSystem : ReservationListOrderedByDate
+deactivate Database
+
+ReservationSystem --> Librarian : ShowOrderedReservations(ReservationList)
+deactivate ReservationSystem
+
+Librarian -> ReservationSystem : SelectNextBorrower(ReservationList)
+activate ReservationSystem
+
+ReservationSystem -> Database : UpdateReservationStatusToReady(BorrowerID, BookID)
+activate Database
+Database --> ReservationSystem : StatusUpdated
+deactivate Database
+
+ReservationSystem -> NotificationService : NotifyBorrowerBookReady(BorrowerID)
+activate NotificationService
+NotificationService --> ReservationSystem : NotificationSent
+deactivate NotificationMaster
+
+ReservationSystem --> Librarian : AcknowledgeNextInLineNotified()
+deactivate ReservationSystem
+
+deactivate Librarian
+
+@enduml
+```
+This sequence diagram starts with the librarian checking the system for pending reservations. The `ReservationSystem` fetches and sorts the reservations from the `Database` based on request dates. The librarian is then shown this ordered list and selects the next borrower for a book. The `ReservationSystem` updates the reservation status in the database and instructs the `NotificationService` to alert the borrower that the book is ready for pick-up. Finally, the librarian is notified that the action has been completed.
+
+Remember, this is a high-level view and focuses on the critical operational aspects related to the user story at hand. Depending on the project's scale and complexity, more participants (like authentication system, payment system for processing fines, etc.) and detailed interactions might be required for a comprehensive design.

@@ -1,0 +1,44 @@
+Creating a detailed sequence diagram for the described user story: "As the site editor, I want to add an article to the site, so that the site has plenty of content," involves illustrating the interactions between the site editor, the content management system (CMS), and potentially other components such as authentication services and a database. Below is a PlantUML script to represent these interactions.
+
+```plantuml
+@startuml
+actor SiteEditor as "Site Editor"
+participant CMSInterface as "CMS Interface"
+participant AuthenticationService as "Authentication Service"
+database CMSDatabase as "CMS Database"
+
+SiteEditor -> CMSInterface: Access CMS
+CMSInterface -> AuthenticationService: Request Authentication
+AuthenticationService -> SiteEditor: Prompt for Credentials
+SiteEditor -> AuthenticationService: Provide Credentials
+AuthenticationService -> AuthenticationService: Validate Credentials
+AuthenticationService --> CMSInterface: Authentication Successful
+
+SiteEditor -> CMSInterface: Select 'Add Article'
+CMSInterface -> SiteEditor: Display Article Template
+SiteEditor -> CMSInterface: Submit New Article Data
+CMSInterface -> CMSDatabase: Save Article Information
+CMSDatabase --> CMSInterface: Confirm Article Saved
+CMSInterface --> SiteEditor: Display Article Posted Confirmation
+
+@enduml
+```
+
+### Explanation of the Sequence Diagram
+
+1. **Site Editor Accesses CMS**: The process starts with the site editor accessing the content management system.
+
+2. **Authentication**: The CMS interface requests authentication from the authentication service, which then prompts the site editor for credentials. Once the credentials are provided and validated, the authentication service signals that the authentication is successful.
+
+3. **Adding an Article**:
+   - The site editor selects the option to add a new article, which prompts the CMS interface to display an article template.
+   - The site editor fills in the article data (title, content, tags, etc.) and submits it to the CMS.
+
+4. **Saving the Article**:
+   - The CMS interface processes the submission and saves the new article information to the CMS database.
+   - The CMS database confirms that the article has been saved.
+
+5. **Confirmation**:
+    - Finally, the CMS interface displays a confirmation to the site editor that the article has been posted successfully.
+
+This sequence diagram captures the fundamental steps involved in adding an article to the site by a site editor using a content management system. Depending on the actual complexity and requirements of the Scrum Alliance Community Platform project, additional steps or systems may be involved (like content approval workflows, notifications, etc.).

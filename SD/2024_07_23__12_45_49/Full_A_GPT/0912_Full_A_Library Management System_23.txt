@@ -1,0 +1,48 @@
+Creating a detailed sequence diagram for the user story "As a librarian, I want to add new members" requires showcasing the interaction between different system components like the user interface (UI), controller, and database, including how the request moves through these components. Below is a PlantUML code that illustrates this process.
+
+```plantuml
+@startuml
+participant LibrarianUI as UI
+participant LibrarianController as Controller
+participant MemberService as Service
+participant MemberRepository as Repository
+database MemberDatabase as DB
+
+UI -> Controller : AddMemberDetails(newMemberData)
+Controller -> Service : createNewMember(newMemberInfo)
+alt Validation Success
+    Service -> Repository : saveMember(member)
+    Repository -> DB : insertMemberData
+    DB --> Repository : confirmation
+    Repository --> Service : memberSaved
+    Service --> Controller : memberCreated(memberID)
+    Controller --> UI : displaySuccess(memberID)
+else Validation Failure
+    Service -> Controller : error(validationErrors)
+    Controller --> UI : displayError(errors)
+end
+@enduml
+```
+
+### Explanation:
+
+- **LibrarianUI (UI):** This is the user interface where the librarian inputs the new member's details.
+- **LibrarianController (Controller):** Acts as an intermediary that takes the request from the UI to add a new member.
+- **MemberService (Service):** Processes business logic, such as validating the new member's data.
+- **MemberRepository (Repository):** Handles data access logic, communicating with the database.
+- **MemberDatabase (DB):** Represents the database where member's information is stored.
+
+### Workflow:
+
+1. **Input:** The librarian enters the details of the new member in the UI.
+2. **Processing:**
+   - The UI sends the new member data to the Controller.
+   - The Controller forwards this data to the Service layer to create a new member.
+   - If the data passes validation, the Service layer interacts with the Repository to save the new member in the database.
+   - The Repository inserts the new member data into the database and returns a confirmation to the Service.
+   - The Service layer sends a success message (memberCreated) back to the Controller, including the member ID.
+3. **Output:** 
+   - The Controller then sends a signal back to the UI to display a success message with the member ID.
+   - If validation fails at the Service layer, an error is sent back up the chain to inform the UI of the validation errors.
+
+This sequence ensures that the process of adding a new member by a librarian is handled efficiently through proper channels, ensuring data validation, persistence, and user feedback.

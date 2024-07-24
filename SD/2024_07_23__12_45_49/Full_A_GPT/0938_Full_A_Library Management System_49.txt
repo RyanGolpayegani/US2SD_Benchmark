@@ -1,0 +1,64 @@
+Creating a sequence diagram for the user story, "As a librarian, I want to edit a member subscription," involves detailing the process flow from initiating the subscription edit action by the librarian to the system's response and confirmation of the action. Here's how you might represent this in PlantUML syntax, focusing on the interaction between the librarian, the library management system (LMS), the database, and potentially the user (member whose subscription is being edited).
+
+```plantuml
+@startuml
+participant Librarian
+participant "Library Management\nSystem (LMS)" as LMS
+database Database
+
+Librarian -> LMS : Select Edit Member Subscription
+activate LMS
+
+LMS -> Database : Retrieve Member Subscription Details
+activate Database
+
+Database --> LMS : Send Member Subscription Details
+deactivate Database
+
+LMS --> Librarian : Display Member Subscription Details
+deactivate LMS
+activate Librarian
+
+Librarian -> LMS : Update Subscription Details\n(New Plan, Expiry Date etc.)
+activate LMS
+
+LMS -> Database : Update Subscription Record
+activate Database
+
+Database --> LMS : Confirm Update
+deactivate Database
+
+LMS --> Librarian : Display Update Confirmation
+deactivate LMS
+
+Librarian -> LMS : Send Notification to Member
+activate LMS
+
+LMS -> Database : Retrieve Member Contact Information
+activate Database
+
+Database --> LMS : Member Contact Information
+deactivate Database
+
+LMS -> LMS : Generate Notification Message
+
+LMS -> Email/SMS_Service : Send Notification to Member
+activate Email/SMS_Service
+Email/SMS_Service --> LMS : Confirmation
+deactivate Email/SMS_Service
+
+LMS --> Librarian : Display Notification Sent Confirmation
+deactivate LMS
+deactivate Librarian
+
+@enduml
+```
+
+This sequence diagram illustrates the sequence of interactions for the user story, starting from the librarian's initiation to edit a member's subscription, through the system processing the update, to the confirmation of the update and notification to the member. 
+
+- The librarian selects the option to edit a member's subscription, prompting the system to retrieve and display the current subscription details.
+- The librarian inputs the updated subscription details, which the system then updates in the database.
+- Upon successful update, the librarian sends a notification to the member about their updated subscription. The system retrieves the member's contact information, generates a suitable notification message, and then employs an email or SMS service to deliver the message.
+- Finally, the librarian is informed that the notification has been sent.
+
+This detailed flow ensures clear communication between the library staff and the member regarding subscription updates, enhancing user satisfaction and operational efficiency.

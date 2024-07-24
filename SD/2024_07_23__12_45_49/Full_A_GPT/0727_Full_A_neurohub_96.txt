@@ -1,0 +1,43 @@
+Given the project description and focusing on the user story provided, below is a representation of a sequence diagram in PlantUML format illustrating the scenario where a researcher wants to restrict the data they share to certain researchers or groups. This diagram includes the interactions between the user (Researcher), the system interfaces, and other components involved in the data sharing process with restriction settings.
+
+```plantuml
+@startuml
+actor Researcher as r
+participant "UI Interface" as ui
+participant "Authentication Module" as auth
+participant "Data Management" as dm
+participant "Access Control" as ac
+participant "Database" as db
+
+== Restrict Data Sharing ==
+r -> ui: Select file/folder to share
+ui -> dm: Request file metadata
+dm -> db: Retrieve metadata
+db -> dm: Return metadata
+dm --> ui: Display metadata and sharing options
+ui -> r: Show sharing options
+
+r -> ui: Specify restrictions (researches/groups)
+ui -> ac: Process restrictions
+ac -> db: Update sharing settings
+
+== Authentication Check ==
+ac -> auth: Verify researcher identities
+auth -> db: Check researcher credentials
+db -> auth: Confirm identities
+
+== Apply Restrictions ==
+auth -> ac: Confirmed identities
+ac -> db: Apply restrictions to data
+db -> ac: Restrictions applied
+ac --> ui: Confirmation message
+ui -> r: Display confirmation
+
+@enduml
+```
+
+This sequence diagram starts with the Researcher selecting the file or folder they wish to share through the User Interface (UI Interface). The Data Management component then retrieves and returns the metadata for the selected item to be shared, with the UI displaying the relevant sharing options to the Researcher. The Researcher specifies the restrictions, such as which researchers or groups can access the data, through the UI.
+
+The Access Control component processes these restrictions and updates the sharing settings in the Database. An Authentication Check is performed to verify the identities of researchers or group members who are granted access. Once identities are confirmed, the restrictions are applied to the data in the Database, and a confirmation message is displayed to the Researcher through the UI.
+
+This diagram assumes that there are well-defined interactions and data flows between the UI, authentication module, data management system, access control mechanisms, and the database. The exact details might vary based on the project's specific implementation details, requirements, and architecture.

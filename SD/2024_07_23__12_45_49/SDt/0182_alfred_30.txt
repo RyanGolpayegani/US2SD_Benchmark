@@ -1,0 +1,30 @@
+@startuml
+participant "Medical Caregiver" as Caregiver
+participant "ALFRED Interface" as Interface
+participant "Authorization Service" as Auth
+participant "Videophone Service" as Videophone
+participant "Patient's ALFRED Device" as PatientDevice
+
+Caregiver -> Interface : Request Videophone Access
+Interface -> Auth : Validate Caregiver
+Auth -> Interface : Access Granted
+
+alt Videophone Call Setup Successful
+    Interface -> Videophone : Initiate Call
+    Videophone -> PatientDevice : Ringing...
+    PatientDevice -> Videophone : Accept Call
+    Videophone -> Interface : Call Established
+    Interface -> Caregiver : Display Video Feed
+else Videophone Call Setup Failed
+    Videophone -> Interface : Call Failed/Error
+    Interface -> Caregiver : Show Error Message
+end
+
+Caregiver -> Interface : End Call
+Interface -> Videophone : Terminate Call
+Videophone -> PatientDevice : End Call Signal
+PatientDevice -> Videophone : Acknowledge End Call
+Videophone -> Interface : Call Ended
+Interface -> Caregiver : Confirmation Call Ended
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+participant Member as M
+participant "Authentication System" as Auth
+participant "Membership Database" as MDB
+participant "Content Management System" as CMS
+database "Article Database" as ADB
+
+M -> Auth: Authenticate
+Auth -> MDB: Verify membership
+MDB --> Auth: Membership status
+Auth --> M: Authentication & Membership status
+
+alt If member is authenticated and verified
+    M -> CMS: Request access to all articles
+    CMS -> ADB: Fetch all articles
+    ADB --> CMS: Return all articles
+    CMS --> M: Display all articles
+else If authentication or membership verification fails
+    Auth --> M: Deny access and suggest membership/login
+end
+
+@enduml

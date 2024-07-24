@@ -1,0 +1,41 @@
+To convey the process of checking the status of a transaction by an Applicant in the context of the County Services & Property Information Portal as described in the project description, we'll outline a detailed sequence diagram in PlantUML format. This diagram will illustrate the sequence of interactions between the Applicant (user), the Portal Interface, the Server (backend logic), and the Database where transaction statuses are stored.
+
+This sequence scenario begins when an Applicant wants to check the status of their transaction through the portal.
+
+```plantuml
+@startuml
+actor Applicant
+participant "Portal Interface" as Portal
+participant "Server" as Server
+database "Database" as DB
+
+== Check Transaction Status ==
+
+Applicant -> Portal: Navigate to "Check Status" page
+Portal -> Server: Request authentication status
+Server -> Applicant: Authenticate User (if not already logged in)
+Applicant -> Server: Provide authentication details
+Server -> Applicant: Authentication successful
+
+Applicant -> Portal: Enter transaction ID/Details
+Portal -> Server: Request transaction status
+activate Server
+    Server -> DB: Query transaction status by ID
+    activate DB
+    DB --> Server: Return transaction status data
+    deactivate DB
+Server --> Portal: Provide status information (service levels, fees, reviews, permits, inspections)
+deactivate Server
+Portal --> Applicant: Display transaction status
+@enduml
+```
+
+This sequence diagram represents a straightforward visualization of the steps an Applicant would take to check the status of a transaction through the County Services & Property Information Portal, along with the interaction flow among the system components.
+
+Key steps detailed in the diagram:
+1. **Navigation and Authentication**: The Applicant navigates to the "Check Status" page and undergoes authentication if not already logged in.
+2. **Transaction Status Request**: After authentication, the Applicant enters the transaction details (e.g., an ID) to request its status.
+3. **Backend Processing**: The Portal Interface communicates with the Server, which then queries the Database for the transaction status.
+4. **Status Display**: Finally, the Server retrieves the status information from the Database and sends it back to the Portal Interface, which displays it to the Applicant.
+
+Note: In real implementations, security considerations such as secure sessions, data encryption, and protection against SQL injection should be taken into account, but these aspects are not detailed in this high-level sequence diagram.

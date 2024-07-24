@@ -1,0 +1,54 @@
+Creating a detailed Sequence Diagram for the given user story using PlantUML notation involves outlining the interaction between actors and the system components to visualize the process of detecting unreturned books and subsequently rejecting members. Below is a simplified representation of this interaction.
+
+```plantuml
+@startuml
+actor Librarian
+participant "Library Management\nSystem" as LMS
+database BooksDB
+database MembersDB
+
+Librarian -> LMS : Login credentials
+activate LMS
+LMS --> Librarian : Authentication Success
+deactivate LMS
+
+Librarian -> LMS : Request list of unreturned books
+activate LMS
+
+LMS -> BooksDB : Query unreturned books
+activate BooksDB
+BooksDB --> LMS : List of unreturned books
+deactivate BooksDB
+
+LMS --> Librarian : Display unreturned books
+deactivate LMS
+
+Librarian -> LMS : Select member with unreturned book
+activate LMS
+
+LMS -> MembersDB : Query member details
+activate MembersDB
+MembersDB --> LMS : Member details
+deactivate MembersDB
+
+LMS -> LMS : Determine rejection criteria
+LMS -> MembersDB : Update member status to 'Rejected'
+activate MembersDB
+MembersDB --> LMS : Confirmation of rejection
+deactivate MembersDB
+
+LMS --> Librarian : Confirmation member rejected
+deactivate LMS
+
+@enduml
+```
+
+This sequence diagram starts with the Librarian logging into the Library Management System (LMS). Once authenticated, the librarian requests a list of unreturned books from the system. The LMS retrieves this information from the Books Database (BooksDB) and displays it to the Librarian.
+
+Following this, the Librarian selects a member associated with an unreturned book to process further. The system then queries the Members Database (MembersDB) for the details of the selected member. Based on predetermined criteria (e.g., duration book has been unreturned), the LMS determines if the member meets the conditions to be rejected.
+
+If the criteria are met, the LMS updates the member's status to 'Rejected' in the MembersDB and confirms the action with the Librarian.
+
+This diagram provides an overview of the interactions involved in the process. However, the actual implementation might involve more detailed conditions and steps based on the library's specific policies and the functionalities supported by the Library Management System.
+
+Remember, the simplified diagram doesn't capture every possible exception or error handling path (like authentication failure or database errors), focusing instead on the primary flow for clarity and conciseness.

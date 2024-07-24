@@ -1,0 +1,24 @@
+@startuml
+participant Manager as M
+participant "Manager Interface" as MI
+participant "Backend Server" as BS
+participant "Database" as DB
+participant "Inventory Service" as IS
+
+M -> MI : Access "Create Backup Food List"
+MI -> BS : Request current inventory status
+BS -> DB : Query inventory data
+DB -> BS : Return inventory data
+BS --> MI : Show current inventory and suggestions
+MI -> M : Display options based on inventory
+M -> MI : Select backup food items
+MI -> BS : Send selected backup items list
+BS -> IS : Process backup food list
+activate IS
+IS -> DB : Update backup food list
+DB -> IS : Confirm update
+deactivate IS
+IS -> BS : Backup list updated
+BS -> MI : Confirm update to manager
+MI -> M : Display confirmation message
+@enduml
