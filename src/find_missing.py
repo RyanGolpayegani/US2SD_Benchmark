@@ -1,9 +1,9 @@
 import os
 
 # Specify the paths to your text and picture folders
-text_folder = "Experiment/US GPT4 Turbo/SDt"
-picture_folder = "Experiment/US GPT4 Turbo/SDi"
-main_folder = "Experiment/US GPT4 Turbo"
+text_folder = "SD/2024_07_23__12_45_49/SDt"
+picture_folder = "SD/2024_07_23__12_45_49/SDi"
+main_folder = "SD/2024_07_23__12_45_49"
 
 # Extract base filenames (without extensions) from the text files
 text_filenames = [os.path.splitext(f)[0] for f in os.listdir(text_folder) if f.endswith(".txt")]
