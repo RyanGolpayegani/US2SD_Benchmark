@@ -59,8 +59,8 @@ counter = 0
 # Generate a response
 for index, row in All_Data.iterrows():
     counter += 1
-    if counter <= 2012:
-       continue
+    # if counter <= 2012:
+    #    continue
     print(f"Generating SDt number {counter}...")
 
     # Create the prompt 
