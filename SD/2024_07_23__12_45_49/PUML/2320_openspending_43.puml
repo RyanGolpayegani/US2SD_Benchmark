@@ -1,0 +1,33 @@
+@startuml
+participant User
+participant WebInterface as "Web Interface"
+participant ValidationService as "Validation Service"
+participant DataService as "Data Service"
+participant Database as "Database"
+
+User -> WebInterface : Select "Add New Dataset"
+WebInterface -> User : Display "New Dataset Form"
+User -> WebInterface : Fill in dataset details\nand select "Hidden" state
+WebInterface -> ValidationService : Validate dataset information
+ValidationService -> WebInterface : Return validation results
+
+alt If dataset information is valid
+    ValidationService -> DataService : Send dataset details with "Hidden" state
+    DataService -> Database : Store dataset information \n(set visibility to hidden)
+    Database -> DataService : Confirm dataset stored
+    DataService -> WebInterface : Display success message
+    WebInterface -> User : Show "Dataset added successfully" notification
+else If dataset information is invalid
+    ValidationPoint -> WebInterface : Display error messages
+    WebInterface -> User : Show errors, ask for correction
+end
+
+User -> WebInterface : [Optional] Edit dataset details
+WebInterface -> ValidationService : Validate updated information
+ValidationService -> DataService : Update dataset details
+DataService -> Database : Apply updates to dataset
+Database -> DataService : Confirm updates applied
+DataService -> WebInterface : Display update success message
+WebInterface -> User : Show "Dataset updated successfully" notification
+
+@enduml

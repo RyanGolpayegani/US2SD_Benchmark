@@ -1,0 +1,19 @@
+@startuml
+participant Student
+participant "Search Interface" as search
+participant "Library Database" as db
+participant "Books Controller" as controller
+participant "Shelf Information System" as shelfInfo
+
+
+== Finding Shelf Information for a Book ==
+Student -> search : searches for a book
+search -> controller : fetchBookDetails(searchQuery)
+controller -> db : queryBookDetails(searchQuery)
+db -> controller : return bookDetails
+controller -> shelfInfo : getShelfInfo(bookID)
+shelfInfo -> controller : return shelfInfoDetails
+controller -> search : displayBookAndShelfInfo(bookDetails, shelfInfoDetails)
+search -> Student : showBookShelfInfo(bookDetails, shelfInfoDetails)
+
+@enduml

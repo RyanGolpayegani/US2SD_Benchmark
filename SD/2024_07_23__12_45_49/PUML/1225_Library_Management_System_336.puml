@@ -1,0 +1,28 @@
+@startuml
+participant StaffInterface as UI
+participant SubscriptionService as Service
+database CLMSDatabase as Db
+
+activate UI
+UI -> Service : createSubscriptionType(details)
+activate Service
+
+Service -> Db : checkIfTypeExists(details.name)
+activate Db
+Db --> Service : typeExists: bool
+deactivate Db
+
+alt if typeExists is true
+    Service --> UI : Failure("Subscription Type Already Exists")
+else
+    Service -> Db : saveSubscriptionType(details)
+    activate Db
+    Db --> Service : Success("Saved Successfully")
+    deactivate Db
+    
+    Service --> UI : Success("Subscription Type Created")
+end
+
+deactivate Service
+deactivate UI
+@enduml

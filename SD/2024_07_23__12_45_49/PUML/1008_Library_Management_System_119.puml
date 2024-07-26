@@ -1,0 +1,23 @@
+@startuml
+actor "Library Manager" as Manager
+participant "CLMS Interface" as Interface
+participant "Book Management" as BookMan
+participant "Checkout System" as Checkout
+participant "Database" as DB
+
+Manager -> Interface: Accesses CLMS
+Interface -> BookMan: Retrieves book management options
+BookMan -> Interface: Displays book management dashboard
+Manager -> Interface: Selects "Manage Checkouts"
+Interface -> Checkout: Request checkout data
+Checkout -> DB: Query checkout records
+DB -> Checkout: Return current checkout records
+Checkout -> Interface: Display current checkouts
+Manager -> Interface: Update checkout status
+Interface -> Checkout: Process checkout update request
+Checkout -> DB: Update checkout record
+DB -> Checkout: Confirm update
+Checkout -> Interface: Checkout successfully updated
+Interface -> Manager: Display success message
+
+@enduml

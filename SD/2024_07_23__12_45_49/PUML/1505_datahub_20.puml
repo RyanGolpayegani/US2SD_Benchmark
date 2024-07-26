@@ -1,0 +1,25 @@
+@startuml
+actor Publisher
+participant "UI Interface" as UI
+participant "API Gateway" as API
+participant "Data Management Service" as DataManagement
+participant "Data Storage" as DataStorage
+control "Authorization Service" as Auth
+database "Audit Log" as Audit
+
+Publisher -> UI: Select undelete option
+UI -> API: Request to undelete data package (package_id)
+API -> Auth: Verify Publisher's identity & permissions
+Auth --> API: Verification successful
+API -> DataManagement: Request undeletion (package_id)
+DataManagement -> DataStorage: Retrieve deleted package metadata (package_id)
+DataStorage --> DataManagement: Deleted package metadata
+DataManagement -> DataStorage: Update package status (visible)
+DataStorage --> DataManagement: Undeletion confirmation
+DataManagement -> Audit: Log undeletion action (package_id, Publisher)
+Audit --> DataManagement: Log successful
+DataManagement --> API: Undeletion success response
+API --> UI: Display undeletion success message
+UI --> Publisher: Confirmation of data package visibility
+
+@enduml

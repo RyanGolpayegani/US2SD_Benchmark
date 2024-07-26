@@ -1,0 +1,33 @@
+@startuml
+
+participant User as user
+participant "UI" as ui
+participant "Search Controller" as search
+participant "File Management System" as filesys
+database "Data Storage" as storage
+
+user -> ui: Enter search query for files
+activate ui
+
+ui -> search: Request file search
+activate search
+
+search -> filesys: Query for files
+activate filesys
+
+filesys -> storage: Fetch file data
+activate storage
+
+storage --> filesys: File data
+deactivate storage
+
+filesys --> search: File search results
+deactivate filesys
+
+search --> ui: Display search results
+deactivate search
+
+ui --> user: Show file results to user
+deactivate ui
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+actor AgencyUser as "Agency User"
+participant BrokerUI as "Broker UI"
+participant BackendServer as "Backend Server"
+participant Database as "Database"
+participant PerformanceMonitor as "Performance Monitor"
+
+== Flexfields Submission ==
+AgencyUser -> BrokerUI : Submit Flexfields Data
+BrokerUI -> BackendServer : Validate Flexfields Data
+alt Validation Success
+    BackendServer -> Database : Store Flexfields Data
+    Database --> BackendServer : Acknowledge Storage
+    BackendServer --> BrokerUI : Confirm Submission Success
+    BrokerUI --> AgencyUser : Display Success Message
+else Validation Failure
+    BackendServer --> BrokerUI : Error Message
+    BrokerUI --> AgencyUser : Display Error Message
+end
+
+== Performance Monitoring ==
+BackendServer -> PerformanceMonitor : Start Monitoring
+loop Performance Check
+    PerformanceMonitor -> BackendServer : Check Performance Metrics
+    alt Performance Degradation Detected
+        PerformanceMonitor -> BackendServer : Notify Degradation
+        BackendServer -> Database : Optimize Data Storage
+        Database --> BackendServer : Confirm Optimization Complete
+        BackendServer --> PerformanceMonitor : Continue Monitoring
+    else No Degradation Detected
+        PerformanceMonitor --> BackendServer : Performance Stable
+    end
+end
+
+@enduml

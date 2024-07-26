@@ -1,0 +1,25 @@
+@startuml
+actor "Data Consuming User" as user
+participant "OpenSpending Web Interface" as web
+participant "Visualization Service" as viz
+participant "Image Generation Service" as img
+database "Data Store" as db
+
+user -> web: Access visualization feature
+web -> viz: Request current view state data
+viz -> db: Fetch data for visualization
+db -> viz: Return requested data
+viz -> web: Display current visualization
+user -> web: Request download of view state image
+web -> img: Send request for image generation
+activate img
+img -> viz: Request specific data for image
+viz -> db: Fetch necessary data
+db -> viz: Provide data
+viz -> img: Return visualization data
+img -> img: Generate image from view state
+img -> web: Provide generated image
+deactivate commodities
+web -> user: Offer image download link
+user -> web: Download image
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+participant Publisher
+participant "DPIE Interface" as DPIE
+participant GitHub
+participant CKAN
+
+Publisher -> DPIE : Upload Data Package
+activate DPIE
+DPIE -> GitHub : Push Data Package
+activate GitHub
+GitHub -> DPIE : Confirm Push
+DPIE -> DPIE : Validate Data Package
+note right of DPIE: Validation includes verifying\nthe data integrity, format, and\nconformance to selected profiles.
+DPIE -> CKAN : Create Catalog Listing
+activate CKAN
+CKAN -> DPIE : Confirm Listing
+DPIE -> Publisher : Notify Success
+deactivate DPIE
+deactivate GitHub
+deactivate CKAN
+
+@enduml

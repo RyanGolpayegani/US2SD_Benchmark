@@ -1,0 +1,21 @@
+@startuml
+participant "Assistant Archivist" as Archivist
+participant "System Interface" as Interface
+participant "Form Management System" as FMS
+participant "Authentication Service" as Auth
+participant "Database" as DB
+
+Archivist -> Interface: Request access to interdepartmental forms
+Interface -> Auth: Validate session/token
+Auth --> Interface: Session valid
+
+alt If session is valid
+    Interface -> FMS: Fetch interdepartmental forms list
+    FMS -> DB: Query available forms
+    DB --> FMS: Return forms list
+    FMS --> Interface: Display forms list
+    Interface --> Archivist: Show available interdepartmental forms
+else If session is invalid
+    Interface --> Archivist: Redirect to login page
+end
+@enduml

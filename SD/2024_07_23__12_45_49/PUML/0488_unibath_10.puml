@@ -1,0 +1,37 @@
+@startuml
+participant Depositor
+participant "Enhanced Research\nData Management Platform" as Platform
+participant Opus
+participant DOI_Service
+
+== Link Datasets to Publications ==
+
+Depositor -> Platform: Select dataset for linking
+
+alt if dataset not already deposited
+    Depositor -> Platform: Deposits dataset 
+    Platform -> DOI_Service: Request DOI for dataset
+    DOI_Service -> Platform: DOI
+    Platform -> Depositor: Confirm dataset deposited\nand DOI assigned
+end
+
+Depositor -> Platform: Input publication details (e.g., title, author)
+
+Platform -> Opus: Search for publication by details
+Opus -> Platform: Return publication match
+
+alt if publication found
+    Platform -> Depositor: Display publication(s) found
+    Depositor -> Platform: Confirm publication to link
+    Platform -> Opus: Link dataset DOI to publication
+    Opus -> Platform: Confirm linkage
+    Platform -> Depositor: Confirm dataset linked to publication
+else
+    Platform -> Depositor: No publication match found\nSuggest manual entry
+    Depositor -> Platform: Provides manual publication details
+    Platform -> Opus: Create new publication entry with dataset DOI link
+    Opus -> Platform: Confirm new publication created and linked
+    Platform -> Depositor: Confirm dataset linked to new publication
+end
+
+@enduml

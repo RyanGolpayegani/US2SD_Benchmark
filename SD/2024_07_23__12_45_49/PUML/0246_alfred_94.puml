@@ -1,0 +1,35 @@
+@startuml
+!theme spacelab
+
+participant "MedicalCaregiver Interface" as Interface
+participant "ALFRED System" as System
+participant "Activity Monitor" as Monitor
+participant "Data Processor" as Processor
+participant "Data Storage" as Storage
+database "User's Activity Data" as UserData
+
+Interface -> System: Request Activity Level
+activate System
+
+System -> Monitor: Capture Data
+activate Monitor
+Monitor --> System: Activity Data
+deactivate Monitor
+
+System -> Processor: Process Data
+activate Processor
+Processor -> UserData <<read>>: Fetch Historical Data
+Processor --> System: Processed Data
+deactivate Processor
+
+System -> Storage: Store Query
+activate Storage
+Storage --> System: Acknowledge
+deactivate Storage
+
+System -> Interface: Display Activity Info
+Interface -> UserData <<read>>: Retrieve Updated Data
+Interface --> System: Confirm Receipt
+deactivate System
+
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+participant "Staff UI" as StaffUI
+participant "SearchController" as Controller
+database "Library Database" as LibraryDB
+
+StaffUI -> Controller : searchBySubject(category)
+activate Controller
+
+Controller -> LibraryDB : queryBooksByCategory(category)
+activate LibraryDB
+
+LibraryDB --> Controller : return booksList
+deactivate LibraryDB
+
+Controller --> StaffUI : showBooks(booksList)
+deactivate Controller
+
+@enduml

@@ -1,0 +1,59 @@
+@startuml
+actor Archivist as archivist
+participant "Web Interface" as web
+participant "Search/Filter Engine" as searchEngine
+database "Digital Archive Database" as database
+
+== Browsing Files in a Collection ==
+archivist -> web: Access collection browsing feature
+activate web
+
+web -> searchEngine: Request list of collections
+activate searchEngine
+
+searchEngine -> database: Retrieve collections
+activate database
+database --> searchEngine: Collections data
+deactivate database
+
+searchEngine --> web: Collections list
+deactivate searchEngine
+
+web --> archivist: Display collections
+deactivate web
+
+archivist -> web: Select a collection
+activate web
+
+web -> searchEngine: Request files in collection
+activate searchEngine
+
+searchEngine -> database: Retrieve files metadata
+activate database
+database --> searchEngine: Files data
+deactivate database
+
+searchEngine --> web: Files list and metadata
+deactivate searchEngine
+
+web --> archivist: Display files in collection
+deactivate web
+
+archivist -> web: Choose file to view details
+activate web
+
+web -> searchEngine: Request file details
+activate searchSearch
+
+searchEngine -> database: Retrieve file details
+activate database
+database --> searchEngine: File details
+deactivate database
+
+searchEngine --> web: File details
+deactivate searchEngine
+
+web --> archivist: Display file details
+deactivate web
+
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+actor Manager as manager
+participant "Web Interface" as webInterface
+participant "Server" as server
+database "Database" as database
+
+== Update Employee Information ==
+
+manager -> webInterface : Access employee update form
+webInterface -> server : Request current employee data
+
+server -> database : Retrieve employee data
+database -> server : Employee data
+
+server -> webInterface : Show employee data
+webInterface -> manager : Display employee data
+
+manager -> webInterface : Submit updated data
+webInterface -> server : UpdateEmployeeData(employeeID, newData)
+
+alt Validation Success
+    server -> server : Validate new data
+
+    server -> database : Update data in Employee table
+    database -> server : Confirmation(Updated)
+
+    server -> webInterface : Show success message
+    webInterface -> manager : Display update success
+else Validation Fail
+    server -> webInterface : Show failure message(Error)
+    webInterface -> manager : Display update failure
+end
+
+@enduml

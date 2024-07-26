@@ -1,0 +1,44 @@
+@startuml
+actor RepositoryManager as RM "Repository Manager"
+participant DAMSInterface as DI "DIMS Interface"
+participant ManagementSystem as MS "Management System"
+participant Database as DB "Database"
+participant NotificationSystem as NS "Notification System"
+
+RM -> DI: Request Modifications Log
+activate DI
+DI -> MS: Fetch Modifications(LogRequest)
+activate MS
+MS -> DB: Query Modifications
+activate DB
+DB -> MS: Modifications Data
+deactivate DB
+MS -> DI: Modifications Response
+deactivate MS
+DI -> RM: Display Modifications
+deactivate DI
+
+RM -> DI: Subscribe to Modifications Notifications
+activate DI
+DI -> MS: Set Notification Preferences
+activate MS
+MS -> NS: Register for Notifications
+activate NS
+NS -> MS: Confirmation
+deactivate NS
+MS -> DI: Subscription Confirmation
+deactivate MS
+DI -> RM: Confirmation Message
+deactivate DI
+
+alt Modification Event Occurs
+    DB -> MS: Log Modification Event
+    activate MS
+    MS -> NS: Trigger Notification
+    activate NS
+    NS -> RM: Send Modification Notification
+    deactivate NS
+    deactivate MS
+end
+
+@enduml

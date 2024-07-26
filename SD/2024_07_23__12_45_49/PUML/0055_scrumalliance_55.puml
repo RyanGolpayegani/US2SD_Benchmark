@@ -1,0 +1,24 @@
+@startuml
+actor SiteEditor as editor
+participant "EditorPanel" as panel
+database "ContentManagementSystem" as cms
+participant "Article" as article
+
+editor -> panel : Login
+editor -> panel : Navigate to Content Management
+panel -> cms : Request Article List
+cms --> panel : Display Articles
+editor -> panel : Select Article to Edit
+panel -> article : Load Article Details
+editor -> article : Set Start Publishing Date
+editor -> article : Set Old Article Date
+editor -> article : Set Stop Publishing Date
+editor -> article : Save Settings
+article -> cms : Update Article Dates in DB
+cms --> editor : Confirm Update
+
+autonumber off
+article -> cms : Each Day Check Dates
+cms -> article : Hide/Show Based on Dates
+
+@enduml

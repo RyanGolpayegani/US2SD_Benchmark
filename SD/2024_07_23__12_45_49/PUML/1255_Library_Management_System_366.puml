@@ -1,0 +1,20 @@
+@startuml
+actor Student as student
+participant "Subscription Page" as page
+participant "Validation System" as validator
+database "Library Database" as db
+participant "Email System" as email
+
+student -> page : Access Subscription Page
+student -> page : Submit Subscription Form
+page -> validator : Validate Form Data
+alt Form Data is Valid
+    validator -> db : Update Database with New Subscriber
+    db -> validator : Confirmation of Update
+    validator -> email : Send Confirmation Email to Student
+    email -> student : Confirmation Email Received
+else Form Data is Invalid
+    validator -> page : Show Error Message
+    page -> student : Display Error Message
+end
+@enduml

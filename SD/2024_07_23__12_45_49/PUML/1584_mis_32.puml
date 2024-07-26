@@ -1,0 +1,25 @@
+@startuml
+
+actor Curator as curator
+participant "Author Authority \n Control Tool" as tool
+database "EDRMS Database" as db
+participant "External Authority \n Database" as extDb
+
+== Authority Control Process ==
+curator -> tool : Request author verification
+tool -> db : Query existing author records
+alt Author record exists
+    db -> tool : Return author details
+    tool -> curator : Display author details
+else No record found
+    tool -> extDb : Query external author authority
+    extDb -> tool : Return external author details
+    alt Author details found
+        db -> tool : Create/Update author record
+        tool -> curator : Display new/updated author details
+    else No details found
+        tool -> curator : Prompt to create new author record
+    end
+end
+
+@enduml

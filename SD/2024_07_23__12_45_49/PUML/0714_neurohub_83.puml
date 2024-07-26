@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+
+participant Researcher as researcher
+participant "Frontend UI" as frontend
+participant "Metadata Service" as metadataService
+participant "Database" as database
+participant "External Metadata Source\n(optional)" as externalMetadata
+
+== Data Addition and Metadata Insertion Process ==
+
+researcher -> frontend : Uploads new data
+activate frontend
+
+frontend -> metadataService : Request metadata generation
+activate metadataService
+
+metadataService -> externalMetadata : Fetch predefined metadata
+activate externalMetadata
+externalLib -> metadataService : Return metadata
+
+metadataService -> database : Insert automatic metadata
+activate database
+database --> metadataService : Acknowledge insertion
+deactivate database
+
+metadataService --> frontend : Confirm metadata added
+deactivate metadataService
+
+frontend --> researcher : Notify data and metadata addition successful
+deactivate frontend
+
+@enduml

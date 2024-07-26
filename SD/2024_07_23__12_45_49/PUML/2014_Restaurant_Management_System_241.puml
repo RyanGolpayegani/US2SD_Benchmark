@@ -1,0 +1,66 @@
+@startuml
+actor Manager
+participant "Management\nInterface" as Interface
+participant "Task\nManagement\nModule" as TaskModule
+participant Database
+
+Manager -> Interface : Log in
+activate Interface
+
+Interface -> TaskModule : Request task creation page
+activate TaskModule
+
+TaskModule -> Interface : Display task creation form
+Interface -> Manager : Show task creation form
+
+Manager -> Interface : Submit new task details
+Interface -> TaskModule : Create new task (details)
+activate TaskModule
+
+TaskModule -> Database : Save new task
+activate Database
+Database --> TaskModule : Confirmation
+deactivate Database
+
+TaskModule --> Interface : Task created successfully
+Interface --> Manager : Display confirmation
+
+Manager -> Interface : Request task monitoring page
+Interface -> TaskModule : Retrieve task status
+activate TaskModule
+
+TaskModule -> Database : Get current tasks status
+activate Database
+Database --> TaskModule : Task statuses
+deactivate Database
+
+TaskModule --> Interface : Show current tasks and statuses
+Interface --> Manager : Display tasks overview
+
+Manager -> Interface : Select task to delegate
+Interface -> TaskModule : Request employee list
+activate TaskModule
+
+TaskModule -> Database : Get available employees
+activate Database
+Database --> TaskModule : Employee list
+deactivate Database
+
+TaskModule --> Interface : Display employee list
+Interface --> Manager : Show available employees
+
+Manager -> Interface : Assign task to selected employee
+Interface -> TaskModule : Update task with employee assignment
+activate TaskModule
+
+TaskModule -> Database : Save task assignment
+activate Database
+Database --> TaskManager : Confirmation
+deactivate Database
+
+TaskModule --> Interface : Task delegated successfully
+Interface --> Manager : Display confirmation
+
+deactivate TaskModule
+deactivate Interface
+@enduml

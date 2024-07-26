@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+
+actor Researcher as researcher
+participant "DPIE Web Interface" as webUI
+participant "Data Package Repository" as repository
+participant "Data Package API" as api
+participant "R Environment" as rEnv
+
+== Get Data Package into R for Analysis and Visualization ==
+
+researcher -> webUI : Search for Data Package
+webUI -> repository : Query for Data Packages
+repository -> webUI : Return search results
+webUI -> researcher : Display Data Packages
+
+researcher -> webUI : Select Data Package
+webUI -> api : Request Data Package URL
+api -> repository : Fetch Data Package URL
+repository -> api : Return Data Package URL
+api -> webUI : Provide Data Package URL
+webUI -> researcher : Display Data Package URL
+
+researcher -> rEnv : Use Data Package URL in R
+note right of rEnv : Use \`devtools\`, \`usethis\`, or similar\nto import the package
+rEnv -> api : Request Data Package content using URL
+api -> repository : Fetch Data Package content
+repository -> api : Return Data Package content
+api -> rEnv : Send Data Package content
+rEnv -> researcher : Data Package is now available in R
+
+researcher -> rEnv : Start analysis and visualization
+
+@enduml

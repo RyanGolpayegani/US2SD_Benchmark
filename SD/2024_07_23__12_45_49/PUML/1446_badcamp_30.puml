@@ -1,0 +1,26 @@
+@startuml
+actor AuthenticatedUser as User
+participant "Sponsorship Page" as Page
+participant "Payment System" as Payment
+participant "Database" as DB
+participant "Email Service" as Email
+
+User -> Page: Select Individual Sponsorship
+Page -> User: Display payment form
+
+User -> Page: Submit payment information
+Page -> Payment: Validate payment information
+alt success
+    Payment -> Page: Confirmation of validation
+    Page -> Payment: Process payment
+    Payment -> DB: Update sponsorship status
+    DB -> Payment: Confirm update
+    Payment -> User: Display payment success
+    Payment -> Email: Send confirmation email
+    Email -> User: Receive confirmation email
+else failure
+    Payment -> Page: Display error message
+    Page -> User: Show error, request retry
+end
+
+@enduml

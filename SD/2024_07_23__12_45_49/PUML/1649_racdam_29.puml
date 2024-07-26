@@ -1,0 +1,32 @@
+@startuml
+participant Archivist as archivist
+participant "UI Interface" as UI
+participant "File Management System" as FMS
+participant "Image Processing Service" as IPS
+participant "Database" as DB
+
+archivist -> UI : Selects scanned file
+UI -> FMS : Requests file upload
+activate FMS
+FMS -> DB : Checks file metadata
+DB --> FMS : Retrieves metadata
+FMS --> UI : Displays file and options
+deactivate FMS
+activate UI
+UI --> archivist : Shows file and available operations
+deactivate UI
+archivist -> UI : Chooses apply contrast and levels
+activate UI
+UI -> IPS : Sends file and processing request
+activate IPS
+IPS -> IPS : Applies automatic contrast and levels
+IPS -> FMS : Returns processed file
+deactivate IPS
+activate FMS
+FMS -> DB : Updates file metadata
+DB --> FMS : Confirms update
+FMS --> UI : Confirms operation completion
+deactivate FMS
+UI --> archivist : Displays processed file
+deactivate UI
+@enduml

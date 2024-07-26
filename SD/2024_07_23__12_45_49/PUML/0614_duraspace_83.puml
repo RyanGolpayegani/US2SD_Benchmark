@@ -1,0 +1,23 @@
+@startuml
+actor DAMSManager as "DAMS Manager"
+participant DIMSInterface as "DIMS Interface"
+participant CopyrightDatabase as "Copyright Database"
+participant AssetManagementModule as "Asset Management Module"
+
+DAMSManager -> DIMSInterface: Request objects under copyright
+DIMSInterface -> CopyrightDatabase: Query copyright status
+loop for each item
+    CopyrightDatabase -> AssetManagementModule: Request current status\nfor item
+    AssetManagementModule -> CopyrightDatabase: Return status (Under Copyright/Free)
+end
+Copyright화Database -> DIMSInterface: Return list of copyrighted objects
+DIMSInterface -> DAMSManager: Display copyrighted objects
+
+note right of DAMSManager
+  The DAMS Manager receives a list of objects
+  or components that are still protected by
+  copyright and require a license or pose a
+  risk if displayed.
+end note
+
+@enduml

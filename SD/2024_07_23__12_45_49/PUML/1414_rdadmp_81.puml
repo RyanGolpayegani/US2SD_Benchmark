@@ -1,0 +1,29 @@
+@startuml
+actor DataManager as "Data Manager"
+participant DMPTool as "DMPTool Interface"
+participant MetadataSystem as "Metadata System"
+participant AnonymizationService as "Data Anonymization Service"
+participant Repository as "Data Repository"
+
+DataManager -> DMPTool : Request to plan data anonymization
+DMPTool -> MetadataSystem : Fetch relevant data criteria
+MetadataSystem -> DMPTool : Return data criteria
+DMPTool -> DataManager : Show data and criteria for anonymization
+
+DataManager -> DMPTool : Define anonymization parameters
+DMPTool -> AnonymizationService : Apply anonymization parameters
+AnonymizationService -> AnonymizationService : Anonymize data
+AnonymizationService -> DMPTool : Anonymization complete
+
+DMPTool -> Repository : Store anonymized data metadata
+Repository -> DMPTool : Confirm storage
+
+DMPTool -> DataManager : Notify about anonymization status
+DataManager -> DMPTool : Review anonymized data metadata
+
+DMPTool -> DataManager : Provide access to anonymized data for review
+DataManager -> DMPTool : Approve anonymized data
+
+DMPTool -> DataManager : Update DMP with anonymized data details
+
+@enduml

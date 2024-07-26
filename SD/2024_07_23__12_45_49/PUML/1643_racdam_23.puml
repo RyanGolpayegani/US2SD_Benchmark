@@ -1,0 +1,33 @@
+@startuml
+actor Archivist
+participant "Authentication System" as Auth
+participant "File Management System" as FileSys
+participant "Licensing Module" as License
+participant "Metadata Editor" as MetaEdit
+participant "Digital Archive Database" as Database
+
+== Authentication ==
+Archivist -> Auth: Enter credentials
+Auth -> Archivist: Authenticated
+
+== Uploading Scans ==
+group Uploading Image Scans
+    Archivist -> FileSys: Select images for upload
+    activate FileSys
+    FileSys -> Database: Check for existing files
+    Database --> FileSys: Confirmation
+    FileSys -> Archivist: Display upload form
+    deactivate FileSys
+
+    Archivist -> MetaEdit: Enter metadata
+    activate MetaEdit
+    MetaEdit -> License: Apply default license
+    deactivate MetaEdit
+
+    License -> Database: Store license info
+    Archivist -> FileSys: Confirm upload
+    FileSys -> Database: Store file and metadata
+    Database --> Archivist: Upload success
+end
+
+@enduml

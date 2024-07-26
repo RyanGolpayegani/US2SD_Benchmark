@@ -1,0 +1,31 @@
+@startuml
+actor Staff
+participant "Web Interface" as Web
+participant "System Backend" as Backend
+participant "Database" as DB
+
+== Delete Book Checkout ==
+
+Staff -> Web : Selects returned book
+activate Web
+
+Web -> Backend : Request to delete checkout (bookId, staffId)
+activate Backend
+
+Backend -> DB : Verify book return status (bookId)
+activate DB
+DB --> Backend : Return status: Returned
+deactivate DB
+
+Backend -> DB : Delete checkout record (bookId)
+activate DB
+DB --> Backend : Record deleted
+deactivate DB
+
+Backend --> Web : Checkout deletion success
+deactivate Backend
+
+Web --> Staff : Display success message
+deactivate Web
+
+@enduml

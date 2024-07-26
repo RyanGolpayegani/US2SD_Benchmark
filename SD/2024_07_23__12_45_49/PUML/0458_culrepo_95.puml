@@ -1,0 +1,27 @@
+@startuml
+
+actor "Library Staff Member" as staff
+participant "Web Interface" as web
+participant "Collection Management Module" as collectionModule
+participant "Metadata Configuration" as metadataConfig
+participant "Database" as db
+participant "Search Engine" as search
+
+== Create Custom Metadata Fields for a Collection ==
+staff -> web : Access Collection Settings
+web -> collectionModule : Request Collection Configuration
+collectionModule -> metadataConfig : Open Metadata Setting
+staff -> web : Specify Custom Metadata Fields
+web -> metadataConfig : Create Custom Fields
+metadataConfig -> db : Update Collection Metadata Schema
+
+== Enable Searching by Custom Metadata Fields ==
+metadataConfig -> search : Update Indexing with New Fields
+search -> db : Re-index Collections with Custom Fields
+
+== Success Confirmation ==
+metadataConfig -> web : Confirm Custom Fields Created
+search -> web : Confirm Fields are Searchable
+web -> staff : Display Success Message
+
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+actor Chef as chef
+participant "UI Layer" as ui
+participant "Backend\n(Server)" as backend
+database "Database" as db
+
+chef -> ui : Selects ingredient to update
+ui -> backend : Requests current expiry date
+backend -> db : Queries ingredient expiry date
+db -> backend : Returns expiry date
+backend -> ui : Shows current expiry date
+chef -> ui : Inputs new expiry date
+ui -> backend : Submits updated expiry date
+backend -> db : Updates expiry date in database
+db -> backend : Confirms update
+backend -> ui : Confirms successful update to chef
+ui -> chef : Display update confirmation
+
+@enduml

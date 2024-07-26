@@ -1,0 +1,37 @@
+@startuml
+participant Developer
+participant IDE
+participant ValidatorService
+participant Reviewer
+
+Developer -> IDE: Write XHTML and CSS
+IDE -> Developer: Highlight non-compliance (real-time)
+Developer -> IDE: Adjust code to comply
+Developer -> ValidatorService: Submit code for validation
+ValidatorService -> ValidatorService: Validate against standards
+alt Valid Code
+    ValidatorService -> Developer: Return success message
+else Non-Compliant Code
+    ValidatorService -> Developer: Return error details
+    Developer -> IDE: Correct errors
+    loop Until compliant
+        Developer -> ValidatorService: Resubmit code for validation
+        ValidatorService -> ValidatorService: Revalidate against standards
+    end
+    ValidatorService -> Developer: Return success message
+end
+Developer -> Reviewer: Request review for compliance and accessibility
+Reviewer -> Reviewer: Review code and site accessibility
+alt Review Passed
+    Reviewer -> Developer: Approve compliance and accessibility
+else Review Feedback
+    Reviewer -> Developer: Provide feedback for improvement
+    loop Based on feedback
+        Developer -> IDE: Adjust code
+        Developer -> ValidatorService: Validate adjustments
+        ValidatorQueue -> Developer: Validation result
+        Developer -> Reviewer: Resubmit for review
+    end
+    Reviewer -> Developer: Approve compliance and accessibility
+end
+@enduml

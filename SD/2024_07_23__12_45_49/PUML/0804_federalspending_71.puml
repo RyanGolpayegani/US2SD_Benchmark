@@ -1,0 +1,18 @@
+@startuml
+participant Developer
+participant "Broker Platform" as Broker
+database "Historical FPDS Data" as HistoricalFPDS
+database "FPDS Feed" as FPDSFeed
+database "Data Loader" as DataLoader
+
+Developer -> Broker: Request data loading process
+Broker -> HistoricalFPDS: Retrieve historical data
+HistoricalFPDS --> Broker: Return historical data
+Broker -> FPDSFeed: Access current FPDS feed data
+FPDSFeed --> Broker: Return FPDS feed data
+Broker -> DataLoader: Initiate data merge process
+DataLoader -> DataLoader: Merge historical and feed data
+DataLoader --> Broker: Confirm data loading completion
+Broker --> Developer: Notify data loading success
+
+@enduml

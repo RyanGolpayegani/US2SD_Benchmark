@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+actor Manager
+participant "UI: Member Creation Form" as Form
+participant "Backend System" as Backend
+database "Database" as DB
+
+Manager -> Form : Fill in member details
+Form -> Backend : Submit new member data
+activate Backend
+
+alt Validation Success
+    Backend -> DB : Store new member information
+    activate DB
+    DB --> Backend : Confirmation
+    deactivate DB
+    
+    Backend --> Form : Display success message
+    Manager <-- Form : View success confirmation
+else Validation Fail
+    Backend --> Form : Display error message
+    Manager <-- Form : View error and correct details
+end
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+participant Consumer
+participant "UI Interface" as UI
+participant "API Gateway" as API
+participant "Data Storage" as Storage
+participant "Data Processing Service" as Processing
+
+Consumer -> UI: Requests download page for a specific data package
+UI -> API: Requests data package details
+API -> Storage: Retrieves data package metadata
+Storage -> API: Returns data package metadata
+API -> UI: Displays download options
+UI -> Consumer: Shows download options including single file download
+Consumer -> UI: Selects single file download option
+UI -> API: Requests single file data package
+API -> Processing: Invokes data package compilation
+Processing -> Storage: Fetches descriptor and resources
+Storage -> Processing: Returns descriptor and resources
+Processing -> Storage: Compiles into single file
+Storage -> Processing: Stores single file and returns download link
+Processing -> API: Returns download link for single file
+API -> UI: Provides download link
+UI -> Consumer: Presents download link
+Consumer -> UI: Initiates download
+UI -> Storage: Requests single file via download link
+Storage -> UI: Streams single file
+UI -> Consumer: Downloads single file
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+actor FABSUser as "FABS User"
+participant Frontend as "Frontend Service"
+participant Router as "Routing Service"
+participant Controller as "Controller"
+participant ViewEngine as "View Engine"
+database URLMappingDB as "URL Mapping Database"
+
+FABSUser -> Frontend : Accesses page via URL
+activate Frontend
+Frontend -> Router : Request page
+activate Router
+
+Router -> URLMappingDB : Query URL Mapping
+activate URLMappingDB
+URLMappingDB --> Router : Return mapping details
+deactivate URLMappingDB
+
+Router -> Controller : Invoke corresponding action
+activate Controller
+Controller -> ViewEngine : Request page rendering
+activate ViewEngine
+
+ViewEngine -> Controller : Return rendered page
+deactivate ViewEngine
+Controller --> Router : Send rendered page
+deactivate Controller
+
+Router --> Frontend : Serve page to user
+deactivate Router
+Frontend --> FABSUser : Display page
+deactivate Frontend
+@enduml

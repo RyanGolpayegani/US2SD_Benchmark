@@ -1,0 +1,51 @@
+@startuml
+participant Student
+participant "Repository Interface" as Repo
+participant "Content Management System" as CMS
+participant "DMP Compliance Checker" as DMP
+participant "NSF System" as NSF
+
+Student -> Repo : Accesses repository via secure login
+activate Repo
+
+Repo -> Student : Presents upload interface
+activate Student
+
+Student -> Repo : Submits dissertation data with embargo details
+activate Repo
+
+Repo -> CMS : Checks content format and requirements
+activate CMS
+
+CMS -> CMS : Validates content
+CMS -> Repo : Confirms content is valid
+deactivate CMS
+
+Repo -> DMP : Verifies DMP requirements
+activate DMP
+
+DMP -> DMP : Matches data with DMP
+DMP -> Repo : Confirms compliance
+deallocate DMP
+
+Repo -> CMS : Stores data with embargo settings
+activate CMS
+
+CMS -> Student : Sends confirmation & DMP compliance notice
+activate Student
+deactivate CMS
+
+Student -> Repo : Requests submission to NSF DDIG
+activate Repo
+
+Repo -> NSF : Submits data and DMP compliance for DDIG
+activate NSF
+
+NSF -> NSF : Processes submission
+NSF -> Repo : Confirms acceptance
+deactivate NSF
+
+Repo -> Student : Notifies success of NFS DDIG submission
+deactivate Repo
+
+@enduml

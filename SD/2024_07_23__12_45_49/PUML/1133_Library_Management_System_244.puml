@@ -1,0 +1,32 @@
+@startuml
+actor Member as member
+participant "Search Interface" as searchInterface
+participant "Database" as database
+participant "Reservation System" as reservationSystem
+participant "Library Account" as account
+participant "Notification System" as notificationSystem
+
+member -> searchInterface: Enter search criteria
+searchInterface -> database: Query available books
+database -> searchInterface: Return search results
+searchInterface --> member: Display available books
+
+member -> searchInterface: Select a book
+searchInterface -> database: Check book status
+database --> searchInterface: Book is available
+
+member -> reservationSystem: Request to borrow book
+reservationSystem -> account: Check member's account status
+account --> reservationSystem: Account is valid
+
+reservationSystem -> database: Update book status to "on loan"
+database -> reservationSystem: Confirmation
+reservationSystem -> notificationSystem: Send borrow confirmation
+notificationSystem -> member: Send confirmation email/SMS
+
+alt If book is not returned by due date
+    reservationSystem -> notificationSystem: Trigger overdue notification
+    notificationSystem -> member: Send overdue notification email/SMS
+end
+
+@enduml

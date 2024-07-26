@@ -1,0 +1,33 @@
+@startuml
+!theme cerulean
+
+participant "App Developer" as AD
+participant "Deployment Module" as DM
+participant "Dataset Type Manager" as DTM
+participant "Dataset Instance Manager" as DIM
+database "App Artifact Repository" as AAR
+
+AD -> DM : Deploy artifact
+activate AD
+activate DM
+
+DM -> AAR : Check artifact for dataset definitions
+activate AAR
+AAR --> DM : Artifact metadata
+deactivate AAR
+
+DM -> DTM : Extract dataset types from metadata
+activate DTM
+DTM --> DM : No dataset types found
+deactivate DTM
+
+DM -> DIM : Check for dataset instances creation request
+activate DIM
+DIM --> DM : No instances creation request
+deactivate DIM
+
+DM --> AD : Deployment Successful (No datasets created)
+deactivate DM
+deactivate AD
+
+@enduml

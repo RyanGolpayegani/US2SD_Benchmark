@@ -1,0 +1,30 @@
+@startuml
+participant User
+participant "Web Interface" as WebInt
+participant "Search Service" as SearchServ
+participant "File Management" as FileMan
+participant "Data Server" as DataServ
+
+User -> WebInt : Request file download from search results
+activate WebInt
+WebInt -> SearchServ : Query selected files info
+activate SearchServ
+SearchServ -> FileMan : Request file details/locations
+activate FileMan
+FileMan -> SearchServ : Return file details/locations
+deactivate FileMan
+SearchServ --> WebInt : Return selected files info
+deactivate SearchServ
+WebInt -> DataServ : Request files download
+activate DataServ
+DataServ -> DataServ : Package requested files
+DataServ -> WebInt : Provide download link/package
+deactivate DataServ
+WebInt -> User : Display download link/package
+deactivate WebInt
+User -> WebInt : Clicks download
+WebInt -> DataServ : Initiate files download
+activate DataServ
+DataServ -> User : Transfer files
+deactivate DataServ
+@enduml

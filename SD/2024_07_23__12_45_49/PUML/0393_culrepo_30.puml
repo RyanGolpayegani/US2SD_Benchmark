@@ -1,0 +1,39 @@
+@startuml
+actor FacultyMember as FM
+participant "Authentication System" as Auth
+participant "Collection Management" as CM
+participant "Document Upload" as DU
+participant "Branding Interface" as BI
+participant "Repository Database" as DB
+
+== Authentication ==
+FM -> Auth: Provide Credentials
+Auth -> FM: Authentication Success
+
+== Collection Creation ==
+FM -> CM: Create New Collection
+CM -> DB: Initialize Collection Record
+DB -> CM: Confirm Collection Initialization
+CM -> FM: Collection Created Notification
+
+== Document Upload ==
+FM -> DU: Select Documents for Upload
+DU -> DB: Save Documents to Collection
+DB -> DU: Confirm Documents Saved
+DU -> FM: Documents Uploaded Notification
+
+== Apply Branding ==
+FM -> BI: Open Branding Interface
+BI -> CM: Fetch Collection Details
+CM -> BI: Return Collection Details
+FM -> BI: Apply Branding (Logo, Colors, Metadata)
+BI -> DB: Update Collection with Branding
+DB -> BI: Confirm Branding Applied
+BI -> FM: Branding Applied Notification
+
+== Finalization ==
+FM -> CM: Publish Collection
+CM -> DB: Update Collection Status to Published
+DB -> CM: Confirm Collection Published
+CM -> FM: Collection Published Notification
+@enduml

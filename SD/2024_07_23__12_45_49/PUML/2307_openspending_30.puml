@@ -1,0 +1,22 @@
+@startuml
+participant User as U
+participant "API Gateway" as A
+participant "Query Service" as Q
+participant "Data Cube" as D
+participant "CSV Generator" as C
+participant "Storage" as S
+
+U -> A: Send cube-based query\nwith CSV output request
+A -> Q: Forward query request
+Q -> D: Fetch relevant data from cube
+D -> Q: Return fetched data
+Q -> C: Convert data to CSV
+C -> S: Save CSV file
+S -> C: Return CSV file URL
+C -> Q: Send CSV file URL
+Q -> A: Return CSV file URL
+A -> U: Send CSV file URL
+U -> S: Request CSV file
+S -> U: Deliver CSV file
+
+@enduml

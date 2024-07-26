@@ -1,0 +1,23 @@
+@startuml
+actor Employee as emp
+participant ":UI" as ui
+participant ":Server" as server
+participant ":AuthService" as auth
+participant ":Database" as db
+
+emp -> ui : Selects member profile
+ui -> server : Request to fetch member details
+server -> db : Query member details
+db -> server : Return member details
+server -> ui : Display member details
+emp -> ui : Clicks on "Ban Member" button
+ui -> server : Request to ban member
+server -> auth : Validate employee credentials
+auth -> server : Credentials valid
+server -> db : Update member status to 'banned'
+db -> server : Confirmation of status update
+server -> ui : Display success message
+emp -> ui : Confirms acknowledgment
+ui -> emp : Member successfully banned
+
+@enduml

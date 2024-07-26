@@ -1,0 +1,21 @@
+@startuml
+actor Manager
+participant "Web Interface" as Web
+participant "Backend System" as Backend
+database "Database" as DB
+
+Manager -> Web: Request sales report
+activate Web
+Web -> Backend: Fetch sales data
+activate Backend
+Backend -> DB: Query sales information
+activate DB
+
+DB --> Backend: Return sales data
+deactivate DB
+Backend -> Backend: Process & compile report
+Backend --> Web: Send compiled report
+deactivate Backend
+Web --> Manager: Display sales report
+deactivate Web
+@enduml

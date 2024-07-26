@@ -1,0 +1,23 @@
+@startuml
+actor FacultyMember as "Cornell Faculty\nMember"
+participant WebInterface as "Web Interface"
+participant SearchModule as "Search Module"
+participant RepositoryDB as "Repository\nDatabase"
+participant RightsManagement as "Rights\nManagement System"
+
+== Check Reuse Rights for Discovered Files ==
+
+FacultyMember -> WebInterface: Request to search files
+WebInterface -> SearchModule: Initiate file search
+SearchModule -> RepositoryDB: Query files
+RepositoryDB -> SearchModule: Return search results
+SearchModule -> WebInterface: Display search results
+FacultyMember -> WebInterface: Select file of interest
+
+WebInterface -> RightsManagement: Request reuse rights info for selected file
+RightsManagement -> RepositoryDB: Fetch rights information
+RepositoryDB -> RightsGraph: Return rights data
+RightsManagement -> WebInterface: Process and format rights info
+WebInterface -> FacultyMember: Display file reuse rights
+
+@enduml

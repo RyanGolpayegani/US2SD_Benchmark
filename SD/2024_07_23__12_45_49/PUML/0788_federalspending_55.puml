@@ -1,0 +1,21 @@
+@startuml
+actor BrokerTeamMember as Broker
+participant "UI Interface" as UI
+database "Broker Database" as DB
+participant "Validation Service" as Validator
+participant "AgencyCodeService" as CodeService
+
+Broker -> UI : Submit data file
+UI -> Validator : Validate data file
+Validator -> CodeService : Request to derive FundingAgencyEcode
+alt valid data
+    CodeService -> Validator : FundingAgencyCode derived
+    Validator -> DB : Update database with new code
+    DB -> UI : Confirmation of update
+    UI -> Broker : Display success message
+else invalid data
+    CodeService -> Validator : Error in deriving code
+    Validator -> UI : Display error message
+    UI -> Broker : Display failure message
+end
+@enduml

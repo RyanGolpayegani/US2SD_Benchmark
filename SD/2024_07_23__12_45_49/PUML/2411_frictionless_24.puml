@@ -1,0 +1,32 @@
+@startuml
+participant Developer
+participant "DPIE System" as DPIE
+participant "EPrints Integration Module" as EPrints
+
+Developer -> DPIE: Request integration with EPrints
+activate DPIE
+DPIE -> EPrints: Initiate EPrints integration setup
+activate EPrints
+EPrints -> EPrint God's Lake : Query available APIs
+EPrint God's Lake  -> EPrints: Return API details
+EPrints -> DPIE: EPrints integration details
+DPIE -> DPIE: Evaluate integration parameters
+DPIE -> Developer: Provide integration instructions
+note right of Developer: Developer follows\nintegration instructions
+Developer -> DPIE: Submit data package for EPrints integration
+DPIE -> EPrints: Parse and transform data package
+EPrints -> EPrints: Map data package to EPrints schema
+EPrints -> DPIE: Confirm data package integration
+DPIE -> Developer: Notify integration success
+alt Data validation error
+    EPrints -> DPIE: Report data validation error
+    DPIE -> Developer: Notify and provide error details
+    Developer -> Developer: Fix data package based on error details
+    Developer -> DPIE: Resubmit data package
+    DPIE -> EPrints: Parse and transform data package
+    EPrints -> DPIE: Confirm data package integration after corrections
+    DPIE -> Developer: Notify integration success after corrections
+end
+deactivate EPrints
+deactivate DPIE
+@enduml

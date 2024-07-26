@@ -1,0 +1,20 @@
+@startuml
+actor Member
+participant "UI: Library Web App" as UI
+participant "Backend Server" as Backend
+participant "Database" as DB
+
+Member -> UI : Enter search query\n(Title, Author, or Category)
+activate UI
+UI -> Backend : Request book information\nincluding shelf number
+activate Backend
+Backend -> DB : Query book details by search parameters
+activate DB
+DB -> Backend : Return book details\n(including shelf number)
+deactivate DB
+Backend -> UI : Display book details\nincluding shelf location
+deactivate Backend
+UI -> Member : Show search results with\nshelf numbers
+deactivate UI
+
+@enduml

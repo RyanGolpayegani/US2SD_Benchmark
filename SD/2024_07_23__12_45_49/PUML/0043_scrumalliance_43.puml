@@ -1,0 +1,22 @@
+@startuml
+actor Recruiter
+participant "Recruitment Portal" as Portal
+database "Database" as DB
+
+Recruiter -> Portal: Access Job Listing Section
+Portal -> DB: Retrieve Job Posting Form
+DB --> Portal: Job Posting Form
+Portal --> Recruiter: Display Job Posting Form
+
+Recruiter -> Portal: Submit Job Ad Details
+Portal -> DB: Validate Submission
+alt Submission is Valid
+    DB -> DB: Create Job Ad Record
+    DB --> Portal: Confirmation
+    Portal --> Recruiter: Show Success Message
+else Submission is Invalid
+    DB --> Portal: Error Message
+    Portal --> Recruiter: Show Error Message
+end
+
+@enduml

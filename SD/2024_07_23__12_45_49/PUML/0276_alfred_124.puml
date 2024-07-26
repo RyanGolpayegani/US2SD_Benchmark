@@ -1,0 +1,39 @@
+@startuml
+!theme cerulean
+
+participant Developer
+participant ALFRED_API_Documentation as Documentation
+participant ALFRED_API_Server as API_Server
+participant App_Backend
+
+== Discovery Phase ==
+Developer -> Documentation: Access documentation
+note right of Developer: Developer looks for\nspecific API endpoints
+
+== Development Phase ==
+Developer -> Developer: Write app code
+Developer -> App_Backend: Implement API calls
+note right of App_Backend: Uses ALFRED API\nto fetch/send data
+
+== Testing Phase ==
+App_Backend -> API_Server: Request API access
+activate API_Server
+API_Server-> API_Server: Validate request
+API_Server -> App_Backend: Respond with data
+deactivate API_Server
+App_Backend -> Developer: Show test results
+
+== Deployment Phase ==
+Developer -> Developer: Finalize app deployment
+Developer -> Documentation: Review deployment guidelines
+Developer -> App_Backend: Deploy the new app
+App_Backend -> API_Server: Register new app
+API_Server -> App_Backend: Confirm registration
+
+== Usage Phase ==
+ALFRED_User -> App_Backend: Interacts with new feature
+App_Backend -> API_Server: Request/Update user data
+API_Server -> App_Backend: Respond with requested data
+App_Backend -> ALFRED_User: Display data/update
+
+@enduml

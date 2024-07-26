@@ -1,0 +1,17 @@
+@startuml
+actor Administrator
+participant "Admin Interface" as UI
+participant "Backend Server" as Backend
+database "Event Schedule DB" as DB
+
+Administrator -> UI: Select session to accept
+UI -> Backend: Request to mark session as accepted
+activate Backend
+Backend -> DB: Update session status to 'accepted'
+activate DB
+DB --> Backend: Confirm update
+deactivate DB
+Backend --> UI: Update success
+deactivate Backend
+UI --> Administrator: Show confirmation message
+@enduml

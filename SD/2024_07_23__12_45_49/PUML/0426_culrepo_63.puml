@@ -1,0 +1,34 @@
+@startuml
+actor Admin as "DB/IR Administrator"
+participant "Authentication System" as Auth
+participant "Repository Dashboard" as Dashboard
+participant "Content Management" as CM
+participant "Database" as DB
+
+== Upload Revised Report/Dataset ==
+
+Admin -> Auth: Authenticate
+Auth --> Admin: Authentication Success
+
+Admin -> Dashboard: Access Content Management
+Dashboard --> Admin: Display Options
+
+Admin -> CM: Select Upload Revised Content
+CM --> Admin: Request File and Metadata
+
+Admin -> CM: Provide File and Metadata\n(Error Correction Note)
+CM -> DB: Check Existing Report/Dataset ID
+
+alt If Report/Dataset Exists
+    DB --> CM: Verify Ownership and Permissions
+    CM --> Admin: Request Confirmation
+    Admin -> CM: Confirm Upload
+    CM -> DB: Update Report/Dataset with New Version
+    DB --> CM: Update Success
+    CM --> Admin: Display Success Message
+else Report/Dataset Not Found
+    DB --> CM: Error Message (Content Not Found)
+    CM --> Admin: Display Error Message
+end
+
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+actor Cook
+participant "UI Layer" as UI
+participant "API Gateway" as API
+participant "Order Management Service" as OrderService
+participant "Database" as DB
+
+Cook -> UI : Requests order queue
+UI -> API : GET /orders/queue
+API -> OrderService : Retrieve order queue
+OrderService -> DB : Query pending orders
+DB -> OrderService : Return orders
+OrderService -> API : Return order queue data
+API -> UI : Display order queue
+UI -> Cook : Order queue shown
+@enduml

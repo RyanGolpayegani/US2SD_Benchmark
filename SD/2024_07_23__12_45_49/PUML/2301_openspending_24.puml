@@ -1,0 +1,50 @@
+@startuml
+participant Developer as dev
+participant "Frontend Application" as frontend
+participant "Branding API" as api
+participant "Configuration Service" as config
+participant "Storage" as storage
+
+dev -> frontend: Access Branding Customization Page
+activate frontend
+
+frontend -> api: Request Current Branding Settings
+activate api
+
+api -> config: Retrieve Branding Settings
+activate config
+
+config -> storage: Get Stored Branding Information
+activate storage
+storage --> config: Branding Information
+deactivate storage
+
+config --> api: Branding Settings
+deactivate config
+
+api --> frontend: Current Branding Settings Displayed
+deactivate api
+
+dev -> frontend: Input New Brand Name, Icon, \nand Primary Color
+activate frontend
+
+frontend -> api: Submit Branding Update
+activate api
+
+api -> config: Update Branding Settings
+activate config
+
+config -> storage: Store New Branding Information
+activate storage
+storage --> config: Confirmation
+deactivate storage
+
+config --> api: Update Confirmation
+deactivate config
+
+api --> frontend: Display Update Success
+deactivate api
+
+frontend --> dev: Confirmation of Branding Customization
+deactivate frontend
+@enduml

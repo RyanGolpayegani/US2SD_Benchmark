@@ -1,0 +1,22 @@
+@startuml
+actor Librarian as librarian
+participant "Authentication Service" as AuthService
+participant "Library Management\nSystem (LMS)" as LMS
+participant "Database" as DB
+
+librarian -> AuthService : Validate login credentials
+AuthService -> librarian : Authentication successful
+
+librarian -> LMS : Request to edit book details
+alt Book ID Valid
+    LMS -> DB : Query book details by Book ID
+    DB -> LMS : Return book details
+    LMS -> librarian : Show book details form
+    librarian -> LMS : Submit updated book details
+    LMS -> DB : Update book details in database
+    DB -> LMS : Confirmation of update
+    LMS -> librarian : Show success message
+else Book ID Invalid
+    LMS -> librarian : Show error message (Book not found)
+end
+@enduml

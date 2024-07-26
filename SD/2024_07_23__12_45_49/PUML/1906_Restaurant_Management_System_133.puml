@@ -1,0 +1,38 @@
+@startuml
+participant Manager as M
+participant "Management Interface" as MI
+participant "Server" as S
+participant "Employee Database" as DB
+
+M -> MI : Selects Employee timesheet
+activate MI
+
+MI -> S : Request Employee Clock In/Out Info
+activate S
+
+S -> DB : Query Employee Info
+activate DB
+DB --> S : Employee Info Retrieved
+deactivate DB
+
+S --> MI : Display Employee Info
+deactivate S
+
+MI --> M : Show Employee Clock In/Out Info
+M -> MI : Edits Clock In/Out Info
+activate MI
+
+MI -> S : Update Employee Clock In/Out Info
+activate S
+
+S -> DB : Update Employee Info
+activate DB
+DB --> S : Update Confirmation
+deactivate DB
+
+S --> MI : Confirmation Message
+deactivate S
+
+MI --> M : Display Update Success Message
+deactivate MI
+@enduml

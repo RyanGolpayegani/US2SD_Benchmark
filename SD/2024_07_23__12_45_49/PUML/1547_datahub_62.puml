@@ -1,0 +1,38 @@
+@startuml
+actor Admin as admin
+participant "UI Dashboard" as UI
+participant "ConfigurationService" as ConfigService
+database "ConfigDatabase" as DB
+
+admin -> UI : Access Configuration Menu
+activate UI
+
+UI -> ConfigService : Fetch Current Configuration
+activate ConfigService
+
+ConfigService -> DB : Query Current Settings
+activate DB
+DB --> ConfigService : Return Settings
+deactivate DB
+
+ConfigService --> UI : Display Current Settings
+deactivate ConfigService
+
+admin -> UI : Update Site Title
+activate UI
+
+UI -> ConfigService : Update Configuration(Request)
+activate ConfigService
+
+ConfigService -> DB : Update Site Title
+activate DB
+DB --> ConfigService : Confirmation
+deactivate DB
+
+ConfigService --> UI : Update Success
+deactivate ConfigService
+
+UI --> admin : Display Success Message
+deactivate UI
+
+@enduml

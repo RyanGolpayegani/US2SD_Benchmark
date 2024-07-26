@@ -1,0 +1,33 @@
+@startuml
+participant "USDA Agency" as USDA
+participant "DB/IR Administrator" as Admin
+participant "Digital Repository System" as System
+participant "Database" as DB
+
+USDA -> Admin: Request to Unpublish Dataset/Report
+activate Admin
+Admin -> System: Authenticate Admin
+activate System
+
+alt Authentication Failed
+    System -> Admin: Authentication Failure Message
+    deactivate Admin
+    deactivate System
+else Authentication Successful
+    System -> Admin: Access Granted
+    Admin -> System: Navigate to Dataset/Report Management
+    Admin -> System: Select Dataset/Report for Unpublishing
+    System -> DB: Retrieve Dataset/Report Metadata
+    activate DB
+    DB -> System: Dataset/Report Metadata
+    System -> Admin: Display Dataset/Report Details
+    Admin -> System: Confirm Unpublish Action
+    System -> DB: Unpublish Dataset/Report
+    DB -> System: Confirmation of Unpublishing
+    System -> Admin: Display Successful Unpublishing Message
+    deactivate DB
+    deactivate System
+    Admin -> USDA: Confirm Dataset/Report Unpublishing
+    deactivate Admin
+end
+@enduml

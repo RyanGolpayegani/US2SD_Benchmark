@@ -1,0 +1,34 @@
+@startuml
+actor StaffMember as Staff
+participant "Web Interface" as Web
+participant "API Controller" as Api
+participant "Checkout Service" as CheckoutService
+database "Database" as DB
+
+Staff -> Web : Request to view checkout page
+activate Web
+
+Web -> Api : Fetch recent checkouts
+activate Api
+
+Api -> CheckoutService : Get recent checkouts
+activate CheckoutService
+
+CheckoutService -> DB : Query recent book checkouts
+activate DB
+
+DB --> CheckoutOptions: CheckoutRecords
+
+DB --> CheckoutService : Return checkout records
+deactivate DB
+
+CheckoutService -> Api : Checkout records data
+deactivate CheckoutTd
+
+CheckoutService --> Web : Show checkout records
+deactivate CheckoutService
+
+Web --> Staff : Checkout InformationDisplayed
+deactivate Web
+
+@enduml

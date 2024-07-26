@@ -1,0 +1,50 @@
+@startuml
+
+participant OlderPerson as User
+participant "ALFRED Interface" as UI
+participant "Exercise Suggestion Module" as ESM
+participant Database as DB
+
+activate User
+User -> UI : Say "Request exercise for today"
+activate UI
+
+UI -> ESM : FetchExerciseSuggestion(UserPreferences)
+activate ESM
+
+ESM -> DB : GetLastExerciseDate(UserID)
+activate DB
+DB --> ESM : LastExerciseInfo
+deactivate DB
+
+ESM -> DB : RetrieveNewExercise(UserPreferences, LastExerciseInfo)
+activate DB
+DB --> ESM : ExerciseDetails
+deactivate DB
+
+ESM -> ESM : CustomizeExercise(ExerciseDetails, UserHealthData)
+ESM --> UI : DailyExerciseSuggestion
+deactivate ESM
+
+UI --> User : Display/Readout DailyExerciseSuggestion
+deactivate UI
+
+User -> UI : Request to ScheduleExercise
+activate UI
+UI -> ESM : ScheduleExerciseForUser(UserID, ExerciseDetails)
+activate ESM
+
+ESM -> DB : SaveScheduledExercise(UserID, ExerciseDetails)
+activate DB
+DB --> ESM : ConfirmationStatus
+deactivate DB
+
+ESM --> UI : ExerciseScheduledAcknowledgment
+deactivate ESM
+
+UI --> User : ConfirmExerciseScheduled
+deactivate UI
+
+deactivate User
+
+@enduml

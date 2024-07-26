@@ -1,0 +1,25 @@
+@startuml
+actor DataManager as "Data Manager"
+participant DMPTool as "DMPTool"
+participant MetadataTool as "Metadata Tool"
+participant Repository as "Repository"
+
+DataManager -> DMPTool : Request data re-use information
+activate DMPTool
+
+DMPTool -> MetadataTool : Fetch metadata details
+activate MetadataTool
+MetadataTool --> DMPTool : Metadata details
+deactivate MetadataTool
+
+DMPTool -> Repository : Query for data availability
+activate Repository
+Repository --> DMPTool : Data availability status
+deactivate Repository
+
+DMPTool -> DMPTool : Check for completeness of re-use information
+activate DMPTool
+DMPTool --> DataManager : Status of necessary information for data re-use
+deactivate DMPTool
+
+@enduml

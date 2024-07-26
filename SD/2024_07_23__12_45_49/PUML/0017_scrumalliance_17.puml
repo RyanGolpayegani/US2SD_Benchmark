@@ -1,0 +1,21 @@
+@startuml
+actor SiteVisitor as visitor
+participant "Web Interface" as web
+participant "Backend Server" as server
+participant "Email System" as email
+participant "Editor" as editor
+
+visitor -> web: Accesses News Submission Page
+web -> visitor: Displays News Submission Form
+visitor -> web: Submits News Item (Email, Content)
+web -> server: Validates Submission
+alt validation successful
+    server --> web: Confirmation
+    web -> visitor: Displays Submission Success Message
+    server -> email: Composes Email (News Item)
+    email -> editor: Sends Email to Editor
+else validation fails
+    server --> web: Error Message
+    web -> visitor: Displays Error Message (e.g., Invalid Email)
+end
+@enduml

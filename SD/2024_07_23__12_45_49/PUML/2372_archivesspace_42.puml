@@ -1,0 +1,24 @@
+@startuml
+actor Archivist
+participant "Frontend Application" as Frontend
+participant "Authentication Service" as Auth
+participant "File Upload Service" as Upload
+participant "EAD Processing Service" as EADProcess
+participant "Database" as DB
+
+== Upload EAD Process ==
+Archivist -> Frontend : Selects "Import EAD"
+Frontend -> Archivist : Requests EAD file
+Archivist -> Frontend : Provides EAD file
+Frontend -> Auth : Validates Archivist's session
+Auth --> Frontend : Session Valid
+Frontend -> Upload : Sends EAD file
+Upload -> EADProcess : Initiates EAD Processing
+EADProcess -> EADProcess : Validates EAD format
+EADProcess -> DB : Saves processed data
+DB --> EADProcess : Confirm data saved
+EADProcess --> Upload : Confirm EAD processed
+Upload --> Frontend : Confirm EAD uploaded
+Frontend -> Archivist : Displays confirmation message
+
+@enduml

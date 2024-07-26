@@ -1,0 +1,24 @@
+@startuml
+participant Researcher as R
+participant "Search Interface" as SI
+participant "Server" as S
+database "Digital Archive Database" as DB
+participant "Thumbnail Generator" as TG
+participant "Licensing Interface" as LI
+
+R -> SI : Enter search criteria
+SI -> S : Request photos based on criteria
+S -> DB : Query for photos
+DB --> S : Return photo metadata
+S -> TG : Request thumbnails
+TG -> DB : Fetch photos
+DB --> TG : Return photos
+TG -> TG : Generate thumbnails
+TG --> S : Return thumbnails
+S --> SI : Display thumbnails
+R -> SI : Select a photo
+SI -> S : Request licensing for selected photo
+S -> LI : Initiate licensing process
+LI --> R : Display licensing form
+
+@enduml

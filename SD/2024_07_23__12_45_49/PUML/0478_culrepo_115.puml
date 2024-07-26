@@ -1,0 +1,30 @@
+@startuml
+participant "Data Curator" as curator
+participant "Web Interface" as web
+participant "Authentication Service" as auth
+database "Repository System" as repo
+participant "Versioning Controller" as versioning
+participant "Metadata Management" as metadata
+participant "Preservation System" as preservation
+
+curator -> web : Request to upload new version
+web -> auth : Validate curator credentials
+auth -> web : Credentials valid
+
+alt If new item
+    web -> repo : Check item exists
+    repo -> web : Item does not exist
+    web -> curator : Show error message
+else If updating existing item
+    web -> repo : Check item exists
+    repo -> web : Item exists
+    web -> versioning : Create new version
+    versioning -> metadata : Update metadata with new version info
+    metadata -> preservation : Preserve old version
+    preservation -> versioning : Confirmation of old version preserved
+    versioning -> repo : Save new version
+    repo -> web : New version uploaded successfully
+    web -> curator : Show success message
+end
+
+@enduml

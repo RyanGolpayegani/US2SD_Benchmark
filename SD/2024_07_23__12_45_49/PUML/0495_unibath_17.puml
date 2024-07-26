@@ -1,0 +1,30 @@
+@startuml
+participant Depositor
+participant WebInterface as "Simplified Data\nDeposit Interface"
+participant DataManager as "Data Management\nSystem"
+participant IntegrityChecker as "Data Integrity\nChecker"
+participant StorageSystem as "Secure Storage\nSystem"
+participant DOIService as "DOI Minting\nService"
+participant FundingBodyAPI as "Funding Body\nAPI"
+
+== Deposit Process ==
+Depositor -> WebInterface : Submit dataset
+note right: Depositor attaches metadata\nand specifies licenses
+WebInterface -> DataManager : Initiate deposit
+DataManager -> IntegrityChecker : Validate data integrity
+IntegrityChecker -> DataManager : Confirm integrity
+DataManager -> StorageSystem : Store dataset securely
+StorageSystem -> DataManager : Confirm storage with integrity
+
+== DOI Minting ==
+DataManager -> DOIService : Request DOI for dataset
+DOIService -> DataManager : Return DOI
+DataManager -> WebInterface : Display DOI to Depositor
+
+== Funding Body Notification ==
+DataManager -> FundingBodyAPI : Send dataset and DOI info
+FundingBodyAPI -> DataManager : Acknowledge reception
+
+Depositor <-- WebInterface : Deposit confirmation and DOI
+
+@enduml

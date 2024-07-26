@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+
+participant Admin
+entity "Video Segmentation\nService" as VideoSegmentation
+database "Video Database" as VideoDB
+entity "Video Processing\nModule" as VideoProcessing
+entity "User Interface" as UI
+
+== Video Segment Viewing ==
+Admin -> VideoSegmentation: Request segmented video
+VideoSegmentation -> VideoDB: Fetch video segments
+VideoDB --> VideoSegmentation: Return video segments
+VideoSegmentation --> Admin: Show video segments
+
+== Validation and Editing ==
+Admin -> UI: Validate segments
+note right of Admin: Verify segment quality\nand content accuracy
+Admin -> UI: Edit segments
+note right of Admin: Adjust start/end,\nmerge, split segments
+UI -> VideoProcessing: Process edited segments
+VideoProcessing -> VideoDB: Update video segments
+VideoDB --> Admin: Confirm segment update
+
+@enduml

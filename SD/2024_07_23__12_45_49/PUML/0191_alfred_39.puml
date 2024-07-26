@@ -1,0 +1,26 @@
+@startuml
+actor OlderPerson
+participant "ALFRED System" as ALFRED
+participant "Navigation Service" as NavService
+
+== Activation and Request ==
+OlderPerson -> ALFRED: Activate navigation assistance
+ALFRED -> OlderPerson: "Please state your destination."
+OlderPerson -> ALFRED: Provides the destination
+ALFRED -> NavService: Request route calculation
+NavService -> ALFRED: Sends route information
+
+== Navigation Instruction ==
+loop until Destination Reached
+    ALFRED -> OlderPerson: Provides navigation instructions
+    alt If route adjustment needed
+        OlderPerson -> ALFRED: "Recalculate route"
+        ALFRED -> NavService: Request route recalculation
+        NavService -> ALFRED: Sends updated route
+    end
+end
+
+== Arrival Confirmation ==
+ALFRED -> OlderPerson: "You have arrived at your destination. Do you need further assistance?"
+
+@enduml

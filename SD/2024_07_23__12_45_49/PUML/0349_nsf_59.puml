@@ -1,0 +1,20 @@
+@startuml
+participant Author
+participant CMS_UI as "CMS Interface"
+participant CMS_Backend as "CMS Backend"
+participant Database as "Database"
+
+Author -> CMS_UI : Selects text to indent/outdent
+CMS_UI -> CMS_Backend : Request to indent/outdent content
+alt if indent
+    CMS_Backend -> Database : Increase indent level
+else if outdent
+    CMS_Backend -> Database : Decrease indent level
+else
+    CMS_Backend -> Database : No change
+end
+Database --> CMS_Backend : Confirm change
+CMS_Backend --> CMS_UI : Update display
+CMS_UI --> Author : Display updated content
+
+@enduml

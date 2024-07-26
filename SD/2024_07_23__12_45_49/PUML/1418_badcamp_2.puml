@@ -1,0 +1,21 @@
+@startuml
+participant "Anonymous User" as AU
+participant "BADCamp Website" as BW
+participant "User Profile Service" as UPS
+participant "Profile Database" as PD
+
+== Viewing List of User Profiles ==
+AU -> BW: Visit attendee profiles page
+BW -> UPS: Request list of visible profiles
+activate UPS
+UPS -> PD: Query visible profiles
+activate PD
+PD --> UPS: Return profile list
+deactivate PD
+UPS --> BW: Return profile data
+deactivate UPS
+BW --> AU: Display profiles
+
+note over AU, PD: Only publicly consented profiles are displayed to ensure privacy compliance.
+
+@enduml

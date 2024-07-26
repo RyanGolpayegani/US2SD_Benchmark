@@ -1,0 +1,22 @@
+@startuml
+participant RepositoryManager as RM "Repository Manager"
+participant EDRMS
+participant PrimaryRemoteStorage as PRS "Primary Remote Storage"
+participant SecondaryRemoteStorage as SRS "Secondary Remote Storage"
+
+RM -> EDRMS : Request replication options
+
+alt Primary Replication
+  EDRMS -> PRS : Initiate Replication Process
+  PRS -> EDRMS : Acknowledge Replication
+  EDRMS -> RM : Confirm primary replication
+else Secondary Replication
+  RM -> EDRMS : Opt for secondary replication
+  EDRMS -> SRS : Initiate Replication Process
+  SRS -> EDRMS : Acknowledge Replication
+  EDRMS -> RM : Confirm secondary replication
+else No Replication
+  EDRMS -> RM : Confirm no replication action
+end
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+participant "Agency User" as user
+participant "Broker Platform" as platform
+participant "Database" as db
+participant "Notification Service" as notify
+participant "Calendar Service" as calendar
+
+== User Query for Submission Period ==
+user -> platform : requests submission period info
+activate platform
+
+platform -> db : query submission period start/end
+activate db
+db --> platform : return period data
+deactivate db
+
+platform -> calendar : request formatted dates
+activate calendar
+calendar --> platform : return formatted start/end dates
+deactivate calendar
+
+== Notification ==
+platform -> notify : prepare notification
+activate notify
+notify -> user : send start/end dates info
+deactivate notify
+
+deactivate platform
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+actor User
+participant "Broker UI" as UI
+participant "Validation Service" as Validator
+participant "SAM API" as SAM
+participant "Database" as DB
+
+User -> UI: Submit DUNS validation request
+UI -> Validator: Initiate DUNS validation(record)
+activate Validator
+
+Validator -> SAM: Request registration dates(DUNS)
+activate SAM
+SAM --> Validator: Registration dates(initial, current)
+deactivate SAM
+
+Validator -> DB: Query ActionDate(DUNS)
+activate DB
+DB --> Validator: Return ActionDate
+deactivate DB
+
+Validator -> Validator: Compare dates(ActionDate, initial, current)
+activate Validator
+
+alt if ActionDate is valid
+    Validator --> UI: DUNS validation successful
+else 
+    Validator --> UI: DUNS validation failed
+end
+deactivate Validator
+
+UI --> User: Show validation result
+@enduml

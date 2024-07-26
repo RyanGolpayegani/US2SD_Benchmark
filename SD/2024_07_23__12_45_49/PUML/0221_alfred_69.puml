@@ -1,0 +1,50 @@
+@startuml
+
+participant SocialCaregiver
+participant "ALFRED System" as ALFRED
+participant "Reminder Service" as Reminder
+participant "User Profile" as UserProfile
+participant "Notification System" as Notification
+
+== Setup Reminder ==
+SocialCaregiver -> ALFRED: Access Reminder Setup
+activate ALFRED
+
+ALFRED -> Reminder: Initiate Reminder Setup
+activate Reminder
+Reminder -> UserProfile: Fetch Caregiver Preferences
+activate UserProfile
+UserProfile --> Reminder: Preferences Data
+deactivate UserProfile
+
+Reminder --> ALFRED: Reminder Setup Interface
+deactivate Reminder
+ALFRED --> SocialCaregiver: Display Setup Interface
+deactivate ALFRED
+SocialCaregiver -> ALFRED: Set Reminder ("Bring Medication")
+activate ALFRED
+ALFRED -> Reminder: Save Reminder Details
+activate Reminder
+Reminder -> UserProfile: Update User Reminders
+activate UserProfile
+UserProfile --> Reminder: Confirmation
+deactivate UserProfile
+Reminder --> ALFRED: Reminder Saved Successfully
+deactivate Reminder
+ALFRED --> SocialCaregiver: Confirm Reminder Set
+deactivate ALFRED
+
+== Reminder Notification ==
+ALFRED -> Reminder: Trigger Daily Check
+activate Reminder
+Reminder -> UserProfile: Fetch Today's Reminders
+activate UserProfile
+UserProfile --> Reminder: Today's Reminders Data
+deactivate UserProfile
+Reminder -> Notification: Prepare Reminder Notification
+activate Notification
+Notification -> SocialCaregiver: Send Reminder ("Remember to bring medication")
+deactivate Notification
+deactivate Reminder
+
+@enduml

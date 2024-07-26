@@ -1,0 +1,28 @@
+@startuml
+actor Developer
+entity "FABS Submission System" as FABS
+database "Broker Database" as BrokerDB
+entity "Notification Service" as Notification
+entity "Logging Service" as Logging
+
+Developer -> FABS : Request to update FABS submission
+alt Submission found and update requested
+    FABS -> BrokerDB : Query submission by ID
+    BrokerDB -> FABS : Return submission details
+    FABS -> FABS : Validate update request
+    alt Update valid
+        FABS -> BrokerDB : Update submission details\n(Change publishStatus)
+        BrokerDB -> FABS : Confirm update
+        FABS -> Developer : Notify update success
+        FABS -> Notification : Trigger status change notification
+        Notification -> Developer : Send status change notification
+        FABS -> Logging : Log change and notification
+    else Update invalid
+        FABS -> Developer : Notify update failure
+        FABS -> Logging : Log attempted update and failure
+    end
+else Submission not found
+    FABS -> Developer : Error message (Submission not found)
+    FABS -> Logging : Log error
+end    
+@enduml

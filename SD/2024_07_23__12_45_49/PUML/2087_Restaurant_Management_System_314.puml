@@ -1,0 +1,22 @@
+@startuml
+actor Waiter
+participant "UI (Waiter Interface)" as UI
+participant "Backend Server" as Server
+database "Database" as DB
+
+Waiter -> UI: Selects order to update
+UI -> Server: Request to fetch order details
+Server -> DB: Retrieve order details
+DB --> Server: Order details
+Server --> UI: Display order details
+Waiter -> UI: Inputs new quantities for items
+UI -> Server: Submit update for item quantities in order
+activate Server
+    Server -> DB: Update quantities for order items
+    activate DB
+    DB --> Server: Confirm update success
+    deactivate DB
+Server --> UI: Update confirmation to Waiter
+deactivate Server
+UI --> Waiter: Show update success message
+@enduml

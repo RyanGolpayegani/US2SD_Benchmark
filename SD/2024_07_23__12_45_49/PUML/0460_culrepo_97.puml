@@ -1,0 +1,21 @@
+@startuml
+participant UserInterface as UI
+participant AuthenticationServer as Auth
+participant ApplicationServer as AppSrv
+participant Database as DB
+
+UI -> Auth: Authenticate Request
+Auth --> UI: Authentication Success
+
+UI -> AppSrv: Rename Collection Request(collectionID, newName)
+alt Collection Found and Permission Granted
+    AppSrv -> DB: Check Collection by collectionID
+    DB --> AppSrv: Collection Data
+    AppSrv -> DB: Update Collection Name(newName)
+    DB --> AppSrv: Update Success
+    AppSrv --> UI: Rename Successful
+else Collection Not Found or Permission Denied
+    AppSrv --> UI: Error Message
+end
+
+@enduml

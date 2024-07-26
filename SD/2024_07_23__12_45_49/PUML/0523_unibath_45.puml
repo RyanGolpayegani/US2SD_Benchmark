@@ -1,0 +1,30 @@
+@startuml
+!theme cerulean
+
+participant UserInterface as UI
+participant AuthenticationSystem as Auth
+participant DataManager as DM
+participant ProjectDatabase as PD
+participant ExternalFunderAPI as EFA
+participant ReportGenerator as RG
+
+== Accessing the Research Data Management Platform ==
+UI -> Auth: Authenticate (Research Information Manager)
+Auth -> UI: Authentication Success
+
+== Linking Datasets to Project Metadata ==
+UI -> DM: Request project-dataset linkage
+DM -> PD: Fetch Project Metadata linked to Datasets
+PD -> DM: Return Metadata
+DM -> UI: Show linked Datasets and Metadata
+
+== Generating Report based on Funder Requirements ==
+UI -> RG: Request Report (by Funder Requirements)
+RG -> EFA: Fetch Funder Requirements
+EFA -> RG: Return Requirements
+RG -> PD: Fetch Projects & Datasets matching Requirements
+PD -> RG: Return matching Projects & Datasets
+RG -> UI: Display Report
+UI -> Auth: Log out
+
+@enduml

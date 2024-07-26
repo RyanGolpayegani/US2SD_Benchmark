@@ -1,0 +1,48 @@
+@startuml
+actor Researcher as researcher
+participant "Web Interface" as webinterface
+participant "Backend System" as backend
+database "Neurohub Database" as nhdb
+
+researcher -> webinterface : Access Neurohub
+alt First Time Data Collection
+    webinterface -> backend : Initiate Data Upload Session
+    backend -> nhdb : Create New Data Entry
+    nhdb --> backend : Data Entry ID
+    backend --> webinterface : Show Upload Interface
+    researcher -> webinterface : Upload Data Files
+    webinterface -> backend : Validate Data
+    alt Data is Valid
+        backend -> nhdb : Store Data
+        nhdb --> backend : Confirmation
+        backend --> webinterface : Display Success Message
+        researcher -> webinterface : Assign Metadata
+        webinterface -> backend : Submit Metadata Information
+        backend -> nhdb : Update Data Entry with Metadata
+        nhdb --> backend : Update Confirmation
+        backend --> webinterface : Metadata Assignment Successful
+        researcher -> webinterface : Create Data Library
+        webinterface -> backend : Initiate Library Creation
+        backend -> nhdb : Create Data Library Entry
+        nhdb --> backend : Library Creation Successful
+        backend --> webinterface : Display Library Creation Success
+    else Data Validation Failed
+        backend --> webinterface : Display Error Message
+    end
+end
+alt Adding Data to Existing Library
+    researcher -> webinterface : Select Existing Library
+    webinterface -> backend : Retrieve Library Information
+    backend -> nhdb : Query Library Details
+    nhdb --> backend : Library Information
+    backend --> webinterface : Display Library Data
+    researcher -> webinterface : Add New Data to Library
+    webinterface -> backend : Initiate Data Upload to Library
+    repeat
+        backend -> nhdb : Store New Data in Library
+        nhdb --> backend : Data Stored Successfully
+    until All Data Uploaded
+    backend --> webinterface : Update Library Success
+end
+
+@enduml

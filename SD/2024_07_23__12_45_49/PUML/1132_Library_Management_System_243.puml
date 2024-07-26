@@ -1,0 +1,29 @@
+@startuml
+!theme cerulean
+
+participant Member as member
+participant "Database" as db
+participant "NotificationService" as notif
+participant "EmailService" as email
+
+== Notifying a Member to Return a Book On Time ==
+
+member -> db: Request book loan details
+activate db
+db --> member: Book loan details
+deactivate db
+
+member -> notif: Checks if near due date
+activate notif
+notif -> db: Retrieve member contact info
+activate db
+db --> notif: Member contact details
+deactivate db
+
+notif -> email: Send return reminder
+activate email
+email --> member: Email notification to return book
+deactivate email
+deactivate notif
+
+@enduml

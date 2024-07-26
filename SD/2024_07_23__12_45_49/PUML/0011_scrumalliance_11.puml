@@ -1,0 +1,30 @@
+@startuml
+actor Member as member
+participant "MemberProfileUI" as ui
+participant "ProfileController" as controller
+participant "ProfileService" as service
+participant "ProfileRepository" as repo
+
+member -> ui : Chooses to edit profile
+ui -> controller : Request edit profile form
+controller -> service : Get profile details(memberId)
+service-> repo : Fetch profile(memberId)
+repo -> service : Return profile details
+service -> controller : Return profile details
+controller -> ui : Display profile edit form
+
+ui -> controller : Submit(emailPrivacy:private)
+controller -> service : Update email privacy settings(memberId, emailPrivacy)
+service -> repo : Save updated profile
+repo -> service : Confirm save
+service -> controller : Confirm update
+controller -> ui : Display success message
+
+member -> ui : Views profile
+ui -> controller : Request profile view
+controller -> service : Get profile details for view(memberId)
+service -> repo : Fetch profile view details(memberId)
+repo -> service : Return view details
+service -> controller : Return masked email(if applicable)
+controller -> ui : Display profile(with private email masked)
+@enduml

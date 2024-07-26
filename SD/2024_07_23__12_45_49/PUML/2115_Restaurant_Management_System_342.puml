@@ -1,0 +1,22 @@
+@startuml
+participant Employee as E
+participant Frontend as UI
+participant Backend as B
+participant Database as DB
+
+E -> UI : Select "Generate Report"
+activate UI
+UI -> B : Request report parameters
+activate B
+B --> UI : Display parameters form (type, period, etc.)
+UI -> E : Display form
+E -> UI : Submit selected parameters (e.g., sales, last month)
+UI -> B : Send report request with parameters
+activate B
+B -> DB : Query data based on parameters
+activate DB
+DB --> B : Return queried data
+B -> B : Process data (generate report)
+B --> UI : Send generated report
+UI -> E : Display report
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+actor Developer
+participant "ALFRED Developer Portal" as Portal
+participant "Pricing Service" as Pricing
+participant "API Gateway" as API
+database "Pricing Database" as DB
+
+Developer -> Portal: Access Developer Portal
+activate Portal
+Portal -> Pricing: Request fee structure
+activate Pricing
+Pricing -> API: Call fee API
+activate API
+API -> DB: Fetch pricing information
+activate DB
+DB --> API: Return pricing data
+deactivate DB
+API --> Pricing: Pricing data
+deactivate API
+Pricing --> Portal: Display fee structure
+Portal --> Developer: Show marketplace fees
+deactivate Portal
+@enduml

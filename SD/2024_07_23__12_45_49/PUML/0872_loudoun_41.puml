@@ -1,0 +1,46 @@
+@startuml
+actor Applicant
+participant "Application\nSystem" as AppSys
+database "Project Database" as DB
+actor "Plan Review\nStaff Member" as PRSM
+
+== Code Modification Submission ==
+Applicant -> AppSys : Submit Code Modification\nRequest with Documentation
+activate AppSys
+AppSys -> DB : Store Submission Details
+activate DB
+DB --> AppSys : Acknowledge Storage
+deactivate DB
+AppSys --> Applicant : Acknowledge\nSubmission Received
+deactivate AppSys
+
+== Code Review Process ==
+PRSM -> AppSys : Fetch Pending\nCode Modifications
+activate AppSys
+AppSys -> DB : Retrieve Submission\nDetails & Documents
+activate DB
+DB --> AppSys : Submission Details &\nDocuments
+deactivate DB
+AppSys --> PRSM : Display Details &\nDocuments
+deactivate AppSys
+PRSM -> PRSM : Review Submitted\nCode Modifications
+note right of PRSM: Review based on\napplicable standards\and project requirements
+
+== Decision Making ==
+alt If Code Modifications Approved
+    PRSM -> AppSys : Approve Modifications\n& Associate with Project
+    activate AppSys
+    AppSys -> DB : Update Project\nwith Modifications
+    activate DB
+    DB --> AppSys : Acknowledge Update
+    deactivate DB
+    AppSys --> PRSM : Confirm Association\n& Approval
+    deactivate AppSys
+    PRSM -> Applicant : Notify Approval\n& Next Steps
+else If Modifications Require Changes
+    PRSM -> Applicant : Request Further\nModifications with Feedback
+else If Code Modifications Rejected
+    PRSM -> Applicant : Notify Rejection\n& Reasons
+end
+
+@enduml

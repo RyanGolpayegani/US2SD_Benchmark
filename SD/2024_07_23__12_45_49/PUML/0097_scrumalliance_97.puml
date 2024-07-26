@@ -1,0 +1,47 @@
+@startuml
+actor SiteEditor as SE
+actor Trainer
+participant "Authentication\nSystem" as Auth
+participant "Editor\nDashboard" as ED
+participant "Trainers-Only\nSection" as TS
+participant Database
+
+SE -> Auth: Login()
+activate Auth
+Auth --> SE: Authentication Success
+deactivate Auth
+
+SE -> ED: Access Editor Tools()
+activate ED
+
+ED --> SE: Display Tools
+
+SE -> ED: Select Post to Trainers-Only Section
+ED -> TS: Access Post Creation Tool()
+activate TS
+
+SE -> TS: Create Post(Content)
+TS -> Database: Save Post(Content, Visibility: Trainers-Only)
+activate Database
+Database --> TS: Confirm Post Saved
+deactivate Database
+
+TS --> SE: Display Post Success Message
+deactivate TS
+
+Trainer -> Auth: Login()
+activate Auth
+Auth --> Trainer: Authentication Success
+deactivate Auth
+
+Trainer -> TS: Access Trainers-Only Section()
+activate TS
+TS -> Database: Fetch Posts(Visibility: Trainers-Only)
+activate Database
+Database --> TS: Return Posts
+deactivate Database
+
+TS --> Trainer: Display Posts
+deactivate TS
+
+@enduml

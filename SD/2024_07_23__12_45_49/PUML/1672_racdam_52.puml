@@ -1,0 +1,47 @@
+@startuml
+actor Archivist
+participant "Digital Archive\nManagement System" as System
+participant "Licensing\nManagement Module" as Licensing
+participant "Access Control\nModule" as AccessControl
+participant "Database" as DB
+
+== Make Archival Material Available ==
+
+Archivist -> System: Access system
+activate System
+
+System -> Licensing: Fetch licensing options
+activate Licensing
+Licensing -> DB: Retrieve licenses
+activate DB
+DB --> Licensing: Licenses data
+deactivate DB
+Licensing --> System: License options
+deactivate Licensing
+
+System --> Archivist: Show license options
+Archivist -> System: Select appropriate license
+activate System
+
+System -> Licensing: Apply selected license to material
+activate Licensing
+Licensing -> DB: Update material license
+activate DB
+DB --> Licensing: Confirmation
+deactivate DB
+Licensing --> System: License applied
+deactivate Licensing
+
+System -> AccessControl: Set access restrictions
+activate AccessControl
+AccessControl -> DB: Update access parameters
+activate DB
+DB --> AccessControl: Confirmation
+deactivate DB
+AccessControl --> System: Access restrictions set
+deactivate AccessControl
+
+System --> Archivist: Confirm material is available
+deactivate System
+
+@enduml

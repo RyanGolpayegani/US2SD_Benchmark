@@ -1,0 +1,31 @@
+@startuml
+participant Archivist as archivist
+participant Interface as ui
+participant "Image Management System" as ims
+participant Database as db
+participant "File Storage" as storage
+
+archivist -> ui : Selects image to rotate
+ui -> ims : Request image rotation\n(imageID, rotationDegree)
+activate ims
+ims -> db : Fetch image metadata\n(imageID)
+activate db
+db --> ims : Return metadata
+deactivate db
+ims -> storage : Retrieve image file\n(imageID)
+activate storage
+storage --> ims : Return image file
+deactivate storage
+ims -> ims : Rotate image\n(rotationDegree)
+ims -> storage : Save rotated image
+activate storage
+storage --> ims : Confirm save
+deactivate storage
+ims -> db : Update metadata\n(imageID, newOrientation)
+activate db
+db --> ims : Confirm metadata update
+deactivate db
+ims --> ui : Notify rotation success
+deactivate ims
+ui --> archivist : Display success message\nand updated image
+@enduml

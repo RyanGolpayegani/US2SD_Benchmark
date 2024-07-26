@@ -1,0 +1,35 @@
+@startuml
+actor Administrator
+participant "User Management System" as UMS
+database "User Roles Database" as DB
+
+== Create User Roles ==
+
+Administrator -> UMS : Access Role Management
+
+alt Role Creation Form Displayed
+    UMS --> Administrator : Display Role Creation Form
+else Error Loading Form
+    UMS --> Administrator : Display Error Message
+end
+
+Administrator -> UMS : Submit New Role Details
+activate UMS
+
+alt Valid Role Details
+    UMS -> DB : Create New Role in Database
+    activate DB
+    alt Role Successfully Created
+        DB --> UMS : Confirm Role Creation
+        UMS --> Administrator : Display Success Message
+    else Role Creation Failed
+        DB --> UMS : Error Message
+        UMS --> Administrator : Display Error Message
+    end
+    deactivate DB
+else Invalid Role Details
+    UMS --> Administrator : Display Validation Error
+end
+
+deactivate UMS
+@enduml

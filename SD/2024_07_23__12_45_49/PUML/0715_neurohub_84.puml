@@ -1,0 +1,33 @@
+@startuml
+actor Researcher as r
+participant "Web Interface" as web
+participant "Metadata Service" as meta
+participant "Data Storage" as storage
+participant "Confirmation Service" as confirm
+
+== Attach Metadata to a Data Entry ==
+r -> web: Select data for upload
+web -> storage: Upload data
+activate storage
+storage --> web: Data upload successful
+deactivate storage
+
+web -> r: Prompt for metadata input
+r -> web: Provide metadata details
+web -> meta: Send metadata
+activate meta
+meta --> web: Metadata processed
+deactivate meta
+
+web -> storage: Link metadata to data
+activate storage
+storage --> web: Metadata attached successfully
+deceive storage
+
+web -> confirm: Request confirmation message
+activate confirm
+confirm --> web: Generate confirmation
+deactivate confirm
+
+web -> r: Display confirmation message
+@enduml

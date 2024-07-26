@@ -1,0 +1,21 @@
+@startuml
+participant "API User" as User
+participant "OpenSpending API" as API
+participant "Authorization Service" as Auth
+participant "User Management" as UserManager
+participant "Database" as DB
+
+User -> API: Request user info\n(GET /user/{id})
+API -> Auth: Validate request
+Auth --> API: Validation response
+
+alt If request is valid
+    API -> UserManager: Get user data\n(user_id)
+    UserManager -> DB: Query user status\n(is_admin)
+    DB --> UserManager: User status response
+    UserManager --> API: User data + status
+    API --> User: Response\n(User data + isAdmin flag)
+else If request is invalid
+    API --> User: Error response\n(Invalid request or unauthorized)
+end
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+actor "Library Manager" as manager
+participant "Web Interface" as web
+participant "Controller" as controller
+participant "StatisticsService" as stats
+database "LibraryDB" as db
+participant "ReportingTool" as report
+
+manager -> web : Request popularity statistics
+web -> controller : GetBookPopularityStats()
+controller -> stats : CalculatePopularity()
+stats -> db : Query book borrow history
+db --> stats : Return history data
+stats -> stats : Process data into statistics
+stats --> controller : Return statistics
+controller -> report : GeneratePopularityReport(statistics)
+report -> report : Create report format
+report --> controller : Report ready
+controller --> web : Display report
+web --> manager : Show book popularity report
+
+@enduml

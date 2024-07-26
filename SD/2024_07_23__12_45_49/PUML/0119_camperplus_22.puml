@@ -1,0 +1,26 @@
+@startuml
+actor CampAdministrator
+entity "Notification System" as NotificationSystem
+database "Parent Database" as ParentDB
+entity "Email/SMS Service" as EmailService
+actor Parent
+
+CampAdministrator -> NotificationSystem : CreateEventNotification(content)
+activate NotificationSystem
+
+NotificationSystem -> ParentDB : FetchAllParentContacts()
+activate ParentDB
+ParentDB --> NotificationSystem : ParentContacts
+deactivate ParentDB
+
+loop for each ParentContact in ParentContacts
+    NotificationSystem -> EmailService : SendNotification(ParentContact, content)
+    activate EmailService
+    EmailService --> NotificationSystem : NotificationStatus(success/failure)
+    deactivate EmailService
+end
+
+NotificationSystem --> CampAdministrator : NotificationReport(status report)
+deactivate NotificationSystem
+
+@enduml

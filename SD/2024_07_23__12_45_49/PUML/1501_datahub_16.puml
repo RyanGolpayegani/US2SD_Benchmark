@@ -1,0 +1,20 @@
+@startuml
+participant Consumer
+participant "UI/API" as UI
+participant "Data Retrieval Service" as DataRetrieval
+participant Cache
+
+== Get Data Package ==
+
+Consumer -> UI : Request data package
+UI -> DataRetrieval : Check for data package
+DataRetrieval -> Cache : Look for cached data
+alt Data available in cache
+    Cache --> DataRetrieval : Return cached data
+    DataRetrieval --> UI : Serve data from cache
+    UI --> Consumer : Deliver data package
+else Data NOT in cache
+    DataRetrieval --> UI : Inform: Data not available
+    UI --> Consumer : Show error message
+end
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+participant FABS_User as FABS
+participant Authentication_Service as Auth
+participant Permissions_Service as Perms
+participant DABS_System as DABS
+
+FABS -> Auth: Login to the Broker Platform
+Auth -> FABS: Authentication Success
+
+FABS -> Perms: Request Access to DABS Pages
+Perms -> Perms: Verify FABS Permissions
+
+alt If FABS User has appropriate permissions
+    Perms -> DABS: Grant Read-Only Access to FABS User
+    DABS -> FABS: Display DABS Pages in Read-Only Mode
+else FABS User lacks permissions
+    Perms -> FABS: Display Error: "Read-Only Access Denied"
+end
+
+@enduml

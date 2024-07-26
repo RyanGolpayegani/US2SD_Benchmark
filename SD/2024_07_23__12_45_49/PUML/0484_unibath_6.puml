@@ -1,0 +1,27 @@
+@startuml
+actor Depositor
+boundary WebInterface
+control DataManager
+database DataSetDB
+entity EmbargoService
+entity MetadataService
+
+Depositor -> WebInterface : Accesses deposit interface
+WebInterface -> DataManager : Requests deposit form
+DataManager -> WebInterface : Returns deposit form
+WebInterface -> Depositor : Displays deposit form
+Depositor -> WebInterface : Submits dataset with embargo request
+WebInterface -> DataManager : Validates deposit information
+DataManager -> DataSetDB : Stores dataset temporarily
+DataManager -> EmbargoService : Requests embargo setup
+EmbargoService -> DataSetDB : Applies embargo rules to dataset
+EmbargoService --> DataManager : Confirms embargo setup
+DataManager -> MetadataService : Updates metadata with embargo details
+MetadataService -> DataSetDB : Updates dataset record
+MetadataService --> DataManager : Confirms metadata update
+DataManager -> DataSetDB : Finalizes dataset deposit
+DataSetDB --> DataManager : Deposit confirmation
+DataManager -> WebInterface : Notifies success
+WebInterface -> Depositor : Displays success message & DOI
+
+@enduml

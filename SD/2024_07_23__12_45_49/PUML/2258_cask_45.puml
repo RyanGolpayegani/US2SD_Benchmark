@@ -1,0 +1,38 @@
+@startuml
+participant User
+participant "Dataset Management \n System (DMS)" as DMS
+participant "Dataset Instance" as Dataset
+database "Dataset Configuration \n Storage" as ConfigDB
+
+== Configuring Time-to-Live for a Dataset Type ==
+
+User -> DMS : Request to configure TTL
+activate DMS
+
+DMS -> ConfigDB : Fetch existing configuration
+activate ConfigDB
+ConfigDB --> DMS : Existing configuration data
+deactivate ConfigDB
+
+DMS -> DMS : Generate unified TTL configuration options
+
+DMS --> User : Present TTL configuration options
+deactivate DMS
+
+User -> DMS : Submit chosen TTL settings
+activate DMS
+
+DMS -> ConfigDB : Update TTL settings
+activate ConfigDB
+ConfigDB --> DMS : Confirm update
+deactivate ConfigDB
+
+DMS -> Dataset : Apply TTL settings to dataset instances
+activate Dataset
+Dataset --> DMS : Confirm application
+deactivate Dataset
+
+DMS --> User : Confirm TTL configuration success
+deactivate DMS
+
+@enduml

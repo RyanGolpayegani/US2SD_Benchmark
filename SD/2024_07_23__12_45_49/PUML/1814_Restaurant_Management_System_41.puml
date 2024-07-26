@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+
+actor Cook
+actor Waiter
+entity "Menu Management System" as Menu
+database "Database" as DB
+
+Cook -> Menu : Submits new menu item details
+activate Menu
+
+Menu -> DB : Save new menu item
+activate DB
+DB --> Menu : Confirm save
+deactivate DB
+
+Menu --> Cook : Confirm menu item creation
+deactivate Menu
+
+alt Menu item creation successful
+   Menu -> Waiter : Update available menu items
+   Waiter -> Waiter : View updated menu
+else Menu item creation failed
+   Menu -> Cook : Show error message
+end
+
+Waiter -> Customer : Inform about new menu items
+
+@enduml

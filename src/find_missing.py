@@ -24,7 +24,7 @@ else:
    print("No missing files found.")
 
 
-with open(f"{main_folder}/missing.txt", 'w') as file:
+with open(f"{main_folder}/missing_SDi.txt", 'w') as file:
    my_string = "\n".join(missing_files)
    file.write(my_string)
    

@@ -1,0 +1,50 @@
+@startuml
+participant DataManager as DM
+participant DMPTool as DMT
+participant MetadataTool as MT
+participant RepositoryAPI as RA
+
+note over DM: Intends to find the right repository\nfor a dataset based on its content.
+
+DM -> DMT: Request dataset content details
+alt Dataset Content not in DMT
+  DMT -> MT: Fetch metadata for dataset
+  MT --> DMT: Return metadata details
+end
+
+DMT -> DMT: Analyze data content and metadata
+DMT --> DM: Show content and metadata summary
+
+note over DM: Reviews content summary\nto understand dataset better.
+
+DM -> DMT: Request suitable repository options based on content
+
+alt Suitable Repositories not in Cache
+  DMT -> RA: Query repository criteria and policies
+  RA --> DMT: Return criteria and policies
+end
+
+DMT -> DMT: Match content to repository criteria and policies
+DMT --> DM: Present matching repository options
+
+DM -> DM: Select the best fitting repository
+
+note over DM: Makes decision based on\npresented content analysis and\nrepository options.
+
+DM -> DMT: Record decision and update data management plan
+DMT -> DMT: Update metadata with chosen repository
+
+note over DM: Updates could include tagging\nthe dataset with repository-specific metadata\nand marking it for transfer or sync.
+
+DMT --> MT: Sync updated metadata back to MetadataTool
+
+note over DMT: Ensures consistent metadata across\nplatforms and aids in data traceability.
+
+DM -> DMT: Request data transfer to chosen repository
+DMT -> RA: Initiate data transfer process
+RA --> DMT: Confirm transfer success
+DMT --> DM: Confirm dataset is transferred and registered
+
+note over DM: Confirmed transfer finalizes the\nrepository assignment, ensuring data is\nstored in the most suitable location.
+
+@enduml

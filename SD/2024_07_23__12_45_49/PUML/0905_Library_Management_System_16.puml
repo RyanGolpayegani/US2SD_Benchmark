@@ -1,0 +1,36 @@
+@startuml
+autonumber
+
+actor Customer as cust
+participant "Customer Interface" as ci
+participant "Recommendation Engine" as re
+database "Database" as db
+
+cust -> ci: Choose to log reading a book
+activate ci
+
+ci -> re: Record reading activity
+activate re
+
+re -> db: Fetch current monthly reads for book
+activate db
+db --> re: Current Read Count
+deactivate db
+
+re -> db: Increment Read Count
+activate db
+db --> re: Updated Successfully
+degenerate db
+
+re -> db: Update Most Read Book of the Month
+activate db
+db --> re: Update Successful
+degenerate db
+
+re --> ci: Update Confirmation
+deactivate re
+
+ci --> cust: Display Success Message
+deactivate ci
+
+@enduml

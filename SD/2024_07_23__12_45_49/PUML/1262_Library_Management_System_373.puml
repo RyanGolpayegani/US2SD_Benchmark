@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+participant UserInterface as UI
+participant AuthenticationService as Auth
+participant CommentService as CS
+participant Database as DB
+
+actor User
+
+User -> UI : Selects Book to Comment
+UI -> Auth : Authenticate User
+Auth --> UI : Authentication Success
+
+User -> UI : Write Comment
+UI -> CS : Send Comment Data {"userId", "bookId", "comment"}
+
+CS -> Auth : Verify User ID
+Auth --> CS : Verification Success
+
+CS -> DB : Save Comment
+DB --> CS : Comment Saved Successfully
+
+CS --> UI : Display Success Message
+UI -> User : Show "Comment Added Successfully"
+
+@enduml

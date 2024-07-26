@@ -1,0 +1,27 @@
+@startuml
+actor Sponsor
+participant "Web Platform" as Platform
+participant "Payment System" as Payment
+database "Platform Database" as DB
+
+Sponsor -> Platform: Navigate to Sponsorship Section
+Platform -> Sponsor: Display Sponsorship Options
+
+Sponsor -> Platform: Select 'Post a Job'
+Platform -> Sponsor: Request Job Details
+
+Sponsor -> Platform: Submit Job Details\n(title, description, skills required, etc.)
+Platform -> Platform: Validate Job Details
+alt Details are valid
+    Platform -> Payment: Initiate Payment Process (If applicable)
+    Payment -> Sponsor: Display Payment Form
+    Sponsor -> Payment: Enter Payment Details
+    Payment -> Platform: Confirm Payment
+    Platform -> DB: Save Job Posting
+    DB -> Platform: Confirm Job Saved
+    Platform -> Sponsor: Display Success Message
+else Details are invalid
+    Platform -> Sponsor: Display Error (Invalid details)
+end
+
+@enduml

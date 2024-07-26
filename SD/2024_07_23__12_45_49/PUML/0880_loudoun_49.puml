@@ -1,0 +1,34 @@
+@startuml
+participant "Inspection Staff Supervisor" as Supervisor
+participant "County Portal" as Portal
+participant "Inspection Assignment System" as AssignmentSystem
+participant "Inspector" as Inspector
+
+Supervisor -> Portal : Log in to portal
+activate Portal
+
+Portal --> Supervisor : Authentication successful
+Supervisor -> Portal : Navigate to inspection assignment section
+activate AssignmentSystem
+
+Portal -> AssignmentSystem : Retrieve pending inspections
+AssignmentSystem --> Portal : List of pending inspections
+
+Portal --> Supervisor : Display pending inspections
+Supervisor -> Portal : Select inspection to assign
+activate Inspector
+
+Supervisor -> Portal : Select Inspector for assignment
+Portal -> AssignmentSystem : Assign inspection to Inspector
+AssignmentSystem -> Inspector : Notification of new inspection assignment
+Inspector --> AssignmentSystem : Acknowledge assignment
+
+AssignmentSystem --> Portal : Update assignment status
+Portal --> Supervisor : Confirm inspection assignment
+deactivate AssignmentSystem
+deactivate Inspector
+
+Supervisor -> Portal : Log out
+deactivate Portal
+
+@enduml

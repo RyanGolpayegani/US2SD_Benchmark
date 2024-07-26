@@ -1,0 +1,31 @@
+@startuml
+actor Member as member
+participant "UI Interface" as ui
+participant "Payment Service" as payment
+participant "Library Database" as db
+database "Financial System" as financial
+
+== Payment Process ==
+member -> ui : Access Fine Payment Section
+ui -> db : Retrieve Fine Details
+db --> ui : Display Fine Details
+
+member -> ui : Opt to Pay Fine
+ui -> payment : Initiate Payment Process
+
+group Payment Transaction
+    payment -> financial : Process Payment
+    alt successful transaction
+        financial --> payment : Confirm Payment
+        payment -> db : Update Fine Status
+        db --> payment : Confirmation
+        payment --> ui : Display Successful Payment Message
+        ui --> member : Show Payment Success & Receipt
+    else transaction failure
+        financial --> payment : Decline Payment
+        payment --> ui : Display Failure Message
+        ui --> member : Show Payment Failure & Options
+    end
+end
+
+@enduml

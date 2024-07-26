@@ -1,0 +1,19 @@
+@startuml
+participant Employee as emp
+participant "Order Management System" as oms
+participant Database as db
+
+== Change Order Process ==
+alt Employee is authenticated
+    emp -> oms : Select table/order to change
+    oms -> db : Retrieve current order details
+    db -> oms : Return order details
+    oms -> emp : Show current order details
+    emp -> oms : Make changes to the order (add/remove items, change quantity)
+    oms -> db : Update order in database
+    db -> oms : Confirm order update
+    oms -> emp : Display order update confirmation
+else Employee is not authenticated
+    oms -> emp : Deny access to change order
+end
+@enduml

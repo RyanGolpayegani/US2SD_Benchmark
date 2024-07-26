@@ -1,0 +1,41 @@
+@startuml
+actor Archivist as archivist
+participant "EDRMS Interface" as UI
+participant "User & Group Management" as UGM
+participant "Collection Management" as CM
+participant "Permissions System" as PS
+
+== Add People to Deposit Group ==
+archivist -> UI: Accesses Deposit Group Management
+UI -> UGM: Fetch existing deposit groups
+UGM --> UI: Display deposit groups
+UI --> archivist: Shows deposit groups
+archivist -> UI: Selects specific collection deposit group
+UI -> UGM: Query to add multiple people
+UGM --> UI: Confirm people added
+UI --> archivist: Confirm addition
+
+== Remove People from Deposit Group ==
+archivist -> UI: Request to remove people
+UI -> UGM: Query to remove selected people
+UGM --> UI: Confirm removal
+UI --> archivist: Confirm people removed
+
+== Set Deposit Window Closure Date ==
+archivist -> UI: Access collection settings
+UI -> CM: Fetch current settings
+CM --> UI: Display settings
+archivist -> UI: Set closure date
+UI -> CM: Update collection with closure date
+CM --> UI: Confirm update
+UI --> archivist: Confirmation of closure date set
+
+== Confer Permissions to Depositors ==
+archivist -> UI: Request to confer permissions
+UI -> PS: Fetch default collection permissions
+PS --> UI: Display default permissions
+UI -> PS: Apply to all depositors in group
+PS --> UI: Confirm permissions applied
+UI --> archivist: Confirm permissions conferred
+
+@enduml

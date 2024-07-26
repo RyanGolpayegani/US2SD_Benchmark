@@ -1,0 +1,25 @@
+@startuml
+
+participant Manager as mgr
+participant "System Interface" as ui
+participant "Backend Server" as server
+database "Database" as db
+participant "Employee Record" as empRecord
+
+mgr -> ui : Access sales tracking feature
+ui -> server : Request employee sales data
+server -> db : Query sales data by employee
+db --> server : Return aggregated sales data
+server -> empRecord : Identify top sales employees
+empRecord --> server : Return employee ranking
+server --> ui : Display sales ranking to manager
+ui --> mgr : Show top selling employees and options
+
+mgr -> ui : Select top performers
+ui -> server : Send instruction to update salaries
+server -> db : Update employee salary records
+db --> server : Confirm salary updates
+server --> ui : Confirm success to manager
+ui --> mgr : Display success message
+
+@enduml

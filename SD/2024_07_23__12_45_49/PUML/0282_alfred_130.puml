@@ -1,0 +1,31 @@
+@startuml
+
+participant Developer as dev
+participant "ALFRED API" as api
+participant "Documentation" as docs
+participant "Validation Service" as validator
+participant "App Store" as store
+
+dev -> docs: Access documentation
+note right of dev: Developer learns about\nAPI capabilities and rules
+
+dev -> api: Request API key
+api --> dev: Provide API key
+
+dev -> dev: Develop app using API
+
+loop Validation Process
+    dev -> validator: Submit app for validation
+    validator -> dev: Request changes (if any)
+    alt If changes are required
+        dev -> dev: Modify app according to feedback
+    else No changes required
+        validator --> dev: Approve app
+    end
+end
+
+dev -> store: Submit approved app
+store --> dev: Publish app on ALFRED platform
+
+note over dev, store: App is now available for older adults
+@enduml

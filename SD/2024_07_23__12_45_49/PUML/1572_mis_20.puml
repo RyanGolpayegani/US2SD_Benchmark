@@ -1,0 +1,62 @@
+@startuml
+actor Curator as curator
+participant "Digital\nRepository\nManagement\nSystem" as DRMS
+participant "Embargo\nManagement\nModule" as EmbargoModule
+participant "Access Permissions\nModule" as PermissionsModule
+database "Digital Repository" as Repository
+
+== Set Embargo and Access Permissions on an Item ==
+curator -> DRMS: Request to set embargo on item
+activate DRMS
+
+DRMS -> EmbargoModule: Initiate embargo settings
+activate EmbargoModule
+
+EmbargoModule -> Repository: Apply embargo details
+note right of Repository: Embargo details include\nthe end date and access\nrestrictions during embargo.
+activate Repository
+Repository --> EmbargoModule: Confirm embargo set
+deactivate Repository
+
+EmbargoModule --> DRMS: Embargo set successfully
+deactivate EmbargoModule
+
+DRMS -> PermissionsModule: Set initial access permissions
+activate PermissionsModule
+
+PermissionsModule -> Repository: Apply initial permissions
+activate Repository
+Repository --> PermissionsPanel: Confirm initial permissions set
+deactivate Repository
+
+PermissionsModule --> DRMS: Initial permissions set successfully
+deactivate PermissionsModule
+
+DRMS --> curator: Confirm embargo and initial permissions set
+deactivate DRMS
+
+== Embargo Expiry ==
+alt Embargo period has ended
+  EmbargoModule -> Repository: Check embargo status
+  activate EmbargoModule
+  activate Repository
+  Repository --> EmbargoModule: Embargo has ended
+  deactivate Repository
+
+  EmbargoModule -> PermissionsModule: Update access permissions post-embargo
+  activate PermissionsModule
+  PermissionsModule -> Repository: Apply updated permissions
+  activate Repository
+  Repository --> PermissionsModule: Updated permissions applied
+  deactivate Repository
+
+  PermissionsModule --> DRMS: Access permissions updated post-embargo
+  deactivate PermissionsModule
+  deactivate EmbargoModule
+  DRMS -> curator: Notify embargo end and permissions update
+else Embargo period still active
+  EmbargoModule -> DRMS: Embargo still active
+  DRMS -> curator: Notify embargo still active
+  deactivate EmbargoModule
+end
+@enduml

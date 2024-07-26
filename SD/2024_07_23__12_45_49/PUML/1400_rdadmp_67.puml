@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+
+actor DataManager as DM
+participant "DMPTool Interface" as DMP
+participant "Metadata Retrieval" as MR
+participant "Technology Info" as TI
+
+== Determine Data Technology and Background Information ==
+
+DM -> DMP: Access project's DMP
+activate DMP
+DMP -> MR: Retrieve data schema
+activate MR
+MR -> TI: Request technology info by dataset
+activate TI
+TI --> MR: Returns technology details
+deactivate TI
+MR --> DMP: Provides metadata including technology details
+deactivate MR
+DMP --> DM: Display technology and software information
+deactivate DMP
+
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+participant Archivist as A
+participant "User Interface" as UI
+participant "File Management System" as FMS
+participant "Database" as DB
+
+A -> UI : Select file(s) for update
+activate UI
+UI -> FMS : Request file details
+activate FMS
+FMS -> DB : Query file details
+activate DB
+DB --> FMS : Return file details
+deactivate DB
+FMS --> UI : Display file details
+deactivate FMS
+UI --> A : Show file details
+deactivate UI
+A -> UI : Set removal date for restrictions
+activate UI
+UI -> FMS : Update file with removal date
+activate FMS
+FMS -> DB: Update file details
+activate DB
+DB --> FMS : Confirm update
+deactivate DB
+FMS --> UI : Update confirmation
+deactivate FMS
+UI --> A : Display confirmation message
+deactivate UI
+@enduml

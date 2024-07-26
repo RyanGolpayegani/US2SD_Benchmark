@@ -1,0 +1,22 @@
+@startuml
+participant Admin
+participant "Search & Filter UI" as UI
+participant "Content Management Service" as CMS
+participant "Database" as DB
+
+Admin -> UI : Enter search criteria\n(metadata/tags)
+UI -> CMS : Request content\nbased on criteria
+activate CMS
+CMS -> DB : Query content information\n(metadata/tags)
+DB --> CMS : Return query results
+deactivate CMS
+CMS --> UI : Display content results
+UI --> Admin : Show content matching\nsearch criteria
+note right of Admin : Admin reviews\ncontent items
+Admin -> CMS : Select content for detailed view/editing
+CMS -> DB : Fetch detailed content data
+DB --> CMS : Return detailed content
+CMS --> Admin : Display detailed content information
+note over Admin : Prefiltering process based\non metadata and tags complete.
+
+@enduml

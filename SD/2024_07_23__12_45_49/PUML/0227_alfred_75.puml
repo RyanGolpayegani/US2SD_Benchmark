@@ -1,0 +1,35 @@
+@startuml
+participant ALF as "OlderPerson"
+participant ALFRED as "ALFRED"
+participant MappingService as "Mapping Service"
+participant LocationSensor as "Location Sensor"
+participant Caregiver as "Caregiver/Emergency Contact"
+
+ALF -> ALFRED: "Navigate me to the nearest Jazz Concert."
+ALFRED -> MappingService: "Find nearest Jazz Concert."
+MappingService -> MappingService: "Search Event Database"
+MappingService --> ALFRED: "Concert Location Found."
+ALFRED -> LocationSensor: "Get Current Location"
+LocationSensor --> ALFRED: "Current Location Data"
+ALFRED -> MappingService: "Generate Route from Current Location to Concert."
+MappingService -> MappingService: "Calculating Route"
+MappingService --> ALFRED: "Route Information"
+ALFRED --> ALF: "Route to Jazz Concert: \n1. Turn right on Main St. \n2. Concert is 500m on the left."
+
+... Time Passes ...
+
+ALF -> ALFRED: "I think I'm lost."
+ALFRED -> LocationSensor: "Confirm Current Location"
+LocationSensor --> ALFRED: "Current Location Data Updated"
+ALFRED -> MappingService: "Find Current Location to Concert Route"
+MappingService --> ALFRED: "Updated Route Information"
+ALFRED --> ALF: "You've diverted. To return to the route: \n1. Go back 200m to Main St. \n2. Continue as previously instructed."
+
+alt If ALF cannot be re-routed
+    ALFRED --> ALF: "Unable to navigate back safely. Contacting caregiver for assistance."
+    ALFRED -> Caregiver: "ALF is lost and requires assistance."
+    Caregiver --> ALFRED: "Acknowledged. On my way."
+    ALFRED --> ALF: "Help is on the way. Stay where you are."
+end
+
+@enduml

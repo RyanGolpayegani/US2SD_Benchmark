@@ -1,0 +1,27 @@
+@startuml
+actor Employee as emp
+participant "UI" as ui
+participant "Controller" as ctrl
+participant "InventoryService" as invService
+database "Database" as db
+
+emp -> ui : Request stock information
+ui -> ctrl : GetStockInfo()
+activate ctrl
+
+ctrl -> invService : queryInventory()
+activate invService
+
+invService -> db : fetchStockDetails()
+activate db
+db --> invService : stockData
+deactivate db
+
+invService --> ctrl : stockInformation
+deactivate invService
+
+ctrl --> ui : DisplayStockInfo(stockInformation)
+deactivate ctrl
+
+ui --> emp : Show stock information
+@enduml

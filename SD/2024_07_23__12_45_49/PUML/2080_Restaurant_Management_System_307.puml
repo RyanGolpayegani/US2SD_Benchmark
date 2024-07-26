@@ -1,0 +1,37 @@
+@startuml
+participant Waiter as waiter
+participant "Order Tracking System" as trackingSystem
+participant "Database" as db
+
+waiter -> trackingSystem: Request order status
+activate waiter
+activate trackingSystem
+
+trackingSystem -> db: Query order by ID
+activate db
+
+db -> trackingSystem: Return order details
+deactivate db
+
+trackingSystem -> waiter: Show order status (Preparing/Cooking/Ready)
+deactivate trackingMediaStorage
+
+waiter -> trackingSystem: Request updates \n(if status == Preparing or Cooking)
+activate trackingSystem
+
+trackingSystem -> trackingSystem: Subscribe to updates
+deactivate trackingSystem
+
+loop Until Order Ready
+    trackingSystem-> waiter: Send real-time updates
+    activate waiter
+    deactivate waiter
+end
+
+trackingSystem -> waiter: Notify when order is ready
+activate trackingSystem
+
+waiter -> waiter: Collect order from kitchen
+
+deactivate trackingSystem
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+participant "Plan Review Staff Supervisor" as Supervisor
+participant "Portal Backend System" as System
+participant "Database" as DB
+participant "Plan Reviewer" as Reviewer
+
+== Check Current Workloads ==
+Supervisor -> System: Request current workload overview
+activate System
+
+System -> DB: Fetch workload data
+activate DB
+DB --> System: Return workload data
+deactivate DB
+
+System --> Supervisor: Display workload overview
+deactivate System
+
+== Adjust Plan Reviewer Workload ==
+Supervisor -> System: Identify workload adjustments
+activate System
+
+System -> Reviewer: Notify of workload change
+activate Reviewer
+Reviewer --> System: Acknowledge
+deactivate Reviewer
+
+Supervisor -> System: Confirm adjustments
+System -> DB: Update workload assignments
+activate DB
+DB --> System: Confirm update
+deactivate DB
+
+System --> Supervisor: Display updated workload overview
+deactivate System
+
+@enduml

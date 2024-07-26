@@ -1,0 +1,27 @@
+@startuml
+actor Administrator as admin
+participant "DMPTool Interface" as interface
+participant "Authorization Service" as auth
+database "Project Database" as db
+participant "Funder Info Module" as funderModule
+
+== Check Funder Info and Requirements ==
+
+admin -> interface : Request to view funder info
+interface -> auth : Validate admin credentials
+auth -> interface : Authentication success
+interface -> db : Query project details
+db -> interface : Return project details
+
+== Project Details Retrieved ==
+
+interface -> funderModule : Request funder info based on project ID
+funderModule -> db : Query funder info and requirements
+db -> funderModule : Return funder info and requirements
+funderModule -> interface : Display funder info and specific obligations
+
+== Info Displayed to Administrator ==
+
+interface -> admin : Show funder info and requirements
+
+@enduml

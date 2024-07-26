@@ -1,0 +1,30 @@
+@startuml
+participant LibrarianUI
+participant Authentication
+participant LibrarianController
+participant MemberService
+participant Database
+
+LibrarianUI -> Authentication : Authenticate(librarianCredentials)
+Authentication --> LibrarianUI : AuthenticationSuccess
+
+LibrarianUI -> LibrarianController : initiateDeleteMember(memberId)
+activate LibrarianController
+
+LibrarianController -> MemberService : requestMemberDeletion(memberId)
+activate MemberService
+
+MemberService -> Database : verifyMemberExistence(memberId)
+activate Database
+Database --> MemberService : MemberExists
+
+MemberService -> Database : deleteMember(memberId)
+Database --> MemberService : MemberDeleted
+
+MemberService --> LibrarianController : deletionSuccess
+deactivate MemberService
+
+LibrarianController --> LibrarianQI : displaySuccessMessage
+deactivate LibrarianController
+
+@enduml

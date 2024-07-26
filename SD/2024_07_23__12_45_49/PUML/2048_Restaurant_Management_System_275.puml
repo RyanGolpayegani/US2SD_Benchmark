@@ -1,0 +1,29 @@
+@startuml
+actor Waiter
+participant "Waiter Interface" as WInterface
+participant "Reservation System" as ReservationSys
+participant "Table Management" as TableMgmt
+participant "Notification Service" as NotifyServ
+database "Restaurant Database" as RestaurantDB
+
+== Clear Table Reservation ==
+
+Waiter -> WInterface: Select option to clear table
+WInterface -> ReservationSys: Request to retrieve current table reservations
+ReservationSys -> RestaurantDB: Query reservation details
+RestaurantDB -> ReservationSys: Return reservation details
+ReservationSys -> WInterface: Show reservations to waiter
+WInterface -> Waiter: Display reservations
+Waiter -> WInterface: Select reservation to clear
+WInterface -> ReservationSys: Send clear table request
+ReservationSys -> TableMgmt: Update table status to available
+TableMgmt -> RestaurantDB: Update reservation status
+RestaurantDB -> TableMgmt: Confirm update
+TableMgmt -> ReservationSys: Confirm table cleared
+ReservationSys -> NotifyServ: Trigger notifications
+NotifyServ -> "Management": Notify reservation cleared
+NotifyServ -> "Host/Hostess": Update on table availability
+ReservationSys -> WInterface: Confirm reservation cleared to waiter
+WInterface -> Waiter: Show confirmation of clear
+
+@enduml

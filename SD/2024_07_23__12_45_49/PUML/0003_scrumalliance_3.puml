@@ -1,0 +1,34 @@
+@startuml
+actor Practitioner as user
+participant "UI: Profile Page" as ui
+participant "Backend Server" as server
+database "Profile Database" as db
+
+user -> ui : Navigate to profile settings
+ui -> server : Request current profile data
+server -> db : Query current profile details
+db -> server : Return current profile details
+server -> ui : Display profile details
+ui -> user : Show profile settings form
+
+user -> ui : Enter additional details
+ui -> server : Submit updated profile details
+server -> db : Update profile details in the database
+db -> server : Confirm update success
+
+alt Success
+    server -> ui : Display success message
+    ui -> user : Show success notification
+else Failure
+    server -> ui : Display error message
+    ui -> user : Show error notification
+end
+
+user -> ui : View updated profile
+ui -> server : Request updated profile page
+server -> db : Query updated profile details
+db -> server : Return updated profile details
+server -> ui : Display updated profile page
+ui -> user : Show updated profile with new details
+
+@enduml

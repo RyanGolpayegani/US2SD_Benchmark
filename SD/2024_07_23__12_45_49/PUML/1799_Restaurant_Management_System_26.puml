@@ -1,0 +1,50 @@
+@startuml
+actor Chef
+participant "UI Interface" as UI
+participant "Server" as S
+database "Database" as DB
+
+== View Seasonal Ingredients ==
+Chef -> UI : Selects "View Seasonal Ingredients"
+activate Chef
+activate UI
+
+UI -> S : Request list of seasonal ingredients
+activate S
+
+S -> DB : Query seasonal ingredients
+activate DB
+DB --> S : Return seasonal ingredients list
+deactivate DB
+
+S --> UI : Display seasonal ingredients
+deactivate S
+
+UI --> Chef : Chef views seasonal ingredients
+deactivate UI
+
+== Build Seasonal Menu ==
+Chef -> UI : Initiates "Create New Menu"
+activate UI
+
+UI -> Chef : Request menu details (name, dishes)
+Chef -> UI : Provides menu details with selected seasonal ingredients
+activate Chef
+deactivate Chef
+
+UI -> S : Send new menu data
+activate S
+
+S -> DB : Save new menu
+activate DB
+DB --> S : Confirm menu saved
+deactivate DB
+
+S --> UI : Confirmation of menu creation
+deactivate S
+
+UI --> Chef : Display success message
+deactivate UI
+deactivate Chef
+
+@enduml

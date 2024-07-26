@@ -1,0 +1,49 @@
+@startuml
+
+participant Developer
+participant BrokerPlatform as "Broker Platform"
+database LoggingSystem as "Logging System"
+participant NewRelic as "New Relic (Optional)"
+
+Developer -> BrokerPlatform : Request to enable detailed logging
+activate BrokerPlatform
+
+BrokerPlatform -> LoggingSystem : Initiate enhanced logging level
+activate LoggingSystem
+LoggingSystem --> BrokerPlatform : Acknowledge logging level set
+deactivate LoggingSystem
+
+BrokerPlatform --> Developer : Confirm logging enabled
+deactivate BrokerPlatform
+
+Developer -> BrokerPlatform : Perform actions causing issues
+activate BrokerPlatform
+
+BrokerPlatform -> LoggingSystem : Log detailed information
+activate LoggingSystem
+LoggingSystem --> BrokerPlatform : Log stored
+deactivate LoggingSystem
+
+BrokerPlatform --> Developer : Notify action logged
+deactivate BrokerPlatform
+
+Developer -> LoggingSystem : Retrieve logs
+activate LoggingSystem
+LoggingSystem --> Developer : Provide detailed logs
+
+note right of Developer
+  Developer reviews logs for
+  errors and potential causes
+end note
+
+Developer -> NewRelic : Query related metrics (Optional)
+activate NewRelic
+NewRelic --> Developer : Provide metrics and performance data
+deactivate NewRelic
+
+note over Developer
+  Developer uses logs and metrics
+  to troubleshoot issues
+end note
+
+@enduml

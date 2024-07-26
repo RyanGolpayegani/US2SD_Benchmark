@@ -19,14 +19,14 @@ latest_folder = directories[0] if directories else None
 print("Latest created folder:", latest_folder)
 
 # Source and destination folders
-source_folder = f"SD/{latest_folder}/SDt"
-destination_folder = f"SD/{latest_folder}/SDi"
+source_folder = f"SD/{latest_folder}/PUML"
+destination_folder = f"SD/{latest_folder}/SDi2"
 text_files_list = [file for file in os.listdir(source_folder) if file.endswith(".txt")]
-
+puml_files_list = [file for file in os.listdir(source_folder) if file.endswith(".puml")]
 # Iterate through all files in the directory
 for filename in os.listdir(source_folder):
     # Check if the file is a text file (ends with .txt)
-    if filename.endswith(".txt"):
+    if filename.endswith(".puml"):
         # Check if the filename contains a space
         if " " in filename:
             # Replace the space with underscore
@@ -43,7 +43,7 @@ os.makedirs(destination_folder, exist_ok=True)
 # print(os.listdir(source_folder))
 # Generate diagrams using the PlantUML command
 for SDt in os.listdir(source_folder):
-    file_name = f"SD/{latest_folder}/SDt/{SDt}"
+    file_name = f"SD/{latest_folder}/PUML/{SDt}"
     os.system(f"python -m plantuml {file_name}")
     # print(file_name)
 

@@ -1,0 +1,29 @@
+@startuml
+actor Customer
+participant "UI/Complaint Form" as UIF
+participant "Complaint Handling System" as CHS
+participant "Database" as DB
+participant "Notification Service" as NS
+participant "Restaurant Manager" as RM
+
+== Customer Submits a Complaint ==
+Customer -> UIF : Choose to submit a complaint
+UIF -> Customer : Display complaint form
+Customer -> UIF : Enter complaint details (Issue, Time, Severity)
+UIF -> CHS : Submit complaint data
+note right of CHS : Validate and log complaint
+CHS -> DB : Save complaint details
+DB -->> CHS : Acknowledgement
+CHS -> NS : Trigger notification to management
+NS -> RM : Send complaint notification
+RM -->> CHS : Acknowledge receipt
+CHS -->> UIF : Notify customer of successful submission
+UIF -->> Customer : Display confirmation and follow-up steps
+
+== Complaint Resolution ==
+RM -> CHS : Update complaint status (investigation, resolution)
+CHS -> DB : Log status updates
+DB -->> CHS : Acknowledgement
+CHS -> Customer : Email update on complaint status
+
+@enduml

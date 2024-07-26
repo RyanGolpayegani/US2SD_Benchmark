@@ -1,0 +1,29 @@
+@startuml
+
+actor OlderPerson as user
+participant "Voice Interface" as VI
+participant "ALFRED System" as AS
+participant "Touristic Information Module" as TIM
+participant "Content Database" as CDB
+participant "External Cultural APIs" as ECA
+
+user -> VI : Request touristic walk info\n"Show me historical sites nearby"
+VI -> AS : Convert speech to text\nProcess request
+AS -> TIM : Query for touristic sites\nwithin specified range
+TIM -> CDB : Retrieve stored sites\n& descriptions
+alt If stored information is insufficient
+    TIM -> ECA : Request additional data\non historical sites
+    ECA -> TIM : Return external data
+end
+TIM -> AS : Compile touristic information\nand routes
+AS -> VI : Convert text to speech\nProvide user with options
+VI -> user : Read out touristic walk options\nand historical explanations
+
+user -> VI : Selects a touristic walk
+VI -> AS : Receive selection\nPrepare navigation
+AS -> TIM : Generate touristic walk route\nwith cultural sights explanations
+TIM -> AS : Provide detailed route\nand sight information
+AS -> VI : Convert route info to speech
+VI -> user : Narrate selected walk route\nand start navigation
+
+@enduml

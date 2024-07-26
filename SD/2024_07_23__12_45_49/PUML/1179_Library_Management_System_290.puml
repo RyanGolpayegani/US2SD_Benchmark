@@ -1,0 +1,16 @@
+@startuml
+actor Member
+boundary SystemInterface
+control LibraryController
+entity AuthenticationSystem
+database LibraryDatabase
+
+Member -> SystemInterface : Request to view books' maximum page numbers
+SystemInterface -> LibraryController : Validate member request
+LibraryController -> AuthenticationSystem : Confirm member's authenticity
+AuthenticationSystem -> LibraryController : Member authenticated
+LibraryController -> LibraryDatabase : Query for maximum page numbers among books
+LibraryDatabase -> LibraryController : Return books' data
+LibraryController -> SystemInterface : Display books with maximum page numbers
+SystemInterface -> Member : Shows books' maximum page numbers
+@enduml

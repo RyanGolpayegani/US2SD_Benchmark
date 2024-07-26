@@ -1,0 +1,25 @@
+@startuml
+actor Admin
+participant "Admin Interface" as AdminUI
+participant "Authentication Service" as AuthService
+database "RecycleSmart Database" as Database
+participant "Notification Service" as NotifyService
+participant User
+
+== Add or Remove Recycling Facility Information ==
+
+Admin -> AdminUI: Log in to platform
+AdminUI -> AuthService: Authenticate Admin
+AuthService -> AdminUI: Authentication Successful
+
+note over Admin, Database: Admin decides to update facility information
+
+Admin -> AdminUI: Selects add/remove facility info
+AdminUI -> Database: Request add/remove facility data
+Database --> AdminUI: Update confirmation
+AdminUI -> NotifyService: Trigger notification for update
+NotifyService -> User: Send out facility update notification
+
+note over User: Users receive updated information
+
+@enduml

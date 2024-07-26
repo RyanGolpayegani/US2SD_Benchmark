@@ -1,0 +1,35 @@
+@startuml
+actor Archivist
+participant "Scanning Interface" as SI
+participant "Digital Archive Management System" as DAMS
+participant "Unique Identifier Generator" as UIG
+participant "Database" as DB
+
+Archivist -> SI: Scan material
+activate SI
+
+SI -> DAMS: Upload scanned material
+activate DAMS
+
+DAMS -> UIG: Request unique identifier
+activate UIG
+
+UIG -> UIG: Generate unique identifier
+UIG -> DB: Check if exists
+activate DB
+
+DB -> UIG: Unique identifier validated
+DB --> DAMS: Unique identifier assigned
+deactivate DB
+
+UIG --> DAMS: Return unique identifier
+deactivate UIG
+
+DAMS -> DB: Store file with unique identifier
+DB -> DAMS: Confirmation
+DAMS -> SI: Display successful upload & identifier
+SI -> Archivist: Show unique identifier
+deactivate DAMS
+deactivate SI
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+actor Employee as emp
+participant "Employee UI" as ui
+participant "Order Management\nService" as oms
+database "Database" as db
+participant "Notification\nService" as ns
+
+== Delete Store Order Sequence ==
+
+emp -> ui : Select order to delete
+ui -> oms : Request deletion of order (orderId)
+
+alt Order Found and Deletion Permitted
+    oms -> db : Query deletion for orderId
+    db --> oms : Confirm deletion
+    oms -> ns : Trigger deletion notifications
+    ns --> oms : Notification status
+    oms --> ui : Display deletion success message
+    ui --> emp : Show success message
+else Order Not Found or Deletion Not Permitted
+    oms --> ui : Display error message (Order not found or not allowed)
+    ui --> emp : Show error message
+end
+
+@enduml

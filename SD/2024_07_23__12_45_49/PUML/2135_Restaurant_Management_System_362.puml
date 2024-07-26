@@ -1,0 +1,22 @@
+@startuml
+participant Employee as E
+participant Frontend as F
+participant BackendServer as B
+participant Database as DB
+
+E -> F : Select "View Orderable Items"
+activate F
+F -> B : GET /menu/orderable-items
+activate B
+B -> DB : Query orderable items
+activate DB
+DB -> DB : Filter active and in-stock items
+DB --> B : Return item list
+deactivate DB
+B --> F : Orderable items data
+deallocate B
+F -> F : Display items to employee
+F --> E : Show orderable menu items
+deactivate F
+
+@enduml

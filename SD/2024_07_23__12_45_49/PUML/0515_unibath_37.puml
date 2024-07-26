@@ -1,0 +1,17 @@
+@startuml
+participant "Data Archive\nAdministrator" as admin
+participant "Disposal\nScheduler" as scheduler
+participant "Data Repository" as repository
+participant "Notification\nSystem" as notification
+
+admin -> scheduler : Review scheduled disposal list
+scheduler -> repository : Fetch scheduled disposals
+repository -> scheduler : Return disposals list
+scheduler -> admin : Display disposals list
+admin -> scheduler : Select disposals to approve
+scheduler -> repository : Mark selected disposals as approved
+repository -> scheduler : Update status
+scheduler -> notification : Trigger approval notifications
+notification -> admin : Confirm approval sent
+
+@enduml

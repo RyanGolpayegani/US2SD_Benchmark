@@ -1,0 +1,26 @@
+@startuml
+participant Manager as manager
+participant "System Interface" as systemInterface
+participant "Reporting Module" as reportingModule
+participant "Database" as database
+
+manager -> systemInterface : Request most borrowed book types report
+activate systemInterface
+
+systemInterface -> reportingModule : Fetch report data
+activate reportingModule
+
+reportingModule -> database : Query borrowed books data
+activate database
+
+database --> reportingModule : Return borrowed books data
+deactivate database
+
+reportingModule -> reportingModule : Process data to find most borrowed types
+reportingModule --> systemInterface : Return report result
+deactivate reportingModule
+
+systemInterface --> manager : Display report
+deactivate systemInterface
+
+@enduml

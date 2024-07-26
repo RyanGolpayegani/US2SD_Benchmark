@@ -1,0 +1,27 @@
+@startuml
+actor Publisher
+participant "DPIE API" as DPIE
+participant "Package Builder" as Builder
+participant "Validation Service" as Validator
+participant "Data Repository" as Repository
+participant "CKAN/GitHub" as Storage
+
+Publisher -> DPIE : Request package creation
+DPIE -> Builder : Initiate package builder
+Builder -> DPIE : Request reproducible steps input
+DPIE -> Publisher : Provide steps (scripts/commands)
+Publisher -> Builder : Upload steps
+Builder -> Validator : Validate steps
+Validator -> Builder : Validation result
+alt steps are valid
+    Builder -> DPIE : Package creation successful
+    DPIE -> Repository : Save package info
+    Repository -> DPIE : Confirm save
+    DPIE -> Storage : Push package to storage (CKAN/GitHub)
+    Storage -> DPIE : Confirm storage
+    DPIE -> Publisher : Package URL
+else steps are not valid
+    Validator -> DPIE : Error message
+    DPIE -> Publisher : Show error
+end
+@enduml

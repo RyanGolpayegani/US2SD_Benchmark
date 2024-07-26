@@ -1,0 +1,19 @@
+@startuml
+participant Employee as E
+participant "UI (User Interface)" as UI
+participant "API Gateway" as API
+participant "Order Management Service" as OMS
+participant "Database" as DB
+
+E -> UI : Selects "Edit Order"
+UI -> API : Sends edit order request
+API -> OMS : Forwards request to edit
+OMS -> DB : Fetches order details
+DB -> OMS : Returns order details
+OMS -> OMS : Processes modifications
+OMS -> DB : Updates order details
+DB -> OMS : Confirms update success
+OMS -> API : Sends edit confirmation
+API -> UI : Updates UI with confirmation
+UI -> E : Shows edit success message
+@enduml

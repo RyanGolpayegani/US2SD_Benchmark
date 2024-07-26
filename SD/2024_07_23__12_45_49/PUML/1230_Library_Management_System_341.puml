@@ -1,0 +1,29 @@
+@startuml
+participant Staff as S
+participant AuthenticationModule as Auth
+participant SubscriberDatabase as SD
+participant VerificationModule as VM
+participant UserInterface as UI
+
+S -> Auth: 1: Authenticate
+Auth --> S: 2: Authentication Success
+
+S -> UI: 3: Select 'Manage Subscribers'
+UI --> S: 4: Display Subscriber Management Options
+
+S -> UI: 5: Choose 'Identify Old Profiles'
+UI -> SD: 6: Request List of Old Profiles
+SD --> UI: 7: Respond with Old Profiles List
+UI --> S: 8: Display Old Profiles List
+
+S -> UI: 9: Select Profiles to Delete
+UI -> VM: 10: Request Verification for Deletion
+VM --> S: 11: Prompt for Deletion Confirmation
+S -> VM: 12: Confirm Deletion
+
+VM -> SD: 13: Delete Selected Profiles
+SD --> VM: 14: Confirm Deletion Success
+VM --> UI: 15: Notify Deletion Success
+UI --> S: 16: Display Success Message
+
+@enduml

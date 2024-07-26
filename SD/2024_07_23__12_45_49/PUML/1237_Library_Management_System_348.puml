@@ -1,0 +1,35 @@
+@startuml
+participant Patron
+participant "UI Interface" as UI
+participant "Notification Service" as NS
+participant "Database" as DB
+participant "Email System" as Email
+
+== Interaction Initiation ==
+Patron -> UI : Sends query/reservation request
+activate UI
+
+UI -> DB : Fetch Patron Contact Info
+activate DB
+DB --> UI : Patron Contact Info
+deactivate DB
+
+UI -> NS : Process request (e.g., Query/Reservation)
+activate NS
+NS -> DB : Log Interaction
+activate DB
+DB --> NS : Confirmation
+deactivate DB
+
+== Sending Notification/Response ==
+NS -> Email : Generate Notification
+activate Email
+Email -> Patron : Send Email Notification/Response
+deactivate Email
+deactivate NS
+
+Patron -> UI : Receive Response/Notification
+UI --> Patron : Display Acknowledgement/Information
+
+deactivate UI
+@enduml

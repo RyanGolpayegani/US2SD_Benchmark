@@ -1,0 +1,22 @@
+@startuml
+participant Publisher as publisher
+participant "Publishing Platform\nUI" as ui
+participant "Backend Service" as backend
+participant "Data Storage" as storage
+participant "Versioning System" as versioning
+
+publisher -> ui: Request to tag data package
+ui -> backend: POST /data-packages/{id}/tag
+activate backend
+backend -> storage: Verify data package exists
+activate storage
+storage --> backend: Data package details
+deactivate storage
+backend -> versioning: Create snapshot with tag
+activate versioning
+versioning --> backend: Tag creation successful
+deactivate versioning
+backend --> ui: Tag creation confirmation
+ui --> publisher: Display success message
+deactivate backend
+@enduml

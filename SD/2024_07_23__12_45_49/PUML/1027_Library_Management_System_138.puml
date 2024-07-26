@@ -1,0 +1,18 @@
+@startuml
+
+actor LibraryMember
+boundary SystemInterface
+control LibraryController
+database LibraryDatabase
+entity EmailSystem
+
+LibraryMember -> SystemInterface : Request time extension
+SystemInterface -> LibraryController : Validate member request
+LibraryController -> LibraryDatabase : Check book status\nand member's extension eligibility
+LibraryDatabase --> LibraryController : Status and eligibility confirmed
+LibraryController -> LibraryDatabase : Update due date
+LibraryDatabase --> LibraryController : Due date updated
+LibraryController -> EmailSystem : Send confirmation email to member
+EmailSystem --> LibraryMember : Email confirmation of time extension
+
+@enduml

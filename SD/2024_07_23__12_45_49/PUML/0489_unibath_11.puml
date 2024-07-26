@@ -1,0 +1,23 @@
+@startuml
+
+actor Depositor
+boundary "Research Data Management Platform" as Platform
+control "DOI Service Provider" as DOIService
+
+Depositor -> Platform : Submit data with metadata
+activate Platform
+
+Platform -> Platform : Validate metadata
+Platform -> Platform : Assign internal ID
+Platform -> DOIService : Request DOI
+activate DOIService
+
+DOIService -> DOIService : Generate DOI
+DOIService --> Platform : Return DOI
+deactivate DOIService
+
+Platform -> Platform : Update dataset with DOI
+Platform -> Platform : Store dataset and metadata
+Platform --> Depositor : Confirm DOI and provide link
+
+@enduml

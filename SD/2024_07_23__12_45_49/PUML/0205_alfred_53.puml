@@ -1,0 +1,54 @@
+@startuml
+participant OlderPerson as OP
+participant "ALFRED Interface" as AI
+participant "Reminder System" as RS
+participant "Database" as DB
+database "User Preferences" as UP
+
+== Medication Reminder Process ==
+
+OP -> AI : Asks to set up medication reminder
+activate AI
+
+AI -> RS : Sends setup request
+activate RS
+
+RS -> DB : Retrieves medication schedule
+activate DB
+DB --> RS : Medication schedule details
+deactivate DB
+
+RS -> UP : Save Medication Reminder
+activate UP
+UP --> RS : Confirmation
+deactivate UP
+
+RS --> AI : Setup Confirmation
+deactivate RS
+
+AI --> OP : Confirmation Message
+deactivate AI
+note right of OP : Medication reminder is now set.
+
+== Medication Reminder Notification ==
+
+activate RS
+RS -> RS : Checks current time against reminder schedule
+RS -> AI** : Triggers medication reminder
+activate AI
+
+AI -> OP : Displays/Sends Medication Reminder
+OP --> AI : Acknowledges reminder
+
+AI -> RS : Acknowledgement received
+deactivate AI
+
+RS -> UP : Logs reminder acknowledgement
+activate UP
+UP --> RS : Log confirmation
+deactivate UP
+
+deactivate RS
+note right of OP : OlderPerson receives and acknowledges the medication reminder.
+
+@enduml

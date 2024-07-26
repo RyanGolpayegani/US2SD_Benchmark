@@ -1,0 +1,26 @@
+@startuml
+participant Manager
+participant "Web Interface" as UI
+participant "Server Application" as Server
+participant "Database" as DB
+
+Manager -> UI: Access schedule creation page
+UI -> Server: Request current waiter list
+Server -> DB: Query waiter data
+DB -> Server: Return waiter data
+Server -> UI: Show waiter list
+UI -> Manager: Display waiter list
+
+Manager -> UI: Input new schedule details
+UI -> Server: Submit new schedule data
+Server -> DB: Save schedule information
+DB -> Server: Confirm save operation
+Server -> UI: Show save confirmation
+UI -> Manager: Display confirmation message
+
+alt Email Notification
+  Server -> Server: Generate notification
+  Server -> Manager: Send schedule creation confirmation email
+end
+
+@enduml

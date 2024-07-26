@@ -1,0 +1,25 @@
+@startuml
+actor Researcher
+boundary "Remote Access System" as RAS
+boundary "Authentication Server" as Auth
+entity "Neurohub Node" as Node
+
+Researcher -> RAS: Request Access
+RAS -> Auth: Authenticate User
+Auth -> RAS: Authentication Success
+
+activate RAS
+
+RAS -> Node: Open Secure Session
+Node --> RAS: Session Established
+
+RAS --> Researcher: Access Granted
+deactivate RAS
+
+Researcher -> Node: Perform Operations
+Node -> Researcher: Operation Results
+
+Researcher -> Node: Terminate Session
+Node --> Researcher: Confirm Termination
+
+@enduml

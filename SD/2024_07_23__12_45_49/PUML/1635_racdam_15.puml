@@ -1,0 +1,30 @@
+@startuml
+participant Archivist as archivist
+participant "UI Layer" as ui
+participant "Controller" as controller
+participant "BatchEditService" as service
+participant "Database" as database
+
+archivist -> ui : Selects files for batch editing
+ui -> controller : Request batch edit mode
+controller -> service : Initiate batch edit
+activate service
+
+service -> database : Fetch selected files metadata
+database --> service : Return files metadata
+service --> controller : Provide editable metadata
+controller --> ui : Show metadata in batch edit form
+archivist -> ui : Edits metadata fields
+ui -> controller : Submit updated metadata
+controller -> service : Process metadata updates
+
+loop For each file
+    service -> database : Update metadata
+    database --> service : Confirm update
+end
+deactivate service
+
+service --> controller : Confirm batch edit success
+controller --> ui : Show success message
+ui --> archivist : Display confirmation and updated metadata
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+participant LibraryManager as LM
+participant CLMSSystem as CLMS
+participant Database as DB
+participant NotificationService as NS
+participant Member as Mem
+
+LM -> CLMS: Request overdue books list
+CLMS -> DB: Query overdue books
+DB -> CLMS: Return overdue books list
+CLMS -> LM: Display overdue books list
+LM -> CLMS: Initiate reminder process for overdue books
+CLMS -> DB: Get member contact details for overdue books
+DB -> CLMS: Return member contact details
+CLMS -> NS: Prepare reminders for members
+NS -> Mem: Send reminders via email/SMS
+Mem -> NS: Acknowledge receipt
+NS -> CLMS: Confirm reminders sent
+CLMS -> LM: Confirm reminders processed
+
+@enduml

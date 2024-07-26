@@ -1,0 +1,32 @@
+@startuml
+participant User
+participant "Neurohub Interface" as Interface
+participant "File Conversion Service" as Converter
+participant "Worm Analysis Tool \nby Christopher James" as AnalysisTool
+database "Neurohub Database" as Database
+
+User -> Interface : Upload worm video
+activate Interface
+Interface -> Interface : Validate file type
+alt If file type is supported
+  Interface -> Converter : Request encoding conversion
+  activate Converter
+  Converter -> Converter : Convert to compatible format
+  Converter -> Interface : Return encoded file
+  deactivate Converter
+  Interface -> Database : Store encoded video
+  activate Database
+  Database --> Interface : Confirm storage
+  deactivate Database
+  Interface -> AnalysisTool : Analyse video with worm analysis tool
+  activate AnalysisTool
+  AnalysisTool -> AnalysisTool : Perform analysis
+  AnalysisTool -> Interface : Return analysis results
+  deactivate AnalysisTool
+  Interface -> User : Display analysis results
+else If file type not supported
+  Interface -> User : Error: Unsupported file type
+end
+deactivate Interface
+
+@enduml

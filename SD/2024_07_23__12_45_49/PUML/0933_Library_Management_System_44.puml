@@ -1,0 +1,24 @@
+@startuml
+participant Librarian
+participant "Library Management\nSystem Interface" as Interface
+participant "Book Management\nService" as BookService
+database Database
+
+Librarian -> Interface : selectBookToDelete(bookId)
+activate Interface
+
+Interface -> BookService : requestDeleteBook(bookId)
+activate BookService
+
+BookService -> Database : deleteBookRecord(bookId)
+activate Database
+
+Database --> BookService : confirmation(deletionSuccessful)
+deactivate Database
+
+BookService --> Interface : result(deletionSuccessful)
+deactivate BookService
+
+Interface --> Librarian : displayResult(deletionSuccessful)
+
+@enduml

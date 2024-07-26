@@ -1,0 +1,31 @@
+@startuml
+participant Member as M
+participant System as S
+participant Database as DB
+participant NotificationService as NS
+
+M -> S : Log in
+activate S
+S -> DB : Fetch member details
+activate DB
+DB --> S : Member details
+deactivate DB
+
+S -> DB : Get loaned items and due dates
+activate DB
+DB --> S : Loaned items with due dates
+deactivate DB
+S --> M : Show loaned items & due dates
+deactivate S
+
+loop Daily check for due dates
+    S -> DB : Check for due items
+    activate DB
+    DB --> S : List of due items and members
+    deactivate DB
+    S -> NS : Prepare notifications for due items
+    activate NS
+    NS -> M : Send due date notification
+    deactivate NS
+end
+@enduml

@@ -1,0 +1,41 @@
+@startuml
+
+participant Archivist
+participant "RAC Website" as Website
+participant "Content Management System" as CMS
+participant ArchiveDatabase
+participant "Digital Asset Manager" as DAM
+
+== Upload Archival Content ==
+Archivist -> CMS: Login
+activate CMS
+CMS --> Archivist: Authentication Success
+
+Archivist -> CMS: Navigate to Upload Section
+activate CMS
+
+Archivist -> DAM: Select Files to Upload
+activate DAM
+DAM -> ArchiveDatabase: Save File Metadata
+activate ArchiveDatabase
+ArchiveDatabase --> DAM: Confirm Save
+DAM --> Archivist: Display Uploaded Files
+
+== Integrate Content into Web Pages ==
+Archivist -> CMS: Create/Edit Web Page
+CMS --> Archivist: Access Web Page Editor
+
+Archivist -> CMS: Insert Archival Content
+CMS -> DAM: Retrieve File Links/Embed Codes
+DAM --> CMS: Return Links/Embed Codes
+CMS --> Archivist: Display Preview
+
+Archivist -> CMS: Publish Changes
+CMS -> Website: Update Web Page Content
+Website --> Archivist: Confirm Publication
+
+deactivate DAM
+deactivate ArchiveDatabase
+deactivate CMS
+
+@enduml

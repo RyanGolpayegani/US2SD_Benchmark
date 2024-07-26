@@ -1,0 +1,19 @@
+@startuml
+participant StaffMember as staff
+participant "Authentication Service" as auth
+participant "Application Backend" as backend
+participant "Database" as db
+
+staff -> backend: Request Removal of Hold (Enter Application ID)
+backend -> auth: Validate Staff Authentication
+auth --> backend: Authentication Success
+
+alt If Staff is Authorized
+    backend -> db: Query to Remove Hold (Application ID)
+    db --> backend: Hold Removed Successfully
+    backend -> staff: Confirmation of Hold Removal
+else Staff Not Authorized
+    backend -> staff: Display Error (Not Authorized to Remove Hold)
+end
+
+@enduml

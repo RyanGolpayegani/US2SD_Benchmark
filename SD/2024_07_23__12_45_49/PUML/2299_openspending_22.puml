@@ -1,0 +1,25 @@
+@startuml
+actor User as user
+participant "UI Component" as ui
+participant "Map Visualization" as mapviz
+participant "Backend API" as backend
+participant "Database" as db
+
+user -> ui : Select map visualization
+ui -> mapviz : Render initial map
+mapviz -> backend : Request map data
+backend -> db : Query geo data
+db -> backend : Return geo data
+backend -> mapviz : Send map data
+mapviz -> ui : Display map with data
+
+ui -> ui : Detect scroll/zoom gesture
+activate ui
+ui -> mapviz : Request stepped zoom
+activate mapviz
+mapviz -> mapviz : Calculate new zoom level
+deactivate mapviz
+mapviz -> ui : Update map to new zoom level
+deactivate ui
+ui -> user : Display updated map
+@enduml

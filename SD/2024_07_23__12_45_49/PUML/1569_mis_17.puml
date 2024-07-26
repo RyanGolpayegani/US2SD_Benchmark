@@ -1,0 +1,28 @@
+@startuml
+participant Curator as C
+participant "UI Interface" as UI
+participant "Form Management Module" as FMM
+participant "Collection Database" as DB
+participant "Form Template Storage" as FTS
+
+C -> UI: Accesses deposit form creation page
+UI -> FMM: Requests available form templates
+FMM -> FTS: Retrieve form templates
+FTS --> FMM: Form templates
+FMM --> UI: Display templates
+UI --> C: Shows form templates
+
+C -> UI: Selects a template & customizes it
+UI -> FMM: Submits customized form data
+FMM -> FMM: Validate form customization
+alt Successful Validation
+    FMM -> DB: Create new form entry for collection
+    DB --> FMM: Confirmation
+    FMM --> UI: Success Message
+    UI --> C: Shows success notification
+else Validation Failure
+    FMM --> UI: Error Message
+    UI --> C: Shows error notification & reasons
+end
+
+@enduml

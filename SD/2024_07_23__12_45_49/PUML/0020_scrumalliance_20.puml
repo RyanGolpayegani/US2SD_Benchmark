@@ -1,0 +1,20 @@
+@startuml
+actor "Site Editor" as editor
+participant "UI: News Management" as UINews
+participant "News Controller" as Controller
+database "News Database" as DB
+
+== Assign Priority to News Item ==
+editor -> UINews : Selects "Edit News"
+UINews -> Controller : Request edit form for news item(id)
+Controller -> DB : Fetch news item details(id)
+DB -> Controller : Return news item details
+Controller -> UINews : Show news item details
+editor -> UINews : Assign priority number to news item
+UINews -> Controller : Update news item with new priority(id, priority)
+Controller -> DB : Save updated news item
+DB -> Controller : Confirm news item updated
+Controller -> UINews : Display success message
+UINews -> editor : Confirmation of priority update
+
+@enduml

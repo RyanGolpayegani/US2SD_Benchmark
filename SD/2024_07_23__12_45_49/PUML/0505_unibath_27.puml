@@ -1,0 +1,28 @@
+@startuml
+actor DataReuser as "Data Reuser"
+participant WebInterface as "Web Interface"
+participant SearchEngine as "Search Engine"
+participant DatasetMetadata as "Dataset Metadata"
+participant DOIService as "DOI Service"
+database DataArchive as "Data Archive"
+
+== View Dataset DOI ==
+DataReuser -> WebInterface: Access platform & search for dataset
+WebInterface -> SearchEngine: Initiate search
+SearchEngine -> DataArchive: Query datasets
+DataArchive -> SearchEngine: Return search results
+SearchEngine -> WebInterface: Display datasets
+WebInterface -> DataReuser: Show search results
+DataReuser -> WebInterface: Select dataset
+WebInterface -> DatasetMetadata: Request dataset details
+DatasetSetMetadata -> DataArchive: Fetch dataset details
+DataArchive -> DatasetMetadata: Return dataset details & DOI
+DatasetMetadata -> WebInterface: Display dataset details & DOI
+WebInterface -> DataReörper:rens  Show DOI and export options
+DataussRe bowlser --> RalphInterface:naństw7  Request DOI copy or export
+WebInterface -> DOIService: Retrieve DOI link
+DOIService -> WebInterface: Provide DOI link
+WebInterface -> DataReuser: Offer DOI link & export instructions
+DataReuser -> DOIService: Use DOI in reference management software
+
+@enduml

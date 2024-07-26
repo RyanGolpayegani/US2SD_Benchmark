@@ -1,0 +1,39 @@
+@startuml
+actor RepositoryManager as RM "Repository Manager"
+participant WebInterface as WI "DIMS Web Interface"
+participant CollectionManagementModule as CMM "Collection Management Module"
+participant Database as DB "DIMS Database"
+
+== Describe a New Collection ==
+RM -> WI: Navigate to 'Create Collection' page
+activate RM
+activate WI
+
+WI -> CMM: Display 'Create Collection' form
+activate CMM
+
+RM -> WI: Fill in collection details:
+...+ Title
+...+ Inclusive / bulk dates
+...+ Languages
+...+ Other aspects
+WI -> CMM: Validates input data
+CMM --> WI: Return validation result
+
+alt If input data is valid
+    CMM -> DB: Save new collection details
+    activate DB
+    DB --> CMM: Confirm collection saved
+    deactivate DB
+    CMM --> WI: Show success message
+    WI --> RM: Display success confirmation
+else If input data is invalid
+    CMM --> WI: Show error messages
+    WI --> RM: Display error messages and request corrections
+end
+
+deactivate CMM
+deactivate WI
+deactivate RM
+
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+participant "Authenticated User" as user
+participant "Sponsorship Page" as page
+participant "Payment Module" as payment
+participant "Database" as db
+participant "Email Service" as email
+
+user -> page: Select $350 Company Sponsorship Level
+activate user
+activate page
+page -> db: Retrieve Payment Information
+activate db
+db --> page: Show Payment Details
+page -> user: Display Payment Options
+deactivate db
+
+user -> payment: Initiate $350 Payment
+activate payment
+payment -> db: Verify Sponsorship Level
+activate db
+db --> payment: Confirm Sponsorship Level
+deactivate db
+
+payment -> db: Process $350 Payment
+activate db
+db --> payment: Payment Successful
+deactivate db
+
+payment --> user: Payment Confirmation
+deactivate payment
+
+payment -> email: Send Confirmation Email
+activate email
+db -> email: Retrieve User Email
+email -> user: Email Payment Confirmation
+deactivate email
+
+deactivate user
+@enduml

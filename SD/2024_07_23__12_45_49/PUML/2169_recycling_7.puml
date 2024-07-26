@@ -1,0 +1,28 @@
+@startuml
+actor User
+participant "Web Interface" as Web
+participant "Server" as Server
+participant "Database" as DB
+
+User -> Web : Select donation center
+activate Web
+
+Web -> Server : Request to add center to favorites
+activate Server
+
+Server -> DB : Verify user is authenticated
+activate DB
+DB --> Server : User authenticated
+deactivate DB
+
+Server -> DB : Add center to user's favorites
+activate DB
+DB --> Server : Center added successfully
+deactivate DB
+
+Server --> Web : Confirmation of addition
+deactivate Server
+
+Web --> User : Display success message
+deactivate Web
+@enduml

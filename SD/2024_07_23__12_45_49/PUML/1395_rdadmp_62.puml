@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+
+participant ITStaff as IT
+participant DMPToolInterface as Interface
+database DMPDatabase as DB
+participant MetadataManagementSystem as MMS
+participant FormatService as FS
+
+IT -> Interface : Request data formats used
+Interface -> DMPDatabase : Query for projects' data formats
+activate DMPDatabase
+DMPDatabase --> Interface : Return list of projects' formats
+deactivate DMPDatabase
+
+Interface -> MMS : Request additional format details
+activate MMS
+MMS --> Interface : Provide format specifications
+deactivate MMS
+
+Interface -> FS : Query for required services by format
+activate FS
+FS --> Interface : Return required technical services
+deactivate FS
+
+Interface -> IT : Display format and service requirements
+IT -> Interface : Acknowledge information
+@enduml

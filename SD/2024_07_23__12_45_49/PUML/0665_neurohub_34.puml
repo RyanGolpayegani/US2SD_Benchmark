@@ -1,0 +1,31 @@
+@startuml
+participant User as user
+participant "Web Interface" as web
+participant "API Gateway" as api
+participant "Metadata Service" as metadata
+participant "Protocol Service" as protocol
+participant "Database" as db
+
+user -> web: Access metadata/protocol input page
+web -> api: Request metadata/protocol form
+api -> metadata: Fetch metadata form template
+api -> protocol: Fetch protocol form template
+metadata -> api: Return metadata form template
+protocol -> api: Return protocol form template
+api -> web: Return combined form to user
+web -> user: Display metadata/protocol input form
+
+user -> web: Enter metadata and protocol details
+web -> api: Submit metadata and protocol information
+api -> metadata: Validate & store metadata
+api -> protocol: Validate & store protocol details
+metadata -> db: Save metadata
+protocol -> db: Save protocol information
+db -> metadata: Confirm metadata saved
+db -> protocol: Confirm protocol saved
+metadata -> api: Metadata saved confirmation
+protocol -> api: Protocol saved confirmation
+api -> web: Confirm saving to user
+web -> user: Display success message
+
+@enduml

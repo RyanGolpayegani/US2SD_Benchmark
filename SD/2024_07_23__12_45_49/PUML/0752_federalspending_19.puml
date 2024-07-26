@@ -1,0 +1,18 @@
+@startuml
+
+participant User
+participant "USAspending Web Interface" as WebInterface
+participant "USAspending Controller" as Controller
+participant "Broker System" as Broker
+participant "FABS Data" as FABS
+
+User -> WebInterface : Request raw agency published files
+WebInterface -> Controller : Forward user request
+Controller -> Broker : Query for raw agency files
+Broker -> FABS : Fetch requested data
+FABS -> Broker : Return raw agency files
+Broker -> Controller : Send raw files data
+Controller -> WebInterface : Provide link to raw files
+WebInterface -> User : Display link to access/download files
+
+@enduml

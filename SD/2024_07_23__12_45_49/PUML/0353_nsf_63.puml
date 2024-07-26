@@ -1,0 +1,26 @@
+@startuml
+participant NSF_Employee as Employee
+participant WebBrowser as Browser
+participant CloudServer as Server
+participant CMS as "Content Management System"
+participant DataBase as DB
+
+Employee -> Browser: Navigate to beta.nsf.gov/sample
+Browser -> Server: Request /sample page
+Server -> CMS: Fetch content for /sample
+CMS -> DB: Query user recruitment form details
+DB --> CMS: Return form details
+CMS --> Server: Provide complete sample page with form
+Server --> Browser: Return sample page HTML
+Browser -> Employee: Display sample page with user recruitment form
+
+note over Employee,Browser: Employee reviews form layout\nand functionality
+
+Employee -> Browser: Interact with form (View, Fill, Submit)
+Browser -> Server: Submit form data for preview
+Server -> CMS: Process form data
+CMS -> Server: Return form submission confirmation
+Server -> Browser: Display confirmation message
+Browser -> Employee: Show confirmation of form action
+
+@enduml

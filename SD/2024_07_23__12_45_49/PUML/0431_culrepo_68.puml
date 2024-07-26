@@ -1,0 +1,30 @@
+@startuml
+actor FacultyMember as FM
+participant "Submission Form" as SF
+participant "Authentication Service" as AS
+participant "Database" as DB
+participant "Repository System" as RS
+
+FM -> SF: Access submission form
+activate SF
+SF -> AS: Request authentication
+activate AS
+AS -> FM: Prompt for researcherID/ORCID
+FM -> AS: Provide researcherID/ORCID
+AS -> DB: Validate ID against database
+activate DB
+DB -> AS: Confirm validity
+deactivate DB
+AS -> SF: Authentication successful
+deactivate AS
+SF -> RS: Associate researcherID/ORCID with submission
+activate RS
+RS -> DB: Update submission record
+activate DB
+DB -> RS: Confirm association
+deactivate DB
+RS -> SF: Association successful
+deactivate RS
+SF -> FM: Display success message
+deactivate SF
+@enduml

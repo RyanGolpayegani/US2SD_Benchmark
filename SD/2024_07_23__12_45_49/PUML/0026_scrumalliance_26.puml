@@ -1,0 +1,23 @@
+@startuml
+
+participant "Site Administrator" as admin
+participant "Administrative Interface" as adminUI
+participant "Course/Event Management System" as CMS
+participant "Database" as DB
+
+== Course/Event Creation Without Listing Fee ==
+
+admin -> adminUI : Access Course/Event Creation Form
+adminUI -> CMS : Request Form
+CMS -> adminUI : Retrieve and Display Form
+adminUI -> admin : Display Form
+
+admin -> adminUI : Fill in Course/Event Details\nMark as "Scrum Gathering"
+adminUI -> CMS : Validate Data\nSet Listing Fee to $0
+CMS -> DB : Create New Course/Event Record
+DB -> CMS : Confirm Creation
+
+CMS -> adminUI : Display Success Message
+adminUI -> admin : Course/Event Created Successfully Without Fee
+
+@enduml

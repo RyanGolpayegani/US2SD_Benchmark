@@ -1,0 +1,21 @@
+@startuml
+participant Developer
+participant "ALFRED's App\nManagement System" as AppManagement
+participant "ALFRED's Notification\nService" as NotificationService
+participant App
+
+Developer -> AppManagement : Registers App
+activate AppManagement
+AppManagement -> App : Deploy App
+activate App
+App -> App : State Change
+App -> AppManagement : Notify State Change
+deactivate App
+
+AppManagement -> NotificationService : Trigger Notification
+activate NotificationService
+NotificationService -> Developer : Send Notification
+deactivate NotificationService
+deactivate AppManagement
+
+@enduml

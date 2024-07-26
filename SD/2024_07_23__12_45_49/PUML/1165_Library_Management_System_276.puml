@@ -1,0 +1,22 @@
+@startuml
+participant Member_UI as Member
+participant AuthorizationService as Auth
+participant ReservationService as Reservation
+participant Database as DB
+
+Member -> Member_UI : Select "Cancel Reservation"
+Member_UI -> Auth : Authenticate(userID)
+Auth -> Member_UI : AuthenticationSuccess
+
+alt Authentication Successful
+    Member_UI -> Reservation : RequestCancelReservation(userID, reservationID)
+    Reservation -> DB : QueryReservationDetails(reservationID)
+    DB -> Reservation : ReservationDetails
+    Reservation -> DB : RemoveReservation(reservationID)
+    DB -> Reservation : Confirmation
+    Reservation -> Member_UI : ShowSuccessMessage("Reservation cancelled successfully")
+else Authentication Fails
+    Member_UI -> Member : ShowErrorMessage("Authentication Failed")
+end
+
+@enduml

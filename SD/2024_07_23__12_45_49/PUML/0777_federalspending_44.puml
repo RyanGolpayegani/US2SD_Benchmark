@@ -1,0 +1,33 @@
+@startuml
+actor AgencyUser as "Agency User"
+participant BrokerUI as "Broker UI"
+participant ValidationService as "Validation Service"
+participant Database as "Database"
+participant FeedbackSystem as "Feedback System"
+
+== Update FABS Validation Rules to Accept Zero and Blank ==
+AgencyUser -> BrokerUI : Submit request to update FABS validation rules
+BrokerUI -> ValidationService : Process update request
+
+== Validation Rule Update ==
+ValidationService -> Database : Validate current rules
+alt If rules need an update
+    Database -> ValidationService : Confirm rules are outdated
+    ValidationService -> Database : Update rules to accept zero and blank for non-loan records
+    Database -> ValidationService  : Confirm rules updated
+    ValidationService -> BrokerUI : Display success message
+    BrokerUI -> AgencyUser : Notify update success
+else Rules already accept zero and blank
+    Database -> ValidationService : Confirm no update needed
+    ValidationService -> BrokerUI : Display "No update required" message
+    BrokerUI -> AgencyUser : Notify no update needed
+end
+
+== User Feedback ==
+AgencyUser -> FeedbackSystem : Provide feedback on update process
+FeedbackSystem -> BrokerUI : Collect feedback
+BrokerUI -> Database : Store feedback for analysis
+Database -> BrokerUI : Confirm feedback stored
+BrokerUL -> AgencyUser : Acknowledge feedback received
+
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+participant Administrator as Admin
+participant "Camp Management Platform" as CMP
+participant Database
+
+== Store Camper's Emergency Information ==
+
+Admin->CMP: Access camper management section
+CMP->CMP: Display camper management dashboard
+
+note over Admin, CMP: Admin selects a camper to add or update emergency information.
+
+Admin->CMP: Select "Add/Update Emergency Information"
+CMP->Database: Retrieve existing information [If available]
+
+alt Information exists
+    CMP->Admin: Display existing emergency information
+    Admin->CMP: Update necessary fields
+else No existing information
+    Admin->CMP: Inputs emergency contact details
+end
+
+Admin->CMP: Submit updated information
+CMP->Database: Store/Update emergency information
+Database-->CMP: Confirmation of storage
+CMP->Admin: Display confirmation message
+
+@enduml

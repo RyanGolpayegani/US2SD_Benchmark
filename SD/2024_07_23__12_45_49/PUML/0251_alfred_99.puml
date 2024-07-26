@@ -1,0 +1,19 @@
+@startuml
+actor OlderPerson as user
+participant "ALFRED Interface" as alfred
+participant "Games Library" as games
+participant "Settings Manager" as settings
+database "User Preferences" as preferences
+
+user -> alfred : Request to adjust game duration
+alfred -> games : Fetch available games
+games --> alfred : Display games list
+alfred -> user : Show games with adjustable durations
+user -> alfred : Select game and desired duration
+alfred -> settings : Request duration limit adjustment
+settings -> preferences : Update user-specific game settings
+preferences --> settings : Confirm update
+settings --> alfred : Confirm duration limit set
+alfred -> user : Confirm new game duration limit
+
+@enduml

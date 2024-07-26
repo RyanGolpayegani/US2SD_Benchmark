@@ -1,0 +1,23 @@
+@startuml
+' Define participants
+actor Archivist
+participant "SearchInterface" as Search
+participant "RightsManagementSystem" as Rights
+participant "Database" as DB
+database "DigitalArchive" as Archive
+
+' Workflow
+Archivist -> Search : enters search criteria for rights
+Search -> Rights : request validation of search query
+Rights -> DB : retrieve rights information
+DB --> Rights : rights information
+Rights --> Search : validated search parameters
+Search -> Archive : search images by rights
+Archive --> Search : search results
+Search --> Archivist : display results
+
+' Add notes
+note right of Search: Search criteria includes\nspecific rights or licenses
+note right of Archive: Filtering is done based on\nthe rights metadata of images
+
+@enduml

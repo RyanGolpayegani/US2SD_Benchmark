@@ -1,0 +1,32 @@
+@startuml
+actor OlderPerson
+participant "Speech Interface" as SI
+participant ALFRED
+participant HealthModule
+participant "Personalized Health Tips" as PHT
+
+== Health Tip Request ==
+OlderPerson -> SI: Request health tips
+activate SI
+
+SI -> ALFRED: Interpret voice command
+activate ALFRED
+
+ALFRED -> HealthModule: Access user health profile
+activate HealthModule
+
+HealthModule -> HealthModule: Analyze health conditions\nand suitable non-medication interventions
+HealthModule -> PHT: Retrieve personalized health tips
+activate PHT
+
+PHT -> ALFRED: Send health tips
+deactivate PHT
+
+ALFRED -> SI: Convert text to speech
+deactivate HealthModule
+
+SI -> OlderPerson: Provide health tips via speech
+deactivate ALFRED
+deactivate SI
+
+@enduml

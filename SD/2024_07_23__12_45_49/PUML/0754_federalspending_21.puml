@@ -1,0 +1,29 @@
+@startuml
+actor User as "Broker User"
+participant "UI/UX System" as UI
+participant "Content Management \nSystem (CMS)" as CMS
+participant "Data Validation System" as Validator
+participant "Data Submission \nModule" as Submission
+
+User -> UI : initiate content mockup
+UI -> CMS : create new mockup session
+CMS --> User : provide mockup editor
+User -> CMS : draft content & upload data
+CMS --> User : preview mockup
+User -> CMS : submit mockup for validation
+
+alt Validation Successful
+    CMS -> Validator : validate content & data
+    Validator --> CMS : validation success
+    CMS --> User : show success notification
+    User -> Submission : submit final content and data
+    Submission -> UI : update submission status
+    UI --> User : confirmation & summary
+else Validation Failed
+    Validator --> CMS : validation errors
+    CMS --> User : show errors & required fixes
+    User -> CMS : correct data & resubmit
+    CMS -> Validator : re-validate content & data
+end
+
+@enduml

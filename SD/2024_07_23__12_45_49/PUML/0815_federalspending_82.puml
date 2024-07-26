@@ -1,0 +1,43 @@
+@startuml
+participant FABSUser as User
+participant "UI Interface" as UI
+participant "Submission Module" as Submission
+participant "Validation Engine" as Validation
+participant "Database" as DB
+
+User -> UI : Navigate to submission form
+UI -> User : Display form
+
+User -> UI : Enter citywide as PPoPZIP
+UI -> Submission : Submit PPoPZIP data
+activate Submission
+
+Submission -> Validation : Initiate validation
+activate Validation
+
+Validation -> DB : Fetch validation rules
+activate DB
+DB -> Validation : Return rules
+
+Validation -> Validation : Apply rules to PPoPZIP
+alt All validations passed
+  Validation -> Submission : Validation passed
+else Validation failed
+  Validation -> UI : Display error messages
+  UI -> User : Show errors\nand request correction
+  User -> UI : Correct PPoPZIP data
+  UI -> Submission : Resubmit corrected data
+  Submission -> Validation : Revalidate
+  repeat 
+    Validation -> Validation : Apply rules
+  until All validations passed
+  Validation -> Submission : Validation passed
+end
+
+Submission -> DB : Store submission data
+DB -> Submission : Confirm storage
+
+Submission -> UI : Confirm successful submission
+UI -> User : Display success message
+
+@enduml

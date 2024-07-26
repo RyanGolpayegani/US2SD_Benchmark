@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+
+actor User as user
+participant "User Interface" as UI
+participant "Validation Service" as validator
+participant "Security Service" as secService
+database "RecycleSmart DB" as DB
+
+user -> UI : Enter personal information\n(Name, Email, PhoneNumber)
+UI -> validator : Validate information format
+activate validator
+validator -> validator : Check email format
+validator -> validator : Check phone number format
+validator --> UI : Validation results
+deactivate validator
+
+alt If validation fails
+    UI -> user : Show validation error
+else If validation succeeds
+    UI -> secService : Encrypt personal information
+    activate secService
+    secService -> secService : Apply encryption algorithm
+    secService --> UI : Encrypted information
+    deactivate secService
+
+    UI -> DB : Store encrypted information
+    activate DB
+    DB --> UI : Confirmation of storage
+    deactivate DB
+    UI -> user : Confirmation message
+end
+
+@enduml

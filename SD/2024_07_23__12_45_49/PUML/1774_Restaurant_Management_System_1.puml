@@ -1,0 +1,27 @@
+@startuml
+actor Cashier
+participant "POS System" as POS
+database "Transaction DB" as DB
+participant "Reporting Service" as Report
+
+Cashier -> POS : Enter Transaction Details\n(amount, type, customer info)
+activate POS
+POS -> DB : Log Transaction
+activate DB
+DB --> POS : Confirm Transaction Logged
+deactivate DB
+POS --> Cashier : Show Transaction Confirmation
+deactivate POS
+Cashier -> POS : Request Transaction Report
+activate POS
+POS -> Report : Generate Transaction Report
+activate Report
+Report -> DB : Query Transaction Data
+activate DB
+DB --> Report : Return Transaction Data
+deactivate DB
+Report --> POS : Display Transaction Report
+deactivate Report
+POS --> Cashier : Show Transaction Report
+deactivate POS
+@enduml

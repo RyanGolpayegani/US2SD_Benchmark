@@ -1,0 +1,18 @@
+@startuml
+actor "Application Administrator" as admin
+participant "Admin Interface" as adminUI
+participant "Authentication Server" as authServer
+participant "Database" as db
+
+admin -> adminUI : Selects 'Reset Password'
+adminUI -> authServer : Request to reset user password
+authServer -> db : Verify Admin Credentials
+db -> authServer : Credentials Validated
+authServer -> adminUI : Prompt for New Password
+admin -> adminUI : Enters New Password
+adminUI -> authServer : Submit New Password
+authServer -> db : Update Password in Database
+db -> authServer : Password Updated
+authManager -> adminUI : Confirm Password Reset
+adminUI -> admin : Display Password Reset Confirmation
+@enduml

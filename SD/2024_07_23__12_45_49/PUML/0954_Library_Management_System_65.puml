@@ -1,0 +1,42 @@
+@startuml
+autonumber
+
+actor Librarian
+participant "Library Management\nSystem (LMS)" as LMS
+database "Database" as DB
+participant "Reporting\nTool" as RT
+
+== Track Most Read Authors ==
+
+Librarian -> LMS: Request report on most read authors
+activate LMS
+
+LMS -> DB: Retrieve borrowing statistics
+activate DB
+
+DB -> DB: Aggregate data by author\n(Calculate total borrows per author)
+DB --> LMS: Return aggregated data
+deactivate DB
+
+LMS -> RT: Request generation of\nmost read authors report
+activate RT
+
+RT -> RT: Generate report based on\naggregated data
+RT --> LMS: Return report
+deactivate RT
+
+LMS --> Librarian: Display report
+deactivate LMS
+
+Librarian -> LMS: Request to purchase more books\nfrom popular authors
+activate LMS
+
+LMS -> DB: Update book purchase requests
+activate DB
+DB --> LMS: Confirm update
+deactivate DB
+
+LMS --> Librarian: Confirm books requested
+deactivate LMS
+
+@enduml

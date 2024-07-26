@@ -1,0 +1,21 @@
+@startuml
+participant Researcher
+participant "DMPTool Interface" as Interface
+participant "DMPTool Backend" as Backend
+participant Database
+
+Researcher -> Interface: Access DMPTool
+Interface -> Backend: Authenticate User
+activate Backend
+Backend -> Database: Query User Department and Role Information
+activate Database
+Database --> Backend: Return Role Information for Department
+deactivate Database
+Backend -> Database: Query Submitted Roles by Department Researchers
+activate Database
+Database --> Backend: Return Submitted Roles Data
+deactivate Database
+Backend --> Interface: Display Roles and Data Manager Posts in Department
+deactivate Backend
+Interface --> Researcher: Show Sections on Roles by Department Researchers
+@enduml

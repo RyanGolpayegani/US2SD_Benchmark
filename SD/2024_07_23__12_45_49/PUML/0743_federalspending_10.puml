@@ -1,0 +1,37 @@
+@startuml
+participant "UI Designer" as Designer
+participant "Design Software" as Software
+participant "Review Team" as Review
+participant "Approval System" as Approval
+participant "Leadership" as Leadership
+
+Designer -> Software: Make round 2 edits on Help page
+note right of Software: Edits may include\nlayout changes, updated FAQs,\nand new user guidance content.
+Software -> Designer: Confirm edits completion
+
+Designer -> Review: Submit edits for review
+Review -> Review: Review round 2 edits
+alt Edits Approved by Review Team
+    Review -> Approval: Forward approved edits
+else Edits Not Approved
+    Review -> Designer: Request additional changes
+    Designer -> Software: Implement changes
+    loop Until Approved
+        Designer -> Review: Resubmit for review
+    end
+end
+
+Approval -> Leadership: Submit edits for final approval
+Leadership -> Leadership: Review submitted edits
+alt Approval Granted by Leadership
+    Leadership -> Designer: Notify approval
+    note over Designer: Designer can now implement\nthe edits on the live Help page.
+else Additional Feedback or Rejection
+    Leadership -> Designer: Provide feedback / Request changes
+    Designer -> Software: Make requested changes
+    loop Until Final Approval
+        Designer -> Leadership: Resubmit for final approval
+    end
+end
+
+@enduml

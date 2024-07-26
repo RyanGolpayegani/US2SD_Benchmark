@@ -1,0 +1,27 @@
+@startuml
+participant Researcher
+participant "Search Interface" as SI
+participant "Authentication Service" as AS
+participant "Database" as DB
+participant "Image Server" as IS
+participant "License & Rights Manager" as LRM
+
+Researcher -> SI: Enter search keywords
+SI -> AS: Validate researcher's access
+AS --> SI: Access confirmed
+
+SI -> DB: Query for images by keywords
+DB --> SI: Return search results
+
+SI -> LRM: Check licenses/rights for images
+LRM --> SI: Filter images by access rights
+
+SI -> IS: Request accessible images
+IS --> SI: Retrieve images
+
+SI -> Researcher: Display images
+Researcher -> SI: Select images for presentation
+SI -> IS: Request high-resolution images
+IS --> Researcher: Provide images download link
+
+@enduml

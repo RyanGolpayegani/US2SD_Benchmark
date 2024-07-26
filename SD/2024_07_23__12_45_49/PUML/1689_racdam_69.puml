@@ -1,0 +1,30 @@
+@startuml
+actor Researcher as researcher
+participant "UI: Web Interface" as UI
+participant "Server: Application Logic" as server
+participant "Database" as db
+
+researcher -> UI : Enter search criteria with specific tags
+UI -> server : Request working papers with tags
+server -> db : Query for tagged working papers
+db --> server : Return search results
+server --> UI : Display working papers
+UI --> researcher : Show list of working papers with tags
+
+alt Download Request
+    researcher -> UI : Request to download selected working paper
+    UI -> server : Verify access rights and request download
+    server -> db : Check for restrictions
+    db --> server : Restrictions status
+    alt No Restrictions
+        server -> db : Log download action
+        db --> server : Log confirmed
+        server -> UI : Initiate download
+        UI --> researcher : Provide download link
+    else Restrictions Found
+        server --> UI : Display restriction message
+        UI --> researcher : Show restriction message
+    end
+end
+
+@enduml

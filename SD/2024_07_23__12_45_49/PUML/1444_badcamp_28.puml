@@ -1,0 +1,26 @@
+@startuml
+participant Administrator as admin
+participant "Admin Dashboard" as dashboard
+participant "Database" as db
+participant "Sponsor Detail Page" as sponsorPage
+
+== Assigning Sponsors to an Event ==
+admin -> dashboard : Accesses Sponsor Management
+dashboard -> db : Fetches available sponsors
+db -> dashboard : Returns sponsor list
+dashboard -> admin : Displays sponsors
+admin -> dashboard : Selects Sponsor, Event/Training/Summit
+dashboard -> db : Assign Sponsor to Event/Training/Summit
+db -> db : Updates Event/Training/Summit Details
+db -> dashboard : Confirmation
+dashboard -> admin : Shows Success Message
+
+== Updating Sponsor Detail Page ==
+dashboard -> db : Fetch updated sponsor info
+db -> db : Retrieves assigned Sponsor details
+db -> sponsorPage : Updates with new Sponsor Info
+sponsorPage -> db : Confirmation of update
+db -> dashboard : Confirms page update
+dashboard -> admin : Notifies update success
+
+@enduml

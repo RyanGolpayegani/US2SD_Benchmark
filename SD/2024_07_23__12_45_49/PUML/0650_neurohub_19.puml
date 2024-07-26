@@ -1,0 +1,37 @@
+@startuml
+participant "Release Engineer" as RE
+participant "Continuous Integration\nServer" as CIS
+participant "Version Control\nSystem" as VCS
+participant "Test Automation\nSystem" as TAS
+participant "Notification\nSystem" as NS
+participant "Test Report" as TR
+
+RE -> CIS : Schedule nightly build
+activate CIS
+
+CIS -> VCS : Fetch latest Neurohub version
+activate VCS
+VCS --> CIS : Latest codebase
+deactivate VCS
+
+CIS -> CIS : Prepare virgin OS image
+
+CIS -> CIS : Install Neurohub\non virtual machine
+activate TAS
+
+CIS -> TAS : Execute automated\ntests (functional, acceptance)
+TAS --> CIS : Test results
+deactivate TAS
+
+CIS -> TR : Generate test report
+activate TR
+TR --> CIS : Report ready
+deactivate TR
+
+CIS -> NS : Send test report and\nnotification to Release Engineer
+activate NS
+NS --> RE : Notification and test report
+deactivate NS
+
+deactivate CIS
+@enduml

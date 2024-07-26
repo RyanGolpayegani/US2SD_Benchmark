@@ -1,0 +1,19 @@
+@startuml
+participant User
+participant DIMS_UI as "DIMS User Interface"
+participant DIMS_Controller as "DIMS Controller"
+participant DIMS_DB as "DIMS Database"
+participant RightsManagementModule as "Rights Management \nModule"
+
+User -> DIMS_UI : Request rights status of object
+DIMS_UI -> DIMS_Controller : Forward rights status request \n(Object ID)
+DIMS_Controller -> DIMS_DB : Query object information \n(Object ID)
+DIMS_DB --> DIMS_Controller : Object metadata
+DIMS_Controller -> RightsManagementModule : Check rights status \n(Object metadata)
+RightsManagementModule -> DIMS_DB : Query rights information \n(Object metadata)
+DIMS_DB --> RightsManagementModule : Rights details
+RightsManagementModule --> DIMS_Controller : Compiled rights status
+DIMS_Controller --> DIMS_UI : Rights status information
+DIMS_UI --> User : Display rights status
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+actor Staff
+participant "Library Staff Interface" as Interface
+participant "Reservation System" as Reservation
+database "Database" as DB
+
+== Checkout Process ==
+Staff -> Interface : Request to checkout book
+activate Interface
+Interface -> Reservation : Verify if book is reserved
+activate Reservation
+Reservation -> DB : Check book status
+activate DB
+DB --> Reservation : Book is reserved and ready for checkout
+deactivate DB
+Reservation --> Interface : Reservation confirmed
+deactivate Reservation
+Interface -> DB : Update book status to 'Checked Out'
+activate DB
+DB --> Interface : Book status updated
+deactivate DB
+Interface --> Staff : Checkout successful
+deactivate Interface
+@enduml

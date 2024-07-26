@@ -1,0 +1,21 @@
+@startuml
+participant Researcher as user
+participant "Power BI" as powerbi
+participant "DPIE API" as dpie
+participant "Dataset Repository" as repo
+
+user -> powerbi: Select dataset import option
+powerbi -> dpie: Request available datasets
+dpie -> repo: Fetch dataset listings
+repo --> dpie: Return dataset listings
+dpie --> powerbi: Show datasets
+powerbi --> user: Display datasets to import
+user -> powerbi: Choose datasets to import
+powerbi -> dpie: Request dataset by ID
+dpie -> repo: Fetch dataset by ID
+repo --> dpie: Return selected dataset
+dpie -> dpie: Validate dataset integrity
+dpie --> powerbi: Provide validated dataset
+powerbi -> powerbi: Import dataset
+powerbi --> user: Confirmation of dataset import
+@enduml

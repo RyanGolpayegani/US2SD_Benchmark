@@ -1,0 +1,23 @@
+@startuml
+participant AgencyUser as AU
+participant "User Interface" as UI
+participant "Validation Service" as VS
+participant "Database" as DB
+participant "Schema Service" as SS
+
+AU -> UI : Submits updated LegalEntityAddressLine3
+UI -> VS : Validate against Schema v1.1
+activate VS
+VS -> SS : Request latest schema for LegalEntityAddressZLine3
+activate SS
+SS -> VS : Return Schema v1.1 details for LegalEntityAddressLine3
+deactivate SS
+VS -> DB : Validate LegalEntityAddressLine3 length
+activate DB
+DB -> VS : Validation result
+deactivate DB
+VS -> UI : Validation success/not successful
+UI -> AU : Show validation result
+deactivate VS
+
+@enduml

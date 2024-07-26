@@ -1,0 +1,21 @@
+@startuml
+actor SiteEditor as "Site Editor"
+participant CMSInterface as "CMS Interface"
+participant AuthenticationService as "Authentication Service"
+database CMSDatabase as "CMS Database"
+
+SiteEditor -> CMSInterface: Access CMS
+CMSInterface -> AuthenticationService: Request Authentication
+AuthenticationService -> SiteEditor: Prompt for Credentials
+SiteEditor -> AuthenticationService: Provide Credentials
+AuthenticationService -> AuthenticationService: Validate Credentials
+AuthenticationService --> CMSInterface: Authentication Successful
+
+SiteEditor -> CMSInterface: Select 'Add Article'
+CMSInterface -> SiteEditor: Display Article Template
+SiteEditor -> CMSInterface: Submit New Article Data
+CMSInterface -> CMSDatabase: Save Article Information
+CMSDatabase --> CMSInterface: Confirm Article Saved
+CMSInterface --> SiteEditor: Display Article Posted Confirmation
+
+@enduml

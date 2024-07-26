@@ -1,0 +1,31 @@
+@startuml
+participant Archivist as archivist
+participant "User Management \nSystem" as UserMgmt
+participant "File Management \nSystem" as FileMgmt
+participant Database as DB
+
+== Restrict Access to Files ==
+archivist -> UserMgmt : Authenticate
+activate UserMgmt
+UserMgmt --> archivist : Authentication Success
+deactivate UserMgmt
+
+archivist -> FileMgmt : Select Files to Restrict
+activate FileMgmt
+FileMgmt -> DB : Fetch File Metadata
+activate DB
+DB --> FileMgmt : File Metadata
+deactivate DB
+
+FileMgmt --> archivist : Display File Metadata
+archivist -> FileMgmt : Apply Access Restrictions\n(Role: Donor Representatives)
+FileMgmt -> DB : Update File Access Settings
+activate DB
+DB --> FileMgmt : Confirmation
+deactivate DB
+
+FileMgmt --> archivist : Restriction Applied Confirmation
+deactivate FileMgmt
+
+== End ==
+@enduml

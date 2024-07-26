@@ -1,0 +1,21 @@
+@startuml
+participant Cook
+participant "Kitchen Management Module" as KMM
+participant "Order Tracking System" as OTS
+participant NotificationService
+participant Waiter
+
+Cook -> KMM: Update dish status to 'Ready'
+KMM -> OTS: Notify dish is ready
+OTS -> NotificationService: Trigger notification for Waiter
+NotificationService -> Waiter: Display 'Food Ready' notification
+
+alt Food Pickup Acknowledgement
+    Waiter -> NotificationService: Acknowledge 'Food Ready' notification
+    NotificationService -> OTS: Update order status to 'Serving'
+    OTS -> Cook: Notify Waiter is serving the food
+else No Acknowledgement
+    NotificationService -> NotificationService: Retry notification
+end
+
+@enduml

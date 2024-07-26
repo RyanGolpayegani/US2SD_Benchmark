@@ -1,0 +1,33 @@
+@startuml
+participant Manager as M
+participant AuthenticationSystem as Auth
+participant Database as DB
+participant AnalysisModule as Analysis
+participant BookManagement as BM
+
+activate M
+M -> Auth: Authenticate
+activate Auth
+Auth --> M: Authentication Successful
+deactivate Auth
+
+M -> Analysis: Request Most Borrowed Book Types
+activate Analysis
+Analysis -> DB: Fetch Borrowing Statistics
+activate DB
+DB --> Analysis: Statistics Data
+deactivate DB
+
+Analysis --> M: Most Borrowed Book Type Data
+deactivate Analysis
+
+M -> BM: Delete Book Type [Most Borrowed]
+activate BM
+BM -> DB: Delete Books by Type
+activate DB
+DB --> BM: Deletion Success
+deactivate DB
+BM --> M: Confirmation of Deletion
+deactivate BM
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+
+actor Archivist as archivist
+participant "Import Interface" as importInterface
+participant "MARCXML Parser" as parser
+participant "Data Validator" as validator
+participant "Database" as database
+
+== Import Process Start ==
+archivist -> importInterface : Select MARCXML file
+importInterface -> parser : Extract Agent and Subject information
+parser -> validator : Validate extracted data
+validator -> parser : Data validated
+alt Valid Data
+    validator -> database : Save Agent and Subject information
+    database -> archivist : Import Successful
+else Invalid Data
+    validator -> archivist : Error Message (Invalid Data)
+end
+
+@enduml

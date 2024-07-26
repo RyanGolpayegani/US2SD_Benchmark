@@ -1,0 +1,27 @@
+@startuml
+actor Depositor
+participant "Web Interface" as Web
+participant "File Version\nManagement" as Version
+participant "Format Conversion\nService" as Format
+participant "Metadata\nGenerator" as Meta
+participant "Data Repository" as Repo
+
+Depositor -> Web : Navigate to deposit section
+Web -> Depositor : Request dataset files
+Depositor -> Web : Selects and uploads dataset files
+
+alt If files need version handling
+    Web -> Version : Check/Select version
+    Version -> Web : Version approved
+else If files need format conversion
+    Web -> Format : Convert to acceptable format
+    Format -> Web : Conversion complete
+end
+
+Web -> Meta : Generate metadata for dataset
+Meta -> Web : Metadata attached
+
+Web -> Repo : Deposit dataset with metadata
+Repo -> Web : Confirm dataset deposit
+Web -> Depositor : Display confirmation message
+@enduml

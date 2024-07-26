@@ -1,0 +1,20 @@
+@startuml
+!theme plain
+
+actor "Management User" as user
+participant "Web Interface" as web
+participant "Server: Order Management" as server
+database "Database" as db
+
+user -> web : Selects "View Current Orders"
+web -> server : GET /orders/current
+activate server
+server -> db : Fetch current orders and statuses
+activate db
+db --> server : Return orders and statuses
+deactivate db
+server --> web : Display orders and statuses
+web --> user : Shows current orders with statuses
+deactivate server
+
+@enduml

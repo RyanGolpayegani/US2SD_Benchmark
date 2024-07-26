@@ -1,0 +1,16 @@
+@startuml
+
+participant Moderator as mod
+participant "AEPT Web Interface" as web
+participant "Authentication Service" as auth
+participant "Email Service" as email
+database "Database" as db
+
+mod -> web: Request password reminder
+web -> auth: Validate moderator's email
+auth -> db: Check email existence
+db --> auth: Email found
+auth -> email: Send password reminder
+email -> mod: Email with password reminder
+
+@enduml

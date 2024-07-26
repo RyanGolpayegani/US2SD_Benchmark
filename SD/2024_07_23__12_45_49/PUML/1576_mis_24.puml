@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+
+participant Archivist as archivist
+participant "Batch Ingest Tool" as batchTool
+database "Repository Database" as repoDB
+participant "Permissions System" as permSystem
+participant "Storage System" as storage
+
+archivist -> batchTool : Upload files & metadata with embargo info
+activate batchTool
+
+batchTool -> repoDB : Check for existing records
+activate repoDB
+repoDB --> batchTool : Return results
+deactivate repoDB
+
+batchTool -> batchTool : Determine new entries
+batchTool -> storage : Store files
+activate storage
+storage --> batchTool : Confirm storage
+deactivate storage
+
+batchTool -> permSystem : Set metadata viewing to everyone
+activate permSystem
+permSystem --> batchTool : Metadata permissions set
+batchTool -> permSystem : Set file download perms for curators & admins
+permSystem --> batchTool : File permissions set
+deactivate permSystem
+
+batchTool -> repoDB : Update database with files, metadata, and permissions
+activate repoDB
+repoDB --> batchTool : Database updated
+deactivate repoDB
+
+batchTool --> archivist : Confirm ingest & embargo settings
+deactivate batchTool
+
+@enduml

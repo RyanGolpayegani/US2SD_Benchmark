@@ -1,0 +1,16 @@
+@startuml
+participant MemberUI as UI
+participant BookManagementSystem as BMS
+database LibraryDB as DB
+
+UI -> BMS: RequestBookStatus(bookID)
+note right of BMS: Validate request\nand user permissions
+BML -> DB: QueryBookAvailability(bookID)
+note right of DB: Look up book status
+DB --> BMS: BookStatus(isBorrowed, dueDate)
+alt Book is available
+    BMS --> UI: ShowMessage("The book is available.")
+else Book is borrowed
+    BMS --> UI: ShowMessage("The book is borrowed.\nDue back on: " + dueDate)
+end
+@enduml

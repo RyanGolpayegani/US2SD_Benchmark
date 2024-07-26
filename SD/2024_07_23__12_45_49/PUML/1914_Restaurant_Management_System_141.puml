@@ -1,0 +1,22 @@
+@startuml
+participant ManagerUI as M
+participant BackendServer as B
+participant Database as DB
+participant AnalyticsService as AS
+
+M -> B : Request best selling items data
+B -> AS : Fetch sales data
+activate AS
+AS -> DB : Query sales records
+DB --> AS : Sales data response
+deactivate AS
+AS --> B : Process best selling items
+B --> M : Display best selling items
+
+M -> M : Select items to remain on menu
+M -> B : Update menu request with selected items
+B -> DB : Update menu items
+DB --> B : Confirmation of update
+B --> M : Display update confirmation
+
+@enduml

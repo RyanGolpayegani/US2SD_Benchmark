@@ -1,0 +1,17 @@
+@startuml
+participant "API User" as user
+participant "OpenSpending API" as api
+participant "Authentication Service" as auth
+database "GIS Database" as gis
+
+user -> api: Send query with parameters for polygon data
+api -> auth: Validate API request
+auth --> api: Return validation result
+alt Authentication successful
+    api -> gis: Request matching polygon data
+    gis --> api: Respond with polygon data
+    api --> user: Return polygon data
+else Authentication failed
+    api --> user: Return error (Authentication failed)
+end
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+actor Moderator
+
+participant "UI: Account Creation Page" as UI
+participant "Server: Account Controller" as Controller
+participant "Service: Account Management" as Service
+database "DB: User Database" as DB
+
+== Account Creation Sequence ==
+
+Moderator -> UI : Enter Name, Email, Username, Password
+UI -> Controller : Validate Input
+alt Validation Success
+    Controller -> Service : Create Account Request(Name, Email, Username, Password)
+    Service -> DB : Check Username & Email Uniqueness
+
+    alt Username and Email Unique
+        DB -> Service : Uniqueness Confirmed
+        Service -> DB : Save New Account Details
+        DB -> Service : Account Save Confirmation
+        Service -> Controller : Account Creation Success
+        Controller -> UI : Display Success Message
+        UI -> Moderator : Show Confirmation
+    else Username or Email Already Exists
+        DB -> Service : Error: Details Not Unique
+        Service ->  Controller : Account Creation Failure
+        Controller -> UI : Display Error Message
+        UI -> Moderator : Show Error (Details Exist)
+    end
+
+else Validation Failed
+    Controller -> UI : Display Error Message (Validation Failed)
+    UI -> Moderator : Show Error (Invalid Input)
+end
+@enduml

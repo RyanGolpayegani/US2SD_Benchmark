@@ -1,0 +1,43 @@
+@startuml
+actor Archivist
+participant "Digital Archive\nManagement System" as DMS
+database "Archive Repository" as Archive
+
+== Uploading and Tagging Process ==
+Archivist->DMS : Log in
+activate DMS
+DMS->Archive : Authenticate Archivist
+activate Archive
+Archive->DMS : Authentication Success
+deactivate Archive
+DMS->Archivist : Display Upload Interface
+Archivist->DMS : Upload Scans of Archival Material\n(Set of files)
+activate DMS
+DMS->Archive : Store Files
+activate Archive
+Archive->DMS : Confirm Files Stored
+DMS->Archivist : Request Metadata (e.g., educational visit details)
+Archivist->DMS : Provide Metadata & Tags (e.g., Date, Topic)
+DMS->Archive : Apply Metadata & Tags to Files
+deactivate DMS
+Archive-->DMS : Confirmation of Tagging
+DMS-->Archivist : Confirm Successful Upload & Tagging
+deactivate Archive
+
+== Retrieval Process ==
+Archivist->DMS : Search for Archival Material\n(by tags or metadata)
+activate DMS
+DMS->Archive : Retrieve Matching Files
+activate Archive
+Archive->DMS : Return Results
+deactivate Archive
+DMS->Archivist : Display Results
+Archivist->DMS : Select Desired Files
+DMS->Archive : Fetch Selected Files
+activate Archive
+Archive->DMS : Provide Files
+DMS->Archivist : Download/View Files
+deactivate DMS
+deactivate Archive
+
+@enduml

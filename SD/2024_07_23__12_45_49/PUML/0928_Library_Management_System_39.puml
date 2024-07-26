@@ -1,0 +1,26 @@
+@startuml
+actor Librarian as L
+participant "UI Dashboard" as UI
+participant "Authentication Service" as Auth
+participant "Book Management Module" as BMM
+participant "Database" as DB
+
+== Authentication ==
+L -> UI: Accesses CLMS Dashboard
+UI -> Auth: Request authentication
+Auth -->> UI: Authentication Success
+
+== Creating Book List ==
+L -> UI: Selects "Create Book List"
+UI -> BMM: Initiates create book list process
+BMM -> DB: Fetches available books
+DB -->> BMM: Returns list of books
+BMM -->> UI: Displays available books
+L -> UI: Selects books and inputs list details
+UI -> BMM: Sends selected books and details
+BMM -> DB: Stores new book list
+DB -->> BMM: Confirm creation
+BMM -->> UI: Shows success message
+UI -->> L: Displays confirmation of book list creation
+
+@enduml

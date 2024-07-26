@@ -1,0 +1,28 @@
+@startuml
+
+actor UnivITServiceUser as "UnivIT Service User"
+participant ExportServiceInterface as "Export Service\nInterface"
+database DB as "Platform Database"
+participant TargetSystem as "Target System"
+
+== Export Data to Another System ==
+
+UnivITServiceUser -> ExportServiceInterface : Request data export
+activate ExportServiceInterface
+
+ExportServiceInterface -> DB : Retrieve all data
+activate DB
+DB --> ExportServiceInterface : Data
+deactivate DB
+
+ExportServiceInterface -> ExportServiceInterface : Process and convert data\nfor Target System
+
+ExportServiceInterface -> TargetSystem : Transfer data
+activate TargetSystem
+TargetSystem --> ExportServiceInterface : Acknowledge receipt
+deactivate TargetSystem
+
+ExportServiceInterface --> UnivITServiceUser : Confirm export completion
+deactivate ExportServiceInterface
+
+@enduml

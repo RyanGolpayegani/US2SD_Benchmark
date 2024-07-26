@@ -1,0 +1,21 @@
+@startuml
+participant "Medical Caregiver" as Caregiver
+participant "ALFRED System" as ALFRED
+participant "Emergency Module" as Emergency
+participant "Video Call Service" as VideoCall
+participant "Older Adult's Device" as Device
+
+Caregiver -> ALFRED : Request Emergency Assistance
+note right: Caregiver detects an emergency\nand needs to initiate a video call
+ALFRED -> Emergency : Trigger Emergency Protocol
+Emergency -> VideoCall : Initiate Video Call Request
+note over VideoCall: Video Call Service processes\nthe request and establishes connection
+VideoCall -> Device : Connect Video Call
+note left of Device: Older Adult's Device receives\nthe video call request
+Device --> VideoCall : Acknowledge Connection
+VideoCall --> Emergency : Confirm Call Establishment
+Emergency --> ALFRED : Video Call Active
+ALFRED --> Caregiver : Notify Video Call Status
+note right of Caregiver: Caregiver is informed about\nsuccessful video call connection
+
+@enduml

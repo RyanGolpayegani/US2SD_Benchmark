@@ -1,0 +1,21 @@
+@startuml
+actor Manager
+participant "Web Interface" as Web
+participant "Backend Server" as Server
+database "Library Database" as DB
+
+Manager -> Web : Log in as Manager
+Web -> Server : Authenticate Manager
+Server -> DB : Validate Manager Credentials
+DB --> Server : Authentication Success
+Server --> Web : Display Manager Dashboard
+
+Manager -> Web : Request List of Borrowed Books
+Web -> Server : Fetch Borrowed Books Information
+Server -> DB : Query Borrowed Books Data
+
+DB --> Server : Return Borrowed Books Data
+Server --> Web : Display Borrowed Books List
+Web --> Manager : Show List of Borrowed Books
+
+@enduml

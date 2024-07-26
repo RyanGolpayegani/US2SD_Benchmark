@@ -1,0 +1,54 @@
+@startuml
+participant "Researcher" as researcher
+participant "Repository System" as system
+participant "Notification Service" as notification
+participant "Content Database" as database
+participant "External Systems" as external
+
+researcher -> system : Search research by topic
+activate system
+
+system -> database : Query topic
+activate database
+database --> system : Return results
+deactivate database
+
+system --> researcher : Display research materials
+deactivate system
+
+researcher -> system : Subscribe to topic updates
+activate system
+
+system -> notification : Create subscription
+activate notification
+notification --> system : Confirmation
+deactivate notification
+
+system --> researcher : Subscription confirmed
+deactivate system
+
+loop Periodic Updates
+    system -> database : Check for new materials
+    activate database
+    database --> system : New materials on topic
+    deactivate database
+
+    system -> notification : Prepare update notification
+    activate notification
+    notification -> researcher : Send update notification
+    deactivate notification
+end
+
+loop On New Publication
+    external -> system : Notify new publication
+    activate system
+
+    system -> notification : Verify topic relevance
+    activate notification
+    notification -> researcher : Send relevant notification
+    deactivate notification
+
+    deactivate  system
+end
+
+@enduml

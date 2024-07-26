@@ -1,0 +1,17 @@
+@startuml
+actor LabMember as Member
+participant "UI Interface" as UI
+participant "Authorization Service" as Auth
+participant "Database" as DB
+participant "Event and Booking Manager" as Manager
+
+== Accessing Events and Equipment Bookings ==
+Member -> UI : Request to view events/bookings
+UI -> Auth : Validate user session
+Auth --> UI : Session valid
+UI -> Manager : Fetch events/bookings for group
+Manager -> DB : Query events/bookings data
+DB --> Manager : Return events/bookings data
+Manager --> UI : Display events/bookings data
+UI --> Member : Shows events and equipment bookings
+@enduml

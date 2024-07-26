@@ -1,0 +1,21 @@
+@startuml
+participant Manager as M
+participant Browser as B
+participant Server as S
+participant AnalyticsService as AS
+participant Database as DB
+
+M -> B: Requests customer satisfaction ratio
+B -> S: GET /customerSatisfactionRatio
+S -> AS: calculateSatisfactionRatio()
+AS -> DB: queryFeedbackAndRatings()
+DB --> AS: returns data
+AS --> S: ratioCalculated
+S --> B: satisfactionRatioResult
+B --> M: Displays Customer Satisfaction Ratio
+
+note over M: Manager views \n satisfaction ratio on dashboard
+note over AS: AnalyticsService calculates \n the ratio based on feedbacks \n and ratings
+note right of DB: Database holds feedback \n and ratings data
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+participant AppDeveloper as developer
+participant "App Management System" as appSystem
+participant "Dataset Type Repository" as typeRepo
+participant "Dataset Instance Manager" as instanceManager
+participant "Version Control" as versionControl
+
+developer -> appSystem : Request to create dataset instance with specific version
+activate appSystem
+
+appSystem -> typeRepo : Query available versions of dataset type
+activate typeRepo
+
+typeRepo -> versionControl : Fetch version details
+activate versionControl
+
+versionControl --> typeRepo : Return version details
+deactivate versionControl
+
+typeRepo --> appSystem : Return available versions
+deactivate typeRepo
+
+appSystem -> appSystem : Select required version
+activate appSystem
+
+appSystem -> instanceManager : Request creation of dataset instance with selected version
+activate instanceManager
+
+instanceManager -> versionControl : Verify version compatibility
+activate versionControl
+
+versionControl --> instanceManager : Confirm compatibility
+deactivate versionControl
+
+instanceManager -> instanceManager : Create dataset instance
+activate instanceManager
+
+instanceManager --> appSystem : Confirm instance creation
+deactivate instanceManager
+
+appSystem --> developer : Return confirmation of dataset instance creation
+deactivate appSystem
+
+@enduml

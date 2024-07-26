@@ -1,0 +1,39 @@
+@startuml
+actor Staff as staff
+participant "UI Interface" as UI
+participant "Server" as server
+participant "Database" as db
+
+staff -> UI : Select option to add borrowed book
+UI -> server : Request to add borrowed book
+activate server
+server -> db : Check if book is available
+activate db
+db --> server : Book availability status
+deactivate db
+
+alt If book is available
+    server -> db : Update book status to borrowed
+    activate db
+    db --> server : Confirm book status updated
+    deactivate db
+    
+    server -> db : Retrieve user information
+    activate db
+    db --> server : User information
+    deactivate db
+    
+    server -> db : Associate book with user
+    activate db
+    db --> server : Confirmation of association
+    deactivate db
+    
+    server --> UI : Display success message
+    UI --> staff : Show confirmation of book borrowed
+else If book is not available
+    server --> UI : Display book not available message
+    UI --> staff : Show book not available message
+end
+
+deactivate server
+@enduml

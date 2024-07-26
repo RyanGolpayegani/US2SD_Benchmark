@@ -1,0 +1,24 @@
+@startuml
+participant User
+participant "Login Interface" as Login
+participant "Authentication Controller" as AuthController
+database "LDAP Server" as LDAP
+database "Local Database" as LocalDB
+
+User -> Login: Enter credentials\n(username and password)
+Login -> AuthController: Validate credentials
+alt LDAP Authentication
+    AuthController -> LDAP: Check credentials
+    LDAP --> AuthController: Authentication Success/Failure
+else Local Authentication
+    AuthController -> LocalDB: Check credentials
+    LocalDB --> AuthController: Authentication Success/Failure
+end
+AuthController --> Login: Authentication Result
+alt Authentication Success
+    Login --> User: Display Dashboard/Home Page
+else Authentication Failure
+    Login --> User: Display Error Message\n(Invalid credentials or account not found)
+end
+
+@enduml

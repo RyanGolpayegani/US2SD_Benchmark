@@ -1,0 +1,24 @@
+@startuml
+participant Trainer
+participant AuthenticationSystem as Auth
+participant Dashboard
+participant CourseEventSystem as CES
+database CourseDB
+
+Trainer -> Auth: Login()
+Auth -> Trainer: Authentication Success
+
+Trainer -> Dashboard: Navigate to My Courses/Events
+Dashboard -> Trainer: Display Courses/Events List
+
+Trainer -> CES: Select Course/Event to Edit
+CES -> CourseDB: Retrieve Selected Course/Event Details()
+CourseDB -> CES: Course/Event Details
+CES -> Trainer: Display Course/Event Details
+
+Trainer -> CES: Update Course/Event Details(New Details)
+CES -> CourseDB: Update Course/Event(New Details)
+CourseDB -> CES: Confirmation
+
+CES -> Trainer: Display Update Confirmation
+@enduml

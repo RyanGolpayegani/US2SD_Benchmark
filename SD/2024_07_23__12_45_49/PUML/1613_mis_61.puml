@@ -1,0 +1,24 @@
+@startuml
+participant CollectionOwner as Owner
+participant UserManagementSubsystem as UserManager
+participant CollectionManagementSubsystem as CollectionManager
+participant PermissionsSubsystem as Permissions
+participant Database as DB
+
+Owner -> UserManager : login(credentials)
+UserManager -> Owner : authenticationSuccess
+
+Owner -> CollectionManager : accessCollection(collectionID)
+CollectionManager -> DB : fetchCollectionDetails(collectionID)
+DB -> CollectionManager : collectionDetails
+CollectionManager -> Owner : displayCollectionDetails
+
+Owner -> Permissions : requestChangePermissions(collectionID)
+Permissions -> DB : getCurrentPermissions(collectionID)
+DB -> Permissions : currentPermissionsDetails
+Permissions -> Permissions : generateRestrictedPermissions(submitterRole)
+Permissions -> DB : updatePermissions(collectionID, newPermissions)
+DB -> Permissions : confirmation
+
+Permissions -> Owner : displayConfirmation(confirmation)
+@enduml

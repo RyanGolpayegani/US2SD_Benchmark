@@ -1,0 +1,32 @@
+@startuml
+
+participant DataManager as DM
+participant "DMPTool System" as DMPTool
+entity "Approval Module" as ApprovalMod
+database "DMP Database" as DMPDB
+
+DM -> DMPTool : Request DMP approval status
+DMPTool -> ApprovalMod : Check approval status
+ApprovalMod -> DMPDB : Retrieve DMP details/Status
+DMPDB --> ApprovalMod : Return DMP details/Status
+ApprovalMod --> DMPTool : Approval status (Approved/Not Approved)
+DMPTool -> DM : Display approval status
+
+alt If DMP is Approved
+    DM -> DMPTool : Initiate next steps based on approval
+    DMPTool -> ApprovalMod : Log initiation of next steps
+    ApprovalMod -> DMPDB : Update DMP status with next steps begun
+    DMPDB --> ApprovalMod : Confirm update success
+    ApprovalMod --> DMPTool : Next steps initiated success
+    DMPTool --> DM : Confirm next steps initiated
+else If DMP is Not Approved
+    DMPTool --> DM : Display reasons/feedback for non-approval
+    DM -> DMPTool : Request/Perform adjustments
+    DMPTool -> ApprovalMod : Process adjustments
+    ApprovalMod -> DMPDB : Update DMP with adjustments
+    DMPDB --> ApprovalMod : Confirm update success
+    ApprovalMod --> DMPTool : Adjustments processed
+    DMPTool --> DM : Adjustments completed notification
+end
+
+@enduml

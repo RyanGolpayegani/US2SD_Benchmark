@@ -1,0 +1,31 @@
+@startuml
+actor Customer
+participant "UI Interface" as UI
+participant "Recommendation Controller" as Controller
+participant "Authentication Service" as AuthService
+participant "Recommendation Service" as RecService
+participant "Database" as DB
+
+Customer -> UI : Selects "My Recommendations"
+UI -> Controller : Request to view recommendations
+Controller -> AuthService : Validate user session
+AuthService -> Controller : Session valid
+Controller -> RecService : Fetch user recommendations
+RecService -> DB : Query recommendations by user ID
+DB -> RecService : Return recommendations
+RecService -> Controller : Recommendations data
+Controller -> UI : Display recommendations
+UI -> Customer : Shows list of recommendations
+
+Customer -> UI : Choose recommendation to update
+UI -> Controller : Request update to recommendation [ID]
+Controller -> AuthService : Confirm user permissions
+AuthService -> Controller : Permission granted
+Controller -> RecService : Request update [ID, new details]
+RecService -> DB : Update recommendation entry
+DB -> RecService : Confirmation of update
+RecService -> Controller : Update successful
+Controller -> UI : Update confirmation
+UI -> Customer : Display update success message
+
+@enduml

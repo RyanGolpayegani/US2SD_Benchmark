@@ -1,0 +1,26 @@
+@startuml
+participant "UI: Employee Interface" as UI
+participant "Server: Application Backend" as Server
+database "DB: Employee Data" as DB
+
+== Add New Employee Information ==
+
+UI -> Server: Request to update employee data
+activate Server
+
+Server -> DB: Retrieve current employee data
+activate DB
+DB --> Server: Current employee data
+deactivate DB
+
+Server -> Server: Process and validate new data
+Server -> DB: Update employee data with new information
+activate DB
+DB --> Server: Confirmation of update
+deactivate DB
+
+Server --> UI: Confirmation of data update
+deactivate Server
+
+UI --> Employee: Display confirmation message
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+participant User
+participant WebInterface as "OpenSpending Web Interface"
+participant API as "OpenSpending API"
+participant CurrencyService as "External Currency Conversion Service"
+
+User -> WebInterface: Select dataset with monetary measures
+activate WebInterface
+
+WebInterface -> API: Request dataset information
+activate API
+
+API --> WebInterface: Returns dataset information
+deactivate API
+
+WebInterface --> User: Displays dataset information
+deactivate WebInterface
+
+User -> WebInterface: Request to change currency display
+activate WebInterface
+
+WebInterface -> API: Request current currency rates
+activate API
+
+API -> CurrencyService: Query current rates for specified currencies
+activate CurrencyService
+
+CurrencyService --> API: Return current rates
+deactivate CurrencyService
+
+API --> WebInterface: Provides conversion rates
+deactivate API
+
+WebInterface -> WebInterface: Convert all monetary measures using rates
+WebInterface --> User: Display dataset in selected currency
+deactivate WebInterface
+
+@enduml

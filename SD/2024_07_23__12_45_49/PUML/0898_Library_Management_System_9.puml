@@ -1,0 +1,32 @@
+@startuml
+actor Customer
+participant "Login Page" as LoginPage
+participant "Search Page" as SearchPage
+participant "Book Details Page" as BookDetails
+participant "Recommendation System" as RecSystem
+database "CLMS Database" as Database
+
+Customer -> LoginPage : Enter credentials
+LoginPage -> Database : Validate user
+Database -> LoginPage : Authentication result
+LoginPage --> Customer : Authentication success
+
+Customer -> SearchPage : Search for book
+SearchPage -> Database : Query book details
+Database -> SearchPage : Return book result
+SearchPage --> Customer : Display search result
+
+Customer -> BookDetails : Select book
+BookDetails -> Database : Fetch book details
+Database -> BookDetails : Display selected book info
+BookDetails --> Customer : Show book details
+
+Customer -> RecSystem : Access recommendation form
+RecSystem --> Customer: Display recommendation form
+
+Customer -> RecSystem : Submit book recommendation
+RecSystem -> Database : Save recommendation
+Database -> RecSystem : Confirmation
+RecSystem --> Customer : Show submission success
+
+@enduml

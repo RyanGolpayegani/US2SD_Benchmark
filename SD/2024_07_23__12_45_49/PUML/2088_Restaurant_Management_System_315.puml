@@ -1,0 +1,30 @@
+@startuml
+actor Waiter as waiter
+participant "UI Interface" as ui
+participant "Reservation System" as reservationSystem
+database "DB Reservation Storage" as db
+
+waiter -> ui : Selects 'Update Reservation'
+activate ui
+
+ui -> reservationson : Sends update request
+activate reservationSystem
+
+reservationSystem -> db : Query existing reservation
+activate db
+db --> reservationSystem : Reservation details
+deactivate db
+
+reservationSystem -> reservationSystem : Process updates
+reservationSystem -> db : Save updated reservation
+activate db
+db --> reservationSystem : Confirmation
+deactivate db
+
+reservationSystem --> ui : Update confirmation
+deactivate reservationSystem
+
+ui --> waiter : Display confirmation message
+deactivae ui
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+participant "LibraryStaff" as staff
+participant "WebInterface" as web
+database "DigitalRepository" as repo
+
+staff -> web : LogIn()
+activate web
+
+web -> web : Authenticate()
+web -> staff: ShowDashboard()
+
+staff -> web : SelectCreateMetadata()
+activate web
+
+web -> staff: DisplayMetadataForm()
+
+staff -> web : SubmitMetadataForm(title, description, author, documentType, status, fileLocations, subscribableFlag, subjectArea, releaseFrequency, keywords)
+activate web
+
+web -> repo : CreateMetadata(title, description, author, documentType, status, fileLocations, subscribableFlag, subjectArea, releaseFrequency, keywords)
+activate repo
+
+repo -> repo : ValidateMetadata()
+repo -> repo : SaveMetadata()
+
+repo --> web : MetadataCreatedSuccess()
+deactivate repo
+
+web --> staff : ConfirmMetadataCreation()
+deactivate web
+
+@enduml

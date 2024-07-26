@@ -1,0 +1,45 @@
+@startuml
+participant MedicalCaregiver as caregiver
+participant "ALFRED System" as system
+participant "Exercise Module" as exercise
+participant "User Sensor Data" as sensor
+participant "User Device" as userdevice
+participant "Older Adult (User)" as user
+
+caregiver -> system : Evaluate exercise data
+activate system
+
+system -> exercise : Request recent exercise data
+activate exercise
+
+exercise -> sensor : Retrieve sensor data
+activate sensor
+
+sensor -> exercise : Send data
+deactivate sensor
+
+exercise --> system : Return exercise data
+deactivate exercise
+
+system -> system : Analyze data for incorrect/harmful exercises
+
+alt Exercise Performed Incorrectly
+    system -> userdevice : Send corrective feedback notification
+    activate userdevice
+
+    userdevice -> user : Display corrective feedback
+    activate user
+
+    user -> userdevice : Acknowledge feedback
+    deactivate user
+
+    userdevice --> system : Acknowledgement received
+    deactivate userdevice
+
+    system -> caregiver : Notify feedback delivery
+else Exercise Performed Correctly
+    system -> caregiver : Confirm exercise correctly performed
+end
+
+deactivate system
+@enduml

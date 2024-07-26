@@ -1,0 +1,20 @@
+@startuml
+actor Librarian as librarian
+participant "UI Interface" as ui
+participant "Backend System" as backend
+database "Database" as db
+
+librarian -> ui : Select "Add Book"
+ui -> backend : Request book info form
+backend -> ui : Display book info form
+librarian -> ui : Fill book info and submit
+ui -> backend : Validate data\nand create book record
+activate backend
+backend -> db : Insert book data
+activate db
+db --> backend : Confirm insertion
+deactivate db
+backend --> ui : Confirm book creation
+deactivate backend
+ui --> librarian : Display confirmation message
+@enduml

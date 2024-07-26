@@ -1,0 +1,24 @@
+@startuml
+actor DevOpsEngineer as DevOps
+participant "Broker Platform" as Broker
+participant "New Relic API" as NewRelicAPI
+participant "New Relic" as NewRelic
+database "Application Logs" as Logs
+
+DevOps -> Broker: Request application monitoring setup
+Broker -> NewRelicAPI: Initiate setup for New Relic integration
+NewRelicAPI -> NewRelic: Request integration with Broker platform
+NewRelic --> NewRelicAPI: Confirm integration setup
+NewRelicAPI --> Broker: Return integration confirmation
+Broker -> Logs: Enable detailed logging
+Logs --> Broker: Confirm logging enabled
+Broker --> DevOps: Confirm New Relic integration and logging setup
+
+DevOps -> NewRelic: Access New Relic Dashboard
+NewRelic -> NewRelicAPI: Fetch application performance data
+NewRelicAPI -> Logs: Request application logs
+Logs --> NewRelicAPI: Return requested logs
+NewRelicAPI --> NewRelic: Provide application performance and logs data
+NewRelic --> DevOps: Display application performance and logs
+
+@enduml

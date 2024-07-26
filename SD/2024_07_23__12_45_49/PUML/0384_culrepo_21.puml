@@ -1,0 +1,36 @@
+@startuml
+
+participant FacultyMember as FM "Faculty Member"
+participant "Digital Repository System" as DRS
+participant EmailService as ES "Email Notification Service"
+participant Database as DB "System Database"
+
+== Item Download Notification Process ==
+
+alt Item Downloaded
+    loop Each Download
+        activate DRS
+        
+        DRS -> DB: Check item ownership
+        activate DB
+        DB --> DRS: Faculty Member ID
+        deactivate DB
+        
+        DRS -> DB: Log download event
+        activate DB
+        DB --> DRS: Log success
+        deactivate DB
+        
+        DRS -> DRS: Determine if notification setting is ON for Faculty Member
+        DRS -> ES: Send download notification
+        activate ES
+        ES -> FM: Email notification
+        deactivate ES
+        
+        deactivate DRS
+    end
+else No Download
+    DRS --> FM: No action required
+end
+
+@enduml

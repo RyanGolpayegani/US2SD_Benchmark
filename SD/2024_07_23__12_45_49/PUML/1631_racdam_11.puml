@@ -1,0 +1,32 @@
+@startuml
+participant Archivist as A
+participant "Digital Archive\nManagement System" as DAMS
+database "Archival Collection\nDatabase" as DB
+participant "Licensing Module" as LM
+
+A -> DAMS : Searches for photo
+DAMS -> DB : Query photo records
+DB --> DAMS : Return photo records
+DAMS --> A : Display search results
+
+alt Photo has been scanned
+    A -> DAMS : Select photo
+    DAMS -> DB : Retrieve photo details
+    DB --> DAMS : Photo details
+    DAMS --> A : Display photo details\n(Scanned status: Yes)
+    
+    A -> LM : Request to license photo
+    LM -> DB : Check licensing conditions
+    DB --> LM : Licensing conditions met
+    LM --> A : Generate license agreement
+    
+    A -> DAMS : License photo to researcher
+    DAMS -> DB : Update photo record\n(Add license details)
+    DB --> DAMS : Confirm update
+    DAMS --> A : Confirm photo licensed
+    
+else Photo not scanned
+    DAMS --> A : Display message\n(Photo not scanned)
+end
+
+@enduml

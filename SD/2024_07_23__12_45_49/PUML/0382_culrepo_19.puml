@@ -1,0 +1,34 @@
+@startuml
+actor StaffMember as "Library Staff"
+participant UI as "User Interface"
+participant AccessControl as "Access Control System"
+participant AnalyticsModule as "Analytics Module"
+database DB as "Database"
+
+== Access Usage Statistics and Analytics ==
+
+StaffMember -> UI: Request usage statistics
+activate UI
+
+UI -> AccessControl: Validate Permissions
+activate AccessControl
+
+AccessControl --> UI: Grant Access
+deactivate AccessControl
+
+UI -> AnalyticsModule: Fetch Analytics
+activate AnalyticsModule
+
+AnalyticsModule -> DB: Query Usage Data
+activate DB
+
+DB --> AnalyticsModule: Return Results
+deactivate DB
+
+AnalyticsModule --> UI: Analytics Data (Repository, Collection, Author, Item Level)
+deactivate AnalyticsModule
+
+UI --> StaffMember: Display Usage Statistics & Altmetrics
+deactivate UI
+
+@enduml

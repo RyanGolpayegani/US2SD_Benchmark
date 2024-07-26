@@ -1,0 +1,18 @@
+@startuml
+actor "Platform Administrator" as admin
+participant "Admin Dashboard" as dashboard
+database "Dataset Database" as database
+participant "OpenSpending API" as api
+
+== Hide Public Dataset ==
+admin -> dashboard : Select dataset to hide
+dashboard -> database : Query dataset details
+database -> dashboard : Return dataset details
+dashboard -> admin : Show dataset details
+admin -> dashboard : Request to hide dataset
+dashboard -> api : Call hideDataset API
+api -> database : Update dataset status to hidden
+database -> api : Confirm dataset status update
+api -> dashboard : Confirm dataset is now hidden
+dashboard -> admin : Display confirmation message
+@enduml

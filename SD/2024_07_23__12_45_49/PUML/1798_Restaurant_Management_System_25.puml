@@ -1,0 +1,30 @@
+@startuml
+actor Chef as chef
+participant "Inventory Management\nSystem" as inventory
+database "Database" as db
+
+== Chef Checks Backup Food List ==
+chef -> inventory: Request backup food list
+activate inventory
+
+inventory -> db: Query backup food items
+activate db
+db --> inventory: Backup food items list
+deactivate db
+
+inventory --> chef: Display backup food items
+deactivate inventory
+
+== Chef Decides to Order Backup Food ==
+chef -> inventory: Select item(s) to order
+activate inventory
+
+inventory -> db: Update order list/request
+activate db
+db --> inventory: Confirmation of order update/request
+deactivate db
+
+inventory --> chef: Display order confirmation
+deactivate inventory
+
+@enduml

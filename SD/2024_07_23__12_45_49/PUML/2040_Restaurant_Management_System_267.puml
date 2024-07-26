@@ -1,0 +1,36 @@
+@startuml
+participant "Server" as server
+participant "UI Interface" as ui
+participant "Order Management" as om
+database "Database" as db
+participant "Kitchen" as kitchen
+participant "Inventory\nManagement" as inventory
+participant "Customer" as customer
+
+server -> ui : Select 'New Order'
+ui -> om : Initiate order creation
+om -> db : Retrieve current menu items
+db -> om : Return menu items
+om -> server : Display menu items
+server -> customer : Take order
+customer -> server : Give order details
+server -> om : Input order details
+om -> kitchen : Send order to kitchen
+activate kitchen
+kitchen -> db : Check ingredient availability
+db -> kitchen : Confirm ingredients available
+kitchen -> inventory : Update ingredient stock
+deactivate kitchen
+inventory -> db : Update stock levels
+db -> inventory : Acknowledge stock update
+inventory -> om : Confirm stock updated
+om -> server : Notify order confirmation
+server -> customer : Confirm order processing
+ui -> server : Update order status
+server -> ui : Mark order as completed
+om -> db : Update order status to 'Completed'
+db -> om : Acknowledge update
+om -> server : Notify order completion
+server -> customer : Serve completed order
+
+@enduml

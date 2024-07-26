@@ -1,0 +1,19 @@
+@startuml
+participant OlderPerson
+participant UI
+participant SpeechInteractionSystem
+participant ContentManagementSystem
+
+OlderPerson -> UI : Tap "Zoom In" or Say "Zoom In"
+UI -> SpeechInteractionSystem : InterpretZoomInCommand()
+alt Voice Command Recognized
+    SpeechInteractionSystem -> UI : ConfirmCommand()
+    UI -> ContentManagementSystem : RequestZoomInContent()
+    ContentManagementSystem -> UI : ProvideZoomedContent()
+    UI -> OlderPerson : DisplayZoomedContent()
+else Manual Command
+    UI -> ContentManagementSystem : RequestZoomInContent()
+    ContentManagementSystem -> UI : ProvideZoomedContent()
+    UI -> OlderPerson : DisplayZoomedContent()
+end
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+actor StaffMember as Staff
+participant "Portal System" as Portal
+database "Application Database" as Database
+participant "GIS System" for spatial compliance checks(optional) as GIS
+
+== Perform Staff Review to Validate Zoning Compliance ==
+
+Staff -> Portal : Request Application for Review
+Portal -> Database : Query Application Details
+Database --> Portal : Return Application Details
+Portal --> Staff : Show Application Details
+
+Staff -> Portal : Request Zoning Ordinance Compliance Check
+Portal -> Database : Retrieve Zoning Requirements
+Database --> Portal : Return Zoning Requirements
+
+Portal -> GIS : Request Spatial Compliance Check(optional)
+GIS --> Portal : Return Spatial Compliance Result
+
+Portal -> Portal : Assess Compliance with Zoning Ordinance
+Portal --> Staff : Display Compliance Assessment
+
+alt Compliance Satisfied
+    Staff -> Portal : Approve Application
+    Portal -> Database : Update Application Status to Approved
+    Database --> Portal : Confirm Status Update
+    Portal --> Staff : Display Approval Confirmation
+else Compliance Not Satisfied
+    Staff -> Portal : Request Additional Information/Reject Application
+    alt Request Additional Information
+        Portal -> Database : Update Application Status to Additional Information Requested
+        Database --> Portal : Confirm Status Update
+        Portal --> Staff : Display Request Confirmation
+    else Reject Application
+        Portal -> Database : Update Application Status to Denied
+        Database --> Portal : Confirm Status Update
+        Portal --> Staff : Display Denial Confirmation
+    end
+end
+
+@enduml

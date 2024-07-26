@@ -1,0 +1,32 @@
+@startuml
+actor LibraryManager as Manager
+participant "Library Management\n System" as System
+database "Database" as DB
+
+== Track Interactions with Patrons ==
+
+Manager -> System : Login()
+activate System
+
+System -> DB : FetchManagerCredentials()
+activate DB
+DB --> System : CredentialsValidated()
+deactivate DB
+
+System --> Manager : ShowDashboard()
+Manager -> System : SelectTrackInteractions()
+System -> DB : RetrieveInteractions()
+activate DB
+DB --> System : InteractionsData()
+deactivate DB
+
+System --> Manager : DisplayInteractions(InteractionsData)
+Manager -> System : InputFilterCriteria()
+System -> DB : ApplyFilters(FilterCriteria)
+activate DB
+DB --> System : FilteredInteractionsData()
+deactivate DB
+
+System --> Manager : DisplayFilteredInteractions(FilteredInteractionsData)
+
+@enduml

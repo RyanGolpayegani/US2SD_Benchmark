@@ -1,0 +1,24 @@
+@startuml
+autonumber
+actor Chef as chef
+participant "UI: Restaurant Management System" as UI
+participant "Backend Server" as backend
+database "Database" as db
+
+== Update Dish Sequence ==
+
+chef -> UI: Selects dish to update
+UI -> backend: Request to fetch dish details (GET /api/dishes/{id})
+backend -> db: Query dish details
+db -> backend: Return dish details
+backend -> UI: Display dish details
+UI -> chef: Show dish details
+
+chef -> UI: Updates dish information
+UI -> backend: Request to update dish (PUT /api/dishes/{id}, dishData)
+backend -> db: Update dish record
+db -> backend: Confirm update success
+backend -> UI: Acknowledge update success
+UI -> chef: Show success message
+
+@enduml

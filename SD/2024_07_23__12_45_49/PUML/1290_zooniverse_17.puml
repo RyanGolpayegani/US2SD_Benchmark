@@ -1,0 +1,20 @@
+@startuml
+participant User
+participant "Mobile App" as App
+participant "AMIDP System" as System
+participant "Geolocation Service" as GeoService
+participant "Content Database" as Database
+
+User -> App : Opens AMIDP app and requests content by location
+App -> GeoService : Requests current geolocation
+GeoService -> App : Returns geolocation
+App -> System : Requests videos/content for current location
+activate System
+System -> Database : Queries for content by geolocation
+activate Database
+Database --> System : Returns list of relevant content
+deactivate Database
+System --> App : Sends content recommendations
+deactivate System
+App --> User : Displays recommended videos/content
+@enduml

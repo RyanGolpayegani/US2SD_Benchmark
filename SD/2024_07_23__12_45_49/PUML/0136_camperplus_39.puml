@@ -1,0 +1,35 @@
+@startuml
+actor Parent as parent
+participant "Web Interface" as web
+participant "Backend Server" as server
+database "Database" as db
+
+== Account Creation ==
+parent -> web: Access Platform Website
+web -> parent: Display Homepage
+
+parent -> web: Click on "Create Account"
+web -> parent: Display Account Creation Form
+
+parent -> web: Fill in Details\n(Username, Password, Email)
+web -> server: Validate Form Input
+
+alt If validation fails
+    server -> web: Return Validation Error
+    web -> parent: Display Error Message
+    parent -> web: Corrects Input and Resubmits
+    web -> server: Validate Form Input
+end
+
+server -> db: Check if username/email exists
+alt If username/email exists
+    db -> server: Return Exists Message
+    server -> web: Inform Parent Email/Username Exists
+    web -> parent: Display Email/Username Exists Message
+else
+    db -> server: Create New Account Record
+    server -> web: Confirm Account Creation
+    web -> parent: Display Account Created Successfully\nPrompt to Login
+end
+
+@enduml

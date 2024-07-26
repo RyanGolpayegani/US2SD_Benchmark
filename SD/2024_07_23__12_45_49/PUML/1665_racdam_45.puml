@@ -1,0 +1,41 @@
+@startuml
+participant Archivist
+participant "Rights Management System" as Rights
+participant "Database" as DB
+participant "User Interface" as UI
+
+== Make Rights Information Available ==
+
+Archivist -> Rights : selectImages()
+activate Rights
+
+Rights -> DB : fetchImageRights(images)
+activate DB
+DB --> Rights : rightsDetails
+deactivate DB
+
+Rights -> UI : displayRightsInformation(rightsDetails)
+activate UI
+UI --> Archivist : showRightsInfo
+deactivate UI
+
+== Viewing Rights Information ==
+
+Archivist -> UI : inputRightsInformationForPublic(rightsInfo)
+activate UI
+
+UI -> DB : updatePublicRightsInfo(images, rightsInfo)
+activate DB
+DB --> UI : confirmation
+deactivate DB
+
+UI -> Rights : notifyResearchersAndDonors()
+activate Rights
+Rights --> UI : notificationStatus
+deactivate Rights
+
+UI --> Archivist : status
+deactivate UI
+deactivate Rights
+
+@enduml

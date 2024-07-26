@@ -1,0 +1,55 @@
+@startuml
+participant "Repository Manager" as RM
+participant "DIMS Interface" as UI
+participant "Object Management Module" as OMM
+participant "Subjects Management" as SM
+participant "Database" as DB
+
+RM -> UI: Select object to update
+activate UI
+
+UI -> OMM: Request object details
+activate OMM
+
+OMM -> DB: Query object information
+activate DB
+
+DB --> OMM: Return object details
+deactivate DB
+
+OMM --> UI: Display object details
+deactivate OMM
+
+RM -> UI: Indicate updating subjects
+activate UI
+
+UI -> SM: Request current subjects
+activate SM
+
+SM -> DB: Retrieve existing subjects
+activate DB
+
+DB --> SM: Return existing subjects list
+deactivate DB
+
+SM --> UI: Display subjects for modification
+deactivate SM
+
+RM -> UI: Add/remove subjects
+activate UI
+
+UI -> SM: Update subjects list
+activate SM
+
+SM -> DB: Save updated subjects
+activate DB
+
+DB --> SM: Confirm subjects updated
+deactivate DB
+
+SM --> UI: Acknowledge successful update
+UI --> RM: Display update confirmation
+deactivate SM
+deactivate UI
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+participant Cook
+participant "Management System" as System
+participant Database
+participant "Waiter's Interface" as WaiterInterface
+
+Cook -> System : Marks item as available
+activate Cook
+activate System
+
+System -> Database : Update item status to 'Available'
+activate Database
+
+Database -> System : Confirm update
+deactivate Database
+
+System -> WaiterInterface : Notify about item availability
+activate WaiterInterface
+
+WaiterInterface -> WaiterInterface : Display updated item status
+WaiterInterface -> Cook : Display confirmation message
+deactivate System
+
+Cook -> Cook : Update completed
+deactivate Cook
+@enduml

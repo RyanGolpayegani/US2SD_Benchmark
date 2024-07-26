@@ -1,0 +1,16 @@
+@startuml
+actor Archivist as archivist
+participant "Web Interface" as UI
+participant "Upload Service" as upload
+participant "Metadata Generation Service" as metadataService
+participant "Database" as db
+
+archivist -> UI: Upload digital file
+UI -> upload: Initiate file upload
+upload -> metadataService: Send file for metadata generation
+metadataService -> metadataService: Extract technical metadata \n(e.g., file size)
+metadataService -> db: Store technical metadata
+db -> metadataService: Confirm metadata stored
+metadataService -> upload: Notify upload success and metadata extraction
+upload -> UI: Confirm upload and display file size to Archivist
+@enduml

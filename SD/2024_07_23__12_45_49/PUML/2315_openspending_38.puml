@@ -1,0 +1,25 @@
+@startuml
+participant "API User" as user
+participant "API Gateway" as gateway
+participant "Authentication Service" as authService
+participant "Dataset Service" as datasetService
+participant "Calculation Engine" as calcEngine
+participant "Database" as db
+
+user -> gateway: Request (GET) /api/dataset/{dataset_id}/measure/{measure_id}/relative_percentage
+gateway -> authService: Validate API Key
+authService -> gateway: API Key Valid
+
+alt API Key Invalid
+  authService -> user: Error Response (401 Unauthorized)
+else API Key Valid
+  gateway -> datasetService: Fetch Measure & Dataset Info\n{dataset_id, measure_id}
+  datasetService -> db: Query Dataset & Measure
+  db -> datasetService: Dataset & Measure Data
+  datasetService -> calcEngine: Calculate Relative Percentage\n{measure_data, dataset_id}
+  calcEngine -> db: Fetch Total of Dataset\n{dataset_id}
+  db -> calcEngine: Dataset Total
+  calcEngine -> calcEngine: Compute Percentage\n{measure_value, dataset_total}
+  calcEngine -> user: Response\n{relative_percentage}
+end
+@enduml

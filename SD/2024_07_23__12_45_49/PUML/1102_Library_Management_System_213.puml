@@ -1,0 +1,27 @@
+@startuml
+participant Manager as M
+participant "Authentication System" as Auth
+participant "Discount Management Module" as DMM
+participant Database as DB
+participant "Notification System" as NS
+
+M -> Auth: Authenticate
+Auth --> M: Authentication Success
+
+M -> DMM: Select Books for Discount
+note right of M: Chooses books and\nspecifies discount
+
+DMM -> DB: Fetch Selected Books
+DB --> DMM: Book Details
+
+M -> DMM: Set Discount Parameters
+DMM -> DB: Update Book Prices with Discount
+DB --> DMM: Update Confirmation
+
+DMM -> NS: Trigger Discount Notifications
+NS -> DB: Fetch Eligible Customers
+DB --> NS: Customer Details
+
+NS -> NS: Send Discount Notifications
+
+@enduml

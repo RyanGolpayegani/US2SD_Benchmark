@@ -1,0 +1,38 @@
+@startuml
+actor Manager
+participant "Web Interface" as Web
+database "Library DB" as DB
+
+Manager -> Web : Access book tracking module
+activate Web
+
+Web -> DB : Request: Get books list
+activate DB
+DB --> Web : Response: Books list
+deactivate DB
+
+Web --> Manager : Display books list
+deactivate Web
+
+Manager -> Web : Select book to view details
+activate Web
+
+Web -> DB : Request: Get book details
+activate DB
+note right: Includes availability, \n genre, borrow times, etc.
+DB --> Web : Response: Book details
+deactivate DB
+
+Web --> Manager : Display book details
+deactivate Web
+
+Manager -> Web : Request: Generate book report
+activate Web
+Web -> DB : Get book statistics
+activate DB
+DB --> Web : Book statistics data
+deactivate DB
+Web --> Manager : Display report
+deactivate Web
+
+@enduml

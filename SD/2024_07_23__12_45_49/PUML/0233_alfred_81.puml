@@ -1,0 +1,23 @@
+@startuml
+actor OlderPerson as user
+participant "Speech Recognition" as SR
+participant "ALFRED UI" as UI
+participant "Contact Management" as CM
+participant "Calendar/Scheduling Service" as Calendar
+participant "Friend/Family Member Device" as FriendDevice
+
+user -> SR: "Schedule a meeting with [Friend]"
+SR -> UI: Convert voice to text
+UI -> CM: Search for [Friend]'s contact details
+CM -> UI: Display [Friend]'s contact information
+UI -> Calendar: Request available times for meeting
+Calendar -> UI: Show available times
+UI -> user: Present available times
+user -> SR: "Select [time/date]"
+SR -> UI: Convert selection to command
+UI -> Calendar: Schedule meeting for [time/date]
+Calendar -> UI: Confirm meeting scheduled
+UI -> FriendDevice: Send meeting invitation
+FriendDevice -> UI: Receive confirmation
+UI -> user: "Meeting with [Friend] scheduled for [time/date]"
+@enduml

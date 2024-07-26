@@ -1,0 +1,20 @@
+@startuml
+participant Admin
+participant "AMIDP Interface" as Interface
+participant "Content Analysis Module" as Analysis
+participant "Image Series Detection" as Detection
+participant "Metadata Repair Tool" as MetaRepair
+participant Database
+
+Admin -> Interface : selects malfunctioning image series
+Interface -> Analysis : initiate image analysis
+Analysis -> Detection : send images for series detection
+Detection -> MetaRepair : detect sequence and infer timestamps
+MetaRepair -> Database : query related images by content & inferred time
+Database --> MetaRepair : return related images
+MetaRepair --> Detection : compile corrected series with timestamps
+Detection --> Analysis : send corrected image series
+Analysis --> Interface : display corrected timestamps & series
+Interface --> Admin : show image series with fixed timestamps
+
+@enduml

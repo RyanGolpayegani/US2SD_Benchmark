@@ -1,0 +1,31 @@
+@startuml
+participant Manager as M
+participant "Management Interface" as MI
+participant "Inventory System" as IS
+participant "Menu Management" as MM
+participant "Supplier Interface" as SI
+
+M -> MI : Log in to Management Portal
+activate MI
+MI -> IS : Request current stock levels
+activate IS
+IS -> IS : Validate stock against menu needs
+IS -> MM : Request today's menu items
+activate MM
+MM -> MM : List ingredients for menu items
+MM --> IS : Send ingredients list
+deactivate MM
+IS -> IS : Compare stock vs. required ingredients
+IS --> MI : Send list of missing ingredients
+deactivate IS
+MI -> M : Display missing ingredients
+M -> MI : Create purchase order
+activate MI
+MI -> SI : Send purchase order for ingredients
+activate SI
+SI -> SI : Confirm order and estimate delivery
+SI --> MI : Send confirmation and delivery details
+deactivate SI
+MI --> M : Display order confirmation and expected delivery
+deactivate MI
+@enduml

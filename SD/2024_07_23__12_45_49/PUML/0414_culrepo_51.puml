@@ -1,0 +1,25 @@
+@startuml
+actor TeachingFacultyMember as faculty
+participant "User Interface" as UI
+participant "Search/Notification Engine" as SearchEngine
+participant "Content Management System" as CMS
+participant "Notification Service" as NotifService
+database "Digital Repository" as Repository
+
+== Identifying Relevant Research ==
+faculty -> UI: Specify search criteria/Configure notifications
+UI -> SearchEngine: Process search/notification request
+SearchEngine -> Repository: Query for matching content
+Repository --> SearchEngine: Return results
+SearchEngine --> UI: Display results/Confirm setup
+faculty -> UI: Select content/Set notification preferences
+UI -> CMS: Retrieve selected content details
+CMS --> faculty: Display content details/Notification confirmed
+
+== Receiving Notifications for New Content ==
+alt New content is published
+    Repository -> NotifService: Trigger content notification
+    NotifService -> faculty: Send notification about new content
+end
+
+@enduml

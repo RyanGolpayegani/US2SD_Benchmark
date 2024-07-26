@@ -1,0 +1,51 @@
+@startuml
+actor Researcher as researcher
+participant "Web Interface" as webInterface
+participant "Logbook Service" as logbookService
+participant "File Management\nService" as fileService
+participant "Database" as database
+
+researcher -> webInterface : Accesses Neurohub
+webInterface -> logbookService : Initiate Logbook Page Creation
+activate logbookService
+
+logbookService -> database : Create new logbook entry
+activate database
+database --> logbookService : Logbook Entry ID
+deactivate database
+
+logbookService --> webInterface : Display Logbook Page Editor
+deactivate logbookService
+researcher -> webInterface : Enters details and attaches file
+webInterface -> fileService : Upload File
+activate fileService
+
+fileService -> database : Store file metadata and path
+activate database
+database --> fileService : Confirmation
+deactivate database
+deactivate fileService
+
+fileService -> logbookService : Attach file to Logbook Page
+activate logbookService
+logbookService -> database : Update logbook entry with file details
+activate database
+database --> logbookService : Confirmation
+deactivate database
+
+logbookService --> webInterface : Display updated Logbook Page
+deactivate logbookService
+researcher -> webInterface : Confirms and Finalizes page
+webInterface -> logbookService : Finalize Logbook Page Creation
+activate loggameService
+
+logbookService -> database : Mark logbook page as complete
+activate database
+database --> logbookService : Confirmation
+deactivate database
+
+logbookService --> webInterface : Display confirmation message
+deactivate logbookService
+researcher -> webInterface : Logout or continue session
+
+@enduml

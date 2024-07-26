@@ -1,0 +1,25 @@
+@startuml
+actor LabAdmin as "Lab Administrator"
+participant "Access Control System" as ACS
+participant "User Management Module" as UMM
+participant "Neurohub Platform" as NP
+participant "Regular User" as RU
+
+LabAdmin -> ACS : Request increased access level
+ACS -> UMM : Validate lab admin privileges
+UMM --> ACS : Privileges Confirmed
+
+alt Increased Access Granted
+    ACS --> LabAdmin : Grant increased access
+    activate LabAdmin
+    LabAdmin -> NP : Access advanced user support features
+    activate NP
+    LabAdmin -> NP : Provide support to regular users
+    NP -> RU : Implement support actions
+    deactivate NP
+    deactivate LabAdmin
+else Increased Access Denied
+    ACS --> LabAdmin : Deny increased access\nInsufficient privileges
+    deactivate LabAdmin
+end
+@enduml

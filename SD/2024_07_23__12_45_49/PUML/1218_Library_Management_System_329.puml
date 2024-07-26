@@ -1,0 +1,24 @@
+@startuml
+participant Staff
+participant WebInterface
+participant ValidationService
+participant Database
+
+Staff -> WebInterface : Accesses book addition form
+WebInterface -> Staff : Presents book addition form
+
+Staff -> WebInterface : Submits new book details (Title, Author, Category, etc.)
+WebInterface -> ValidationService : Validates submitted details
+alt If validation fails
+    Validation their submit users to books and info stafftitle authors
+    ValidationService -> WebInterface : Sends validation errors
+    WebInterface -> Staff : Displays validation errors
+    Staff -> WebInterface : Corrects and resubmits book details
+    WebInterface -> ValidationService : Revalidates submitted details
+else If validation succeeds
+    ValidationService -> WebInterface : Confirmation of successful validation
+    WebInterface -> Database : Save new book details
+    Database -> WebInterface : Confirmation book details are saved
+    WebInterface -> Staff : Display success message
+end
+@enduml

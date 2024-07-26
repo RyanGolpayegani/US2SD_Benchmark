@@ -1,0 +1,29 @@
+@startuml
+actor User
+participant "UI Layer" as UI
+participant "API Controller" as Controller
+participant "Service Layer" as Service
+database "Database" as DB
+
+== Bulk Update Enum Value Process ==
+
+User -> UI: Selects enum values to update
+UI -> Controller: Sends bulk update request
+
+alt Validation Success
+    Controller -> Service: Validates request data
+    Service -> DB: Fetches target enum records
+    DB --> Service: Returns enum records
+    Service -> DB: Updates enum values en masse
+    DB --> Service: Confirms updates
+    Service --> Controller: Confirms success
+    Controller --> UI: Displays success message
+    UI --> User: Shows confirmation of bulk update
+else Validation Failure
+    Controller -> Service: Validates request data
+    Service --> Controller: Returns validation errors
+    Controller --> UI: Displays error messages
+    UI --> User: Indicates failure & reasons
+end
+
+@enduml

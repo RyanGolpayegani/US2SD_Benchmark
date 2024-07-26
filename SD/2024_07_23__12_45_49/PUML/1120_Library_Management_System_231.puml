@@ -1,0 +1,43 @@
+@startuml
+participant Manager as M
+participant WebInterface as WI
+participant BackendServer as BS
+participant Database as DB
+
+M -> WI: Access reporting module
+activate WI
+
+WI -> BS: Request: Get most borrowed book types
+activate BS
+
+BS -> DB: Query borrowed books statistics
+activate DB
+
+DB --> BS: Return statistics
+deactivate DB
+
+BS --> WI: Show statistics to Manager
+deactivate BS
+
+M <-- WI: Display most borrowed book types
+deactivate WI
+
+M -> WI: Select update library stock option
+activate WI
+
+WI -> BS: Request: Update focus on most borrowed types
+activate BS
+
+BS -> DB: Update stock/focus records
+activate DB
+
+DB --> BS: Confirm update
+deactivate DB
+
+BS --> WI: Show update confirmation to Manager
+deactivate BS
+
+WI --> M: Display confirmation message
+deactivate WI
+
+@enduml

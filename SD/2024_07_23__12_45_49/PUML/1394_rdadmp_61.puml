@@ -1,0 +1,23 @@
+@startuml
+!theme plain
+
+participant DataManager as DM
+participant "DMPTool Interface" as UI
+participant "Metadata Repository" as MR
+participant "External Datasets API" as EDA
+participant "Dependency Verification Module" as DVM
+database "Institutional Data Storage" as IDS
+
+DM --> UI : Request data dependency check
+UI -> DVM : Initiate dependency verification
+DVM -> MR : Retrieve dataset metadata
+MR --> DVM : Metadata including external dependencies
+DVM -> EDA : Query for external dataset information
+note right of EDA : Queries include\ninstitutional and external\ndatasets dependencies
+EDA --> DVM : External datasets details
+DVM -> IDS : Check for institutional datasets linkage
+IDS --> DVM : Institutional linkage information
+DVM --> UI : Display dependency verification results
+UI --> DM : Show results (dependencies & missing links)
+
+@enduml

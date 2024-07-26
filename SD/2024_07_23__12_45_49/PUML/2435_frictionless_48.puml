@@ -1,0 +1,22 @@
+@startuml
+participant Developer
+participant "Data Repository"
+participant "Online Validation Service" as OVS
+
+Developer -> "Data Repository" : Push data update
+activate "Data Repository"
+
+"Data Repository" -> OVS : Notify of data update
+activate OVS
+
+OVS -> "Data Repository" : Retrieve updated data
+activate "Data Repository"
+deactivate "Data Repository"
+
+OVS -> OVS : Validate data
+OVS -> "Data Repository" : Send validation results
+deactivate OVS
+
+"Data Repository" -> Developer : Display validation results
+deactivate "Data Repository"
+@enduml

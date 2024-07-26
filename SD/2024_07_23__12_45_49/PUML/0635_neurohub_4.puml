@@ -1,0 +1,21 @@
+@startuml
+actor Investigator as inv
+participant "Web Interface" as web
+participant "Authentication Service" as auth
+database "Test Results DB" as db
+participant "Report Generator" as report
+
+== Authentication Process ==
+inv -> web : Access Web Interface
+web -> auth : Authenticate Request
+auth -> web : Authentication Success
+
+== View Acceptance Test Results ==
+inv -> web : Selects "View Test Results"
+web -> db : Query Test Results
+db -> web : Return Results
+web -> report : Generate Test Report
+report -> web : Test Report
+web -> inv : Display Test Results
+
+@enduml

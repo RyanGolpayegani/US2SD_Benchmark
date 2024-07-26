@@ -1,0 +1,30 @@
+@startuml
+actor Librarian
+participant "Library System Interface" as System
+participant "Book Management Module" as BookModule
+database "Library Database" as Database
+
+Librarian -> System : Selects 'Remove Book' option
+System -> BookModule : InitiateBookRemoval(userID, bookID)
+activate BookModule
+
+BookModule -> Database : CheckBookAvailability(bookID)
+activate Database
+Database --> BookModule : BookAvailabilityStatus
+deactivate Database
+
+alt If book is available and issue process completed
+  BookModule -> Database : UpdateBookStatus(bookID, 'Removed')
+  activate Database
+  Database --> BookModule : Confirmation
+  deactivate Database
+  
+  BookModule --> System : DisplayRemovalConfirmation()
+  System --> Librarian : Confirm book removal
+else If book is not available or already issued
+  BookModule --> System : DisplayError(message)
+  System --> Librarian : Show error message
+end
+
+deactivate BookModule
+@enduml

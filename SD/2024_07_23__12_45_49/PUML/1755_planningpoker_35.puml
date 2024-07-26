@@ -1,0 +1,15 @@
+@startuml
+participant "Participant UI" as UI
+participant "Controller" as Controller
+participant "EstimationService" as Service
+database "Database" as DB
+
+UI -> Controller : requestEstimatorPreviousEstimates(storyId)
+Controller -> Service : getPreviousEstimates(storyId)
+Service -> DB : fetchEstimatesByStoryId(storyId)
+DB --> Service : return estimatesList
+Service --> Controller : estimatesData
+Controller --> UI : displayEstimates(estimatesData)
+
+note over UI : UI formats and shows each\nestimator's previous estimates
+@enduml

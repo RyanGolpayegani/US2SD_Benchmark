@@ -1,0 +1,21 @@
+@startuml
+actor Administrator as admin
+participant "Admin Dashboard" as dashboard
+database "Blog Database" as db
+participant "Content Management \nSystem (CMS)" as cms
+
+== Blog Creation Process ==
+admin -> dashboard: Access Dashboard
+dashboard -> cms: Select "Create Blog Post"
+activate cms
+admin -> cms: Provide Blog Post Content
+note right of admin: Content includes title, \nbody, images, and tags.
+cms -> cms: Verify Content and Permissions
+alt Validation Success
+  cms -> db: Save New Blog Post
+  db --> cms: Confirm Save
+  cms --> admin: Display Success Message
+else Validation Failure
+  cms --> admin: Show Error Messages
+end
+@enduml

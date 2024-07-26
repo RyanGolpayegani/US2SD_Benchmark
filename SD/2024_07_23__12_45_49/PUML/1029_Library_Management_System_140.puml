@@ -1,0 +1,40 @@
+@startuml
+participant LibraryMember as member
+participant "Web Interface" as webUI
+participant "Borrower Service" as borrowerService
+participant "Book Management System" as bookManagement
+participant Database as db
+
+== Change Due Date of a Borrowed Book ==
+
+member -> webUI: Request to modify due date of the borrowed book
+webUI -> borrowerService: Validate member session
+
+alt authentication success
+    borrowerService -> member: Authentication successful
+else authentication failure
+    borrowerService -> member: Authentication failed, request login
+    deactivate borrowerService
+    stop
+end
+
+borrowerService -> borrowerService: Retrieve member's borrowed book details
+borrowerService -> db: Query for the borrowed book details and current due date
+db -> borrowerService: Return borrowed book details and current due date
+
+borrowerService -> member: Display current due date and ask for new due date
+member -> borrowerService: Provides new desired due date
+
+alt if new due date is valid
+    borrowerService -> db: Request to update the due date in the database
+    db -> borrowerService: Confirm due date has been updated
+    borrowerService -> bookManagement: Notify of due date change for book tracking
+    bookManagement -> borrowerService: Acknowledge notification
+    borrowerService -> member: Confirm due date change
+else if new due date is not valid
+    borrowerService -> member: Notify about invalid due date selection and request a valid date
+    deactivate borrowerService
+    stop
+end
+
+@enduml

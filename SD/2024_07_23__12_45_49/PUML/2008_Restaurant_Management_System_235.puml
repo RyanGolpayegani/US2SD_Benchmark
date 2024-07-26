@@ -1,0 +1,25 @@
+@startuml
+actor Employee as emp
+entity "Inventory Management" as inv
+entity "Analytics Module" as analytics
+entity "Notification System" as notifSystem
+database "Database" as db
+
+== Check Stock Levels for Top 10 Menu Items ==
+emp -> analytics: Request top 10 menu items
+analytics -> db: Query top 10 ordered items
+db -> analytics: Return list
+analytics -> emp: Show top 10 items
+
+== Monitor Stock Levels ==
+loop every day at "4:00 AM"
+    analytics -> inv: Check stock levels for top 10 items
+    inv -> db: Request current stock for items
+    db -> inv: Return stock levels
+    inv -> analytics: Report below 30% items
+    analytics -> notifSystem: Trigger low stock warning
+    notifSystem -> db: Log warning event
+    db -> notifSystem: Confirm log
+    notifSystem -> emp: Send low stock alert
+end
+@enduml

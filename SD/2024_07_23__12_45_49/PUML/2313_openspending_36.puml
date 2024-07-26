@@ -1,0 +1,21 @@
+@startuml
+actor APIUser as "API User"
+participant "API Gateway" as APIGateway
+participant "Data Processing Service" as DataProcessing
+database "Datastore" as Datastore
+participant "GDP Normalization Service" as GDPNormalization
+participant "External GDP Data" as ExternalGDP
+
+APIUser -> APIGateway : Request to normalize measure by GDP with dataset identifier
+APIGateway -> DataProcessing : Retrieve specified dataset
+DataProcessing -> Datastore : Fetch dataset details\n(including monetary measures)
+Datastore --> DataProcessing : Return dataset details
+DataProcessing -> GDPNormalization : Send monetary measures for normalization
+GDPNormalization -> ExternalGDP : Request GDP data\n(based on dataset context)
+ExternalGDP --> GDPNormalization : Provide GDP data
+GDPNormalization -> GDPNormalization : Calculate normalized values
+GDPNormalization --> DataProcessing : Return normalized monetary measures
+DataProcessing --> APIGateway : Send normalized data response
+APIGateway --> APIUser : Provide normalized dataset measures by GDP
+
+@enduml

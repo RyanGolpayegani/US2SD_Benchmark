@@ -1,0 +1,28 @@
+@startuml
+actor Archivist as archivist
+participant "UI Interface" as ui
+participant "Authentication\nService" as auth
+participant "Subject Heading\nManagement Module" as subjectModule
+participant "Database" as db
+
+== Authentication Phase ==
+archivist -> ui : Access System
+ui -> auth : Request Authentication
+auth -> archivist : Authenticate
+archivist -> auth : Provide Credentials
+auth -> ui : Authentication Success
+
+== Association Phase ==
+archivist -> ui : Select Subject Heading
+ui -> subjectModule : Request Subject Heading Details
+subjectModule -> db : Retrieve Heading Details
+db -> subjectModule : Return Details
+subjectModule -> ui : Display Heading Details to Archivist
+archivist -> ui : Input Standard Identifier
+ui -> subjectModule : Associate Identifier with Heading
+subjectModule -> db : Update Heading with Identifier
+db -> subjectModule : Confirmation of Update
+subjectModule -> ui : Display Success Message
+ui -> archivist : Confirmation & Updated Details
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+actor "Data Publishing User" as User
+participant "OpenSpending Platform Interface" as Interface
+participant "Dataset Management Service" as ManagementService
+participant "Database" as DB
+
+User -> Interface : Select "My Published Datasets"
+Interface -> ManagementService : Request user's published datasets
+ManagementService -> DB : Query published datasets by user
+DB -> ManagementService : Return list of datasets
+ManagementService -> Interface : Display datasets to user
+User -> Interface : Choose dataset to delete
+Interface -> ManagementService : Request dataset deletion (dataset ID)
+alt If dataset can be deleted
+    ManagementService -> DB : Delete dataset record (dataset ID)
+    DB -> ManagementService : Confirm deletion
+    ManagementService -> Interface : Display success message
+    Interface -> User : Show dataset successfully deleted
+else If dataset cannot be deleted
+    ManagementService -> Interface : Display error message (reason)
+    Interface -> User : Show failure to delete dataset
+end
+
+@enduml

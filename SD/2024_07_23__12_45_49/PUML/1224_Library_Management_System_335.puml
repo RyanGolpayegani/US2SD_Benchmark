@@ -1,0 +1,24 @@
+@startuml
+actor Staff as s
+participant "UI Application" as ui
+participant "Backend System" as backend
+database "Database" as db
+
+s -> ui : Selects "Create New Profile"
+ui -> backend : Request to create new profile
+activate backend
+
+backend -> db : Check if subscriber exists
+activate db
+db --> backend : No existing subscriber
+deactivate db
+
+backend -> db : Create new subscriber profile
+activate db
+db --> backend : Profile created successfully
+deactivate db
+
+backend --> ui : Subscriber profile creation successful
+ui --> s : Display success message
+
+@enduml

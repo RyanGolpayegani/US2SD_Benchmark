@@ -1,0 +1,28 @@
+@startuml
+actor ZooniverseAdmin as admin
+participant "Media Upload Interface" as upload
+participant "Audio Processing Module" as audioProc
+participant "Noise Reduction Algorithm" as noiseRed
+database "Audio Storage" as storage
+
+admin -> upload : Upload audio file
+activate upload
+upload -> audioProc : Send audio file
+activate audioProc
+
+audioProc -> noiseRed : Analyze and identify noise
+activate noiseRed
+noiseRed --> audioProc : Noise profile
+deactivate noiseRed
+
+audioProc -> noiseMitigation Filter -> noiseRed : Apply noise reduction
+activate noiseFilter
+noiseFilter -> storage : Save processed audio
+activate storage
+storage --> admin : Updated audio file available
+deactivate storage
+deactivate noiseFilter
+deactivate audioProc
+deactivate upload
+
+@enduml

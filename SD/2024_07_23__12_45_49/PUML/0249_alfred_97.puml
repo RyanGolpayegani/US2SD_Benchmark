@@ -1,0 +1,34 @@
+@startuml
+actor "Social Caregiver" as Caregiver
+actor "User" as User
+participant "ALFRED Device" as Alfred
+participant "ALFRED Software" as Software
+participant "Health Monitoring\nService" as HealthService
+
+Caregiver -> Alfred: Request to enable Step Counter feature for User
+Alfred -> Software: Activate Step Counter
+Software -> Alfred: Step Counter activated
+activate Alfred
+Alfred -> User: "Step Counter feature is now available."
+User -> Alfred: "Enable Step Counter"
+Alfred -> Software: Initiate Step Counting
+deactivate Alfred
+
+loop Daily Usage
+    User -> Alfred: Walking
+    Alfred -> Software: Count steps
+end
+
+Software -> HealthService: Send daily step data
+HealthService -> Software: Acknowledge receipt
+
+loop Health Monitoring
+    Caregiver -> Alfred: Request Step Count Data
+    Alfred -> Software: Retrieve Step Data
+    Software -> HealthService: Request User's Step Data
+    HealthService -> Software: Send Step Data
+    Software -> Alfred: Display Step Data
+    Alfred -> Caregiver: Show Step Data
+end
+
+@enduml

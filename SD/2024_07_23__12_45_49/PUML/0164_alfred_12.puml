@@ -1,0 +1,56 @@
+@startuml
+participant OlderPerson
+participant "Settings Interface" as settings
+participant ALFRED
+participant SpeechService
+
+== Adjust Speech Rate ==
+
+OlderPerson -> settings : Select "Speech Settings"
+activate settings
+
+settings -> ALFRED : Request current speech rate
+activate ALFRED
+
+ALFRED -> SpeechService : Retrieve current speech rate
+activate SpeechService
+
+SpeechService --> ALFRED : Current speech rate
+deactivate SpeechService
+
+ALFRED --> settings : Show current speech rate
+deactivate ALFRED
+
+OlderPerson -> settings : Adjust to "Very Slow and Clear"
+activate settings
+
+settings -> ALFRED : Set new speech rate
+activate ALFRED
+
+ALFRED -> SpeechService : Update speech rate to "Very Slow"
+activate SpeechService
+
+SpeechService --> ALFRED : Confirm speech rate updated
+deactivate SpeechService
+
+ALFRED --> settings : Confirm speech rate adjustment
+deactivate ALFRED
+
+settings --> OlderPerson : "Speech will now be very slow and clear"
+deactivate settings
+
+== Interaction with ALFRED using adjusted speech rate ==
+
+OlderPerson -> ALFRED : "What's the weather today?"
+activate ALFRED
+
+ALFRED -> SpeechService : Generate speech("Very Slow and Clear", "Weather today is sunny with a high of 75")
+activate SpeechService
+
+SpeechService --> ALFRED : Slow and clear speech audio stream
+deactivate SpeechService
+
+ALFRED --> OlderPerson : Plays the slow and clear speech audio
+deactivate ALFRED
+
+@enduml

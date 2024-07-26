@@ -1,0 +1,39 @@
+@startuml
+participant "FABS User" as User
+participant "FABS Web Interface" as WebUI
+participant "Validation Service" as Validator
+participant "Database" as DB
+
+activate User
+User -> WebUI: Submit file for validation
+activate WebUI
+WebUI -> Validator: Request data validation
+activate Validator
+
+Validator -> DB: Fetch relevant validation rules
+activate DB
+DB --> Validator: Validation rules
+deactivate DB
+
+Validator -> Validator: Run validations against submission
+note right of Validator: Optimized algorithms\nto ensure efficiency
+
+Validator -> DB: Log validation results
+activate DB
+DB --> Validator: Acknowledge logging
+deactivate DB
+
+Validator --> WebUI: Validation results
+deactivate Validator
+
+WebUI --> User: Display validation results
+deactivate WebUI
+
+User -> WebUI: Request re-submission (if needed)
+WebUI -> Validator: Request data re-validation
+Validator -> DB: Log new submission
+DB --> Validator: Acknowledge logging
+Validator --> WebUI: New Validation results
+WebUI --> User: Display new validation results
+
+@enduml

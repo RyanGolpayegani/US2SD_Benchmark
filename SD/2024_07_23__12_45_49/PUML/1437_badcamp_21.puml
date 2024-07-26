@@ -1,0 +1,34 @@
+@startuml
+
+actor AuthenticatedUser as "Authenticated User"
+participant SponsorshipsPage as "Sponsorships Page"
+participant BackendAPI as "Backend API"
+database DB as "Database"
+participant PaymentGateway as "Payment Gateway"
+
+== Find Sponsorship Link ==
+AuthenticatedUser -> SponsorshipsPage: Visit Sponsorships Page
+SponsorshipsPage -> BackendAPI: Request Sponsorship Levels
+BackendAPI -> DB: Query Sponsorship Options
+DB -> BackendAPI: Sponsorship Details
+BackendAPI -> SponsorshipsPage: $350 Sponsorship Link
+SponsorshipsPage -> AuthenticatedUser: Display Sponsorship Options
+
+== Initiate Sponsorship ==
+AuthenticatedUser -> SponsorshipsPage: Select $350 Sponsorship
+SponsorshipsPage -> BackendAPI: Select $350 Level
+BackendAPI -> PaymentGateway: Initiate Payment Process
+PaymentGateway -> BackendAPI: Payment Page URL
+BackendAPI -> SponsorshipsPage: Redirect to Payment
+SponsorshipsStart -> AuthenticatedUser: Redirect to Payment Gateway
+
+== Complete Payment ==
+AuthenticatedUser -> PaymentGateway: Complete Payment
+PaymentGateway -> AuthenticatedUser: Payment Confirmation
+PaymentGateway -> BackendAPI: Notify Payment Success
+BackendAPI -> DB: Update Sponsorship Status
+DB -> BackendAPI: Confirmation
+BackendAPI -> SponsorshipsPage: Update User Role to Sponsor
+SponsorshipsPage -> AuthenticatedUser: Display Sponsor Confirmation
+
+@enduml

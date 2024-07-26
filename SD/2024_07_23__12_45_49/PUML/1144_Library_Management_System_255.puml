@@ -1,0 +1,27 @@
+@startuml
+participant Member
+participant "Web Interface" as Web
+database "CLMS Database" as DB
+participant "Comments Module" as Comments
+
+Member -> Web : Navigate to book details
+Web -> DB : Fetch book information
+DB --> Web :Return book details
+Web --> Member : Display book details
+
+Member -> Web : Select 'Add Comment'
+Web -> Comments : Initiate comment posting
+Member -> Web : Enter comment
+Web -> Comments : Validate comment\n(Check for profanity, length)
+
+alt Validation Success
+    Comments -> DB : Save comment
+    DB --> Comments : Confirmation
+    Comments -> Web : Confirm comment posted
+    Web --> Member : Display success message
+else Validation Failed
+    Comments -> Web : Show validation error
+    Web --> Member : Display error message
+end
+
+@enduml

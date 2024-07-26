@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+
+actor Librarian as librarian
+participant "Web Interface" as web
+participant "Application Logic" as backend
+database "Database" as db
+
+librarian -> web : Input search criteria\nfor book's location
+web -> backend : Forward search query
+
+activate web
+  activate backend
+    backend -> db : Fetch book location\nbased on criteria
+    activate db
+    db --> backend : Return book\nlocation details
+    deactivate db
+
+    backend --> web : Process and forward\nlocation details
+  deactivate backend
+
+web --> librarian : Display book\nlocation details
+deactivate web
+
+@enduml

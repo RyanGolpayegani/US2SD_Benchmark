@@ -1,0 +1,49 @@
+@startuml
+actor Tester
+participant "Broker UI" as UI
+participant "Validation Service" as Validation
+participant "Data Processing Module" as Processing
+participant "Broker Database" as DB
+participant "Log System" as Log
+participant "EMAIlING System" as EMAIL
+
+Tester -> UI : Upload FABS test file
+activate UI
+UI -> Validation : Validate file format and data
+activate Validation
+Validation --> UI : File validation errors / success
+deactivate Validation
+UI --> Tester : Display validation results
+
+alt If file is valid
+  UI -> Processing : Process FABS test file for field derivation
+  activate Processing
+  Processing -> DB : Add/Update derived fields in FABS data
+  activate DB
+  DB --> Processing : Confirm data update
+  deactivate DB
+  Processing --> UI : Display processing success
+  deactivate Processing
+  UI --> Tester : Show success message
+  Tester -> UI : Request FABS data check
+  UI -> DB : Query derived fields from FABS data
+  activate DB
+  DB --> UI : Return queried fields data
+  deactivate DB
+  UI --> Tester : Display queried fields to verify derivation
+else If file is invalid
+  UI --> Tester : Show error and suggest corrections
+end
+
+alt If derivation issues found
+  Tester -> Log : Log derivation issues
+  activate Log
+  Log --> Tester : Confirm issues logged
+  deactivate Log
+  Tester -> EMAIL : Send follow-up check request/notification
+  activate EMAIL
+  EMAIL --> Tester : Confirm follow-up request sent
+  deactivate EMAIL
+end
+
+@enduml

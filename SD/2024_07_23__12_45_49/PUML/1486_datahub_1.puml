@@ -1,0 +1,39 @@
+@startuml
+participant Publisher as pub
+participant "Authentication Service" as auth
+participant "UI Interface" as ui
+participant "Dataset Management Service" as dms
+participant "Access Control" as ac
+participant "Storage Service" as store
+participant "Team Members" as team
+
+== Authentication ==
+pub -> auth: Sign in via OAuth
+auth -> pub: Authentication Success
+
+== Publish a Dataset ==
+pub -> ui: Navigate to Publish Dataset
+ui -> pub: Display Publish Form
+
+pub -> ui: Submit Dataset Details\n(Private Visibility)
+ui -> dms: Request to Publish Dataset
+dms -> ac: Set Access Permissions
+ac -> dms: Permissions Set
+dms -> store: Save Dataset Info
+store -> dms: Dataset Stored
+dms -> pub: Dataset Published Successfully
+
+== Share Dataset with Team ==
+pub -> ui: Navigate to Dataset Settings
+ui -> pub: Display Settings
+pub -> ui: Select Team Members to Share With
+ui -> ac: Update Access Permissions for Selected Users
+ac -> ui: Access Updated
+ui -> pub: Dataset Shared Successfully with Selected Team Members
+
+team -> ui: Access Shared Dataset
+ui -> ac: Verify Access Permissions
+ac -> store: Access Granted
+store -> team: Display Dataset
+
+@enduml

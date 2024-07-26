@@ -1,0 +1,19 @@
+@startuml
+
+participant LibrarianUI as UI
+participant AuthenticationSystem as Auth
+participant UserManagementService as UM
+database Database as DB
+
+UI -> Auth : Authenticate librarian
+Auth --> UI : Authentication success
+
+UI -> UM : Request to block a member (memberID)
+UM -> DB : Validate librarian's privileges
+DB --> UM : Validation success
+
+UM -> DB : Update block status of member
+DB --> UM : Block status updated successfully
+UM --> UI : Member successfully blocked
+
+@enduml

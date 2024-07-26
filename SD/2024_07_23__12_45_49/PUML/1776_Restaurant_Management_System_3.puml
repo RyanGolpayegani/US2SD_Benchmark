@@ -1,0 +1,32 @@
+@startuml
+participant Cashier as cashier
+participant "Restaurant Management\nSystem" as system
+participant "Payments API" as paymentsAPI
+
+cashier -> system : Enter total bill amount
+cashier -> system : Specify number of customers\npaying separately
+
+alt calculating bill split
+    system -> system : Calculate each portion
+else bill split manually
+    cashier -> system : Enter specified amounts
+end
+
+system -> cashier : Display bill portions
+cashier -> system : Confirm bill split
+system -> paymentsAPI : Initiate payment requests
+
+loop For each customer
+    paymentsAPI -> paymentsAPI : Generate payment link
+    paymentsAPI -> cashier : Provide payment link for customer
+    cashier -> system : Log payment initiation
+end
+
+loop For each payment confirmation
+    paymentsAPI -> system : Confirm payment
+    system -> system : Update payment status
+end
+
+system -> cashier : Display all payments completed
+
+@enduml

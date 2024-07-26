@@ -1,0 +1,27 @@
+@startuml
+participant "Restaurant Manager" as manager
+participant "Management Interface" as UI
+participant "Backend Server" as server
+participant "Database" as db
+
+manager -> UI : Select "View Most Frequently Ordered Food"
+UI -> server : Request most ordered food data (monthly)
+server -> db : Query most ordered food of each month
+db -> server : Return query results
+server -> UI : Display most ordered food list
+UI -> manager : Show most ordered food (monthly)
+
+manager -> UI : Select "Delete" for targeted food item
+UI -> server : Send delete request for food item
+server -> db : Execute delete operation
+db -> server : Confirm deletion
+server -> UI : Confirms food item deletion
+UI -> manager : Display deletion confirmation
+
+manager -> UI : Request updated menu
+UI -> server : Query updated menu without deleted item
+server -> db : Retrieve updated menu list
+db -> server : Return updated menu
+UI -> manager : Display updated menu
+
+@enduml

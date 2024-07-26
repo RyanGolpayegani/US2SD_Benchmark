@@ -1,0 +1,29 @@
+@startuml
+
+actor User
+participant "Submission Interface" as SI
+participant "Validation Engine" as VE
+participant "Error Handling System" as EHS
+database "Broker Database" as BD
+
+User -> SI: Submit file with flexfields
+activate SI
+SI -> VE: Initiate validation
+activate VE
+
+VE -> BD: Retrieve validation rules
+activate BD
+BD --> VE: Validation rules
+deactivate BD
+
+VE -> VE: Validate submission
+VE -> EHS: Identify missing required elements
+activate EHS
+EHS -> VE: Generate error details
+VE --> SI: Return error with flexfield info
+
+deactivate VE
+SI -> User: Show error file with flexfields
+deactivate SI
+
+@enduml

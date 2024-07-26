@@ -1,0 +1,31 @@
+@startuml
+participant "Library Management System" as LMS
+participant "Database" as DB
+participant "Notification Service" as NS
+participant "Email Service" as ES
+participant "SMS Service" as SS
+participant "Customer" as Cust
+
+LMS -> DB: Check overdue books
+activate DB
+DB --> LMS: List of overdue loans
+deactivate DB
+
+loop for each overdue loan
+  LMS -> NS : Prepare notification message
+  activate NS
+  
+  NS -> ES: Send Email Notification
+  activate ES
+  ES --> Cust: Email about overdue book
+  deactivate ES
+  
+  NS -> SS: Send SMS Notification
+  activate SS
+  SS --> Cust: SMS about overdue book
+  deactivate SS
+  
+  deactivate NS
+end
+
+@enduml

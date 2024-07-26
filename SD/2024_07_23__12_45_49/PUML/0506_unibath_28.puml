@@ -1,0 +1,21 @@
+@startuml
+actor DataReuser as "Data Reuser"
+participant WebInterface as "Web Interface"
+participant SearchModule as "Search Module"
+participant DatasetManagement as "Dataset Management"
+participant DOIService as "DOI Service"
+
+DataReuser -> WebInterface: Search for dataset
+WebInterface -> SearchModule: Initiate search query
+SearchModule -> DatasetManagement: Retrieve dataset list
+SearchModule <-- DatasetManagement: Dataset list
+WebInterface <-- SearchAddon: Display datasets
+DataReuser -> WebInterface: Select dataset
+
+WebInterface -> DatasetManagement: Request dataset details
+DatasetManagement -> DOIService: Request DOI for Dataset
+DatasetManagement <-- DOIService: DOI
+WebInterface <-- DatasetManagement: Dataset details with DOI
+
+DataReuser <- WebInterface: Show DOI and dataset details
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+participant UserInterface as UI
+participant AuthenticationModule as Auth
+participant FileManager as FM
+participant Database as DB
+actor User
+
+User -> UI : Selects multiple files
+User -> UI : Requests ownership/sharing change
+UI -> Auth : Validates user
+Auth --> UI : Success/Failure
+alt Validation Success
+    UI -> FM : Request file details
+    FM -> DB : Fetch file details
+    DB --> FM : File details
+    FM --> UI : File details display
+    User -> UI : Selects new owner/shares
+    UI -> FM : Update request with new settings
+    FM -> DB : Update file metadata
+    DB --> FM : Update confirmation
+    FM --> UI : Confirmation message
+    UI --> User : Display success message
+else Validation Failure
+    UI --> User : Display error message
+end
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+actor Librarian as librarian
+participant "Librarian UI" as ui
+participant "Server" as server
+database "Database" as db
+participant "Notifications Module" as notifications
+
+librarian -> ui : Selects book for checkout
+ui -> server : Request to checkout book(bookId, userId)
+alt Book is available for checkout
+  server -> db : Query to update book status to "checked-out"(bookId)
+  db --> server : Confirm status update
+  server -> notifications : Send checkout notification(userId, bookId)
+  notifications -> librarian : Display checkout success message
+else Book not available
+  server -> librarian : Display error message(book not available)
+end
+
+@enduml

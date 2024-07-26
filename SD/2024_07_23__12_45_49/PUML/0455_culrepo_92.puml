@@ -1,0 +1,40 @@
+@startuml
+participant FacultyMember as FM
+participant "Digital Repository System" as DRS
+participant "Content Management System" as CMS
+participant "Database" as DB
+
+title Faculty Member Recommends a Digital Collection
+
+autonumber
+
+FM -> DRS: Initiate Collection Recommendation
+activate DRS
+
+DRS -> CMS: Verify Faculty Member Credentials
+activate CMS
+CMS --> DRS: Credentials Verified
+deactivate CMS
+
+DRS -> DRS: Process Recommendation Request
+DRS -> DB: Check Existing Collections
+activate DB
+DB --> DRS: No Similar Collections Found
+deactivate DB
+
+DRS -> DRS: Prepare Collection Proposal
+DRS -> FM: Request Additional Collection Details
+deactivate DRS
+activate FM
+FM --> DRS: Provide Collection Details
+activate DRS
+deactivate FM
+
+DRS -> DB: Save Collection Proposal
+activate DB
+DB --> DRS: Proposal Saved
+deactivate DB
+
+DRS -> FM: Confirm Collection Proposal Submission
+deactivate DRS
+@enduml

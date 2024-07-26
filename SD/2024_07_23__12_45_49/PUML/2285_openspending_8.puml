@@ -1,0 +1,43 @@
+@startuml
+actor User
+participant "Packager GUI" as GUI
+participant "Backend Server" as Backend
+participant "Datastore" as Datastore
+
+User -> GUI: Select dataset for editing
+GUI -> User: Show dataset editing options
+User -> GUI: Choose to add constants
+GUI -> User: Show constants addition interface
+
+User -> GUI: Input constant details (name, value, etc.)
+GUI -> Backend: Send constant addition request
+activate Backend
+Backend -> Backend: Validate constant details
+alt Invalid Details
+    Backend -> GUI: Respond with validation error
+    GUI -> User: Display error message
+    deactivate Backend
+else Valid Details
+    Backend -> Datastore: Store new constant in dataset model
+    activate Datastore
+    Datastore -> Backend: Confirm constant addition
+    deactivate Datastore
+    
+    Backend -> GUI: Confirm successful addition
+    deactivate Backend
+    GUI -> User: Display success message
+end
+
+User -> GUI: Request to save and reprocess dataset
+GUI -> Backend: Send reprocessing request with new constants
+activate Backend
+Backend -> Backend: Integrate constants into data model
+Backend -> Datastore: Update dataset with new model
+activate Datastore
+Datastore -> Backend: Confirm dataset update
+deactivate Datastore
+
+Backend -> GUI: Confirm successful dataset update
+deactivate Backend
+GUI -> User: Notify dataset update success
+@enduml

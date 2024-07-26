@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+
+actor Member as member
+participant "Web Interface" as web
+participant "Server" as server
+participant "Database" as db
+
+member -> web : Select "My Borrowed Books"
+web -> server : Request borrowed books list
+alt Authentication Check
+    server -> db : Validate member session
+    db -> server : Session valid
+else Unauthorized
+    server -> web : Redirect to login
+    web -> member : Display login screen
+    deactivate db
+    deactivate server
+    deactivate web
+    stop
+end
+
+server -> db : Query borrowed books for member
+db -> server : Return borrowed books list
+server -> web : Display borrowed books
+web ->\\\\ member : Show list of borrowed books
+
+@enduml

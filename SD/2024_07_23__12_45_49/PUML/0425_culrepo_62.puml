@@ -1,0 +1,43 @@
+@startuml
+participant "Library Staff" as LS
+participant "Repository System Interface" as RSI
+participant "Content Management System" as CMS
+participant "Metadata Management" as MM
+participant "Database" as DB
+
+LS -> RSI: Access content deposit form
+RSI --> LS: Display deposit form
+
+activate LS
+LS -> RSI: Choose to add custom metadata
+deactivate LS
+
+RSI -> CMS: Request custom metadata field addition
+activate CMS
+CMS -> MM: Initiate custom field creation
+activate MM
+
+MM -> MM: Validate custom metadata requirements
+MM -> DB: Create custom metadata field in schema
+activate DB
+DB --> MM: Confirm field creation
+deactivate DB
+
+MM --> CMS: Custom metadata field created
+deactivate MM
+CMS --> RSI: Custom field addition successful
+RSI --> LS: Show confirmation & updated form with custom field
+activate LS
+LS -> RSI: Complete deposit with custom metadata
+RSI -> CMS: Process deposit with custom metadata
+activate CMS
+CMS -> DB: Store deposit with custom metadata
+activate DB
+DB --> CMS: Confirm storage
+deactivate DB
+CMS --> RSI: Deposit successful
+RSI --> LS: Display success message
+deactivate CMS
+deactivate LS
+
+@enduml

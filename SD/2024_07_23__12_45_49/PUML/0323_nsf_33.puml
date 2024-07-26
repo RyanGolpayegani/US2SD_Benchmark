@@ -1,0 +1,29 @@
+@startuml
+participant Manager
+participant "Recruiter Setup System" as Setup
+participant "Cloud Infrastructure" as Cloud
+participant "Content Management System" as CMS
+participant Database
+
+Manager -> Setup : CheckRecruiterStatus()
+activate Setup
+
+Setup -> Cloud : VerifyRecruiterInstance()
+activate Cloud
+Cloud --> Setup : InstanceDetails
+deactivate Cloud
+
+Setup -> CMS : FetchRecruiterConfig()
+activate CMS
+CMS --> Setup : ConfigDetails
+deactivate CMS
+
+Setup -> Database : ValidateConfigSettings()
+activate Database
+Database --> Setup : ValidationResult{Status, Details}
+deactivate Database
+
+Setup --> Manager : StatusReport{IsValid, Issues}
+deactivate Setup
+
+@enduml

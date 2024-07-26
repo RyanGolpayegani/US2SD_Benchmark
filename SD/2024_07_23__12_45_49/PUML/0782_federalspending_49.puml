@@ -1,0 +1,31 @@
+@startuml
+actor BrokerUser as User
+participant "UI Interface" as UI
+participant "FABS Loader" as Loader
+participant "DataValidationService" as Validation
+database "FABS Database" as Database
+
+User -> UI : Initiate historical data loading
+UI -> Loader : Request data load with agency code derivation
+activate Loader
+
+Loader -> Validation : Validate historical FABS data
+activate Validation
+Validation -> Validation : Check data integrity and conformity
+Validation --> Loader : Data validation result
+deactivate Validation
+
+alt If data is valid
+    Loader -> Database : Update FABS data with derived agency codes
+    activate Database
+    Database --> Loader : Confirm data update
+    deactivate Database
+    Loader --> UI : Display success message
+    UI --> User : Show success message
+else If data has issues
+    Loader --> UI : Display error message
+    UI --> User : Show error message
+end
+
+deactivate Loader
+@enduml

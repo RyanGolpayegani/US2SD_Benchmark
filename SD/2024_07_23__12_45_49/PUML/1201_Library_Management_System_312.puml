@@ -1,0 +1,30 @@
+@startuml
+actor Member as member
+participant "UI Interface" as ui
+participant "Reservation System" as reservationSystem
+participant "Database" as db
+
+== Update Online Reservation ==
+
+member -> ui : Selects option to update reservation
+ui -> reservation <u>reservations</u>
+
+reservation -> db : Fetch current reservation details\n(MemberID, BookID)
+db -> reservation : Current reservation details
+reservation -> ui : Display current reservation details
+ui -> member : Shows current reservation details
+
+member -> ui : Inputs new reservation details\n(New dates, Book etc.)
+ui -> reservation : Sends updated reservation info\n(MemberID, NewDetails)
+
+alt If update is valid
+    reservation -> db : Update reservation details in DB\n(MemberID, NewDetails)
+    db -> reservation : Confirm reservation update
+    reservation -> ui : Display update success message
+    ui -> member : Shows reservation update success
+else If update is invalid
+    reservation -> ui : Display error message\n(Conflicting dates/Unavailable book)
+    ui -> member : Show error (Conflict/Book Unavailable)
+end
+
+@enduml

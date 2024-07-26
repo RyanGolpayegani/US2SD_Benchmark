@@ -1,0 +1,24 @@
+@startuml
+participant Staff as S
+participant UI as UI
+participant BackendServer as B
+participant Database as DB
+
+S -> UI: Select book to edit
+UI -> B: Request edit book form
+B -> DB: Fetch book details
+DB --> B: Book details
+B --> UI: Display edit book form with details
+S -> UI: Submit edited book details
+UI -> B: Submit update request for book
+B -> DB: Update book record
+alt Success
+    DB --> B: Acknowledgement
+    B --> UI: Display success message
+    S --> UI: Sees confirmation
+else Error
+    DB --> B: Error message
+    B --> UI: Display error message
+    S --> UI: Sees error
+end
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+participant Developer
+participant "Broker Platform\nInterface" as BrokerInterface
+participant "Historical FABS\nData Loader" as DataLoader
+participant "USASpending.gov\nDatabase" as USASpendingDB
+
+Developer -> BrokerInterface : Request loading historical FABS data
+BrokerInterface -> DataLoader : Initiate loading process with FREC derivations
+activate DataLoader
+
+DataLoader -> DataLoader : Process historical FABS data
+DataLoader -> DataLoader : Derive FREC from historical data
+
+DataLoader -> USASpendingDB : Update data with FREC derivations
+activate USASpendingDB
+USASpendingDB -> USASpendingDB : Validate and store FREC data
+deactivate USASpendingDB
+
+DataLoader --> BrokerInterface : Confirm data loaded successfully
+deactivate DataLoader
+
+BrokerInterface -> Developer : Notify successful data loading with FREC derivations
+@enduml

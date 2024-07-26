@@ -1,0 +1,36 @@
+@startuml
+actor Member1 as "Member #1"
+participant "Web Interface" as Web
+participant "Server: Friends Management" as FriendServer
+database "CLMS Database" as Db
+actor Member2 as "Member #2"
+
+== Search for Friend ==
+Member1 -> Web: Searches for Member #2
+Web -> FriendServer: Request to find Member #2
+FriendIBM Internal Use OnlyServer -> Db: Query for Member #2
+Db --> FriendServer: Member #2 Data
+FriendServer --> Web: Display Member #2 Profile
+Web --> Member1: Show Member #2 Profile and Option to Add as Friend
+
+== Send Friend Request ==
+Member1 -> Web: Add Member #2 as Friend
+Web -> FriendServer: Initiate Add Friend Request
+alt If Member #2 Accepts Friend Requests Automatically
+    FriendServer -> Db: Update Friends List
+    Db --> FriendServer: Confirmation
+    FriendServer --> Web: Friend Request Accepted
+    Web --> Member1: Notification of Success
+else
+    FriendServer -> Db: Save Friend Request
+    Db --> FriendServer: Request Saved
+    FriendServer -> Member2: Notify of Friend Request
+    Member2 -> FriendServer: Accepts Request
+    FriendServer -> Db: Update Friends List 
+    Db --> FriendServer: Friends List Updated
+    FriendServer --> Member2: Confirmation of Friendship
+    Member2 -> Web: Acknowledgement
+    Web --> Member1: Notification of Success
+end
+
+@enduml

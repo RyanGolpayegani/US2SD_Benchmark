@@ -1,0 +1,20 @@
+@startuml
+actor Manager
+participant "Web Interface" as Web
+database "Backend System" as Backend
+database "Database" as DB
+
+Manager -> Web : Request report generation on book genres
+activate Web
+Web -> Backend : Request book genre statistics
+activate Backend
+Backend -> DB : Query book genres and their statistics
+activate DB
+DB --> Backend : Return query results
+deactivate DB
+Backend -> Backend : Process and compile report data
+Backend --> Web : Send compiled report data
+deactivate Backend
+Web --> Manager : Display report on book genres
+deactivate Web
+@enduml

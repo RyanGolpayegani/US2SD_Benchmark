@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+
+participant "AnonymousUser" as User
+participant "Web Platform UI" as UI
+participant "Web Platform Backend" as Backend
+participant "Registration System" as RegSys
+
+User -> UI : Navigates to BADCamp website
+activate UI
+
+UI -> Backend : Request to load homepage
+activate Backend
+
+Backend -> UI : Returns homepage data
+UI -> User : Displays homepage
+
+User -> UI : Selects "Register"
+UI -> Backend : Request registration link
+Backend -> RegSys : Queries for registration form link
+activate RegSys
+
+RegSys -> Backend : Returns registration form link
+Backend -> UI : Provides link to UI
+UI -> User : Displays registration link
+
+User -> UI : Clicks registration link
+UI --> User : Redirects to Registration System
+deactivate Backend
+
+User -> RegSys : Access Registration Form
+RegSys -> User : Displays Registration Form
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+participant Trainer
+participant "Web Interface" as Web
+participant "File Processing System" as FPS
+participant "Database" as DB
+
+Trainer -> Web : Upload Excel File
+activate Web
+
+Web -> FPS : Send file for processing
+activate FPS
+
+FPS -> FPS : Validate file format
+alt file format is valid
+    FPS -> FPS : Extract data
+    note right: Data includes\nparticipant details
+    FPS -> DB : Insert participant records
+    activate DB
+    DB --> FPS : Acknowledge record addition
+    deactivate DB
+    
+    FPS --> Web : Confirm upload success
+else file format is invalid
+    FPS --> Web : Error: Invalid file format
+end
+deactivate FPS
+
+alt upload success
+    Web --> Trainer : Display success message
+else upload failure
+    Web --> Trainer : Display error message
+end
+
+deactivate Web
+@enduml

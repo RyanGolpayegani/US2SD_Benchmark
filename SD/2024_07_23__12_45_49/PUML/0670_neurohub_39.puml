@@ -1,0 +1,32 @@
+@startuml
+participant "Lab Administrator" as admin
+participant "Neurohub Interface" as neurohub
+database "Wormbase" as wormbase
+
+== Managing Worm Strain Stocks ==
+admin -> neurohub : Request worm strain management
+activate neurohub
+
+neurohub -> wormbase : Retrieve current strain data
+activate wormbase
+wormbaee --> neurohub : Strain data
+deactivate wormbase
+
+admin <- neurohub : Display strain data
+activate admin
+admin -> admin : Review / Update data
+
+admin -> neurohub : Submit updated strain data
+deactivate admin
+
+neurohub -> wormbase : Update strain information
+activate wormbase
+wormbase --> neurohub : Confirmation of update
+deactivate wormbase
+
+neurohub --> admin : Confirmation message
+activate admin
+deactivate admin
+deactivate neurohub
+
+@enduml

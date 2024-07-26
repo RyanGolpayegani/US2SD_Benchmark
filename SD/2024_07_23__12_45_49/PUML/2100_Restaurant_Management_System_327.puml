@@ -1,0 +1,25 @@
+@startuml
+actor Employee
+participant "Employee Interface" as EI
+participant "Discount Module" as DM
+participant "Customer Order" as CO
+participant "Order Management System" as OMS
+participant "Database" as DB
+participant "Customer Notification" as CN
+
+== Apply Discount to Customer Order ==
+
+Employee -> EI: Select order for discount
+EI -> DM: Request apply discount
+DM -> CO: Identify order details
+CO -> OMS: Request discount validation
+OMS -> DM: Validate discount criteria
+DM -> DB: Retrieve discount details
+DB --> DM: Discount parameters
+DM -> OMS: Apply discount to order
+OMS -> DB: Update order with discount
+DB --> OMS: Confirm order updated
+OMS -> CN: Send discount notification to customer
+CN --> Employee: Display confirmation message
+
+@enduml

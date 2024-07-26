@@ -1,0 +1,18 @@
+@startuml
+actor Manager
+participant "UI: Management Dashboard" as Dashboard
+participant "Backend Service: Order Management" as OrderService
+participant "Database" as DB
+
+Manager -> Dashboard: Selects order to edit
+Dashboard -> OrderService: Request order details [Order ID]
+OrderService -> DB: Query order details [Order ID]
+DB --> OrderService: Order details
+OrderService --> Dashboard: Show order details
+Manager -> Dashboard: Provides edited order details
+Dashboard -> OrderService: Update order request [Edited Details]
+OrderService -> DB: Update order in DB
+DB --> OrderService: Confirm update
+OrderService --> Dashboard: Update confirmation
+Dashboard --> Manager: Show update success message
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+participant Member
+participant SearchInterface
+participant SearchController
+database LibraryDatabase
+
+Member -> SearchInterface : Enter search criteria (title, author, category, date)
+SearchInterface -> SearchController : Validate input
+alt if input is valid
+  SearchController -> LibraryDatabase : Query books by criteria
+  LibraryDatabase -> SearchController : Return search results
+  SearchController -> SearchInterface : Display search results
+  SearchInterface -> Member : Show list of books
+else if input is invalid
+  SearchController -> SearchInterface : Show error message
+  SearchInterface -> Member : Retry search
+end
+@enduml

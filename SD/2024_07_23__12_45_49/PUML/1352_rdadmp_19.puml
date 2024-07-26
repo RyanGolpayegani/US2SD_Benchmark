@@ -1,0 +1,44 @@
+@startuml
+participant ITStaff as "IT Staff"
+participant ProjectPlan as "Project Plan"
+participant DMPTool as "DMPTool"
+participant MetadataTool as "Metadata Tool"
+participant DataManager as "Data Manager"
+participant ServicesDB as "Services Database"
+
+== Determine Data Types and Required Support Services ==
+
+ITStaff -> DMPTool: Access project details
+activate DMPTool
+
+DMPTool -> ProjectPlan: Request project metadata
+activate ProjectPlan
+
+ProjectPlan --> DMPTool: Return metadata (incl. data types)
+
+DMPTool -> MetadataTool: Import metadata
+activate MetadataTool
+
+MetadataTool --> DMPTool: Metadata imported successfully
+
+deactivate ProjectPlan
+deactivate MetadataTool
+
+DMPTool -> DataManager: Analyze metadata for data types
+activate DataManager
+
+DataManager --> DMPTool: List of data types
+deactivate DataManager
+
+DMPTool -> ITStaff: Display data types
+activate ITStaff
+
+ITStaff -> ServicesDB: Query for required services per data type
+activate ServicesDB
+Services首页531DB --> ITStaff: List of required services and functionalities
+deactivate ServicesDB
+
+deactivate DMPTool
+deactivate ITStaff
+
+@enduml

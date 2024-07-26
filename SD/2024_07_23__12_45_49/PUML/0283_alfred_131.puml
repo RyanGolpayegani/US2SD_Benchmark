@@ -1,0 +1,26 @@
+@startuml
+actor Developer
+participant "Developer Portal" as DP
+participant "ALFRED API" as API
+participant "Speech Recognition" as SR
+participant "Response Handling" as RH
+participant "Database" as DB
+
+Developer -> DP : Input new question-response pair
+DP -> API : Send question-response data
+API -> DB : Store new data
+activate DB
+DB --> API : Confirmation
+deactivate DB
+API --> DP : Show success message
+DP --> Developer : Display success confirmation
+
+alt Speech Recognition Process
+    Developer -> SR : Test new question via speech
+    SR -> DB : Query for response
+    DB -> SR : Return response data
+    SR -> RH : Provide response data
+    RH -> Developer : Output new response
+end
+
+@enduml

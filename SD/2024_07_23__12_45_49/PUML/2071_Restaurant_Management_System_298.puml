@@ -1,0 +1,26 @@
+@startuml
+participant Waiter_UI as Waiter
+participant OrderManagementSystem as OrderSystem
+participant Database as DB
+participant NotificationService as Notify
+participant Chef_UI as Chef
+
+Waiter -> Waiter_UI: InitiateOrderRenewal
+Waiter_UI -> OrderSystem: UpdateOrder(orderDetails)
+OrderSystem -> DB: CheckOrderValidity(orderId)
+DB -> OrderSystem: OrderValid
+
+alt If order is valid
+  OrderSystem -> DB: UpdateOrder(orderDetails)
+  DB -> OrderSystem: Confirmation
+  OrderSystem -> Notify: SendOrderUpdateNotification(chefId, orderDetails)
+  Notify -> Chef_UI: DisplayOrderUpdate
+  Chef_UI -> Chef: NotifyChefOfOrderUpdate
+  OrderSystem -> Waiter_UI: DisplaySuccessMessage
+  Waiter_UI -> Waiter: ConfirmOrderRenewal
+else If order not valid or update fails
+  OrderSystem -> Waiter_UI: DisplayErrorMessage(Reason)
+  Waiter_UI -> Waiter: ShowErrorToWaiter
+end
+
+@enduml

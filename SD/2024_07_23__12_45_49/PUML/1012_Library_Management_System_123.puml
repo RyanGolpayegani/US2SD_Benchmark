@@ -1,0 +1,21 @@
+@startuml
+participant LibraryManager as LM
+participant "Library Management\nSystem Interface" as LMSI
+participant "Score Calculation\nModule" as SCM
+participant "Member Database" as MDB
+participant "Decision Module" as DM
+
+LM -> LMSI : Request member's library score
+LMSI -> SCM : Calculate library score
+SCM -> MDB : Retrieve member's borrowing history
+MDB --> SCM : Borrowing history data
+SCM -> SCM : Compute score based on\nborrowing history, returns, and fines
+SCM --> LMSI : Return library score
+LMSI -> DM : Verify if score exceeds\nborrowing threshold
+DM -> MDB : Check threshold value
+MDB --> DM : Threshold value
+DM -> DM : Compare score with threshold
+DM --> LMSI : Decision to lend book or not
+LMSI --> LM : Show decision and\nmember's library score
+
+@enduml

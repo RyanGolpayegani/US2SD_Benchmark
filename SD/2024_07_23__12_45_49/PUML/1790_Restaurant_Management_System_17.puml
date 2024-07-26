@@ -1,0 +1,34 @@
+@startuml
+participant Chef
+participant "Restaurant Management\nand Operations System" as System
+participant "Order Management Module" as OrderModule
+participant Database
+
+Chef -> System : Checks for new orders
+System -> OrderModule : Retrieve new orders
+activate OrderModule
+
+OrderModule -> Database : Query new orders
+activate Database
+Database --> OrderModule : Return new order data
+deactivate Database
+
+OrderModule --> System : Display new orders
+System --> Chef : Show new orders on chef's dashboard
+deactivate OrderModule
+
+Chef -> System : Select order to prepare
+System -> OrderModule : Update order status to "In preparation"
+OrderModule -> Database : Update order status
+Database --> OrderModule : Confirm status update
+OrderModule --> System : Notify order update
+System --> Chef : Confirm order is in preparation
+
+Chef --> System : Mark order as Ready-to-Serve
+System -> OrderModule : Update order status to "Ready-to-Serve"
+OrderModule -> Database : Update order status
+Database --> OrderModule : Confirm status update
+OrderModule --> System : Notify servers order is Ready-to-Serve
+System -> Chef : Confirmation order is Ready-to-Serve
+
+@enduml

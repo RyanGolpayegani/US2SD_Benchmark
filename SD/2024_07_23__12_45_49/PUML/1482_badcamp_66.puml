@@ -1,0 +1,31 @@
+@startuml
+actor AuthenticatedUser as User
+participant "Registration \nInterface" as UI
+database "Sponsorship \nDatabase" as DB
+participant "Payment \nGateway" as PG
+
+User -> UI : Log in
+activate UI
+
+UI -> UI : Navigate to\nregistration start
+UI -> UI : Proceed to\nsecond page
+UI --> DB : Fetch sponsorship options
+activate DB
+DB --> UI : Return options
+deactivate DB
+
+UI -> User : Display sponsorship levels
+User -> UI : Selects sponsorship
+activate UI
+UI -> PG : Process payment
+activate PG
+PG -> User : Confirm and pay
+User -> PG : Submits payment
+PG -> DB : Update sponsorship status
+deactivate PG
+activate DB
+DB -> UI : Confirm update
+deactivate DB
+UI -> User : Display receipt and\nthank you message
+deactivate UI
+@enduml

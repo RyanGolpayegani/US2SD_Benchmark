@@ -1,0 +1,41 @@
+@startuml
+actor StaffMember as Staff
+entity "Customer Portal" as Portal
+database "Application Database" as Database
+
+== Perform Completeness Review ==
+
+Staff -> Portal : Log in to staff account
+Portal -> Database : Validate staff credentials
+Database -> Portal : Access granted
+
+Staff -> Portal : Select pending applications
+Portal -> Database : Fetch pending applications
+Database -> Portal : Display list of pending applications
+
+Staff -> Portal : Choose application for review
+Portal -> Database : Fetch application details
+Database -> Portal : Display application details
+
+Staff -> Portal : Review application details
+Staff -> Portal : Check for required documents
+Staff -> Portal : Validate application information
+
+alt All Required Information and Documents Submitted
+    Staff -> Portal : Mark application as "Complete"
+    Portal -> Database : Update application status to "Complete"
+    Database -> Portal : Confirmation of status update
+    Portal -> Staff : Notify completion of completeness review
+else Missing or Incomplete Information/Document
+    Staff -> Portal : Mark application as "Incomplete"
+    Portal -> Database : Update application status to "Incomplete"
+    Database -> Portal : Confirmation of status update
+    Portal -> Portal : Generate request for additional information
+    Portal -> Staff : Notify staff to communicate with applicant
+    Staff -> Portal : Send communication to applicant
+    Portal -> Database : Log communication and request for additional information
+    Database -> Portal : Confirmation of communication logged
+    Portal -> Staff : Confirmation of request sent to applicant
+end
+
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+actor Administrator as admin
+participant "Web Interface" as web
+participant "Application Server" as app
+database "Active Directory" as ad
+database "Permissions Database" as db
+
+== Assign Staff to User Groups ==
+admin -> web: Access User Management Interface
+web -> app: Request User Management Page
+app -> web: Return User Management Page
+web -> admin: Display User Management Page
+
+admin -> web: Submit Staff & Group Assignment
+web -> app: Process Assignment Request
+app -> ad: Update User Group
+ad -> app: Acknowledge Update
+app -> db: Update Read/Write Permissions
+db -> app: Acknowledge Permissions Update
+app -> web: Confirm Assignment Success
+web -> admin: Display Success Message
+
+@enduml

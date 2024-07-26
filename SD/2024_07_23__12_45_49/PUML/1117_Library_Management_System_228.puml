@@ -1,0 +1,26 @@
+@startuml
+actor Manager
+participant "Web Interface" as Web
+participant "Database" as DB
+participant "Fine Calculator" as FineCalc
+
+== Track Borrowed Books ==
+
+Manager -> Web : Request borrowed books list
+Web -> DB : Query borrowed books, user IDs, due dates
+DB --> Web : Return borrowed books data
+Web --> Manager : Display borrowed books list
+
+== Calculate Fines for Delayed Returns ==
+
+loop for each borrowed book
+    Web -> DB : Get current date, due date for book
+    DB --> Web : Return dates
+    Web -> FineCalc : Calculate fine based on dates
+    FineCalc --> Web : Return fine amount
+    Web -> DB : Update fine in user's account
+    DB --> Web : Confirm fine update
+end
+
+Web --> Manager : Display fines and updated due dates
+@enduml

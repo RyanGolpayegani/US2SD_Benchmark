@@ -1,0 +1,33 @@
+@startuml
+participant Cook
+participant "Cook Interface" as CI
+participant "Order Management System" as OMS
+participant "Inventory Management System" as IMS
+participant "Database" as DB
+
+Cook -> CI : Access system
+CI -> OMS : Select manage dishes
+alt Edit Dish Availability
+  Cook -> CI : Choose to update dish status
+  CI -> OMS : Request update dish status (dish_id, new_status)
+  OMS -> DB : Update Dish Status
+  DB --> OMS : Confirmation
+  OMS --> CI : Update Confirmed
+  CI --> Cook : Display success message
+else Check Inventory
+  Cook -> CI : Request inventory levels
+  CI -> IMS : Query inventory (ingredient_id)
+  IMS -> DB : Fetch Inventory Data
+  DB --> IMS : Inventory Details
+  IMS --> CI : Display Inventory Levels
+  CI --> Cook : Show inventory levels
+else Create New Order
+  Cook -> CI : Initiate new order
+  CI -> OMS : Create new Order (order_details)
+  OMS -> DB : Save new Order
+  DB --> OMS : Order Saved
+  OMS --> CI : Order Confirmation
+  CI --> Cook : Display order success
+end
+
+@enduml

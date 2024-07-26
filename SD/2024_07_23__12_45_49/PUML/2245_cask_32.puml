@@ -1,0 +1,30 @@
+@startuml
+
+participant PluginDeveloper as PD
+participant "Dataset Management \nSystem" as DMS
+participant "Application Deployment \n(Optional)" as AD
+participant "Custom Dataset Type" as CDT
+database "Dataset Repository" as DR
+
+== Use Case Initialization ==
+PD -> DMS: Requests to use a custom dataset type
+DMS -> DR: Searches for the requested dataset type
+alt Dataset type deployed as part of an application
+    DR -> AD: Confirms dataset type as part of app deployment
+    AD -> CDT: Fetches dataset type details
+else Dataset type deployed independently
+    DR -> CDT: Fetches dataset type details independently
+end
+
+== Dataset Type Integration ==
+CDT --> DMS: Returns dataset type details and metadata
+DMS --> PD: Provides integration details for the plugin
+PD -> PD: Integrates dataset type into plugin
+
+== Finalization ==
+PD -> DMS: Registers plugin with custom dataset integration
+DMS -> DR: Updates dataset repository with the new plugin registration
+PD -> DMS: Deploys plugin
+DMS -> CDT: Confirms dataset type availability for the plugin
+
+@enduml

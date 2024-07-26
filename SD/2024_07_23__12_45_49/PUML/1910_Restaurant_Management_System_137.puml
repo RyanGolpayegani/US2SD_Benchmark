@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+participant "Manager Interface" as manager
+participant "Backend Server\n(Node.js + Express)" as backend
+database "Database\n(PostgreSQL or MongoDB)" as db
+participant "Employee Interface" as employee
+
+== Editing an Employee's Shift Information ==
+
+manager -> backend : Request: Edit Shift Interface
+activate backend
+backend -> db : Fetch Employee's Current Shift Data
+activate db
+db --> backend : Return Current Shift Data
+deactivate db
+backend --> manager : Show Current Shift Data
+deactivate backend
+manager -> backend : Submit Updated Shift Data (Employee ID, New Shift Details)
+activate backend
+backend -> db : Update Shift Information
+activate db
+db --> backend : Confirmation
+deactivate db
+backend --> manager : Update Confirmation
+deactivate backend
+
+== Notification of Shift Change ==
+backend -> employee : Notify Shift Change
+activate employee
+employee --> backend : Acknowledge Receipt
+deactivate employee
+
+@enduml

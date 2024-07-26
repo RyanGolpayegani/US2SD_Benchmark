@@ -1,0 +1,28 @@
+@startuml
+participant AcademicPublisher as AP
+participant WebInterface as WI
+participant DataManager as DM
+participant DOIService as DOI
+participant VerificationService as VS
+participant NotificationService as NS
+
+AP -> WI : Submit link request (Article ID, Dataset ID)
+WI -> DM : Check if DOI exists for Dataset ID
+alt DOI exists
+    DM -> DM : Retrieve existing DOI
+else DOI not exists
+    DM -> DOI : Request DOI minting for Dataset
+    DOI -> DM : DOI minted and returned
+end
+DM -> WI : DOI for Dataset Retrieved/Generated
+WI -> AP : Show DOI, request confirmation to create link
+AP -> WI : Confirm link creation
+WI -> VS : Verify link integrity and compliance
+VS -> VS : Perform verification checks
+VS -> WI : Verification Successful
+WI -> DM : Create persistent link (Article DOI, Dataset DOI)
+DM -> NS : Notify stakeholders of link creation
+NS -> AP : Send confirmation and details of link creation
+AP <- NS : Receive notifications (as applicable)
+
+@enduml

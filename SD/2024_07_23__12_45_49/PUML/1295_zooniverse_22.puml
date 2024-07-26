@@ -1,0 +1,20 @@
+@startuml
+actor Admin
+participant "Upload Interface" as UI
+participant "Content Analysis System" as CAS
+participant "Audio Fingerprinting Service" as AFS
+participant "Editing Detection Engine" as EDE
+participant "Database" as DB
+
+Admin -> UI: Upload audio file
+UI -> CAS: Send file for analysis
+CAS -> AFS: Extract audio fingerprint
+AFS -> CAS: Return fingerprint data
+CAS -> EDE: Analyze for editing
+EDE -> DB: Check fingerprint against known originals
+DB -> EDE: Return comparison results
+EDE -> CAS: Interpret results to assess editing
+CAS -> UI: Display assessment result
+UI -> Admin: Show if audio has been edited
+
+@enduml

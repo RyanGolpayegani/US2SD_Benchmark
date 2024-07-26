@@ -1,0 +1,25 @@
+@startuml
+actor Manager as manager
+participant "Management Interface" as managementUI
+participant "Backend Server" as server
+participant "Database" as db
+
+manager -> managementUI : Selects 'Delete Monthly Favorites'
+managementUI -> server : Request to delete monthly favorites
+activate server
+
+server -> db : Fetch monthly favorites IDs
+activate db
+db --> server : Return list of IDs
+deactivate db
+
+server -> db : Delete records by IDs
+activate db
+db --> server : Confirmation of deletion
+deactivate db
+
+server --> managementUI : Display success message
+deactivate server
+managementUI --> manager : Show confirmation of deletion
+
+@enduml

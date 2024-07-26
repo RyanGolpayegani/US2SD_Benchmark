@@ -1,0 +1,43 @@
+@startuml
+
+actor OlderPerson as "Older Person"
+participant "Voice Interface" as Voice
+participant "Personalization Engine" as Engine
+participant "Activity Module" as Activity
+participant "Health Module" as Health
+participant "Social Module" as Social
+
+== Initialization ==
+OlderPerson -> Voice : Says "I'm bored"
+Voice -> Engine : interpretRequest("I'm bored")
+Engine -> Activity : fetchNewActivities()
+Activity -> Engine : listActivities(["Walking", "Yoga", "Museum Visit"])
+Engine -> Voice : suggestActivities()
+Voice -> OlderPerson : displayActivities(["Walking", "Yoga", "Museum Visit"])
+
+== Selection of Activity ==
+OlderPerson -> Voice : Says "Select Yoga"
+Voice -> Engine : interpretSelection("Yoga")
+Engine -> Activity : setActivity("Yoga")
+Activity -> Health : adjustHealthGoals("Yoga")
+Health -> Engine : confirmGoalsSet()
+Engine -> Social : findLocalYogaClasses()
+Social -> Engine : yogaClassesDetails([Class1, Class2])
+
+== Communicating Activity Details ==
+Engine -> Voice : communicateActivityDetails([Class1, Class2])
+Voice -> OlderPerson : displayClasses([Class1, Class2])
+OlderPerson -> Voice : Says "Enroll me in Class1"
+Voice -> Engine : interpretEnrollment("Class1")
+Engine -> Social : enrollInClass("Class1")
+Social -> Engine : enrollmentConfirmed("Class1")
+Engine -> Voice : confirmEnrollment("Class1")
+Voice -> OlderPerson : displayConfirmation("Enrolled in Class1")
+
+== Reminder Setup ==
+Engine -> Activity : setReminder("Yoga", "Class1")
+Activity -> Engine : reminderConfirmed("Yoga", "Class1")
+Engine -> Voice : setSuccessMessage("Reminder Set for Yoga Class1")
+Voice -> OlderPerson : displayMessage("Reminder Set for Yoga Class1")
+
+@enduml

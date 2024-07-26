@@ -1,0 +1,26 @@
+@startuml
+actor Archivist as archivist
+participant "Web Interface" as web
+database "CAMS Database" as db
+participant "Import Module" as importMod
+participant "MARCXML Parser" as parser
+participant "Resource Manager" as resourceMan
+
+== Import Resources from MARCXML Records ==
+
+archivist -> web : Select "Import MARCXML"
+web -> importMod : Trigger import process
+importMod -> parser : Send MARCXML data
+parser -> parser : Parse MARCXML to CAMS format
+parser -> resourceMan : Send parsed data
+
+alt Successful Parsing
+    resourceMan -> db : Store new Resources
+    db -> resourceMan : Confirm storage
+    resourceMan -> web : Respond with success message
+    web -> archivist : Display success message
+else Parsing Error
+    resourceMan -> web : Respond with error message
+    web -> archivist : Display error message
+end
+@enduml

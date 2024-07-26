@@ -1,0 +1,31 @@
+@startuml
+actor Customer as cust
+participant "Web Interface" as web
+participant "Recommendation Controller" as recCtrl
+database "Database" as db
+
+cust -> web : Choose to delete recommendation
+activate web
+
+web -> recCtrl : Request to delete recommendation(ID)
+activate recCtrl
+
+recCtrl -> db : Query to check recommendation exists
+activate db
+
+db --> recCtrl : Recommendation details
+deactivate db
+
+recCtrl -> db : Delete recommendation by ID
+activate db
+
+db --> recCtrl : Confirmation of deletion
+deactivate db
+
+recCtrl --> web : Show success message
+deactivate recCtrl
+
+web --> cust : Display deletion success message
+deactivate web
+
+@enduml

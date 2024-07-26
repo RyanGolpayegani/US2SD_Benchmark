@@ -1,0 +1,30 @@
+@startuml
+actor User
+participant "UI" as UI
+participant "UserController" as UserController
+participant "UserService" as UserService
+participant "UserRepository" as UserRepository
+
+User -> UI : Selects 'View Profiles'
+UI -> UserController : viewOtherUserProfiles()
+activate UserController
+
+UserController -> UserService : getOtherUserProfileDetails()
+activate UserService
+
+UserService -> UserRepository : findUserProfiles()
+activate UserRepository
+
+UserRepository --> UserService : userProfileData
+deactivate UserRepository
+
+UserService --> UserController : userProfileDetails
+deactivate UserService
+
+UserController --> UI : displayUserProfiles(userProfileDetails)
+deactivate UserController
+
+UI --> User : Shows User Profiles
+deactivate UI
+
+@enduml

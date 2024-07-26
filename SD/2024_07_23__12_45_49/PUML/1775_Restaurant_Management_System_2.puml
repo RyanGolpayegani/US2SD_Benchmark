@@ -1,0 +1,32 @@
+@startuml
+participant CashierInterface
+participant AuthenticationModule
+participant OrderManagementSystem
+participant Database
+
+== Displaying Table Tabs for Payment ==
+
+CashierInterface -> AuthenticationModule: Validate Cashier
+AuthenticationModule -> CashierInterface: Validation Success
+
+CashierInterface -> OrderManagementSystem: Request to Retrieve Table Tabs
+OrderManagementSystem -> Database: Query Table and Orders
+Database -> OrderManagementSystem: Return Table Order Data
+
+OrderManagementSystem -> CashierInterface: Display Table Tabs
+
+CashierInterface -> Cashier: Cashier Reviews Tabs
+
+== Process for Continuing with Payment ==
+
+Cashier -> CashierInterface: Confirm Payment Initiation
+CashierInterface -> OrderManagementSystem: Process Payment Request
+OrderManagementSystem -> Database: Update Order Status
+Database -> OrderManagementSystem: Confirm Update
+
+OrderManagementSystem -> PaymentGateway: Request Payment Processing
+PaymentGateway -> OrderManagementSystem: Payment Success
+OrderManagementSystem -> CashierInterface: Confirm Payment Success
+CashierInterface -> Cashier: Display Payment Success Message
+
+@enduml

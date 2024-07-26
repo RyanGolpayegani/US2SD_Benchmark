@@ -1,0 +1,31 @@
+@startuml
+participant SiteAdmin
+participant PaymentVerificationSystem
+participant CourseRegistrationSystem
+
+SiteAdmin -> PaymentVerificationSystem : VerifyPayment(proof)
+activate SiteAdmin
+activate PaymentVerificationSystem
+
+PaymentVerificationSystem --> SiteAdmin : VerificationStatus
+deactivate PaymentVerificationSystem
+
+alt If Payment Verified
+
+    SiteAdmin -> CourseRegistrationSystem : MoveToRegistered(pendingMembers)
+    activate CourseRegistrationSystem
+ 
+    CourseRegistrationSystem --> SiteAdmin : UpdateStatus(success/failure)
+    deactivate CourseRegistrationSystem
+
+else If Payment Not Verified
+
+    SiteAdmin -> CourseRegistrationSystem : KeepAsPending(pendingMembers)
+    activate CourseRegistrationSystem
+ 
+    CourseRegistrationSystem --> SiteAdmin : NoActionRequired
+    deactivate CourseRegistrationSystem
+
+end
+
+@enduml

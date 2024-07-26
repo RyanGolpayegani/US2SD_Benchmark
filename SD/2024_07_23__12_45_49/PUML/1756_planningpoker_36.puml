@@ -1,0 +1,20 @@
+@startuml
+participant User as participant
+participant Browser_GUI as gui
+participant Server as server
+participant "Estimation Game Engine" as game_engine
+database "Estimation Data" as data
+
+participant->gui: Request to view estimates
+gui->server: Fetch current round estimates
+server->game_engine: Retrieve estimates\nfor current round
+activate game_engine
+game_engine->data: Query estimates and\nparticipant details
+activate data
+data-->game_engine: Return estimates and\nparticipant details
+deactivate data
+game_engine-->server: Estimates and\nparticipant info
+deactivate game_engine
+server-->gui: Display estimates with\nparticipant names
+gui-->participant: Show estimates and\nnames on screen
+@enduml

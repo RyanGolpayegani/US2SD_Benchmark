@@ -1,0 +1,23 @@
+@startuml
+participant Employee as E
+participant "Frontend Interface" as F
+participant "Backend Server" as B
+participant "Database" as D
+
+E -> F : Selects Order to Add Note
+F -> E : Displays Selected Order Details
+E -> F : Enters Note for Order
+F -> B : Sends Request to Add Note to Order(ID, Note)
+alt Validation Success
+    B -> D : Update Order with Note [Order ID, Note]
+    D -> D : Validates and Saves Note
+    D --> B : Confirmation Message
+    B -> F : Note Addition Successful
+    F -> E : Displays Success Message
+else Validation Failure
+    D -> B : Error Message
+    B -> F : Displays Error to Employee
+    F -> E : Shows Failure/Error Message
+end
+
+@enduml

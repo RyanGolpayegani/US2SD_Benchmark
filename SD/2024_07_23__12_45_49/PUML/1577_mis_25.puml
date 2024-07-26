@@ -1,0 +1,37 @@
+@startuml
+participant UserInterface as UI
+participant ControlLayer as CL
+participant EmbargoManager as EM
+participant AccessControl as AC
+participant Database as DB
+
+activate UI
+UI -> CL : Request embargo lift and access control set
+activate CL
+
+CL -> EM : Check embargoed items due for release
+activate EM
+EM -> DB : Retrieve embargoed items due for release
+activate DB
+DB --> EM : Return items
+deactivate DB
+
+EM --> CL : List of items
+deactivate EM
+
+CL -> AC : Set access control for items
+activate AC
+AC -> DB : Update access permissions
+activate DB
+DB --> AC : Confirm permissions update
+deactivate DB
+AC --> CL : Confirm access control set
+deactivate AC
+
+CL --> UI : Confirm embargo lift and access control update
+deactivate CL
+
+UI -> UserInterface : Display success message to DigitalRecords Archivist
+deactivate UI
+
+@enduml

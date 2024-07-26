@@ -1,0 +1,36 @@
+@startuml
+participant Supervisor
+participant NeurohubPlatform as Platform
+participant FormTemplate as Template
+participant Student
+
+== Create Feedback Form ==
+Supervisor -> Platform : Log in to dashboard
+activate Platform
+
+Platform --> Supervisor : Display Dashboard
+Supervisor -> Platform : Navigate to "Create Feedback Form"
+Platform -> Template : Fetch Form Template
+activate Template
+Template --> Platform : Return Template
+Platform --> Supervisor : Display Form Template
+Supervisor -> Platform : Edit and Configure Form
+Platform -> Platform : Save Form Configuration
+Supervisor -> Platform : Publish Form
+deactivate Template
+
+== Student Interaction ==
+loop Each Student
+    Platform -> Student : Notify about New Feedback Form
+    Student -> Platform : Access Feedback Form
+    activate Student
+    Platform -> Student : Display Form
+    Student -> Platform : Fill Form
+    Student -> Platform : Submit Feedback
+    deactivate Student
+end
+
+Platform --> Supervisor : Compile and Display Submissions
+deactivate Platform
+
+@enduml

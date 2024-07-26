@@ -1,0 +1,49 @@
+@startuml
+autonumber
+
+actor User as user
+participant "User Interface" as UI
+participant "Recommendation Engine" as RE
+participant "User Profile Manager" as UPM
+participant "Similarity Analyzer" as SA
+participant "Content Database" as DB
+
+== Music Discovery based on Similar Users ==
+user -> UI : Requests music discovery
+activate UI
+
+UI -> RE : Triggers recommendation process
+activate RE
+
+RE -> UPM : Retrieves user's profile data
+activate UPM
+
+UPM -> RE : Returns user profile
+deactivate UPM
+
+RE -> SA : Analyzes profiles for similarity
+activate SA
+
+SA -> DB : Queries for users with similar profiles
+activate DB
+
+DB -> SA : Returns list of similar users
+deactivate DB
+
+SA -> RE : Provides similar user profiles
+deactivate SA
+
+RE -> DB : Retrieve music preferences of similar users
+activate DB
+
+DB -> RE : Returns music data
+depreciate DB
+
+RE -> UI : Suggests music based on similar user preferences
+activate UI
+
+UI -> user : Displays music recommendations
+deactivate UI
+deactivate RE
+
+@enduml

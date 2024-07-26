@@ -1,0 +1,34 @@
+@startuml
+actor Owner as o
+participant "User Account Management" as uam
+participant "Role Management Module" as rmm
+participant "Data Registry System" as drs
+participant "Notification Service" as ns
+database "Data Registry DB" as db
+
+o -> uam : select Remove Owner
+uam -> rmm : verify Owner credentials
+activate rmm
+
+rmm -> drs : request role change for User X
+activate drs
+drs -> db : query current role of User X
+activate db
+db --> drs : User X is an Owner
+drs -> db : update User X role to Member
+db --> drs : confirmation of role update
+deactivate db
+
+drs -> ns : send notification to User X
+activate ns
+ns --> drs : notification sent
+deactivate ns
+
+drs --> rmm : role updated to Member
+deactivate drs
+
+rmm --> uam : confirm role update to Owner
+deactivate rmm
+
+uam --> o : display confirmation of demotion
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+actor "Repository Manager" as RM
+participant "DIMS Interface" as DI
+participant "Metadata Management Module" as MMM
+database "DAMS Database" as DB
+
+RM -> DI: Accesses DIMS
+DI -> MMM: Initiate component description process
+activate MMM
+
+MMM -> DB: Retrieve component (if exists)
+return Component Data
+MMM <-- RM: Inputs/Updates details\n(title, date(s), language(s), etc.)
+activate RM
+deactivate RM
+
+MMM -> DB: Save updated component details
+DB --> MMM: Confirm save operation
+deactivate MMM
+
+MMM --> DI: Display success message
+DI --> RM: Show confirmation of updated details
+@enduml

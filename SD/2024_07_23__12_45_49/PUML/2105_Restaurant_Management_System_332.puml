@@ -1,0 +1,28 @@
+@startuml
+participant EmployeeInterface as EI
+participant AuthenticationService as Auth
+participant ApplicationServer as AS
+participant OrderManagementService as OMS
+participant Database as DB
+
+EI -> Auth: Validate employee credentials
+activate Auth
+Auth --> EI: Credentials valid
+deactivate Auth
+
+EI -> AS: Request to delete customer order [Order ID]
+activate AS
+AS -> OMS: Delete order request [Order ID]
+activate OMS
+OMS -> DB: Query to find order [Order ID]
+activate DB
+DB --> OMS: Order details
+OMS -> DB: Delete order command [Order ID]
+DB --> OMS: Order deletion confirmation
+OMS --> AS: Order successfully deleted
+deactivate DB
+AS --> EI: Confirmation of deletion
+deactivate OMS
+deactivate AS
+
+@enduml

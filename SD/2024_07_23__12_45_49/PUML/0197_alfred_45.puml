@@ -1,0 +1,22 @@
+@startuml
+participant OlderPerson as user
+participant ALFRED as alfred
+participant "Smart Home System" as shs
+participant "HVAC" as hvac
+
+user -> alfred : Says "Increase temperature"
+activate alfred
+alfred -> alfred : Process command
+alfred -> shs : Sends heatingControlIncrease request
+activate shs
+shs -> hvac : Adjust Temperature Setting
+activate hvac
+hvac -> hvac : Increase Temperature
+hvac -> shs : Confirm Temperature Increased
+deactivate hvac
+shs -> alfred : Confirm Adjustment Successful
+deactivate shs
+alfred -> user : "Temperature increased"
+deactivate alfred
+
+@enduml

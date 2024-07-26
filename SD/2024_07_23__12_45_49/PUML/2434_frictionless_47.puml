@@ -1,0 +1,37 @@
+@startuml
+participant DeveloperWrangler as dw
+participant CommandLineTool as clt
+participant DPIEValidationService as dpvs
+participant Database as db
+participant ExternalDataSources as eds
+
+dw -> clt: Enter validation command with data path
+activate clt
+
+clt -> dpvs: Request validation
+activate dpvs
+
+dpvs -> db: Fetch validation rules
+activate db
+db --> dpvs: Validation rules
+deactivate db
+
+dpvs -> eds: Fetch external validation resources (schemas, standards)
+activate eds
+eds --> dpvs: Validation resources
+deactivate eds
+
+dpvs -> dpvs: Validate data against rules & resources
+dpvs -> dpvs: Analyze data for completeness & integrity
+
+alt If data is valid
+    dpvs --> clt: Validation success message
+    clt --> dw: Display success message & summary
+else If data is invalid
+    dpvs --> clt: Validation error message + details
+    clt --> dw: Display error messages & corrective suggestions
+end
+
+deactivate dpvs
+deactivate clt
+@enduml

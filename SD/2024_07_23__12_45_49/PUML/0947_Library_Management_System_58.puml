@@ -1,0 +1,41 @@
+@startuml
+actor Librarian
+participant "CLMS Frontend" as Frontend
+participant "CLMS Backend" as Backend
+database "Database" as DB
+
+Librarian -> Frontend : Access book management page
+activate Frontend
+
+Frontend -> Backend : Request current book details (if editing)
+activate Backend
+
+Backend -> DB : Fetch current book details
+activate DB
+DB --> Backend : Return book details
+deactivate DB
+
+Backend --> Frontend : Show current book details
+deactivate Backend
+
+Frontend --> Librarian : Display book details/edit form
+deactivate Frontend
+
+Librarian -> Frontend : Enter/update book details & shelf number
+activate Frontend
+
+Frontend -> Backend : Send new book details & shelf number
+activate Backend
+
+Backend -> DB : Update/Add book details in database
+activate DB
+DB --> Backend : Confirmation of update
+deactivate DB
+
+Backend --> Frontend : Update successful
+deactivate Backend
+
+Frontend --> Librarian : Display success message
+deactivate Frontend
+
+@enduml

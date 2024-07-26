@@ -1,0 +1,27 @@
+@startuml
+actor Accountant as acc
+participant "RecycleSmart\nPlatform Interface" as interface
+participant "Authentication\nModule" as auth
+participant "Database" as db
+participant "Fees\nManagement Service" as fees
+
+acc -> interface : Request to view activity fees
+interface -> auth : Validate session
+auth --> interface : Session valid
+
+interface -> fees : Fetch available fees
+fees -> db : Query fees data
+db --> fees : Return fees data
+fees --> interface : Fees details
+interface --> acc : Display fees information
+
+acc -> interface : Select fees for bill statement
+interface -> fees : Process selected fees
+fees -> interface : Confirm selection
+interface --> acc : Display bill statement draft
+acc -> interface : Confirm to create bill statement
+interface -> fees : Generate bill statement
+fees --> interface : Bill statement generated
+interface --> acc : Display/download bill statement
+
+@enduml

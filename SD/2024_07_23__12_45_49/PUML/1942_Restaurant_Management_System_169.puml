@@ -1,0 +1,40 @@
+@startuml
+participant Manager as M
+participant "Management Interface" as MI
+participant "Menu Management System" as MMS
+participant Database as DB
+
+M -> MI : Accesses menu management
+activate MI
+
+MI -> MMS : Request current month's menu
+activate MMS
+
+MMS -> DB : Retrieve current menu
+activate DB
+
+DB --> MMS : Current menu data
+deactivate DB
+
+MMS --> MI : Show current menu
+deactivate MMS
+
+M -> MI : Initiates "Save Menu" for the month
+activate MI
+
+MI -> MMS : Save current menu as monthly snapshot
+activate MMS
+
+MMS -> DB : Store monthly menu snapshot
+activate DB
+
+DB --> MMS : Confirmation of saved menu
+deactivate DB
+
+MMS --> MI : Confirmation message to Manager
+deactivate MMS
+
+MI --> M : Display save confirmation
+deactivate MI
+
+@enduml

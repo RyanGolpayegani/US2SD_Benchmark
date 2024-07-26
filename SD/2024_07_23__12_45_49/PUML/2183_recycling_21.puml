@@ -1,0 +1,42 @@
+@startuml
+!theme plain
+
+actor Admin
+participant "Admin Dashboard" as Dashboard
+participant "User Management\nSystem" as UserManager
+participant "Database" as DB
+participant "Security\nSystem" as Security
+
+== Block User IP Address ==
+
+Admin -> Dashboard : Access Dashboard
+activate Dashboard
+
+Dashboard -> UserManager : Request to block IP
+activate UserManager
+
+UserManager -> DB : Search User by IP
+activate DB
+
+DB --> UserManager : User Details
+deactivate DB
+
+UserManager -> Security : Block IP Address
+activate Security
+
+Security -> DB : Update IP Block List
+activate DB
+
+DB --> Security : Confirmation
+deactivate DB
+
+Security --> UserManager : IP Blocked Successfully
+deactivate Security
+
+UserManager --> Dashboard : Display Success Message
+deactivate UserManager
+
+Dashboard --> Admin : Show Confirmation Message
+deegrate Dashboard
+
+@enduml

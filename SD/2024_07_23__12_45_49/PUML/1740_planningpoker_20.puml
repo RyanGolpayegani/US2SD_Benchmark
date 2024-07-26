@@ -1,0 +1,29 @@
+@startuml
+participant Moderator as M
+participant "Web Interface" as W
+participant "Server Application" as S
+participant "Database" as D
+
+M -> W : Selects "Delete Game"
+activate W
+
+W -> S : Request to delete game (gameID)
+activate S
+
+S -> D : Query to check game existence (gameID)
+activate D
+D --> S : Game Exists
+deactivate D
+
+S -> D : Delete game records (gameID)
+activate D
+D --> S : Confirmation of Deletion
+deactivate D
+
+S --> W : Game Deleted Successfully
+deactivate S
+
+W --> M : Display Deletion Confirmation
+deputeate W
+
+@enduml

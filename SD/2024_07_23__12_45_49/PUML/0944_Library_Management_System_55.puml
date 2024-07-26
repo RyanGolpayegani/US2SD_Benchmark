@@ -1,0 +1,22 @@
+@startuml
+participant Librarian as L
+participant WebInterface as UI
+participant Authentication as Auth
+participant RecommendationService as RS
+participant Database as DB
+
+L -> UI: Selects "Edit Recommendations"
+UI -> Auth: Verify librarian credentials
+Auth --> UI: Credentials valid
+UI -> RS: Request current recommendations list
+RS -> DB: Retrieve recommendations
+DB --> RS: Current Recommendations List
+RS --> UI: Display recommendations
+L -> UI: Update recommendations (add/delete/edit)
+UI -> RS: Submit updated list
+RS -> DB: Update recommendations in DB
+DB --> RS: Confirmation of update
+RS --> UI: Display success message
+UI --> L: Show confirmation message
+
+@enduml

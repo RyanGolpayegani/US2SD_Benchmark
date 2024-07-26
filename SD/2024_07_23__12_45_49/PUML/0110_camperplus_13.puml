@@ -1,0 +1,56 @@
+@startuml
+
+actor Administrator as admin
+participant "Scheduling System" as system
+participant "Facilities Database" as database
+participant "Conflict Checker" as checker
+participant "Notification System" as notifier
+
+== Track and Schedule Camp Facilities ==
+
+admin -> system : Request facility usage schedule
+activate system
+
+system -> database : Retrieve current schedules
+activate database
+
+database --> system : Current schedules
+deactivate database
+
+system -> admin : Display schedules
+admin -> system : Schedule new facility usage
+activate admin
+
+system -> checker : Check for conflicts
+activate checker
+
+checker -> database : Request related schedules
+activate database
+
+database --> checker : Related schedules
+deactivate database
+
+checker --> system : Conflict status
+deactivate checker
+
+alt If conflict detected
+    system -> admin : Notify of conflict
+    admin -> system : Reschedule facility usage
+else No conflict
+    system -> database : Update schedule with new usage
+    activate database
+    database --> system : Schedule updated
+    deactivate database
+
+    system -> notifier : Send notifications to impacted parties
+    activate notifier
+    notifier --> admin : Notification sent
+    deactivate notifier
+end
+
+admin --> system : Confirm scheduling
+deactivate admin
+system --> admin : Scheduling complete
+deactivate system
+
+@enduml

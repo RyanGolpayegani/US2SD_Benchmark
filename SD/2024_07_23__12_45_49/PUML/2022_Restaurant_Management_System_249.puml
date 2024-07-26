@@ -1,0 +1,25 @@
+@startuml
+participant Manager as manager
+participant "Management Interface" as mInterface
+participant "Reporting Service" as rService
+participant "Database" as db
+
+manager -> mInterface: Request total sales information
+activate mInterface
+
+mInterface -> rService: Fetch total sales data
+activate rService
+
+rService -> db: Query sales transactions
+activate db
+
+db --> rService: Return sales transactions
+deactivate db
+
+rService --> mInterface: Compute total sales
+deactivate rService
+
+mInterface --> manager: Display total sales
+deactivate mInterface
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+actor AgencyUser as "Agency User"
+participant BrokerUI as "Broker UI"
+participant ValidationService as "Validation Service"
+participant DataService as "Data Service"
+participant Database as "Database"
+
+AgencyUser -> BrokerUI : Submits data with quotation
+BrokerUI -> ValidationService : Validate data format
+alt Data Format Valid
+  ValidationService -> DataService : Process data submission
+  DataService -> Database : Store data with quotation
+  Database --> DataService : Confirm data stored
+  DataService --> BrokerUI : Display success message
+  BrokerUI --> AgencyUser : Notify submission success
+else Data Format Invalid
+  ValidationService -> BrokerUI : Error: Invalid data format
+  BrokerUI --> AgencyUser : Show error message
+end
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+actor ResearcherPublisher as RP
+participant "DPIE Interface" as DPIE
+participant "Validation Service" as VS
+database "External Data Sources" as EDS
+
+RP -> DPIE : Upload Data Package
+DPIE -> DPIE : Check for existing profile specification
+alt Data Package Profile exists
+    DPIE -> VS : Request Validation against Profile
+    VS -> EDS : Retrieve standard terms/profiles
+    EDS -> VS : Return standard terms/profiles
+    VS -> VS : Perform Validation
+    VS -> DPIE : Return Validation Results
+    DPIE -> RP : Display Validation Results (Success/Failure)
+else Profile does not exist
+    DPIE -> RP : Error: Profile Specification Missing
+end
+@enduml

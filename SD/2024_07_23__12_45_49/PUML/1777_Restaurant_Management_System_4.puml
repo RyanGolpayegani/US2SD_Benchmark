@@ -1,0 +1,36 @@
+@startuml
+participant CashierUI
+participant PaymentModule
+participant InventorySystem
+participant FinancialReporting
+database DB
+
+CashierUI -> PaymentModule : initiatePayment(orderDetails)
+activate PaymentModule
+
+PaymentModule -> DB : validateOrder(orderID)
+activate DB
+DB --> PaymentModule : orderValidated
+deactivate DB
+
+PaymentModule -> InventorySystem : updateInventory(orderDetails)
+activate InventorySystem
+InventorySystem --> Paymentmodule : inventoryUpdated
+deactivate InventorySystem
+
+PaymentModule -> PaymentModule : calculateTotal(orderDetails)
+PaymentModule -> PaymentModule : processDiscounts(coupons)
+PaymentModule -> FinancialReporting : recordTransaction(orderDetails, finalAmount)
+activate FinancialReporting
+FinancialReporting --> PaymentModule : transactionRecorded
+deactivate FinancialReporting
+
+PaymentModule -> DB : updatePaymentStatus(orderID, "Completed")
+activate DB
+DB --> PaymentModule : statusUpdated
+deactivate DB
+
+PaymentModule --> CashierUI : displayReceipt(finalAmount, orderID)
+deactivate PaymentModule
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+participant Employee
+participant InventorySystem
+participant Database
+participant NotificationService
+
+Employee -> InventorySystem : CheckStock(itemID)
+InventorySystem -> Database : QueryStockLevel(itemID)
+Database -> InventorySystem : ReturnStockLevel
+InventorySystem -> Employee : DisplayStockLevel
+
+alt Stock Level is Below Threshold
+    InventorySystem -> NotificationService : TriggerLowStockAlert(itemID)
+    NotificationService -> Employee : SendLowStockNotification
+    Employee -> InventorySystem : RequestRestock(itemID, quantity)
+    InventorySystem -> Database : UpdateRequestedRestock(itemID, quantity)
+    Database -> InventorySystem : ConfirmRestockRequest
+    InventorySystem -> Employee : DisplayRestockConfirmation
+end
+
+@enduml

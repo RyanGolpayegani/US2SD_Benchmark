@@ -1,0 +1,40 @@
+@startuml
+
+actor GovernmentPublisher as Publisher
+participant "DPIE Interface" as DPIE
+participant "Data Validation Service" as ValidationService
+participant "Data Package Repository" as Repository
+participant "Transparency Ledger" as Ledger
+database CKAN_DB as CKAN
+
+== Publish Valid Data Package ==
+
+Publisher -> DPIE : Prepare Data Package
+activate DPIE
+DPIE -> ValidationService : Validate Data Package
+activate ValidationService
+
+ValidationService -> DPIE : Validation Report
+deactivate ValidationService
+
+DPIE -> Publisher : Show Validation Report
+Publisher -> DPIE : Request Data Package Upload
+DPIE -> Repository : Upload Data Package
+activate Repository
+
+Repository -> CKAN : Save to CKAN
+activate CKAN
+CKAN --> Repository : Acknowledge Save
+deactivate CKAN
+Repository --> DPIE : Confirm Upload
+degenerate Repository
+
+DPIE -> Ledger : Log Transparency Record
+activate Ledger
+Ledger --> DPIE : Log Confirmation
+deactivate Ledger
+
+DPIE --> Publisher : Publish Confirmation
+deactivate DPIE
+
+@enduml

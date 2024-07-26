@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+
+participant "Employee" as employee
+participant "Restaurant Management\nSystem" as system
+database "Database" as db
+
+== Track Customer Orders ==
+
+employee -> system : View/Update Order Status
+activate system
+system -> db : Fetch Order Details
+activate db
+db -> system : Return Order Details
+deactivate db
+
+system -> employee : Display Order Details
+deactivate system
+employee -> system : Update Order if Necessary
+activate system
+system -> db : Update Order Records
+activate db
+db -> system : Confirm Update
+deactivate db
+
+system -> employee : Display Update Confirmation
+deactivate system
+
+@enduml

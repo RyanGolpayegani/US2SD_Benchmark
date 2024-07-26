@@ -1,0 +1,23 @@
+@startuml
+participant FABSUser as User
+participant "FABS Page" as FABS
+participant "Backend API" as Backend
+participant "Database" as DB
+
+User -> FABS : Navigate to FABS page
+FABS -> Backend : Request current page language
+Backend -> DB : Retrieve page language settings
+DB -> Backend : Return language settings
+Backend -> FABS : Display page in user's language
+User -> FABS : Request for more appropriate language
+FABS -> Backend : Signal need for language update
+Backend -> DB : Update language settings to be more user-friendly
+DB -> Backend : Confirm language settings updated
+Backend -> FABS : Notify update success
+FABS -> User : Display update success message
+User -> FABS : Refresh FABS page
+FABS -> Backend : Request updated page language
+Backend -> DB : Retrieve new language settings
+DB -> Backend : Return new language settings
+Backend -> FABS : Display page in updated language
+@enduml

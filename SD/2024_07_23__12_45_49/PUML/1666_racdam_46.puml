@@ -1,0 +1,16 @@
+@startuml
+actor Archivist as archivist
+entity "Archival Management\nSystem" as system
+database "Digital Archive\nDatabase" as database
+entity "Email Service" as emailService
+
+archivist -> system : Request to send email about object
+system -> database : Retrieve object details
+database -> system : Return object details
+system -> system : Generate citation information
+note right of system : Citation information includes\n- Title\n- Identifier (e.g., DOI)\n- Date\n- Collection\n- Access conditions
+system -> emailService : Send email with citation
+emailService -> archivist : Email containing accurate citation
+note over archivist : Archivist reviews\nemail to confirm\ncitation accuracy
+
+@enduml

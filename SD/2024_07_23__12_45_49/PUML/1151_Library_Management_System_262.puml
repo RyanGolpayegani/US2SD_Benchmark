@@ -1,0 +1,17 @@
+@startuml
+participant MemberInterface as "Member Interface"
+participant SearchSystem as "Search System"
+database CLMSDB as "CLMS Database"
+
+MemberInterface -> SearchSystem : enterSearchCriteria(publicationDate)
+activate SearchSystem
+
+SearchSystem -> CLMSDB : queryBooksByPublicationDate(publicationDate)
+activate CLMSDB
+
+CLMSDB --> SearchSystem : returnBookResults
+deactivate CLMSDB
+
+SearchSystem --> MemberInterface : displayResults(books)
+deactivate SearchSystem
+@enduml

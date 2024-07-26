@@ -1,0 +1,22 @@
+@startuml
+participant LibraryManager as LM
+participant CLMSSystem as CLMS
+participant Database as DB
+participant FinancialModule as FM
+participant NotificationService as NS
+
+LM -> CLMS: Request overdue books
+CLMS -> DB: Fetch overdue book details
+DB -> CLMS: Return overdue book details
+CLMS -> LM: Display overdue books list
+LM -> FM: Calculate fines for overdue books
+FM -> DB: Retrieve member details and book due dates
+DB -> FM: Return member details and due dates
+FM -> FM: Compute fines based on due dates
+FM -> CLMS: Return computed fines
+CLMS -> NS: Prepare notification messages with fines
+NS -> DB: Fetch member contact information
+DB -> NS: Return member contact information
+NS -> NS: Send notifications to members
+NS -> LM: Confirm notification delivery
+@enduml

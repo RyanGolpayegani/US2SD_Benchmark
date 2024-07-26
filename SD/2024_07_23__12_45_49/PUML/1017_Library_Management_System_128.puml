@@ -1,0 +1,37 @@
+@startuml
+participant LibraryManager as LM
+participant "CLMS Interface" as UI
+participant "Backend System" as Backend
+database "CLMS Database" as DB
+
+LM -> UI : Login into CLMS
+UI -> Backend : Validate login
+activate Backend
+Backend -> DB : Fetch manager credentials
+activate DB
+DB --> Backend : Credentials data
+deactivate DB
+Backend --> UI : Authentication successful
+deactivate Backend
+UI --> LM : Display Dashboard
+LM -> UI : Selects "Most Borrowed Books" Report
+UI -> Backend : Request most borrowed books data
+activate Backend
+Backend -> DB : Query borrowed books stats
+activate DB
+DB --> Backend : Return stats
+deactivate DB
+Backend --> UI : Display most borrowed books
+deactivate Backend
+UI --> LM : Shows books and borrowing counts
+LM -> UI : Requests further copies for procurement
+UI -> Backend : Log procurement request
+activate Backend
+Backend -> DB : Update procurement log
+activate DB
+DB --> Backend : Confirmation
+deactivate DB
+Backend --> UI : Confirm update to LM
+deactivate Backend
+UI --> LM : Display procurement confirmation
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+!theme plain
+
+actor Recruiter
+participant "Job Submission Form" as Form
+participant "Server: Job Management" as Server
+participant "Email System" as Email
+actor Admin
+
+== Job Submission ==
+Recruiter -> Form : Submit job
+Form -> Server : Validate job details
+alt Job Details Valid
+    Server -> Server : Store Job details
+    Server -> Email : Send notification email to Admin
+    Email -> Admin : Email received
+else Job Details Invalid
+    Server -> Form : Display error to Recruiter
+end
+
+@enduml

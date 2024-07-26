@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+actor Moderator
+boundary SystemUI
+control AccountService
+database AccountDB
+
+Moderator -> SystemUI: Navigate to account settings
+Moderator -> SystemUI: Selects "Delete Account"
+SystemUI -> Moderator: Display confirmation dialog
+Moderator -> SystemUI: Confirms deletion
+
+SystemUI -> AccountService: Request account deletion
+AccountService -> AccountDB: Validate moderator authentication
+AccountDB --> AccountService: Authentication confirmed
+
+AccountService -> AccountDB: Delete associated games
+AccountDB --> AccountService: Games deletion confirmed
+AccountService -> AccountDB: Delete moderator account
+AccountDB --> AccountService: Account deletion confirmed
+
+AccountService --> SystemUI: Deletion success message
+SystemUI --> Moderator: Show deletion confirmation
+Moderator -> SystemUI: Acknowledge & Logout
+
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+participant Developer as D
+participant "Wizard Configuration" as WC
+participant "Data Type Module" as DTM
+participant "Data Package API" as API
+participant "User Interface" as UI
+
+D -> WC : Access Wizard Configuration
+activate WC
+WC -> DTM : Retrieve Available Modules
+DTM -> WC : Return Modules
+WC -> D : Display Modules
+D -> WC : Select Specific Module for Customization
+activate DTM
+WC -> DTM : Load Selected Module Configuration
+DTM -> WC : Display Configuration Options
+WC -> D : Customize Module (Fields, Validation, etc.)
+D -> DTM : Submit Customization
+DTM -> DTM : Validate Customization
+alt Customization Valid
+    DTM -> API : Update Module with Customization
+    API -> DTM : Confirm Update
+    DTM -> WC : Notify Success
+    WC -> D : Display Success Message
+else Customization Invalid
+    DTM -> WC : Notify Error
+    WC -> D : Display Error Message
+end
+
+alt User Interface Generation
+    DTM -> UI : Generate Custom UI Components
+    UI -> DTM : Confirm UI Components
+    DTM -> WC : Update Wizard with Custom UI
+    WC -> D : Display Updated Wizard Preview
+end
+
+deactivate DTM
+deactivate WC
+
+@enduml

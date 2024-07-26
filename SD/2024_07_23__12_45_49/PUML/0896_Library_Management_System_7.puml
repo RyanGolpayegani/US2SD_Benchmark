@@ -1,0 +1,26 @@
+@startuml
+actor Customer
+participant "Web Interface" as Web
+participant "Authorization Service" as Auth
+participant "Borrow Management" as BorrowManage
+participant "Database" as DB
+
+Customer -> Web: Selects "My Borrows"
+Web -> Auth: Validate customer session
+Auth --> Web: Session valid
+Web -> BorrowManage: Request list of current borrows
+BorrowManage -> DB: Query for customer's borrows
+DB --> BorrowManage: Return list of borrows
+BorrowManage --> Web: Show borrows to customer
+Web --> Customer: Displays borrows
+
+Customer -> Web: Selects "Delete" on a borrow
+Web -> Auth: Validate customer action
+Auth --> Web: Action validated
+Web -> BorrowManage: Request borrow deletion
+BorrowManage -> DB: Delete borrow record
+DB --> BorrowManage: Confirm deletion
+BorrowManage --> Web: Deletion successful
+Web --> Customer: Confirm borrow has been deleted
+
+@enduml

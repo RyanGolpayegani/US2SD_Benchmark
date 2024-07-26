@@ -1,0 +1,22 @@
+@startuml
+
+actor Researcher as researcher
+participant "UI: Digital Archives Portal" as UI
+participant "Backend Server" as server
+participant "Database" as db
+participant "Notification System" as notify
+
+researcher -> UI : Search for items in folder
+UI -> server : Query request for folder items
+server -> db : Check digitized status of items
+db --> server : Return statuses
+server -> server : Determine partial digitization
+alt if folder is partially digitized
+    server -> notify : Initiate notification
+    notify -> UI : Show notification
+    UI --> researcher : Display "Partially Digitized" alert
+else all items digitized
+    UI --> researcher : Display full contents
+end
+
+@enduml

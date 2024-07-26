@@ -1,0 +1,23 @@
+@startuml
+title Export Agent Records as EAC-CPF
+
+actor Archivist as archivist
+participant "UI: CAMS\nInterface" as UI
+participant "Export\nController" as ExportController
+participant "Agent\nManagement" as AgentManagement
+participant "EAC-CPF\nGenerator" as EACCPFGenerator
+database "CAMS\nDatabase" as CAMSDatabase
+
+== Export Process ==
+archivist -> UI : Select "Export Agent Records"
+UI -> ExportController : Request export (EAC-CPF)
+ExportController -> AgentManagement : Fetch selected agent records
+AgentManagement -> CAMSDatabase : Query agent data
+CAMSDatabase --> AgentManagement : Return agent data
+AgentManagement --> ExportController : Provide agent records
+ExportController -> EACCPFGenerator : Convert records to EAC-CPF format
+EACCPFGenerator --> ExportController : Return EAC-CPF data
+Export_duController -> UI : Provide download link
+UI --> archivist : Download EAC-CPF file
+
+@enduml

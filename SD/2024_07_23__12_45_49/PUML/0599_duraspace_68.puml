@@ -1,0 +1,25 @@
+@startuml
+participant "Repository Manager" as RM
+participant "DIMS Interface" as UI
+participant "Collection Management Module" as CMM
+participant "Notification System" as NS
+participant "Database" as DB
+
+RM -> UI: Access DIMS
+UI -> CMM: Request current language settings
+CMM -> DB: Fetch current language data
+DB -> CMM: Return language data
+CMM -> UI: Display current language settings
+RM -> UI: Request notification on language change
+UI -> CMM: Enable notifications for language change
+CMM -> DB: Update notification settings
+DB -> CMM: Confirmation
+CMM -> UI: Notification settings updated
+UI -> RM: Confirmation
+
+alt Language change detected
+   DB -> NS : Trigger language change notification
+   NS -> RM : Notify of language change
+end
+
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+participant Parent as parent
+participant "Authentication System" as auth
+participant "Parent Dashboard" as dashboard
+participant "Payment Service" as paymentService
+participant "Database" as db
+
+parent -> auth : Login()
+activate auth
+auth -> db : Validate credentials
+activate db
+db --> auth : Credentials valid
+deactivate db
+auth --> parent : Login successful
+deactivate auth
+
+parent -> dashboard : Navigate to payments section
+activate dashboard
+dashboard -> paymentService : Request payment status(userID)
+activate paymentService
+payment service -> db : Get payment records(userID)
+activate db
+db --> paymentService : Return payment records
+deactivate db
+paymentService --> dashboard : Display payment status
+deactivate paymentService
+dashboard --> parent : Show payment status
+deactivate dashboard
+
+@enduml

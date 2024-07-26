@@ -1,0 +1,22 @@
+@startuml
+actor AuthenticatedUser as "Authenticated User"
+participant System as "System"
+database Database as "UserProfile Database"
+
+AuthenticatedUser -> System : Request to Update Profile
+System -> System : Verify User Authentication
+alt Authentication Success
+    System -> AuthenticatedUser : Allow Profile Access
+    AuthenticatedUser -> System : Input Updated Profile Data
+    System -> System : Validate Input Data
+    alt Validation Success
+        System -> Database : Update Profile Information
+        Database -> System : Confirm Update
+        System -> AuthenticatedUser : Display Update Success Message
+    else Validation Failure
+        System -> AuthenticatedUser : Display Error Message
+    end
+else Authentication Failure
+    System -> AuthenticatedUser : Display Authentication Error
+end
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+
+actor user as "User"
+boundary system as "Broker Platform"
+control validator as "Data Validator"
+database fabs_db as "FABS Data"
+database fpds_db as "FPDS Data"
+entity d_files as "D Files Generator"
+database validations_db as "Validations DB"
+
+user -> system : Request D Files generation
+system -> fabs_db : Fetch FABS data
+system -> fpds_db : Fetch FPDS data
+system -> d_files : Generate D Files\n(FABS & FPDS data)
+d_files -> system : D Files generated
+system -> user : Display D Files
+
+user -> system : Request D Files validation
+system -> d_files : Fetch D Files
+d_files -> validator : Validate D Files
+validator -> validations_db : Fetch validation rules
+validations_db -> validator : Validation rules
+validator -> d_files : Return validation results
+d_files -> system : D Files validated
+system -> user : Display validation results
+
+@enduml

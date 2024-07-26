@@ -1,0 +1,22 @@
+@startuml
+actor AuthenticatedUser as User
+participant "Authentication Service" as Auth
+participant "Job Board Service" as JobBoard
+participant "Database" as DB
+
+User -> Auth : Authenticate
+activate Auth
+Auth --> User : Authentication Success
+deactivate Auth
+
+User -> JobBoard : Request to view Job Board
+activate JobBoard
+
+JobBoard -> DB : Query Job Listings
+activate DB
+DB --> JobBoard : Return Job Listings
+deactivate DB
+
+JobBoard --> User : Display Job Listings
+deactivate JobBoard
+@enduml

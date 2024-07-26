@@ -1,0 +1,32 @@
+@startuml
+actor OlderPerson as "Older Person"
+participant "Sales Website" as Website
+participant "Discounts System" as Discounts
+participant "Payment Gateway" as Payment
+
+== Purchase Process ==
+OlderPerson -> Website: Visit Sales Page
+Website -> OlderPerson: Display ALFRED Options
+
+OlderPerson -> Website: Selects ALFRED
+Website -> Discounts: Query Discounts for ALFRED
+Discounts -> Website: Return Discount Info
+
+alt If Discount Available
+    Website -> OlderPerson: Show Discounted Price
+else No Discount Available
+    Website -> OlderPerson: Show Standard Price
+end
+
+OlderPerson -> Website: Confirm Purchase
+Website -> Payment: Process Payment with Discounted Price
+Payment -> Payment: Verify and Process Payment
+
+alt If Payment Successful
+    Payment -> OlderPerson: Display Success Message
+    Payment -> Website: Update Sales Record
+else Payment Failed
+    Payment -> OlderPerson: Display Failure Message
+end
+
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+actor OlderPerson
+participant "VoiceRecognitionSystem" as VRS
+participant "PrivacyControl" as PC
+participant "ALFRED" as ALFRED
+
+== Initialization ==
+OlderPerson -> ALFRED: Activate
+activate ALFRED
+ALFRED -> VRS: InitializeVoiceRecognition
+activate VRS
+VRS --> ALFRED: Ready
+deactivate VRS
+ALFRED --> OlderPerson: ActivationComplete
+
+== Listening Mode ==
+OlderPerson -> ALFRED: "Hey ALFRED"
+activate ALFRED
+ALFRED -> VRS: StartListening
+activate VRS
+VRS --> ALFRED: Listening
+ALFRED --> OlderPerson: "I'm listening..."
+deactivate ALFRED
+
+== Command Processing ==
+OlderPerson -> ALFRED: "Do something"
+activate ALFRED
+ALFRED -> VRS: ProcessCommand
+activate VRS
+VRS -> PC: VerifyCommandOwner
+activate PC
+PC --> VRS: OwnerVerified
+deactivate PC
+VRS --> ALFRED: CommandUnderstood
+ALFRED -> ALFRED: PerformAction
+ALFRED --> OlderPerson: "Action done"
+deactivate ALFRED
+deactivate VRS
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+participant "User" as user
+participant "User Interface" as ui
+participant "Search & Navigation Module" as search
+participant "Database" as db
+participant "Copyright and Rights Management" as rightsManagement
+
+user -> ui : Request object/component details
+ui -> search : Query object/component by ID or Name
+search -> db : Fetch object/component metadata
+db -> search : Return metadata
+search -> ui : Display metadata including rights info
+ui --> user : Object/component details with \nbasic rights information
+
+alt If detailed rights info is available
+    ui -> rightsManagement : Request detailed copyright and \nrights information
+    rightsManagement -> db : Query detailed rights data
+    db -> rightsManagement : Return detailed rights data
+    rightsManagement -> ui : Detailed rights info
+    ui --> user : Display detailed copyright and \nrights holder information
+else No detailed rights info available
+    ui --> user : Display message: "Detailed copyright \ninformation not available."
+end
+
+@enduml

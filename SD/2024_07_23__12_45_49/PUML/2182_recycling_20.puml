@@ -1,0 +1,67 @@
+@startuml
+participant User
+participant "User Device" as Device
+participant "Web Server" as Server
+participant "Database" as DB
+
+User -> Device : Access RecycleSmart on device
+activate Device
+
+Device -> Server : Request RecycleSmart homepage
+activate Server
+
+Server -> DB : Fetch user preferences
+activate DB
+DB -> Server : Return preferences
+deactivate DB
+
+Server -> Device : Display customized homepage
+deactivate Server
+
+User -> Device : Enter zip code
+activate Device
+
+Device -> Server : Request recycling centers near zip
+activate Server
+
+Server -> DB : Query for centers by zip code
+activate DB
+DB -> Server : Return list of centers
+deactivate DB
+
+Server -> Device : Display centers on map
+deactivate Server
+Device -> User : Show map and center details
+deactivate Device
+
+alt Using another device
+    User -> Device : Switch to another device
+    activate Device
+    Device -> Server : Request user session transfer
+    activate Server
+    Server -> DB : Fetch user session data
+    activate DB
+    DB -> Server : Provide session data
+    deactivate DB
+    Server -> Device : Continue session on new device
+    deactivate Server
+    Device -> User : Display current state
+    deactivate Device
+end
+
+alt Additional actions
+    User -> Device : Perform actions (e.g., set alerts, add favorites)
+    activate Device
+    Device -> Server : Update user preferences/actions
+    activate Server
+    Server -> DB : Store updates
+    activate DB
+    DB -> Server : Confirm storage
+    deactivate DB
+    Server -> Device : Acknowledge completion
+    deactivate Server
+    Device -> User : Confirm actions
+    deactivate Device
+end
+
+@enduml

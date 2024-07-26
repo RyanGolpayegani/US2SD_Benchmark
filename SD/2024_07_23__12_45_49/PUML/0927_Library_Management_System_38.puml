@@ -1,0 +1,34 @@
+@startuml
+actor Librarian
+participant "Library System" as System
+participant "Database" as DB
+
+== Count Books Borrowed by Users ==
+Librarian -> System : RequestCountOfBorrowedBooks(timeFrame)
+activate System
+
+System -> DB : QueryBorrowedBooksCount(timeFrame)
+activate DB
+DB --> System : BooksCount
+deactivate DB
+
+System -> DB : GetUsersWithBorrowCount(BooksCount)
+activate DB
+DB --> System : UsersList
+deactivate DB
+
+System --> Librarian : DisplayUsersAndBorrowCount(UsersList)
+deactivate System
+
+Librarian -> System : SelectUsersForGifts(SelectedUsers)
+activate System
+
+System -> DB : UpdateGiftStatusForSelectedUsers(SelectedUsers)
+activate DB
+DB --> System : Confirmation
+deactivate DB
+
+System --> Librarian : DisplayConfirmation(Confirmation)
+deactivate System
+
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+participant "Library Member" as member
+participant "Web Interface" as web
+participant "Gamification System" as gamification
+database "Member Database" as database
+participant "Notification Service" as notification
+
+member -> web: Access Gamification Feature
+web -> gamification: Request Member's Activity Log
+gamification -> database: Query Member Activity Data
+database --> gamification: Return Activity Data
+
+gamification -> gamification: Calculate Points and Rank
+gamification -> database: Update Points/Rank
+database --> gamification: Confirmation
+
+gamification -> notification: Generate Achievement Notification
+notification -> member: Send Achievement Notification to Member
+
+alt Top Member Rewards
+    gamification -> notification: Generate Rewards Notification
+    notification -> member: Send Rewards Notification to Member
+end
+
+alt New Badge Earned
+    gamification -> notification: Generate New Badge Notification
+    notification -> member: Send New Badge Notification to Member
+end
+
+@enduml

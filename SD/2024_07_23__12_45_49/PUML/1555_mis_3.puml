@@ -1,0 +1,50 @@
+@startuml
+
+participant RepositoryManager as RM "Repository Manager"
+participant EDRMS_UI as GUI "EDRMS User Interface"
+participant FinancialTrackingModule as FTM
+participant Database as DB "Database"
+
+title Tracking Financial Responsibility Sequence
+
+RM -> GUI : Select item to assign financial contact
+activate RM
+activate GUI
+
+GUI -> FTM : Request financial contact form
+activate FTM
+
+FTM -> GUI : Respond with contact form
+
+GUI -> RM : Display financial contact form
+deactivate FTM
+
+RM -> GUI : Submit financial contact details\n(name, phone, email, title, address)
+activate FTM
+
+GUI -> FTM : Validate submitted details
+FTM -> DB : Query to check if contact exists
+activate DB
+DB -> FTM : Return query result
+deactivate DB
+
+alt If contact does not exist
+    FTM -> DB : Create new contact record
+    activate DB
+    DB -> FTM : Confirm creation
+    deactivate DB
+end
+
+FTM -> DB : Link contact to item
+activate DB
+DB -> FTM : Confirm linkage success
+deactivate DB
+
+FTM -> GUI : Notify update success
+GUI -> RM : Display success message
+
+deactivate FTM
+deactivate GUI
+deactivate RM
+
+@enduml

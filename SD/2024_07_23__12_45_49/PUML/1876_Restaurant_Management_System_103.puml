@@ -1,0 +1,37 @@
+@startuml
+!theme plain
+
+actor Manager as M
+participant "UI Dashboard" as UI
+participant "Menu Management\nModule" as MMM
+participant "Backend API" as BA
+database "Database" as DB
+
+== Menu Update Process ==
+M -> UI: Access system
+UI --> M: Display dashboard
+
+M -> UI: Select 'Menu Management'
+UI -> MMM: Request menu details
+MMM -> BA: Query current menu items
+BA -> DB: SELECT menu items
+DB --> BA: Return menu items
+BA --> MMM: Menu items data
+MMM --> UI: Display menu items
+UI --> M: Show menu items
+
+M -> UI: Initiate menu change
+UI -> MMM: Access menu edit mode
+MMM --> UI: Provide edit interface
+UI --> M: Display edit interface
+
+M -> UI: Update menu items
+UI -> MMM: Submit updated menu items
+MMM -> BA: Update menu items request
+BA -> DB: UPDATE menu items
+DB --> BA: Confirm changes
+BA --> MMM: Menu update confirmation
+MMM --> UI: Display success message
+UI --> M: Confirm menu updated
+
+@enduml

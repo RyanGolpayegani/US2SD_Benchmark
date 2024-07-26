@@ -1,0 +1,19 @@
+@startuml
+actor Owner
+participant "User Management System" as UMS
+participant "Permissions API" as PA
+participant "Staging Environment" as SE
+participant "Production Environment" as PE
+participant "FABS Testers" as FT
+
+Owner -> UMS : Request environment reset
+UMS -> PA : Retrieve current permissions
+PA --> UMS : List of Permissions
+UMS -> UMS : Identify FABS Tester permissions
+UMS -> PA : Request to revoke FABS Tester permissions
+PA --> UMS : Permissions revoked confirmation
+UMS -> SE : Apply Staging MAX permissions
+SE --> UMS : Staging MAX permissions applied
+UMS -> FT : Notify FABS testers about permission change
+UMS --> Owner : Environment reset to Staging MAX permissions only
+@enduml

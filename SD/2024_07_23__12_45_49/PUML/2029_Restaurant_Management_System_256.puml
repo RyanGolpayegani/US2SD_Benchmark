@@ -1,0 +1,28 @@
+@startuml
+participant Manager as M
+participant "Authentication Module" as Auth
+participant "Dashboard Interface" as DI
+participant "Performance Metrics\nModule" as PM
+participant "Database" as DB
+
+activate M
+M -> Auth : Authenticate
+activate Auth
+Auth --> M : Success
+deactivate Auth
+
+M -> DI : Request "Employee Service Time"
+activate DI
+DI -> PM : Fetch Service Time Data
+activate PM
+PM -> DB : Query Employee Service Times
+activate DB
+DB --> PM : Service Time Data
+deactivate DB
+PM --> DI : Processed Data for Display
+deactivate PM
+DI --> M : Display Employee Service Times
+deactivate DI
+deactivate M
+
+@enduml

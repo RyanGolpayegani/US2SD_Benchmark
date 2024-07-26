@@ -1,0 +1,39 @@
+@startuml
+participant Librarian
+participant "CLMS Interface" as Interface
+database "CLMS Database" as Database
+
+Librarian -> Interface : Access book management section
+activate Interface
+
+Interface -> Database : Query to find the borrowed book details
+activate Database
+Database --> Interface : Return book details including due date
+deactivate Database
+
+Interface --> Librarian : Display borrowed book return date
+deactivate Interface
+
+Librarian -> Interface : Query for waiting list of the book
+activate Interface
+
+Interface -> Database : Fetch waiting list for the book
+activate Database
+Database --> Interface : Return list of users waiting for the book
+deactivate Database
+
+Interface --> Librarian : Display list of users demanding the book
+deactivate Interface
+
+Librarian -> Interface : Select notification option for users
+activate Interface
+
+Interface -> Database : Trigger notification process for waiting users
+activate Database
+Database --> Interface : Confirm notifications sent
+deactivate Database
+
+Interface --> Librarian : Confirm successful notification to users
+deactivate Interface
+
+@enduml

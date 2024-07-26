@@ -1,0 +1,36 @@
+@startuml
+actor Archivist as user
+participant "User Interface" as UI
+participant "Hierarchy Management" as HM
+participant "Database" as DB
+
+
+user -> UI: Selects archival object
+activate UI
+
+UI -> HM: DragStartEvent(archival object)
+activate HM
+
+HM -> UI: Show valid drop targets
+UI -> user: Display drag overlay
+
+user -> UI: Drops object at new position
+UI -> HM: DropEvent(new position)
+HM -> DB: Query parent object ID
+activate DB
+
+DB -> DB: Validate new position
+DB -> HM: Return success and update needed
+
+HM -> DB: Update object hierarchy
+DB -> DB: Save new hierarchy
+DB -> HM: Confirm hierarchy updated
+
+HM -> UI: Display updated hierarchy
+deactivate DB
+deactivate HM
+
+UI -> user: Show success message
+deactivate UI
+
+@enduml

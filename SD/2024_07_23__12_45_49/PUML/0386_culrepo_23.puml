@@ -1,0 +1,42 @@
+@startuml
+participant Administrator as admin
+participant "Branding Module" as branding
+participant "Content Management System" as CMS
+participant "Database" as DB
+participant "User Interface" as UI
+participant "External User" as user
+
+admin -> branding: Initiate upload process
+activate branding
+branding -> CMS: Upload content
+activate CMS
+CMS -> DB: Store metadata\n(Set branded metadata fields)
+activate DB
+DB --> CMS: Confirm storage
+deactivate DB
+CMS --> branding: Confirm upload and metadata application
+deactivate CMS
+branding --> admin: Display upload and branding success message
+deactivate branding
+
+admin -> UI: Publish branded content
+activate UI
+UI -> DB: Update content status to 'Published'
+activate DB
+DB --> UI: Confirm status update
+deactivate DB
+UI --> admin: Display publication success message
+deactivate UI
+
+loop Each External User Access
+    user -> UI: Access branded content
+    activate UI
+    UI -> DB: Retrieve branded content
+    activate DB
+    DB --> UI: Return branded content
+    deactivate DB
+    UI --> user: Display branded content
+    deactivate UI
+end
+
+@enduml

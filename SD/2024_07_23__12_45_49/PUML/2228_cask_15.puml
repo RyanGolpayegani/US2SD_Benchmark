@@ -1,0 +1,22 @@
+@startuml
+participant "App Developer" as developer
+participant "App Code" as appcode
+participant "Dataset Type Interface" as dsinterface
+database "Dataset Implementation Registry" as dsregistry
+participant "Runtime Environment" as runtime
+participant "Dataset Implementation" as dsimpl
+
+developer -> appcode : Defines dependency on\nDataset Type Interface
+appcode -> dsinterface : References Interface
+
+activate runtime
+runtime -> dsregistry : Query for Implementation\nbased on Interface
+dsregistry --> runtime : Return Implementation Details
+
+runtime -> dsimpl : Inject Implementation at Runtime
+deactivate runtime
+
+dsimpl -> appcode : Provide Dataset Functionality
+appcode -> developer : Executes with Injected Implementation
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+!theme spacelab
+
+actor Librarian as librarian
+participant "Web Interface" as web
+participant "Backend System" as backend
+database "Database" as db
+
+== Add New Book to Book List ==
+
+librarian -> web : Selects "Add New Book"
+web -> librarian : Displays Add Book Form
+
+librarian -> web : Submits book details\n (Title, Author, ISBN, etc.)
+web -> backend : Validates book details
+
+alt Book details valid
+    backend -> db : Inserts new book into database
+    db --> backend : Returns success message
+    backend -> web : Book successfully added
+    web -> librarian : Display success message
+else Book details invalid
+    backend -> web : Returns error message
+    web -> librarian : Display error message
+end
+
+@enduml

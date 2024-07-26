@@ -1,0 +1,32 @@
+@startuml
+actor Member as M
+participant "UI: Library Portal" as UI
+participant "Controller: BookSearchController" as Controller
+participant "Service: BookService" as Service
+participant "Database" as DB
+
+M -> UI: Access library portal
+activate UI
+
+UI -> Controller: Request available books with shelf numbers
+activate Controller
+
+Controller -> Service: Get available books with shelf numbers
+activate Service
+
+Service -> DB: Query available books with details
+activate DB
+
+DB --> Service: Return book details with shelf numbers
+deactivate DB
+
+Service --> Controller: Book details with shelf numbers
+deactivate Service
+
+Controller --> UI: Show book details with shelf numbers to member
+deactivate Controller
+
+UI --> M: Display available books with shelf numbers
+deactivate UI
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+
+participant DAMSManager as DM "DAMS Manager"
+participant WebInterface as WI "Web Interface"
+participant DIMSServer as DS "DIMS Server"
+participant EventManagement as EM "Event Management Module"
+participant Database as DB "Database"
+
+title DAMS Manager Inquiry for Event Agents
+
+DM -> WI : Request to find agent(s) for event
+activate WI
+
+WI -> DS : Retrieve agent(s) for specified event
+activate DS
+
+DS -> EM : Query event details
+activate EM
+
+EM -> DB : Fetch event agent(s) data
+activate DB
+
+DB --> EM : Return event agent(s) details
+deactivate DB
+
+EM --> DS : Event agent(s) information
+deactivate EM
+
+DS --> WI : Show event agent(s) data
+deactivate DS
+
+WI --> DM : Display event agent(s)
+deactivate WI
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+participant "Restaurant Manager" as manager
+participant "Frontend Interface" as frontend
+participant "Backend Server" as backend
+participant "Database" as db
+
+manager -> frontend : Selects the option to view occupancy
+frontend -> backend : Requests current occupancy data
+activate backend
+
+backend -> db : Queries occupancy data
+activate db
+db --> backend : Returns occupancy data
+deactivate db
+
+backend --> frontend : Sends the occupancy data
+deactivate backend
+
+frontend --> manager : Displays occupancy data
+manager -> frontend : Analyzes occupancy trends
+frontend -> backend : Requests historical occupancy data
+activate backend
+
+backend -> db : Queries historical occupancy data
+activate db
+db --> backend : Returns historical data
+deactivate db
+
+backend --> frontend : Sends the historical occupancy data
+deactivate backend
+
+frontend --> manager : Displays historical occupancy trends
+@enduml

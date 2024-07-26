@@ -1,0 +1,30 @@
+@startuml
+participant Employee as E
+participant UI as UI
+participant Server as S
+participant Database as DB
+
+E -> UI : Select Create Table
+activate UI
+UI -> S : Request to create a new table
+activate S
+S -> DB : Check for table availability
+activate DB
+DB --> S : Availability status
+deactivate DB
+alt If table available
+    S -> DB : Create new table entry
+    activate DB
+    DB --> S : Table created successfully
+    deactivate DB
+    S --> UI : Table creation successful
+    deactivate S
+    UI --> E : Display success message
+    deactivate UI
+else If table not available
+    S --> UI : Error, table not available
+    deactivate S
+    UI --> E : Display error message
+    deactivate UI
+end
+@enduml

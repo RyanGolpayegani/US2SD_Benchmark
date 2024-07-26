@@ -1,0 +1,21 @@
+@startuml
+actor "Website User" as user
+participant "Web Interface" as web
+participant "Data Service" as service
+participant "Validation Process" as validation
+participant "Data Storage" as storage
+participant "Update Scheduler" as scheduler
+
+== Daily Update Process ==
+scheduler -> storage : Trigger Daily Update
+storage -> validation : Validate New Financial Data
+validation -> storage : Store Validated Data
+
+== User Request for Data ==
+user -> web : Request Latest Financial Assistance Data
+web -> service : Fetch Updated Data
+service -> storage : Retrieve Financial Data
+storage --> service : Return Financial Data
+service --> web : Serve Updated Data
+web --> user : Display Financial Data
+@enduml

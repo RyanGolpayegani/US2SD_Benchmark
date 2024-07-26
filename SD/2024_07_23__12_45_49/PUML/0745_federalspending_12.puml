@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+
+actor BrokerUser as "Broker User"
+participant BrokerUI as "Broker UI"
+participant FileUploadService as "File Upload Service"
+participant ErrorHandlingService as "Error Handling\nService"
+participant DisplayService as "Display Service"
+
+== Upload and Validate Error Message ==
+BrokerUser -> BrokerUI : Selects file to upload
+BrokerUser -> FileUploadService : Uploads file
+activate FileUploadService
+FileUploadService -> ErrorHandlingService : Processes & Validates file
+activate ErrorHandlingService
+ErrorHandlingService -> FileUploadService : Errors Found with validation
+deactivate ErrorHandlingService
+FileUploadService -> DisplayService : Sends validated error messages
+deactivate FileUploadService
+DisplayService -> BrokerUI : Displays error messages with accurate text
+BrokerUI -> BrokerUser : Views error messages
+@enduml

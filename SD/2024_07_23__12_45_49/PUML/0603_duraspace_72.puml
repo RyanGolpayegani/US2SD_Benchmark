@@ -1,0 +1,27 @@
+@startuml
+participant "Repository Manager" as manager
+participant "DIMS Web Interface" as webInterface
+participant "Authentication Service" as authService
+participant "Role Management Component" as roleMan
+participant "Database" as db
+
+manager -> webInterface : Select collection/object/component
+manager -> webInterface : Choose to edit roles
+
+webInterface -> authService : Validate session
+authService --> webInterface : Session Valid
+
+webInterface -> roleMan : Request roles form
+roleMan --> webInterface : Return roles form
+
+webInterface -> manager : Display roles form
+manager -> webInterface : Submit role assignment (e.g., illustrator)
+
+webInterface -> roleMan : Process role assignment
+roleMan -> db : Update role for name
+db --> roleMan : Confirm update
+roleMan --> webInterface : Confirm success
+
+webInterface -> manager : Display success message
+
+@enduml

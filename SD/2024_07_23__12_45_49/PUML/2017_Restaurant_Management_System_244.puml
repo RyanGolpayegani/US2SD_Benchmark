@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+
+actor "Restaurant Manager" as manager
+participant "Web Interface" as web
+participant "Backend Server\n(Node.js + Express)" as server
+database "Database\n(MongoDB/PostgreSQL)" as db
+participant "Report Generator" as reportGen
+participant "Analytics Module" as analytics
+
+== Request Daily Sales Report ==
+
+manager -> web : Request daily sales report
+web -> server : GET /reports/daily-sales
+server -> db : Query sales data\n(Date: Today)
+db -> server : Return sales data
+server -> reportGen : Generate report\nfrom sales data
+reportGen -> analytics : Analyze sales data
+analytics -> reportGen : Send analytics data\n(e.g., total sales, trends)
+reportGen -> server : Daily Sales Report\n(including analytics)
+server -> web : Send report
+web -> manager : Display report
+
+@enduml

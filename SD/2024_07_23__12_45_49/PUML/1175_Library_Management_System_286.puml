@@ -1,0 +1,20 @@
+@startuml
+
+participant "Member" as member
+participant "Web Interface" as web
+participant "Backend Server" as server
+participant "Database" as db
+
+member -> web : Enter search query (author/category)
+web -> server : Request to search books by author/category
+alt If search query is valid
+    server -> db : Query books by the specified author/category
+    db -> server : Return list of matching books
+    server -> web : Display list of matching books
+    web -> member : Show search results
+else If search query is invalid or empty
+    server -> web : Signal query error (invalid or empty)
+    web -> member : Show error message (No input/Invalid)
+end
+
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+actor Librarian
+participant "Frontend Interface" as UI
+participant "Backend Server" as Backend
+database "Library Database" as DB
+
+== Search Books ==
+Librarian -> UI : Enter search criteria\n(title, author, category, publication date)
+UI -> Backend : Send search request
+Backend -> DB : Query books by criteria
+DB --> Backend : Return book results
+Backend --> UI : Display search results
+UI --> Librarian : Show book results
+
+== Place Reservation ==
+Librarian -> UI : Selects book for reservation
+UI -> Backend : Send reservation request\n(bookID, librarianID)
+Backend -> DB : Check book availability
+alt Book is available
+    DB --> Backend : Book is available
+    Backend -> DB : Create reservation\n(set book as reserved, add librarianID)
+    DB --> Backend : Reservation confirmed
+    Backend --> UI : Show reservation success
+    UI --> Librarian : Display success message
+else Book is unavailable
+    DB --> Backend : Book is unavailable
+    Backend --> UI : Show book unavailable message
+    UI --> Librarian : Display unavailable message
+end
+
+@enduml

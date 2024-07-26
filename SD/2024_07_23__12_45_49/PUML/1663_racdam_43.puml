@@ -1,0 +1,26 @@
+@startuml
+participant Researcher
+participant "Search Interface" as Search
+database "Digital Archive" as Archive
+participant "Ordering System" as OrderSys
+participant "Licensing & Rights Management" as Licensing
+participant "Payment Gateway" as Payment
+participant "Notification System" as Notify
+
+Researcher -> Search : searches for photos with keywords
+Search -> Archive : query photos
+Archive -> Search : return search results
+Researcher -> Search : selects photos for ordering
+Search -> OrderSys : initiate order process
+OrderSys -> Licensing : check licensing and rights\nfor publication usage
+Licensing -> OrderSys : return licensing info and fees
+OrderSys -> Researcher : display licensing info and request confirmation
+Researcher -> OrderSys : confirms order with publication details
+OrderSys -> Payment : process payment info
+Researcher -> Payment : enters payment details
+Payment -> OrderSys : confirms payment
+OrderSys -> Archive : marks photos as ordered
+OrderSys -> Notify : send order and payment confirmation
+Notify -> Researcher : email confirmation with order details
+
+@enduml

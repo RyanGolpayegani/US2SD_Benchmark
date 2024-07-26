@@ -1,0 +1,21 @@
+@startuml
+title Fine Calculation for Delayed Returns
+
+actor Member as member
+participant "Library Web Interface" as webInterface
+participant "Library Backend System" as backend
+database "Database" as db
+
+member -> webInterface : Request to view delayed returns fine
+webInterface -> backend : Validate member session
+alt session valid
+  backend -> db : Fetch fines for delayed returns
+  db -> backend : Return fines data
+  backend -> webInterface : Show fines information
+  webInterface -> member : Display fines due
+else session invalid
+  backend -> webInterface : Session timeout/error message
+  webInterface -> member : Display session error, prompt re-login
+end
+
+@enduml

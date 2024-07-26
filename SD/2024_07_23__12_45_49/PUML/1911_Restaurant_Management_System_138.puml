@@ -1,0 +1,34 @@
+@startuml
+actor Manager
+participant "UI: Management Portal" as ManagementUI
+participant "Controller: Item Management" as ItemControl
+participant "Controller: Employee Management" as EmployeeControl
+database "DB: Restaurant Database" as RestaurantDB
+
+== Edit Menu Item ==
+Manager -> ManagementUI : Select "Edit Menu Item"
+ManagementUI -> ItemControl : Request item details
+ItemGotdata -> RestaurantDB : Fetch menu item details
+RestaurantDB --> ItemControl : Return item details
+ItemControl --> ManagementUI : Display item details
+Manager -> ManagementUI : Update menu item details and submit
+ManagementUI -> ItemControl : Send updated item details
+ItemUpdated -> RestaurantDB : Update menu item in database
+RestaurantDB --> ItemControl : Confirm item update
+ItemControl --> ManagementUI : Display update confirmation
+ManagementUI --> Manager : Show success message
+
+== Edit Employee Information ==
+Manager -> ManagementUI : Select "Edit Employee"
+ManagementUI -> EmployeeControl : Request employee details
+EmployeeControl -> RestaurantDB : Fetch employee details
+RestaurantDB --> EmployeeControl : Return employee details
+EmployeeControl --> ManagementUI : Display employee details
+Manager -> ManagementUI : Update employee details and submit
+ManagementUI -> EmployeeControl : Send updated employee information
+EmployeeControl -> RestaurantDB : Update employee in database
+RestaurantDB --> EmployeeControl : Confirm employee update
+EmployeeControl --> ManagementUI : Display update confirmation
+ManagementUI --> Manager : Show success success message
+
+@enduml

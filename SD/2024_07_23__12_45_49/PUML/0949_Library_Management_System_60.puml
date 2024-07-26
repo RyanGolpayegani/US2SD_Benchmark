@@ -1,0 +1,34 @@
+@startuml
+participant "Database" as DB
+participant "DueDateChecker" as Checker
+participant "NotificationService" as NS
+participant "LibrarianUI" as UI
+
+note over Checker: Checks daily for overdue books
+Checker -> DB : getOverdueBooks()
+activate DB
+DB --> Checker : overdueBooksList
+deactivate DB
+
+loop for each book in overdueBooksList
+    Checker -> NS : prepareAlert(book)
+    activate NS
+    NS -> DB : getLibrarianDetails(book)
+    activate DB
+    DB --> NS : librarianDetails
+    deactivate DB
+
+    NS -> NS : generateAlertMessage(librarianDetails, book)
+    NS -> NS : sendAlert(librarianDetails, alertMessage)
+
+    alt if email
+        NS -> UI : displayEmailSentConfirmation()
+    else if SMS
+        NS -> UI : displaySmsSentConfirmation()
+    end
+    deactivate NS
+end
+
+note over UI: Librarian gets notified via UI and Email/SMS
+
+@enduml

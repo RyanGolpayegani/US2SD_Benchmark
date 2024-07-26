@@ -1,0 +1,41 @@
+@startuml
+participant Staff
+participant "Library Management\nSystem Interface" as Interface
+participant Backend
+database "Library Database" as DB
+
+Staff -> Interface : Access Asset Tracking Module
+activate Interface
+
+Interface -> Backend : Request current asset data
+activate Backend
+
+Backend -> DB : Query asset information
+activate DB
+DB --> Backend : Return asset data
+deactivate DB
+
+Backend --> Interface : Provide current asset data
+deactivate Backend
+
+Interface --> Staff : Display asset information
+deactivate Interface
+
+Staff -> Interface : Perform update/delete/add
+activate Interface
+
+Interface -> Backend : Process update/delete/add request
+activate Backend
+
+Backend -> DB : Execute SQL update/delete/insert
+activate DB
+DB --> Backend : Confirm transaction success
+deactivate DB
+
+Backend --> Interface : Confirm update/delete/add success
+deactivate Backend
+
+Interface --> Staff : Display success message
+deactivate Interface
+
+@enduml

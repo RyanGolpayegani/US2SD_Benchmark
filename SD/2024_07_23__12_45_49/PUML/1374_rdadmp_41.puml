@@ -1,0 +1,34 @@
+@startuml
+actor "Repository Operator" as repoOp
+participant "DMPTool Interface" as dmpInt
+participant "Metadata Management" as metaMan
+database "Data Repository" as dataRepo
+participant "Storage Analysis Tool" as storageTool
+
+repoOp -> dmpInt: Request data information
+activate dmpInt
+
+dmpInt -> metaMan: Extract metadata info
+activate metaMan
+
+metaMan -> dataRepo: Query data types and sizes
+activate dataRepo
+
+dataRepo --> metaMan: Return data details
+deactivate dataRepo
+
+metaMan --> dmpInt: Provide aggregated metadata
+deactivate metaMan
+
+dmpInt -> storageTool: Analyze storage requirements
+activate storageTool
+
+storageTool -> storageTool: Calculate necessary storage and system specs
+
+storageTool --> dmpInt: Return analysis results
+deactivate storageTool
+
+dmpInt --> repoOp: Display data and storage requirements
+deactivate dmpInt
+
+@enduml

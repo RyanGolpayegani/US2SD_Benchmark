@@ -1,0 +1,34 @@
+@startuml
+actor DataContributor as DC
+participant "Authentication\nSystem" as Auth
+participant "Repository\nInterface" as UI
+participant "Disaster Recovery\nPlan Module" as DRPM
+participant "Storage\nSystem" as Storage
+
+== Accessing Disaster Recovery Plan ==
+
+DC -> UI : Access Repository
+activate UI
+
+UI -> Auth : Request Authentication
+activate Auth
+
+Auth -> UI : Authenticate User
+deactivate Auth
+
+UI -> DRPM : Request Disaster Recovery Plan Access
+activate DRPM
+
+DRPM -> Storage : Fetch Disaster Recovery Plan
+activate Storage
+
+Storage -> DRPM : Return Disaster Recovery Document
+deactivate Storage
+
+DRPM -> UI : Provide Access to Disaster Recovery Plan
+deactivate DRPM
+
+UI -> DC : Display Disaster Recovery Plan
+deactivate UI
+
+@enduml

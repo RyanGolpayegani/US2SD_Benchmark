@@ -1,0 +1,44 @@
+@startuml
+actor Developer
+participant "ALFRED Developer Portal" as Portal
+participant "App Review System" as Review
+participant "ALFRED App Store" as Store
+participant "User App" as UserApp
+participant "End-User" as User
+
+Developer -> Portal: Submit App for Review
+Portal -> Review: Review App Submission
+activate Review
+
+Review -> Review: Evaluate App\n(Data Privacy, Accessibility, Functionality)
+alt If App Approved
+    Review --> Portal: Notify Approval
+    Developer <- Portal: Receive Approval Notification
+    Portal -> Store: Add App to ALFRED App Store
+    Store -> UserApp: Feature New App
+else If App Rejected
+    Review --> Portal: Notify Rejection\n(Feedback for Improvement)
+    Developer <- Portal: Receive Rejection Notification
+end
+
+UserApp -> User: Recommend New Apps
+User -> UserApp: Explore New Apps
+User -> UserApp: Install/Subscribe to the App
+UserApp -> Store: Increment App Download/Subscription Count
+
+alt Every Month
+    Store -> Developer: Provide App Usage Stats\n(Downloads, Active Users)
+end
+
+alt When Developer Updates App
+    Developer -> Portal: Submit App Update
+    repeat
+        Portal -> Review: Review App Update
+        Review -> Review: Evaluate App Update
+        Review -> Portal: Notify Update Review Outcome
+        Developer <- Director: Receive Update Notification
+    until Update Approved
+    Portal -> Store: Update App in ALFRED App Store
+end
+
+@enduml

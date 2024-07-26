@@ -1,0 +1,27 @@
+@startuml
+participant MedicalCaregiver as MC
+participant ALFRED_UI as UI
+participant SpeechRecognition as SR
+participant HeartRateMonitor as HRM
+participant HealthMonitoringService as HMS
+
+MC -> UI: Request "Check User's Heart Rate"
+activate UI
+UI -> SR: "Convert Speech to Text Command"
+activate SR
+SR --> UI: "Interpreted Command: Check Heart Rate"
+deactivate SR
+UI -> HRM: Request HeartRateCheck()
+activate HRM
+HRM -> HRM: MeasureUserHeartRate()
+note right of HRM: Heart Rate Measurement Process
+HRM -> HMS: SendHeartRateData()
+activate HMS
+HMS -> HMS: AnalyzeHeartRateData()
+HMS --> HRM: AnalysisResult()
+deactivate HMS
+HRM --> UI: Display HeartRate + Analysis
+deactivate HRM
+UI --> MC: Show HeartRateInfo on Screen
+deactivate UI
+@enduml

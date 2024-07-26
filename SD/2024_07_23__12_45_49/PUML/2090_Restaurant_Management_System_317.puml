@@ -1,0 +1,25 @@
+@startuml
+participant Waiter as waiter
+participant "Waiter Interface" as UI
+participant "Backend System" as backend
+participant "Database" as db
+
+waiter -> UI: Selects table to update
+UI -> backend: Request update waiting time
+activate backend
+
+backend -> db: Retrieve current wait time
+activate db
+db --> backend: Return current wait time
+deactivate db
+
+backend -> db: Update waiting time
+activate db
+db --> backend: Confirm waiting time updated
+deactivate db
+
+backend --> UI: Update success confirmation
+deactivate backend
+
+UI --> waiter: Display success message
+@enduml

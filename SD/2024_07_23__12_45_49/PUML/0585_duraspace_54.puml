@@ -1,0 +1,26 @@
+@startuml
+participant "DAMS Manager" as manager
+participant "DIMS Interface" as interface
+participant "Repository Management" as repo_management
+participant "Database" as db
+participant "Event and Integrity\nMonitoring Module" as integrity_monitor
+
+== Indicate Source-Capture Information for a File ==
+
+manager -> interface : Select file to update
+interface -> repo_management : Request file details
+repo_management -> db : Query file by ID
+db -> repo_management : File details
+repo_management -> interface : Display file details
+interface -> manager : Show file details
+
+manager -> interface : Enter source-capture information
+interface -> repo_management : Validate information
+repo_management -> integrity_monitor : Verify integrity and format
+integrity_monitor -> repo_management : Validation results
+repo_management -> db : Update file with source-capture information
+db -> repo_management : Confirmation of update
+repo_management -> interface : Update successful
+interface -> manager : Display success message
+
+@enduml

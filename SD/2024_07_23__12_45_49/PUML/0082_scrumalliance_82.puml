@@ -1,0 +1,37 @@
+@startuml
+
+actor CSM as "Certified ScrumMaster"
+participant "Scrum Alliance Platform" as platform
+database "Certification Registry" as registry
+participant "Certification Verification System" as verification
+
+CSM -> platform : Request listing in registry
+activate platform
+
+platform -> registry : Check if CSM is already listed
+activate registry
+registry --> platform : CSM not listed
+deactivate registry
+
+platform -> platform : Generate unique listing request
+platform -> CSM : Send listing confirmation request
+CSM -> platform : Confirm listing request
+activate CSM
+
+platform -> verification : Verify CSM certification
+activate verification
+verification --> platform : Certification verified
+deactivate verification
+
+platform -> registry : Add CSM to registry without membership
+activate registry
+registry --> platform : CSM listed in registry
+deactivate registry
+
+platform -> CSM : Notify listing completion
+CSM --> platform : Acknowledge notification
+deactivate CSM
+
+deactivate platform
+
+@enduml

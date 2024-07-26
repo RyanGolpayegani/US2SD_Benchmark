@@ -1,0 +1,20 @@
+@startuml
+participant "Library Worker" as Worker
+participant "Web Interface" as Interface
+participant "Book Management System" as BookSys
+participant "Database" as DB
+
+Worker -> Interface : selects "List Borrowers" option
+Interface -> BookSys : requestListOfBorrowers(bookId)
+activate BookSys
+
+BookSys -> DB : queryBorrowersByBook(bookId)
+activate DB
+DB --> BookSys : borrowersList
+deactivate DB
+
+BookSys --> Interface : displayBorrowers(borrowersList)
+Interface --> Worker : shows list of borrowers and return dates
+deactivate BookSys
+
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+participant Owner
+participant "User Management System" as UMS
+participant "Database" as DB
+participant User
+
+Owner -> UMS: Select "Invite User"
+UMS -> Owner: Display User Search Interface
+Owner -> UMS: Input User Details & Submit
+UMS -> DB: Validate User Exists
+alt User exists
+    DB -> UMS: User Validated
+    UMS -> Owner: Display "Confirm Invitation"
+    Owner -> UMS: Confirm
+    UMS -> DB: Create Publisher Membership
+    DB -> UMS: Confirmation
+    UMS -> Owner: Display "User Invited Successfully"
+    UMS -> User: Send Invitation Notification
+else User does not exist
+    DB -> UMS: User Not Found
+    UMS -> Owner: Display "User Not Found Error"
+end
+@enduml

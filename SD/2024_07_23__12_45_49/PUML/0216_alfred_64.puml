@@ -1,0 +1,63 @@
+@startuml
+participant OlderPerson as person
+participant "ALFRED" as alfred
+participant "Phone Contact Application" as phone
+
+== Add a New Contact ==
+person -> alfred : Says "Add a new contact"
+activate alfred
+alfred -> alfred : Processes voice command
+alfred -> phone : Sends command to add contact
+activate phone
+phone -> phone : Opens contact addition form
+phone --> alfred : Confirms form is open
+deactivate phone
+alfred --> person : Asks for contact details
+activate person
+person -> alfred : Provides contact details\n(Name, Number, etc.)
+activate alfred
+alfred -> phone : Sends contact details
+activate phone
+phone -> phone : Creates new contact
+phone --> alfred : Confirms contact is saved
+deactivate phone
+alfred --> person : Confirms contact saved
+deactivate alfred
+deactivate person
+
+== Update a Contact ==
+person -> alfred : Says "Update contact [Name]"
+activate alfred
+alfred -> alfred : Processes voice command
+alfred -> phone : Requests contact details for [Name]
+activate phone
+phone -> phone : Retrieves contact details
+phone --> alfred : Displays contact details
+deactivate phone
+alfred --> person : Reads out contact details\nAsks for changes
+activate person
+person -> alfred : Provides updated details
+activate alfred
+alfred -> phone : Sends updated details
+activate phone
+phone -> phone : Updates contact
+phone --> alfred : Confirms contact updated
+deactivate phone
+alfred --> person : Confirms contact updated
+deactivate alfred
+deactivate person
+
+== Delete a Contact ==
+person -> alfred : Says "Delete contact [Name]"
+activate alfred
+alfred -> alfred : Processes voice command
+alfred -> phone : Sends command to delete [Name]
+activate phone
+phone -> phone : Deletes contact
+phone --> alfred : Confirms contact deleted
+deactivate phone
+alfred --> person : Confirms contact deleted
+deactivate alfred
+deactivate person
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+participant User
+participant "EDRMS System" as EDRMS
+participant "Authentication Service" as Auth
+participant "IP Whitelist Checker" as IPCheck
+
+User -> EDRMS : Request Object
+EDRMS -> IPCheck : Verify IP Address
+alt IP Not Whitelisted
+    IPCheck -> EDRMS : IP Not Whitelisted
+    EDRMS -> Auth : Request Authentication
+    User -> Auth : Authenticate
+    alt Authentication Success
+        Auth -> EDRMS : Access Granted
+        EDRMS -> User : Provide Access to Object
+    else Authentication Failure
+        Auth -> EDRMS : Access Denied
+        EDRMS -> User : Deny Access
+    end
+else IP Whitelisted
+    IPCheck -> EDRMS : IP Whitelisted
+    EDRMS -> User : Provide Direct Access to Object
+end
+@enduml

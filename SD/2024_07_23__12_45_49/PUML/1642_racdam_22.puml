@@ -1,0 +1,33 @@
+@startuml
+actor Archivist
+participant "DigitalArchiveInterface" as Interface
+database "MetadataDatabase" as MetadataDB
+participant "FileStorageSystem" as Storage
+participant "CitationIndex" as Citation
+
+== Link Electronic Publication to Citation ==
+
+Archivist -> Interface : Select publication to link
+Interface -> MetadataDB : Query publication details
+MetadataDB --> Interface : Return publication details
+Interface --> Archivist : Display publication details
+
+Archivist -> Interface : Provide citation details
+Interface -> MetadataDB : Check if citation exists
+MetadataDB --> Interface : Citation status
+
+alt Citation Exists
+    Interface -> Citation : Request existing citation link
+
+else Citation Not Found
+    Interface -> Citation : Create new citation record
+    Citation --> MetadataDB : Store new citation
+    MetadataDB --> Interface : Confirm citation stored
+end
+
+Interface -> Citation : Link publication to citation
+Citation --> Interface : Confirm link successful
+
+Interface --> Archivist : Display confirmation message
+
+@enduml

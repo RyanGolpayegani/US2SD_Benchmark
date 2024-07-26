@@ -1,0 +1,31 @@
+@startuml
+participant AgencyUser as AU
+participant Developer as Dev
+participant DevOps as DO
+participant QA as QA
+
+AU -> Dev: Request FABS Deployment
+activate Dev
+
+Dev -> Dev: Finalize FABS build
+Dev -> DO: Handover to DevOps for deployment preparation
+activate DO
+
+DO -> DO: Prepare production environment
+DO -> DO: Validate deployment scripts
+
+DO -> QA: Request deployment validation
+activate QA
+
+QA -> QA: Validate FABS in pre-production
+QA -> QA: Perform functional and performance tests
+QA -> DO: Confirm validation success
+
+DO -> DO: Deploy FABS to production
+DO -> AU: Confirm FABS deployment
+
+deactivate Dev
+deactivate DO
+deactivate QA
+
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+participant User as user
+actor "Member Profile Service" as MPS
+actor "Privacy Setting Service" as PSS
+actor "Database" as DB
+
+user->MPS: Request to view profiles
+MPS->PSS: Check privacy settings
+PSS->DB: Fetch privacy preferences
+DB->PSS: Return preferences
+PSS->MPS: Privacy settings result
+alt if profiles are public
+    MPS->DB: Retrieve public profiles
+    DB->MPS: Return profile details
+    MPS->user: Display profiles
+else if some profiles are private
+    MPS->DB: Retrieve public + consented private profiles
+    DB->MPS: Return allowed profile details
+    MPS->user: Display allowed profiles
+else
+    MPS->user: Notify "All profiles are private"
+end
+@enduml

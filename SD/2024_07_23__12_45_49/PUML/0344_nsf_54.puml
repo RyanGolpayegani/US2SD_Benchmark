@@ -1,0 +1,48 @@
+@startuml
+participant VisualDesigner as Designer
+participant "CMS" as CMS
+participant "Cloud Storage" as Cloud
+participant "Stakeholders" as Stakeholders
+
+Designer -> CMS : Log into CMS
+activate CMS
+
+Designer -> Cloud : Access moodboard template
+activate Cloud
+Cloud --> Designer : Provide moodboard template
+
+Designer -> Designer : Create moodboard based\non design concepts
+Designer -> Cloud : Save moodboard drafts
+Cloud --> Designer : Confirm save
+
+Designer -> CMS : Link moodboard to relevant project
+CMS --> Designer : Confirm link
+
+loop Review and Revise
+    Designer -> Designer : Review and adjust moodboard
+end
+
+Designer -> CMS : Publish moodboard for review
+CMS --> Stakeholders : Notify of moodboard for review
+
+Stakeholders -> CMS : Access moodboard
+activate Stakeholders
+Stakeholders -> Stakeholders : Review moodboard
+
+alt Feedback Loop
+    Stakeholders -> Designer : Provide feedback
+    Designer -> Designer : Iterate on moodboard based on feedback
+    Designer -> CMS : Update moodboard
+    CMS --> Stakeholders : Notify of updated moodboard
+    Stakeholders -> CMS : Review updated moodboard
+end
+
+Stakeholders -> Designer : Approve moodboard
+Designer -> CMS : Finalize moodboard publication
+CMS --> Designer : Confirm publication
+
+deactivate CMS
+deactivate Cloud
+deactivate Stakeholders
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+title Adjust Most Frequently Ordered Food of the Month
+
+actor Manager
+participant "Restaurant Management \n System Interface" as Interface
+participant "Analytics/Reporting Module" as Analytics
+participant "Menu Management \n System" as MenuManagement
+participant Database
+
+activate Manager
+Manager -> Interface : Request most frequently \n ordered food list
+activate Interface
+
+Interface -> Analytics : Fetch order analytics
+activate Analytics
+
+Analytics -> Database : Query order data
+activate Database
+
+Database --> Analytics : Return order data
+deactivate Database
+
+Analytics --> Interface : Display most frequently \n ordered foods
+deactivate Analytics
+
+Interface --> Manager : Show most frequently ordered foods
+Manager -> Interface : Adjust list with new preferences
+activate MenuManagement
+Interface -> MenuManagement : Update menu list
+MenuManagement -> Database : Update menu data
+deactivate Interface
+
+Database --> MenuManagement : Confirm update
+MenuManagement --> Manager : Confirmation of list update
+deactivate MenuManagement
+
+@enduml

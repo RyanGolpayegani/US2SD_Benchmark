@@ -1,0 +1,17 @@
+@startuml
+participant Waiter as waiter
+participant UI as ui
+participant BackendService as backend
+participant Database as db
+
+waiter -> ui : Select "View Order Details"
+ui -> backend : Request: GET /order/{orderId}/prices
+activate backend
+backend -> db : Query order details with prices
+activate db
+db --> backend : Return order details with prices
+deactivate db
+backend --> ui : Response: Order details with prices
+deactivate backend
+ui --> waiter : Display order prices
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+actor "Plan Review Staff" as staff
+participant "Portal Interface" as portal
+database "Application Database" as db
+participant "Assignment Module" as assignment
+actor "Plan Reviewer" as reviewer
+
+== Assign Plans for Review ==
+staff -> portal : Select Application to Assign
+portal -> db : Query Application Details
+db --> portal : Return Application Details
+portal --> staff : Display Application Details
+
+staff -> portal : Initiate Assignment Process
+portal -> assignment : Invoke Assignment Module
+note over assignment : Determine Eligible Reviewers
+
+assignment -> db : Retrieve Reviewers List
+db --> assignment : Return Reviewers List
+assignment --> portal : Display Reviewers for Selection
+
+staff -> portal : Select Plan Reviewer
+portal -> assignment : Assign Reviewer to Application
+assignment -> db : Update Application with Reviewer Info
+db --> assignment : Confirm Update
+
+assignment --> portal : Confirm Assignment
+portal --> staff : Show Assignment Success Message
+staff -> portal : Notify Plan Reviewer
+portal -> reviewer : Send Assignment Notification
+note over reviewer : Reviewer Receives Assignment
+
+@enduml

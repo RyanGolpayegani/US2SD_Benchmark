@@ -1,0 +1,19 @@
+@startuml
+participant Developer
+participant "CLI Tool" as CLI
+participant "Platform API" as API
+participant "Database" as DB
+participant "File System" as FS
+
+Developer -> CLI: Executes command with\nrequirements file
+CLI -> API: Requests DataPackages information\nbased on file
+API -> DB: Queries available DataPackages\nand versions
+DB -> API: Returns DataPackages data
+API -> CLI: Provides list of DataPackages\nand current versions
+CLI -> Developer: Displays available DataPackages\nand versions
+Developer -> CLI: Pins exact versions\nin the file
+CLI -> FS: Updates the file with pinned versions
+FS -> CLI: Confirms file update
+CLI -> Developer: Notifies of successful pinning
+
+@enduml

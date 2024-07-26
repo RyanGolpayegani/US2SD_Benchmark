@@ -1,0 +1,39 @@
+@startuml
+participant Member as M
+participant "Member Interface" as MI
+participant "Messaging System" as MS
+participant "Database" as DB
+participant "Librarian Interface" as LI
+participant Librarian as L
+
+M -> MI : Selects 'Contact Librarian'
+MI -> MS : Initiates message composition
+MS --> M : Displays message composition interface
+
+M -> MS : Submits message
+MS -> DB : Saves message
+DB --> MS : Confirm message saved
+MS --> MI : Confirmation & Notification sent to Librarian
+MI --> M : Display "Message sent successfully"
+
+L -> LI : Checks for new messages
+LI -> MS : Requests new messages
+MS -> DB : Retrieves new messages
+DB --> MS : Returns new messages
+MS --> LI : Displays new messages
+LI --> L : Show message from Member
+
+L -> MS : Replies to message
+MS -> DB : Saves reply
+DB --> MS : Confirm reply saved
+MS --> LI : Confirmation & Notification sent to Member
+LI --> L : Display "Reply sent successfully"
+
+M -> MI : Receives notification
+MI -> MS : Requests message & replies
+MS -> DB : Retrieves conversation
+DB --> MS : Returns conversation details
+MS --> MI : Displays conversation with reply
+MI --> M : View reply from Librarian
+
+@enduml

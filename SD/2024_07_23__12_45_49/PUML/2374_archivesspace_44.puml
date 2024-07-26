@@ -1,0 +1,40 @@
+@startuml
+autonumber
+
+participant RepositoryManager as RM
+participant AuthenticationSystem as Auth
+participant ManagementInterface as MI
+participant Database as DB
+
+== Authentication ==
+RM -> Auth: login(credentials)
+Auth --> RM: AuthSuccess
+
+== Create Archival Description ==
+RM -> MI: selectCreateArchDescription()
+activate MI
+MI -> DB: createRecord(archivalDescriptionDetails)
+DB --> MI: RecordCreated
+deactivate MI
+MI --> RM: ShowSuccessMessage("Archival Description Created")
+
+== Update Archival Description ==
+RM -> MI: selectUpdateArchDescription(recordID)
+activate MI
+MI -> DB: getRecordByID(recordID)
+DB --> MI: DisplayRecordDetails
+RM -> MI: submitUpdatedRecordDetails(updatedDetails)
+MI -> DB: updateRecord(recordID, updatedDetails)
+DB --> MI: RecordUpdated
+deactivate MI
+MI --> RM: ShowSuccessMessage("Archival Description Updated")
+
+== Delete Archival Description ==
+RM -> MI: selectDeleteArchDescription(recordID)
+activate MI
+MI -> DB: deleteRecord(recordID)
+DB --> MI: RecordDeleted
+deactivate MI
+MI --> RM: ShowSuccessMessage("Archival Description Deleted")
+
+@enduml

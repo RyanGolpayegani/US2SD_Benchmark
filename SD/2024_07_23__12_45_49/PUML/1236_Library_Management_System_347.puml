@@ -1,0 +1,42 @@
+@startuml
+participant StaffMember as Staff
+participant "CLMS Interface" as Interface
+participant "Book Management Module" as BookModule
+participant "User Management Module" as UserModule
+participant "Reservation Module" as ReservationModule
+participant Database
+
+== Adding a New Book ==
+Staff -> Interface : Access Book Management
+Interface -> BookModule : Add New Book Details
+BookModule -> Database : Validate & Store Book Data
+Database --> BookModule : Confirm Book Added
+BookModule --> Interface : Display Success Message
+Interface --> Staff : Show Confirmation
+
+== Managing User Subscriptions ==
+Staff -> Interface : Access User Management
+Interface -> UserModule : Select Manage Subscriptions
+UserModule -> Database : Fetch Subscription Details
+Database --> UserModule : Return Subscription Info
+UserModule --> Interface : Display Subscription Info
+Staff -> Interface : Update Subscription Plan
+Interface -> UserModule : Process Subscription Update
+UserModule -> Database : Update Subscription Data
+Database --> UserModule : Confirm Update
+UserModule --> Interface : Display Success Message
+Interface --> Staff : Show Confirmation
+
+== Handling a Book Reservation ==
+Staff -> Interface : Access Reservation Module
+Interface -> ReservationModule : Manage Reservations
+ReservationModule -> Database : Fetch Reservations
+Database --> ReservationModule : Show Reservations
+Staff -> Interface : Approve/Deny Reservation
+Interface -> ReservationModule : Update Reservation Status
+ReservationModule -> Database : Process Reservation Update
+Database --> ReservationModule : Confirm Update
+ReservationModule --> Interface : Show Update Confirmation
+Interface --> Staff : Display Confirmation
+
+@enduml

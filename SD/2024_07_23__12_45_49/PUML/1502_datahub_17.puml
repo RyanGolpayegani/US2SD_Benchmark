@@ -1,0 +1,29 @@
+@startuml
+actor Publisher
+participant "UI" as UI
+participant "Auth Service" as Auth
+participant "Data Service" as DataService
+participant "Validation Service" as Validation
+participant "Storage Service" as Storage
+participant "Version Control" as Versioning
+
+Publisher -> UI: Select "Publish Data Package"
+UI -> Auth: Validate Publisher
+Auth --> UI: Validation Response
+
+alt Validation Success
+  UI -> DataService: Request to Publish
+  DataService -> Validation: Validate Data Package
+  Validation --> DataService: Validation Success
+  DataService -> Storage: Store Data Package
+  Storage --> DataService: Confirmation & Generate URL
+  DataService -> Versioning: Create New Version
+  Versioning --> DataService: Version Info
+  DataService --> UI: Publish Success + Data URL
+  UI --> Publisher: Show Success Message & Link
+else Validation Failed
+  Validation --> DataService: Validation Errors
+  DataService --> UI: Show Validation Errors
+  UI --> Publisher: Display Errors
+end
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+participant UserInterface as "Library Staff Interface"
+participant AuthenticationSystem as "Authentication System"
+participant ExternalSystemService as "External System API"
+participant RepositorySystem as "Repository System"
+participant IndexingService as "Indexing Service"
+
+actor LibraryStaff as "Library Staff Member"
+
+LibraryStaff -> UserInterface : Request to add external item
+UserInterface -> AuthenticationSystem : Authenticate request
+AuthenticationSystem -> UserInterface : Authentication successful
+
+UserInterface -> ExternalSystemService : Fetch digital item metadata
+ExternalSystemService -> UserInterface : Return metadata
+
+UserInterface -> RepositorySystem : Submit metadata for addition
+RepositorySystem -> IndexingService : Index metadata for searching
+IndexingService -> RepositorySystem : Confirm indexing successful
+RepositorySystem -> UserInterface : Confirm item addition successful
+UserInterface -> LibraryStaff : Display success message
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+actor "API User" as user
+participant "API Gateway" as gateway
+participant "Authentication Service" as auth
+participant "Data Processing Module" as processing
+participant "HASC Code Resolver" as hascResolver
+participant "Fiscal Data API" as fiscalAPI
+participant "Visualization Service" as visualization
+database "Fiscal Data Store" as datastore
+
+user -> gateway : Request data with HASC codes
+gateway -> auth : Validate API Key/User
+auth -> gateway : Validation Response
+
+alt Validation Successful
+    gateway -> processing : Extract HASC codes
+    processing -> hascResolver : Resolve HASC codes to regions
+    hascResolver -> fiscalAPI : Request fiscal data for regions
+    fiscalAPI -> datastore : Fetch data
+    datastore -> fiscalAPI : Return fiscal data
+    fiscalAPI -> processing : Aggregate and prepare data
+    processing -> visualization : Prepare visualization payload
+    visualization -> user : Provide visualization link/embed code
+else Validation Failed
+    gateway -> user : Error Response (Unauthorized)
+end
+@enduml

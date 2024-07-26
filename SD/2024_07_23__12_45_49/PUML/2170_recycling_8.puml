@@ -1,0 +1,21 @@
+@startuml
+participant User as U
+participant "RecycleSmart Interface" as UI
+participant "System Backend" as SB
+participant "Database" as DB
+participant "Email Service" as ES
+
+U -> UI : Enters Email ID
+UI -> SB : Validate Email
+alt Valid Email
+    SB -> DB : Store Email ID
+    DB --> SB : Confirmation of Email ID Stored
+    SB -> ES : Subscribe to Notification Service
+    ES --> SB : Confirmation of Subscription
+    SB --> UI : Show Success Message
+else Invalid Email
+    SB --> UI : Show Error Message (Invalid Email)
+end
+UI --> U : Display Confirmation/Error Message
+
+@enduml

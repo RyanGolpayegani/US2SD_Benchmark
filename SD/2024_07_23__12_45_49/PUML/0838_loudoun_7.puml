@@ -1,0 +1,42 @@
+@startuml
+!theme plain
+
+actor Applicant
+participant "Customer Portal" as Portal
+participant "Payment System" as Payment
+database "County Database" as Database
+
+Applicant -> Portal : Login to User Account
+activate Portal
+
+Portal --> Applicant : Display Dashboard\n(Outstanding Fees)
+Applicant -> Portal : Select Fee to Pay
+activate Portal
+
+Portal -> Payment : Initiate Payment Process
+activate Payment
+
+Payment --> Applicant : Display Payment Form
+Applicant -> Payment : Enter Payment Details\n(Card Info, Amount)
+Payment -> Payment : Validate Payment Information
+
+alt Payment Successful
+
+    Payment --> Applicant : Display Success Message
+    Payment -> Portal : Notify Payment Success
+    activate Portal
+    Portal -> Database : Update Fee Status
+    activate Database
+    Database --> Portal : Confirm Update
+    deactivate Database
+    Portal --> Applicant : Update User Dashboard\n(Fee Paid)
+    deactivate Portal
+
+else Payment Failed
+
+    Payment --> Applicant : Display Failure Message\n(Retry Payment)
+    deactivate Payment
+
+end
+
+@enduml

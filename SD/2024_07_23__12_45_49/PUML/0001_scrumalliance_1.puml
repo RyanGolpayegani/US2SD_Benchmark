@@ -1,0 +1,24 @@
+@startuml
+actor Member as member
+participant "UI Frontend" as ui
+participant "Profile Controller" as controller
+participant "Input Validator" as validator
+participant "Profile Service" as service
+participant "Database" as db
+
+member -> ui : Navigate to profile edit page
+ui -> member : Display profile edit form
+
+member -> ui : Enter semi-structured description
+ui -> controller : Submit profile update request
+controller -> validator : Validate input data
+
+alt If input data is valid
+    validator -> service : Request profile update
+    service -> db : Update profile information
+    db -> service : Confirm update success
+    service -> member : Display success message
+else If input data is invalid
+    validator -> member : Display error message
+end
+@enduml

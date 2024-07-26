@@ -1,0 +1,35 @@
+@startuml
+actor StaffMember
+participant "System: Portal" as System
+database "Applications Database" as Database
+
+== Assign Application for Detailed Review ==
+
+StaffMember -> System : Log in to Staff Account
+activate System
+
+System --> StaffMember : Display Dashboard
+
+StaffMember -> System : Select Application for Review
+activate System
+
+System -> Database : Retrieve Application Details
+activate Database
+Database --> System : Application Details
+deactivate Database
+
+System --> StaffMember : Display Application Details
+deactivate System
+
+StaffMember -> System : Request "Assign for Detailed Review"
+activate System
+
+System -> Database : Update Application Status \nto "Under Detailed Review"
+activate Database
+Database --> System : Confirm Status Update
+deactivate Database
+
+System --> StaffMember : Display Confirmation of Assignment
+deactivate System
+
+@enduml

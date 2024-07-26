@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+
+participant Developer
+participant "Domain Model Service" as DMS
+database "DB Indexer" as DBI
+participant "Validation Service" as VS
+
+== Indexing Domain Models ==
+Developer -> DMS : Request to index domain models
+activate DMS
+DMS -> DBI : Index models
+activate DBI
+DBI --> DMS : Indexing complete
+deactivate DBI
+DMS --> Developer : Models indexed
+deactivate DMS
+
+== Retrieving Validation Results ==
+Developer -> VS : Request validation for models
+activate VS
+VS -> DBI : Retrieve indexed models
+activate DBI
+DBI --> VS : Indexed models
+deactivate DBI
+VS -> VS : Validate models
+VS --> Developer : Validation results
+deactivate VS
+
+@enduml

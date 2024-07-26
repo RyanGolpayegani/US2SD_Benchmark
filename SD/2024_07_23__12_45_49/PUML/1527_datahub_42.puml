@@ -1,0 +1,30 @@
+@startuml
+actor Publisher as pub
+participant "UI/CLI" as ui
+database "Data Registry Platform" as platform
+participant "Versioning System" as versioning
+participant "Data Validation Service" as validation
+participant "Data Storage" as storage
+
+pub -> ui : Request to overwrite data package
+ui -> platform : Authenticate Publisher
+alt Authentication Success
+    platform -> versioning : Check if tagged version exists
+    alt Version Exists
+        versioning -> platform : Confirm version overwrite permission
+        platform -> pub : Request validation of data package
+        pub -> validation: Provide new data package for validation
+        validation -> pub: Validation Success
+        pub -> ui : Confirms overwrite operation
+        ui -> storage : Store new version of data package
+        storage -> versioning : Tag and overwrite previous version
+        versioner -> platform : Update versioning records
+        platform -> pub : Overwrite Successful
+    else Version Not Found
+        platform -> pub : Error: Version does not exist
+    end
+else Authentication Failed
+    platform -> pub : Authentication Error
+end
+
+@enduml

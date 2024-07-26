@@ -1,0 +1,24 @@
+@startuml
+participant Customer as cust
+participant WebInterface as web
+participant Controller as cont
+participant RecommendationEngine as rec
+participant Database as db
+
+cust -> web: Request to view most read book this month
+web -> cont: Fetch most read book
+cont -> rec: Query most read book this month
+rec -> db: Retrieve book data
+db -> rec: Book data
+rec -> cont: Most read book details
+cont -> web: Display book details
+web -> cust: Show most read book details
+
+cust -> web: Request to delete most read book record
+web -> cont: Delete request for most read book
+cont -> rec: Check if deletion criteria met
+rec -> cont: Criteria not met (or met, for admins)
+cont -> web: Deletion denied (or approved for admins)
+web -> cust: Show deletion status
+
+@enduml

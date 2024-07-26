@@ -1,0 +1,26 @@
+@startuml
+
+participant RepositoryManager as RM "Repository Manager"
+participant DIMS as D "DIMS"
+database DAMS_DB "DAMS Database"
+participant EventMonitoring as EM "Event Monitoring"
+
+RM -> D: Request title change notifications
+D -> DAMS_DB: Retrieve current titles
+DAMS_DB -> D: Current titles information
+D -> EM: Subscribe to title change events
+note right of EM: Event Monitoring subscribes \n to changes on titles for collections, \n objects, and components as requested.
+EM --> D: Subscription confirmed
+D -> RM: Subscription to title change notifications confirmed
+
+alt Title Change Detected
+    EM -> D: Notify title change event
+    D -> DAMS_DB: Log title change event
+    DAMS_DB -> D: Confirmation & details of change
+    D -> RM: Notify title change
+    note over RM: Repository Manager reviews \n the changes.
+else No Title Change Detected
+    note over EM: No action required until \n a change is detected.
+end
+
+@enduml

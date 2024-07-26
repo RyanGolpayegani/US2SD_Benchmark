@@ -1,0 +1,33 @@
+@startuml
+participant Archivist as A
+participant AuthenticationModule as Auth
+participant RightsManagementInterface as RMI
+participant RightsDatabase as RD
+
+A -> Auth: Login()
+activate Auth
+Auth --> A: AuthenticationSuccess
+deactivate Auth
+
+A -> RMI: AccessRightsManagement()
+activate RMI
+RMI -> RD: FetchRightsStatusesAndStatements()
+activate RD
+RD --> RMI: RightsDetails
+deactivate RD
+
+RMI --> A: DisplayRightsStatusesAndStatements()
+deactivate RMI
+
+A -> RMI: SelectRightsDetails()
+activate RMI
+A -> RMI: CreateUniformRightsStatement()
+RMI -> RD: SaveNewRightsStatement()
+activate RD
+RD --> RMI: Confirmation
+deactivate RD
+
+RMI --> A: ConfirmationMessage()
+deactivate RMI
+
+@enduml

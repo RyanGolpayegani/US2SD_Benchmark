@@ -1,0 +1,21 @@
+@startuml
+participant "Collection Curator" as Curator
+participant "EDRMS" as EDRMS
+database "EZID" as EZID
+
+Curator -> EDRMS : Update item metadata
+activate EDRMS
+EDRMS -> EDRMS : Validate metadata change
+EDRMS -> EDRMS : Check if item has DOI
+alt item has DOI
+    EDRMS -> EZID : Send updated metadata for DOI
+    activate EZID
+    EZID -> EZID : Update metadata
+    EZID -> EDRMS : Acknowledge update
+    deactivate EZID
+    EDRMS -> Curator : Notify success
+else item has no DOI
+    EDRMS -> Curator : Notify no action needed
+end
+deactivate EDRMS
+@enduml

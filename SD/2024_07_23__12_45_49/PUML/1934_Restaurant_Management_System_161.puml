@@ -1,0 +1,33 @@
+@startuml
+participant Manager as M
+participant "Management Interface" as MI
+participant "Financial Operations System" as FOS
+participant "Database" as DB
+participant "Reporting Tool" as RT
+
+M -> MI: Request total sales and profit info
+MI -> FOS: Retrieve sales data
+FOS -> DB: Query sales and expenses data
+DB --> FOS: Return data
+FOS -> RT: Calculate total sales and total profit
+RT --> FOS: Total sales and profit calculated
+FOS --> MI: Display total sales and total profit
+MI --> M: Show total sales and profit results
+
+alt If total sales and profit information is sufficient
+    M -> MI: Request to determine salaries based on profit
+    MI -> FOS: Calculate salaries based on profit
+    FOS -> DB: Fetch employee data
+    DB --> FOS: Provide employee data
+    FOS -> RT: Determine salaries
+    RT --> FOS: Salaries determined
+    FOS --> MI: Display salary calculations
+    MI --> M: Show salary determination results
+else If additional information is required
+    M -> MI: Request additional data
+    note right: This could involve more detailed\nfinancial reports or adjustments
+    MI -> FOS: Process additional request
+    FOS --> MI: Provide requested information
+    MI --> M: Display information
+end
+@enduml

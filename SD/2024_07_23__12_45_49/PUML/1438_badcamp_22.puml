@@ -1,0 +1,36 @@
+@startuml
+participant "Anonymous User" as User
+participant "Web Interface" as Web
+participant "Sponsor Module" as SponsorModule
+participant "Attendee Database" as Database
+
+User -> Web: Access sponsor list page
+activate Web
+
+Web -> SponsorModule: Request list of sponsors
+activate SponsorModule
+
+SponsorModule -> Database: Query sponsor information
+activate Database
+Database --> SponsorModule: Return sponsor info
+deactivate Database
+
+SponsorModule --> Web: Display list of sponsors
+deactivate SponsorModule
+
+User -> Web: Select a sponsor
+Web -> SponsorModule: Request attendees of selected sponsor
+activate SponsorModule 
+
+SponsorModule -> Database: Query attendees linked to sponsor
+activate Database
+Database --> SponsorModule: Return attendees list
+deactivate Database
+
+SponsorModule --> Web: Display attendees of sponsor
+deactivate SponsorModule
+
+Web --> User: Show list of attendees associated with sponsor
+deactivate Web
+
+@enduml

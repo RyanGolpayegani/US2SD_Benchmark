@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+participant AssetManager as AM
+participant "Digital Repository System" as DRS
+participant "Policy Verification Module" as PVM
+participant "Disposition Execution Module" as DEM
+participant "Notification Service" as NS
+
+== Assurance of Disposition Plan ==
+AM -> DRS : RequestDispositionPlanAssurance()
+DRS -> PVM : VerifyDispositionPolicy()
+activate PVM
+PVM --> DRS : PolicyVerified()
+deactivate PVM
+
+DRS -> DEM : ExecuteDispositionPlan()
+activate DEM
+DEM -> DEM : ValidateAssets()
+DEM -> DEM : PrepareDisposition()
+DEM --> DRS : DispositionReady()
+deactivate DEM
+
+DRS -> NS : NotifyAssetManager(DispositionPlanReady)
+NS --> AM : ReceiveNotification(DispositionPlanAssurance)
+
+@enduml

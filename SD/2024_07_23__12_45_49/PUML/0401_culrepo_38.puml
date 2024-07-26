@@ -1,0 +1,24 @@
+@startuml
+participant Researcher
+participant SearchInterface
+participant AuthenticationModule
+participant RepositorySystem
+participant Database
+
+== Search within Repository or Collection ==
+
+Researcher -> SearchInterface: Input search query\nand select collection/subset
+SearchInterface -> AuthenticationModule: Verify access rights
+AuthenticationModule -> SearchInterface: Access granted
+
+alt If access granted
+    SearchInterface -> RepositorySystem: Initiate search\n(Query, Collection/Subset info)
+    RepositorySystem -> Database: Fetch matching records
+    Database -> RepositorySystem: Return search results
+    RepositorySystem -> SearchInterface: Display search results
+    SearchInterface -> Researcher: Show search results with\nrelevant collection/subset information
+else If access denied
+    SearchInterface -> Researcher: Display access denied message
+end
+
+@enduml

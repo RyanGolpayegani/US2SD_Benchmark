@@ -1,0 +1,37 @@
+@startuml
+actor Moderator
+participant "Frontend" as FE
+participant "Backend" as BE
+database DB
+
+== Invitation Process ==
+Moderator -> FE : Accesses "Create Game" page
+activate FE
+FE --> Moderator : Presents "Create Game" form
+
+Moderator -> FE : Fills form and submits request to invite estimators
+activate FE
+FE -> BE : POST /games/create with game details and estimators' emails
+activate BE
+
+BE -> DB : Save game details
+activate DB
+DB --> BE : Confirm game saved
+deactivate DB
+
+BE -> DB : Create invitations for each estimator (up to 15)
+loop for each estimator
+    BE -> DB : Save invitation
+    DB --> BE : Confirm invitation saved
+end
+
+DB --> BE : Invitations created
+deactivate DB
+
+BE -> BE : Generate and send invitation emails
+BE --> FE : Confirmation game and invitations are created
+deactivate BE
+FE --> Moderator : Display success message and game details
+deactivate FE
+
+@enduml

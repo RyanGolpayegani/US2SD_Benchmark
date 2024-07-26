@@ -1,0 +1,43 @@
+@startuml
+actor Manager as mgr
+participant "UI Interface" as UI
+participant "Backend System" as Backend
+participant "Database" as DB
+
+mgr -> UI : Access employee schedule page
+activate UI
+
+UI -> Backend : Request employee schedules
+activate Backend
+
+Backend -> DB : Query employee information\nand schedules
+activate DB
+
+DB --> Backend : Return employee data
+deactivate DB
+
+Backend --> UI : Display employee schedules
+deactivate Backend
+
+UI --> mgr : Show employee information\nand availability
+deactivate UI
+
+mgr -> UI : Select employees\nand assign shifts
+activate UI
+
+UI -> Backend : Update employee shifts
+activate Backend
+
+Backend -> DB : Save shift updates
+activate DB
+
+DB --> Backend : Confirm shift update
+deactivate DB
+
+Backend --> UI : Shift update success
+deactivate Backend
+
+UI --> mgr : Confirm shift assignments
+deactivate UI
+
+@enduml

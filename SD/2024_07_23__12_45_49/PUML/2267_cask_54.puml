@@ -1,0 +1,36 @@
+@startuml
+participant AppDeveloper as developer
+participant DeploymentService as deployment
+participant DatasetManagement as datasetMgmt
+participant AppConfigService as appConfig
+participant DatasetService as dataset
+
+developer -> deployment: initiateRedeployment(appID)
+deployment -> appConfig: checkDeploymentConfig(appID)
+activate appConfig
+appConfig --> deployment: configOK
+deactivate appConfig
+deployment -> datasetMgmt: listDatasets(appID)
+activate datasetMgmt
+datasetMgmt --> deployment: datasetIDs[]
+deactivate datasetMgmt
+
+loop for each datasetID in datasetIDs
+    deployment -> dataset: checkReconfigurability(datasetID)
+    activate dataset
+    alt if dataset is reconfigurable
+        dataset --> deployment: reconfigurable
+        deactivate dataset
+    else dataset not reconfigurable
+        dataset --> deployment: error
+        deactivate dataset
+        deployment -> developer: redeploymentFailed(datasetID)
+        deactivate deployment
+        return
+    end
+end
+
+deployment -> deployment: redeployApplication(appID)
+deployment -> developer: redeploymentSuccess()
+deactivate deployment
+@enduml

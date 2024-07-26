@@ -1,0 +1,35 @@
+@startuml
+actor "County Staff Member" as staff
+participant "User Authentication System" as auth
+participant "Custom Query Interface" as customQuery
+participant "Database" as db
+participant "Reporting Engine" as reportEngine
+participant "Report" as report
+
+== Authentication ==
+staff -> auth: Authenticate
+auth --> staff: Authentication Success
+
+== Initiate Custom Query Creation ==
+staff -> customQuery: Access Custom Query Module
+customQuery --> staff: Display Custom Query Form
+
+== Submit Custom Query Details ==
+staff -> customQuery: Submit Query Parameters
+customQuery -> db: Parse Query Parameters
+db --> customQuery: Validate & Process Query Parameters
+customQuery --> staff: Confirm Query Submission
+
+== Generate Report ==
+customQuery -> reportEngine: Request Report Generation
+reportEngine -> db: Fetch Data
+db --> reportEngine: Return Data
+reportEngine -> report: Compile Data into Report
+report --> customQuery: Report Ready
+
+== Deliver Report ==
+customQuery --> staff: Provide Report Download Link
+staff -> report: Download Report
+report --> staff: Report Downloaded
+
+@enduml

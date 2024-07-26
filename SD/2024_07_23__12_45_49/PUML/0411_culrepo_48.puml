@@ -1,0 +1,25 @@
+@startuml
+autonumber
+actor ExternalUser as User
+participant "Search Interface" as Search
+participant "Authentication System\n(Shibboleth)" as Auth
+participant "Content Management\nSystem" as Content
+participant "Data Storage" as Storage
+
+User -> Search : Enter search query\nfor specific topic
+Search -> Content : Request relevant\nmaterials
+Content -> Storage : Fetch metadata\nof materials
+Storage --> Content : Metadata of\nrelated materials
+Content --> Search : Display search\nresults with metadata
+User -> Search : Select desired material
+Search -> Auth : Request access\nfor external user
+Auth --> User : Prompt login/create account
+User -> Auth : Login/Signup
+Auth --> User : Authentication successful
+User -> Search : Request selected material
+Search -> Content : Check access permissions
+Content -> Storage : Fetch full material
+Storage --> Content : Return requested material
+Content --> Search : Deliver material to user
+Search --> User : Display/download\nmaterial
+@enduml

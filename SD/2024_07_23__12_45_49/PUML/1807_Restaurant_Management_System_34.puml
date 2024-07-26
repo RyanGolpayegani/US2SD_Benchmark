@@ -1,0 +1,20 @@
+@startuml
+participant Chef as chef
+participant "UI Interface" as UI
+participant "Backend Service" as backend
+participant "Database" as db
+
+chef -> UI : Select 'Update Menu Item'
+UI -> backend : Request to update ingredients
+alt Validation Success
+    backend -> db : Fetch current item ingredients
+    db -> backend : Return current ingredients
+    backend -> db : Update ingredients details
+    db -> backend : Confirm update
+    backend -> UI : Update success message
+    UI -> chef : Display success notification
+else Validation Failed
+    backend -> UI : Error message
+    UI -> chef : Display error notification
+end
+@enduml

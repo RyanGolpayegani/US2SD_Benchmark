@@ -1,0 +1,32 @@
+@startuml
+participant LibraryStaffMember as staff
+participant WebInterface as web
+participant MetadataService as metadata
+participant Database as db
+
+== Customizable Metadata Field Creation ==
+staff -> web : Access Metadata Management
+activate web
+
+web -> metadata : Request Field Customization Interface
+activate metadata
+
+metadata -> web : Return Customization Form
+web -> staff : Display Form
+
+staff -> web : Submit Customized Field Data
+web -> metadata : Process Customization Data
+activate db
+
+metadata -> db : Store Custom Metadata Field
+db -> metadata : Confirm Field Creation
+
+metadata -> web : Confirm Custom Field Added
+web -> staff : Display Confirmation Message
+
+== End ==
+deactivate db
+deactivate metadata
+deallocate web
+
+@enduml

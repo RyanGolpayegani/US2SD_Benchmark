@@ -1,0 +1,22 @@
+@startuml
+actor User
+participant "SignUp Page" as SignUp
+participant "Validation Service" as Validator
+database "User Database" as DB
+participant "Email Service" as Email
+
+User -> SignUp : Enter Details (Name, Email, Password)
+SignUp -> Validator : Validate Details
+alt Details are Valid
+    Validator -> SignUp : Validation Success
+    SignUp -> DB : Save User Details
+    activate DB
+    DB --> SignUp : Account Created
+    deactivate DB
+    SignUp -> Email : Send Confirmation Email
+    Email -> User : Confirmation Email Sent
+else Details are Invalid
+    Validator -> SignUp : Validation Failed (Reasons)
+    SignUp -> User : Show Validation Errors
+end
+@enduml

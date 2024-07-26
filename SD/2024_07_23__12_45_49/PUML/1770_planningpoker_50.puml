@@ -1,0 +1,31 @@
+@startuml
+participant User
+participant "Front-End UI" as FrontEnd
+participant "Router" as Router
+participant "Session Handler" as Session
+participant "URL Generator" as URLGen
+
+User -> FrontEnd : navigates to game via dashboard
+activate FrontEnd
+
+FrontEnd -> Router : request navigation to game
+activate Router
+
+Router -> Session : validate user session
+activate Session
+Session -> Session : check session validity
+Session --> Router : session valid
+deactivate Session
+
+Router -> URLGen : request URL for game
+activate URLGen
+URLGen -> URLGen : generate predictable URL
+URLGen --> Router : return generated URL
+deactivate URLGen
+
+Router --> FrontEnd : redirect to game URL
+FrontEnd -> FrontEnd : render game page
+FrontEnd --> User : display game at generated URL
+deactivate FrontEnd
+
+@enduml

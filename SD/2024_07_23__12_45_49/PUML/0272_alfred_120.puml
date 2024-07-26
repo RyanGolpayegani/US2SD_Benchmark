@@ -1,0 +1,56 @@
+@startuml
+participant Developer as dev
+participant "ALFRED Platform\n Interface" as UI
+participant "Accounting Service" as AccService
+participant "API Gateway" as API
+participant "Database" as DB
+
+dev -> UI: Access accounting section
+activate UI
+
+UI -> API: Request accounting data
+activate API
+
+API -> AccService: Get accounting details
+activate AccService
+
+AccService -> DB: Query accounting records
+activate DB
+
+DB --> AccService: Return records
+deactivate DB
+
+AccService --> API: Accounting details response
+deactivate AccService
+
+API --> UI: Display accounting data
+deactivate API
+
+UI -> dev: Show account balance,\nrevenue, and expenses
+deactivate UI
+
+dev -> UI: Request detailed report
+activate UI
+
+UI -> API: Request detailed accounting report
+activate API
+
+API -> AccService: Generate detailed report
+activate AccFeatures
+
+AccService -> DB: Retrieve transactions
+activate DB
+
+DB --> AccService: Transaction data
+deactivate DB
+
+AccService --> API: Detailed report
+deactivate AccService
+
+API --> UI: Display detailed report
+deactivate API
+
+UI --> dev: Show detailed accounting report
+deactivate UI
+
+@enduml

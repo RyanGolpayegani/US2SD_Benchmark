@@ -1,0 +1,23 @@
+@startuml
+participant BrokerUser as User
+participant "Broker UI" as UI
+participant "Validation Service" as Validator
+database "Validation Rules DB" as RulesDB
+database "ZIP Code DB" as ZIPDB
+
+User -> UI : Enter PPoP ZIP+4
+UI -> Validator : Request ZIP+4 Validation
+Validator -> RulesDB : Retrieve Validation Rules
+RulesDB -> Validator : Return Rules
+Validator -> ZIPDB : Request ZIP+4 Info
+ZIPDB -> Validator : Return ZIP+4 Data
+
+alt If PPoP ZIP+4 matches Legal Entity ZIP Validation Rules
+    Validator -> UI : Validation Success
+    UI -> User : Display Success Message
+else If validation fails
+    Validator -> UI : Validation Error
+    UI -> User : Display Error Message
+end
+
+@enduml

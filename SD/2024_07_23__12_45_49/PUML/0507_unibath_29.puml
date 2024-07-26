@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+participant User as reuser
+participant "Primo Interface" as primo
+participant "Enhanced Research \nData Management Platform" as erdmp
+database "University of Bath \nData Archive" as archive
+
+reuser -> primo : initiate search for datasets, books, articles
+activate primo
+
+primo -> erdmp : query for datasets matching search criteria
+activate erdmp
+
+erdmp -> archive : fetch matching datasets
+activate archive
+archive --> erdmp : return datasets metadata
+deactivate archive
+
+erdmp --> primo : datasets metadata including DOIs
+deactivate erdmp
+
+primo --> reuser: display search results (datasets, books, articles)
+deactivate primo
+
+@enduml

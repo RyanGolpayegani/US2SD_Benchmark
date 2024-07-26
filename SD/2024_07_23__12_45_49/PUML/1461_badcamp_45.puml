@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+participant User
+participant WebsiteInterface as "Website Interface"
+participant Server as "Backend Server"
+database DB as "Database"
+
+User -> WebsiteInterface : Accesses Summit Details
+activate Website Handler
+
+WebsiteInterface -> Server : Request Remaining Seats for Summit
+activate Server
+
+Server -> DB : Query Summit Capacity and Registrations
+activate DB
+DB --> Server : Return Capacity Data
+deactivate DB
+
+Server --> WebsiteInterface : Send Remaining Seats Information
+deactivate Server
+
+WebsiteInterface --> User : Display Seats Information
+deactivate Website Handler
+
+@enduml

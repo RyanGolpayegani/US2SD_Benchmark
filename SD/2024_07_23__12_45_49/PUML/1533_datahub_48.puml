@@ -1,0 +1,22 @@
+@startuml
+participant "Consumer" as consumer
+participant "UI/CLI" as ui
+database "Platform Server" as server
+database "Data Storage" as storage
+
+== Download Data Package at Specific Version ==
+consumer -> ui : Request specific version of data package
+ui -> server : Validate request & fetch version details
+alt Data package version exists
+    server -> storage : Retrieve specified version of data package
+    storage -> server : Specified version data
+    server -> ui : Provide download link for data package
+    ui -> consumer : Offer data package download
+    consumer -> ui : Download package
+    ui -> storage : Download requested data
+    storage -> consumer : Data package (version specific)
+else Version not found
+    server -> ui : Error message (version not found)
+    ui -> consumer : Show error message
+end
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+actor Publisher as publisher
+participant "DPIE Web Interface" as webInterface
+participant "DPIE API" as dpiApi
+database "Data Package" as dataPackage
+participant "Embeddable Preview Generator" as previewGenerator
+participant "Web Page" as webPage
+
+publisher -> webInterface : log in
+webInterface -> dpiApi : fetch available Data Packages
+dpiApi -> dataPackage : query for packages
+dataPackage -> dpiApi : return packages
+dpiApi -> webInterface : display packages
+publisher -> webInterface : select Data Package for preview
+webInterface -> previewGenerator : request interactive preview\n(generate script)
+previewGenerator -> dataPackage : access selected package
+dataPackage -> previewGenerator : provide data & metadata
+previewGenerator -> previewGenerate: generate iframe or JS code
+previewGenerator -> webInterface : return embed code for preview
+webInterface -> publisher : show embed code
+publisher -> webPage : embed preview code
+
+note over publisher, webPage : Publisher adds the code to\nthe HTML of their site
+
+@enduml

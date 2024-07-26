@@ -1,0 +1,23 @@
+@startuml
+actor RepositoryManager as RM "Repository Manager"
+participant DIMSUI as UI "DIMS UI"
+participant DIMSService as DS "DIMS Backend Service"
+participant DAMSDB as DB "DAMS Database"
+
+RM -> UI : Log in to DIMS
+UI -> DS : Validate login
+DS -> RM : Display Dashboard
+
+RM -> UI : Select resource to update
+UI -> DS : Fetch resource details
+DS -> DB : Query resource by ID
+DB -> DS : Return resource data
+DS -> UI : Display resource details
+RM -> UI : Indicate/update geo-coordinates
+UI -> DS : Update request with geo-coordinates
+DS -> DB : Update resource record
+DB -> DS : Confirm update
+DS -> UI : Display success message
+UI -> RM : Confirm geo-coordinates update
+
+@enduml

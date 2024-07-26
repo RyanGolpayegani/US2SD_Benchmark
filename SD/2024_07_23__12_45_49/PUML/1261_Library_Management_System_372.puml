@@ -1,0 +1,16 @@
+@startuml
+!theme plain
+
+actor User as user
+participant "UI" as ui
+participant "Library System\nBackend" as backend
+database "Library Database" as db
+
+user -> ui : Selects shelf and requests book details
+ui -> backend : GET /books/shelf/:id
+backend -> db : SELECT * FROM books\nWHERE shelf_id = :id
+db -> backend : Return book details
+backend -> ui : Display book details
+ui -> user : Shows book details
+
+@enduml

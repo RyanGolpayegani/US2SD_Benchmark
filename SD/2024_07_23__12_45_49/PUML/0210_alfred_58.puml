@@ -1,0 +1,50 @@
+@startuml
+actor OlderPerson as "Older Person"
+participant "ALFRED's Sensor" as Sensor
+participant "ALFRED's Core" as Core
+participant "ALFRED's Communication Module" as CommModule
+participant "Emergency Contact" as Contact
+
+== Fall Detection Sequence ==
+OlderPerson -> Sensor: Fall
+activate Sensor
+
+Sensor -> Core: Detects fall
+activate Core
+
+Core -> Core: Assess fall severity
+alt severity high
+    Core -> CommModule: Trigger emergency protocol
+    activate CommModule
+
+    CommModule -> Contact: Send emergency notification
+    activate Contact
+    deactivate Contact
+    
+    CommModule -> Core: Confirmation of notification sent
+    deactivate CommModule
+
+    Core -> OlderPerson: Notify: "Emergency contact alerted"
+    deactivate Core
+else severity low or uncertain
+    Core -> OlderPerson: Notify: "Detected a fall, are you okay?"
+    deactivate Core
+    
+    OlderPerson -> Core: Response: "Need help"
+    activate Core
+
+    Core -> CommModule: Trigger emergency protocol (upon user's request)
+    activate CommModule
+
+    CommModule -> Contact: Send emergency notification (user confirmed)
+    activate Contact
+    deactivate Contact
+
+    CommModule -> Core: Confirmation of notification(sent)
+    deactivate CommModule
+
+    Core -> OlderPerson: Notify: "Emergency contact notified per your request"
+    deactivate Core
+end
+
+@enduml

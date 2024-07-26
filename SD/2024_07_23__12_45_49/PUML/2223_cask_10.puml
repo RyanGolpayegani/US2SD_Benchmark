@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+
+participant AppDeveloper as developer
+participant "Dataset Management\nSystem" as DMS
+participant "Dataset Repository" as Repo
+participant "Other Applications" as Apps
+
+== Share a Previously Deployed Dataset Type ==
+developer -> DMS : Request to share dataset type
+activate DMS
+
+DMS -> Repo : Check dataset type exists
+activate Repo
+Repo -> DMS : Dataset type details
+deactivate Repo
+
+DMS -> Repo : Mark dataset type as shared
+activate Repo
+Repo -> DMS : Confirmation
+deactivate Repo
+
+DMS -> Apps : Notify available shared dataset type
+activate Apps
+Apps --> DMS : Acknowledge
+deactivate Apps
+
+DMS -> developer : Share successful
+deactivate DMS
+@enduml

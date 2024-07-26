@@ -1,0 +1,21 @@
+@startuml
+actor "Library Member" as member
+participant "Web Interface" as web
+participant "Controller" as controller
+participant "Search Service" as searchService
+database "Database" as db
+
+== Search Process ==
+member -> web : Enter search query\n(title)
+web -> controller : searchRequest(title)
+controller -> searchDidYouMeanService : searchBooksByTitle(title)
+activate searchService
+searchService -> db : queryBooksByTitle(title)
+activate db
+db --> searchService : return results
+deactivate db
+searchService --> controller : searchResults
+deactivate searchService
+controller --> web : displayResults(searchResults)
+web --> member : Show books by title
+@enduml

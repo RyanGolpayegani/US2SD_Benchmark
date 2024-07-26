@@ -1,0 +1,27 @@
+@startuml
+actor SuperUser as SU
+participant "UI Interface" as UI
+database "RecycleSmartDB" as DB
+participant "Admin Module" as AM
+participant "Recycling Center" as RC
+
+SU -> UI: Access Update Center Form
+UI -> SU: Display Form
+SU -> UI: Fill in Update Details & Submit
+UI -> AM: Verify Superuser Authentication
+alt Authentication Successful
+    AM -> DB: Query Recycling Center Info
+    DB -> AM: Return Info
+    AM -> UI: Display Current Center Info
+    UI -> SU: Shows Current Info + Edit Options
+    SU -> UI: Submits Updated Info
+    UI -> AM: Update Request with Details
+    AM -> DB: Update Recycling Center Info
+    DB -> AM: Confirm Update
+    AM -> UI: Update Successful
+    UI -> SU: Display Success Message
+else Authentication Failed
+    AM -> UI: Display Authentication Error
+    UI -> SU: Show Error & Retry Options
+end
+@enduml

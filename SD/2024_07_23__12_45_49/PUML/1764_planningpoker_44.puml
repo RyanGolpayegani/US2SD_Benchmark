@@ -1,0 +1,34 @@
+@startuml
+participant Developer
+participant AEPTSystem as System
+database GlossaryDB as DB
+
+== Glossary Request Initialization ==
+Developer -> System: RequestGlossaryCreation()
+activate System
+
+System -> DB: CheckExistingGlossary()
+activate DB
+DB --> System: GlossaryExists(Yes/No)
+deactivate DB
+
+alt If Glossary Exists
+  System --> Developer: ShowExistingGlossary()
+else If Glossary Does Not Exist
+  System -> System: CreateGlossary()
+  System -> DB: InitializeGlossaryDB()
+  activate DB
+  DB --> System: GlossaryDBInitialized()
+  deactivate DB
+  System --> Developer: ConfirmGlossaryCreation()
+  Developer -> System: SubmitGlossaryTerms()
+  activate System
+  System -> DB: StoreGlossaryTerms()
+  activate DB
+  DB --> System: TermsStoredSuccess()
+  deactivate DB
+  System --> Developer: GlossaryUpdated()
+end
+
+deactivate System
+@enduml

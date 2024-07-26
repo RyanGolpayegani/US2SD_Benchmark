@@ -1,0 +1,23 @@
+@startuml
+participant User
+participant "Visualization Interface" as Vis
+participant "Image Capture Service" as ImgCap
+participant "Social Media Integration Module" as SM
+participant "Social Network API" as SN
+
+User -> Vis: Request shareable image of view state
+Vis -> ImgCap: Trigger image capture of current view
+ImgCap -> ImgCap: Capture and process view state
+ImgCap -> Vis: Return image URL
+Vis -> User: Display image preview and share options
+
+User -> Vis: Select "Share to Social Network"
+Vis -> SM: Initiate share request with image URL
+SM -> SN: Invoke Social Network API\nwith image URL
+SN -> SN: Authenticate request
+SN -> SN: Post image with context
+SN --> SM: Return sharing status
+SM --> Vis: Notify user of share success
+Vis --> User: Display confirmation message
+
+@enduml

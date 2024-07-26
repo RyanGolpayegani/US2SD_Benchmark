@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+
+participant AppDeveloper as AD
+participant App as A
+participant DatasetManagementSystem as DMS
+participant HydratorPipeline as HP
+participant DatasetInstance as DI
+
+AD -> A : requests dataset instances
+A -> DMS : query for dataset instances
+DMS -> HP : fetches instances created by pipelines
+HP -> DI : retrieves dataset instances
+DI -> DMS : returns dataset instances
+DMS -> A : provides dataset instances
+A -> AD : displays dataset instances
+
+note right of DI : Datasets are versioned \nand managed for integrity.
+
+AD -> HP : integrates dataset instances into app
+HP -> DI : links instances to app
+DI -> DMS : updates instance access
+DMS -> A : confirms integration
+A -> AD : provides access to dataset instances within app
+
+note over AD, A : App Developer ensures \nall needed datasets are accessible.
+
+@enduml

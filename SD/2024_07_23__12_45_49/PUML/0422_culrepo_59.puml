@@ -1,0 +1,27 @@
+@startuml
+actor "Library Staff" as staff
+participant "Repository Interface" as UI
+participant "Authentication Service" as Auth
+database "Digital Repository" as Repo
+participant "Media Server" as Media
+participant "Content Delivery Network (CDN)" as CDN
+
+staff -> UI: Selects media for streaming
+alt Authentication Required
+    UI -> Auth: Request access validation
+    Auth --> UI: Confirm access
+end
+
+UI -> Repo: Retrieve media metadata
+Repo --> UI: Media metadata
+UI -> Media: Request media streaming setup
+Media --> UI: Streaming configuration parameters
+UI -> Repo: Log access and setup details
+Repo --> UI: Log confirmation
+
+UI -> CDN: Initiate streaming session
+CDN -> Media: Request media content
+Media --> CDN: Transfer media content
+CDN -> UI: Provide streaming link
+UI --> staff: Display streaming link
+@enduml

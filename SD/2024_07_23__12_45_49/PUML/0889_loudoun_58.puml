@@ -1,0 +1,32 @@
+@startuml
+actor StaffMember
+participant "Authentication" as Auth
+participant "Dashboard" as Dashboard
+participant "CitationManagement" as Citation
+participant "DocumentGeneration" as DocGen
+participant "NotificationService" as Notify
+participant "Database" as DB
+
+== Authentication ==
+StaffMember -> Auth: Login()
+Auth --> StaffMember: Authentication Success
+
+== Send or Post Citations ==
+StaffMember -> Dashboard: Select 'Send/Post Citations'
+Dashboard -> Citation: Access Citation Management()
+
+== Generate Notice of Violation ==
+Citation -> DocGen: Initiate Notice of Violation Document Generation(PropertyID, Details)
+DocGen -> DB: Fetch Property Owner Details(PropertyID)
+DB --> DocGen: Return Owner Details
+DocGen --> Citation: Document Generated(Success, DocumentID)
+
+== Log Notice of Violation ==
+Citation -> DB: Log Notice of Violation(DocumentID, Timestamp, StaffID)
+DB --> Citation: Log Success
+
+== Notify Property Owner ==
+Citation -> Notify: Send Notification to Property Owner(OwnerID, DocumentID)
+Notify --> StaffMember: Notification Sent
+
+@enduml

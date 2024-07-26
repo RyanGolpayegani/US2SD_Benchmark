@@ -1,0 +1,22 @@
+@startuml
+actor DAMSManager as "DAMS Manager"
+participant "Rights Management Module" as RightsModule
+participant "Database" as DB
+participant "Notification System" as Notify
+
+== Modification of a Statute Application ==
+DAMSManager -> RightsModule : ModifyStatute(objectId, newStatuteDetails)
+activate RightsModule
+
+RightsModule -> DB : UpdateStatuteApplication(objectId, newStatuteDetails)
+activate DB
+DB --> RightsModule : UpdateSuccess
+deactivate DB
+
+RightsModule -> Notify : SendModificationAlert(DAMSManagerId, objectId, modificationDetails)
+activate Notify
+Notify --> DAMSManager : DisplayModificationAlert
+deactivate Notify
+
+deactivate RightsModule
+@enduml

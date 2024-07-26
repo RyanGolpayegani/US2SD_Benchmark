@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+participant Developer
+participant "Broker System Interface" as Interface
+participant "Application Backend" as Backend
+participant "Database" as DB
+
+Developer -> Interface : Enter GTAS window data
+Interface -> Backend : Validate data entry
+alt validation success
+    Backend -> Backend : Prepare GTAS data package
+    Backend -> DB : Insert GTAS data
+    DB --> Backend : Acknowledge Data Insertion
+    Backend --> Interface : Show success message
+    Interface --> Developer : Display "Data Added Successfully"
+else validation failed
+    Backend --> Interface : Show error message
+    Interface --> Developer : Display "Data Validation Failed"
+end
+
+Developer -> Backend : Request site lockdown
+Backend -> DB : Update site status to "locked"
+DB --> Backend : Confirm status update
+Backend --> Developer : Confirm site is locked during GTAS submission
+@enduml

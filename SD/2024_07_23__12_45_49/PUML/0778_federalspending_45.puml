@@ -1,0 +1,23 @@
+@startuml
+participant BrokerMember as "Broker Team Member"
+participant IDE as "Integrated Development Environment"
+participant VersionControl as "Version Control System"
+participant BuildServer as "Build Server"
+participant Testing as "Automated Testing System"
+participant Deployment as "Deployment System"
+participant DataBase as "Database"
+
+BrokerMember -> IDE : Update SQL codes for clarity
+IDE -> VersionControl : Commit updated SQL
+VersionControl -> BuildServer : Trigger new build
+BuildServer -> Testing : Run SQL unit tests
+Testing --> BuildServer : Report test results
+alt Successful Test
+  BuildServer -> Deployment : Deploy updates to staging
+  Deployment -> DataBase : Apply SQL updates
+  DataBase --> Deployment : Confirm successful update
+  Deployment --> BrokerMember : Notify update success
+else Test Failure
+  Testing --> BrokerMember : Report failure details
+end
+@enduml

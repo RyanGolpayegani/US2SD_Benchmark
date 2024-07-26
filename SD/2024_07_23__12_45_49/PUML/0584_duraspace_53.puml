@@ -1,0 +1,43 @@
+@startuml
+
+participant "DAMS Manager" as DAMSManager
+participant "DIMS User Interface" as UI
+participant "Digital Asset\nManagement System" as DAMS
+participant "Preservation\nManagement Module" as Preservation
+participant "Repository Database" as Database
+
+DAMSManager -> UI: Accesses preservation details form
+activate UI
+
+UI -> DAMS: Request to retrieve master file data for an object
+activate DAMS
+
+DAMS -> Database: Fetch master file information
+activate Database
+Database --> DAMS: Return master file information
+deactivate Database
+
+DAMS --> UI: Display master file details
+deactivate DAMS
+
+UI --> DAMSManager: Shows master file details and input form for checksum and method
+deactivate UI
+
+DAMSManager -> UI: Inputs checksum and checksum method
+activate UI
+
+UI -> Preservation: Send checksum information
+activate Preservation
+
+Preservation -> Database: Update master file with checksum details
+activate Database
+Database --> Preservation: Confirm checksum update
+deactivate Database
+
+Preservation --> UI: Display success message
+deactivate Preservation
+
+UI --> DAMSManager: Confirm checksum indication to preservation managers
+deactivate UI
+
+@enduml

@@ -1,0 +1,53 @@
+@startuml
+!theme plain
+
+participant UserInterface as "Staff Member\n(User Interface)"
+database DataStorage as "Portal\nData Storage"
+entity ReportModule as "Report\nDevelopment Module"
+entity BusinessRulesEngine as "Business Rules\nEngine"
+entity DistributionModule as "Distribution\nModule"
+
+UserInterface -> ReportModule : Selects "Create New Report"
+activate ReportModule
+ReportModule --> UserInterface : Display Report Template Editor
+
+UserInterface -> ReportModule : Enters Report Details\nand Saves Draft
+ReportModule -> DataStorage : Store Draft Report
+activate DataStorage
+DataStorage --> ReportModule : Confirmation
+deactivate DataStorage
+ReportModule --> UserInterface : Draft Saved Successfully
+
+UserInterface -> ReportModule : Submits Report for Review
+ReportModule -> BusinessRulesEngine : Validate\nReport Details
+activate BusinessRulesEngine
+BusinessRulesEngine --> ReportModule : Validation Success
+deactivate BusinessRulesEngine
+
+ReportModule -> DataStorage : Save Final Report
+activate DataStorage
+DataStorage --> ReportModule : Confirmation
+deactivate DataStorage
+ReportModule --> UserInterface : Report Submitted Successfully
+
+UserInterface -> DistributionModule : Initiate Report Distribution
+activate DistributionModule
+DistributionModule -> BusinessRulesEngine : Apply Distribution Rules
+activate BusinessRulesEngine
+BusinessRulesEngine -> DataStorage : Fetch Distribution List
+activate DataStorage
+DataStorage --> BusinessRulesEngine : Distribution List
+deactivate DataStorage
+BusinessRulesEngine --> DistributionModule : Processed List with Rules Applied
+deactivate BusinessRulesEngine
+
+DistributionModule -> DataStorage : Log Distribution Activity
+activate DataStorage
+DataStorage --> DistributionModule : Log Confirmation
+deactivate DataStorage
+
+DistributionModule --> UserInterface : Report Distribution Initiated Successfully
+deactivate Distribution());
+
+deactivate ReportModule
+@enduml

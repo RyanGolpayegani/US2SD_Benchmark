@@ -1,0 +1,28 @@
+@startuml
+actor CSM as "Certified Scrum Master"
+participant "Scrum Alliance Platform" as Platform
+participant "Certification Management" as CertManagement
+participant "Payment Gateway" as Payment
+
+CSM -> Platform : Apply for Practitioner Status
+Platform -> CertManagement : Validate CSM Application
+CertManagement -> CertManagement : Review Application
+
+alt Application Approved
+    CertManagement -> Platform : Notify Approval
+    Platform -> CSM : Notification of Approval
+    CSM -> Platform : Acknowledge Notification
+    Platform -> CSM : Display Payment Option
+    CSM -> Payment : Initiate Payment
+    Payment -> CSM : Process and Confirm Payment
+    Payment -> Platform : Notify Payment Success
+    Platform -> CertManagement : Activate Practitioner Status
+    CertManagement -> Platform : Confirm Activation
+    Platform -> CSM : Display Activated Status
+    
+else Application Rejected
+    CertManagement -> Platform : Notify Rejection
+    Platform -> CSM : Display Rejection Message
+end
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+actor "Anonymous User" as user
+participant "Web Interface" as web
+participant "Sessions Module" as sessions
+participant "Sponsors Module" as sponsors
+database "Sessions Database" as db
+
+user -> web : Request Sessions Associated\nwith Sponsor Attendees
+web -> sessions : Fetch Sponsor Sessions
+activate sessions
+
+sessions -> sponsors: Get Sponsor IDs
+activate sponsors
+sponsors -> db : Query Sponsor Details
+db --> sponsors : Return Sponsor Details
+deactivate sponsors
+
+sessions -> db : Query Sessions by Sponsor IDs
+db --> sessions : Return Sessions List
+deactivate sessions
+
+sessions -> web : Display Sessions List
+web --> user : Show Sponsor Sessions
+@enduml

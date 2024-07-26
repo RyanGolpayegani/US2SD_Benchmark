@@ -1,0 +1,41 @@
+@startuml
+actor Archivist as archivist
+participant "Digital Archive\nManagement System" as DAMS
+participant "Database" as db
+
+== Identify Digitization Standards ==
+archivist -> DAMS : Upload digital object
+activate DAMS
+
+DAMS -> DAMS : Evaluate digitization quality
+note right of DAMS : Algorithms assess if digitization \nmeets preservation standards
+
+DAMS -> db : Retrieve digitization standards
+activate db
+db --> DAMS : Digitization standards data
+deactivate db
+
+DAMS --> archivist : Display digitization standards met
+deactivate DAMS
+
+== Categorize Digital Object ==
+archivist -> DAMS : Categorize digital object
+activate DAMS
+
+alt If Preservation Standards Met
+    DAMS -> db : Mark as "Preservation"
+    activate db
+    db --> DAMS : Confirmation
+    deactivate db
+    DAMS --> archivist : Digital object marked for preservation
+else If Only for Access
+    DAMS -> db : Mark as "Access Only"
+    activate db
+    db --> DAMS : Confirmation
+    deactivate db
+    DAMS --> archivist : Digital object marked for access only
+end
+
+deactivate DAMS
+
+@enduml

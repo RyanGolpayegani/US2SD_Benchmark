@@ -1,0 +1,30 @@
+@startuml
+participant Curator as C
+participant "EDRMS Interface" as UI
+participant "Permission Service" as PS
+participant "User Group Service" as UGS
+participant Database as DB
+
+C -> UI: Accesses EDRMS
+activate UI
+UI -> PS: Validates Curator Credentials
+activate PS
+PS -> UI: Credentials Valid
+deactivate PS
+
+UI -> C: Display User Group Management
+C -> UI: Requests to Create New Group
+activate UI
+UI -> UGS: Create Group
+activate UGS
+
+UGS -> DB: Save New Group Details
+activate DB
+DB -> UGS: Confirm Group Created
+deactivate DB
+
+UGS -> UI: Group Creation Success
+deactivate UGS
+UI -> C: Display Success Message
+deactivate UI
+@enduml

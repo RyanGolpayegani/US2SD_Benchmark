@@ -1,0 +1,27 @@
+@startuml
+participant Librarian as librarian
+participant "Librarian Interface" as webUI
+participant "Library Management System\n(Backend)" as backend
+participant Database as db
+
+librarian -> webUI : Select "Update Book List"
+webUI -> backend : Request Update Form
+activate backend
+backend -> db : Validate librarian session
+activate db
+db --> backend : Session Valid
+deactivate db
+backend --> webUI : Provide Update Form
+deactivate backend
+webUI --> librarian : Display Update Form
+librarian -> webUI : Submit updated book details\n(ID, Title, Author, etc.)
+webUI -> backend : Process updated book details
+activate backend
+backend -> db : Update Book Record
+activate db
+db --> backend : Confirm Update Success
+deactivate db
+backend --> webUI : Update Confirmation
+deactivate backend
+webUI --> librarian : Display Update Success Message
+@enduml

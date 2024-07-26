@@ -1,0 +1,40 @@
+@startuml
+actor Manager as mgr
+participant "Management Interface" as mgmtUI
+participant "Inventory Management System" as invSys
+participant "Database" as db
+
+mgr -> mgmtUI : Access Inventory Tracking
+activate mgmtUI
+
+mgmtUI -> invSys : Request Current Inventory Data
+activate invSys
+
+invSys -> db : Query Inventory Items
+activate db
+
+db --> invSys : Return Inventory Items Data
+deactivate db
+
+invSys --> mgmtUI : Display Inventory Items
+deactivate invSys
+
+mgr -> mgmtUI : Select Product to Track
+activate mgmtUI
+
+mgmtUI -> invSys : Send Track Request(ProductID)
+activate invSys
+
+invSys -> db : Update Track Status for ProductID
+activate db
+
+db --> invSys : Confirm Update
+deactivate db
+
+invSys --> mgmtUI : Show Tracking Confirmation
+deactivate invSys
+
+mgmtUI --> mgr : Tracking Product Successful
+deactivate mgmtUI
+
+@enduml

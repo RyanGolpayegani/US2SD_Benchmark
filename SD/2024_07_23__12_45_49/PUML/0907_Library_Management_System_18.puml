@@ -1,0 +1,58 @@
+@startuml
+actor Librarian
+
+participant "Librarian Interface" as LI
+participant "Server/API" as API
+database "Database" as DB
+
+== Add Subscriber ==
+Librarian -> LI: Choose to Add New Subscriber
+activate LI
+LI -> API: Request Subscriber Form
+activate API
+API -> LI: Return Subscriber Form
+deactivate API
+LI -> Librarian: Display Subscriber Form
+deactivate LI
+
+Librarian -> LI: Input Subscriber Details & Submit
+activate LI
+LI -> API: Post New Subscriber Details
+activate API
+API -> DB: Insert Subscriber Details
+activate DB
+DB --> API: Confirm Subscriber Added
+deactivate DB
+API --> LI: Return Success Message
+deactivate API
+LI --> Librarian: Display Success Message
+deactivate LI
+
+== Edit Subscriber ==
+Librarian -> LI: Search and Select Subscriber to Edit
+activate LI
+LI -> API: Request Subscriber Details
+activate API
+API -> DB: Fetch Subscriber Details
+activate DB
+DB --> API: Return Subscriber Details
+deactivate DB
+API --> LI: Display Subscriber Details
+deactivate API
+LI --> Librarian: Show Subscriber Details Form
+deactivate LI
+
+Librarian -> LI: Update Details & Submit
+activate LI
+LI -> API: Send Updated Subscriber Details
+activate API
+API -> DB: Update Subscriber Details in DB
+activate DB
+DB --> API: Confirm Details Updated
+deactivate DB
+API --> LI: Return Success Message for Update
+deactivate API
+LI --> Librarian: Display Update Success Message
+deactivate LI
+
+@enduml

@@ -1,0 +1,61 @@
+@startuml
+actor Waiter
+participant "Waiter Interface" as WI
+participant "Order Management System" as OMS
+participant "Kitchen Display System" as KDS
+participant "Inventory Management" as IM
+database "Database" as DB
+
+== Order Modification Sequence ==
+
+Waiter -> WI: Select the order to modify
+activate WI
+
+WI -> OMS: Request current order details
+activate OMS
+
+OMS -> DB: Fetch order details
+activate DB
+DB --> OMS: Order details
+deactivate DB
+
+OMS --> WI: Display order details
+deactivate OMS
+
+Waiter -> WI: Make modifications (add/remove items)
+WI -> OMS: Update order with modifications
+activate OMS
+
+alt If item removed
+  OMS -> IM: Update inventory
+  activate IM
+  IM -> DB: Adjust stock levels
+  activate DB
+  DB --> IM: Stock updated
+  deactivate DB
+  IM --> OMS: Inventory updated
+  deactivate IM
+else If item added
+  OMS -> IM: Check stock availability
+  activate IM
+  IM -> DB: Query stock levels
+  activate DB
+  DB --> IM: Stock details
+  deactivate DB
+  IM --> OMS: Stock availability confirmed
+  deactivate IM
+end
+
+OMS -> DB: Save updated order
+DB --> OMS: Save confirmation
+deactivate OMS
+
+OMS -> KDS: Send updated order to kitchen
+activate KDS
+KDS --> WI: Update displayed to chef/cook
+deactivate KDS
+
+WI --> Waiter: Confirm order updated
+deactivate WI
+
+@enduml

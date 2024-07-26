@@ -1,0 +1,26 @@
+@startuml
+participant Publisher as pub
+participant "Authentication Service" as auth
+participant "Data Publishing Interface" as dpi
+participant "Validation Service" as validate
+participant "Publisher's Server" as server
+participant "Registry Cache" as cache
+participant "Publication Confirmation" as confirm
+
+pub -> auth: Authenticate\n(GitHub, Google)
+auth --> pub: Authentication Success
+
+pub -> dpi: Submit Data Package
+dpi -> validate: Validate Data Package
+validate --> dpi: Validation Success
+
+dpi -> server: Store Data on Publisher's Server
+server --> dpi: Data Stored Successfully
+
+dpi -> cache: Cache Copy of Data Package
+cache --> dpi: Caching Successful
+
+dpi -> confirm: Publish Data Package
+confirm --> pub: Publication Success Notification
+
+@enduml

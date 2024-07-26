@@ -1,0 +1,24 @@
+@startuml
+actor Cook
+participant "UI Dashboard" as UI
+participant "Backend Server" as Backend
+participant "Inventory Management" as Inventory
+
+Cook -> UI : Accesses Inventory Settings
+UI -> Backend : Requests current stock thresholds
+Backend -> Inventory : Retrieves stock thresholds
+Inventory -> Backend : Returns current thresholds
+Backend -> UI : Displays thresholds
+Cook -> UI : Specifies new thresholds
+UI -> Backend : Sends updated thresholds
+Backend -> Inventory : Updates stock levels and thresholds
+activate Inventory
+Inventory -> Inventory : Monitors stock levels against thresholds
+alt Stock level is below threshold
+  Inventory -> Backend : Triggers shortage alert
+  Backend -> UI : Sends alert notification
+  UI -> Cook : Displays shortage alert
+end
+deactivate Inventory
+
+@enduml

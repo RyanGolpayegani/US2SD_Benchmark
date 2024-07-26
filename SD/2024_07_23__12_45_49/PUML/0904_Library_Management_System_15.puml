@@ -1,0 +1,23 @@
+@startuml
+!theme cerulean
+
+participant Customer
+participant CLMS_UI as UI
+participant BorrowManagementSystem as BMS
+participant Database as DB
+participant NotificationService as NS
+
+== Book Return Process Start ==
+Customer -> UI: Request to update borrow (return book)
+UI -> BMS: Validate customer ID and book ID
+BMS -> DB: Check book status
+DB --> BMS: Book status (e.g., overdue)
+BMS -> DB: Calculate overdue fees (if any)
+DB --> BMS: Fee details
+BMS -> DB: Update borrow record (mark as returned)
+DB --> BMS: Record updated
+BMS -> NS: Send confirmation to customer
+NS -> Customer: Confirmation message (SMS/Email)
+== Book Return Process End ==
+
+@enduml

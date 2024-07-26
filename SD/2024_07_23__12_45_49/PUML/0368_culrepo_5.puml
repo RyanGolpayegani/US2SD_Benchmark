@@ -1,0 +1,24 @@
+@startuml
+actor Patron as patron
+participant "UI" as ui
+participant "SubscriptionManager" as manager
+participant "Database" as db
+database "RepositorySystemDB" as repo
+
+== Select/Deselect Reports/Datasets for Email Notification ==
+
+patron -> ui : Access repository
+ui -> manager : Request available reports/datasets
+manager -> db : Query available items
+db -> manager : Return list of items
+manager -> ui : Display items with checkbox
+ui -> patron : Show items list
+
+patron -> ui : Select/Deselect items
+ui -> manager : Capture selections
+manager -> db : Update subscription preferences
+db -> manager : Confirm update
+manager -> ui : Show update confirmation
+ui -> patron : Display confirmation message
+
+@enduml

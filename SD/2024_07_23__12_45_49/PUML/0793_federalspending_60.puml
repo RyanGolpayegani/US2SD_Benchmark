@@ -1,0 +1,31 @@
+@startuml
+actor FABSUser as "FABS User"
+participant UIBrowser as "UI Browser"
+participant Server as "Server"
+participant ValidationService as "Validation Service"
+participant Database as "Database"
+participant FileStorage as "File Storage"
+
+FABSUser -> UIBrowser: Selects "What you want to submit"
+UIBrowser -> Server: Request to open dialog
+Server -> Database: Fetch template info
+Database -> Server: Template details
+Server -> UIBrowser: Display dialog with link to current SAMPLE FILE
+UIBrowser -> FABSUser: Shows dialog
+FABSUser -> UIBrowser: Requests file update
+UIBrowser -> Server: Request file update
+Server -> ValidationService: Validate file path
+alt File path is valid
+    ValidationService -> Server: Path valid
+    Server -> FileStorage: Update link to SAMPLE FILE
+    FileStorage -> Server: Confirm update
+    Server -> Database: Update SAMPLE FILE link in DB
+    Database -> Server: Update confirmation
+    Server -> UIBrowser: Update success message
+    UIBrowser -> FABSUser: Display success message
+else File path is invalid
+    ValidationService -> Server: Path invalid
+    Server -> UIBrowser: Error message (invalid path)
+    UIBrowser -> FABSUser: Display error message
+end
+@enduml

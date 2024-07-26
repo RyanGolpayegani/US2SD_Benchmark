@@ -1,0 +1,39 @@
+@startuml
+actor Librarian
+participant "Library Web Interface" as WebInterface
+database "CLMS Database" as Database
+participant "Book Management Module" as BookModule
+
+Librarian -> WebInterface: Access Book Management
+activate Webinterface
+
+WebInterface -> BookModule: Request Book List
+activate BookModule
+
+BookModule -> Database: Query Existing Books
+activate Database
+Database --> BookModule: Return Book List
+deactivate Database
+
+BookModule --> WebInterface: Show Book List
+deactivate BookModule
+WebInterface -> Librarian: Display Book List
+deactivate WebInterface
+
+Librarian -> WebInterface: Select Book to Edit
+activate Webinterface
+
+WebInterface -> BookModule: Send Edit Request(Book ID)
+activate BookModule
+
+BookModule -> Database: Update Book Details(Book ID)
+activate Database
+Database --> BookModule: Confirm Update
+deactivate Database
+
+BookModule --> WebInterface: Confirm Update to Librarian
+deactivate BookModule
+WebInterface -> Librarian: Display Update Confirmation
+deactivate WebInterface
+
+@enduml

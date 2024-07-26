@@ -1,0 +1,22 @@
+@startuml
+actor User
+participant "Web Interface" as Web
+participant "Back-End Server" as Server
+database "Database" as DB
+
+User -> Web : Select "Schedule Pickup"
+Web -> Server : Request available times
+Server -> DB : Query available pickup times
+DB -> Server : Return available times
+Server -> Web : Show available times
+Web -> User : Display options
+
+User -> Web : Choose pickup time
+Web -> Server : Submit chosen time
+Server -> DB : Store new pickup time
+
+DB -> Server : Confirmation
+Server -> Web : Confirm with user
+Web -> User : Show confirmation message
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+actor FacultyMember as "Faculty Member"
+participant "Upload Interface" as UI
+participant "Content Management System" as CMS
+participant "License Management" as LM
+participant "Database" as DB
+participant "Repository Interface" as RI
+
+== File Upload and License Assignment ==
+FacultyMember -> UI : Selects files for upload
+activate UI
+
+UI -> CMS : Upload files
+activate CMS
+
+CMS -> LM : Prompt license selection
+deactivate CMS
+activate LM
+
+FacultyMember -> LM : Assigns CC license
+LM -> DB : Update file metadata with CC license
+activate DB
+deactivate LM
+
+DB -> CMS : Confirm metadata update
+deactivate DB
+activate CMS
+
+CMS -> RI : Display file with CC license
+deactivate CMS
+
+FacultyMember <- RI : Display confirmation
+@enduml

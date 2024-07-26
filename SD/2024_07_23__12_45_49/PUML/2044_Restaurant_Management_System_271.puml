@@ -1,0 +1,35 @@
+@startuml
+
+participant Waiter
+participant "Restaurant Management \nand Operations System" as System
+database "Database" as DB
+participant Chef
+
+title Add New Orders Process
+
+Waiter -> System : Selects option to add new order
+activate System
+
+System -> DB : Retrieve current menu items
+activate DB
+DB --> System : Current menu items
+deactivate DB
+
+System --> Waiter : Displays current menu items
+Waiter -> System : Inputs customer's order details
+activate System
+
+System -> DB : Save new order
+activate DB
+DB --> System : Confirm order saved
+deactivate DB
+
+System --> Waiter : Display order confirmation
+deactivate System
+
+System -> Chef : Notify new order available
+activate Chef
+Chef --> System : Acknowledge receipt
+deactivate Chef
+
+@enduml

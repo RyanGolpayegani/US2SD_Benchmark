@@ -1,0 +1,29 @@
+@startuml
+actor Researcher
+participant "DAMS Interface" as DAMS
+participant "Archivist" as Archivist
+database "Physical Inventory" as Inventory
+
+Researcher -> DAMS : Search for Digital Object
+DAMS -> Researcher : Display Search Results
+Researcher -> DAMS : Select Digital Object for Request
+DAMS -> Researcher : Show Request Form
+
+Researcher -> DAMS : Submit Request with Details
+DAMS -> Archivist : Notify of Analog Request
+
+alt Exists in Physical Form
+    Archivist -> Inventory : Check Availability
+    Inventory -> Archivist : Confirm Availability
+    Archivist -> DAMS : Update Request Status to 'Available'
+    DAMS -> Researcher : Notify 'Request Approved'
+else Not Available
+    Archivist -> DAMS : Update Request Status to 'Not Available'
+    DAMS -> Research' : Notify 'Request Denied'
+end
+
+Researcher -> DAMS : Acknowledge Notification
+DAMS -> Archivist : Schedule Appointment for Researcher
+Archivist -> Researcher : Confirm Appointment Details
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml
+actor Developer
+participant "ALFRED API" as API
+participant "Authentication Server" as Auth
+participant "ALFRED System" as System
+
+Developer -> API: Request API documentation
+API -> Developer: Return API documentation
+
+Developer -> API: Request API key
+API -> Auth: Validate developer
+Auth -> Developer: Return API key
+
+Developer -> API: Send request to create new app (with API key)
+API -> System: Validate API key\nCreate new app space
+System -> API: Return app creation confirmation
+API -> Developer: Return success message and app ID
+
+Developer -> API: Request data schema for health monitoring
+API -> System: Fetch health data schema
+System -> API: Return data schema
+API ->  Developer: Display data schema
+
+Developer -> API: Submit health monitoring app code (with app ID)
+API -> System: Validate app ID\nDeploy app code
+System -> API: Return deployment status
+API -> Developer: Return success and app access details
+
+Developer -> API: Request to register app webhook
+API -> System: Register app webhook for events
+System -> API: Confirm webhook registration
+API -> Developer: Return webhook registration success
+
+note right of Developer
+Interaction with the ALFRED API enables the developer
+to build and deploy a health monitoring app for older adults,
+leveraging the system's functionalities and ensuring ease of
+integration and support for their needs.
+end note
+
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+actor "Library Manager" as manager
+participant "CLMS Interface" as interface
+database "Database" as db
+
+manager -> interface : Access CLMS Dashboard
+activate interface
+
+interface -> db : Fetch book details
+activate db
+db --> interface : Book details
+deactivate db
+
+manager -> interface : Select \"Update Book\"
+activate interface
+
+interface -> db : Query specific book record
+activate db
+db --> interface : Specific book record
+deactivate db
+
+manager -> interface : Enter updated status
+activate interface
+
+interface -> db : Update book record in Database
+activate db
+db --> db : Update record
+db --> interface : Confirmation of update
+deactivate db
+
+interface --> manager : Display update confirmation
+deactivate interface
+
+@enduml

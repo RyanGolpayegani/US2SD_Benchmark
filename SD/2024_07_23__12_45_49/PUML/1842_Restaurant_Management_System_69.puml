@@ -1,0 +1,20 @@
+@startuml
+participant Customer as C
+participant "Frontend UI" as F
+participant "Backend Server" as B
+participant "Database" as DB
+
+C -> F : Select dish
+C -> F : Click customize
+F -> B : Request available ingredients (dishId)
+B -> DB : Query ingredients (dishId)
+DB -> B : Return ingredients list
+B -> F : Show ingredients to customer
+C -> F : Unselect ingredients to remove
+F -> B : Submit customization request (dishId, removedIngredients[])
+B -> DB : Update dish customization
+DB -> B : Confirm update
+B -> F : Display updated dish
+F -> C : Confirmation message
+
+@enduml

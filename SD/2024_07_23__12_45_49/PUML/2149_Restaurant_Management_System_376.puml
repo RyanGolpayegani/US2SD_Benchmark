@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+
+actor Employee
+participant "UI (React/Angular)" as UI
+participant "Backend\n(Node.js/Express)" as Server
+participant "Database\n(MongoDB/PostgreSQL)" as DB
+
+== Employee Wants to See Unfulfilled Orders ==
+
+Employee -> UI : Selects to view unfulfilled orders
+UI -> Server : GET /unfulfilledOrders
+activate Server
+
+Server -> DB : Query unfulfilled orders
+activate DB
+DB --> Server : Return unfulfilled orders
+deactivate DB
+
+Server --> UI : Response with unfulfilled orders
+deactivate Server
+UI --> Employee : Display unfulfilled orders
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+participant Member as member
+participant WebInterface as web
+participant AuthenticationSystem as auth
+participant NewspaperService as service
+participant Database as db
+
+member -> web : Access CLMS to view newspapers
+web -> auth : Validate Member Session
+activate auth
+auth -->> web : Session Valid
+deactivate auth
+web -> service : Request Daily Newspapers
+activate service
+service -> db : Query Available Newspapers
+activate db
+db -->> service : Return Newspaper Listings
+deactivate db
+service -->> web : Display Newspapers
+deactivate service
+web -> member : Show Daily Newspapers Listing
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+actor DataCurator as curator
+participant "Digital Repository System" as system
+participant "Content Management Module" as content
+participant "Scheduling System" as schedule
+participant "Database" as db
+
+curator -> system : Access system
+activate system
+
+system -> content : Navigate to Content Management
+activate content
+
+content -> schedule : Select record for scheduling
+activate schedule
+
+curator -> schedule : Define scheduling parameters\n(e.g., deletion date)
+activate schedule
+
+schedule -> db : Store scheduling parameters
+activate db
+db --> schedule : Confirmation & scheduling ID
+deactivate db
+
+schedule --> curator : Display confirmation message & details
+deactivate schedule
+deactivate content
+deactivate system
+
+@enduml

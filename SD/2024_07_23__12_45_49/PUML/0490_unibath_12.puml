@@ -1,0 +1,40 @@
+@startuml
+participant Depositor
+participant ERDMP
+participant "Pure/Opus" as PureOpus
+database "Metadata Store" as Metadata
+
+== Deposit Process Initiation ==
+Depositor -> ERDMP : Initiate Deposit
+note right of ERDMP: Display deposit form
+
+== Fetch Metadata from University Systems ==
+ERDMP -> PureOpus : Request Metadata for Depositor
+activate PureOpus
+PureOpus --> ERDMP : Return Metadata
+deactivate PureOpus
+note right of ERDMP: Fill deposit form with Metadata
+
+== Check for Previous Deposits ==
+ERDMP -> Metadata : Query for previous deposits by Depositor
+activate Metadata
+Metadata --> ERDMP : Return Metadata of previous deposits
+deactivate Metadata
+note right of ERDMP: Pre-fill additional information\nfrom previous deposits
+
+== Depositor Reviews Auto-filled Metadata ==
+ERDMP -> Depositor : Present auto-filled form
+Depositor -> ERDMP : Confirms/updates information
+note right of Depositor: User may modify\nauto-filled data
+
+== Finalize Deposit ==
+Depositor -> ERDMP : Submit final data
+ERDMP -> Metadata : Store final dataset metadata
+activate Metadata
+Metadata --> ERDMP : Confirm data stored
+deactivate Metadata
+
+note right of ERDMP: Generate DOI, apply licenses,\nand link to publication if applicable
+ERDMP -> Depositor : Deposit confirmation & DOI
+
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+actor "Repository Manager" as RM
+participant "DIMS Interface" as Interface
+participant "Rights Management Module" as RightsModule
+database "Database" as DB
+
+RM -> Interface : Access Rights Management
+activate Interface
+
+Interface -> RightsModule : Request Rights Form for Object
+activate RightsModule
+
+RightsModule -> DB : Fetch Object Details
+activate DB
+
+DB --> RightsModule : Object Details
+deactivate DB
+
+RightsModule --> Interface : Display Rights Form with Object Details
+deactivate RightsModule
+
+RM -> Interface : Input/Update Rights Information
+activate Interface
+
+Interface -> RightsModule : Update Rights for Object
+activate RightsModule
+
+RightsModule -> DB : Store Updated Rights Information
+activate DB
+
+DB --> RightsModule : Confirm Update Success
+deactivate DB
+
+RightsModule --> Interface : Display Success Message
+deactivate RightsModule
+
+Interface --> RM : Confirm Rights Updated
+deactivate Interface
+
+@enduml

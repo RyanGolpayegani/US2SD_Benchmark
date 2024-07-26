@@ -1,0 +1,38 @@
+@startuml
+actor Researcher
+participant "Web Interface" as WebUI
+participant "Annotation Service" as Annotate
+participant "Metadata Repository" as MetadataRepo
+participant "Search Service" as Search
+
+Researcher -> WebUI: Request to annotate image
+WebUI -> Annotate: Initiate annotation process
+activate Annotate
+
+Annotate -> MetadataRepo: Fetch standard metadata template
+activate MetadataRepo
+MetadataRepo --> Annotate: Return metadata template
+deactivate MetadataRepo
+
+Annotate -> Annotate: Apply metadata to image
+Annotate -> MetadataRepo: Save annotated image metadata
+activate MetadataRepo
+MetadataRepo --> Annotate: Confirm metadata saved
+deactivate MetadataRepo
+
+Annotate --> WebUI: Confirm image annotated
+deactivate Annotate
+
+Researcher -> WebUI: Search for annotated images
+WebUI -> Search: Initiate search
+activate Search
+
+Search -> MetadataRepo: Query by metadata
+activate MetadataRepo
+MetadataRepo --> Search: Return search results
+deactivate MetadataRepo
+
+Search --> WebUI: Display search results
+WebUI --> Researcher: Show annotated images
+
+@enduml

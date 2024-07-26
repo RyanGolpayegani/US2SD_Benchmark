@@ -1,0 +1,19 @@
+@startuml
+participant "Repository Manager" as RM
+participant "DMPTool Interface" as Interface
+participant "Metadata Management System" as MMS
+participant "Translation Service" as TS
+database "Data Repository" as DR
+
+RM -> Interface : Request metadata translation\n(select metadata, target languages)
+Interface -> MMS : Validate request\n(verify access, metadata ID)
+alt Validation Success
+    MMS -> TS : Send metadata\n(specify target languages)
+    TS --> MMS : Return translated metadata\n(in all target languages)
+    MMS -> DR : Update metadata\n(store translations)
+    MMS -> RM : Notify success\n(metadata updated)
+else Validation Failure
+    MMS -> RM : Notify failure\n(invalid metadata ID or access rights)
+end
+
+@enduml

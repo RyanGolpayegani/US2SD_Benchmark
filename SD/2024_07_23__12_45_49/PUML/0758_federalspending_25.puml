@@ -1,0 +1,31 @@
+@startuml
+
+participant "UI Designer" as UI
+participant "User Testing Scheduling System" as Scheduling
+database "Tester Database" as DB
+entity "Tester" as Tester
+participant "Email Notification System" as Email
+
+UI -> Scheduling: Access testing scheduling feature
+activate Scheduling
+
+Scheduling -> DB: Retrieve tester list
+activate DB
+DB --> Scheduling: Tester list
+deactivate DB
+
+Scheduling -> Tester: Display available dates to UI Designer
+activate Tester
+Tester --> Scheduling: Select preferred dates
+deactivate Tester
+
+UI -> Scheduling: Confirm selected dates
+Scheduling --> Email: Schedule notifications
+activate Email
+Email -> Tester: Send schedule confirmation
+deactivate Email
+
+UI <-- Scheduling: Display scheduling success message
+deactivate Scheduling
+
+@enduml

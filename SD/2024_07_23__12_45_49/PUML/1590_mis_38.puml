@@ -1,0 +1,21 @@
+@startuml
+actor RepositoryManager as RM "Repository Manager"
+participant AuthenticationModule as AM "Authentication Module"
+participant UserDatabase as UD "User Database"
+participant SystemInterface as SI "System Interface"
+
+RM -> AM: Request user data view
+activate AM
+AM -> UD: Query active users
+activate UD
+UD -> UD: Fetch authenticated users
+UD -> UD: Fetch anonymous users
+UD --> AM: Return user data
+deactivate UD
+AM --> SI: Display user data
+activate SI
+SI --> RM: Show authenticated & anonymous users
+deactivate AM
+deactivate SI
+
+@enduml

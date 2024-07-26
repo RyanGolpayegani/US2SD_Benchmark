@@ -1,0 +1,19 @@
+@startuml
+participant Manager_UI as "Manager Interface"
+participant Authentication_Service as "Auth Service"
+participant Database as "Database"
+participant Report_Generator as "Report Generator"
+
+Manager_UI->Authentication_Service: Login(credentials)
+Authentication_Service->Database: Validate user info
+Database->Authentication_Service: User valid
+Authentication_Service->Manager_UI: Authentication success
+
+Manager_UI->Report_Generator: Request new books report for the month
+Report_Generator->Database: Fetch new books data (monthly)
+Database->Report_Generator: Return new books data
+Report_Generator->Manager_UI: Display report with new books
+
+Manager_UI->Manager_UI: View and analyze report
+
+@enduml

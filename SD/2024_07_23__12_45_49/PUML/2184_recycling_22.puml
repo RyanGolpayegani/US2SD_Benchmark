@@ -1,0 +1,21 @@
+@startuml
+participant Admin
+participant DashboardInterface as DI
+participant AuthenticationService as AS
+participant DashboardService as DS
+participant Database as DB
+
+Admin -> DI: Request Dashboard Access
+DI -> AS: Verify Admin Credentials
+AS --> DI: Authentication Successful
+
+DI -> DS: Request Site Status Data
+activate DS
+DS -> DB: Query User Activities
+DB --> DS: User Activities Data
+DS -> DB: Query Service Statuses
+DB --> DS: Service Statuses Data
+DS --> DI: Dashboard Data
+deactivate DS
+DI --> Admin: Display Dashboard
+@enduml

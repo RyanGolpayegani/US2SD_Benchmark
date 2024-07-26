@@ -1,0 +1,24 @@
+@startuml
+actor Researcher as researcher
+participant "Authentication Service" as auth
+participant "Data Upload Service" as upload
+participant "Metadata Service" as metadata
+participant "Data Protection Service" as protection
+participant "Storage System" as storage
+
+researcher -> auth: Request Access
+auth -> researcher: Grant Access
+
+researcher -> upload: Upload Data
+upload -> storage: Store Data
+
+upload -> metadata: Attach Metadata
+metadata -> storage: Update Data with Metadata
+
+researcher -> protection: Request Data Protection
+protection -> storage: Set Protection Flags
+
+storage -> protection: Confirm Protection
+protection -> researcher: Notify Protection Success
+
+@enduml

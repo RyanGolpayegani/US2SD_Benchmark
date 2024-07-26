@@ -1,0 +1,26 @@
+@startuml
+actor User
+participant "Web Application" as WebApp
+participant "Application Server" as AppServer
+participant "Database" as DB
+
+== User Requests Enum Value List Page ==
+User -> WebApp : Request Page
+activate WebApp
+
+WebApp -> AppServer : Fetch Enum Values\n(Request)
+activate AppServer
+
+AppServer -> DB : SELECT Enum Values\n(Query)
+activate DB
+
+DB --> AppServer : Return Enum Values\n(Result Set)
+deactivate DB
+
+AppServer --> WebApp : Enum Values\n(Response)
+deactivate AppServer
+
+WebApp --> User : Display Page with\nEnum Values
+deactivate WebApp
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+actor Developer
+participant "Developer Portal" as Portal
+participant "ALFRED API" as API
+participant "Authentication Service" as Auth
+participant "Health Data Service" as HealthData
+participant "Notification Service" as Notification
+
+Developer -> Portal: Access Developer Portal
+Portal -> Developer: Display API Documentation
+
+Developer -> API: Request API Key
+API -> Auth: Validate Developer Account
+Auth -> API: Confirm Authentication
+API -> Developer: Provide API Key
+
+Developer -> HealthData: Send Health Data using API Key
+alt successful data submission
+    HealthData -> Developer: Acknowledge Receipt
+else failure in data submission
+    HealthData -> Developer: Error Message
+end
+
+Developer -> Notification: Subscribe to Health Alerts
+Notification -> Developer: Confirm Subscription
+
+@enduml

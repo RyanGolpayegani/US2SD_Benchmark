@@ -1,0 +1,39 @@
+@startuml
+actor Developer
+participant "Development Environment" as DevEnv
+participant "Version Control System" as VCS
+participant "Continuous Integration System" as CIS
+participant "Broker Validation Rule Table" as BVRT
+participant "Broker Database" as BDB
+
+== Update Process ==
+Developer -> DevEnv : Retrieve latest codebase
+DevEnv -> VCS : Pull request for latest version
+VCS -> DevEnv : Return latest codebase
+
+Developer -> DevEnv : Implement rule updates in DB-2213
+DevEnv -> Developer : Display implemented changes
+
+Developer -> DevEnv : Write unit tests for DB-2213 changes
+DevEnv -> Developer : Run tests and display results
+
+Developer -> DevEnv : Commit changes and tests
+DevEnv -> VCS : Push committed changes and tests
+
+== Continuous Integration ==
+VCS -> CIS : Trigger build for new commit
+CIS -> CIS : Compile code and run all tests
+CIS -> VCS : Report build and test status
+
+== Deployment ==
+CIS -> BVRT : Update Broker validation rule table with DB-2213 rules
+BVRT -> BDB : Apply rule updates in Broker Database
+BDB -> BVRT : Confirm updates
+
+CIS -> Developer : Notify deployment success
+
+== Validation ==
+Developer -> BVRT : Verify DB-2213 rules in Broker Application
+BVRT -> Developer : Display new rule state and validation results
+
+@enduml

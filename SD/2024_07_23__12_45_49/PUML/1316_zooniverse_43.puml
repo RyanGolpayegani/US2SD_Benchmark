@@ -1,0 +1,26 @@
+@startuml
+participant ZooniverseAdmin as admin
+participant "AMIDP System" as system
+database "Volunteer Database" as volDB
+participant "Experience Assessment Service" as expService
+participant "Classification Weight Calculator" as calcService
+
+admin -> system : request volunteer classification assessment
+system -> volDB : fetch volunteer data
+activate volDB
+return volunteer data
+deactivate volDB
+system -> expService : assess volunteer experience(volunteer data)
+activate expDto
+expService -> volDB : retrieve historical classifications
+return historical data
+expService -> expService : calculate experience level(historical data)
+return experience level
+deactivate expService
+system -> calcService : calculate classification weight(experience level)
+calcService -> calcService : apply weight algorithm
+return classification weight
+system -> admin : return assessment result (classification weight)
+deactivate system
+
+@enduml

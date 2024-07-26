@@ -1,0 +1,48 @@
+@startuml
+participant User as user
+participant "OpenSpending\nPlatform" as platform
+participant "Data Model\nEditor" as editor
+participant "Visualization\nRequirements" as requirements
+participant "Data Validation\nService" as validator
+participant "Map\nVisualization Feature" as mapView
+
+== User Requests Information on Data Visualization Requirements ==
+user -> platform: Access data publishing section
+activate platform
+
+platform -> requirements: Fetch map visualization criteria
+activate requirements
+
+requirements --> user: Display required data fields\nand formats for map visualization
+deactivate requirements
+
+== User Prepares Dataset Based on Requirements ==
+user -> editor: Open Data Model Editor
+activate editor
+
+user -> editor: Input/Edit data\naccording to requirements
+editor -> validator: Validate data with map criteria
+activate validator
+
+validator -> editor: Return validation results
+deactivate validator
+
+alt If Data Meets Requirements
+    editor --> user: Notify data compliance\nwith map visualization
+    deactivate editor
+    
+    user -> platform: Submit validated dataset
+    deactivate platform
+    
+    platform -> mapView: Initiate map visualization process
+    activate mapView
+    
+    mapView -> platform: Generate map visualization
+    mapView --> user: Provide link/access to\nmap visualization
+    deactivate mapView
+else Data Does Not Meet Requirements
+    editor --> user: Notify data non-compliance\nsuggest corrections
+    deactivate editor
+    deactivate platform
+end
+@enduml

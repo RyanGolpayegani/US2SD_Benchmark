@@ -1,0 +1,17 @@
+@startuml
+participant "DAMS Manager" as Manager
+participant "DIMS Interface" as Interface
+participant "Digital Asset\nNavigation & Structuring\nModule" as NavigationModule
+participant "Repository" as Repo
+participant "Metadata Management\nSystem" as Metadata
+
+Manager -> Interface : request object components\n(in assigned order)
+Interface -> NavigationModule : query for object components\nand order
+NavigationModule -> Repo : fetch object ID\nand related components
+Repo -> NavigationModule : return object components\nand metadata
+NavigationModule -> Metadata : request component\nordering information
+Metadata -> NavigationModule : provide ordering\nbased on metadata
+NavigationModule -> Interface : send ordered components list
+Interface -> Manager : display components\n(in assigned order)
+
+@enduml

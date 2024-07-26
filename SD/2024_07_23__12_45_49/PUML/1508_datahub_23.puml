@@ -1,0 +1,61 @@
+@startuml
+participant Publisher
+participant "UI Interface" as UI
+participant "Data Publishing Service" as PublishingService
+participant "Validation Service" as ValidationService
+participant Database
+participant "Data Storage" as Storage
+participant "Cache System" as Cache
+
+Publisher -> UI : Access Publishing Platform
+activate UI
+
+UI -> PublishingService : Request Data Publishing Form
+activate PublishingService
+
+PublishingService -> UI : Provide Data Publishing Form
+UI -> Publisher : Display Data Publishing Form
+
+Publisher -> UI : Submit Data Package Details and Files
+UI -> PublishingService : Initiate Data Publishing Process
+
+PublishingService -> ValidationService : Validate Data Package
+activate ValidationService
+ValidationService -> PublishingService : Return Validation Results
+
+alt If Data is Valid
+    PublishingService -> Database : Create Data Package Record
+    activate Database
+    Database -> PublishingService : Confirm Data Package Record Created
+    deactivate Database
+
+    PublishingService -> Storage : Store Data Package Files
+    activate Storage
+    Storage -> PublishingService : Confirm Data Stored
+    deactivate Storage
+
+    PublishingService -> Cache : Cache Data Package for Quick Access
+    activate Cache
+    Cache -> PublishingService : Confirm Data Cached
+    deactivate Cache
+
+    PublishingService -> UI : Notify Success & Provide Sharing Options
+    UI -> Publisher : Show Success & Sharing Options
+
+    Publisher -> UI : Choose Highlighting Option
+    UI -> PublishingSchool : Apply Highlighting Option
+    PublishingSchool -> Database : Update Data Package Record with Highlight
+    Database -> PublishingSchool : Confirm Update
+    PublishingSchool -> UI : Highlight Applied
+    UI -> Publisher : Show Updated Publication with Highlight
+else If Data is Invalid
+    PublishingService -> UI : Notify Data Validation Failed
+    UI -> Publisher : Display Validation Errors
+    
+    Publisher -> UI : Adjust Data Package and Resubmit
+    [-> PublishingService : Repeat Process
+endif
+
+deactivate PublishingService
+deactivate UI
+@enduml

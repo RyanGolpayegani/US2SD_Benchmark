@@ -1,0 +1,20 @@
+@startuml
+
+actor Manager
+
+participant "Management\nInterface" as MI
+participant "Authorization\nService" as Auth
+participant "Order\nManagement\nService" as OrderService
+participant "Database" as DB
+
+Manager -> MI : Request to delete order [OrderID]
+MI -> Auth : Verify Manager's permissions
+Auth --> MI : Permission Granted
+
+MI -> OrderService : Delete Order [OrderID]
+OrderService -> DB : Query to remove Order [OrderID]
+DB --> OrderLib: Confirmation of deletion
+OrderService --> MI : Order Deleted Successfully
+MI --> Manager : Show deletion confirmation
+
+@enduml

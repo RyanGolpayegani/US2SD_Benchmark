@@ -1,0 +1,29 @@
+@startuml
+participant Repoadmin as admin
+participant "EDRMS Configuration System" as config
+participant "Linked Data Module" as ld
+participant "Data Repository" as repo
+participant "Public Interface" as public
+
+== Enable Linked Data Interface ==
+admin -> config : Access EDRMS Configuration
+activate config
+config -> ld : Activate Linked Data Interface
+activate ld
+ld -> ld : Configure Base URI
+ld -> ld : Map Repository Data to RDF
+ld -> repo : Fetch Data for RDF Mapping
+activate repo
+repo --> ld : Data Set
+deactivate repo
+ld -> ld : Generate RDF Triples
+ld -> public : Publish Linked Data Endpoint
+activate public
+public --> ld : Endpoint URL
+deactivate public
+ld --> config : Configuration Success
+deactivate ld
+config --> admin : Linked Data Interface Enabled
+deactivate config
+
+@enduml

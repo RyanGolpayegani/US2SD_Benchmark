@@ -1,0 +1,22 @@
+@startuml
+
+participant Manager
+participant "Inventory Management System" as IMS
+participant Database
+participant "Supplier Management Module" as SMM
+
+Manager -> IMS: Check current inventory levels
+IMS -> Database: Query inventory data
+Database -> IMS: Return inventory data
+IMS -> Manager: Display inventory levels
+
+alt If Inventory is Low
+    Manager -> IMS: Initiate restock process
+    IMS -> SMM: Send restock request to suppliers
+    SMM -> Database: Log restock order
+    SMM -> Manager: Confirm restock initiation
+else Inventory Sufficient
+    Manager -> IMS: No action needed
+end
+
+@enduml

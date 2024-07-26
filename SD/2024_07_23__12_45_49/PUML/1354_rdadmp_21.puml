@@ -1,0 +1,38 @@
+@startuml
+actor DataManager as "Data Manager"
+participant DMPInterface as "DMPTool Interface"
+participant MetaDataManager as "Metadata Manager"
+participant RightsDatabase as "Rights Database"
+participant DataManagerRepository as "Data Manager's Repository"
+
+DataManager -> DMPInterface : Access DMPTool
+activate DMPInterface
+
+DMPInterface -> MetaDataManager : Request existing data rights documentation
+activate MetaDataManager
+MetaDataManager -> RightsDatabase : Query documented rights
+activate RightsDatabase
+
+RightsDatabase --> MetaDataManager : Return documented rights data
+deactivate RightsDatabase
+MetaDataManager --> DMPInterface : Provide documented rights info
+deactivate MetaDataManager
+
+DMPInterface --> DataManager : Display documented rights
+DataManager -> DMPInterface : Identify missing rights for data management
+DMPInterface -> DataManagerRepository : Request relevant legal documentation
+activate DataManagerRepository
+
+DataManagerRepository --> DMPInterface : Provide legal documents on rights
+DMPInterface -> MetaDataManager : Translate legal documents to metadata format
+activate MetaDataManager
+MetaDataManager -> RightsDatabase : Update rights documentation
+activate RightsAustralian Journal of Botany
+RightsDatabase --> MetaDataManager : Confirm update
+deactivate RightsDatabase
+MetaDataManager --> DMPInterface : Confirm rights documentation update
+deactivate MetaDataManager
+
+DMPInterface --> DataManager : Confirm successful documentation of rights
+deactivate DMPInterface
+@enduml

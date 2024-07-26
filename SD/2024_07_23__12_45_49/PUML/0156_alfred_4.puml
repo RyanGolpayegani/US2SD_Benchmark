@@ -1,0 +1,37 @@
+@startuml
+participant OlderPerson as user
+participant "Speech Recognition" as SR
+participant "Command Processor" as CP
+database "User Preferences" as UP
+participant "Service Handler" as SH
+database "Services" as S
+participant "Feedback System" as FB
+
+user -> SR: Speaks command
+SR -> CP: Translates voice to text
+CP -> UP: Fetch user settings/preferences
+UP --> CP: User settings/preferences
+CP -> SH: Process command with settings
+alt Health Check
+    SH -> S: Requests health status
+    S --> SH: Health data
+    SH -> FB: Generate health status message
+    FB --> user: Speaks health update
+else Set Reminder
+    SH -> S: Set new reminder
+    S --> SH: Confirmation
+    SH -> FB: Generate confirmation message
+    FB --> user: Speaks confirmation
+else Control Smart Device
+    SH -> S: Control command (e.g., turn off lights)
+    S --> SH: Confirmation
+    SH -> FB: Generate confirmation message
+    FB --> user: Speaks confirmation
+else General Query
+    SH -> S: Fetch information (e.g., weather, news)
+    S --> SH: Information
+    SH -> FB: Generate information message
+    FB --> user: Speaks requested information
+end
+
+@enduml

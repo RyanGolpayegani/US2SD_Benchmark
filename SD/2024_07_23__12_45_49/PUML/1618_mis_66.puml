@@ -1,0 +1,25 @@
+@startuml
+actor Curator as curator
+participant "UI Interface" as UI
+participant "Authentication Service" as AuthService
+participant "Permission Service" as PermService
+participant "Database" as DB
+participant "Permissions Display" as PermDisplay
+
+== View Permissions on Objects ==
+
+curator -> UI: Request to view permissions
+UI -> AuthService: Validate curator session
+AuthService -> UI: Session Valid
+
+UI -> PermService: Request object permissions for curator
+activate PermFormat
+
+PermService -> DB: Query permissions by curator ID
+DB -> PermService: Return permissions data
+PermService -> UI: Permissions data processed
+
+UI -> PermDisplay: Display formatted permissions data
+PermDisplay -> curator: Show permissions overview
+
+@enduml

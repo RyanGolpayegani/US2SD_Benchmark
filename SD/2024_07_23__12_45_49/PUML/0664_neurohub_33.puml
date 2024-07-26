@@ -1,0 +1,35 @@
+@startuml
+participant SystemAdministrator as SA
+participant BackupScheduler as BS
+participant BackupSystem as Backup
+database NeurohubDB as DB
+participant ExternalStorage as Storage
+participant NotificationSystem as NS
+
+== Managed Backup Protocol Execution ==
+
+SA -> BS: Schedule backup (time, frequency)
+BS -> Backup: Trigger backup at scheduled time
+Backup -> DB: Request data snapshot
+DB --> Backup: Data snapshot
+Backup -> Storage: Transfer data snapshot
+Storage --> Backup : Confirm receipt
+
+== Backup Verification ==
+
+Backup -> DB: Verify data integrity
+DB --> Backup: Integrity report
+Backup -> NS : Send backup and integrity status
+NS --> SA: Notification (Backup complete, status)
+
+== Manual Backup Request ==
+
+SA -> Backup: Initiate manual backup
+Backup -> DB: Request data snapshot
+DB --> Backup: Data snapshot
+Backup -> Storage: Transfer data snapshot
+Storage --> Backup : Confirm receipt
+Backup -> NS : Send backup status
+NS --> SA: Notification (Manual backup complete)
+
+@enduml

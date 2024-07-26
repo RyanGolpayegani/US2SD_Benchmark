@@ -1,0 +1,24 @@
+@startuml
+
+actor Member
+participant "Web Interface" as Web
+database "CLMS Database" as DB
+participant "Genres Controller" as GenresCtrl
+
+== User Views Book Genres ==
+
+Member -> Web : Request to view genres
+Web -> GenresCtrl : Fetch genres list
+activate GenresCtrl
+
+GenresCtrl -> DB : Query available genres
+activate DB
+DB --> GenresCtrl : Return genres list
+deactivate DB
+
+GenresCtrl --> Web : Provide genres list
+deactivate GenresCtrl
+
+Web --> Member : Display genres
+
+@enduml

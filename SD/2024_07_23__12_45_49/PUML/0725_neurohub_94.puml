@@ -1,0 +1,33 @@
+@startuml
+participant Researcher as res
+participant "UI" as ui
+participant "MMS" as mms
+participant "DB" as db
+
+== Bulk Upload Completion ==
+res -> ui: Access Neurohub
+ui -> mms: Open Bulk Upload Status
+mms -> db: Query Upload Status
+db -> mms: Return Status: Complete
+mms -> ui: Show Status: Complete
+ui -> res: Display Bulk Upload Completed
+
+== Metadata Association ==
+res -> ui: Request to Add Metadata
+ui -> mms: Fetch Metadata Template
+db -> mms: Return Metadata Template
+mms -> ui: Display Metadata Form
+res -> ui: Input Metadata Values
+ui -> mms: Validate Metadata Input
+alt Invalid Metadata
+    mms -> ui: Prompt Correction
+    res -> ui: Correct and Resubmit Metadata
+else Valid Metadata
+    mms -> db: Associate Metadata with Group
+    db -> db: Update Group Record
+    db -> mms: Confirmation of Metadata Association
+    mms -> ui: Confirm Metadata Update
+    ui -> res: Display Success Message
+end
+
+@enduml

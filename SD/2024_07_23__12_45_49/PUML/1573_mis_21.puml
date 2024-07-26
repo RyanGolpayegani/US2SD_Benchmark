@@ -1,0 +1,32 @@
+@startuml
+participant Submitter
+participant "EDRMS Interface" as Interface
+participant "Collection Management" as Collection
+participant "License Management" as License
+participant "Repository Database" as Database
+
+Submitter -> Interface: Initiate deposit
+Interface -> Collection: Request deposit details
+Collection -> Interface: Display collection-specific instructions
+Interface -> Submitter: Show instructions & request for files
+
+Submitter -> Interface: Upload files
+Interface -> License: Request collection-specific licenses
+License -> Interface: Provide licenses options
+Interface -> Submitter: Display licenses
+
+Submitter -> Interface: Select & accept license
+alt License Accepted
+    Interface -> License: Confirm license acceptance
+    License -> Database: Log license agreement
+    Database -> Interface: Confirmation logged
+    Interface -> Collection: Proceed with deposit
+    Collection -> Database: Store deposit details
+    Database -> Interface: Deposit success
+    Interface -> Submitter: Display deposit success message
+else License Not Accepted or Not Selected
+    Interface -> Submitter: Notify license requirement
+    Submitter -> Interface: Abort or restart process
+end
+
+@enduml

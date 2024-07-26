@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+actor "Repository Manager" as repoManager
+participant ":User Interface (UI)" as ui
+participant ":DIMS Backend" as backEnd
+participant ":External Links Manager" as extLinkMgr
+participant ":Database" as db
+
+== Indicate External Descriptions of Collections outside DAMS ==
+
+repoManager -> ui : access DIMS
+ui -> backEnd : request collection management page
+backEnd -> ui : return collection management page
+repoManager -> ui : select "Indicate External Descriptions"
+ui -> backEnd : request external description form
+backEnd -> ui : return external description form
+repoManager -> ui : inputs external descriptions\nand submits
+ui -> backEnd : submit external description details
+backEnd -> extLinkMgr : process external descriptions
+extLinkMgr -> db : update collection with\nexternal descriptions
+db -> extLinkMgr : confirm update
+extLinkMgr -> backEnd : indicate success
+backEnd -> ui : show success message
+ui -> repoManager : display success message
+
+@enduml

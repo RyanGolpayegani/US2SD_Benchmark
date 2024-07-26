@@ -1,0 +1,30 @@
+@startuml
+actor Developer
+participant "DPIE API" as DPIE
+participant "DataPackage\nProcessor" as DPProcessor
+database "DSpace Repository" as DSpace
+
+Developer -> DPIE: Request DSpace Integration
+activate DPIE
+DPIE -> DPProcessor: Initiate DataPackage Integration
+activate DPProcessor
+
+DPProcessor -> DSpace: Check for Existing DataPackage
+activate DSpace
+DSpace --> DPProcessor: DataPackage Exists / Not Found
+deactivate DSpace
+
+alt DataPackage Exists
+    DPProcessor -> DSpace: Update DataPackage
+    DSpace --> DPProcessor: Acknowledge Update
+else DataPackage Not Found
+    DPProcessor -> DSpace: Upload DataPackage
+    DSpace --> DPProcessor: Acknowledge Upload
+end
+
+DPProcessor --> DPIE: DSpace Integration Successful
+deactivate DPProcessor
+DPIE --> Developer: Integration Complete
+deactivate DPIE
+
+@enduml

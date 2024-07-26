@@ -1,0 +1,27 @@
+@startuml
+participant UserInterface as UI
+participant "Join Game Form" as JGF
+participant "Game Server" as GS
+database "Game Database" as GD
+
+UI -> JGF: Enter URL
+note over JGF: URL contains game ID
+JGF -> JGF: Validate URL format
+alt URL is valid
+    JGF -> UI: Request Name Input
+    UI -> JGF: Submit Name
+    JGF -> GS: Request to join game (Name, Game ID)
+    GS -> GD: Check Game Status (Game ID)
+    alt Game exists and is accepting players
+        GD -> GS: Game details
+        GS -> GD: Add Estimator (Name, Game ID)
+        GD --> GS: Confirmation
+        GS -> UI: Join Success
+        UI -> UserInterface : Display Game Session
+    else Game does not exist or not accepting
+        GS -> UI: Error Message (Game not available)
+    end
+else URL is invalid
+    JGF -> UI: Error Message (Invalid URL)
+end
+@enduml

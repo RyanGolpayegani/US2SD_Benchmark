@@ -1,0 +1,22 @@
+@startuml
+participant Manager as M
+participant "Management Interface" as MI
+participant "Server Module" as SM
+participant Database as DB
+
+M -> MI : Access report feature
+activate MI
+MI -> SM : Request order count per waiter
+activate SM
+
+SM -> DB : Query orders by waiter\nand date
+activate DB
+DB --> SM : Return order counts
+deactivate DB
+
+SM --> MI : Send order counts data
+deactivate SM
+MI -> M : Display order count report
+deactivate MI
+
+@enduml

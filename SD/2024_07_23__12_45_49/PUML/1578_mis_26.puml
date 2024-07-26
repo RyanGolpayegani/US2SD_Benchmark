@@ -1,0 +1,35 @@
+@startuml
+participant Visitor
+participant WebInterface
+participant RepositorySystem
+participant DataAccessLayer
+participant Database
+
+Visitor -> WebInterface : Request item details
+activate WebInterface
+
+WebInterface -> RepositorySystem : Fetch item details
+activate RepositorySystem
+
+RepositorySystem -> DataAccessLayer : Query embargo status & release date
+activate DataAccessLayer
+
+DataAccessLayer -> Database : Retrieve embargo info
+activate Database
+Database --> DataAccessLayer : Embargo details
+deactivate Database
+
+DataAccessLayer --> RepositorySystem : Embargo status & release date
+deactivate DataAccessLayer
+
+RepositorySystem --> WebInterface : Item details with embargo info
+deactivate RepositorySystem
+
+note over WebInterface
+Format embargo information
+end note
+
+WebInterface --> Visitor : Display item with embargo status highlighted
+deactivate WebInterface
+
+@enduml

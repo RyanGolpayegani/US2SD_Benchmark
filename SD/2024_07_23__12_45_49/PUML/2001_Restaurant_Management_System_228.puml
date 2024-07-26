@@ -1,0 +1,23 @@
+@startuml
+actor Employee
+participant "UI Interface" as UI
+participant "Backend Server" as Backend
+participant "Inventory Management" as Inventory
+participant "Database" as DB
+
+Employee -> UI: Request to check product availability
+UI -> Backend: Fetch product availability details
+activate Backend
+Backend -> Inventory: Query product availability
+activate Inventory
+Inventory -> DB: SELECT available_quantity FROM products WHERE product_id = XYZ
+activate DB
+DB --> Inventory: Return product availability
+Inventory --> Backend: Product availability details
+deactivate DB
+Backend --> UI: Display product availability status
+UI --> Employee: Show product availability
+deactivate Inventory
+deactivate Backend
+
+@enduml

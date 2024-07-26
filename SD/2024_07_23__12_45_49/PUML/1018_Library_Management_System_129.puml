@@ -1,0 +1,63 @@
+@startuml
+actor LibraryManager as LM
+participant "CLMS Interface" as UI
+participant "Book Management System" as BMS
+participant "Database" as DB
+
+== Check Condition of Books ==
+LM -> UI : Request book list
+activate LM
+activate UI
+
+UI -> BMS : Fetch book details
+activate BMS
+
+BMS -> DB : Query book data (including condition)
+activate DB
+
+DB --> BMS : Return book data
+deactivate DB
+
+BMS --> UI : Show books and conditions
+deactivate BMS
+
+UI --> LM : Display book list and conditions
+deactivate UI
+
+LM -> UI : Select book with poor condition
+activate UI
+
+UI -> BMS : Request detailed condition for selected book
+activate BMS
+
+BMS -> DB : Query detailed condition for book
+activate DB
+
+DB --> BMS : Return detailed condition
+deactivate DB
+
+BMS --> UI : Show detailed book condition
+deactivate BMS
+
+UI --> LM : Display book condition details
+deactivate UI
+
+LM -> UI : Initiates replacement process
+activate UI
+
+UI -> BMS : Trigger book replacement workflow
+activate BMS
+
+BMS -> DB : Update book status to "toBeReplaced"
+activate DB
+
+DB --> BMS : Confirm status updated
+deactivate DB
+
+BMS --> UI : Confirm initiation of replacement
+deactivate BMS
+
+UI --> LM : Display replacement initiation confirmation
+deactivate UI
+
+@enduml

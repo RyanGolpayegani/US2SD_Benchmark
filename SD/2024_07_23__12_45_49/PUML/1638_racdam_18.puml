@@ -1,0 +1,29 @@
+@startuml
+actor Archivist as arch
+participant "Web Interface" as web
+participant "File Management System" as fms
+participant "Storage" as storage
+database "Archival Repository" as repo
+
+arch -> web : upload file(s)
+web -> fms : initiate file upload
+fms -> storage : save original file(s)
+storage -> fms : confirm save
+fms -> fms : check file type
+alt is image or text file
+    fms -> fms : initiate OCR if text
+    fms -> storage : save OCR text
+    storage -> fms : confirm OCR save
+    fms -> fms : create access copy (with watermarks if needed)
+else is video or audio file
+    fms -> fms : create compressed access copy
+else other file types
+    fms -> fms : create standard access copy
+end
+fms -> storage : save access copy
+storage -> fms : confirm access copy save
+fms -> repo : update metadata with access copy details
+repo -> fms : confirm metadata update
+fms -> web : show success message to archivist
+web -> arch : display success and file details
+@enduml

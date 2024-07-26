@@ -1,0 +1,36 @@
+@startuml
+actor Depositor as dep
+participant "Web Interface" as web
+participant "Authentication System" as auth
+participant "Dataset Management" as manage
+participant "Policy Engine" as policy
+participant "Data Archive" as archive
+
+dep -> web : Access Platform
+web -> auth : Authenticate User
+auth -> web : Authentication Successful
+
+alt Authentication Success
+    dep -> web : Select Dataset Management
+    web -> manage : Request Dataset Selection
+    dep -> manage : Choose Dataset for Disposal Policy
+    manage -> dep : Dataset Selected
+
+    dep -> manage : Specify Disposal Policy
+    manage -> policy : Initiate Disposal Policy Specification
+    policy -> manage : Policy Specification Interface
+
+    dep -> policy : Enter Disposal Policy Details
+    policy -> archive : Apply Disposal Policy
+    archive -> policy : Disposal Policy Set
+    policy -> manage : Confirm Policy Set
+    manage -> web : Display Confirmation to Depositor
+    dep -> web : Confirm and Save
+    web -> archive : Save Policy to Dataset
+    archive -> web : Policy Saved Successfully
+    web -> dep : Display Success Message
+else Authentication Failure
+    web -> dep : Display Login Error
+end
+
+@enduml

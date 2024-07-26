@@ -1,0 +1,21 @@
+@startuml
+!theme cerulean
+
+actor Employee
+participant "UI Application" as UI
+participant "Server\n(Node.js/Express)" as Server
+database "Database\n(MongoDB/PostgreSQL)" as DB
+
+== View Drink Contents ==
+Employee -> UI : Select "View Drink Contents"
+UI -> Server : GET /drinks/contents
+alt Drinks found
+    Server -> DB : Query drink details
+    DB -> Server : Return drink details
+    Server -> UI : Display drink contents
+    UI -> Employee : Show drink details
+else No drinks found
+    Server -> UI : Display error message
+    UI -> Employee : Show "No drinks available"
+end
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+actor "Site Editor" as editor
+participant "Content Management\nSystem (CMS)" as cms
+participant "Event Management\nModule" as eventModule
+participant "Database" as db
+
+editor -> cms : Access CMS dashboard
+activate cms
+
+cms -> eventModule : Navigate to Event Management
+activate eventModule
+
+eventModule -> eventModule : Select Event
+eventModule -> eventModule : Set 'Feature on Home Page' flag
+
+eventModule -> db : Update Event Details
+activate db
+db --> eventModule : Confirmation
+deactivate db
+
+eventModule --> cms : Event Updated
+deactivate eventModule
+
+cms --> editor : Display Confirmation Message
+deactivate cms
+
+@enduml

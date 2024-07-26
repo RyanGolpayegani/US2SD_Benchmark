@@ -1,0 +1,39 @@
+@startuml
+participant Attendee
+participant "Frontend UI" as Frontend
+participant "Server Logic" as Server
+participant "Database" as DB
+
+Attendee -> Frontend: Selects summit from list
+
+Frontend -> Server: Request summit details
+Server -> DB: Query summit details
+DB -> Server: Return summit details
+Server -> Frontend: Display summit details
+Frontend -> Attendee: Shows summit details
+
+Attendee -> Frontend: Clicks on "Register"
+Frontend -> Server: Request registration form
+Server -> Frontend: Return registration form
+Frontend -> Attendee: Display registration form
+
+Attendee -> Frontend: Submit filled registration form
+Frontend -> Server: Sends registration data
+
+alt Registration data valid
+    Server -> DB: Create registration record
+    DB -> Server: Confirm record creation
+    Server -> Frontend: Registration success message
+    Frontend -> Attendee: Display success & summit details
+
+    opt Send Confirmation Email
+        Server -> "Email System": Send confirmation email
+        "Email System" -> Attendee: Deliver confirmation email
+    end
+
+else Registration data invalid
+    Server -> Frontend: Registration failure message
+    Frontend -> Attendee: Show error & ask to correct data
+end
+
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+participant Applicant
+participant "User Account Authentication" as Auth
+participant "Application Submission Interface" as Submission
+participant "Document Upload Module" as Upload
+database "Portal Backend" as Backend
+database "Application Database" as AppDB
+
+Applicant -> Auth: Access the portal
+Auth -> Applicant: Request login credentials
+Applicant -> Auth: Provide login credentials
+Auth -> Applicant: Authentication successful
+
+Applicant -> Submission: Initiate documentation submission
+Submission -> Upload: Request to upload documents
+Upload -> Applicant: Display document upload interface
+Applicant -> Upload: Selects and uploads documents
+Upload -> Backend: Validates document format and size
+alt Document validation successful
+    Backend -> Upload: Confirmation of successful validation
+    Applicant -> Upload: Confirm submission
+    Upload -> AppDB: Stores document metadata and link
+    AppDB -> Submission: Update application status
+    Submission -> Applicant: Display updated application status and success message
+else Document validation failed
+    Backend -> Upload: Document validation error message
+    Upload -> Applicant: Display error and request re-upload
+end
+
+@enduml

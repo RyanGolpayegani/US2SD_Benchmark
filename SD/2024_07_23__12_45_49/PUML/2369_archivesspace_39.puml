@@ -1,0 +1,55 @@
+@startuml
+participant Archivist as archivist
+participant "AMS UI" as UI
+participant "Controller" as controller
+participant "Model" as model
+participant "Database" as db
+
+== Associate an Instance with a Resource/Component ==
+
+archivist -> UI : Selects Resource/Component
+activate UI
+
+UI -> controller : Request to Associate Instance
+activate controller
+
+controller -> model : Validate Resource/Component
+activate model
+model -> db : Retrieve Resource/Component Details
+activate db
+db -> model : Resource/Component Details
+deactivate db
+model -> controller : Validation Success
+deactivate model
+
+controller -> model : Fetch Instances for Association
+activate model
+model -> db : Query Available Instances
+activate db
+db -> model : Instances List
+deactivate db
+model -> controller : Return Instances
+deactivate model
+
+controller -> UI : Show Instances for Selection
+deactivate controller
+UI -> archivist : Display Instances
+archivist -> UI : Select Instance for Association
+UI -> controller : Associate Selected Instance
+activate controller
+
+controller -> model : Associate Instance with Resource/Component
+activate model
+model -> db : Update Association in Database
+activate db
+db -> db : Validate & Commit Changes
+db -> model : Association Success
+deactivate db
+model -> controller : Confirmation of Association
+deactivate model
+controller -> UI : Display Success Message
+deactivate controller
+UI -> archivist : Confirmation & Summary
+deactivate UI
+
+@enduml

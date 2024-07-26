@@ -1,0 +1,36 @@
+@startuml
+actor "DB/IR Administrator" as admin
+participant "Upload Interface" as UI
+participant "Document Processor" as DP
+participant "Document Classifier" as DC
+participant "Metadata Manager" as MM
+database "Repository" as Repo
+
+== Document Upload ==
+admin -> UI : Upload document
+UI -> DP : Initiate processing
+DP -> DC : Send document for classification
+DC -> DC : Analyze document content\nand metadata
+DC -> MM : Tag document with\ncategory and attributes
+
+== Document Categorization ==
+alt Historical Report Still Published
+    MM -> Repo : Store as "Historical: Active"
+else Expired Historical Report
+    MM -> Repo : Store as "Historical: Expired"
+else Single Topic Dataset
+    MM -> Repo : Store as "Dataset: Single Topic"
+else Broad Topic Dataset
+    MM -> Repo : Store as "Dataset: Broad Topic"
+else Report with Subtopic
+    MM -> Repo : Store as "Report: Subtopic"
+else Computer File
+    MM -> Repo : Store as "File: Computer File"
+end
+
+== Completion ==
+MM --> DP : Categorization complete
+DP -> UI : Display Success Message
+UI -> admin : Notify upload & categorization success
+
+@enduml

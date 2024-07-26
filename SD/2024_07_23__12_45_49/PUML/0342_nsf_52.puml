@@ -1,0 +1,46 @@
+@startuml
+participant UserResearcher as UR
+participant "CMS (Content Management System)" as CMS
+participant "Recruitment Module" as RM
+database CloudInfrastructure as CI
+participant "Potential Participant" as PP
+
+UR -> CMS : Log in to CMS
+activate CMS
+
+UR -> CMS : Access recruitment module
+CMS -> RM : Fetch module interface
+activate RM
+
+UR -> RM : Input recruitment test details\n(e.g., recruitment criteria, test duration)
+RM -> CI : Store recruitment details in cloud
+activate CI
+CI --> RM : Confirm details stored
+deactivate CI
+
+RM --> UR : Display recruitment test setup confirmation
+deactivate RM
+
+UR -> RM : Activate test
+RM -> CI : Initialize test on cloud
+CI -> RM : Confirm test activation
+RM --> UR : Test activation confirmation
+deactivate CMS
+
+loop Every Visitor
+    CI -> PP : Display recruitment message
+    activate PP
+    PP -> RM : Express interest in participation
+    RM -> CI : Log participant details
+    CI --> PP : Confirmation of interest registration
+    deactivate PP
+end
+
+PP -> RM : Complete recruitment tasks
+activate RM
+RM -> CI : Update participant status
+CI --> RM : Confirm status update
+RM --> PP : Confirm completion & next steps
+deactivate RM
+
+@enduml

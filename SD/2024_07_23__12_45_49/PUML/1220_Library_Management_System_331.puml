@@ -1,0 +1,18 @@
+@startuml
+participant Staff as S
+participant "Library System" as LS
+participant "Database" as DB
+participant "Finance Module" as FM
+participant "Notification System" as NS
+
+S -> LS : Request fine calculation\nfor overdue items
+LS -> DB : Verify overdue items\nfor specified member
+DB -> LS : Return list of overdue items
+LS -> FM : Calculate fines based on\noverdue items and policy
+FM -> LS : Return calculated fines
+LS -> DB : Update member account\nwith fines
+DB -> LS : Confirm fine update
+LS -> NS : Trigger fine notification\nto member
+NS -> LS : Confirm notification sent
+LS -> S : Display fine calculation\nand notification status
+@enduml

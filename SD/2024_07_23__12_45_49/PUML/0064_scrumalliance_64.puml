@@ -1,0 +1,24 @@
+@startuml
+participant Visitor as V
+participant "Article Page" as AP
+participant "Comment System" as CS
+database "Database" as DB
+
+V -> AP: Visit article page
+AP -> CS: Show article and existing comments
+CS -> DB: Query existing comments
+DB --> CS: Return comments
+CS --> AP: Display article and comments
+V -> AP: Write comment
+AP -> CS: Submit new comment
+CS -> CS: Validate comment\n(check spam, content rules, etc.)
+alt Validation Success
+    CS -> DB: Save comment
+    DB --> CS: Confirm save
+    CS --> AP: Show success message
+    AP -> V: Display updated comments including new comment
+else Validation Failure
+    CS --> AP: Show error message
+    AP -> V: Prompt to correct comment
+end
+@enduml

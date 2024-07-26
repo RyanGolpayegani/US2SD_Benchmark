@@ -1,0 +1,30 @@
+@startuml
+participant Archivist as user
+participant "Frontend UI" as frontend
+participant "Backend Server" as backend
+participant "Database" as database
+
+user -> frontend : Request Accession/Resource View
+frontend -> backend : GET request for Accession/Resource data
+backend -> database : Query Accession/Resource data
+database --> backend : Return Accession/Resource data
+backend --> frontend : Accession/Resource data (include Dates and Extents)
+frontend -> frontend : Process data to display Dates and Extents \nbefore the list of Subjects in both views
+frontend --> user : Display Accession/Resource View
+
+user -> frontend : Request edit mode for Accession/Resource
+frontend -> backend : GET editable fields for Accession/Resource
+backend -> database : Query editable fields (include Dates and Extents)
+database --> backend : Return editable fields data
+backend --> frontend : Editable fields data for Accession/Resource
+frontend -> frontend : Enable edit mode, place Dates and Extents fields \nbefore Subjects list
+frontend --> user : Display editable Accession/Resource View
+
+user -> frontend : Submit updated Accession/Resource data
+frontend -> backend : POST updated Accession/Resource data
+backend -> database : Update Accession/Resource record
+database --> backend : Confirm record updated
+backend --> frontend : Update successful
+frontend --> user : Display updated Accession/Resource view with confirmation
+
+@enduml

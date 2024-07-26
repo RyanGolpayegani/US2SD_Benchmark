@@ -1,0 +1,23 @@
+@startuml
+!theme plain
+
+participant User
+participant WebApplication as WA
+participant BackendServer as BS
+participant Database as DB
+
+User -> WA: Enter search criteria\n(title, author, category, publication date)
+WA -> BS: Request book search\n(criteria)
+alt If search criteria is valid
+    BS -> DB: Query books\n(criteria)
+    DB --> BS: Return results
+    BS --> WA: Display search results
+    WA --> User: Show books list
+else If no results found
+    BS --> WA: Display no results message
+    WA --> User: Show no results found
+else If invalid criteria
+    BS --> WA: Show error message
+    WA --> User: Prompt to correct criteria
+end
+@enduml

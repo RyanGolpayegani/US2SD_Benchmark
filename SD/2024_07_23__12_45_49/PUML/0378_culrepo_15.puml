@@ -1,0 +1,22 @@
+@startuml
+actor FacultyMember as F
+participant MobileApp as MA
+participant SearchService as SS
+participant RepositorySystem as RS
+
+F -> MA : Opens App
+MA -> MA : Authenticate User\n(Shibboleth integration)
+MA -> SS : Enter search keywords
+SS -> RS : Query Repository\n(with Keywords)
+RS -> RS : Search Contents
+RS --> SS : Return Results
+SS --> MA : Display Search Results
+MA --> F : Browse Results on Phone
+
+F -> MA : Select Item to View Details
+MA -> RS : Request Item Details
+RS -> RS : Retrieve Item Details
+RS --> MA : Send Item Details
+MA --> F : Display Item Details
+
+@enduml

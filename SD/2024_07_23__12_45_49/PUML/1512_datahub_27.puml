@@ -1,0 +1,24 @@
+@startuml
+
+participant Publisher as Pub
+participant "UI Interface" as UI
+participant "API Gateway" as API
+participant "Database" as DB
+participant "Cache" as Cache
+
+actor "Visitor"
+
+Pub -> UI : Navigate to Examples section
+UI -> API : Request: GET /examples
+API -> Cache : Check for cached examples
+alt Cache hit
+    Cache -> API : Return cached examples
+else Cache miss
+    API -> DB : Query published examples
+    DB -> API : Return examples data
+    API -> Cache : Update cache with new examples data
+end
+API -> UI : Respond with examples data
+UI -> Pub : Display examples of published packages
+
+@enduml

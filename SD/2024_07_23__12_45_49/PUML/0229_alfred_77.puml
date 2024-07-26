@@ -1,0 +1,39 @@
+@startuml
+participant "OlderPerson" as person
+participant "ALFRED" as alfred
+participant "PaymentService" as paymentService
+participant "BankAPI" as bankAPI
+database "BankDatabase" as bankDB
+
+person -> alfred : "Pay $10 for groceries"
+activate alfred
+alfred -> paymentService : initiatePayment(10)
+activate paymentService
+
+paymentService -> bankAPI : verifyFunds(userId, 10)
+activate bankAPI
+bankAPI -> bankDB : checkFunds(userId)
+activate bankDB
+bankDB --> bankAPI : fundsAvailable
+deactivate bankDB
+
+bankAPI --> paymentService : fundsVerified
+deactivate bankAPI
+
+paymentService -> bankAPI : deductFunds(userId, 10)
+activate bankAPI
+bankAPI -> bankDB : deductAmount(userId, 10)
+activate bankDB
+bankDB --> bankAPI : deductionSuccess
+deactivate bankDB
+
+bankAPI --> paymentService : paymentSuccess
+deactivate bankAPI
+
+paymentService --> alfred : confirmPayment
+deactivate paymentService
+
+alfred --> person : "Payment of $10 successful"
+deactivate alfred
+
+@enduml

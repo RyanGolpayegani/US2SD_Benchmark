@@ -1,0 +1,44 @@
+@startuml
+actor Developer
+participant "Frontend\nApplication" as Frontend
+participant "Browser\nCompatibility\nTesting Tool" as TestingTool
+database "Test\nBrowser" as Browser
+
+== Development Process ==
+Developer -> Frontend : Develop features
+activate Frontend
+
+== Compatibility Testing ==
+Frontend -> TestingTool : Initiate testing
+activate TestingTool
+
+== Test on Multiple Browsers ==
+loop for each Browser
+    TestingTool -> Browser : Execute tests
+    activate Browser
+    Browser --> TestingTool : Test results
+    deactivate Browser
+end
+
+TestingTool --> Frontend : Overall test results
+deactivate TestingTool
+
+== Process Test Results ==
+Frontend -> Developer : Send test pass/fail report
+deactivate Frontend
+
+Developer -> Developer : Analyze feedback
+activate Developer #FFAAAA
+
+== Making Adjustments ==
+alt If adjustments needed
+    Developer -> Frontend : Apply fixes
+    activate Frontend
+    Frontend --> Developer : Confirm adjustments
+    deactivate Frontend
+else All tests passed
+    Developer -> Developer : Merge changes
+end
+deactivate Developer
+
+@enduml

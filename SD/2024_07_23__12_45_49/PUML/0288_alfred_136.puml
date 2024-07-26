@@ -1,0 +1,31 @@
+@startuml
+!theme cerulean
+
+actor Developer as dev
+participant "API Server" as apiserver
+database "Settings Database" as settingsdb
+participant "ALFRED System" as alfred
+
+dev -> apiserver : Request access to manage settings API
+apiserver -> settingsdb : Validate developer credentials
+settingsdb --> apiserver : Credentials Valid
+apiserver --> dev : Provide API access
+
+group Managing User Settings
+    dev -> apiserver : Send update settings command\n(Include: User ID, New Settings)
+    apiserver -> settingsdb : Query existing settings for User ID
+    settingsdb --> apiserver : Return current settings
+    apiserver -> settingsdb : Update settings with new values
+    settingsdb --> apiserver : Confirm settings update
+    apiserver --> dev : Update Success
+end
+
+group Applying Settings to User Device
+    apiserver -> alfred : Push new settings to ALFRED device\n(For User ID)
+    alfred -> settingsdb : Retrieve latest settings
+    settingsdb --> alfred : Provide latest settings
+    alfred --> apiserver : Confirmation of settings applied
+    apiserver --> dev : Confirmation received
+end
+
+@enduml

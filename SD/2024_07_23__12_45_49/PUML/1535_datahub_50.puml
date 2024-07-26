@@ -1,0 +1,28 @@
+@startuml
+actor Consumer
+participant "Login Interface" as Login
+participant "Dashboard" as Dashboard
+participant "Activity Metrics Service" as Metrics
+participant "Database" as DB
+
+== Consumer Verifies Site Activity ==
+
+Consumer -> Login: Access Platform
+Login --> Consumer: Display Login Options
+
+Consumer -> Login: Authenticate (e.g., via GitHub or Google)
+Login -> DB: Validate Consumer Credentials
+DB --> Login: Credentials Valid
+Login --> Consumer: Authentication Successful
+
+Consumer -> Dashboard: Request Site Activity Info
+Dashboard -> Metrics: Query Activity Metrics
+Metrics -> DB: Fetch Activity Data
+DB --> Metrics: Return Activity Data
+Metrics --> Dashboard: Compile Activity Insights
+Dashboard --> Consumer: Display Activity Insights
+
+Consumer -> Consumer: Evaluate Activity Insights
+note right of Consumer: Decision to Get Involved \nBased on Perceived Activity
+
+@enduml

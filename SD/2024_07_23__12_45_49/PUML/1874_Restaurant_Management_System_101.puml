@@ -1,0 +1,24 @@
+@startuml
+participant Manager
+participant "UI: Employee Scheduling" as UI
+participant "Server: Scheduling Controller" as Controller
+participant "Database" as DB
+
+Manager -> UI : Access Employee Scheduling Module
+UI -> Controller : Request Current Shifts
+Controller -> DB : Query Current Shifts
+DB -> Controller : Return Shifts Data
+Controller -> UI : Display Shifts
+UI -> Manager : Show Current Shifts
+
+Manager -> UI : Request Shift Change
+UI -> Controller : Validate and Process Shift Change
+Controller -> DB : Update Shifts Information
+DB -> Controller : Confirm Update
+Controller -> UI : Shift Change Success
+UI -> Manager : Confirm Shift Change
+
+note over Manager : Reviews Shift Change Confirmation
+note over DB : Shifts are updated in the Database
+
+@enduml

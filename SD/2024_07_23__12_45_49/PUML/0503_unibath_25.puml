@@ -1,0 +1,19 @@
+@startuml
+actor "Data Reuser" as reuser
+participant "Web Interface" as web
+participant "Backend Service" as backend
+database "Dataset Database" as db
+
+reuser -> web : Request dataset listings
+web -> backend : Fetch dataset summaries
+backend -> db : Query dataset metadata and file lists
+db --> backend : Return dataset metadata and file lists
+backend --> web : Display dataset summaries with file lists
+web --> reuser : Show datasets and downloadable files preview
+reuser -> web : Select dataset for preview
+web -> backend : Request dataset file structure and summary
+backend -> db : Query selected dataset details
+db --> backend : Return selected dataset details
+backend --> web : Send dataset file structure and summary
+web --> reuser : Display dataset structure and file summary\n(without downloading entire dataset)
+@enduml

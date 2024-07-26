@@ -1,0 +1,33 @@
+@startuml
+actor Moderator
+participant "UI: Estimation Game" as UI
+participant "Server: Game Controller" as Controller
+participant "Estimation Logic" as Logic
+database "Game Database" as DB
+
+Moderator -> UI: Selects "Show All Estimates"
+activate UI
+UI -> Controller: Request to Show Estimates
+activate Controller
+
+alt If all estimators have submitted
+    Controller -> Logic: Check Estimation Completion
+    activate Logic
+    Logic --> Controller: All Estimates Submitted
+    deactivate Logic
+else Some estimators have not submitted
+    Controller -> Logic: Check Estimation Completion
+    activate Logic
+    Logic --> Controller: Incomplete Estimates
+    deactivate Logic
+    Controller -> DB: Fetch Partial Estimates
+    activate DB
+    DB --> Controller: Return Estimates
+    deactivate DB
+    Controller -> UI: Display Estimates to Moderator
+    UI -> Moderator: Shows Estimates
+    deactivate Controller
+end
+
+deactivate UI
+@enduml

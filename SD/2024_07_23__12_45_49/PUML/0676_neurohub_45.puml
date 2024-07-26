@@ -1,0 +1,45 @@
+@startuml
+actor User
+participant "Neurohub UI" as UI
+participant "Reference Manager" as RM
+database "Neurohub Database" as DB
+
+== Manage References ==
+User -> UI: Access references section
+UI -> RM: Fetch references list
+RM -> DB: Query saved references
+DB --> RM: Return references data
+RM --> UI: Display references
+UI --> User: Show references list
+
+== Add New Paper ==
+User -> UI: Select add new reference
+UI -> User: Provide paper details form
+User -> UI: Submit paper details
+UI --> RM: Validate and store new reference
+RM -> DB: Save new reference
+DB --> RM: Confirm save
+RM --> UI: Confirm addition to the user
+UI --> User: Show success message
+
+== Organize References ==
+User -> UI: Select organize references
+UI --> User: Provide organization options (e.g., folders, tags)
+User -> UI: Submit organization changes
+UI -> RM: Update organization settings
+RM -> DB: Apply changes
+DB --> RM: Confirm changes
+RM --> UI: Confirm organization update
+UI --> User: Show success message
+
+== Share Reference ==
+User -> UI: Choose reference to share
+UI --> User: Provide share options (e.g., email, group)
+User -> UI: Submit share request
+UI -> RM: Process share request
+RM -> DB: Log share activity
+DB --> RM: Confirm logging
+RM --> UI: Confirm share action
+UI --> MyUser: Show success message
+
+@enduml

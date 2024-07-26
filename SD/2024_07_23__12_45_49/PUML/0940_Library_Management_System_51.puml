@@ -1,0 +1,29 @@
+@startuml
+participant Librarian
+participant WebInterface
+participant AuthenticationServer
+participant Database
+participant BookManagementSystem
+
+Librarian -> WebInterface : Access Book Management Section
+WebInterface -> AuthenticationServer : Validate Librarian Credentials
+note right of AuthenticationServer : Authentication is necessary\nto ensure only authorized\nusers edit book information.
+Authenticationserver --> WebInterface : Verification Response
+
+alt Successful Verification
+    WebInterface --> Librarian : Display Edit Book Shelf Page
+    Librarian -> WebInterface : Search for Book to Edit
+    WebInterface -> Database : Fetch Book Details
+    Database --> WebInterface : Book Details
+    WebInterface --> Librarian : Show Book Details
+    Librarian -> WebInterface : Enter New Shelf Information
+    WebInterface -> BookManagementSystem : Update Shelf Information Request
+    BookManagementSystem -> Database : Update Shelf Info in Record
+    Database --> BookManagementSystem : Confirmation of Update
+    BookManagementSystem --> WebInterface : Update Successful Message
+    WebInterface --> Librarian : Display Success Notification
+else Failed Verification
+    WebInterface --> Librarian : Display Error Message
+end
+
+@enduml

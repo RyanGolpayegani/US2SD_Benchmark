@@ -1,0 +1,29 @@
+@startuml
+title User updates content using WYSIWYG editor
+
+actor AuthenticatedUser as User
+participant "Frontend Interface" as Frontend
+participant "Backend Server" as Backend
+participant "Content Management System" as CMS
+
+User -> Frontend : Navigate to content update page
+activate Frontend
+Frontend -> User : Display content in WYSIWYG editor
+deactivate Frontend
+User -> Frontend : Edit content using editor
+activate Frontend
+Frontend -> User : Show preview of updated content
+User -> Frontend : Submit updated content
+Frontend -> Backend : Send updated content with user session info
+activate Backend
+note right of Backend: Validate user session\nand permissions
+Backend -> CMS : Update content in database
+activate CMS
+CMS -> Backend : Confirm content update
+deactivate CMS
+Backend -> Frontend : Response with update success
+deactivate Backend
+Frontend -> User : Display success message
+deactivate Frontent
+
+@enduml

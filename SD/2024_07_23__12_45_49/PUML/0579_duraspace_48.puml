@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+
+actor User
+participant "User Interface" as UI
+participant "Access Control" as AC
+participant "Data Service" as DS
+participant "Repository Manager" as RM
+
+== Component Hierarchy Navigation ==
+
+User -> UI : Request object's component hierarchy
+UI -> AC : Validate user access
+AC --> UI : Access granted
+
+UI -> DS : Fetch component hierarchy
+DS -> RM : Query object's components
+RM --> DS : Return components
+DS --> UI : Component hierarchy data
+
+UI -> User : Display component hierarchy
+User -> UI : Select a component to navigate
+UI -> DS : Fetch selected component details
+DS -> RM : Query selected component
+RM --> DS : Return component details
+DS --> UI : Selected component data
+
+UI -> User : Display selected component details
+
+@enduml

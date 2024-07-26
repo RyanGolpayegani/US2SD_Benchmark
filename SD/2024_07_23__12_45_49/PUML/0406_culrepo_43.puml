@@ -1,0 +1,49 @@
+@startuml
+
+!theme plain
+
+participant AdminInterface as "DB/IR Admin Interface"
+participant AuthenticationModule as "Authentication System"
+participant ClassificationManager as "Subject Classification Manager"
+participant Database as "Repository Database"
+
+== Authentication ==
+AdminInterface -> AuthenticationModule : authenticate(credentials)
+AuthenticationModule --> AdminInterface : authenticationStatus
+
+alt if authenticated successfully
+    == Display Current Classifications ==
+    AdminInterface -> ClassificationManager : requestExistingClassifications()
+    ClassificationManager -> Database : fetchClassifications()
+    Database --> ClassificationManager : classificationsData
+    ClassificationManager --> AdminInterface : displayClassifications(classificationsData)
+
+    == Add, Update, or Delete Classifications ==
+    loop for each modification
+        alt Add Classification
+            AdminInterface -> ClassificationManager : addClassification(newClassificationDetails)
+            ClassificationManager -> Database : insertClassification(newClassificationDetails)
+            Database --> ClassificationManager : updateStatus
+        else Update Classification
+            AdminInterface -> ClassificationManager : updateClassification(classificationId, updatedDetails)
+            ClassificationManager -> Database : modifyClassification(classificationId, updatedDetails)
+            Database --> ClassificationManager : updateStatus
+        else Delete Classification
+            AdminInterface -> ClassificationManager : deleteClassification(classificationId)
+            ClassificationManager -> Database : removeClassification(classificationId)
+            Database --> ClassificationManager : updateStatus
+        end
+        ClassificationManager --> AdminInterface : displayUpdateStatus(updateStatus)
+    end
+
+    == Reflect Updates ==
+    AdminInterface -> ClassificationManager : requestUpdatedClassifications()
+    ClassificationManager -> Database : fetchUpdatedClassifications()
+    Database --> ClassificationManager : updatedClassificationsData
+    ClassificationManager --> AdminInterface : displayUpdatedClassifications(updatedClassificationsData)
+
+else
+    AdminInterface -> AdminInterface : displayAuthenticationFailedMessage()
+end
+
+@enduml

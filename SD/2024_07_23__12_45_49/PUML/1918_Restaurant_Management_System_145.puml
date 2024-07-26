@@ -1,0 +1,32 @@
+@startuml
+participant Manager as M
+participant "UI\n(Management Dashboard)" as UI
+participant "Backend\nServer" as Backend
+participant "Database" as DB
+participant "Promotions\nModule" as Promo
+
+== Generate Daily Occupancy Reports ==
+M -> UI: Access Dashboard
+UI -> Backend: Request to generate occupancy report
+Backend -> DB: Query occupancy data
+DB --> Backend: Return occupancy data
+Backend -> UI: Display occupancy report
+UI --> M: Show report
+
+== Analyze Reports and Identify Low Occupancy Days ==
+M -> UI: Review occupancy trends
+UI --> M: Low occupancy days highlighted
+
+== Create Offers for Low Occupancy Days ==
+M -> UI: Select 'Create Promotion'
+UI -> M: Show promotion creation form
+M -> UI: Input promotion details\n(for low occupancy days)
+UI -> Backend: Send promotion details
+Backend -> DB: Store promotion
+DB --> Backend: Confirm promotion stored
+Backend -> Promo: Schedule promotions
+Promo --> Backend: Confirmed promotions scheduling
+Backend -> UI: Confirm promotion creation
+UI --> M: Show promotion creation success message
+
+@enduml

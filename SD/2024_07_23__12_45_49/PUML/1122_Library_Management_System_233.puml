@@ -1,0 +1,28 @@
+@startuml
+actor Member
+participant "Search System" as Search
+participant "Reservation System" as Reserve
+participant "Database" as DB
+participant "Notification System" as Notify
+
+Member -> Search : search(bookDetails)
+Search -> DB : query(bookAvailability)
+DB --> Search : bookUnavailable
+Search --> Member : displayUnavailableBookInfo
+
+Member -> Reserve : requestReservation(bookID)
+Reserve -> DB : checkBookStatus(bookID)
+alt Book is available
+  DB --> Reserve : bookAvailable
+  Reserve --> Member : informBookAvailable\nUnable to Reserve
+else Book is unavailable
+  DB --> Reserve : bookUnavailable
+  Reserve -> DB : addReservation(bookID, memberID)
+  DB --> Reserve : reservationConfirmed
+  Reserve --> Member : reservationSuccess(bookID)
+  Reserve -> Notify : scheduleReservationNotification(bookID, memberID)
+  DB -> Notify : setNotificationDetails(notificationInfo)
+  Notify --> Reserve : notificationScheduled
+end
+
+@enduml

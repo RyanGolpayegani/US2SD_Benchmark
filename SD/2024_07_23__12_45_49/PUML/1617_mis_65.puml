@@ -1,0 +1,22 @@
+@startuml
+
+participant "Repository Manager" as Manager
+participant "Staff Interface" as Interface
+participant "Version Control" as VersionControl
+database "EDRMS Database" as Database
+
+Manager -> Interface : Request object versions
+Interface -> VersionControl : Retrieve versions list
+VersionControl -> Database : Query available versions
+Database --> VersionControl : Return versions data
+VersionControl --> Interface : Show versions to manager
+Interface --> Manager : Display versions
+
+Manager -> Interface : Select version to restore
+Interface -> VersionControl : Initiate version restore
+VersionControl -> Database : Restore selected version
+Database --> VersionControl : Confirm restoration
+VersionControl --> Interface : Notify restoration success
+Interface --> Manager : Display success message
+
+@enduml

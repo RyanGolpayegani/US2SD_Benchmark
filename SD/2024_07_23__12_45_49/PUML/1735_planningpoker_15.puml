@@ -1,0 +1,29 @@
+@startuml
+participant Moderator
+participant "Web Interface" as WebInterface
+participant "Paste Stories API" as PasteAPI
+participant "Session Manager" as SessionManager
+participant "Database" as DB
+
+Moderator -> WebInterface : Select 'Import Stories'
+Moderator -> WebInterface : Copies stories from spreadsheet
+WebInterface -> PasteAPI : Invoke Paste Stories(action: copyPaste, data: stories)
+activate PasteAPI
+
+PasteAPI -> SessionManager : Validate Moderator
+activate SessionManager
+
+SessionManager --> PasteAPI : Validation Success
+PasteAPI -> PasteAPI : Parse and format stories
+PasteAPI -> DB : Save formatted stories to session
+activate DB
+
+DB --> PasteAPI : Confirmation of Saved Stories
+PasteAPI --> WebInterface : Return success message
+WebInterface --> Moderator: Display 'Stories Imported Successfully'
+
+deactivate PasteAPI
+deactivate SessionManager
+deactivate DB
+
+@enduml

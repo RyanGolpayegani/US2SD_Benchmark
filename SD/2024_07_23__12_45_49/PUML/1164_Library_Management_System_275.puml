@@ -1,0 +1,24 @@
+@startuml
+actor Member
+participant "Registration Page" as RP
+participant "Backend System" as Backend
+database "Database" as DB
+
+Member -> RP : Enter name, surname, credentials
+RP -> Backend : Validate input data
+alt validation successful
+    Backend -> DB : Create new member record
+    alt Record Created Successfully
+        DB --> Backend : Return Success Message
+        Backend --> RP : Display registration successful message
+        RP --> Member : Show success & prompt to explore books
+    else Record Creation Failed
+        DB --> Backend : Return Error
+        Backend --> RP : Display error message
+        RP --> Member : Show error & prompt to try again
+    end
+else validation failed
+    Backend --> RP : Display validation error
+    RP --> Member : Show validation error & prompt correction
+end
+@enduml

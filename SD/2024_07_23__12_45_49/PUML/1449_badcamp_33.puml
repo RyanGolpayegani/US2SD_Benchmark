@@ -1,0 +1,32 @@
+@startuml BADCamp Newsletter Subscription
+
+actor AnonymousUser as user
+participant "UI: Website" as UI
+participant "Backend: Subscription Service" as BackendSubscription
+participant "Database" as DB
+participant "Email Service" as EmailService
+
+user -> UI: Visit BADCamp website
+UI -> user: Display Homepage
+
+note over user, UI
+  Banner or section prompting the user
+  to sign up for the newsletter is visible.
+end note
+
+user -> UI: Navigate to Newsletter Sign-up
+UI -> user: Show Newsletter Sign-up Form
+
+user -> UI: Enter Email and Submit
+UI -> BackendSubscription: Validate and Process Subscription(Email)
+
+alt Email Valid 
+    BackendSubscription -> DB: Store Subscription Details
+    DB -> BackendSubscription: Confirm Subscription Saved
+    BackendSubscription -> EmailService: Send Confirmation Email
+    EmailService -> user: Display Confirmation Message
+else Email Not Valid
+    BackendSubscription -> user: Display Error Message
+end
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+actor User as u
+participant "Web Interface" as w
+participant "Experiment Management" as e
+participant "Database" as d
+
+u -> w : Request to link experimental runs
+activate w
+
+w -> e : Initiate link process
+activate e
+
+e -> d : Fetch available experimental runs
+activate d
+d --> e : List of experimental runs
+deactivate d
+
+e --> w : Display experimental runs
+deactivate e
+
+w --> u : Show experimental runs
+u -> w : Selects runs to link & submit
+activate w
+
+w -> e : Link selected experimental runs
+activate e
+
+e -> d : Update experiment data with linked runs
+activate d
+d --> e : Confirmation of link
+deactivate d
+
+e --> w : Confirm successful link
+deactivate e
+
+w --> u : Notify success
+deactivate w
+@enduml

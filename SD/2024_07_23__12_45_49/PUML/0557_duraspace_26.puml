@@ -1,0 +1,26 @@
+@startuml
+actor RepositoryManager as RM
+participant "DIMS Portal" as Portal
+participant "Object Management Module" as OMM
+participant "External Links API" as ELAPI
+participant Database as DB
+
+RM -> Portal: Access DIMS
+Portal -> RM: Show Object Management Options
+
+RM -> Portal: Select Object to Update
+Portal -> OMM: Load Object Details
+
+OMM -> RM: Display Object Details
+RM -> OMM: Choose to Add External Version/Description
+OMM -> RM: Request External Version/Description Details
+
+RM -> OMM: Provide External Version/Description Details
+OMM -> ELAPI: Process External Version/Description
+ELAPI -> DB: Update Object with External Info
+
+DB -> ELAPI: Confirm Update
+ELAPI -> OMM: External Version/Description Added
+OMM -> RM: Confirm Update to Repository Manager
+
+@enduml

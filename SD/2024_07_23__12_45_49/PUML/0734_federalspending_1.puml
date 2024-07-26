@@ -1,0 +1,41 @@
+@startuml
+
+!define RectangleParticipant(participantAlias, participantLabel) participant participantAlias as participantLabel << (R,#ADD1B2) >>
+
+actor "Data User" as User
+RectangleParticipant(DB, "Broker Database")
+RectangleParticipant(ValEngine, "Validation Engine")
+RectangleParticipant(Logging, "Logging System")
+RectangleParticipant(NotificationSys, "Notification System")
+
+== Deletion Request by Data User ==
+
+User -> BrokerPlatform : Request deletions\nfrom 12-19-2017
+BrokerPlatform -> ValEngine : Initiate data validation\nfor deletion date
+activate ValEngine
+ValEngine -> DB : Query deletions\nwith specified date
+activate DB
+DB --> ValEngine : Return deletion\nentries
+deactivate DB
+
+ValEngine -> ValEngine : Validate deletion\nentries criteria
+ValEngine --> BrokerPlatform : Validated deletions
+
+== Processing Deletions ==
+BrokerPlatform -> DB : Process validated\ndeletions
+activate DB
+DB --> BrokerPlatform : Confirm deletions processed
+deactivate DB
+
+BrokerPlatform -> Logging : Log deletion\nactivity
+activate Logging
+Logging --> BrokerPlatform : Log entry created
+deactivate Logging
+
+== Notification ==
+BrokerPlatform -> NotificationSys : Notify User of\nsuccessful deletions
+activate NotificationSys
+NotificationSys -> User : Deletions processed\nemail/notification
+deactivate NotificationSys
+
+@enduml

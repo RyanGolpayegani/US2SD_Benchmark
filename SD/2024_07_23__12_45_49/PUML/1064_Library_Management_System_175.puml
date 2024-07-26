@@ -1,0 +1,17 @@
+@startuml
+actor Member as member
+participant "Web Interface" as web
+participant "Search Controller" as controller
+participant "Book Service" as service
+database "Books Database" as db
+
+== Show Unavailable Books ==
+member -> web: Requests unavailable books
+web -> controller: GetUnavailableBooks()
+controller -> service: fetchUnavailableBooks()
+service -> db: queryUnavailableBooks()
+db -> service: return unavailableBooks
+service -> controller: List<BookDetails>
+controller -> web: ShowUnavailableBooks(unavailableBooks)
+web -> member: Display Unavailable Books
+@enduml

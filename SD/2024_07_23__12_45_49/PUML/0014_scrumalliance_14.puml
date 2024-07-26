@@ -1,0 +1,34 @@
+@startuml
+actor Admin
+participant "Authentication System" as Auth
+participant "Admin Dashboard" as Dashboard
+participant "Member Profile System" as ProfileSys
+participant "Database" as DB
+
+== Authentication ==
+Admin -> Auth : Enter credentials
+Auth -> Auth : Validate credentials
+Auth --> Admin : Authentication Success
+
+== Navigate to Member Profile ==
+Admin -> Dashboard : Select Edit Member Profile
+Dashboard -> ProfileSys : Request Member Profiles List
+ProfileSys -> DB : Query Member Profiles
+DB --> ProfileSys : Return Profiles
+ProfileSys --> Dashboard : Display Member Profiles
+Dashboard --> Admin : Show Member Profiles
+
+== Edit Member Profile ==
+Admin -> Dashboard : Select Member to Edit
+Dashboard -> ProfileSys : Request Profile Details
+ProfileSys -> DB : Query Member Details
+DB --> ProfileSys : Member Details
+Profilesys --> Dashboard : Show Member Details
+Admin -> Dashboard : Edit Details (Correct Problems)
+Dashboard -> ProfileSys : Update Member Profile
+ProfileSys -> DB : Update Member Details in DB
+DB --> ProfileSys : Confirm Update
+ProfileSys --> Dashboard : Update Success Message
+Dashboard --> Admin : Display Success Message
+
+@enduml

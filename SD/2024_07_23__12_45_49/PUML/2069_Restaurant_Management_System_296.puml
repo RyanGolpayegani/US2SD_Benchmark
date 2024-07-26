@@ -1,0 +1,29 @@
+@startuml
+actor Waiter
+participant "Waiter Interface" as WI
+participant "Order Management System" as OMS
+participant "Inventory Management" as IM
+participant "Database" as DB
+
+Waiter -> WI: Selects "Modify Order"
+WI -> OMS: Request to edit order
+OMS -> DB: Retrieve current order details
+DB --> OMS: Order details
+OMS -> OMS: Check item availability
+OMS -> IM: Request inventory status
+IM -> DB: Check inventory
+DB --> IM: Inventory status
+IM --> OMS: Confirm item availability
+OMS --> WI: Display editable order details
+WI -> WI: Waiter edits order
+Waiter -> WI: Submits modified order
+WI -> OMS: Update order with modifications
+OMS -> DB: Apply order modifications
+DB --> OMS: Confirmation of modification
+OMS -> IM: Update inventory based on modification
+IM -> DB: Adjust inventory levels
+DB --> IM: Inventory updated
+OMS --> WI: Confirm successful modification
+WI --> Waiter: Show modification success message
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+
+participant User
+participant "Neurohub Interface" as Interface
+database "Neurohub Database" as Database
+participant "Sharing Service" as Sharing
+
+User -> Interface: Choose logbook entry
+Interface -> User: Display logbook entry options
+User -> Interface: Select "Set Privacy"
+Interface -> User: Display Privacy Options (Private, Share with individuals)
+User -> Interface: Choose Privacy Setting
+alt if user chooses Private
+    Interface -> Database: Mark entry as Private
+    Database -> Interface: Confirm change
+    Interface -> User: Display confirmation message
+else if user chooses to Share with individuals
+    Interface -> User: Show individuals selection
+    User -> Interface: Select individuals to share with
+    Interface -> Sharing: Process sharing with selected individuals
+    Sharing -> Database: Update sharing settings
+    Database -> Sharing: Confirm update
+    Sharing -> Interface: Confirm sharing processed
+    Interface -> User: Display sharing confirmation message
+end
+@enduml

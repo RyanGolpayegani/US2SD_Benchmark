@@ -1,0 +1,29 @@
+@startuml
+participant DigitalRecordsArchivist as Archivist
+participant EDRMS
+participant FedoraRepository as Fedora
+database ExternalSystem as External
+
+== Expose Descriptive Record for ETD Item ==
+
+Archivist -> EDRMS: Request descriptive record for ETD item
+activate EDRMS
+
+EDRMS -> Fedora: Query ETD item descriptive record
+activate Fedora
+
+Fedora -> Fedora: Retrieve ETD item metadata
+Fedora -> EDRMS: Return ETD item descriptive record
+deactivate Fedora
+
+EDRMS -> EDRMS: Format descriptive record for external use
+EDRMS -> External: Expose formatted descriptive record
+activate External
+
+External -> External: Store/Utilize descriptive record
+deactivate External
+
+EDRMS -> Archivist: Confirm descriptive record exposure
+deactivate EDRMS
+
+@enduml

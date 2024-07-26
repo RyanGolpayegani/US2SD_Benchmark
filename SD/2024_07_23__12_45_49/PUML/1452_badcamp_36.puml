@@ -1,0 +1,19 @@
+@startuml
+
+participant User as user
+participant WebServer as server
+participant BlogModule as blog
+database BlogDB as db
+
+user -> server: Request to access BADCamp blog
+server -> blog: Fetch latest blog posts
+activate blog
+blog -> db: Query for latest blog posts
+activate db
+db --> blog: Return latest blog posts
+deactivate db
+blog --> server: Latest blog posts data
+deactivate blog
+server --> user: Display blog posts
+
+@enduml

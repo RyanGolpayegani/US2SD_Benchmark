@@ -1,0 +1,34 @@
+@startuml
+participant UserInterface as UI
+participant Repoadmin as RA
+participant RepositoryIndex as RI
+participant PublicInterface as PI
+database BackupIndex as BI
+
+RA -> RI : checkCurrentIndexStatus()
+alt Index is busy
+    RI -> RA : IndexBusyMessage()
+    RA -> BI : initiateIndexBackup()
+    BI -> RI : copyCurrentIndexState()
+    RA -> RI : scheduleIndexUpdate(duringOffPeakHours)
+else Index is available
+    RA -> RI : lockIndexForUpdate()
+    RI -> RA : confirmIndexLocked()
+    RA -> PI : displayMaintenanceNotice()
+    RI -> BI : backupCurrentIndexState()
+    BI -> RI : confirmBackupComplete()
+    RA -> RI : updateIndex()
+    alt Update Successful
+        RI -> RA : confirmUpdateSuccess()
+        RA -> RI : unlockIndex()
+        RI -> PI : resumeNormalOperation()
+        RA -> PI : removeMaintenanceNotice()
+    else Update Failed
+        RI -> RA : rollbackToPreviousState()
+        RA -> RI : unlockIndex()
+        RI -> PI : resumeNormalOperation()
+        RA -> PI : notifyUpdateFailure()
+    end
+end
+
+@enduml

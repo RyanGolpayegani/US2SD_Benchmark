@@ -1,0 +1,25 @@
+@startuml
+!theme plain
+
+actor Researcher as r
+entity "DMPTool System" as sys
+database "DMP Repository" as db
+control "Authorization Service" as auth
+
+r -> sys : Request access to costing sections in department
+activate sys
+
+sys -> auth : Validate researcher's credentials and permissions
+activate auth
+auth --> sys : Authorization granted
+deactivate auth
+
+sys -> db : Query costing sections by department researchers
+activate db
+db --> sys : Returns costing sections data
+deactivate db
+
+sys --> r : Display costing information
+deactivate sys
+
+@enduml

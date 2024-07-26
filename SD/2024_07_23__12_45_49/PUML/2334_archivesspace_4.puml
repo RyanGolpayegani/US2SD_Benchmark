@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+
+participant Archivist
+participant "Web Interface" as Web
+participant "Import Module" as Import
+participant "Validation Module" as Validation
+participant "Database" as DB
+
+== Import EAD File ==
+Archivist -> Web : Select and Upload EAD File
+Web -> Import : Initiate Import Process
+Import -> Validation : Validate EAD File
+alt Valid EAD File
+  Validation -> Import : File Is Valid
+  Import -> DB : Store EAD Data
+  DB --> Import : Confirm Data Stored
+  Import --> Web : Display Success Message
+  Web --> Archivist : Show Confirmation & Details
+else Invalid EAD File
+  Validation -> Import : Error in File
+  Import --> Web : Display Error Message
+  Web --> Archistrate : Show Error & Suggest Corrections
+end
+
+@enduml

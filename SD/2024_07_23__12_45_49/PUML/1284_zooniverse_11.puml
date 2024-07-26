@@ -1,0 +1,21 @@
+@startuml
+
+participant User
+participant "UI Interface" as UI
+participant "Recommendation Engine" as RE
+participant "News API Service" as NewsAPI
+participant "Geolocation Service" as Geo
+database "Content Database" as DB
+
+User -> UI : Request content based on local news
+UI -> Geo : Get user location
+Geo -> UI : Return location
+UI -> NewsAPI : Fetch news based on location
+NewsAPI -> UI : Return local news events
+UI -> RE : Query recommendations based on news events
+RE -> DB : Access relevant content
+DB -> RE : Return related media content
+RE -> UI : Provide content recommendations
+UI -> User : Display recommended content
+
+@enduml

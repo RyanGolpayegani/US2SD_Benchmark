@@ -1,0 +1,15 @@
+@startuml
+participant MigrationSpecialist as MS
+participant MigrationTool as MT
+database AT_ArchonDB as ATDB
+database ASpaceDB as ASDB
+
+MS -> MT : Initiate Migration
+MT -> ATDB : Extract Data and Source Record IDs
+ATDB -> MT : Return Data and IDs
+MT -> MT : Map AT/Archon Records to ASpace Schema
+MT -> ASDB : Insert Mapped Records with Source IDs
+ASDB -> MT : Confirm Insertion
+MT -> MS : Migration Completed
+
+@enduml

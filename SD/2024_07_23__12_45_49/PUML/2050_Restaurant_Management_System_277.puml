@@ -1,0 +1,26 @@
+@startuml
+actor Waiter
+participant "Waiter Interface" as WI
+participant "Table Management Module" as TMM
+participant "Database" as DB
+
+== Update Cleaned Table Status ==
+
+Waiter -> WI: Selects "Table Ready"
+activate WI
+
+WI -> TMM: Sends table ready signal
+activate TMM
+
+TMM -> DB: Update table status to "Available"
+activate DB
+DB --> TMM: Confirm table status updated
+deactivate DB
+
+TMM --> WI: Display success message
+deactivate TMM
+
+WI -> Waiter: Shows "Table Ready for New Customers" message
+deactivate WI
+
+@enduml

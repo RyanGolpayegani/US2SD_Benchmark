@@ -1,0 +1,22 @@
+@startuml
+actor Employee
+participant "Login System" as Login
+participant "Employee Dashboard" as Dashboard
+participant "Request Management" as ReqMan
+participant "Database" as DB
+
+== Authentication Process ==
+Employee -> Login: Enter credentials
+Login -> DB: Validate user info
+DB -> Login: Return validation result
+Login -> Employee: Authentication success
+
+== View Customer Requests ==
+Employee -> Dashboard: Select "View Requests"
+Dashboard -> ReqMan: Fetch pending requests
+ReqForeign_key -> DB: Query pending requests by datetime
+DB -> ReqMan: Return list of requests
+ReqMan -> Dashboard: Display requests in order
+Dashboard -> Employee: Show requests sequentially
+
+@enduml

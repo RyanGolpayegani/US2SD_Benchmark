@@ -1,0 +1,30 @@
+@startuml
+participant Archivist as archivist
+participant "Digital Archive\nManagement System" as system
+participant "Access Control" as accessControl
+participant "Redaction Tool" as redactTool
+database "Archive Database" as db
+
+archivist -> system : Selects file for redaction
+activate system
+
+system -> redactTool : Initiate redaction process
+activate redactTool
+
+redactTool --> system : Display redaction interface
+system -> archivist : Provide redaction interface
+archivist -> redactTool : Apply redactions & set timeframe
+redactTool -> db : Store redacted file and metadata
+db --> redactTool : Confirm storage
+deactivate redactTool
+
+redactTool -> accessControl : Update access rules with timeframe
+activate accessControl
+accessProject -> db : Store updated access rules
+db --> accessControl : Confirm rules updated
+deactivate accessControl
+
+accessControl --> system : Confirm file and access updated
+system -> archivist : Confirm redaction and access settings
+deactivate system
+@enduml

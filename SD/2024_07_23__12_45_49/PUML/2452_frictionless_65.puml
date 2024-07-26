@@ -1,0 +1,35 @@
+@startuml
+
+participant ResearcherPublisher as RP
+participant "DPIE Interface" as DPIE
+participant "DPIE Backend" as Backend
+participant "Metadata Editor" as Editor
+participant "Data Storage" as Storage
+
+RP -> DPIE : Access DPIE
+DPIE -> Backend : Authenticate RP
+activate Backend
+Backend -> RP : Authentication Successful
+deactivate Backend
+
+RP -> DPIE : Select Dataset
+DPIE -> Backend : Fetch Dataset Details
+activate Backend
+Backend -> RP : Show Dataset Details
+deactivate Backend
+
+RP -> DPIE : Request to Add Funding Info
+DPIE -> Editor : Open Funding Info Editor
+Editor -> RP : Provide Funding Info Form
+
+RP -> Editor : Fill Funding Information
+Editor -> Backend : Validate Funding Info
+activate Backend
+Backend -> Editor : Funding Info Valid
+deactivate Backend
+
+Editor -> Storage : Update Dataset with Funding Info
+Storage -> Editor : Confirm Update
+Editor -> RP : Funding Info Updated Successfully
+
+@enduml

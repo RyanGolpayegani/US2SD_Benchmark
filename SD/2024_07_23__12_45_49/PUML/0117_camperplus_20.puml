@@ -1,0 +1,36 @@
+@startuml
+actor Administrator as admin
+participant "Admin Dashboard" as dashboard
+participant "Database" as db
+
+== Administrator Logs In ==
+admin -> dashboard: Login()
+
+== View Camp Records ==
+dashboard -> db: FetchCampRecords()
+db -> dashboard: CampRecords[]
+dashboard -> admin: DisplayRecords(CampRecords[])
+
+== Add New Camper Profile ==
+admin -> dashboard: SelectAddNewCamper()
+admin -> dashboard: InputCamperDetails(CamperDetails)
+dashboard -> db: SaveNewCamper(CamperDetails)
+db -> dashboard: AcknowledgeSave()
+dashboard -> admin: DisplaySuccessMessage()
+
+== Modify Existing Camper Profile ==
+admin -> dashboard: SelectModifyCamper(CamperID)
+dashboard -> db: FetchCamperDetails(CamperID)
+db -> dashboard: CamperDetails
+admin -> dashboard: UpdateCamperDetails(UpdatedDetails)
+dashboard -> db: UpdateCamperProfile(UpdatedDetails)
+db -> dashboard: AcknowledgeUpdate()
+dashboard -> admin: DisplayUpdateSuccess()
+
+== Archive Year's Data ==
+admin -> dashboard: SelectArchiveYearData()
+dashboard -> db: ArchiveCurrentYearData()
+db -> dashboard: AcknowledgeArchive()
+dashboard -> admin: DisplayArchiveSuccess()
+
+@enduml

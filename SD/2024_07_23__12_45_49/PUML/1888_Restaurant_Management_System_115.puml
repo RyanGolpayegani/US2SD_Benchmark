@@ -1,0 +1,30 @@
+@startuml
+actor Manager
+participant "Management Interface" as Interface
+participant "Backend Server" as Server
+database "Database" as DB
+
+Manager -> Interface : Access Coupon Creation Feature
+activate Interface
+
+Interface -> Server : Request to Create New Coupon
+activate Server
+
+Server -> DB : Check Existing Coupons
+activate DB
+DB --> Server : Provide Existing Coupons Data
+deactivate DB
+
+Server -> Server : Validate and Process Coupon Creation
+Server -> DB : Save New Coupon
+activate DB
+DB --> Server : Confirm Save
+deactivate DB
+
+Server --> Interface : Confirm Coupon Created
+deactivate Server
+
+Interface --> Manager : Show Coupon Creation Success Message
+deactivate Interface
+
+@enduml

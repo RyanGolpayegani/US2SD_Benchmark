@@ -1,0 +1,26 @@
+@startuml
+participant "FABS User" as FABSUser
+participant "Broker Platform" as Broker
+participant "Banner Message Service" as BannerService
+participant "FABS Message Filter" as FABSFilter
+participant "DABS Message Filter" as DABSFilter
+participant "User Interface" as UI
+
+FABSUser -> Broker : Login into Broker Platform
+Broker -> BannerService : Request Banner Messages
+BannerService -> FABSFilter : Apply FABS Filter
+BannerService -> DABSFilter : Apply DABS Filter
+
+alt If FABS User
+    DABSFilter --> BannerService : Exclude DABS Messages
+    FABSFilter --> BannerService : Include FABS Messages
+    BannerService -> UI : Display FABS Messages
+    UI --> FABUser : Viewed by FABS User
+else If DABS User
+    FABSFilter --> BannerService : Exclude FABS Messages
+    DABSFilter --> BannerService : Include DABS Messages
+    BannerService -> UI : Display DABS Messages
+    UI --> FABSUser : Viewed by DABS User
+end
+
+@enduml

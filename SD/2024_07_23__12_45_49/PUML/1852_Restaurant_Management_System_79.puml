@@ -1,0 +1,39 @@
+@startuml
+actor Customer
+participant "UI: Web/App Interface" as UI
+participant "Server: Comments Controller" as Controller
+database "DB: Comments Storage" as DB
+
+activate Customer
+Customer -> UI: Select "My Orders"
+activate UI
+UI -> Controller: Request past orders
+activate Controller
+Controller -> DB: Fetch orders for customer
+activate DB
+DB --> Controller: Return orders
+deactivate DB
+Controller --> UI: Display orders
+deactivate Controller
+UI --> Customer: Show past orders
+
+Customer -> UI: Select order to comment
+UI -> Controller: Request comment form
+activate Controller
+Controller --> UI: Provide comment form
+deactivate Controller
+UI --> Customer: Display comment form
+
+Customer -> UI: Update comment
+UI -> Controller: Submit updated comment
+activate Controller
+Controller -> DB: Update comment in DB
+activate DB
+DB --> Controller: Confirm update
+deactivate DB
+Controller --> UI: Update confirmation
+deactivate Controller
+UI --> Customer: Display confirmation message
+deactivate UI
+
+@enduml

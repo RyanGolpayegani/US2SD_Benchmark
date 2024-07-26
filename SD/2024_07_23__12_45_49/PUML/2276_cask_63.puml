@@ -1,0 +1,29 @@
+@startuml
+participant User
+participant "DMS UI" as DMS_UI
+participant "Dataset Management System" as DMS
+participant "Dataset Configuration Module" as ConfigModule
+participant DatasetInstance
+participant ExplorationModule
+
+User -> DMS_UI: Request to enable exploration
+DMS_UI -> DMS: Validate user request
+DMS -> ConfigModule: Retrieve dataset configuration
+ConfigModule --> DMS: Dataset configuration
+DMS -> DatasetInstance: Check current configuration
+DatasetInstance --> DMS: Configuration details
+DMS -> ExplorationModule: Request enable exploration
+activate ExplorationModule
+
+ExplorationModule -> DatasetInstance: Update configuration to enable exploration
+DatasetInstance --> ExplorationModule: Confirmation & Details
+deactivate ExplorationModule
+
+ExplorationModule -> ConfigModule: Update dataset schema for exploration (if needed)
+ConfigModule --> ExplorationModule: Schema update confirmation
+
+ExplorationModule --> DMS: Exploration enabled successfully
+DMS --> DMS_UI: Notify success
+DMS_UI --> User: Exploration enabled confirmation
+
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+
+actor DBIRAdmin as "DB/IR Admin"
+
+participant UISystem as "UI System"
+participant Controller as "Search Controller"
+database AccountDB as "Accounts Database"
+
+DBIRAdmin -> UISystem : Enter search query (name/email)
+UISystem -> Controller : SearchRequest(query)
+activate Controller
+
+Controller -> AccountDB : FindAccountsByQuery(query)
+activate AccountDB
+AccountDB --> Controller : AccountsList
+deactivate AccountDB
+
+Controller --> UISystem : DisplayResults(AccountsList)
+deactivate Controller
+
+UISystem --> DBIRAdmin : Show search results
+
+@enduml

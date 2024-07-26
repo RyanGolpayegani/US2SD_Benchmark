@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+
+participant "Geospatial Data System" as GDS
+participant "Change Detection Module" as CDM
+participant "Notification System" as NS
+participant "Staff Member's Interface" as SMI
+database "Property Information Database" as PID
+
+GDS -> PID: Update Geospatial Attributes
+activate PID
+PID --> GDS: Acknowledgement
+deactivate PID
+
+GDS -> CDM: Report Update
+activate CDM
+CDM -> PID : Confirm Changes
+activate PID
+PID --> CDM : Changes Confirmed
+deactivate PID
+
+CDM --> NS : Trigger Notification
+deactivate CDM
+activate NS
+NS -> SMI : Notify Staff of Changes
+activate SMI
+SMI --> NS : Acknowledge Notification
+deactivate SMI
+deactivate NS
+
+@enduml

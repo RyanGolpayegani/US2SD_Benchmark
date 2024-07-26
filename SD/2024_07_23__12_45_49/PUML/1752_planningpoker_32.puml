@@ -1,0 +1,44 @@
+@startuml
+participant Participant as P
+participant "AEPT Web Interface" as W
+participant "Server" as S
+database "Database" as D
+
+P -> W : Join Estimation Game
+activate W
+W -> S : Request Estimation Items & Status
+activate S
+S -> D : Get Estimation Items & Submissions
+activate D
+D --> S : Estimation Items & Status Data
+deactivate D
+S --> W : Display Estimation Items & Current Estimates
+deactivate S
+
+== Estimator Submits an Estimate ==
+participant "Estimator" as E
+E -> W : Submit Estimate
+activate W
+W -> S : Update Estimate with Estimator ID
+activate S
+S -> D : Store Estimate
+activate D
+D --> S : Confirmation
+deactivate D
+S --> W : Estimate Update Confirmation
+deactivate S
+
+== Notify Participants ==
+W -> S : Request Updated Estimates & Estimators
+activate S
+S -> D : Get Updated Estimates & Submitter Info
+activate D
+D --> S : Updated Estimates & Estimators Data
+deactivate D
+S --> W : Updated Estimates & Estimators
+deactivate S
+
+W --> P : Notify: New Estimate & Submitter Info
+deactivate W
+
+@enduml

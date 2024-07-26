@@ -1,0 +1,29 @@
+@startuml
+participant OlderPerson as person
+participant "ALFRED Device" as alfred
+participant "ALFRED Server" as server
+participant "Caregiver Device" as caregiver
+
+person -> alfred : PressCallButton
+alfred -> server : InitiateCallRequest
+server -> caregiver : RouteCallNotification
+caregiver -> server : Acknowledge
+server -> alfred : ConfirmAcknowledgement
+alfred -> person : DisplayCallConnected
+
+note right of person: The OlderPerson waits for the caregiver to respond.
+
+caregiver -> server : StartCommunication
+server -> alfred : EstablishCommunicationLink
+alfred -> person : ShowCommLinkEstablished
+
+note right of person: The OlderPerson communicates with the caregiver.
+
+person -> alfred : EndCall
+alfred -> server : TerminateCall
+server -> caregiver : EndCommunication
+caregiver -> server : ConfirmEnd
+server -> alfred : AcknowledgeTermination
+alfred -> person : DisplayCallEnded
+
+@enduml

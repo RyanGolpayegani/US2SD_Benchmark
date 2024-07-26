@@ -1,0 +1,39 @@
+@startuml
+participant ResearcherPublisher as RP
+participant "DPIE System" as DPIE
+participant "Validation Module" as VM
+database "Data Package Repo" as DP
+
+RP -> DPIE : Upload Data Package
+activate DPIE
+
+DPIE -> VM : Validate Data Package
+activate VM
+
+VM -> DP : Retrieve Validation Rules
+activate DP
+DP -> VM : Validation Rules
+deactivate DP
+
+VM -> VM : Validate against Rules
+VM -> DPIE : Validation Report
+deactivate VM
+
+DPIE -> RP : Show Validation Report
+deactivate DPIE
+
+RP -> RP : Adjust Data based on Report
+
+RP -> DPIE : Re-upload adjusted Data Package
+activate DPIE
+
+DPIE -> VM : Re-validate Data Package
+activate VM
+VM -> VM : Validate against Rules
+VM -> DPIE : Validation Success
+deactivate VM
+
+DPIE -> RP : Data Package is valid
+deactivate DPIE
+
+@enduml

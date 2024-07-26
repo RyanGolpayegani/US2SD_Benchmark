@@ -1,0 +1,25 @@
+@startuml
+actor "Training Coordinator" as TC
+participant "BADCamp Platform" as BCP
+participant "Email Service" as ES
+database "Trainer Database" as DB
+
+== Email Trainers Sequence ==
+
+TC -> BCP : Initiates "Email Trainers"
+activate BCP
+
+BCP -> DB : Retrieve Trainer Emails
+activate DB
+DB --> BCP : Email List
+deactivate DB
+
+BCP -> ES : Send Email to Trainers
+activate ES
+note right of ES : Email includes\ninfo and updates
+ES --> TC : Email Sent Confirmation
+deactivate ES
+
+deactivate BCP
+
+@enduml

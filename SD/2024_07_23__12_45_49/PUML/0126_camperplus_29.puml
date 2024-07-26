@@ -1,0 +1,29 @@
+@startuml
+
+participant "Camp Administrator" as admin
+participant "Platform Interface" as interface
+participant "Task/Event Management System" as taskSystem
+participant "Database" as db
+
+== Modify a Scheduled Task/Event ==
+
+admin -> interface : select task/event to modify
+interface -> taskSystem : fetch task/event details
+taskstateProvider -> db : query task/event details
+db -> taskSystem : return task/event details
+taskSystem -> interface : display task/event details
+interface -> admin : show task/event details
+
+admin -> interface : modify details and submit
+interface -> taskSystem : validate modifications
+alt modifications are valid
+  taskSystem -> db : update task/event details
+  db -> taskSystem : confirm update
+  taskSystem -> interface : notify modification success
+  interface -> admin : display success message
+else modifications are invalid
+  taskSystem -> interface : error message (invalid modifications)
+  interface -> admin : show error message and request to correct
+end
+
+@enduml

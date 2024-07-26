@@ -1,0 +1,26 @@
+@startuml
+participant PI as "Principal Investigator"
+participant UI as "DMPTool Interface"
+participant DMP as "Data Management Plan"
+database MetadataDB as "Metadata Database"
+participant IRM as "IT Resource Manager"
+participant DM as "Data Manager"
+
+PI -> UI : Log in to DMPTool
+UI -> DMP : Create/Edit Data Management Plan
+DMP -> UI : Show Data Storage Planning Section
+PI -> UI : Input data storage needs
+UI -> DMP : Record storage needs
+DMP -> MetadataDB : Update Metadata with Storage Plan
+MetadataDB -> DMP : Confirm Update
+UI <- DMP : Display Updated Plan
+PI -> UI : Request IT Resource Assessment
+UI -> IRM : Trigger IT Resource Evaluation
+IRM -> IRM : Assess IT Resource Requirements
+IRM -> DMP : Update Plan with IT Recommendations
+DMP -> DM : Notify Data Manager of New Plan
+DM -> MetadataDB : Review & Approve Data Storage Plan
+MetadataDB -> DMP : Confirm Approval
+UI <- DMP : Show Approval and Recommendations
+PI <- UI : Receive Updated Plan and IT Recommendations
+@enduml

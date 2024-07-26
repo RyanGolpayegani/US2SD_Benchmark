@@ -1,0 +1,33 @@
+@startuml
+actor DataManager
+participant "DMPTool" as DMP
+database "Plan Database" as DB
+participant "Repository" as Repo
+
+== Data Manager Queries Time Plan for Data Collection ==
+
+DataManager -> DMP: Request time plan for data collection
+activate DMP
+
+DMP -> DB: Query time plan for specific project
+activate DB
+
+DB -> DMP: Return time plan details
+deactivate DB
+
+DMP -> Repo: Request any updates on time plan 
+activate Repo
+
+Repo -> DMP: Return updated time plan details
+deactivate Repo
+
+DMP -> DataManager: Present compiled time plan for data collection
+deactivate DMP
+
+DataManager -> DMP: Acknowledge receipt and validity of time plan
+activate DMP
+DMP -> DataManager: Confirmation of successful operation
+
+deactivate DMP
+
+@enduml

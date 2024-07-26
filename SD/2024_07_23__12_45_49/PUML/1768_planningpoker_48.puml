@@ -1,0 +1,25 @@
+@startuml
+actor Estimator as user
+participant "Frontend\n(Angular/React)" as frontend
+participant "Backend\n(Node.js/Django)" as backend
+database "Database\n(PostgreSQL/MongoDB)" as db
+
+user -> frontend : Clicks to submit estimate
+activate frontend
+frontend -> backend : POST /submit-estimate\n{estimate: 5, itemID: 'abc123'}
+activate backend
+backend -> db : Query to save estimate
+activate db
+db --> backend : Acknowledge save
+deactivate db
+backend --> frontend : HTTP 200 OK\n{success: true, message: 'Estimate saved'}
+deactivate backend
+
+group Quick Response Mechanism
+    frontend -> frontend : Update UI to show\nestimate as submitted
+end
+
+frontend --> user : Display confirmation message
+deactivate frontend
+
+@enduml

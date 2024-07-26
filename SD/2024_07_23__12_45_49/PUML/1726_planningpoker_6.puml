@@ -1,0 +1,26 @@
+@startuml
+participant Moderator
+participant "AEPT Web Interface" as WebInterface
+participant "Backend Service" as Backend
+database "Database" as DB
+
+== Add Item to Estimation List ==
+
+Moderator -> WebInterface : Selects "Add New Item"
+WebInterface -> Moderator : Shows "Add Item" form
+
+Moderator -> WebInterface : Submits new item details
+WebInterface -> Backend : Request to add new item
+activate Backend
+
+Backend -> DB : Insert new item into database
+activate DB
+DB --> Backend : Confirm item added
+deactivate DB
+
+Backend --> WebInterface : Item Added Successfully
+deactivate Backend
+
+WebInterface --> Moderator : Display success message
+
+@enduml

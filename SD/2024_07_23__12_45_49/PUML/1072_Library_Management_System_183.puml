@@ -1,0 +1,23 @@
+@startuml
+participant User
+participant "Frontend Interface" as Frontend
+participant "Server (Backend)" as Backend
+database Database
+
+User -> Frontend : Enters name, surname, credentials
+Frontend -> Backend : Sends registration data
+activate Backend
+    Backend -> Database : Checks if user already exists
+    alt If User Exists
+        Database --> Backend : User Exists Error
+        Backend -> Frontend : Notify user exists
+        Frontend -> User : Display error message
+    else User Does Not Exist
+        Database --> Backend : OK to Register
+        Backend -> Database : Create new user record
+        Database --> Backend : User Registered Confirmation
+        Backend -> Frontend : Notify registration success
+        Frontend -> User : Display success message & instructions
+    end
+deactivate Backend
+@enduml

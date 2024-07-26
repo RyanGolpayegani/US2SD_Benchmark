@@ -1,0 +1,21 @@
+@startuml
+autonumber
+
+actor Member
+participant "Web Interface" as UI
+participant "Backend System" as Backend
+database "Database" as DB
+
+Member -> UI : Requests to view fine amount
+UI -> Backend : GetFineAmount(memberID)
+activate Backend
+
+Backend -> DB : QueryFineAmount(memberID)
+activate DB
+DB --> Backend : FineAmount
+deactivate DB
+
+Backend --> UI : ShowFineAmount(FineAmount)
+UI --> Member : Display Fine Amount
+
+@enduml

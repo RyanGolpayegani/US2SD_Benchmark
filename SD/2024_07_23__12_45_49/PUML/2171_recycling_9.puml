@@ -1,0 +1,19 @@
+@startuml
+
+actor User as user
+participant "Web Interface" as web
+participant "Application Server" as server
+database "Recycling Data" as database
+participant "Google Maps API" as maps
+
+
+user -> web : Request map display of recycling bins
+web -> server : Fetch recycling bin locations for area
+server -> database : Query public recycling bins by area
+database --> server : Return recycling bins data
+server -> maps : Request map with markers for bins
+maps --> server : Respond with map view
+server --> web : Return map view to display
+web -> user : Display map with recycling bins
+
+@enduml

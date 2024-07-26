@@ -1,0 +1,26 @@
+@startuml
+participant Researcher
+participant "DPIE System" as DPIE
+participant "DataPackage API" as API
+participant "Mendeley Data Integration" as Mendeley
+participant "Validation Service" as Validation
+
+Researcher -> DPIE: Request Data Validation
+activate DPIE
+DPIE -> API: Invoke Upload DataPackage
+activate API
+API -> DPIE: DataPackage Uploaded
+deactivate API
+
+DPIE -> Mendeley: Initiate Data Validation
+activate Mendeley
+Mendeley -> Validation: Validate against datasets
+activate Validation
+Validation -> Mendeley: Validation Results
+deactivate Validation
+
+Mendeley -> DPIE: Validation Response
+deactivate Mendeley
+DPIE -> Researcher: Display Validation Results
+deactivate DPIE
+@enduml

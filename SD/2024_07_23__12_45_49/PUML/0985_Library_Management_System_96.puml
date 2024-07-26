@@ -1,0 +1,33 @@
+@startuml
+participant Librarian as L
+participant "Web Interface" as W
+participant "Server" as S
+participant "Database" as D
+
+L -> W : Log in to system
+activate W
+W -> S : Request login authentication
+activate S
+S -> D : Validate librarian credentials
+activate D
+D --> S : Credentials valid
+deactivate D
+S --> W : Authentication successful
+deactivate S
+W --> L : Display dashboard
+deactivate W
+
+L -> W : Select "View Statistics"
+activate W
+W -> S : Request most frequently borrowed books data
+activate S
+S -> D : Query for most borrowed books statistics
+activate D
+D --> S : Return statistics data
+deactivate D
+S --> W : Process and format statistics
+deactivate S
+W --> L : Display most frequently borrowed books statistics
+deactivate W
+
+@enduml

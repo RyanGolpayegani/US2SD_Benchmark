@@ -1,0 +1,21 @@
+@startuml
+actor Depositor
+participant "UI: Data Management Page" as UI
+participant "Auth Service" as Auth
+participant "Data Manager" as DataManager
+participant "Metrics Service" as Metrics
+
+Depositor -> UI: Accesses deposit dashboard
+UI -> Auth: Authenticate depositor
+Auth --> UI: Authentication Success
+
+UI -> DataManager: Request deposit list
+DataManager --> UI: Returns deposit list
+
+Depositor -> UI: Select dataset to track
+UI -> Metrics: Request download metrics for dataset
+
+Metrics --> UI: Returns download data
+UI -> Depositor: Shows download metrics
+
+@enduml

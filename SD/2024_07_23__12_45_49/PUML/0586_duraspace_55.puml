@@ -1,0 +1,42 @@
+@startuml
+actor "DAMS Manager" as DAMSManager
+participant "Preservation Manager" as PreservationManager
+participant "DIMS System" as DIMSSystem
+database "DAMS Repository" as DAMSRepo
+
+== Event and Integrity Monitoring ==
+DAMSManager -> DIMSSystem: Request integrity/authentication checks or format updates
+activate DIMSSystem
+
+DIMSSystem -> DAMSRepo: Retrieve object information
+activate DAMSRepo
+DAMSRepo --> DIMSSystem: Object information
+deactivate DAMSRepo
+
+DIMSSystem -> PreservationManager: Analyze object for integrity, authenticity, or format update
+activate PreservationManager
+PreservationManager -> DIMSSystem: Report findings
+deactivate PreservationManager
+
+== Decision Making ==
+DIMSSystem --> DAMSManager: Notify of issues or updates per object
+deactivate DIMSSystem
+
+DAMSManager -> DIMSSystem: Decide on object update or preservation action
+activate DIMSSystem
+
+DIMSSystem -> PreservationManager: instruct correction or update procedure
+deactivate DIMSSystem
+activate PreservationManager
+PreservationManager -> DAMSRepo: Execute correction/update
+activate DAMSRepo
+DAMSRepo --> PreservationManager: Confirmation of action
+deactivate DAMSRepo
+PreservationManager --> DIMSSystem: Update success
+deactivate PreservationManager
+
+== Notification ==
+DIMSSystem --> DAMSManager: Confirm object status update
+deactivate DIMSSystem
+
+@enduml

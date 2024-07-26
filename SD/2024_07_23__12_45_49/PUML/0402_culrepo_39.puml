@@ -1,0 +1,26 @@
+@startuml
+autonumber
+actor AcademicResearcher as researcher
+participant "Search Interface" as search
+participant "Authentication Service" as auth
+participant "Database" as db
+participant "Content Management System" as cms
+participant "Sorting Service" as sort
+
+researcher -> search: Enter search query with author's name
+search -> auth: Validates researcher access
+auth --> search: Access confirmed
+
+search -> db: Fetch author's works
+db --> cms: Retrieve list of works
+cms --> db: List of works
+db --> search: Display initial results
+
+researcher -> search: Request to sort by date
+search -> sort: Sort works by publication date
+sort --> db: Retrieve sorted list
+db --> sort: Sorted data
+sort --> search: Display sorted results
+search -> researcher: Show sorted list of works to view scholarship evolution
+
+@enduml

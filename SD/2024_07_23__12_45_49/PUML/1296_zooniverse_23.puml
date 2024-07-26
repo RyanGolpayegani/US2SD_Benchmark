@@ -1,0 +1,25 @@
+@startuml
+actor Admin
+participant "Content Management System" as CMS
+participant "Nudity Detection Service" as NDS
+participant Database as DB
+
+== Prefilter Nudity in Content ==
+
+Admin -> CMS : Upload content/Initiate check
+CMS -> NDS : Send content for scanning
+activate NDS
+NDS -> NDS : Analyze content
+alt Content contains nudity
+  NDS -> CMS : Return result (nudity detected)
+  deactivate NDS
+  CMS -> DB : Flag content as inappropriate
+  CMS --> Admin : Notify: Content flagged
+else No nudity found
+  NDS -> CMS : Return result (clean)
+  deactivate NDS
+  CMS -> DB : Mark content as verified
+  CMS --> Admin : Notify: Content approved
+end
+
+@enduml

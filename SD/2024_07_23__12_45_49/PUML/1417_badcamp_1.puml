@@ -1,0 +1,25 @@
+@startuml
+participant "Anonymous User" as User
+participant "Web Browser" as Browser
+participant "Web Server" as Server
+participant "Sponsorship Controller" as Controller
+participant "Sponsorship Model" as Model
+participant "Database" as DB
+
+User -> Browser : Navigate to sponsors page
+Browser -> Server : Request /sponsors
+Server -> Controller : Get request for sponsors list
+activate Controller
+Controller -> Model : Fetch sponsors
+activate Model
+Model -> DB : Query sponsors data
+activate DB
+DB --> Model : Return sponsors data
+deactivate DB
+Model --> Controller : Sponsors list
+deactivate Model
+Controller --> Server : Sponsorship details
+deactivate Controller
+Server --> Browser : Display sponsors list
+Browser --> User : View sponsors list
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+participant User
+participant "FABS UI" as UI
+participant "Submission Controller" as Controller
+participant "Database" as DB
+
+User -> UI : Clicks publish
+activate UI
+
+UI -> Controller : Request to publish
+activate Controller
+
+Controller -> DB : Initiate Submission
+activate DB
+DB --> Controller : Submission ID & Status (In progress)
+deactivate DB
+
+Controller -> UI : Disable publish button
+deactivate Controller
+UI -> User : Display "Submission in progress"
+deactivate UI
+
+... Derivation Process ...
+
+DB -> Controller : Update Submission Status (Complete)
+activate Controller
+
+Controller -> UI : Enable publish button
+activate UI
+UI -> UI : Update Submission Status Display
+
+UI -> User : Display "Submission complete"
+deactivate UI
+deactivate Controller
+
+@enduml

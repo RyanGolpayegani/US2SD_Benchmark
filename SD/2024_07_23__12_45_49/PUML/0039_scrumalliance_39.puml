@@ -1,0 +1,21 @@
+@startuml
+participant UserInterface as UI
+participant SearchController as Controller
+database FAQDatabase as DB
+
+UI -> Controller : search(query)
+activate Controller
+
+Controller -> DB : fetchFAQsContaining(query)
+activate DB
+DB --> Controller : List<FAQs>
+deactivate DB
+
+Controller -> UI : displayResults(List<FAQs>)
+deactivate Controller
+
+UI -> User : showResultsOnPage()
+activate User
+deactivate User
+
+@enduml

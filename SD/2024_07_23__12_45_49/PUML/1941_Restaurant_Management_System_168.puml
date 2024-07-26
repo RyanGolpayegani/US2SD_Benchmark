@@ -1,0 +1,25 @@
+@startuml
+actor Manager
+participant "Feedback Management System" as FMS
+participant "Database" as DB
+participant "Email Service" as ES
+participant "Customer Portal" as CP
+
+Manager -> FMS: Access customer feedback/complaints
+FMS -> DB: Retrieve feedback/complaints
+DB -> FMS: Feedback/Complaints data
+FMS -> Manager: Show feedback/complaints
+Manager -> FMS: Select feedback and write response
+FMS -> DB: Save response
+DB -> FMS: Confirmation
+
+alt If Email Response
+    FMS -> ES: Prepare email response
+    ES -> CP: Send email to customer
+    CP -> Manager: Email sent notification
+else If Portal Response
+    FMS -> CP: Post response on customer portal
+    CP -> Manager: Response posted notification
+end
+
+@enduml

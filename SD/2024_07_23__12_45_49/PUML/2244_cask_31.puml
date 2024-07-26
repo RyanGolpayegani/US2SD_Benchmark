@@ -1,0 +1,50 @@
+@startuml
+participant PluginDeveloper as PD
+participant PluginArtifact as PA
+participant DatasetManagementSystem as DMS
+participant ApplicationEcosystem as AE
+participant PipelineCreationTool as PCT
+participant Database as DB
+
+== Inclusion of Dataset Type in Plugin Artifact ==
+PD -> PA : Include Dataset Type Code
+activate PA
+PA -> DMS : Register Dataset Type
+activate DMS
+DMS -> DB : Update Dataset Type Registry
+activate DB
+DB --> DMS : Acknowledge Update
+deactivate DB
+DMS --> PA : Dataset Type Registered
+deactivate DMS
+PA --> PD : Dataset Type Included Successfully
+deactivate PA
+
+== Pipeline Creation Using Plugin ==
+PD -> PCT : Initiate Pipeline Creation
+activate PCT
+PCT -> DMS : Request Dataset Instance Creation
+activate DMS
+DMS -> DB : Create New Dataset Instance
+activate DB
+DB --> DMS : Dataset Instance Created
+deactivate DB
+DMS --> PCT : Dataset Instance Available
+deactivate DMS
+PCT -> AE : Integrate Pipeline with Dataset Instance
+activate AE
+AE --> PCT : Pipeline & Dataset Instance Integrated
+deactivate AE
+PCT --> PD : Pipeline Creation Successful
+deactivate PCT
+
+== Making Dataset Instance Explorable and Available ==
+DMS -> AE : Make Dataset Instance Explorable
+activate AE
+AE --> DMS : Dataset Instance is Now Explorable
+deactivate AE
+DMS -> AE : Make Dataset Instance Available to Apps
+activate AE
+AE --> DMS : Dataset Instance Available to Apps
+deactivate AE
+@enduml

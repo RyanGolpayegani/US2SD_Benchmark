@@ -1,0 +1,42 @@
+@startuml
+!theme plain
+
+actor User
+participant "Dataset Management\nSystem" as DMS
+database "Database/Storage" as DB
+
+== Configuration Specification ==
+
+User -> DMS: Specify dataset configuration\n(including explorability)
+activate DMS
+DMS -> DB: Fetch current dataset configuration
+activate DB
+DB --> DMS: Current configuration data
+deactivate DB
+
+DMS -> DMS: Process new configuration\n(Check explorability setting)
+
+alt If explorability is enabled
+    DMS -> DB: Update dataset metadata\n(Set explorability to true)
+    activate DB
+    DB --> DMS: Confirmation
+    deactivate DB
+    DMS -> DB: Enable exploration features
+    activate DB
+    DB --> DMS: Exploration features enabled
+    deactivate DB
+else If explorability is disabled
+    DMS -> DB: Update dataset metadata\n(Set explorability to false)
+    activate DB
+    DB --> DMS: Confirmation
+    deactivate DB
+    Dms -> DB: Disable exploration features
+    activate DB
+    DB --> DMS: Exploration features disabled
+    deactivate DB
+end
+
+DMS --> User: Dataset configuration updated
+deactivate DMS
+
+@enduml

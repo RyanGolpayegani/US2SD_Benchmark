@@ -1,0 +1,21 @@
+@startuml
+actor TC as "Training Coordinator"
+participant UI as "User Interface"
+participant Server as "Backend Server"
+participant DB as "Database"
+
+TC -> UI : Selects "View Trainees"
+UI -> Server : GET /trainees
+Server -> DB : Fetch all trainees
+DB -> Server : Return all trainees
+Server -> UI : Trainees list
+UI -> TC : Display trainees
+
+TC -> UI : Select "Filter by Session"
+UI -> Server : POST /filterTrainees {sessionID}
+Server -> DB : Fetch trainees for sessionID
+DB -> Server : Return filtered trainees
+Server -> UI : Filtered trainees list
+UI -> TC : Display filtered trainees
+
+@enduml

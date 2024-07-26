@@ -1,0 +1,40 @@
+@startuml
+participant User as user
+participant "Web Interface" as web
+participant "Authentication System" as auth
+participant "Calendar Service" as cal_service
+participant "Mobile App" as mobile_app
+
+user -> web: Access calendar via web
+activate web
+
+web -> auth: Request authentication
+activate auth
+auth -> web: Authentication successful
+deactivate auth
+
+web -> cal_service: Request group's shared calendars
+activate cal_service
+cal_service -> web: Return shared calendars
+deactivate cal_service
+
+web -> user: Display shared calendars
+deactivate web
+
+user -> mobile_app: Access calendar via mobile
+activate mobile_app
+
+mobile_app -> auth: Request authentication
+activate auth
+auth -> mobile_app: Authentication successful
+deactivate auth
+
+mobile_app -> cal_service: Request group's shared calendars
+activate cal_service
+cal_service -> mobile_app: Return shared calendars
+deactivate cal_service
+
+mobile_app -> user: Display shared calendars
+deactivate mobile_app
+
+@enduml

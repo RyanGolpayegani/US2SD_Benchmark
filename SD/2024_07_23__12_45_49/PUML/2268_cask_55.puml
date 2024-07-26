@@ -1,0 +1,29 @@
+@startuml
+!theme amiga
+
+participant AppDeveloper as AD
+participant AppDeploymentService as ADS
+participant DatasetManagementSystem as DMS
+participant DatasetCompatibilityService as DCS
+
+AD -> ADS : deployApplication(includes Dataset)
+ADS -> DMS : requestDatasetCreation(datasetInfo)
+DMS -> DMS : checkIfDatasetExists(datasetInfo)
+alt Dataset Exists
+    DMS -> DCS : checkCompatibility(existingDatasetInfo, newDatasetInfo)
+    DCS -> DCS : evaluatePropertiesCompatibility()
+    alt Properties are Compatible
+        DCS --> DMS : CompatibilityConfirmed
+        DMS -> DMS : updateDatasetReference()
+        DMS --> ADS : DatasetDeploymentSkipped(compatible)
+    else Properties are Incompatible
+        DCS --> DMS : CompatibilityIssueDetected
+        DMS --> ADS : DatasetDeploymentFailed(incompatible properties)
+    end
+else Dataset Does Not Exist
+    DMS -> DMS : createNewDatasetInstance(datasetInfo)
+    DMS --> ADS : DatasetCreatedSuccessfully
+end
+ADS --> AD : DeploymentOutcome(Result)
+
+@enduml

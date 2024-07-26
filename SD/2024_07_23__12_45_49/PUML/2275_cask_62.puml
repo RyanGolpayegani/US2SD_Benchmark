@@ -1,0 +1,53 @@
+@startuml
+actor User
+participant "Dataset Management\nSystem" as DMS
+participant "Version Control\nSystem" as VCS
+participant "Data Integrity\nChecker" as DIC
+participant "Data Store" as DS
+participant "Exploration Service" as ES
+
+== Update Dataset for Exploration ==
+
+User -> DMS : Request dataset update
+activate DMS
+
+DMS -> VCS : Check latest version
+activate VCS
+VCS --> DMS : Latest version details
+deactivate VCS
+
+DMS -> DMS : Verify compatibility with\nexisting data instances
+DMS -> DIC : Validate data integrity
+activate DIC
+DIC -> DS : Check current data
+activate DS
+DS --> DIC : Data validation result
+deactivate DS
+
+DIC --> DMS : Integrity confirmation
+deactivate DIC
+
+DMS -> DS : Prepare data migration/upgrade
+activate DS
+DS --> DMS : Migration/Upgrade prepared
+deactive DS
+
+DMS -> DS : Commit dataset update
+activate DS
+DS --> DMS : Update successful
+deactive DS
+
+DMS -> ES: Update Exploration Service with new dataset version
+activate ES
+ES -> ES : Re-index data
+ES --> DMS : Exploration updated
+deactivate ES
+
+DMS -> VCS : Log update completion
+activate VCS
+VCS --> DMS : Log success
+deactivate VCS
+
+DMS --> User : Update and integrity check complete
+deactivate DMS
+@enduml

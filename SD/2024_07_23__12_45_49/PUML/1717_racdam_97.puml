@@ -1,0 +1,26 @@
+@startuml
+
+actor Administrator as admin
+participant "Web Interface" as UI
+participant "Backend System" as Backend
+participant "Database" as DB
+participant "Active Directory" as AD
+
+admin -> UI : Access rights management
+UI -> Backend : Request to update user group rights
+activate Backend
+
+Backend -> AD : Verify admin authentication
+activate AD
+AD --> Backend : Authentication successful
+deactivate AD
+
+Backend -> DB : Update rights for user group
+activate DB
+DB --> Backend : Rights update confirmation
+deactivate DB
+
+Backend --> UI : Display update success message
+UI --> admin : Show confirmation of rights update
+
+@enduml

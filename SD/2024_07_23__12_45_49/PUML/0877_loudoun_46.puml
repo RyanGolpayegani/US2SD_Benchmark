@@ -1,0 +1,53 @@
+@startuml
+!theme cerulean
+
+actor Applicant
+participant "Customer Portal" as Portal
+participant "Application System" as AppSystem
+participant "Review Team" as ReviewTeam
+participant "Inspection System" as InspectionSystem
+participant "Inspector" as Inspector
+participant "Zoning & Permitting" as ZoningPermitting
+participant "Bond Management" as BondManagement
+database "County Database" as Database
+
+== Application Submission ==
+Applicant -> Portal: Log in to user account
+Portal -> AppSystem: Initiate Application for Project Completion
+Applicant -> AppSystem: Submit Application\nwith Project Details and Request for Inspection
+AppSystem -> Database: Store Application/Project Details
+AppSystem --> Applicant: Acknowledge Submission\nProvide Application Number
+
+== Initial Review ==
+ReviewTeam -> AppSystem: Retrieve Application
+AppSystem -> ReviewTeam: Display Application Details
+ReviewTeam -> ReviewTeam: Evaluate Application & Documents
+ReviewTeam -> Database: Record Review Notes and Approval
+ReviewTeam --> AppSystem: Approval for Inspection
+
+== Inspection Scheduling ==
+Applicant -> Portal: Request Inspection Schedule
+Portal -> InspectionSystem: Forward Inspection Request
+InspectionSystem -> Inspector: Assign Inspection Task
+Inspector --> InspectionSystem: Confirm Schedule
+InspectionSystem --> Portal: Notify Applicant of Schedule
+Portal --> Applicant: Provide Inspection Schedule
+
+== Inspection Process ==
+Inspector -> InspectionSystem: Perform Inspection
+Inspector -> InspectionSystem: Submit Inspection Report
+InspectionSystem -> Database: Update Status and Report
+InspectionSystem --> AppSystem: Notify Completion of Inspection
+
+== Final Review for Bond Release and Occupancy Permit ==
+AppSystem -> ZoningPermitting: Request Final Review
+ZoningPermitting -> Database: Evaluate Final Compliance
+ZoningPermitting -> BondManagement: Verify Bond Release Conditions
+BondManagement -> ZoningPermitting: Confirm Bond Release Eligibility
+ZoningPermitting -> ZoningPermitting: Issue Occupancy Permit
+ZoningPermitting -> Database: Update Permit Status
+ZoningPermitting --> BondManagement: Release Bond
+BondManagement --> Applicant: Notify Bond Release
+ZoningPermitting --> Applicant: Provide Occupancy Permit
+
+@enduml

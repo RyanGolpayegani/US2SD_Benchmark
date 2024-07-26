@@ -1,0 +1,52 @@
+@startuml
+participant Researcher
+participant "Neurohub Interface" as Interface
+participant "Revision Control System" as RCS
+database "Project Repository" as Repo
+
+Researcher -> Interface : Request access to Revision Control
+activate Researcher
+activate Interface
+
+Interface -> RCS : Authenticate User
+activate RCS
+
+RCS -> Repo : Fetch User's Projects
+activate Repo
+Repo --> RCS : Return Projects List
+deactivate Repo
+
+RCS --> Interface : Display Projects with Revision Data
+deactivate RCS
+
+Interface --> Researcher : Show Projects and Revisions
+deactivate Interface
+
+Researcher -> Interface : Perform Revision Action (Add, Update, Delete)
+activate Interface
+
+Interface -> RCS : Process Revision Action
+activate RCS
+
+alt If action involves update or add
+    RCS -> Repo : Store New Revision
+    activate Repo
+    Repo --> RCS : Confirm Revision Stored
+    deactivate Repo
+
+    RCS --> Interface : Confirm Action Success
+    Interface --> Researcher : Display Success Message
+    deactivate RCS
+    deactivate Interface
+else If action is delete
+    RCS -> Repo : Delete Revision
+    activate Repo
+    Repo --> RCS : Confirm Revision Deleted
+    deactivate Repo
+    RCS --> Interface : Confirm Action Success
+    Interface --> Researcher : Display Success Message
+    deactivate RCS
+    deactivate Interface
+end
+
+@enduml

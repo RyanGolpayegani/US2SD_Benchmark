@@ -1,0 +1,27 @@
+@startuml
+actor Waiter
+participant "Order Management System" as OMS
+participant "Inventory Management System" as IMS
+participant "Menu Database" as MDB
+
+== Check Item Availability ==
+
+Waiter -> OMS: Requests item availability
+activate OMS
+
+OMS -> IMS: Query item stock levels
+activate IMS
+
+IMS -> MDB: Fetch current stock for items
+activate MDB
+
+MDB --> IMS: Stock levels
+deactivate MDB
+
+IMS --> OMS: Item availability data
+deactivate IMS
+
+OMS --> Waiter: Display item availability
+deactivate OMS
+
+@enduml

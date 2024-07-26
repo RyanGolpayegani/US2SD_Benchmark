@@ -1,0 +1,27 @@
+@startuml
+participant Employee_UI as "Employee\nUser Interface"
+participant Server_API as "Server/API"
+participant Database as "Database"
+participant NotificationService as "Notification Service"
+
+title Employee Changes Customer Order Sequence
+
+autonumber
+
+== Change Order Process ==
+Employee_UI -> Server_API : Request to change order (OrderID, NewDetails)
+Server_API -> Database : Query to fetch original order
+Database -> Server_API : Original order details
+Server_API -> Database : Update order with NewDetails
+Database -> Server_API : Confirmation of update
+Server_API -> NotificationService : Send notification to kitchen/staff
+NotificationService -> Database : Log notification status
+Database -> NotificationService : Confirmation of log
+NotificationService -> Server_API : Notification sent confirmation
+Server_API -> Employee_UI : Confirm order change to employee
+Employee_UI -> Server_API : Request to display updated order
+Server_API -> Database : Fetch updated order details (OrderID)
+Database -> Server_API : Updated order details
+Server_API -> Employee_UI : Display updated order
+
+@enduml

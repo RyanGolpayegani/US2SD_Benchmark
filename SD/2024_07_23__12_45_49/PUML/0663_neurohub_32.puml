@@ -1,0 +1,20 @@
+@startuml
+participant User
+participant WebInterface as "Web Interface"
+participant DataManager as "Data Manager"
+database ExperimentDatabase as "Experiment Database"
+
+User -> WebInterface: Select files for experiment
+WebInterface -> DataManager: Request to associate files
+activate DataManager
+
+DataManager -> ExperimentDatabase: Check existing associations
+ExperimentDATABASE --> DataManager: Return existing file associations
+DataManager --> ExperimentDatabase: Create new association
+ExperimentDatabase --> DataManager: Confirm association created
+deactivate DataManager
+
+DataManager -> WebIDataManager: Provide association confirmation
+WebInterface -> User: Display association confirmation message
+
+@enduml

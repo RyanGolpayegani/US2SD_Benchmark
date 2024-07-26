@@ -1,0 +1,38 @@
+@startuml
+participant "Assistant Archivist" as AA
+participant "Digital Archive\nManagement System" as DAMS
+database "Archive Database" as DB
+participant "File Storage" as FS
+participant "Staff/Researchers" as SR
+
+== Upload Process ==
+AA -> DAMS : Select working papers
+AA -> DAMS : Enter metadata and tags
+loop For each document
+   DAMS -> FS : Store working paper
+   activate FS
+      FS -> FS : Assign unique ID
+      FS --> DAMS : Confirm storage and ID
+   deactivate FS
+   DAMS -> DB : Save metadata, tags, and ID
+   activate DB
+      DB --> DAMS : Confirm saved
+   deactivate DB
+end
+DAMS --> AA : Confirm upload and tagging
+
+== Access Process ==
+SR -> DAMS : Search/Browse working papers
+DAMS -> DB : Query metadata/tags
+activate DB
+   DB --> DAMS : Return results
+deactivate DB
+DAMS -> SR : Display search results
+SR -> DAMS : Select working paper
+DAMS -> FS : Retrieve document by ID
+activate FS
+   FS --> DAMS : Serve working paper
+deactivate FS
+DAMS --> SR : Display/Download working paper
+
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+participant Developer as dev
+participant "DPIE API" as DPIE
+participant "Data Package Repository" as Repo
+database "Local Node Application" as NodeApp
+
+dev -> DPIE : Request Data Package integration
+activate DPIE
+DPIE -> Repo : Fetch Data Package
+activate Repo
+
+Repo --> DPIE : Data Package
+deactivate Repo
+DPIE -> DPIE : Validate and parse Data Package
+
+DPIE --> dev : Return parsed Data Package
+deactivate DPIE
+dev -> NodeApp : Integrate Data Package
+activate NodeApp
+NodeApp -> NodeApp : Analyze and visualize data
+NodeApp --> dev : Analysis and Visualization ready
+deactivate NodeApp
+@enduml

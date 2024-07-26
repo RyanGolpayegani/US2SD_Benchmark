@@ -1,0 +1,26 @@
+@startuml
+actor Manager
+participant "Management\nInterface" as UI
+participant "Backend\nServer" as Backend
+database "Database" as DB
+
+Manager -> UI : Request profit and loss report
+UI -> Backend : Get report data
+activate Backend
+
+Backend -> DB : Retrieve sales data
+activate DB
+DB --> Backend : Sales data
+deactivate DB
+
+Backend -> DB : Retrieve expense data
+activate DB
+DB --> Backend : Expense data
+deactivate DB
+
+Backend -> Backend : Calculate total profit and loss
+Backend --> UI : Report data
+deactivate Backend
+
+UI --> Manager : Display profit and loss report
+@enduml

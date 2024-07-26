@@ -1,0 +1,68 @@
+@startuml
+actor Staff as "Staff Member"
+participant "User Authentication" as Auth
+participant "Staff Dashboard" as Dashboard
+participant "Affidavit Management System" as AMS
+participant "Database" as DB
+participant "Compliance Module" as Compliance
+
+== Authenticate Staff Member ==
+Staff -> Auth: Access Portal
+Auth -> Staff: Request Credentials
+Staff -> Auth: Provide Credentials
+Auth -> Auth: Validate Credentials
+Auth -> Staff: Grant Access
+
+== Navigate to Affidavit Management ==
+Staff -> Dashboard: Select Manage Affidavits
+Dashboard -> AMS: Open Affidavit Management
+
+== View Pending Affidavits ==
+AMS -> DB: Query Pending Affidavits
+DB -> AMS: Return Pending Affidavits
+AMS -> Staff: Display Pending Affidavits
+
+loop For Each Affidavit
+    == Review Affidavit Details ==
+    Staff -> AMS: Select Affidavit
+    AMS -> DB: Retrieve Affidavit Details
+    DB -> AMS: Affidavit Details
+    AMS -> Staff: Show Affidavit Details
+    
+    == Verify Compliance ==
+    Staff -> Compliance: Check Requirements
+    Compliance -> DB: Validate Compliance
+    DB -> Compliance: Compliance Status
+    Compliance -> Staff: Show Status
+    
+    alt If Affidavit Compliant
+        Staff -> AMS: Mark as Compliant
+        AMS -> DB: Update Status
+        DB -> AMS: Confirmation
+        AMS -> Staff: Show Confirmation
+        
+        == Generate Compliance Notice ==
+        Staff -> Compliance: Generate Notice
+        Compliance -> DB: Save Notice
+        DB -> Compliance: Confirmation
+        Compliance -> Staff: Notice Generated
+        
+    else If Affidavit Not Compliant
+        Staff -> AMS: Mark as Non-Compliant
+        AMS -> DB: Update Status
+        DB -> AMS: Confirmation
+        AMS -> Staff: Show Confirmation
+    
+        == Request Additional Information ==
+        Staff -> AMS: Request Info
+        AMS -> DB: Update Request
+        DB -> AMS: Confirmation
+        AMS -> Staff: Info Requested
+    end
+end
+
+== Log Out ==
+Staff -> Auth: Log Out
+Auth -> Staff: Confirm Log Out
+
+@enduml

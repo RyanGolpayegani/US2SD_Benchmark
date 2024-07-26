@@ -1,0 +1,23 @@
+@startuml
+participant Developer
+participant DPIE_API as "DPIE API"
+database MongoDB
+participant DataPackage as "Data Package"
+
+Developer -> DPIE_API: Request Mongo Integration
+activate DPIE_API
+DPIE_API -> MongoDB: Initiate Connection
+activate MongoDB
+MongoDB --> DPIE_API: Connection Established
+deactivate MongoDB
+DPIE_API -> DataPackage: Fetch Data Package
+activate DataPackage
+DataPackage --> DPID_API: Return Data Package
+deactivate DataPackage
+DPIE_API -> MongoDB: Insert/Update Data
+activate MongoDB
+MongoDB --> DPIE_API: Confirmation
+deactivate MongoDB
+DPIE_API --> Developer: Operation Success
+deactivate DPIE_API
+@enduml

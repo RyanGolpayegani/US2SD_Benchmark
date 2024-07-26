@@ -1,0 +1,34 @@
+@startuml
+participant User
+participant WebInterface as "Web Interface"
+participant LogBookPage as "Log Book Page"
+participant Server as "Server"
+database DataStore as "Data Store"
+
+User -> WebInterface: Access Log Book Feature
+activate WebInterface
+
+WebInterface -> LogBookPage: Open/Create Log Page
+activate LogBookPage
+
+User -> LogBookPage: Enter/Edit HTML for Table
+activate LogBookPage
+
+LogBookPage -> Server: Submit HTML Content
+activate Server
+
+Server -> DataStore: Save Log Page with Table
+activate DataStore
+
+DataStore --> Server: Confirm Save
+deactivate DataStore
+
+Server --> LogBookPage: Confirm Log Page Saved
+deactivate Server
+
+LogBookPage --> User: Display Log Page with Table
+deactivate LogBookPage
+
+deactivate WebInterface
+
+@enduml

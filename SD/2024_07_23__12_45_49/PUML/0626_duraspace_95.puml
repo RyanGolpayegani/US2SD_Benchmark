@@ -1,0 +1,27 @@
+@startuml
+actor DAMSManager as "DAMS Manager"
+participant DIMSInterface as "DIMS Interface"
+participant RightsManagementModule as "Rights Management \nModule"
+participant Database as "DIMS Database"
+
+== Query for Permission/Restriction Dates ==
+
+DAMSManager -> DIMSInterface : Query(permission/restriction dates)
+activate DIMSInterface
+
+DIMSInterface -> RightsManagementModule : GetDatesForPermissionOrRestriction()
+activate RightsManagementModule
+
+RightsManagementModule -> Database : Fetch(permission/restriction dates)
+activate Database
+
+Database --> RightsManagementModule : ReturnDates()
+deactivate Database
+
+RightsManagementModule --> DIMSInterface : DatesInfo(permission/restriction dates)
+deactivate RightsManagementModule
+
+DIMSInterface --> DAMSManager : DisplayDates(permission/restriction dates)
+deactivate DIMSInterface
+
+@enduml

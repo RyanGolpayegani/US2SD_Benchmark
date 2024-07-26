@@ -1,0 +1,28 @@
+@startuml
+actor Member
+participant UI
+participant Controller
+participant SearchService
+database Database
+
+Member -> UI : Enter subject category
+UI -> Controller : Search request(subject category)
+activate Controller
+
+Controller -> SearchService : Get books by subject(subject category)
+activate SearchService
+
+SearchService -> Database : Query books(subject category)
+activate Database
+
+Database --> SearchService : Return books
+deactivate Database
+
+SearchService --> Controller : Books list
+deactivate SearchService
+
+Controller --> UI : Display books
+deactivate Controller
+
+UI --> Member : Show search results
+@enduml

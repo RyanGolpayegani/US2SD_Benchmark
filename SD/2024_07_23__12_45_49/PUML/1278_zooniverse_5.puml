@@ -1,0 +1,25 @@
+@startuml
+actor User
+participant "Front End" as FE
+participant "Recommendation \nEngine" as RE
+database "Content Database" as DB
+
+User -> FE : Enter search query and image tags
+activate FE
+
+FE -> RE : Query with metadata and tags
+activate RE
+
+RE -> DB : Fetch music based on \nmetadata and image tags
+activate DB
+DB --> RE : Return search results
+deactivate DB
+
+RE -> RE : Process results \n(Analyze & Categorize)
+RE --> FE : Suggest music, artists, genres
+deactivate RE
+
+FE --> User : Display music suggestions \nand related artists
+deactivate FE
+
+@enduml

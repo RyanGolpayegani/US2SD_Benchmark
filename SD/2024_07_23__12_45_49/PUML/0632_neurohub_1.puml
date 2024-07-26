@@ -1,0 +1,43 @@
+@startuml
+actor SysAdmin as "System Administrator"
+participant Script as "Installation Script"
+participant UbuntuSystem as "Ubuntu OS"
+participant NeurohubNode as "Neurohub Node"
+
+SysAdmin -> Script: execute(./install_neurohub.sh)
+activate Script
+
+Script -> UbuntuSystem: check_system_requirements()
+activate UbuntuSystem
+UbuntuSystem -> UbuntuSystem: validate_requirements()
+UbuntuSystem --> Script: requirements_ok
+deactivate UbuntuSystem
+
+Script -> UbuntuSystem: install_dependencies()
+activate UbuntuSystem
+UbuntuSystem --> Script: dependencies_installed
+deactivate UbuntuSystem
+
+Script -> UbuntuSystem: configure_system_settings()
+activate UbuntuSystem
+UbuntuSystem --> Script: system_configured
+deactivate UbuntuSystem
+
+Script -> UbuntuSystem: download_neurohub_files()
+activate UbuntuSystem
+UbuntuSystem -> UbuntuSystem: fetch_from_repository()
+UbuntuSystem --> Script: files_downloaded
+deactivate UbuntuSystem
+
+Script -> UbuntuSystem: install_neurohub_node()
+activate UbuntuSystem
+UbuntuSystem -> NeurohubNode: setup()
+activate NeurohubNode
+NeurohubNode --> UbuntuSystem: installation_complete
+deactivate NeurohubNode
+UbuntuSystem --> Script: neurohub_installed
+deactivate UbuntuSystem
+
+Script --> SysAdmin: installation_success
+deactivate Script
+@enduml

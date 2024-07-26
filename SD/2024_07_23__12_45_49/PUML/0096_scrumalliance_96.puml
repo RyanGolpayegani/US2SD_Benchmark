@@ -1,0 +1,19 @@
+@startuml
+actor Trainer
+database Database
+participant "ContentFilterService" as Filter
+participant "ContentManagementSystem" as CMS
+participant "UserProfile" as Profile
+
+== Read Relevant Information Flow ==
+
+Trainer -> CMS : Request content
+CMS -> Filter : Get Trainer's profile ID
+Filter -> Database : Query profile details
+Database -> Filter : Return profile details
+Filter -> CMS : Identify content relevant to Trainers
+CMS -> Database : Request relevant content
+Database -> CMS : Return relevant content
+CMS -> Trainer : Display relevant content
+
+@enduml

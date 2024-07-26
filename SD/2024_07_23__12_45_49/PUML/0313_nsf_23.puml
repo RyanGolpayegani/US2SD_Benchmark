@@ -1,0 +1,34 @@
+@startuml
+participant Administrator as admin
+participant "CMS System" as cms
+participant "Database" as db
+
+== Role Assignment Sequence ==
+
+admin -> cms : Log into CMS
+activate admin
+activate cms
+
+cms -> db : Validate admin credentials
+activate db
+db -> cms : Confirmation
+deactivate db
+
+cms -> admin : Display dashboard
+admin -> cms : Navigate to user management section
+cms -> admin : Display user list
+
+admin -> cms : Select user to assign role
+activate admin
+admin -> cms : Choose role from dropdown
+cms -> db : Update user with new role
+activate db
+db -> db : Save changes
+db -> cms : Confirm role assignment
+deactivate db
+
+cms -> admin : Display success message
+deactivate admin
+deactivate cms
+
+@enduml

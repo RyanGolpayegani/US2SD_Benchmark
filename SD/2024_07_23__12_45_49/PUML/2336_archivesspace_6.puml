@@ -1,0 +1,20 @@
+@startuml
+actor User
+participant "Login Interface" as UI
+participant "Authentication Service" as Auth
+database "LDAP Server" as LDAP
+
+User -> UI : Enter username\nand password
+UI -> Auth : Validate credentials
+Auth -> LDAP : Request authentication
+LDAP -> Auth : Authentication response\n(success or failure)
+Auth -> UI : Authentication result
+UI -> User : Display authentication result
+
+alt Success
+    UI -> User : Display main page
+else Failure
+    UI -> User : Display error message
+end
+
+@enduml

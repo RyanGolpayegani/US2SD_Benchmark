@@ -1,0 +1,25 @@
+@startuml
+actor Publisher
+participant "UI/API Gateway" as Gateway
+participant "Authentication Service" as Auth
+participant "Dataset Management Service" as DatasetService
+participant "Data Storage" as Storage
+participant "Versioning System" as Versioning
+participant "Validation Service" as Validation
+participant "Publishing Engine" as Publishing
+
+Publisher -> Gateway : Request to publish dataset
+Gateway -> Auth : Authenticate Publisher
+Auth --> Gateway : Authentication Success
+Gateway -> DatasetService : Initiate Publish Dataset
+DatasetService -> Storage : Save Dataset Info
+Storage --> DatasetService : Dataset Info Saved
+DatasetService -> Validation : Validate Dataset
+Validation --> DatasetService : Dataset Valid
+DatasetService -> Versioning : Create New Version
+Versioning --> DatasetService : Version Created
+DatasetService -> Publishing : Make Dataset Public
+Publishing --> DatasetService : Dataset Published Publicly
+DatasetService --> Gateway : Publish Success
+Gateway --> Publisher : Dataset Published Successfully
+@enduml

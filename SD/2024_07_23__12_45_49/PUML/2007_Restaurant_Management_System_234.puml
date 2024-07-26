@@ -1,0 +1,27 @@
+@startuml
+participant Customer_UI as Customer
+participant Server
+database DB
+participant "Notification System" as NS
+participant Employee_UI as Employee
+
+Customer -> Server : Place Order
+activate Server
+
+Server -> DB : Save Order Details
+activate DB
+DB --> Server : Confirmation
+deactivate DB
+
+Server -> NS : Generate Order Notification
+activate NS
+NS --> Server : Notification Generated
+deactivate NS
+
+Server -> Employee_UI : Send Notification
+activate Employee_UI
+Employee_UI --> Server : Acknowledge
+deactivate Employee_UI
+
+deactivate Server
+@enduml

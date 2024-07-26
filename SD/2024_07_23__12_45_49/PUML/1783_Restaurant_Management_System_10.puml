@@ -1,0 +1,40 @@
+@startuml
+actor Chef
+participant "Menu Management System" as Menu
+database "Database" as DB
+participant "Feedback System" as Feedback
+
+note over Chef, Feedback : Chef creates dishes and follows up on customer comments
+
+Chef -> Menu : select "Create New Dish"
+activate Menu
+
+Menu -> DB : save new dish details
+activate DB
+DB --> Menu : confirm dish creation
+deactivate DB
+
+Menu --> Chef : show creation success message
+deactivate Menu
+
+... time passes ...
+
+Chef -> Menu : request to view dishes
+activate Menu
+Menu -> DB : query dish details
+activate DB
+DB --> Menu : return dish details
+deactivate DB
+Menu --> Chef : display dishes
+deactivate Menu
+
+Chef -> Feedback : select dish to view comments
+activate Feedback
+Feedback -> DB : query comments for dish
+activate DB
+DB --> Feedback : return comments
+deactivate DB
+Feedback --> Chef : display comments
+deactivate Feedback
+
+@enduml

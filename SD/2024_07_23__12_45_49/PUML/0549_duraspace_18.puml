@@ -1,0 +1,33 @@
+@startuml
+participant RepoManager as RM "Repository Manager"
+participant DIMS_UI as UI "DIMS User Interface"
+participant CacheSystem as Cache "Cache System"
+participant DIMSEngine as Engine "DIMS Engine"
+participant DAMSDatabase as DB "DAMS Database"
+
+RM -> UI : Request object file list
+activate RM
+activate UI
+
+UI -> Engine : Get files for object [ObjectID]
+activate Engine
+
+Engine -> Cache : Check if file list in cache
+activate Cache
+alt Cache Hit
+    Cache -> Engine : Return cached file list
+else Cache Miss
+    Cache -> Engine : Return cache miss signal
+    Engine -> DB : Query files for ObjectID
+    activate DB
+    DB -> Engine : Return file list from DB
+    deactivate DB
+    Engine -> Cache : Update cache with new file list
+end
+Cache --> Engine : Return file list
+Engine -> UI : Display file list to RM
+UI -> RM : Show file list
+deactivate Engine
+deactivate UI
+deactivate RM
+@enduml

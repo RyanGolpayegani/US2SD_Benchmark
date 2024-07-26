@@ -1,0 +1,44 @@
+@startuml
+actor "OlderPerson" as person
+participant "ALFRED Device" as alfred
+participant "Server" as server
+participant "Social Activities Database" as db
+participant "Human Interaction Module" as humanInteraction
+
+== Real Human Interaction Triggering ==
+
+person -> alfred : Express wish for human interaction
+alfred -> server : Request social activities near location
+server -> db : Query for activities
+db -> server : Return activity list
+server --> alfred : Send list of activities
+alfred -> humanInteraction : Suggest activities with potential for human interaction
+humanInteraction -> alfred : Provide details (time, place, type)
+alfred -> person : Display suggested activities
+
+== User Chooses an Activity ==
+
+person -> alfred : Choose an activity
+alfred -> server : Register choice & preferences
+server -> db : Update user activity preferences
+alfred -> person : Confirm participation and provide details
+
+== Reminders and Navigation Assistance ==
+
+alfred -> person : Send reminder on day of event
+person -> alfred : Request directions
+alfred -> server : Request navigation details for selected activity
+server -> alfred : Provide navigation instructions
+alfred -> person : Offer step-by-step navigation
+
+== Post-Activity Engagement ==
+
+person -> alfred : Mark activity as attended
+alfred -> server : Update user's social interaction profile
+server -> db : Log activity attendance
+alfred -> person : Ask for feedback on activity
+person -> alfred : Provide feedback
+alfred -> server : Submit feedback
+server -> db : Store feedback for future suggestions
+
+@enduml

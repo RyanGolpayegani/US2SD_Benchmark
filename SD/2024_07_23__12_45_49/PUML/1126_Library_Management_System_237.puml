@@ -1,0 +1,25 @@
+@startuml
+actor Member
+participant "Frontend Interface" as Frontend
+participant "Backend Server" as Backend
+participant "Database" as DB
+
+== User Requests Book Details ==
+Member -> Frontend : Search for book
+activate Frontend
+Frontend -> Backend : Request book details
+activate Backend
+
+== Backend Processes Request ==
+Backend -> DB : Query book information
+activate DB
+DB -> Backend : Return book details including Unique ID
+deactivate DB
+
+== Backend Responds with Book Details ==
+Backend -> Frontend : Display book details (including Unique ID)
+deactivate Backend
+Frontend -> Member : Show book details and Unique ID
+deactivate Frontend
+
+@enduml

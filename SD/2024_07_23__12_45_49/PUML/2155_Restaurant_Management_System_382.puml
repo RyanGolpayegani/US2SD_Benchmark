@@ -1,0 +1,26 @@
+@startuml
+participant Owner as owner
+participant "UI Interface" as UI
+participant "Backend Server" as server
+participant "Employee Management System" as empManager
+participant "Database" as db
+
+owner -> UI : Access employee management module
+UI -> server : Request employee data
+server -> empManager : Query employee clock-in/out records
+empManager -> db : Fetch employee time records
+db --> empManager : Employee time records
+empManager --> server : Employee time data
+server --> UI : Display employee time data
+UI --> owner : Show employee time data
+
+owner -> UI : Request edit of clock-in/out data
+UI -> server : Send edit request
+server -> empManager : Process edit request
+empManager -> db : Update employee time records
+db --> empManager : Confirm update
+empManager --> server : Update successful
+server --> UI : Display success message
+UI --> owner : Confirm data updated
+
+@enduml

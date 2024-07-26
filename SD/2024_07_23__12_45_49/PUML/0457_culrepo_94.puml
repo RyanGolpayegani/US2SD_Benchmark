@@ -1,0 +1,39 @@
+@startuml
+actor "DB/IR Administrator" as admin
+participant "Admin Interface" as interface
+database "Patron Account DB" as patronDB
+
+== View Patron Subscriptions ==
+admin -> interface: Access patron accounts section
+activate interface
+interface -> patronDB: Retrieve account details
+activate patronDB
+patronDB -> interface: Account details
+deactivate patronDB
+interface -> admin: Display account subscriptions
+deactivate interface
+
+== Edit Patron Subscriptions ==
+admin -> interface: Select Edit Subscriptions
+activate interface
+admin -> interface: Modify subscriptions
+interface -> patronDB: Update subscription details
+activate patronDB
+patronDB -> interface: Confirmation of update
+deactivate patronDB
+interface -> admin: Display updated subscriptions
+deactivate interface
+
+== Reset Patron Password ==
+admin -> interface: Select Reset Password
+activate interface
+admin -> interface: Confirm password reset
+interface -> patronDB: Process password reset
+activate patronDB
+patronDB -> patronDB: Generate temporary password
+patronDB -> interface: Temporary password & reset confirmation
+deactivate patronDB
+interface -> admin: Display confirmation and temporary password
+deactivate interface
+
+@enduml

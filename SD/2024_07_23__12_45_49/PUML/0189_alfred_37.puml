@@ -1,0 +1,35 @@
+@startuml
+participant OlderPerson as user
+participant "ALFRED Device" as device
+participant "Agenda Management" as agenda
+participant "Notification System" as notify
+participant "Speech Interface" as speech
+
+user -> device : "Activate day/night rhythm support"
+activate device
+
+device -> agenda : "Fetch personal agenda"
+activate agenda
+agenda -> agenda : "Calculate day schedule"
+agenda -> agenda : "Integrate night rhythm"
+agenda -> device : "Return personalized agenda"
+deactivate agenda
+
+device -> notify : "Setup reminders"
+activate notify
+notify -> notify : "Schedule day reminders"
+notify -> notify : "Schedule night reminders"
+notify -> device : "Reminders set"
+deactivate notify
+
+loop Each Reminder
+    device -> speech : "Voice Reminder"
+    activate speech
+    speech --> user : "Agenda Reminder (voice)"
+    deactivate speech
+end
+
+device -> device : "Monitor response/adjustment"
+device --> user : "Adjust reminders if needed"
+
+@enduml

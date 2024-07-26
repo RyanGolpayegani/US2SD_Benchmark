@@ -1,0 +1,22 @@
+@startuml
+actor DataManager
+participant "DMPTool Interface" as Interface
+participant "Metadata Repository" as Metadata
+participant "Expertise Database" as ExpertiseDB
+participant "Data Content Analysis Module" as AnalysisModule
+
+== Query Data Content ==
+DataManager -> Interface : Access DMPTool to check data content
+Interface -> Metadata : Request metadata for specified data
+Metadata --> Interface : Return metadata details
+Interface --> DataManager : Display metadata content
+
+== Analyze Data Content for Reusability ==
+DataManager -> Interface : Request analysis on data content
+Interface -> AnalysisModule : Send data content for analysis
+AnalysisModule -> ExpertiseDB : Query available expertise for content type
+ExpertiseDB --> AnalysisModule : Return expertise availability
+AnalysisModule --> Interface : Analysis results (expertise matched/unmatched)
+Interface --> DataManager : Display analysis results & expertise status
+
+@enduml

@@ -1,0 +1,60 @@
+@startuml
+actor Researcher as R
+participant "DMPTool Interface" as UI
+database "Metadata Repository" as MR
+participant "Licensing Module" as LM
+participant "External Metadata Tools" as EMT
+participant "Institutional Systems" as IS
+
+R -> UI: Access DMPTool
+activate UI
+
+UI -> MR: Retrieve existing project DMP
+activate MR
+
+MR --> UI: Display DMP details
+deactivate MR
+
+UI -> R: Show DMP details
+R -> UI: Select "Add Data Sharing Intent"
+
+UI -> LM: Request available licenses
+activate LM
+
+LM --> UI: Display license options
+
+R -> UI: Choose specific license
+UI -> LM: Record selected license
+activate LM
+
+LM -> MR: Update DMP with license details
+activate MR
+
+MR --> LM: Confirm update
+deactivate MR
+
+LM --> UI: Confirm successful record
+deactivate LM
+
+UI -> EMT: Trigger metadata synchronization
+activate EMT
+
+EMT -> MR: Update external metadata
+activate MR
+
+MR --> EMT: Confirm metadata update
+deactivate MR
+
+EMT --> UI: Synchronization complete
+deactivate EMT
+
+UI -> IS: Update institutional records
+activate IS
+
+IS --> UI: Confirm institutional update
+deactivate IS
+
+UI --> R: Display confirmation message
+deactivate UI
+
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+actor NSFMember as Member
+
+participant "Cloud Interface" as Cloud
+participant "CMS" as CMS
+participant "Document Storage" as Storage
+participant "Browser Interface" as Browser
+
+Member -> Cloud: Request beta.nsf.gov/documentation
+activate Cloud
+Cloud -> CMS: Fetch documentation link
+activate CMS
+CMS -> Storage: Retrieve documents list
+activate Storage
+
+alt If documents exist
+    Storage -> Storage: Compile requested documents
+    Storage -> CMS: Send documents list
+    deactivate Storage
+    CMS -> Cloud: Provide documentation link
+    deactivate CMS
+    Cloud -> Browser: Display documentation page
+    activate Browser
+    Browser -> Member: Show documentation and reports
+    deactivate Browser
+else No documents found
+    Storage --> CMS: Error message
+    deactivate Storage
+    CMS --> Cloud: No documents available
+    deactivate CMS
+    Cloud -> Browser: Show error message
+    activate Browser
+    Browser -> Member: Display no documents found message
+    deactivate Browser
+end
+
+deactivate Cloud
+
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+actor Administrator
+participant "Admin Interface" as AdminInterface
+participant "User Management System" as UserManagement
+participant "Metadata Management" as MetadataManagement
+participant "Database" as DB
+
+== Restrict Metadata Field Visibility ==
+Administrator -> AdminInterface: Access Metadata Field Settings
+AdminInterface -> MetadataManagement: Request Current Settings
+MetadataManagement -> DB: Fetch Current Metadata Settings
+DB -> MetadataManagement: Return Metadata Settings
+MetadataManagement -> AdminInterface: Show Current Settings
+AdminInterface -> Administrator: Display Current Metadata Settings
+
+Administrator -> AdminInterface: Specify Field Visibility Restrictions
+AdminInterface -> MetadataManagement: Update Visibility Settings
+MetadataManagement -> DB: Validate User Group Exists
+DB -> MetadataManagement: User Group Validation Response
+
+alt If User Group Exists
+    MetadataManagement -> DB: Update Field Visibility Based on User Group
+    DB -> MetadataManagement: Confirmation of Update
+    MetadataManagement -> AdminInterface: Display Update Success Message
+    AdminInterface -> Administrator: Notify Update Success
+else If User Group Does Not Exist
+    MetadataManagement -> AdminInterface: Error Message (User Group Not Found)
+    AdminInterface -> Administrator: Display Error Message
+end
+
+@enduml

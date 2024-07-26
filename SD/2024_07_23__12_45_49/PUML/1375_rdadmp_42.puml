@@ -1,0 +1,20 @@
+@startuml
+participant Researcher
+participant DMPToolInterface as Interface
+participant DataManager as DM
+participant RepositorySystem as RepoSys
+participant CostCalculationTool as CostTool
+
+Researcher -> Interface : request(cost information)
+Interface -> DM : query(metadata for cost estimation)
+DM --> Interface : metadata
+Interface -> CostTool : calculateCosts(metadata)
+activate CostTool
+CostTool -> RepoSys : getRepositoryCriteria()
+RepoSys --> CostTool : criteria
+CostTool -> RepoSys : estimateSubmissionFees(metadata, criteria)
+RepoSys --> CostTool : submissionFees
+deactivate CostTool
+CostTool --> Interface : costsDetail(submissionFees,\n storage, preservation)
+Interface --> Researcher : display(costsDetail)
+@enduml

@@ -1,0 +1,45 @@
+@startuml
+actor "Data Publishing User" as user
+participant "User Interface" as UI
+participant "Authentication Service" as Auth
+participant "Dataset Management Service" as Manage
+database "Dataset Repository" as Repo
+
+== Authentication ==
+user -> UI : Navigate to My Published Difs
+UI -> Auth : Request user authentication
+Auth -> UI : Authentication success
+
+== Fetching Published Datasets ==
+UI -> Manage : Request published datasets for user
+Manage -> Repo : Query datasets by user ID
+Repo -> Manage : Return datasets list
+Manage -> UI : Display datasets to user
+
+== User Management Actions ==
+loop for each dataset
+    alt Edit Dataset
+        user -> UI : Select "Edit" on a dataset
+        UI -> Manage : Request dataset details
+        Manage -> Repo : Fetch dataset details
+        Repo -> Manage : Return dataset details
+        Manage -> UI : Display edit form
+        user -> UI : Update dataset and submit
+        UI -> Manage : Update dataset in Repo
+        Manage -> UI : Confirm update to user
+    else Delete Dataset
+        user -> UI : Select "Delete" on a dataset
+        UI -> Manage : Request dataset deletion
+        Manage -> Repo : Delete dataset
+        Repo -> Manage : Confirm deletion
+        Manage -> UI : Confirm deletion to user
+    else Update Dataset
+        user -> UI : Select "Update" on a dataset
+        UI -> Manage : Request dataset update process
+        Manage -> UI : Guide user through dataset update
+        user -> UI : Submit updated dataset
+        UI -> Manage : Process and save updated dataset
+        Manage -> UI : Confirm update to user
+    end
+end
+@enduml

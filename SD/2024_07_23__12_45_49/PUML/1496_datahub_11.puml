@@ -1,0 +1,22 @@
+@startuml
+actor Publisher
+participant "UI Dashboard" as Dashboard
+participant "API Gateway" as API
+participant "Authentication Service" as AuthService
+participant "Data Management Service" as DataService
+participant "Storage" as Storage
+participant "Cache" as Cache
+
+Publisher -> Dashboard: Selects data package for deletion
+Dashboard -> API: Request to delete data package (auth token, package_id)
+API -> AuthService: Validate auth token
+AuthService --> API: Token validity confirmed
+API -> DataService: Delete data package request (package_id)
+DataService -> Storage: Request permanent deletion (package_id)
+Storage --> DataService: Confirm deletion
+DataService -> Cache: Invalidate cache for deleted package
+Cache --> DataService: Cache updated
+DataService --> API: Deletion successful
+API --> Dashboard: Display success message
+Dashboard --> Publisher: Notify of successful deletion
+@enduml

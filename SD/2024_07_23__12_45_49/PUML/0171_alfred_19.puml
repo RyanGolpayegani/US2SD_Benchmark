@@ -1,0 +1,31 @@
+@startuml
+!theme cerulean
+
+actor OlderPerson as "Older Person"
+participant ALFRED as "ALFRED Interface"
+participant "Payment Processor" as PP
+participant "Vendor" as Vendor
+
+== Payment Initiation ==
+OlderPerson -> ALFRED : "Initiate payment of X amount"
+ALFRED -> ALFRED : Verify user identity
+ALFRED -> PP : "Request payment of X to Vendor"
+
+== Payment Processing ==
+PP -> PP : "Process payment"
+alt Payment Success
+    PP -> Vendor : "Transfer X amount"
+    Vendor -> PP : "Confirm receipt"
+    PP -> ALFRED : "Payment successful"
+else Payment Failure
+    PP -> ALFRED : "Payment failed: [Reason]"
+end
+
+== Feedback to User ==
+alt Payment Successful
+    ALFRED -> OlderPerson : "Payment of X to Vendor successful"
+else Payment Failed
+    ALFRED -> OlderPerson : "Payment failed: [Reason]"
+end
+
+@enduml

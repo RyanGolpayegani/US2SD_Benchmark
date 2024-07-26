@@ -1,0 +1,22 @@
+@startuml
+participant Publisher as publisher
+participant "DPIE System" as dpi
+participant "Data Storage" as storage
+participant "Verification Service" as verify
+participant "Data Package Repository" as repo
+
+publisher -> dpi : Request availability check
+dpi -> storage : Verify data integrity
+storage -> verify : Request data verification
+verify -> storage : Return verification status
+storage --> dpi : Confirm data availability
+dpi --> publisher : Return availability status
+
+publisher -> dpi : Request persistence check
+dpi -> repo : Verify persistence criteria
+repo -> verify : Request persistence validation
+verify -> repo : Validate persistence
+repo --> dpi : Confirm persistence status
+dpi --> publisher : Return persistence status
+
+@enduml

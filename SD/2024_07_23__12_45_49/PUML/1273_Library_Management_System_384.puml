@@ -1,0 +1,36 @@
+@startuml
+participant Librarian
+participant WebInterface as "Web Interface"
+participant AuthenticationController as "Authentication Controller"
+participant BookManagementSystem as "Book Management System"
+participant Database as "Database"
+
+Librarian -> WebInterface: Initiate book update process
+activate WebInterface
+
+WebInterface -> AuthenticationController: Validate librarian credentials
+activate AuthenticationController
+AuthenticationController --> WebInterface: Credentials validated
+deactivate AuthenticationController
+
+WebInterface -> BookManagementSystem: Request book details update form
+activate BookManagementSystem
+BookManagementSystem --> WebInterface: Display update form
+deactivate BookManagementSystem
+
+Librarian -> WebInterface: Submit updated book details
+activate WebInterface
+WebInterface -> BookManagementSystem: Process book update
+activate BookManagementSystem
+
+BookManagementSystem -> Database: Update book details
+activate Database
+Database --> BookManagementSystem: Book details updated
+deactivate Database
+
+BookManagementSystem --> WebInterface: Confirm book updated successfully
+deactivate BookManagementSystem
+WebInterface --> Librarian: Display success message
+deactivate WebInterface
+
+@enduml

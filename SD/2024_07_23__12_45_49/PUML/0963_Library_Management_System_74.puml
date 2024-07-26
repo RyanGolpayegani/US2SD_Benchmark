@@ -1,0 +1,40 @@
+@startuml
+participant Librarian
+participant "CLMS Interface" as CLMS
+database "Library Database" as DB
+
+== Placing a Unique Identification Number on a Book ==
+
+Librarian -> CLMS : LogIn(credentials)
+activate CLMS
+
+CLMS -> DB : ValidateLibrarianCredentials(credentials)
+activate DB
+DB --> CLMS : CredentialsValidated
+deactivate DB
+
+CLMS --> Librarian : DisplayDashboard()
+deactivate CLMS
+
+Librarian -> CLMS : NavigateToAddBookSection()
+activate CLMS
+
+CLMS --> Librarian : DisplayAddBookForm()
+deactivate CLMS
+
+Librarian -> CLMS : SubmitBookDetails(title, author, \npublicationDate, etc.)
+activate CLMS
+
+CLMS -> CLMS : GenerateUniqueID()
+activate CLMS
+CLMS --> CLMS : UniqueIDGenerated
+deactivate CLMS
+
+CLMS -> DB : SaveBookDetails(title, author, uniqueID, \npublicationDate, etc.)
+activate DB
+DB --> CLMS : BookSavedSuccessfully
+deactivate DB
+
+CLMS --> Librarian : DisplaySuccessMessage("Book added \nwith ID: [uniqueID]")
+deactivate CLMS
+@enduml

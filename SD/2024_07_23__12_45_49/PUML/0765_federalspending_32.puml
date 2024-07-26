@@ -1,0 +1,17 @@
+@startuml
+participant AgencyUser as AU
+participant BrokerWebInterface as BWI
+participant DataValidationService as DVS
+participant Database as DB
+
+AU -> BWI : Initiate Submission Request
+BWI -> DVS : Start Data Processing
+DVS -> DB : Fetch Data Including FSRS Records
+DB --> DVS : Data with FSRS Records
+DVS -> DVS : Validate FSRS Record Status
+DVS -> DB : Query for Deleted FSRS Records
+DB --> DVS : Deleted FSRS Records List
+DVS -> DVS : Exclude Deleted FSRS Records from Submission
+DVS -> BWI : Return Processed and Validated Data for Submission
+BWI -> AU : Display Submission Results\n(without Deleted FSRS Records)
+@enduml

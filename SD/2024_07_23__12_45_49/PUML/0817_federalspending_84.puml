@@ -1,0 +1,22 @@
+@startuml
+participant "Agency User" as user
+participant "Broker Platform" as broker
+participant "Validation Service" as validation
+participant "Submission Processor" as processor
+participant "Database" as db
+
+user -> broker : Submit data (ZIP - last 4 digits missing)
+broker -> validation : Validate submission
+activate validation
+validation -> validation : Check ZIP format
+note right of validation : ZIP validation rules updated\nto allow missing last 4 digits
+validation --> broker : Validation passed
+deactivate validation
+broker -> processor : Process submission
+activate processor
+processor -> db : Update submission record
+db --> processor : Confirmation
+processor --> broker : Submission processed
+deactivate processor
+broker --> user : Submission successful
+@enduml

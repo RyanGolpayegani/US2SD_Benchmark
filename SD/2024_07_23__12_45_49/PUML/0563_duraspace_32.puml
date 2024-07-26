@@ -1,0 +1,32 @@
+@startuml
+participant User
+participant "UI Layer" as UI
+participant "Control Layer" as Control
+participant "Data Access Layer" as DataAccess
+participant "Database" as DB
+
+User -> UI: Request object details
+activate UI
+
+UI -> Control: GetObjectDetails(objectId)
+activate Control
+
+Control -> DataAccess: FetchObjectDetails(objectId)
+activate DataAccess
+
+DataAccess -> DB: Query object components
+activate DB
+
+DB --> DataAccess: Object components data
+deactivate DB
+
+DataAccess --> Control: Object details with components
+deactivate DataAccess
+
+Control --> UI: Object details and components
+deactivate Control
+
+UI --> User: Display object components
+deactivate UI
+
+@enduml

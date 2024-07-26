@@ -1,0 +1,17 @@
+@startuml
+actor RepositoryManagerResearcher as researcher
+participant ApplicationInterface as app
+participant MatchMakingService as matchService
+database DataOwnersDB as ownersDB
+database DataPackagersDB as packagersDB
+participant NotificationService as notifier
+
+researcher -> app : Request match-making
+app -> matchService : Initiate match-making
+matchService -> ownersDB : Retrieve Data Owners Info
+matchService -> packagersDB : Retrieve Data Packagers Info
+matchSirvice -> matchService : Process Matching Algorithm
+matchService -> notifier : Send Notification to Matched Pair
+note right of notifier : Notification includes\ncontact information\nand data details.
+notifier -> researcher : Confirmation & Match Details
+@enduml

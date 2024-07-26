@@ -1,0 +1,28 @@
+@startuml
+participant TeamMember
+participant CollaborationPlatform
+participant CalendarService
+participant NotificationService
+
+TeamMember -> CollaborationPlatform: RequestIncreasedCoworkingSlots()
+activate CollaborationPlatform
+
+CollaborationPlatform -> CalendarService: CheckForAvailableSlots()
+activate CalendarService
+CalendarService --> CollaborationPlatform: AvailableSlotsDetails
+deactivate CalendarService
+
+CollaborationPlatform -> TeamMember: DisplayAvailableSlots(AvailableSlotsDetails)
+TeamMember -> CollaborationPlatform: SelectDesiredSlots(SelectedSlots)
+CollaborationPlatform -> CalendarService: ScheduleSlots(SelectedSlots)
+activate CalendarService
+CalendarService --> CollaborationPlatform: Confirmation(ScheduledSlots)
+deactivate CalendarService
+
+CollaborationPlatform -> NotificationService: SendConfirmationToTeam(ScheduledSlots)
+activate NotificationService
+NotificationService --> TeamMember: ConfirmationNotification(ScheduledSlots)
+deactivate NotificationTService
+
+deactivate CollaborationPlatform
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+actor "Extension Administrator" as EA
+participant "Repository Web Interface" as RWI
+participant "Authentication System" as Auth
+participant "Content Management System" as CMS
+participant "Metadata Handler" as MH
+participant "Access Control" as AC
+participant "Notification System" as NS
+database "Repository Database" as RD
+
+EA -> RWI : Accesses Repository
+RWN -> Auth : Authentication Request
+Auth -> RWI : Authentication Response
+activate Auth
+deactivate Auth
+
+EA -> RWI : Selects 'Upload Resource'
+RWI -> CMS : Initiate Resource Upload
+CMS -> MH : Add Metadata
+activate MH
+MH -> RD : Update Metadata
+deactivate MH
+
+EA -> CMS : Define Access/Visibility Settings
+CMS -> AC : Set Access Permissions
+activate AC
+RD <- AC : Apply Permissions to Resource
+deactivate AC
+
+EA -> CMS : Specify Geographic Areas and Projects
+CMS -> MH : Update Resource Metadata with Tags
+MH -> RD : Save Updated Metadata
+
+EA -> RWI : Confirm & Finalize Upload
+RWI -> CMS : Process Confirmation
+CMS -> RD : Store Resource Information
+CMS -> NS : Send Notifications
+activate NS
+NS -> EA : Notification of Availability to Faculty
+deactivate NS
+
+@enduml

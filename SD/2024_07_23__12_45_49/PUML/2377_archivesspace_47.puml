@@ -1,0 +1,41 @@
+@startuml
+participant RepositoryManager as RM
+participant CAMSFrontend as CF
+participant CAMSBackend as CB
+participant Database as DB
+
+== Record Creation ==
+RM -> CF : Navigate to record creation page
+CF -> CB : Request record creation form
+CB -> CF : Return record creation form
+CF -> RM : Display record creation form
+RM -> CF : Fill form and submit
+CF -> CB : Validate and create request
+CB -> DB : Insert record data
+DB --> CB : Acknowledge record creation
+CB --> CF : Confirmation of record creation
+CF --> RM : Display creation success message
+
+== Record Update ==
+RM -> CF : Search and select record
+CF -> CB : Request record details
+CB -> DB : Retrieve record details
+DB --> CB : Return record details
+CB --> CF : Display record details
+CF --> RM : Show record details
+RM -> CF : Modify details and submit
+CF -> CB : Validate and update request
+CB -> DB : Update record data
+DB --> CB : Acknowledge record update
+CB --> CF : Confirmation of record update
+CF --> RM : Display update success message
+
+== Record Deletion ==
+RM -> CF : Select delete option for record
+CF -> CB : Request record deletion
+CB -> DB : Delete record
+DB --> CB : Acknowledge record deletion
+CB --> CF : Confirmation of record deletion
+CF --> RM : Display deletion success message
+
+@enduml

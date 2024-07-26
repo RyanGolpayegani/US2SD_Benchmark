@@ -1,0 +1,29 @@
+@startuml
+
+participant DonorRepresentative as DR
+participant WebInterface as WI
+participant UserAuthenticationService as UAS
+participant ArchiveManagementSystem as AMS
+participant Database as DB
+participant ThumbnailGenerationService as TGS
+
+DR -> WI: Request to view thumbnails
+WI -> UAS: Verify user identity and permissions
+UAS -> WI: User authenticated and authorized
+WI -> AMS: Request digital item thumbnails
+AMS -> DB: Query digital items
+loop For each digital item
+    DB -> AMS: Return digital item info
+    AMS -> TGS: Request to generate thumbnail [If not exists]
+    TGS -> AMS: Thumbnail generated and stored
+end
+AMS -> WI: Return list of items with thumbnails reference
+WI -> DR: Display thumbnails
+DR -> WI: Selects a thumbnail
+WI -> AMS: Request specific digital item details
+AMS -> DB: Retrieve digital item details
+DB -> AMS: Digital item details returned
+AMS -> WI: Return digital item details
+WI -> DR: Display digital item details
+
+@enduml

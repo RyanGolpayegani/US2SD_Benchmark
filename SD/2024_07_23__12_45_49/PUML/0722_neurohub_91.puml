@@ -1,0 +1,43 @@
+@startuml
+!theme cerulean
+
+actor Researcher as researcher
+participant "Web Interface" as webInterface
+participant "Backend Server" as backend
+database "Experiment Database" as database
+
+== Authentication ==
+researcher -> webInterface : Access Neurohub
+webInterface -> backend : Request authentication
+backend -> database : Validate user credentials
+database -> backend : Credentials valid
+backend -> webSecret Window: Access granted
+webInterface -> researcher : Display dashboard
+
+== Navigating to Experiment Section ==
+researcher -> webInterface : Navigate to 'My Experiments'
+webInterface -> backend : Request user's experiments
+backend -> database : Fetch experiments list
+database -> backend : Return experiments
+backend -> webInterface : Display experiments list
+webInterface -> researcher : Show 'My Experiments' section
+
+== Uploading Experiment Inputs ==
+researcher -> webInterface : Select 'Upload Inputs'
+webInterface -> researcher : Show upload form
+researcher -> webInterface : Submit input files and metadata
+webInterface -> backend : Submit input files and experiment metadata
+backend -> database : Store input files and metadata
+database -> backend : Confirm storage
+backend -> webInterface : Upload successful
+webInterface -> researcher : Display success message
+
+== Verifying Upload and Provenance ==
+researcher -> webInterface : Request input files list
+webInterface -> backend : Fetch uploaded inputs for experiment
+backend -> database : Retrieve input details
+database -> backend : Return input details
+backend -> webInterface : Display inputs list
+webInterface -> researcher : Show experiment inputs with metadata
+
+@enduml

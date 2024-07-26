@@ -1,0 +1,20 @@
+@startuml
+participant ArchiveManager as "Archive Manager"
+participant DMPToolInterface as "DMPTool Interface"
+participant MetadataTools as "External Metadata Tools"
+participant PreservationPlanning as "Preservation Planning Module"
+
+Activate ArchiveManager
+ArchiveManager -> DMPToolInterface : RequestConservationPeriodInformation
+Activate DMPToolInterface
+DMPToolInterface -> MetadataTools : FetchMetadataForDataset
+Activate MetadataTools
+MetadataTools --> DMPToolInterface : ReturnMetadata
+deactivate MetadataTools
+DMPToolInterface -> PreservationPlanning : DetermineConservationPeriod(Metadata)
+Activate PreservationPlanning
+PreservationPlanning --> DMPToolInterface : ConservationPeriodDetails
+deactivate PreservationPlanning
+DMPToolInterface --> ArchiveManager : DisplayConservationPeriodDetails
+deactivate DMPToolInterface
+@enduml

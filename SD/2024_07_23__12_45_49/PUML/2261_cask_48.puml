@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+
+actor User
+participant "User Interface" as UI
+participant "Dataset Management System" as DMS
+participant "Dataset Instance" as DI
+participant "Version Control" as VC
+participant "Error Handling Module" as EH
+
+User -> UI: Request to update dataset properties
+UI -> DMS: Validate user request
+activate DMS
+DMS -> DI: Fetch current dataset properties
+DI -> DMS: Return current properties
+DMS -> VC: Check compatibility of new properties with current version
+VC -> DMS: Compatibility Result
+alt If properties are incompatible
+  VC -> EH: Invoke error handling  
+  EH -> DMS: Meaningful error message
+  DMS -> UI: Display error message to User
+  UI -> User: Show failure due to incompatibility
+else Properties are compatible
+  DMS -> DI: Update dataset with new properties
+  DI -> DMS: Confirmation of update
+  DMS -> UI: Confirm success to User
+  UI -> User: Show success message
+end
+deactivate DMS
+
+@enduml

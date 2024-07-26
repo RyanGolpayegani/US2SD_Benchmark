@@ -1,0 +1,37 @@
+@startuml
+
+participant RepositoryManager as RM "Repository Manager"
+participant DIMS_UI as UI "DIMS User Interface"
+participant RightsManagementService as RMS "Rights Management Service"
+participant Database as DB "Database"
+
+RM -> UI : Access component rights interface
+activate UI
+
+UI -> RMS : Request current rights info
+activate RMS
+
+RMS -> DB : Query current rights
+activate DB
+DB --> RMS : Return current rights
+deactivate DB
+
+RMS --> UI : Display current rights
+deactivate RMS
+
+UI --> RM : Show current rights
+RM -> UI : Indicate additional rights
+UI -> RMS : Process additional rights
+activate RMS
+
+RMS -> DB : Update rights information
+activate DB
+DB --> RMS : Confirm update
+deactivate DB
+
+RMS --> UI : Indicate success
+deactivate RMS
+UI --> RM : Display success message
+deactivate UI
+
+@enduml

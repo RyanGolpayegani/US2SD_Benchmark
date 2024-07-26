@@ -1,0 +1,31 @@
+@startuml
+actor Customer
+participant "Frontend Interface" as Frontend
+participant "Payment Service" as PaymentGateway
+participant "Backend Server" as Backend
+database "Database" as DB
+
+Customer -> Frontend: Selects 'Pay Bill Partially'
+Frontend -> Backend: Request to retrieve bill details
+Backend -> DB: Query bill information
+DB --> Backend: Return bill details
+Backend --> Frontend: Display bill details
+Frontend --> Customer: Shows bill with partial payment option
+
+Customer -> Frontend: Enters partial payment amount
+Frontend -> Backend: Sends partial payment request including amount
+Backend -> PaymentGateway: Requests payment authorization for the amount
+PaymentGateway -> PaymentGateway: Processes payment authorization
+PaymentGateway --> Backend: Returns payment authorization result
+
+alt If payment authorization is successful
+    Backend -> DB: Update payment status and remaining balance
+    DB --> Backend: Confirm payment update
+    Backend --> Frontend: Notify payment success
+    Frontend --> Customer: Show success message and updated bill
+else Payment authorization fails
+    Backend --> Frontend: Notify payment failure
+    Frontend --> Customer: Show failure message and suggest retry
+end
+
+@enduml

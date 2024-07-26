@@ -1,0 +1,22 @@
+@startuml
+participant "Camp Administrator" as Admin
+participant "Camp Management \n& Communication Platform" as Platform
+database "Camp Database" as DB
+
+Admin -> Platform : Selects Delete Parent option
+Platform -> DB : Retrieves Parent Record
+DB --> Platform : Display Parent Record
+Platform --> Admin : Show Parent Record & Confirm Delete
+Admin -> Platform : Confirms Deletion
+
+alt successful deletion
+    Platform -> DB : Delete Parent Record
+    DB --> Platform : Confirm Deletion
+    Platform --> Admin : Confirmation Message: Parent Deleted
+else deletion failed
+    Platform -> DB : Log Error
+    DB --> Platform : Error Logged
+    Platform --> Admin : Error Message: Deletion Unsuccessful
+end
+
+@enduml

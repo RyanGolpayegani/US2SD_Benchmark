@@ -1,0 +1,27 @@
+@startuml
+
+actor Researcher as researcher
+participant "DPIE Web Interface" as web
+participant "DPIE API" as api
+participant "Data Package Handler" as handler
+participant "STATA Integration Module" as stata
+database "Data Package Repository" as repo
+
+== Importing Data Package into STATA ==
+
+researcher -> web : Initiate Data Package Import
+web -> api : Request Import [Researcher ID, Package Details]
+api -> handler : Validate Request
+handler -> repo : Retrieve Data Package
+repo --> handler : Data Package
+handler --> api : Validation Success + Data Package
+api --> stata : Convert to STATA format
+stata -> repo : Fetch additional metadata if required
+repo --> stata : Metadata
+stata --> api : Data Package in STATA format
+api -> web : Import Successful
+web -> researcher : Provide download link and instructions for STATA
+researcher -> web : Download Data Package for STATA
+web -> researcher : Data Package (STATA formatted)
+
+@enduml

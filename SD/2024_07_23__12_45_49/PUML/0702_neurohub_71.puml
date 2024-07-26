@@ -1,0 +1,43 @@
+@startuml
+participant User
+participant WebInterface as "Web Interface"
+participant AuthenticationModule as "Authentication Module"
+participant SharingService as "Sharing Service"
+participant DataBase as "Database"
+participant ExternalRepository as "External Repository\n(Mendeley)"
+
+activate User
+User -> WebInterface: Requests to share a paper/note
+activate WebInterface
+
+WebInterface -> AuthenticationModule: Validates user credentials
+activate AuthenticationModule
+AuthenticationModule --> WebInterface: User validated
+deactivate AuthenticationModule
+
+WebInterface -> SharingService: Invoke sharing mechanism
+activate SharingService
+
+SharingService -> DataBase: Check if the document exists
+activate DataBase
+DataBase --> SharingService: Document found
+deactivate DataBase
+
+SharingService -> ExternalRepository: Request sharing permissions
+activate ExternalRepository
+ExternalRepository --> SharingService: Permissions granted
+deactivate ExternalRepository
+
+SharingService -> DataBase: Log sharing activity
+activate DataBase
+DataBase --> SharingService: Log updated
+deactivate DataBase
+
+SharingService --> WebInterface: Sharing successful
+deactivate SharingService
+
+WebInterface --> User: Display sharing confirmation
+deactivate WebInterface
+deactivate User
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+!theme plain
+
+participant Employee as E
+participant "UI Interface" as UI
+participant "Order Management System" as OMS
+database "Database" as DB
+
+== Add Customer Order Process ==
+E -> UI : Select "Add Order"
+activate UI
+UI -> OMS : Request to add order (Order Details)
+activate OMS
+OMS -> DB : Retrieve Item Details
+activate DB
+DB --> OMS : Item Details
+deactivate DB
+OMS -> DB : Save Order
+DB --> OMS : Confirmation
+deactivate OMS
+OMS -> UI : Order Added Successfully
+UI --> E : Display Success Message
+deactivate UI
+@enduml

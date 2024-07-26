@@ -1,0 +1,51 @@
+@startuml
+participant Manager
+participant "UI: Frontend" as Frontend
+participant "Backend Server" as Backend
+participant "Inventory Management\nSystem" as InventorySystem
+participant "Database" as DB
+
+Manager -> Frontend : Select Update Inventory
+activate Frontend
+
+Frontend -> Backend : Request Inventory List
+activate Backend
+
+Backend -> InventorySystem : Query Inventory Items
+activate InventorySystem
+
+InventorySystem -> DB : Fetch Current Inventory
+activate DB
+DB --> InventorySystem : Inventory Data
+deactivate DB
+
+InventorySystem --> Backend : Inventory Items
+deactivate InventorySystem
+
+Backend --> Frontend : Display Inventory Items
+deactivate Backend
+
+Manager -> Frontend : Update Inventory Item Details
+activate Frontend
+
+Frontend -> Backend : Submit Updated Inventory Item
+activate Backend
+
+Backend -> InventorySystem : Update Inventory Item
+activate InventorySystem
+
+InventorySystem -> DB : Update Item in Database
+activate DB
+DB --> InventorySystem : Update Confirmation
+deactivate DB
+
+InventorySystem --> Backend : Update Success
+deactivate InventorySystem
+
+Backend --> Frontend : Display Success Message
+deactivate Backend
+
+Frontend --> Manager : Show Update Confirmation
+deactivate Frontend
+
+@enduml

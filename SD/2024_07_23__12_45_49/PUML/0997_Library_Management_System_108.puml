@@ -1,0 +1,23 @@
+@startuml
+actor Librarian as L
+participant "LibraryManagementSystem" as LMS
+participant "BookDatabase" as BD
+participant "ExternalBookPriceAPI" as API
+
+L -> LMS: Request book prices
+activate LMS
+LMS -> BD: Query available books
+activate BD
+BD --> LMS: Return book list
+deactivate BD
+
+loop for each book in list
+    LMS -> API: Request price for book
+    activate API
+    API --> LMS: Return book price
+    deactivate API
+end
+
+LMS --> L: Display book prices
+deactivate LMS
+@enduml

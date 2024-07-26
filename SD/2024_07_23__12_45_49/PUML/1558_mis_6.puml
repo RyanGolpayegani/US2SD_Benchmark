@@ -1,0 +1,24 @@
+@startuml
+participant FacultyMember as FM
+participant "UI" as UI
+participant "Backend Service" as BS
+participant "Database" as DB
+
+activate FM
+FM -> UI: Enter search query with date delimiter
+activate UI
+UI -> BS: Send search request\n(includes date delimiter)
+activate BS
+
+BS -> DB: Query items with date constraints
+activate DB
+DB -> BS: Return search results
+deactivate DB
+
+BS -> UI: Display filtered search results
+deactivate BS
+UI -> FM: Show results within specified dates
+deactivate UI
+deactivate FM
+
+@enduml

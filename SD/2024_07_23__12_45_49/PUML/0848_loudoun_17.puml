@@ -1,0 +1,45 @@
+@startuml
+actor StaffMember
+participant "Portal Interface" as Portal
+participant "Authentication Service" as Auth
+participant "Proffer Management System" as ProfferSys
+database "Proffer Database" as DB
+
+== Authentication ==
+StaffMember -> Portal: Access Proffer Management
+Portal -> Auth: Validate Session
+Auth --> Portal: Session Valid
+
+== View Approved Proffers ==
+Portal <- StaffMember: Request Approved Proffers List
+Portal -> ProfferSys: Query Approved Proffers
+ProfferSys -> DB: Fetch Approved Proffers
+DB --> ProfferSys: Return Approved Proffers Data
+ProfferSys --> Portal: List of Approved Proffers
+Portal --> StaffMember: Display Approved Proffers
+
+== Select Specific Proffer to Manage ==
+StaffMember -> Portal: Select Specific Proffer
+Portal -> ProfferSys: Request Proffer Details
+ProfferSys -> DB: Fetch Proffer Details
+DB --> ProfferSys: Return Proffer Details
+ProfferSys --> Portal: Display Proffer Details
+Portal --> StaffMember: Show Proffer Details
+
+== Update Proffer Status ==
+StaffMember -> Portal: Update Proffer Compliance Status
+Portal -> ProfferSys: Update Proffer Compliance
+ProfferSys -> DB: Update Compliance Status
+DB --> ProfferSys: Confirm Update
+ProfferSys --> Portal: Update Confirmation
+Portal --> StaffMember: Show Update Success Message
+
+== Log Activity ==
+StaffMember -> Portal: Log Compliance Check Activity
+Portal -> ProfferSys: Log Activity in Proffer's Record
+ProfferSys -> DB: Update Proffer Record with Activity
+DB --> ProfferSys: Confirm Logging
+ProfferSys --> Portal: Log Confirmation
+Portal --> StaffMember: Show Log Success Message
+
+@enduml

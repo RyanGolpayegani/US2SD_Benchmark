@@ -1,0 +1,24 @@
+@startuml
+actor User
+participant "Neurohub Interface" as Neurohub
+participant "API Gateway" as API
+participant "Google Calendar API" as GoogleAPI
+participant "Google Calendar" as GoogleCal
+
+User -> Neurohub : Create/Update Event
+Neurohub -> API : Request sync with Google Calendar
+API -> GoogleAPI : Authenticate as User
+alt Authentication Success
+    GoogleAPI -> API : Auth token
+    API -> GoogleAPI : Send Event Details\n(Auth Token)
+    GoogleAPI -> GoogleCal : Create/Update Event
+    GoogleCal -> GoogleAPI : Confirmation
+    GoogleAPI -> API : Sync Confirmation
+    API -> Neurohub : Confirmation Message
+    Neurohub -> User : Display Sync Success
+else Authentication Failure
+    GoogleAPI -> API : Auth Error
+    API -> Neurohub : Display Auth Error
+    Neurohub -> User : Display Sync Failure/Retry Option
+end
+@enduml

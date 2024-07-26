@@ -1,0 +1,22 @@
+@startuml
+actor User
+participant "UI Portal" as UI
+participant "MetadataService" as Metadata
+database "MetadataDB" as DB
+
+== Restrict Metadata Field Entry ==
+User -> UI : Select Metadata Field Configuration
+UI -> Metadata : Request Metadata Field Details
+Metadata -> DB : Retrieve Field Details
+DB -> Metadata : Field Details
+Metadata -> UI : Display Field Details
+UI -> User : Show Field Restrictions Options
+
+User -> UI : Define Restrictions (e.g., data type, range, format)
+UI -> Metadata : Update Field Restrictions
+Metadata -> DB : Save Field Restrictions
+DB -> Metadata : Confirmation
+Metadata -> UI : Restrictions Updated Successfully
+UI -> User : Show Success Message
+
+@enduml

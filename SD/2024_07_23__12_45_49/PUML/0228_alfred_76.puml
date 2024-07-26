@@ -1,0 +1,33 @@
+@startuml
+participant OlderPerson as user
+participant "Voice Interaction" as voice
+participant "ALFRED System" as alfred
+database "Navigation Data" as navdata
+participant "Public Transportation API" as publicTrans
+
+== Navigation Request ==
+user -> voice: "I want to visit the library"
+voice -> alfred: interpretRequest("Visit library")
+alfred -> navdata: getNearbyLibraries()
+navdata -> alfred: libraryLocations
+alfred -> alfred: selectOptimalLibrary(libraryLocations)
+
+== Calculating Route ==
+alfred -> navdata: calculateRoute(currentLocation, selectedLibrary)
+navdata -> alfred: routeDetails
+alfred -> publicTrans: getPublicTransportOptions(routeDetails)
+publicTrans -> alfred: transportOptions
+alfred -> alfred: integrateWalkWithPublicTransport(transportOptions)
+alfred -> voice: generateNarrativeDirections(integratedRoute)
+voice -> user: speakNarrativeDirections()
+
+== Ongoing Assistance ==
+loop Every 5 minutes or on event
+    alfred -> publicTrans: updateOnTransit(currentLocation)
+    publicTrans -> alfred: transitUpdates
+    alfred -> alfred: adjustNarrativeIfNecessary(transitUpdates)
+    alfred -> voice: updatedNarrativeDirections()
+    voice -> user: speakUpdates()
+end
+
+@enduml

@@ -1,0 +1,53 @@
+@startuml
+actor "Agency User" as AgencyUser
+participant "User Interface" as UI
+participant "Validation Service" as ValidationService
+participant "Database" as DB
+participant "Error Handling" as ErrorHandler
+
+== Update FABS Validation Rules to Accept Zero and Blank ==
+
+AgencyUser -> UI: Request rule update
+activate UI
+
+UI -> Validation/controler Service: Validate user permissions
+activate ValidationService
+
+ValidationService --> UI: Permissions validated
+deactivate ValidationService
+
+UI -> UI: Navigate to rule update section
+
+UI -> ValidationService: Send update request (zero and blank acceptance for loan records)
+activate ValidationService
+
+ValidationService -> DB: Check current validation rules
+activate DB
+
+DB --> ValidationService: Return current rules
+deactivate DB
+
+ValidationService -> DB: Update validation rules to accept zero and blank for loan records
+activate DB
+
+DB --> ValidationService: Confirm rules updated
+deactivate DB
+
+ValidationService --> UI: Update successful
+deactivate ValidationService
+
+UI -> AgencyUser: Display update success message
+deactivate UI
+
+== Error Handling ==
+alt if any error occurs during rule update
+    ValidationService -> ErrorHandler: Log error details
+    activate ErrorHandler
+    ErrorHandler --> ValidationService: Error logged
+    deactivate ErrorHandler
+
+    ValidationService --> UI: Display error to agency user
+    UI -> AgencyUser: Show error message
+end
+
+@enduml

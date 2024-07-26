@@ -1,0 +1,43 @@
+@startuml
+participant "Zooniverse Admin" as admin
+participant "AMIDP Platform" as platform
+participant "Content Analysis Module" as analysis
+participant "AI/ML Recognition Engine" as ai
+participant "Database" as db
+
+activate admin
+admin -> platform : Log in to AMIDP
+activate platform
+
+platform -> analysis : Initiate animal detection
+activate analysis
+
+analysis -> ai : Request animal number detection
+activate ai
+
+ai -> db : Retrieve Snapshot Serengeti images
+activate db
+
+db --> ai : Return images
+deactivate db
+
+ai -> ai : Analyze images for animal count
+
+ai --> analysis : Return detection results
+deactivate ai
+
+analysis --> platform : Send analyzed data
+deactivate analysis
+
+platform -> db : Save analysis results
+activate db
+
+db --> platform : Confirmation of saving
+deactivate db
+
+platform --> admin : Display animal detection results
+deactivate platform
+
+admin -> platform : Log out
+deactivate admin
+@enduml

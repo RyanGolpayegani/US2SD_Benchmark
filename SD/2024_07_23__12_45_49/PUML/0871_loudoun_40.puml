@@ -1,0 +1,38 @@
+@startuml
+participant Applicant
+participant "Portal Interface" as Portal
+participant "Authentication Service" as Auth
+participant "User Account Service" as UserAcc
+participant "Application Service" as AppService
+participant "Plan Review Service" as Review
+participant "Notification Service" as Notify
+
+Applicant -> Portal : Request: Resubmit Plans
+Portal -> Auth : Validate User
+Auth -> Portal : User Validated
+Portal -> UserAcc : Retrieve User Account Details
+UserAcc -> Portal : User Account Details
+Portal -> AppService : Request: Initiate Resubmission
+AppService -> AppService : Check Application Status
+AppService -> Review : Request: Withdraw Previous Submission
+Review -> Review : Archive Previous Plans
+Review --> AppService : Previous Submission Withdrawn
+AppService -> Portal : Resubmission Initiated
+Portal -> Applicant : Display: Upload Revised Plans
+Applicant -> Portal : Action: Upload Revised Plans
+Portal -> Review : Submit: Revised Plans
+Review -> Review : Process Revised Plans
+Review -> AppService : Update: Application with Revised Plans
+AppService -> Notify : Trigger: Plan Resubmission Notification
+Notify -> Applicant : Send: Resubmission Confirmation Email
+
+alt Successful Plan Review
+    Review -> AppService : Update: Application Status - Plans Approved
+    AppService -> Notify : Trigger: Approval Notification
+    Notify -> Applicant : Send: Plans Approved Email
+else Plan Revision Required
+    Review -> AppService : Update: Application Status - Revision Required
+    AppService -> Notify : Trigger: Revision Requested Notification
+    Notify -> Applicant : Send: Revision Request Email
+end
+@enduml

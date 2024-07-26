@@ -1,0 +1,22 @@
+@startuml
+actor User
+participant "UI Frontend\n(RecycleSmart)" as Frontend
+participant "Backend Server" as Server
+participant "Database" as DB
+
+User -> FrontshowMessage: Accesses RecycleSmart & \nrequests to view safe disposal events
+activate Frontend
+Frontend -> Server: GET request: /disposal-events?zipCode=[ZIP]
+activate Server
+
+Server -> DB: Query safe disposal events \nby ZIP code
+activate DB
+DB --> Server: Return list of events
+deactivate DB
+
+Server --> Frontend: Response with events data
+deactivate Server
+
+Frontend --> User: Display safe disposal events
+deactivate Frontend
+@enduml

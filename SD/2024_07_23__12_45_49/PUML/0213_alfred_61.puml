@@ -1,0 +1,52 @@
+@startuml
+participant "OlderPerson" as user
+participant "ALFRED System" as alfred
+participant "Preferences Module" as preferences
+participant "Interest Domain" as interests
+participant "Question Generator" as qgen
+participant "Content Database" as db
+
+== Initialization ==
+user -> alfred: Wearable activation signal
+activate alfred
+alfred -> preferences: Retrieve user preferences
+activate preferences
+preferences -> interests: Load Interest Domains (Cinema, Exhibitions, Cooking)
+activate interests
+interests --> preferences: Domains loaded
+deactivate interests
+preferences --> alfred: Preferences loaded
+deactivate preferences
+
+== Interest-based Question Generation ==
+alfred -> qgen: Request question generation
+activate qgen
+qgen -> interests: Select domain based on preferences
+activate interests
+interests -> db: Fetch content on selected domain
+activate db
+db --> interests: Content data
+deactivate db
+interests --> qgen: Selected domain content
+deactivate interests
+qgen -> db: Generate question based on content
+activate db
+db --> qgen: Generated question
+deactivate db
+qgen --> alfred: Question for the user
+deactivate qgen
+alfred -> user: Pose question (Voice Output)
+deactivate alfred
+
+== User Interaction ==
+user -> alfred: Responds to question (Voice Input)
+activate alfred
+alfred -> qgen: Analyze response
+activate qgen
+qgen -> qgen: Score/feedback on response
+qgen --> alfred: Response analysis
+deactivate qgen
+alfred -> user: Feedback/Acknowledgment (Voice Output)
+deactivate alfred
+
+@enduml

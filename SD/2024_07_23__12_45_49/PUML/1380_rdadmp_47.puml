@@ -1,0 +1,33 @@
+@startuml
+
+participant Postgraduate_Convenor as PC
+participant DMPTool_System as DS
+participant Data_Analytics_Module as DAM
+participant Database as DB
+participant Email_Service as ES
+
+== Trigger Report Generation ==
+PC -> DS : Request Summary Report\n(Trigger/Schedule)
+activate DS
+
+DS -> DAM : Initiate Data Analysis for Trends
+activate DAM
+
+DAM -> DB : Fetch Research Data Usage
+activate DB
+DB --> DAM : Return Data
+deactivate DB
+
+DAM --> DS : Analysis Result
+deactivate DAM
+
+DS -> ES : Send Summary Report via Email
+activate ES
+ES -> PC : Email Summary Report
+deactivate ES
+
+PC -> DS : Acknowledge Receipt
+DS --> PC : End
+deactivate DS
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+actor "Library Manager" as manager
+participant "UI Interface" as ui
+participant "Authentication System" as auth
+participant "Profile Management" as profile
+participant "Subscription Management" as subscription
+participant "Database" as db
+
+== Keeping Track of Subscriber Profiles and Subscriptions ==
+
+manager -> ui : Logs into the system
+ui -> auth : Validates credentials
+auth -> manager : Provides access to system
+
+manager -> ui : Selects 'Manage Subscriptions'
+ui -> profile : Fetch user list
+db -> profile : Return list of users
+profile -> ui : Display users
+
+manager -> ui : Selects a subscriber profile
+ui -> db : Fetch subscriber details and subscription status
+db -> ui : Return subscriber details and subscription status
+ui -> manager : Display subscriber details and subscription status
+
+manager -> ui : Updates subscription details
+ui -> subscription : Process subscription update
+subscription -> db : Update subscriber record
+db -> subscription : Confirm update success
+subscription -> ui : Notify update success
+ui -> manager : Display update confirmation
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+actor Archivist as A
+participant "Frontend Interface" as F
+participant "Authentication Service" as AS
+participant "Digital Object Management Service" as DOMS
+database Database as DB
+
+A -> F : Login credentials
+F -> AS : Validate credentials
+AS --> F : Authentication Response
+A -> F : Navigate to Manage Digital Objects
+F -> DOMS : Request digital object form
+DOMS --> F : Display form (Create, Update, Delete)
+A -> F : Fills out form (E.g., Create new digital object)
+F -> DOMS : Process request (E.g., Create)
+DOMS -> DB : Save new digital object
+DB --> DOMS : Confirmation
+DOMS --> F : Operation result
+F --> A : Display result (Success/Failure)
+
+@enduml

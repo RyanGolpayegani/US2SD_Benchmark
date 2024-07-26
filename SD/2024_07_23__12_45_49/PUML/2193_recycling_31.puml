@@ -1,0 +1,70 @@
+@startuml
+actor FacilityRep as "Facility Representative"
+participant UI as "User Interface"
+participant AL as "Application Logic"
+database DB as "RecycleSmart Database"
+
+== Upload Information Process ==
+FacilityRep -> UI : Access website
+activate UI
+
+UI -> AL : Authenticate login
+activate AL
+
+AL -> DB : Validate user credentials
+activate DB
+
+DB -> AL : Credentials valid
+deactivate DB
+
+AL -> UI : Display Dashboard
+deactivate AL
+
+FacilityRep -> UI : Select "Upload Info"
+UI -> AL : Request data form
+AL -> UI : Display data form
+
+FacilityRep -> UI : Fill in data form
+FacilityRep -> UI : Submit information
+
+UI -> AL : Process submission
+activate AL
+
+AL -> DB : Insert/Update info
+activate DB
+
+DB -> DB : Validate & Store data
+DB -> AL : Confirm success
+deactivate DB
+
+AL -> UI : Display success message
+deactivate AL
+UI -> FacilityRep : Show confirmation
+
+== Delete Information Process ==
+FacilityRep -> UI : Access Dashboard
+UI -> AL : Authenticate session
+AL -> UI : Show Dashboard options
+
+FacilityRep -> UI : Select "Delete Info"
+UI -> AL : Request item selection
+
+FacilityRep -> UI : Select item(s) to delete
+FacilityRep -> UI : Confirm deletion
+
+UI -> AL : Process deletion request
+activate AL
+
+AL -> DB : Delete selected info
+activate DB
+
+DB -> DB : Validate & Remove data
+DB -> AL : Confirm deletion success
+deactivate DB
+
+AL -> UI : Display deletion success message
+deactivate AL
+UI -> FacilityRep : Show confirmation
+deactivate UI
+
+@enduml

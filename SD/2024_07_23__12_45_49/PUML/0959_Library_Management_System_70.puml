@@ -1,0 +1,22 @@
+@startuml
+actor Librarian
+participant "CLMS Web Interface" as Web
+participant "CLMS Backend System" as Backend
+database "Library Database" as DB
+
+Librarian -> Web : Access Unreturned Books Section
+activate Web
+Web -> Backend : Request List of Unreturned Books
+activate Backend
+
+Backend -> DB : Query Unreturned Books
+activate DB
+DB --> Backend : Return Unreturned Books Data
+deactivate DB
+
+Backend --> Web : Display Unreturned Books List
+deactivate Backend
+Web --> Librarian : Show Unreturned Books Information
+deactivate Web
+
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+actor Archivist as user
+participant "UI Interface" as ui
+participant "Authentication System" as auth
+participant "Resource Management Module" as resource
+participant "Subject Association Function" as associate
+participant "Database" as db
+
+== User Authentication ==
+user -> ui: Access CAMS
+ui -> auth: Authenticate User
+auth --> ui: Auth Success
+
+== Associate Subject with Resource ==
+user -> ui: Select Resource
+ui -> resource: Retrieve Resource Details
+db -> resource: Resource Data
+resource --> ui: Display Resource
+user -> ui: Initiate Associate Subject
+ui -> associate: List Available Subjects
+db -> associate: Subjects Data
+associate --> ui: Display Subjects
+user -> ui: Select Subject and Confirm
+ui -> db: Associate Subject with Resource
+db --> ui: Confirmation
+ui --> user: Association Successful
+
+@enduml

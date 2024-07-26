@@ -1,0 +1,59 @@
+@startuml
+!theme plain
+
+participant Librarian
+participant "Library System" as System
+database "Database" as DB
+
+Librarian -> System : Log in to the system
+activate System
+
+System -> DB : Validate librarian credentials
+activate DB
+
+DB --> System : Credentials valid
+deactivate DB
+
+System --> Librarian : Display dashboard
+deactivate System
+
+Librarian -> System : Request overdue books list
+activate System
+
+System -> DB : Retrieve overdue books information
+activate DB
+
+DB --> System : Return overdue books data
+deactivate DB
+
+System --> Librarian : Display overdue books list
+deactivate System
+
+loop for each overdue book
+    Librarian -> System : Select overdue book for fine calculation
+    activate System
+
+    System -> DB : Retrieve book return date and current date
+    activate DB
+
+    DB --> System : Return dates
+    deactivate DB
+
+    System -> System : Calculate fine based on dates
+    System --> Librarian : Display calculated fine
+    deactivate System
+end
+
+Librarian -> System : Confirm fine calculation
+activate System
+
+System -> DB : Update book record with fine
+activate DB
+
+DB --> System : Record updated
+deactivate DB
+
+System --> Librarian : Display confirmation message
+deactivate System
+
+@enduml

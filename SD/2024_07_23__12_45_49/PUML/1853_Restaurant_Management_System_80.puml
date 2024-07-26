@@ -1,0 +1,19 @@
+@startuml
+actor Customer
+participant "Frontend UI" as UI
+participant "Backend Server" as Server
+participant "Database" as DB
+
+Customer -> UI : Select "Update Order"
+UI -> Server : Request order update (orderId, newDetails)
+alt Order exists and can be modified
+    Server -> DB : Query to update order (orderId, newDetails)
+    DB -> Server : Order updated successfully
+    Server -> UI : Display order updated confirmation
+    UI -> Customer : Show success message
+else Order cannot be modified
+    Server -> UI : Display error message (Order cannot be modified)
+    UI -> customer : Show failure message
+end
+
+@enduml

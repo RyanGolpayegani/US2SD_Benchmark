@@ -1,0 +1,27 @@
+@startuml
+actor Visitor as V
+participant Browser as B
+participant "Scrum Alliance Website" as SAW
+participant "Article Management System" as AMS
+participant Database as DB
+
+== Accessing Articles Without Joining ==
+V -> B: Open Scrum Alliance Website
+B -> SAW: Request to access articles
+SAW -> AMS: Query available articles
+AMS -> DB: Fetch article list
+DB -> AMS: Return article list
+AMS -> SAW: Display article summaries
+SAW -> B: Show articles to visitor
+V -> B: Clicks on an article summary
+B -> SAW: Request full article
+SAW -> AMS: Fetch full article content
+AMS -> DB: Retrieve selected article
+DB -> AMS: Return full article
+AMS -> SAW: Display full article
+SAW -> B: Show full article to visitor
+activate V
+V -> B: Reads article
+deactivate V
+
+@enduml

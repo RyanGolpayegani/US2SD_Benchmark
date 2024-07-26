@@ -1,0 +1,34 @@
+@startuml
+actor Archivist as archivist
+participant "UI: Archival System Interface" as UI
+participant "Controller: Hierarchy Management" as Controller
+database "Archival Database" as DB
+
+== Rearrange Digital/Resource Hierarchy ==
+
+archivist -> UI: Press keyboard shortcut to rearrange
+UI -> Controller: InitiateHierarchyChange()
+activate Controller
+
+Controller -> DB: FetchCurrentHierarchy()
+activate DB
+DB --> Controller: ReturnHierarchyData
+deactivate DB
+
+Controller -> Controller: CalculateNewHierarchyPositions()
+Controller -> UI: DisplayCurrentHierarchyWithEditOptions()
+UI --> archivist: Show hierarchy & edit options
+archivist -> UI: Use keyboard to rearrange hierarchy
+UI -> Controller: UpdateHierarchy(newPositions)
+activate Controller
+
+Controller -> DB: SaveNewHierarchy()
+activate DB
+DB --> Controller: ConfirmSave
+deactivate DB
+
+Controller --> UI: ConfirmHierarchyChange()
+UI --> archivist: DisplaySuccessMessage()
+
+deactivate Controller
+@enduml

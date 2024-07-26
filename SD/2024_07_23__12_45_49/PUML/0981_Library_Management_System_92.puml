@@ -1,0 +1,32 @@
+@startuml
+
+participant Librarian
+participant LibrarySystem
+database Database
+
+== Check Delayed Books By Reader ==
+Librarian -> LibrarySystem : Request delayed books for Reader_ID
+activate LibrarySystem
+
+LibrarySystem -> Database : Query delayed books for Reader_ID
+activate Database
+
+Database --> LibrarySystem : Return list of delayed books
+deactivate Database
+
+LibrarySystem --> Librarian : Display delayed books
+deactivate LibrarySystem
+
+Librarian -> LibrarySystem : Select books to send warning
+activate LibrarySystem
+
+LibrarySystem -> Database : Update warning status for selected books
+activate Database
+
+Database --> LibrarySystem : Acknowledge status update
+deactivate Database
+
+LibrarySystem --> Librarian : Show warning sent confirmation
+deactivate LibrarySystem
+
+@enduml

@@ -1,0 +1,41 @@
+@startuml
+participant "Batch Submitter" as BS
+participant "Submission Interface" as SI
+participant "Repository Staff" as RS
+participant "EDRMS" as EDRMS
+
+== Preparation ==
+BS -> SI : Access submission guidelines
+SI -> BS : Provide guidelines and template
+
+BS -> BS : Prepare data and metadata according to template
+
+== Submission ==
+BS -> SI : Submit data and metadata package
+
+SI -> RS : Notify of new batch submission
+RS -> SI : Review submission details
+SI -> RS : Provide submission data and metadata
+
+== Ingest Process ==
+RS -> EDRMS : Create new batch submission record
+EDRMS -> EDRMS : Validate data and metadata format
+EDRMS --> RS : Notify validation success/failure
+
+alt If validation successful
+    RS -> EDRMS : Initiate data and metadata ingest
+    EDRMS -> EDRMS : Store data and metadata in repository
+    EDRMS --> RS : Confirm successful ingest
+    RS -> SI : Update submission status
+    SI -> BS : Notify batch submission success
+else Validation fails
+    EDRMS --> RS : Report validation errors
+    RS -> SI : Request data/metadata revision
+    SI -> BS : Notify need for revision and provide reasons
+    BS -> BS : Revise data and metadata
+    note right of BS : Process loops until validation is successful
+    BS -> SI : Resubmit revised data and metadata
+end
+
+
+@enduml

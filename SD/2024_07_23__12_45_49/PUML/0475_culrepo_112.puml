@@ -1,0 +1,19 @@
+@startuml
+actor AssetManager as AM
+actor System as SYS
+actor Database as DB
+actor Successor as SU
+
+AM -> SYS : RequestTransferOwnership(assetId, successorEmail)
+SYS -> DB : LookupAsset(assetId)
+DB --> SYS : AssetDetails
+SYS -> DB : ValidateSuccessor(successorEmail)
+DB --> SYS : SuccessorValidated
+SYS -> SU : NotifyPendingTransfer(assetId)
+SU --> SYS : AcceptTransfer(assetId)
+SYS -> DB : TransferOwnership(assetId, successorId)
+DB --> SYS : TransferConfirmed
+SYS --> SU : TransferSuccessfulNotification
+SYS --> AM : ConfirmTransferSuccess(assetId, successorEmail)
+
+@enduml

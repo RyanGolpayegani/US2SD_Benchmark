@@ -1,0 +1,23 @@
+@startuml
+participant Estimator
+participant Browser
+participant "AEPT Web Server" as WebServer
+database "Database" as DB
+
+== Estimator Requests Estimation Items ==
+Estimator -> Browser: Navigate to estimation session
+Browser -> WebServer: Request session details
+WebServer -> DB: Query for estimation items
+DB --> WebServer: Return estimation items
+WebServer --> Browser: Display estimation items
+Browser --> Estimator: Show estimation session with items
+
+== Estimator Views Estimation Items ==
+alt Estimation Items Available
+    Estimator -> Browser: Scroll through items
+    Browser -> Estimator: Visual feedback on items
+else No Estimation Items
+    Browser -> Estimator: Show "No items available"
+end
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+actor Employee
+participant "Employee Interface" as EI
+participant "Order Management System" as OMS
+database "Database" as DB
+
+== Add Store Order Sequence ==
+
+Employee -> EI: Selects "Add Order"
+EI -> OMS: Request to add a new order
+activate OMS
+
+OMS -> OMS: Generate order form
+OMS -> EI: Present order form
+EI <-- Employee: Fills in order details
+EI -> OMS: Submit order details
+activate EI
+
+OMS -> DB: Validates and saves order
+activate DB
+DB --> OMS: Order saved confirmation
+deactivate DB
+
+OMS -> EI: Confirmation of order addition
+EI -> Employee: Display confirmation message
+deactivate OMS
+deactivate EI
+
+@enduml

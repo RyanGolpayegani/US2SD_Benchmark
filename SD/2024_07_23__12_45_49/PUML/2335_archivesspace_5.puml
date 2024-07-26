@@ -1,0 +1,22 @@
+@startuml
+participant Archivist as archivist
+participant FrontendInterface as ui
+participant AuthenticationModule as auth
+participant ComponentManagement as compMan
+participant Database as db
+
+archivist -> ui : Select "Edit Resource Component"
+ui -> auth : Verify access rights
+auth -> ui : Access granted
+
+ui -> compMan : Request unique ID assignment form
+compMan -> ui : Display form on UI
+
+archivist -> ui : Enter unique ID and submit
+ui -> compMan : Validate input & process assignment
+compMan -> db : Update resource component with unique ID
+db -> compMan : Confirm update
+compMan -> ui : Confirm unique ID assignment
+ui -> archivist : Display success message
+
+@enduml

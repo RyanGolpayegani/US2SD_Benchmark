@@ -1,0 +1,29 @@
+@startuml
+actor Chef as chef
+participant "Inventory System" as inventory
+participant "Database" as db
+
+== Check Ingredient Due Dates ==
+chef -> inventory : Check ingredient due dates
+inventory -> db : Query ingredient dates
+db -> inventory : Return due dates
+inventory -> chef : Display due dates
+
+== Update Ingredient Due Dates ==
+chef -> inventory : Update due dates for ingredients
+activate inventory
+inventory -> db : Update due dates in DB
+db --> inventory : Confirm update
+deactivate inventory
+inventory --> chef : Confirm due dates updated
+
+== Daily Due Date Alert ==
+activate inventory
+inventory -> db : Query ingredients near due date
+activate db
+db -> inventory : Return near due date ingredients
+deactivate db
+inventory -> chef : Alert near due date ingredients
+deactivate inventory
+
+@enduml

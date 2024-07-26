@@ -1,0 +1,31 @@
+@startuml
+actor User as user
+participant "UI" as ui
+participant "Validation Service" as validator
+participant "Data Service" as dataService
+participant "Database" as db
+
+user -> ui : Request PPoPCode & PPoPCongressionalDistrict
+activate ui
+
+ui -> validator : Validate data request
+activate validator
+
+alt If validation fails
+    validator -> ui : Return error message
+    ui -> user : Display validation error
+else Validation success
+    validator -> dataService : Fetch data
+    activate dataService
+    dataService -> db : Query PPoPCode & CongDistrict
+    activate db
+    db -> dataService : Return data
+    deactivate db
+    dataService -> ui : Data payload
+    deactivate dataService
+    ui -> user : Display PPoPCode & CongDistrict
+end
+
+deactivate validator
+deactivate ui
+@enduml

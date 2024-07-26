@@ -1,0 +1,26 @@
+@startuml
+actor Manager
+participant "Library Management System" as LMS
+database "Database" as DB
+
+== Authentication ==
+Manager -> LMS : Request to authenticate
+LMS -> DB : Validate manager credentials
+DB -> LMS : Credentials validation response
+LMS -> Manager : Authentication response
+
+== Check Librarians and Members ==
+alt Success Authentication
+    Manager -> LMS : Initiate check on librarians and members
+    activate LMS
+    LMS -> DB : Request librarians and members list
+    activate DB
+    DB -> LMS : Return librarians and members list
+    deactivate DB
+    LMS -> Manager : Display librarians and members list
+    deactivate LMS
+else Failed Authentication
+    LMS -> Manager : Display authentication failure message
+end
+
+@enduml

@@ -1,0 +1,54 @@
+@startuml
+
+participant MedicalCaregiver as MC
+participant "ALFRED Unit" as AU
+participant "API Server" as APIS
+database "Functionality Database" as FDB
+
+== Initialization ==
+
+MC -> AU: Turn on and initialize
+activate AU
+AU -> APIS: Register Device and Caregiver
+activate APIS
+APIS --> AU: Confirmation
+deactivate APIS
+
+== Functionality Expansion ==
+
+MC -> AU: Request additional functions
+activate AU
+AU -> APIS: Query available functions for expansion
+activate APIS
+APIS -> FDB: Fetch available functions
+activate FDB
+FDB --> APIS: Return function list
+deactivate FDB
+APIS --> AU: Show function list
+deactivate APIS
+AU --> MC: Display available functions
+
+MC -> AU: Select desired functions
+AU -> APIS: Request function activation
+activate APIS
+APIS -> FDB: Activate functions for this unit
+activate FDB
+FDB --> APIS: Confirm activation
+deactivate FDB
+APIS --> AU: Confirm successful activation
+deactivate APIS
+AU --> MC: Display activation confirmation
+
+== Use Expanded Functions ==
+
+MC -> AU: Use new function
+activate AU
+AU -> APIS: Execute function
+activate APIS
+note right of APIS: Could involve data processing, \naccessing another microservice, or fetching data
+APIS --> AU: Display results/feedback
+deactivate APIS
+AU --> MC: Show results/feedback
+deactivate AU
+
+@enduml

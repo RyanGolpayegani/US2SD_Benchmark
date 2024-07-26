@@ -1,0 +1,53 @@
+@startuml
+actor MedicalCaregiver
+participant "ALFRED App" as App
+participant "Server\n(System Backend)" as Server
+participant "User\n(Older Adult)" as User
+participant "ALFRED Device" as Device
+
+== Initialization ==
+MedicalCaregiver -> App : Log in to ALFRED App
+App -> Server : Authenticate and log in
+Server --> App : Authentication success
+App --> MedicalCaregiver : Display dashboard
+
+== Setting up Exercise Reminders ==
+MedicalCaregiver -> App : Navigate to "Set Exercise Reminder"
+App --> MedicalCaregiver : Display exercise reminder setup page
+MedicalCaregiver -> App : Input exercise reminder details\n(e.g., time, type, frequency)
+App -> Server : Save exercise reminder settings
+Server --> App : Confirmation of saved settings
+App --> MedicalCaregiver : Display successful setup message
+
+== Exercise Reminder Notification ==
+Server -> Device : Trigger exercise reminder at specified time
+Device -> User : Notify about exercise reminder\n(via sound, display message, vibration)
+User --> Device : Acknowledges the reminder
+Device -> Server : Log reminder acknowledgment
+Server -> App : Update exercise reminder status
+App -> MedicalCaregiver : Notify that the user has been reminded
+
+== User Initiates Exercise ==
+User -> Device : Start exercise (e.g., by voice command or button press)
+Device -> Server : Log start of exercise
+Server -> App : Update exercise log
+App --> MedicalCaregiver : Display started exercise log entry
+
+== User Completes Exercise ==
+User -> Device : Complete exercise
+Device -> Server : Log completion of exercise
+Server -> App : Update on exercise completion
+App --> MedicalCaregiver : Notify exercise completion and details
+
+== Review and Feedback ==
+MedicalCaregiver -> App : Review exercise log
+App -> Server : Request exercise log details
+Server -> App : Send exercise log details
+App --> MedicalCaregiver : Display exercise log for user
+
+MedicalCaregiver -> App : Provide feedback or adjustments
+App -> Server : Update exercise plan based on feedback
+Server --> App : Confirmation of plan update
+App --> MedicalCaregiver : Display successful update message
+
+@enduml

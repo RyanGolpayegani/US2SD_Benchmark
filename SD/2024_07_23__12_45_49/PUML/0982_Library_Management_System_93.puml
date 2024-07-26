@@ -1,0 +1,35 @@
+@startuml
+actor Librarian as librarian
+participant "Library UI" as UI
+participant "LMS Backend" as Backend
+participant "Book Management\nModule" as BookModule
+database "Library Database" as DB
+
+librarian -> UI : Login
+activate UI
+UI -> Backend : Authentication request
+activate Backend
+Backend -> DB : Validate Librarian Credentials
+activate DB
+DB --> Backend : Credentials Valid
+deactivate DB
+Backend --> UI : Authentication Success
+deactivate Backend
+
+librarian -> UI : Selects 'View Borrowed Books'
+UI -> Backend : Fetch Borrowed Books Request
+activate Backend
+Backend -> BookModule : Request due dates of borrowed books
+activate BookModule
+BookModule -> DB : Query Borrowed Books with due dates
+activate DB
+DB --> BookModule : Return Borrowed Books Data
+deactivate DB
+BookModule --> Backend : Borrowed Books with due dates
+deactivate BookModule
+Backend --> UI : Display Borrowed Books with due dates
+deactivate Backend
+UI --> librarian : Shows list of borrowed books and due dates
+deactivate UI
+
+@enduml

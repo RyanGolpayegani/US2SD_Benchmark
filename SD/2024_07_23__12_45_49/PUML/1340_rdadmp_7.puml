@@ -1,0 +1,52 @@
+@startuml
+actor PI as "Principal Investigator"
+participant DMPTool_UI as "DMPTool Interface"
+participant MetadataModule as "Metadata Manager"
+participant StoragePlanningModule as "Storage Planning Module"
+participant ITResourceModule as "IT Resource Manager"
+participant RepositoryModule as "Repository Manager"
+database ExternalMetadataTools as "External Metadata Tools"
+database InstitutionalSystems as "Institutional Systems"
+
+== Planning Data Recording/Storage ==
+
+PI -> DMPTool_UI : Initiate data planning
+activate DMPTool_UI
+
+DMPTool_UI -> MetadataModule : Request metadata fields
+activate MetadataModule
+MetadataModule --> DMPTool_UI : Display metadata fields
+deactivate MetadataThe intention of this diagram is not to be exhaustive but illustrative, capturing the critical steps involved in planning data recording or storage within the DMPTool platform as per the user story. Depending on the specific requirements and functionalities of DMPTool, additional steps, interactions, or refinements might be necessary. Module
+
+PI -> DMPTool_UI : Provide data details
+activate DMPTool_UI
+
+DMPTool_UI -> StoragePlanningModule : Determine storage needs
+activate StoragePlanningModule
+StoragePlanningModule -> ITResourceModule : Estimate IT resources
+activate ITResourceModule
+ITResourceModule --> StoragePlanningModule : Resource requirements
+deactivate ITResourceModule
+StoragePlanningModule --> DMPTool_UI : Storage options
+deactivate StoragePlanningModule
+
+PI -> DMPTool_UI : Choose storage option
+DMPTool_UI -> RepositoryModule : Validate with target repository criteria
+activate RepositoryModule
+RepositoryModule --> DMPTool_UI : Validation result
+deactivate RepositoryModule
+
+DMPTool_UI -> ExternalMetadataTools : Import existing metadata
+activate ExternalMetadataTools
+ExternalMetadataTools --> DMPTool_UI : Metadata imported
+deactivate ExternalMetadataTools
+
+DMPTool_UI -> InstitutionalSystems : Integrate project-specific information
+activate InstitutionalSystems
+InstitutionalSystems --> DMPTool_UI : Information integrated
+deactivate InstitutionalSystems
+
+DMPTool_UI --> PI : Data recording/storage plan created
+deactivate DMPTool_UI
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+participant OlderPerson as OP
+participant ALFREDSystem as ALFRED
+participant NurseSchedulingSystem as NS
+participant NotificationService as NSvc
+
+== Home Care Nurse Dispatch Sequence ==
+
+NS -> ALFRED: Notify(ALFRED, NurseStatusUpdate)
+activate ALFRED
+
+ALFRED -> NSvc: GenerateMessage("Your home care nurse is on the way")
+activate NSvc
+
+NSvc -> ALFRED: MessageCreated(Success)
+deactivate NSvc
+
+ALFRED -> OP: SendMessage(HomeNurseArrivalNotification)
+activate OP
+OP -> ALFRED: AcknowledgeMessage(Received)
+deactivate OP
+
+deactivate ALFRED
+@enduml

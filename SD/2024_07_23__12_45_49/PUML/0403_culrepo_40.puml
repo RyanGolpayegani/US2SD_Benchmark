@@ -1,0 +1,29 @@
+@startuml
+actor Researcher as "Academic Researcher"
+participant "Search Interface" as Search
+participant "Authentication System" as Auth
+participant "Repository Backend" as Backend
+participant "Database" as DB
+participant "Content Delivery" as Content
+
+Researcher -> Search: Enter search query\n("influential judge thesis")
+alt If user is not authenticated
+    Search -> Auth: Redirect to login
+    Researcher -> Auth: Provide credentials
+    Auth -> Search: Authentication successful
+end
+
+Search -> Backend: Send search query
+Backend -> DB: Query thesis papers
+DB -> Backend: Return search results
+Backend -> Search: Display search results
+Researcher -> Search: Select desired thesis
+Search -> Backend: Request thesis paper
+alt If access control required
+    Backend -> Auth: Check access rights
+    Auth -> Backend: Access granted
+end
+Backend -> Content: Retrieve thesis paper
+Content -> Researcher: Display thesis paper
+
+@enduml

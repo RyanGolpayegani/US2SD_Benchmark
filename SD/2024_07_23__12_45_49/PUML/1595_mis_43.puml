@@ -1,0 +1,26 @@
+@startuml
+!theme cerulean
+
+participant Repoadmin
+participant PrimaryServer as "Primary Server"
+participant HealthCheckService as "Health Check Service"
+participant BackupServer as "Backup Server"
+participant NotificationService as "Notification Service"
+
+Repoadmin -> PrimaryServer : Regular operation interaction
+alt Primary Server is down
+    Repoadmin -> HealthCheckService : Triggers health check on Primary Server
+    HealthCheckService -> PrimaryServer : Check status
+    note right of HealthCheckService : Server does not respond\nor reports failure
+    HealthCheckService -> BackupServer : Activate as primary
+    BackupServer --> HealthCheckService : Activation confirmed
+
+    HealthCheckService -> NotificationService : Send failure notification
+    NotificationService -> Repoadin : Notify server failover
+
+    Repoadmin -> BackupServer : Continue operation on Backup
+else Primary Server is operational
+    Repoadmin -> PrimaryServer : Continue normal operations
+end
+
+@enduml

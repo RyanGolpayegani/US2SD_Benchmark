@@ -1,0 +1,32 @@
+@startuml
+title Display Books Sequence Diagram
+
+actor "Library Member" as Member
+participant "Web Interface" as Web
+participant "Book Search Controller" as Controller
+database "Book Database" as DB
+participant "Book List" as BookList
+
+== Display Books Process ==
+Member -> Web: Access library website
+activate Web
+
+Web -> Controller: Request to display books
+activate Controller
+
+Controller -> DB: Query available books
+activate DB
+
+DB --> Controller: Return query results
+deactivate DB
+
+Controller -> BookList: Organize books into list
+activate BookList
+
+BookList --> Web: Send formatted book list
+deactivate BookList
+
+Web --> Member: Display book list
+deactivate Web
+
+@enduml

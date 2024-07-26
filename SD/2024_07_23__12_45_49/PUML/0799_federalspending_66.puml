@@ -1,0 +1,16 @@
+@startuml
+participant AgencyUser as User
+participant "Frontend Interface" as UI
+participant "Validation Service" as Validator
+participant "User Notification Service" as Notifier
+
+User -> UI : Uploads file with wrong extension
+UI -> Validator : Sends file metadata
+alt File extension valid
+    Validator -> UI : Validation success
+else File extension invalid
+    Validator -> Notifier : Trigger error notification
+    Notifier -> UI : Display file-level error message
+    UI -> User : Shows helpful error "Unsupported file extension. Please upload [.allowed extensions]."
+end
+@enduml

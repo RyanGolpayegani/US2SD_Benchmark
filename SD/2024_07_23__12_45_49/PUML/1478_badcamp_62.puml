@@ -1,0 +1,35 @@
+@startuml
+actor Anonymous as "Anonymous User"
+participant "Registration Page" as RP
+participant "Database" as DB
+participant "User Dashboard" as UD
+participant "Session Submission Form" as SSF
+participant "Review System" as RS
+
+Anonymous->RP: Visit registration page
+RP->DB: Check for existing user data
+alt User not found in DB
+    RP->RP: Display registration form
+    Anonymous->RP: Submit registration info\n(Name, Email, Password)
+    RP->DB: Create new user account
+    DB->RP: Confirmation of account creation
+    RP->Anonymous: Display success message &\nredirect to login
+else User found in DB
+    RP->Anonymous: Redirect to login page
+end
+
+Anonymous->UD: Login
+UD->DB: Validate user credentials
+DB->UD: Authentication success
+UD->Anonymous: Display User Dashboard
+
+Anonymous->SSF: Access Session Submission Form
+SSF->SSF: Display session submission fields
+Anonymous->SSF: Submit session details\n(Title, Description, Session Type)
+SSF->DB: Store session submission
+DB->SSF: Confirmation of submission received
+SSF->RS: Submit session for review
+RS->DB: Update session status to 'Under Review'
+DB->RS: Confirmation of status update
+RS->Anonymous: Notify user of successful submission and\nunder review status
+@enduml

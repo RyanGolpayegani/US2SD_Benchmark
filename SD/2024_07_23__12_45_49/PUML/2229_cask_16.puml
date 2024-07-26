@@ -1,0 +1,32 @@
+@startuml
+
+participant "App Developer" as AD
+participant "IDE/Development Environment" as IDE
+participant "Dataset Interface" as DI
+participant "Mocking Framework" as MF
+participant "Unit Test Framework" as UTF
+database "Mocked Dataset Instance" as MDI
+
+== Define Dataset Interface ==
+AD -> DI: Define DatasetInterface
+DI -> IDE: Provide Interface Details
+
+== Develop App against Dataset Interface ==
+AD -> IDE: Implement App Logic\nusing DatasetInterface
+
+== Setup Mock Environment ==
+AD -> MF: Create Mock Implementation\nof DatasetInterface
+MF -> MDI: Instantiate Mock Dataset\nwith Test Data
+MF -> IDE: Integrate Mock into App Environment
+
+== Write Unit Tests ==
+AD -> UTF: Write Tests for App\nusing Mocked Dataset
+UTF -> IDE: Provide Test Cases\nand Expectations
+
+== Execute Unit Tests ==
+AD -> IDE: Initiate Test Run
+IDE -> UTF: Execute Unit Tests
+UTF -> MDI: Interact with Mock Dataset\n (CRUD Operations)
+UTF --> AD: Return Test Results (Pass/Fail)
+
+@enduml

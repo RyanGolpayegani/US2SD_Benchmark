@@ -1,0 +1,46 @@
+@startuml
+participant Customer
+participant "CLMS Web Interface" as Web
+participant "Reservation System" as Reservation
+participant "Database" as DB
+
+Customer -> Web : Request to reserve a book
+Web -> Reservation : Validate request
+activate Reservation
+
+Reservation -> DB : Check book availability
+activate DB
+DB --> Reservation : Book availability status
+deactivate DB
+
+alt If book is available
+    Reservation --> Web : Show book available
+    Web --> Customer : Display success message
+
+    Customer -> Web : Confirm reservation
+    Web -> Reservation : Process reservation
+    activate Reservation
+
+    Reservation -> DB : Update book status to reserved
+    activate DB
+    DB --> Reservation : Confirmation of reservation
+    deactivate DB
+    
+    Reservation --> Web : Reservation success
+    Web --> Customer : Display reservation details
+else If book is unavailable
+    Reservation --> Web : Show book unavailable
+    Web --> Customer : Display waitlist option
+
+    Customer -> Web : Request to be added to waitlist
+    Web -> Reservation : Process waitlist request
+    Reservation -> DB : Add to waitlist
+    DB --> Reservation : Waitlist confirmation
+    deactivate DB
+
+    Reservation --> Web : Waitlist success
+    Web --> Share : Display waitlist confirmation
+endif
+
+deactivate Reservation
+@enduml

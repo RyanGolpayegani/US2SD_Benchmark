@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+
+participant Employee as E
+participant "Employee Interface" as EI
+participant "Server" as S
+participant "Database" as DB
+
+note over E: Employee decides to mark entry time
+E -> EI: Accesses System
+activate EI
+
+EI -> S: Request to mark entry time
+activate S
+
+note over S: Validates employee authentication
+S -> DB: Retrieve employee record
+activate DB
+
+DB --> S: Employee record
+deactivate DB
+
+S -> DB: Update entry time
+DB --> S: Confirmation message
+deactivate S
+
+S --> EI: Display confirmation
+EI --> E: Shows success message
+deactivate EI
+
+note over E: Entry time marked successfully
+
+@enduml

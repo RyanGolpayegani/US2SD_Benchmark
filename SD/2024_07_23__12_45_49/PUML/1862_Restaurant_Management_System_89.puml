@@ -1,0 +1,20 @@
+@startuml
+actor ManagementUser as "Management User"
+participant WebInterface as "Web Interface"
+participant Server as "Backend Server"
+participant Database as "Database"
+
+ManagementUser -> WebInterface: Request to view available table count
+Webinterface -> Server: GET /api/tables/available
+activate Server
+
+Server -> Database: SELECT COUNT(*) FROM tables WHERE status = 'available'
+activate Database
+Database --> Server: Count of available tables
+deactivate Database
+
+Server --> WebInterface: Response with available table count
+deactivate Server
+
+WebInterface -> ManagementUser: Display available table count
+@enduml

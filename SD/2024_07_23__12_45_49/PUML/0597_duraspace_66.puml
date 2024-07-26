@@ -1,0 +1,42 @@
+@startuml
+participant User
+participant "UI Interface" as UI
+participant "Search Manager" as Search
+participant "Collection Management" as CM
+participant "Object Management" as OM
+participant "Rights Management" as RM
+participant Database
+
+User -> UI : Request information\n(search parameters)
+UI -> Search : Initiate search
+Search -> CM : Query Collection
+activate CM
+CM -> Database : Fetch Collection details
+Database --> CM : Collection details
+deactivate CM
+
+Search -> OM : Query Object
+activate OM
+OM -> Database : Fetch Object details
+Database --> OM : Object details
+deactivate OM
+
+Search -> OM : Query Object Components
+activate OM
+OM -> Database : Fetch Component details
+Database --> OM : Component details
+deactivate OM
+
+Search -> RM : Check Access/Use Conditions
+activate RM
+RM -> Database : Fetch Rights and Conditions
+Database --> RM : Rights Conditions
+deactivate RM
+
+RM --> Search : Rights and Conditions details
+OM --> Search : Object & Component details
+CM --> Search : Collection details
+Search --> UI : Aggregate Information
+UI --> User : Display Information
+
+@enduml

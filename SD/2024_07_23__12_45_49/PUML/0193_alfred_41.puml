@@ -1,0 +1,25 @@
+@startuml
+participant OlderPerson as User
+participant "ALFRED\nAssistive Device" as ALFRED
+participant "Taxi Dispatch\nSystem" as Taxi
+
+User -> ALFRED : "Request taxi for [time]"
+ALFRED -> ALFRED : Process request\nIdentify current location
+ALFRED -> Taxi : Send taxi request with\ntime and location
+note right of Taxi : Taxi allocation process
+Taxi --> ALFRED : Confirm taxi booking\ndetails (Time, Car Number)
+ALFRED -> User : "Taxi booked for [time]\nCar Number: [XYZ]"
+User --> ALFRED : "Acknowledge"
+note left of User : Prepares for pickup
+
+alt if Taxi arrival is imminent
+    Taxi -> ALFRED : "Taxi arriving in 5 minutes"
+    ALFRED -> User : "Your taxi will\narrive in 5 minutes"
+end
+
+alt if Taxi is delayed
+    Taxi -> ALFRED : "Taxi delayed by [minutes]"
+    ALFRED -> User : "Your taxi is delayed\nby [minutes]"
+end
+
+@enduml

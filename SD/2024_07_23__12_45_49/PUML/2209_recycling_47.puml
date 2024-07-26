@@ -1,0 +1,39 @@
+@startuml
+participant Admin
+participant "RecycleSmart \nPlatform" as Platform
+participant "Notification \nService" as NotificationService
+participant "Facility \nRepresentative" as FacilityRep
+
+== Admin Initiates Communication ==
+Admin -> Platform : Access Facility Communication Module
+activate Platform
+
+Platform -> Platform : Authenticate Admin
+note right: Verify admin credentials\nto allow access
+
+Platform -> NotificationService : Prepare Communication Interface
+activate NotificationService
+
+== Composing Message ==
+Admin -> Platform : Compose Message
+Platform -> NotificationService : Create New Message
+activate NotificationService
+NotificationService --> Admin : Display Message Draft Interface
+deactivate NotificationService
+
+Admin -> NotificationService : Submit Message Draft + Facility Target Info
+activate NotificationService
+NotificationService -> NotificationService : Validate Message and Facility Info
+
+== Sending Message ==
+NotificationService -> FacilityRep : Dispatch Message
+activate FacilityRep
+FacilityRep --> Platform : Acknowledge Receipt
+deactivate FacilityRep
+Platform --> Admin : Confirm Message Delivery
+deactivate NotificationMarketingService
+
+== Interaction Ends ==
+deactivate Platform
+
+@enduml

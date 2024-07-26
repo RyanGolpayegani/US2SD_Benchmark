@@ -1,0 +1,22 @@
+@startuml
+participant Manager as M
+participant "Management System" as MS
+participant "Database" as DB
+
+M -> MS : Selects resource to remove
+activate MS
+
+MS -> DB : Query resource details
+activate DB
+DB --> MS : Resource details
+deactivate DB
+
+MS -> MS : Verify manager authorization
+MS -> DB : Remove resource from inventory
+activate DB
+DB --> MS : Confirm resource removal
+deactivate DB
+
+MS --> M : Display removal confirmation
+deactivate MS
+@enduml

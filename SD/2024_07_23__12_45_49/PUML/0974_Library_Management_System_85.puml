@@ -1,0 +1,19 @@
+@startuml
+actor Librarian as librarian
+participant "LibraryManagementSystem" as LMS
+database "Database" as DB
+participant "NotificationService" as NS
+entity "Member" as member
+
+librarian -> LMS : ViewExpiredBooks()
+LMS -> DB : FetchExpiredBooks()
+DB --> LMS : ExpiredBooksList
+LMS --> librarian : ShowExpiredBooks(ExpiredBooksList)
+librarian -> LMS : SelectBooksForNotification(ExpiredBooksList)
+LMS -> DB : FetchMemberDetails(SelectedBooks)
+DB --> LMS : MemberDetailsList
+LMS -> NS : PrepareNotifications(MemberDetailsList)
+NS -> member : SendNotification(OverdueBooks)
+NS --> LMS : Confirmation(NotificationStatus)
+LMS --> librarian : ShowNotificationStatus(Confirmation)
+@enduml

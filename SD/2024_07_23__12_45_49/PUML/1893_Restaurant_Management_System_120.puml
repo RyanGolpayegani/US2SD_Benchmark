@@ -1,0 +1,30 @@
+@startuml
+participant ManagerUI as "Manager UI"
+participant BackendServer as "Backend Server"
+participant Database as "Database"
+
+activate ManagerUI
+ManagerUI->BackendServer: Request to view employee list
+activate BackendManServer
+
+BackendServer->Database: Fetch employee list
+activate Database
+Database-->BackendServer: Employee list data
+deactivate Database
+
+BackendServer-->ManagerUI: Display employee list
+deactivate BackendServer   
+ManagerUI->ManagerUI: Select employee to delete
+
+activate BackendServer
+ManagerUI->BackendServer: Send delete request (Employee ID)
+BackendServer->Database: Delete employee record (Employee ID)
+activate Database
+Database-->BackendServer: Confirm deletion
+deactivate Database
+
+BackendServer-->ManagerUI: Confirm deletion to Manager
+deactivate BackendServer
+ManagerUI->ManagerUI: Display updated employee list
+
+@enduml

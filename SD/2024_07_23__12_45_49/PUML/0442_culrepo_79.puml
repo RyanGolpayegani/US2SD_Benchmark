@@ -1,0 +1,42 @@
+@startuml
+participant Patron as user
+participant WebInterface as web
+participant AccountService as acc
+participant Database as db
+participant NotificationService as notif
+participant EmailSystem as email
+
+user -> web : Navigate to Sign Up page
+web -> acc : Display sign up form
+acc -> web : Show form fields: Name, Email, Password
+web -> user : User inputs: Name, Email, Password
+user -> web : Submit form
+web -> acc : Create account request(Name, Email, Password)
+acc -> db : Check if user exists
+db -> acc : User does not exist
+acc -> db : Save new user details
+db -> acc : Confirm user saved
+acc -> notif : Setup default notification preferences
+notif -> db : Save notification preferences
+db -> notif : Confirmation
+notif -> acc : Notification preferences saved
+acc -> email : Send verification email
+email -> user : Email verification link
+user -> email : Click verification link
+email -> acc : Verify email request
+acc -> db : Mark email as verified
+db -> acc : Email verified confirmation
+
+acc -> web : Account creation successful
+web -> user : Display success & instruction to login
+
+user -> web : Navigate to Report/Dataset subscription
+web -> user : Display available reports/datasets
+user -> web : Selects report/dataset
+web -> notif : Request to setup notification for report/dataset
+notif -> db : Save user preference
+db -> notif : Confirmation
+notif -> web : Notification setup successful
+web -> user : Display success message
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+participant User
+participant "AMIDP Platform" as Platform
+participant "Content Identification" as CI
+participant "Metadata Service" as MS
+participant "Database" as DB
+
+User -> Platform: Upload video/find video
+activate Platform
+
+Platform -> CI: Extract video frames
+activate CI
+CI -> CI: Analyze frames for logos
+CI --> Platform: Logo identified
+deactivate CI
+
+Platform -> MS: Request info for logos
+activate MS
+MS -> DB: Query logo information
+activate DB
+
+DB --> MS: Logo information
+deactivate DB
+MS --> Platform: Logo metadata (broadcaster info)
+deactivate MS
+
+Platform --> User: Display broadcaster information
+deactivate Platform
+@enduml

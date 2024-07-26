@@ -1,0 +1,25 @@
+@startuml
+actor "Summit Coordinator" as coordinator
+participant ":Web Interface" as web
+participant ":Authentication Service" as auth
+participant ":Summit Management Module" as summitModule
+participant ":Database" as db
+
+coordinator -> web : Navigate to Sponsorship Page
+web -> auth : Validate Session
+auth --> web : Session Valid
+
+web -> summitModule : Request to List Sponsors
+summitModule -> db : Query Sponsor Details
+db --> summit_EXAMPLE_Module : Return Sponsors List
+summitModule --> web : Display Sponsors List
+web --> coordinator : Show Sponsors on Summit Page
+
+coordinator -> web : Add/Edit Sponsor Info
+web -> summitModule : Update Sponsor Details
+summitModule -> db : Save New/Updated Info
+db --> summit_EXAMPLE_Module : Confirm Save
+summitModule --> web : Confirmation Message
+web --> coordinator : Show Success/Failure Message
+
+@enduml

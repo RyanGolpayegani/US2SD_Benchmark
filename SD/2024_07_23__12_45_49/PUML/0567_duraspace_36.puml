@@ -1,0 +1,31 @@
+@startuml
+actor RepositoryManager as "Repository Manager"
+participant DAMS as "DIMS System"
+participant CollectionManagement as "Collection Management"
+participant ObjectStructureModule as "Object Structure Module"
+participant Database as "Database"
+
+== Object Structure Representation ==
+
+RepositoryManager -> DAMS : Login()
+DAMS -> RepositoryManager : Display Dashboard
+
+RepositoryManager -> DAMS : Access Object Management
+DAMS -> ObjectStructureModule : Initiate Object Structure Representation
+ObjectStructureModule -> RepositoryManager : Display Object Structure Form
+
+RepositoryManager -> ObjectStructureModule : Provide Structure Details
+ObjectStructureModule -> Database : Save Structure Information
+
+alt Successful Save
+    Database --> ObjectStructureModule : Confirm Save
+    ObjectStructureModule --> RepositoryManager : Display Success Message
+else Save Failed
+    Database --> ObjectStructureModule : Error Message
+    ObjectStructurerModule --> RepositoryManager: Display Error Message
+end
+
+RepositoryManager -> DAMS : Logout()
+DAMS -> RepositoryManager : Confirm Logout
+
+@enduml

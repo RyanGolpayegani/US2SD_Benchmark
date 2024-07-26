@@ -1,0 +1,21 @@
+@startuml
+actor ZooniverseAdmin as admin
+participant "Recommendation Engine" as engine
+participant Database as db
+participant "User Profile" as profile
+participant "Project Management" as project
+participant Volunteer as volunteer
+
+admin -> engine : trigger recommendations update
+engine -> db : fetch volunteers' history
+db -> engine : return history
+engine -> profile : analyze history
+profile -> engine : return interests\nand preferences
+engine -> db : query similar projects
+db -> engine : return project list
+engine -> project : filter projects by\nvolunteer preferences
+project -> engine : return filtered projects
+engine -> volunteer : recommend projects based on\nprevious experiences
+volunteer -> engine : receive project recommendations
+
+@enduml

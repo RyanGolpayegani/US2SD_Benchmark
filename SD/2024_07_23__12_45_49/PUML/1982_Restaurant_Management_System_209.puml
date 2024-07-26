@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+
+participant Manager as M
+participant FrontendApplication as FA
+participant BackendServer as BS
+participant Database as DB
+
+title Store Orders and Calculate Total Sales
+
+M -> FA : Store order details
+FA -> BS : Request to store order
+activate BS
+BS -> DB : Save order data
+activate DB
+DB --> BS : Acknowledge data saved
+deactivate DB
+
+BS -> DB : Query orders for sales calculation
+activate DB
+DB --> BS : Return orders data
+deactivate DB
+
+BS -> BS : Calculate total sales
+BS --> FA : Send total sales data
+deactivate BS
+FA --> M : Display total sales
+
+@enduml

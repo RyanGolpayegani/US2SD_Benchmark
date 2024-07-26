@@ -1,0 +1,24 @@
+@startuml
+participant Member
+participant "Search Interface" as Interface
+participant "Library Management System" as LMS
+participant Database
+
+Member -> Interface: Enter unique ID
+Interface -> LMS: Request book details with unique ID
+activate LMS
+LMS -> Database: Query book details
+activate Database
+Database -> Database: Search for book
+Database --> LMS: Return book details
+deactivate Database
+LMS -> LMS: Locate related books
+LMS -> Database: Query related books and shelf numbers
+activate Database
+Database -> Database: Search for related books
+Database --> LMS: Return related books and shelf numbers
+deactivate Database
+LMS --> Interface: Show book and related books with shelf numbers
+deactivate LMS
+Interface --> Member: Display book information and locations
+@enduml

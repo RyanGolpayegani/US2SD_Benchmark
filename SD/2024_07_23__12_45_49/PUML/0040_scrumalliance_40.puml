@@ -1,0 +1,28 @@
+@startuml
+actor "Site Member" as member
+participant "UI Interface" as ui
+participant "AuthenticationService" as authService
+participant "ContentManagementSystem" as cms
+participant "PDFService" as pdfService
+participant "Database" as db
+
+== Download Training Material & Methodology PDFs ==
+member -> ui: Requests to download PDFs
+ui -> authService: Validate member
+authService -> ui: Validation success
+
+ui -> cms: Request available PDFs list
+cms -> db: Fetch available PDFs metadata
+db -> cms: Return PDFs metadata
+cms -> ui: Display PDFs list to member
+
+member -> ui: Selects specific PDFs to download
+ui -> cms: Request selected PDFs
+cms -> pdfService: Fetch selected PDFs
+pdfService -> db: Retrieve PDFs data
+db -> pdfService: Return PDFs data
+pdfService -> cms: Package PDFs for download
+cms -> ui: Provide download link
+ui -> member: Member downloads PDFs
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+actor Borrower as borrower
+participant "UI:Library Portal" as ui
+participant "SearchController" as controller
+participant "SearchService" as service
+participant "BookRepository" as repo
+database "LibraryDB" as db
+
+borrower -> ui : Enter search query by title
+ui -> controller : SearchByTitle(query)
+controller -> service : getBookByTitle(query)
+service -> repo : findBookByTitle(title)
+repo -> db : Query for Book by Title
+db -> repo : Book details/Not found
+repo -> service : Return Book details/Not found
+service -> controller : Search results
+controller -> ui : Display results
+ui -> borrower : Show Book Exists/Not Found
+
+@enduml

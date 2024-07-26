@@ -1,0 +1,24 @@
+@startuml
+participant "Zooniverse Admin" as admin
+participant "AMIDP Platform" as platform
+database "Media Database" as mediaDB
+participant "Content Analysis Module" as analysisModule
+participant "User Annotation Module" as annotationModule
+participant "Talk Comments API" as talkAPI
+participant "Aggregator & Scorer" as aggregator
+
+== Assess Picture Quality ==
+admin -> platform: Request Picture Analysis\n[Picture ID]
+platform -> mediaDB: Retrieve Picture Data\n[Picture ID]
+mediaDB --> platform: Picture Data
+platform -> analysisModule: Analyze Picture\n[Picture, Metadata]
+analysisModule --> platform: Analysis Report\n[Quality Metrics]
+platform -> annotationModule: Fetch Annotations\n[Picture ID]
+annotationModule --> platform: Annotation Data
+platform -> talkAPI: Fetch Comments\n[Picture ID]
+talkAPI --> platform: Comments Data
+platform -> aggregator: Aggregate Data\n[Analysis, Annotations, Comments]
+aggregator --> platform: Assessment Report\n[Interest, Appeal, Complexity]
+platform --> admin: Display Assessment Report
+
+@enduml

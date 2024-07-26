@@ -1,0 +1,21 @@
+@startuml
+participant Manager
+participant MenuManagementSystem
+participant InventorySystem
+participant Database
+
+Manager -> MenuManagementSystem : Request to view current menu
+MenuManagementSystem -> Database : Fetch menu items
+Database -> MenuManagementSystem : Menu items data
+MenuManagementSystem -> Manager : Display menu items
+
+Manager -> MenuManagementSystem : Select item(s) to be removed
+MenuManagementSystem -> InventorySystem : Check item stock
+InventorySystem -> Database : Query stock levels
+Database -> InventorySystem : Stock levels data
+InventorySystem -> MenuManagementSystem : Stock status (Out of stock)
+
+MenuManagementSystem -> Database : Update item status (Disable/Mark as out of stock)
+Database -> MenuManagementSystem : Confirmation of update
+MenuManagementSystem -> Manager : Confirm item removal/update
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+participant Customer
+participant Server as S
+participant "Order Management System" as OMS
+participant "Inventory Management" as INV
+participant Database as DB
+
+title Chef Updating Order Item Status to Received
+
+Customer -> S: Place order
+S -> OMS: Send order details
+OMS -> DB: Log order\n(Status: Pending)
+DB --> OMS: Confirmation
+OMS --> S: Order confirmed
+S --> Customer: Order processing
+
+... Later ...
+
+OMS -> OMS: Check Order Status
+OMS -> Chef: Display Pending Orders
+Chef -> OMS: Select Order Item to Update
+Chef -> OMS: Update Status to Received
+OMS -> DB: Update Order Item Status\n(Status: Received)
+DB --> OMS: Confirmation
+OMS --> Chef: Status Updated Confirmation
+OMS -> INV: Adjust Inventory Stock
+INV -> DB: Update Stock Levels
+DB --> INV: Confirmation
+INV --> OMS: Inventory Updated
+
+@enduml

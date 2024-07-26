@@ -1,0 +1,24 @@
+@startuml
+participant Consumer as C
+participant "UI" as UI
+participant "Server/API" as S
+participant "Data Processing Module" as DPM
+participant "Database" as DB
+participant "External Data Storage" as EDS
+
+C -> UI : Request data package in SQLite format
+UI -> S : API call to fetch data package
+S -> DB : Query for data package details/availability
+DB -> S : Return data package metadata
+S -> DPM : Request to package data in SQLite format
+DB -> DPM : Send raw data package
+DPM -> EDS : Store SQLite formatted data temporarily
+EDS -> DPM : Return URL for download
+DPM -> S : Pass URL for download
+S -> UI : Provide download URL to Consumer
+UI -> C : Display download link
+C -> UI : Initiate download
+UI -> EDS : Request download via URL
+EDD -> C : Send SQLite database to Consumer
+
+@enduml

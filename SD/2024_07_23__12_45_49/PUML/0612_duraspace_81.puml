@@ -1,0 +1,29 @@
+@startuml
+participant DAMSManager as DM "DAMS Manager"
+participant PreservationManager as PM "Preservation Manager"
+database DAMSDB "DAMS Database"
+
+DM -> PM : Request list of files with checksum changes
+activate PM
+PM -> DAMSDB : Query files with last registered checksum
+activate DAMSDB
+
+DAMSDB --> PM : Return files list
+deactivate DAMSDB
+PM -> DAMSDB : Get latest checksums for files
+activate DAMSDB
+
+DAMSDB --> PM : Return latest checksums
+deactivate DAMSDB
+
+loop for each file
+    PM -> DAMSDB : Compare last registered vs. latest checksum
+    activate DAMSDB
+    DAMSDB --> PM : Return comparison result
+    deactivate DAMSDB
+end
+
+PM -> DM : Send report of changed checksum files
+deactivate PM
+
+@enduml

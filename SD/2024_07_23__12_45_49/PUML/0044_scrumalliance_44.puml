@@ -1,0 +1,34 @@
+@startuml
+actor Recruiter
+participant "Job Submission Form" as Form
+participant "Website Backend" as Backend
+participant "Job Approval Queue" as Queue
+actor Admin
+participant "Job Database" as Database
+
+== Job Posting Submission ==
+Recruiter -> Form : Submit Help Wanted Ad
+Form -> Backend : Validate Submission
+alt Submission is Invalid
+    Backend -> Recruiter : Display Error Message
+else Submission is Valid
+    Backend -> Queue : Add Job to Approval Queue
+    Recruiter -> Backend : Display "Pending Approval" Message
+end
+
+== Job Approval Process ==
+Admin -> Queue : Review Job Listings
+loop For Each Job in Queue
+    alt Job is Approved
+        Admin -> Backend : Approve Job Listing
+        Backend -> Database : Save to Job Database
+        Backend -> Admin : Display "Job Approved" Message
+        Backend -> Recruiter : Send "Job Approved" Email Notification
+    else Job is Rejected
+        Admin -> Backend : Reject Job Listing
+        Backend -> Admin : Display "Job Rejected" Message
+        Backend -> Recruiter : Send "Job Rejected" Email Notification
+    end
+end
+
+@enduml

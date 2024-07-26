@@ -1,0 +1,23 @@
+@startuml
+
+participant Repoadmin as admin
+participant "EDRMS Configuration Interface" as config
+participant "Repository Database" as db
+participant "OAI-PMH Provider" as provider
+participant "Metadata Harvester" as harvester
+
+== Configuration Phase ==
+admin -> config : Access OAI-PMH module settings
+config -> db : Retrieve available collections
+admin <- config : Display collections
+admin -> config : Select collections to expose
+config -> db : Update collection exposure settings
+admin <- config : Confirm exposure settings
+
+== Harvesting Phase ==
+harvester -> provider : Request exposed metadata (ListRecords verb)
+provider -> db : Query exposed collections metadata
+db -> provider : Return metadata
+provider -> harvester : Respond with metadata records
+
+@enduml

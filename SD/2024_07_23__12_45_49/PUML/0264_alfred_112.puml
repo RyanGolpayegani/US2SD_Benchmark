@@ -1,0 +1,25 @@
+@startuml
+participant MedicalCaregiver as MC
+participant ALFRED as A
+participant "HealthMonitor" as HM
+participant "ExerciseModule" as EM
+participant "GameSuggestionEngine" as GSE
+participant "PrivacySettings" as PS
+participant Database as DB
+
+MC -> A : Request for mental & physical games
+A -> PS : Check privacy & data control settings
+PS -> A : Confirm access granted
+A -> GSE : Request game suggestions
+GSE -> DB : Retrieve game options
+DB -> GSE : Return options
+GSE -> EM : Request exercise suitability
+EM -> HM : Check user health status
+HM -> EM : Provide health parameters
+EM -> GSE : Confirm suitability based on health
+GSE -> A : Suggest suitable games
+A -> MC : Display games with mental & physical exercises
+MC -> A : Select game for older adult
+A -> EM : Initiate game with exercise guidelines
+EM -> MC : Display start instructions & safety guidelines
+@enduml

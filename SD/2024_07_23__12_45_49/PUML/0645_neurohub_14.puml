@@ -1,0 +1,19 @@
+@startuml
+actor Researcher as res
+participant "UI Interface" as ui
+participant "File Management System" as fileSys
+participant "Logbook Service" as logbook
+database "Neurohub Database" as db
+
+res -> ui : Select "Attach File" option on Logbook page
+ui -> fileSys : Fetch non-attached files
+fileSys -> res : Display list of non-attached files
+res -> fileSys : Select files to attach
+fileSys -> logbook : Request to attach selected files to Logbook page
+logbook -> db : Validate files against Logbook page
+db --> logbook : Validation Success
+logbook -> db : Update Logbook entry with attached files
+db -> logbook : Confirm attachment success
+logbook -> ui : Confirm successful attachment to Researcher
+ui -> res : Display attachment confirmation message
+@enduml

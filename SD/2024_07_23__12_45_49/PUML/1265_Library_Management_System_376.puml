@@ -1,0 +1,31 @@
+@startuml
+!theme plain
+
+actor User as user
+participant "Web Interface" as web
+participant "Backend Server" as backend
+database "Database" as db
+
+== User Requests Book Listing ==
+
+user -> web: Request list of books
+activate user
+activate web
+
+web -> backend: GET /books
+activate backend
+
+backend -> db: SELECT * FROM books
+activate db
+
+db --> backend: BookList
+deactivate db
+
+backend --> web: Response(BookList)
+deactivate backend
+
+web --> user: Display BookList
+deactivate web
+deactivate user
+
+@enduml

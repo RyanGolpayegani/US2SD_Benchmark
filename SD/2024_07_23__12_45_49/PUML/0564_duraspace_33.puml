@@ -1,0 +1,26 @@
+@startuml
+actor User as user
+participant "User Interface" as UI
+participant "Search Module" as search
+participant "Access Control" as access
+participant "File Management" as fileManager
+participant "Database" as db
+database "DAMS Repository" as repo
+
+user -> UI : Request to access content files for an object
+UI -> search : Initiate search for object
+search -> db : Query object details
+db -> search : Return object details
+search -> UI : Display object metadata
+UI -> user : Show object metadata and request access confirmation
+user -> UI : Confirm access to content files
+UI -> access : Request access validation for user
+access -> db : Validate user credentials and permissions
+db -> access : Confirm access rights
+access -> fileManager : Request content files for object
+fileManager -> repo : Fetch content files
+repo -> fileManager : Return content files
+fileManager -> access : Provide access to content files
+access -> UI : Grant access and display content files
+UI -> user : Display content files
+@enduml

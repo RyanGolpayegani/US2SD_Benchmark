@@ -1,0 +1,40 @@
+@startuml
+participant LabAdministrator as admin
+participant WebInterface as web
+participant ThemeSettings as theme
+participant SystemDatabase as db
+
+admin -> web: Access Theme Settings
+activate web
+
+web -> theme: Load Current Theme Settings
+activate theme
+
+theme -> db: Fetch Current Theme Settings
+activate db
+
+db --> theme: Current Theme Settings
+deactivate db
+
+theme --> web: Display Current Settings
+deactivate theme
+
+admin -> web: Select New Theme
+activate web
+
+web -> theme: Update Theme Settings
+activate theme
+
+theme -> db: Save New Theme Settings
+activate db
+
+db --> theme: Confirmation
+deactivate db
+
+theme --> web: Update Successful
+deactivate theme
+
+web --> admin: Display New Theme
+deactivate web
+
+@enduml

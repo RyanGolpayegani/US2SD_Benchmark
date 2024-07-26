@@ -1,0 +1,41 @@
+@startuml
+!theme plain
+
+participant Chef_UI as Chef
+participant Backend_System as Backend
+database DB
+participant Waiter_UI as Waiter
+
+== Update Dish Status ==
+Chef -> Backend : Update dish status (dishID, newStatus)
+activate Chef
+activate Backend
+
+Backend -> DB : Query to update status (dishID, newStatus)
+activate DB
+
+DB --> Backend : Confirm status updated
+deactivate DB
+
+Backend --> Chef : Display success message
+deactivate Backend
+
+== Notify Waiters ==
+Backend -> DB : Query to get waiters list
+activate Backend
+activate DB
+
+DB --> Backend : Return waiters list
+deactivate DB
+
+Backend -> Waiter : Update available to waiters UI
+activate Waiter
+
+Waiter --> Backend : Acknowledge update
+deactivate Waiter
+
+Backend --> Chef : Notify update completion to Chef
+deactivate Backend
+
+deactivate Chef
+@enduml

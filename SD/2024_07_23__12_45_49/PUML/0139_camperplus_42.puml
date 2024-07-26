@@ -1,0 +1,30 @@
+@startuml
+participant Parent as parent
+participant "Platform Interface" as platform
+participant "Authentication Service" as auth
+participant "Database" as db
+
+parent -> platform : Access Platform
+platform -> auth : Request Authentication
+auth -> parent : Authenticate
+parent -> auth : Provide Credentials
+auth -> auth : Validate Credentials
+auth -> platform : Authentication Successful
+
+platform -> parent : Display Dashboard
+
+parent -> platform : Select "Consent Forms"
+platform -> db : Retrieve Consent Forms
+db -> platform : Return Consent Forms
+platform -> parent : Display Consent Forms
+
+parent -> platform : Select "Sign & Submit"
+platform -> parent : Display Form
+
+parent -> platform : Sign Form Electronically
+platform -> db : Save Signed Form
+db -> platform : Confirm Form Saved
+
+platform -> parent : Display Confirmation Message
+
+@enduml

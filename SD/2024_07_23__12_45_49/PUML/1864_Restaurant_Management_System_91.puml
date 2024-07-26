@@ -1,0 +1,22 @@
+@startuml
+
+participant Manager
+participant "Management Dashboard" as Dashboard
+participant "Reservation System" as ReservationSystem
+participant "Table Management Module" as TableModule
+participant Database
+
+Manager -> Dashboard: Request restaurant fullness info
+Dashboard -> ReservationSystem: Get current reservations
+ReservationSystem -> Database: Query reservations
+Database --> ReservationSystem: Reservation data
+ReservationSystem --> Dashboard: Current reservation numbers
+
+Dashboard -> TableModule: Get occupancy status
+TableModule -> Database: Query table statuses
+Database --> TableModule: Occupancy data
+TableModule --> Dashboard: Current occupancy status
+
+Dashboard --> Manager: Display fullness data (Reservations + Occupancy)
+
+@enduml

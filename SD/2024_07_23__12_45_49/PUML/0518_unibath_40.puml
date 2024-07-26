@@ -1,0 +1,37 @@
+@startuml
+participant Administrator as Admin
+participant "Web Interface" as Web
+participant "Data Deposit System" as DDS
+participant "Open Standards API" as API
+participant "Dataset Repository" as Repo
+
+== Encouraging the Use of Open Standards for Data Deposit ==
+
+Admin -> Web: Access Deposit Guidelines
+note right of Admin: Reviews guidelines\nfor including open standards
+
+Admin -> Web: Update Deposit Guidelines
+note right of Web: Incorporates open standards\nrecommendations
+
+Web -> DDS: Display Updated Guidelines
+
+== Depositing Dataset Using Open Standards ==
+
+Depositor -> Web: Navigate to Dataset Deposit
+Web -> DDS: Request Deposit Form
+DDS -> Web: Provide Deposit Form with Open Standards Info
+Web -> Depositor: Display Deposit Form
+
+Depositor -> Web: Submit Dataset with Metadata
+Web -> DDS: Validate Metadata against Open Standards
+alt Metadata Valid
+    DDS -> API: Apply Open Standards to Metadata
+    API -> DDS: Confirm Standards Application
+    DDS -> Repo: Deposit Dataset
+    Repo -> DDS: Acknowledge Deposit
+    DDS -> Depositor: Deposit Successful Message
+else Metadata Invalid
+    DDS -> Depositor: Error Message with Guidelines
+end
+
+@enduml

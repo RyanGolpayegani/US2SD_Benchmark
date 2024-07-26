@@ -1,0 +1,42 @@
+@startuml
+participant Manager as M
+participant UIManager as UI
+participant Backend as B
+participant Database as DB
+
+M -> UI : Access Pricing Module
+activate M
+activate UI
+
+UI -> B : Request current item prices
+activate B
+
+B -> DB : Query current item prices
+activate DB
+
+DB --> B : Return item prices
+deactivate DB
+
+B --> UI : Display item prices
+deactivate B
+
+M -> UI : Specify new prices and discounts
+activate UI
+
+UI -> B : Submit updated prices and discounts
+activate B
+
+B -> DB : Update item prices and discounts
+activate DB
+
+DB --> B : Confirm price update
+deactivate DB
+
+B --> UI : Display success message
+deactivate B
+
+UI --> M : Confirm price changes
+deactivate M
+deactivate UI
+
+@enduml

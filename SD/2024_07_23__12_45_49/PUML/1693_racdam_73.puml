@@ -1,0 +1,31 @@
+@startuml
+participant Archivist
+participant "Digital Archive System" as System
+participant "Image Metadata" as Metadata
+participant "File Storage" as Storage
+database "Digital Archive Database" as Database
+
+Archivist -> System : Upload image
+System -> Storage : Save image file
+activate Storage
+Storage --> System : Confirm save
+deactivate Storage
+System -> Metadata : Extract metadata
+activate Metadata
+Metadata --> System : Image color model (RGB/Grey scale)
+deallocate Metadata
+
+System -> Database : Update metadata record
+activate Database
+Database --> System : Confirm metadata update
+deactivate Database
+
+System -> Archivist : Display image status (Color/B&W)
+Archivist -> System : Request image list with color model
+System -> Database : Query images by color model
+activate Database
+Database -> System : Return list of images
+deactivate Database
+
+System --> Archivist : Display images meeting criteria
+@enduml

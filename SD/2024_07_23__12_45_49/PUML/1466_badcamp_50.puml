@@ -1,0 +1,35 @@
+@startuml
+actor Sponsor
+entity "Authentication System" as Auth
+entity "Job Listing Service" as JobService
+entity "Sponsorship Profile Service" as SponsorProfile
+database "Database" as DB
+
+Sponsor->Auth: Log In
+activate Auth
+Auth-->Sponsor: Authentication Success
+deactivate Auth
+
+Sponsor->JobService: Navigate to Job Listings
+activate JobService
+
+Sponsor->JobService: Add/Edit Job Listing
+activate JobService
+JobService->Sponsor: Display Job Listing Form
+
+Sponsor->SponsorProfile: Select Link to Sponsorship Profile
+activate SponsorProfile
+SponsorProfile->JobService: Provide Link
+
+Sponsor->JobService: Submit Job Listing with Profile Link
+JobService->DB: Save/Update Job Listing
+activate DB
+DB-->JobService: Confirmation
+deactivate DB
+
+JobService-->Sponsor: Display Success Message
+
+deactivate SponsorProfile
+deactivate JobService
+
+@enduml

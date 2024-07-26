@@ -1,0 +1,34 @@
+@startuml
+participant Archivist
+participant "Import Service" as Import
+participant "Data Validator" as Validator
+participant "Error Logging Service" as Logger
+participant "Notification Service" as Notifier
+
+Archivist -> Import : Initiate Import (EAD, CSV, MARCXML, EAC-CPF)
+activate Import
+
+Import -> Validator : Validate Data Format and Integrity
+activate Validator
+
+alt Validation Failed
+    Validator -> Logger : Log Error Details
+    activate Logger
+    Logger --> Validator : Log ID
+    deactivate Logger
+    
+    Validator -> Notifier : Trigger Error Notification(Log ID)
+    deactivate Validator
+    activate Notifier
+    Notifier -> Archivist : Display Error and Suggestion
+    deactivate Notifier
+else Validation Successful
+    Validator --> Import : Proceed with Data Import
+    deactivate Validator
+    
+    Import -> Import : Import Data to System
+    Import -> Archivist : Show Success Message
+end
+
+deactivate Import
+@enduml

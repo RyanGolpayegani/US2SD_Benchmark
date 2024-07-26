@@ -1,0 +1,21 @@
+@startuml
+participant Parent as parent
+participant "Authentication System" as auth
+participant "Camp Management\n& Communication Platform" as platform
+participant "Database" as db
+participant "Notification System" as notif
+
+parent -> platform: Request child's schedule
+platform -> auth: Validate parent's identity
+auth -> platform: Identity confirmed
+
+alt If identity validation fails
+    auth -> parent: Notification (Access Denied)
+else Identity validation success
+    platform -> db: Query child's activity schedule
+    db -> platform: Return schedule data
+    platform -> notif: Format schedule information
+    notif -> parent: Notify parent with child's schedule
+end
+
+@enduml

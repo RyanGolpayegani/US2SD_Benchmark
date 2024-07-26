@@ -1,0 +1,21 @@
+@startuml
+participant Attendee
+participant TrainingModule as Training
+database BADCampDB as DB
+participant EmailSystem as Email
+
+Attendee -> Training: Request to join waitlist
+Training -> DB: Check if waitlist available
+alt Waitlist is available
+    DB -> Training: Confirm availability
+    Training -> Attendee: Show waitlist form
+    Attendee -> Training: Submit waitlist form
+    Training -> DB: Add to waitlist
+    DB -> Training: Waitlist confirmation
+    Training -> Email: Send confirmation email to Attendee
+    Email -> Attendee: Waitlist confirmation email
+else Waitlist not available/full
+    DB -> Training: Inform waitlist full
+    Training -> Attendee: Show waitlist full message
+end
+@enduml

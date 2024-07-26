@@ -1,0 +1,43 @@
+@startuml
+participant Employee as E
+participant "CLMS Frontend" as CF
+participant "Authentication Server" as AS
+participant "Work Log Server" as WLS
+participant Database as DB
+
+E -> CF : Clicks on "Log Work Time"
+CF -> AS : Validates Employee session
+AS --> CF : Session Valid
+CF -> E : Displays Work Log Form
+
+E -> CF : Submits Work Time Entry
+note right of E: Work Time Details: \n- Date \n- Start Time \n- End Time
+
+CF -> WLS : Request to Log Work Time
+activate WPA
+
+alt Work Time Validations Pass
+    WLS -> DB : Save Work Time Entry
+    DB --> WLS : Acknowledge Save
+    WLS --> CF : Work Time Logged Successfully
+    CF -> E : Display Success Message
+else Validation Fails
+    WLS --> CF : Error Message (Validation Failed)
+    CF -> E : Display Error Message
+end
+
+alt Edit Work Time
+    E -> CF : Requests to Edit Work Time
+    CF -> WLS : Request to Retrieve Work Time Data
+    WLS -> DB : Fetch Work Time Entry
+    DB --> WLS : Work Time Data
+    WLS --> CF : Display Work Time Data
+    CF -> E : Shows Editable Form with Data
+    E -> CF : Submits Updated Work Time
+    CF -> WLS : Update Work Time Entry in DB
+    DB --> WLS : Acknowledge Update
+    WLS --> CF : Work Time Updated Successfully
+    CF -> E : Display Success Message for Update
+end
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+participant Archivist
+participant "EDRMS Interface" as UI
+participant "Ingestion Module" as Ingest
+participant "ProQuest API" as PQAPI
+participant "Repository DB" as RepoDB
+participant "Audit & Logging" as Audit
+
+== Batch Ingestion Process for ETDs ==
+
+Archivist -> UI: Initiate batch ingest request
+UI -> Ingest: Validate request
+activate Ingest
+
+Ingest -> PQAPI: Request ETDs
+activate PQAPI
+PQAPI -> Ingest: Return ETD batch
+deactivate PQAPI
+
+Ingest -> Ingest: Process ETDs
+activate Ingest
+Ingest -> RepoDB: Store ETDs metadata & files
+activate RepoDB
+
+RepoDB -> Ingest: Confirm storage
+deactivate RepoDB
+Ingest -> Audit: Log ingest activity
+activate Audit
+Audit -> Ingest: Confirm logging
+deactivate Audit
+
+deactivate Ingest
+Ingest -> UI: Display ingest confirmation
+UI -> Archivist: Show confirmation & summary
+
+@enduml

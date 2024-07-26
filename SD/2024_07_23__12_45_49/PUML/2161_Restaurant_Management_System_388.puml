@@ -1,0 +1,35 @@
+@startuml
+
+participant Owner
+participant Dashboard
+participant BackendService
+participant Database
+participant AnalyticsEngine
+participant SupplierOrderService
+
+Owner -> Dashboard : Select "View Consumption Rates"
+Dashboard -> BackendService : Request historical order data
+BackendKService -> Database : Fetch historical order data
+Database -> BackendService : Return order data
+BackendService -> Dashboard : Provide data on past orders
+Dashboard -> Owner : Display past orders
+
+Owner -> Dashboard : Request consumption analysis
+Dashboard -> AnalyticsEngine : Analyze consumption rates
+AnalyticsEngine -> Database : Retrieve specific food order data
+Database -> AnalyticsEngine : Return food order data
+AnalyticsEngine -> Dashboard : Send consumption rate analysis
+Dashboard -> Owner : Show consumption rates
+
+Owner -> Dashboard : Decide to order based on rates
+Dashboard -> Owner : Confirm order details
+Owner -> Dashboard : Confirm and place order
+Dashboard -> SupplierOrderService : Place order for foods
+SupplierOrderService -> Database : Log order details
+Database -> SupplierOrderService : Confirm order logged
+
+SupplierOrderService -> SupplierOrderService : Send order to supplier
+SupplierOrderService -> Dashboard : Confirm order with supplier
+Dashboard -> Owner : Show order confirmation
+
+@enduml

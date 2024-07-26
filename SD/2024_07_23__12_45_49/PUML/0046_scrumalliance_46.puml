@@ -1,0 +1,22 @@
+@startuml
+participant "Site Member" as member
+participant "Community Platform" as platform
+participant "RSS Feed System" as rss
+participant "Job Listings Section" as jobs
+
+member -> platform : Visit Job Listings Section
+platform -> jobs : Request RSS Feed URL
+jobs -> platform : Respond with RSS Feed URL
+platform -> member : Display RSS Feed Subscription Option
+member -> rss : Initiate RSS Feed Subscription
+rss -> jobs : Request Current Job Listings
+jobs -> rss : Return Current Job Listings
+rss -> member : Subscribe Member to Job Listings RSS Feed
+
+alt Successful Subscription
+    rss -> member : Display Success Message
+else Subscription Error
+    rss -> member : Display Error Message
+end
+
+@enduml

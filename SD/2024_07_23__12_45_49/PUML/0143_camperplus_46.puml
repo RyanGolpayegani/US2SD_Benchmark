@@ -1,0 +1,31 @@
+@startuml
+participant Parent as parent
+participant "Registration Interface" as regInterface
+participant "Camp Database" as db
+participant "Payment System" as paySys
+participant "Confirmation System" as confSys
+
+parent -> regInterface : Accesses Registration Portal
+regInterface -> db : Retrieve available slots/sessions
+db -> regInterface : Response with slots/sessions
+regInterface -> parent : Display available options
+
+parent -> regInterface : Selects session and enters child details
+regInterface -> db : Check for duplicate
+alt if duplicate found
+  db -> regInterface : Duplicate Error
+  regInterface -> parent : Show error, ask to modify details
+else no duplicate
+  db -> regInterface : Proceed to payment
+  regInterface -> parent : Redirect to Payment Gateway
+end
+
+parent -> paySys : Makes payment
+paySys -> db : Payment Confirmation
+db -> confSys : Trigger confirmation process
+
+confSys -> db : Generate enrollment record
+db -> confSys : Enrollment record saved
+
+confSys -> parent : Send enrollment confirmation email/SMS
+@enduml

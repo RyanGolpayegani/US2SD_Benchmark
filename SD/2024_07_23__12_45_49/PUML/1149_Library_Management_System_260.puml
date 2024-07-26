@@ -1,0 +1,30 @@
+@startuml
+participant Member
+participant UISystem
+participant SearchController
+participant Database
+participant Book
+
+== Lookup Books by Author ==
+
+Member -> UISystem : Enters search query (Author name)
+UISystem -> SearchController : Initiate author search
+activate SearchController
+
+SearchController -> Database : Query books by author
+activate Database
+
+Database -> Book : Fetch books matching author
+activate Book
+
+Book -> Database : Return results
+deactivate Book
+
+Database -> SearchController : Send results
+deactivate Database
+
+SearchController -> UISystem : Display search results
+deactivate SearchController
+
+UISystem -> Member : Show list of books by author
+@enduml

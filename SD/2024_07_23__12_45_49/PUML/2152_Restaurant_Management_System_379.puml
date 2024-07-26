@@ -1,0 +1,32 @@
+@startuml
+participant Employee as E
+participant "Inventory System" as IS
+database "Inventory Database" as ID
+participant "Reporting Tool" as RT
+participant Manager as M
+
+E -> IS : Access inventory
+activate IS
+
+IS -> ID : Query stock levels
+activate ID
+ID --> IS : Return stock levels
+deactivate ID
+
+IS --> E : Show stock levels
+E -> IS : Generate stock report request
+IS -> RT : Compile stock report
+activate RT
+RT -> ID : Retrieve stock data
+activate ID
+ID --> RT : Return stock data
+deactivate ID
+RT --> IS : Stock report ready
+deactivate RT
+
+IS --> E : Display/download stock report
+E -> E : Review stock report
+E -> M : Submit stock report
+note right of M : Manager reviews\nstock report
+
+@enduml

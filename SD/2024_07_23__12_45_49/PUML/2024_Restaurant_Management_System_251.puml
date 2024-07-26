@@ -1,0 +1,45 @@
+@startuml
+!theme cerulean
+
+participant Manager as mgr
+participant "Management Interface" as mgmt
+participant "Database" as db
+participant "Inventory System" as inv
+participant "Menu Management System" as menu
+
+mgr -> mgmt : Access Menu Management
+activate mgmt
+mgmt -> db : Fetch Current Menu
+activate db
+db --> mgmt : Current Menu Data
+deactivate db
+mgmt --> mgr : Display Menu
+deactivate mgmt
+
+mgr -> mgmt : Request Inventory Data
+activate mgmt
+mgmt -> inv : Query Inventory Levels
+activate inv
+inv -> db : Get Inventory Data
+activate db
+db --> inv : Inventory Details
+deactivate db
+inv --> mgmt : Inventory Levels
+deactivate inv
+mgmt --> mgr : Display Inventory
+deactivate mgmt
+
+mgr -> mgmt : Organize Menu Based on Inventory
+activate mgmt
+mgmt -> menu : Adjust Menu Items
+activate menu
+menu -> db : Update Menu
+activate db
+db --> menu : Confirmation
+deactivate db
+menu --> mgmt : Menu Updated
+deactivate menu
+mgmt --> mgr : Update Successful
+deactivate mgmt
+
+@enduml

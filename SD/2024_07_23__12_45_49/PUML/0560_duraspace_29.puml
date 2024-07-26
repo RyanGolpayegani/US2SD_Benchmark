@@ -1,0 +1,24 @@
+@startuml
+actor "DAMS Manager" as damsmgr
+participant "DIMS Interface" as interface
+participant "Authentication Module" as auth
+participant "Collection Management" as collection_mgmt
+database "DIMS Database" as db
+
+== Authentication Sequence ==
+damsmgr -> interface: Request collection info for object
+interface -> auth: Initiate authentication
+auth -->> damsmmrg: Authentication request
+damsmgr -> auth: Provide credentials
+auth -> db: Validate credentials
+db -->> auth: Authentication response
+auth -->> interface: Authentication successful
+
+== Collection Retrieval Sequence ==
+interface -> collection_mgmt: Retrieve collection(s) for object
+collection_mgmt -> db: Query object to find collection(s)
+db -->> collection_mgmt: Collection(s) details
+collection_mgmt -->> interface: Display collection(s) information
+interface -->> damsmgr: Show collection(s) object belongs to
+
+@enduml

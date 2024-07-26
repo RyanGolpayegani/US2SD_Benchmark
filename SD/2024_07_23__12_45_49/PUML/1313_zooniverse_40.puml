@@ -1,0 +1,17 @@
+@startuml
+actor ZooniverseAdmin as admin
+participant "AMIDP Platform" as AMIDP
+participant "Video Analysis\nTool" as AnalysisTool
+database "Video Database" as VideoDB
+
+admin -> AMIDP : Request video reduction for\nworm motion analysis
+AMIDP -> VideoDB : Fetch target video
+VideoDB --> AMIDP : Video data
+AMIDP -> AnalysisTool : Initiate motion analysis\nwith video data
+AnalysisTool -> AnalysisTool : Analyze motion to\nidentify relevant segments
+AnalysisTool --> AMIDP : Analysis results with\ntimeframes
+AMIDP -> AMIDP : Process analysis results to\ndetermine segments to keep
+AMIDP -> VideoDB : Update video with reduced\nduration
+VideoDB --> AMIDP : Confirmation of update
+AMIDP --> admin : Notify completion and\nprovide access to reduced video
+@enduml

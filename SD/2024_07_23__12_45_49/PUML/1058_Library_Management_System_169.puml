@@ -1,0 +1,30 @@
+@startuml
+!theme cerulean
+
+actor Member as M
+participant "Web Interface" as W
+participant "Reservation System" as RS
+database "CLMS Database" as DB
+participant "Notification System" as NS
+
+== Reserve a Book ==
+
+M -> W : Search for book
+W -> RS : Request book availability
+RS -> DB : Query book status
+DB --> RS : Return book status
+RS --> W : Show book availability/status
+W --> M : Display book status
+
+alt If book is available for reservation
+    M -> W : Request to reserve book
+    W -> RS : Process reservation
+    RS -> DB : Update book status\n(Set as reserved)
+    DB --> RS : Confirm update
+    RS -> NS : Send reservation confirmation
+    NS -> M : Email/SMS confirmation to Member
+else If book is not available
+    W --> M : Inform book is unavailable
+end
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+participant "Dataset Developer" as Developer
+participant "Version Control System" as VCS
+participant "Dataset Interface Repository" as InterfaceRepo
+participant "Dataset Implementation Repository" as ImplRepo
+participant "App" as Application
+
+== Interface Separation Process ==
+Developer -> VCS: Checkout latest dataset type code
+note right of Developer: Review and define\ninterface for dataset type
+Developer -> InterfaceRepo: Commit interface code
+activate InterfaceRepo
+InterfaceRepo -> VCS: Create new interface version
+deactivate InterfaceRepo
+
+== Implementation ==
+note over Developer: Implement functionality\nbased on the interface
+Developer -> ImplRepo: Commit implementation code
+activate ImplRepo
+ImplRepo -> VCS: Create new implementation version
+deactivate ImplRepo
+
+== Integration ==
+Developer -> VCS: Tag and release new dataset type version
+VCS -> Application: Notify new version availability
+Application -> VCS: Pull interface
+Application -> VCS: Dynamically link to implementation at runtime
+
+@enduml

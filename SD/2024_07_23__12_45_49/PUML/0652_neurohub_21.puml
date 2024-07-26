@@ -1,0 +1,30 @@
+@startuml
+actor User
+participant "Web UI" as UI
+participant "Backend Server" as Backend
+database "File Storage" as Storage
+
+User -> UI : Select file (>1GB) for upload
+activate UI
+
+UI -> Backend : POST /upload (file metadata)
+activate Backend
+
+Backend -> Backend: Validate file size and type
+Backend -> Storage : Initialize file upload session
+activate Storage
+
+loop Chunk Upload
+  UI -> Backend : PUT /upload/{sessionId} (file chunk)
+  Backend -> Storage : Store chunk
+end
+
+Backend -> Storage : Complete upload session
+Storage -> Backend : Confirm file stored
+Backend -> UI : Upload success message
+UI -> User : Display success message
+
+deactivate Storage
+deactivate Backend
+deactivate UI
+@enduml

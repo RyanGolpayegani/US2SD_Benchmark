@@ -1,0 +1,29 @@
+@startuml
+actor Chef as chef
+participant "Authentication System" as Auth
+participant "Web Interface" as WebUI
+participant "Backend System" as Backend
+database "Database" as DB
+
+chef -> WebUI: Access menu management
+WebUI -> Auth: Validate chef credentials
+Auth -->> WebUI: Access Granted
+
+alt Successful Login
+    WebUI -> Backend: Request current dish details
+    Backend -> DB: Query dish details
+    DB -->> Backend: Return dish details
+    Backend -->> WebUI: Display dish details
+
+    chef -> WebUI: Enter/update ingredients
+    WebUI -> Backend: Update dish with new ingredients
+    Backend -> DB: Save updated dish details
+    DB -->> Backend: Confirmation
+    Backend -->> WebUI: Confirmation message
+    WebUI -->> chef: Display success message
+else Unsuccessful Login
+    Auth -->> WebUI: Access Denied
+    WebUI -->> chef: Display error message
+end
+
+@enduml

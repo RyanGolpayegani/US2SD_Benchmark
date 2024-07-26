@@ -1,0 +1,31 @@
+@startuml
+actor Researcher as res
+participant "Web Interface" as web
+participant "Neurohub API" as api
+database "Group Repository" as repo
+
+== Upload Document ==
+res -> web : Select document to upload
+web -> api : Upload request (document)
+api -> repo : Save document
+repo --> api : Acknowledgement
+api --> web : Upload success
+web --> res : Display success message
+
+== Add Metadata/Review ==
+res -> web : Add metadata/review
+web -> api : Submit metadata/review
+api -> repo : Update document details
+repo --> api : Acknowledgement
+api --> web : Update success
+web --> res : Display success message
+
+== Share with Group ==
+res -> web : Share document request
+web -> api : Share document (group ID)
+api -> repo : Update access control
+repo --> api : Acknowledgement
+api --> web : Sharing success
+web --> res : Display success message
+
+@enduml

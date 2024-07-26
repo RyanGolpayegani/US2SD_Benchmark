@@ -1,0 +1,17 @@
+@startuml
+participant Librarian as L
+participant FrontEnd as FE
+participant Controller as C
+participant DatabaseAccessObject as DAO
+database LibraryDB as DB
+
+L -> FE : Request total book count
+FE -> C : GetTotalBooks()
+C -> DAO : fetchTotalBookCount()
+DAO -> DB : SELECT COUNT(*) FROM books
+DB --> DAO : totalBooksCount
+DAO --> C : Send totalBooksCount
+C --> FE : Show totalBooksCount
+FE --> L : Display totalBooksCount
+
+@enduml

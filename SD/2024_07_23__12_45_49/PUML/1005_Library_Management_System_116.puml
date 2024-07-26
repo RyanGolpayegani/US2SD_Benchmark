@@ -1,0 +1,19 @@
+@startuml
+actor "Library Manager" as manager
+participant "Library Management\nInterface" as interface
+participant "Authentication\nService" as auth
+participant "Book Management\nService" as bookService
+participant "Database" as db
+
+== User Story: Delete a Book Record ==
+
+manager -> interface : Selects option to delete a book
+interface -> auth : Validates manager credentials
+auth -> interface : Authentication confirmed
+interface -> bookService : Request to delete book (bookId)
+bookService -> db : Query to delete from book records
+db -> bookService : Confirm deletion
+bookService -> interface : Show deletion success message
+interface -> manager : Display success message
+
+@enduml

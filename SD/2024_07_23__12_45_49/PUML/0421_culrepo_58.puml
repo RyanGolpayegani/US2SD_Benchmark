@@ -1,0 +1,40 @@
+@startuml
+!theme plain
+
+participant "LibraryStaff" as staff
+participant "WebInterface" as web
+participant "AuthenticationService" as auth
+participant "UploadService" as upload
+participant "MetadataService" as meta
+participant "DOIService" as doi
+participant "RepositoryDatabase" as db
+
+== Authentication ==
+staff -> web: Access Upload Page
+web -> auth: Request Authentication
+activate auth
+auth --> web: Authentication Successful
+deactivate auth
+web --> staff: Display Upload Form
+
+== Upload Work ==
+staff -> web: Submit Work with Files
+web -> upload: Initiate Upload Process
+activate upload
+upload -> meta: Extract Metadata
+activate meta
+meta --> upload: Metadata Extracted
+deactivate meta
+upload -> doi: Request DOIs for Files
+activate doi
+doi --> upload: DOIs Assigned
+deactivate doi
+upload -> db: Save Work and Files with Metadata & DOIs
+activate db
+db --> upload: Confirmation
+deactivate db
+upload --> web: Upload Successful
+deactivate upload
+web --> staff: Display Success Message
+
+@enduml

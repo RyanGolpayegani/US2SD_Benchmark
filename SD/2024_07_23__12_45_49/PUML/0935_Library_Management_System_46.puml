@@ -1,0 +1,40 @@
+@startuml
+actor Librarian
+participant "Library Management\nSystem" as LMS
+database BooksDB
+database MembersDB
+
+Librarian -> LMS : Login credentials
+activate LMS
+LMS --> Librarian : Authentication Success
+deactivate LMS
+
+Librarian -> LMS : Request list of unreturned books
+activate LMS
+
+LMS -> BooksDB : Query unreturned books
+activate BooksDB
+BooksDB --> LMS : List of unreturned books
+deactivate BooksDB
+
+LMS --> Librarian : Display unreturned books
+deactivate LMS
+
+Librarian -> LMS : Select member with unreturned book
+activate LMS
+
+LMS -> MembersDB : Query member details
+activate MembersDB
+MembersDB --> LMS : Member details
+deactivate MembersDB
+
+LMS -> LMS : Determine rejection criteria
+LMS -> MembersDB : Update member status to 'Rejected'
+activate MembersDB
+MembersDB --> LMS : Confirmation of rejection
+deactivate MembersDB
+
+LMS --> Librarian : Confirmation member rejected
+deactivate LMS
+
+@enduml

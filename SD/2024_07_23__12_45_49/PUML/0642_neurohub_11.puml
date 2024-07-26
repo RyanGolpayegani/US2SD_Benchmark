@@ -1,0 +1,31 @@
+@startuml
+actor Researcher as res
+participant "Web GUI" as gui
+participant "File Handling Service" as fhs
+participant "Logbook Service" as lbs
+
+res -> gui : Select files for upload
+gui -> fhs : Initiate file upload
+activate fhs
+fhs -> fhs : Validate file types and sizes
+fhs -> fhs : Store files temporarily
+res <- fhs : Display upload progress and confirmation
+deactivate fhs
+res -> gui : Navigate to logbook page
+gui -> lbs : Request logbook page
+activate lbs
+lbs -> lbs : Retrieve logbook page details
+res <- lbs : Display logbook page
+deactivate lbs
+res -> gui : Attach uploaded files to logbook page
+gui -> lbs : Request file attach operation
+activate lbs
+lbs -> fhs : Retrieve files from temporary storage
+activate fhs
+fhs -> lbs : Provide files
+deactivate fhs
+lbs -> lbs : Attach files to logbook page
+res <- lbs : Confirm attachment
+deactivate lbs
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+participant Developer
+participant "DPIE Integration Module" as DIM
+participant "Core Data Package API" as CDP
+participant "Python Integration" as PI
+database "Data Package Repository" as DPR
+
+== Get Data Package into Python ==
+Developer -> DIM : request data package for Python
+DIM -> CDP : query available data packages
+CDP -> DPR : fetch package details
+DPR --> CDP : return package details
+CDP --> DIM : package options
+DIM --> Developer : display package options
+Developer -> DIM : select package
+DIM -> DPR : request selected Data Package
+DPR --> DIM : return Data Package
+DIM -> PI : integrate Data Package into Python
+PI -> Developer : send confirmation & access instructions
+
+@enduml

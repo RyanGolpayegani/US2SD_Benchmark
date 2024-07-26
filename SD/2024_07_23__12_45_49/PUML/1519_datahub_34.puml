@@ -1,0 +1,32 @@
+@startuml
+actor DataAnalyst as Analyst
+participant "Web Interface" as Web
+participant "Authentication System" as Auth
+participant "Dataset Search" as Search
+participant "Data Package System" as DataSystem
+participant "Download Manager" as Download
+participant "Data Processing" as Process
+
+Analyst -> Web : Access Platform
+Web -> Auth : Validate Access
+Auth -> Web : Authentication Successful
+
+Analyst -> Web : Search for Dataset
+Web -> Search : Initiate Dataset Search
+Search -> Web : Return Search Results
+
+Analyst -> Web : Select Dataset for Download
+Web -> DataSystem : Request Dataset Details
+DataSystem -> Web : Display Dataset Information
+
+Analyst -> Web : Request to Download Dataset
+Web -> Download : Initiate Download Process
+Download -> DataSystem : Fetch Data Package
+DataSystem -> Download : Data Package Ready
+
+Download -> Analyst : Download Data Package
+Analyst -> Process : Begin Data Wrangling
+
+note right of Analyst : Data Analysis and Insights Generation
+
+@enduml

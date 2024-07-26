@@ -1,0 +1,37 @@
+@startuml
+participant DataManager as "Data Manager"
+participant DMPTool as "DMPTool Interface"
+participant DataManagerPortal as "Data Manager Portal"
+participant UsageAnalytics as "Usage Analytics"
+participant MetadataTool as "External Metadata Tool"
+participant ResearchDatabase as "Research Database"
+
+DataManager -> DMPTool : Request data usage info
+DMPTool -> DataManagerPortal : Authenticate DataManager
+DataManagerPortal -> UsageAnalytics : Fetch usage data
+activate UsageAnalytics
+
+UsageAnalytics -> ResearchDatabase : Query detailed data logs
+activate ResearchDatabase
+ResearchDatabase --> UsageAnalytics : Return data logs
+
+deactivate ResearchDatabase
+UsageAnalytics --> DataManagerPortal : Process usage data
+DataManagerPortal --> DMPTool : Display summarized data usage
+
+DMPTool -> MetadataTool : Import metadata
+MetadataTool --> DMPTool : Metadata for corresponding data usage
+
+DMPTool --> DataManager : Present data usage and metadata
+DataManager -> DMPTool : Request development of support scenarios
+DMPTool -> DataManagerPortal : Initiate collaboration with researchers
+
+DataManagerPortal --> DataManager : Collaboration link
+DataManager -> DataManagerPortal : Develops scenarios with researchers
+DataManagerPortal -> UsageAnalytics : Update usage scenarios
+UsageAnalytics --> DataManagerPortal : Confirm update
+
+DataManagerPortal --> DPRTool : Update complete
+DMPTool --> DataManager : Acknowledge scenario development
+
+@enduml

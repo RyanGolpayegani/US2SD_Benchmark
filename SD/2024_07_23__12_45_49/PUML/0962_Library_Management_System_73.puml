@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+
+actor Librarian as librarian
+boundary "Email/SMS System" as emailSystem
+control "Notification Service" as notificationService
+entity "Library Database" as libraryDB
+participant "Member" as member
+
+== Notify Members about Due Dates ==
+
+librarian -> notificationService : trigger due date notification process
+notificationService -> libraryDB : query overdue books and member details
+libraryDB -> notificationService : return list of overdue books and member details
+notificationService -> emailSystem : prepare notification messages
+loop for each member with overdue books
+    emailSystem -> member : send due date reminder
+end
+note right of emailSystem : Notifications can be\nEmails or SMS based on\nmember's preference
+member -> member: Acknowledge receipt
+
+@enduml

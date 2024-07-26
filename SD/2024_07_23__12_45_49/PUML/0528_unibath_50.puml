@@ -1,0 +1,80 @@
+@startuml
+participant DeveloperService as "Developer's Service"
+participant SWORD2API as "SWORD2 API"
+participant Platform as "Management Platform"
+
+DeveloperService -> SWORD2API : Initialize dataset deposit
+activate SWORD2API
+
+SWORD2API -> Platform : Create new dataset record
+activate Platform
+
+Platform -> Platform : Validate dataset
+Platform -> Platform : Apply default metadata
+Platform -> Platform : Secure dataset storage location
+
+Platform --> SWORD2API : Dataset record creation confirmation
+deactivate Platform
+
+SWORD2API -> DeveloperService : Confirm dataset deposit initialization
+deactivate SWORD2API
+
+DeveloperService -> SWORD2API : Send dataset metadata
+activate SWORD2API
+
+SWORD2API -> Platform : Update dataset with metadata
+activate Platform
+
+Platform -> Platform : Validate and store metadata
+
+Platform --> SWORD2API : Metadata update confirmation
+deactivate Platform
+
+SWORD2API -> DeveloperService : Confirm metadata update
+deactivate SWORD2API
+
+DeveloperService -> SWORD2API : depositDatasetFile(filePath)
+activate SWORD2API
+
+SWORD2API -> Platform : Deposit dataset file
+activate Platform
+
+Platform -> Platform : Store file in dataset
+Platform --> SWORD2API : Dataset file deposit confirmation
+deactivate Platform
+
+SWORD2API --> DeveloperService : Confirm file deposit
+deactivate SWORD2API
+
+DeveloperService -> SWORD2API : Apply license and embargoes
+activate SWORD2API
+
+SWORD2API -> Platform : Set license and embargo details
+activate Platform
+
+Platform -> Platform : Update dataset record
+Platform -> Platform : Apply license
+Platform -> Platform : Apply embargo rules
+
+Platform --> SWORD2API : License and embargo update confirmation
+deactivate Platform
+
+SWORD2API --> DeveloperService : Confirm license and embargo application
+deactivate SWORD2API
+
+DeveloperService -> SWORD2API : Finalize dataset deposit
+activate SWORD2API
+
+SWORD2API -> Platform : Finalize and publish dataset
+activate Platform
+
+Platform -> Platform : Perform final checks
+Platform -> Platform : Publish dataset
+
+Platform --> SWORD2API : Deposit finalization confirmation
+deactivate Platform
+
+SWORD2API --> DeveloperService : Deposit successful
+deactivate SWORD2API
+
+@enduml

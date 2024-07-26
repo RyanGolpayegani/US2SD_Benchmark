@@ -1,0 +1,23 @@
+@startuml
+actor Manager as "Restaurant Manager"
+boundary System as "Restaurant Management\nand Operations System"
+control Reporting as "Reporting Controller"
+database DB as "Database"
+
+Manager -> System : Request daily orders report
+activate System
+
+System -> Reporting : Gather orders data
+activate Reporting
+
+Reporting -> DB : Query order by date
+activate DB
+DB --> Reporting : Return orders data
+deactivate DB
+
+Reporting --> System : Compile report
+deactivate Reporting
+
+System --> Manager : Display orders report
+deactivate System
+@enduml

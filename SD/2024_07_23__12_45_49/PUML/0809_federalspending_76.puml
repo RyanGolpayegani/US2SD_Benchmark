@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+
+actor Developer
+boundary "FABS System Interface"
+control "FABS Controller"
+entity "FABS Service"
+database "FABS Database"
+
+Developer -> "FABS System Interface" : Request to add FREC-functional group
+"FABS System Interface" -> "FABS Controller" : Initiate FREC group creation
+"FABS Controller" -> "FABS Service" : Call create FREC group
+"FABS Service" -> "FABS Database" : Validate FREC data
+"FABS Database" --> "FABS Service" : Data Validation Results
+
+alt If FREC data is valid
+    "FABS Service" -> "FABS Database" : Store FREC group
+    "FABS Database" --> "FABS Service" : Confirmation
+    "FABS Service" --> "FABS Controller" : Success Response
+    "FABS Controller" --> "FABS System Interface" : Display Success Message
+    "FABS System Interface" --> Developer : FREC Group Created Successfully
+else If FREC data is invalid
+    "FABS Service" --> "FABS Controller" : Error Response
+    "FABS Controller" --> "FABS System Interface" : Display Error Message
+    "FABS System Interface" --> Developer : Failed to Create FREC Group
+end
+
+@enduml

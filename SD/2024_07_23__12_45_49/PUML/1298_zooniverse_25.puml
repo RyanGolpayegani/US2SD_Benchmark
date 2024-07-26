@@ -1,0 +1,22 @@
+@startuml
+participant Admin
+participant "Content Ingestion System" as CIS
+participant "Content Validation Service" as CVS
+database "Copyright Database" as CDB
+participant "Validation Result Handler" as VRH
+participant "Notification Service" as NS
+
+Admin -> CIS : Upload content
+CIS -> CVS : Request validation
+CVS -> CDB : Check copyright
+CDB --> CVS : Validation results
+CVS --> VRH : Send results
+alt Validation passed
+    VRH -> NS : Inform Admin (Success)
+    NS -> Admin : Content validated successfully
+else Validation failed
+    VRH -> NS : Inform Admin (Failure)
+    NS -> Admin : Copyright infringement detected
+end
+
+@enduml

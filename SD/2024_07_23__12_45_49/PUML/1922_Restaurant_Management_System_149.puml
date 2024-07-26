@@ -1,0 +1,34 @@
+@startuml
+actor Manager
+participant "Management Dashboard" as Dashboard
+participant "Reporting Service" as Reporting
+database "Database" as DB
+
+Manager -> Dashboard: Request report generation
+activate Dashboard
+
+Dashboard -> Reporting: Fetch report data
+activate Reporting
+
+Reporting -> DB: Query transaction data
+activate DB
+DB --> Reporting: Return transaction data
+deactivate DB
+
+Reporting -> DB: Query employee performance data
+activate DB
+DB --> Reporting: Return employee data
+deactivate DB
+
+Reporting -> DB: Query inventory levels
+activate DB
+DB --> Reporting: Return inventory data
+deactivate DB
+
+Reporting --> Dashboard: Compile and send report
+deactivate Reporting
+
+Dashboard --> Manager: Display report
+deactivate Dashboard
+
+@enduml

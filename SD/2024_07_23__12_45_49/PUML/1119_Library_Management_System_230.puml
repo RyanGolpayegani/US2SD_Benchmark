@@ -1,0 +1,37 @@
+@startuml
+actor Manager
+participant "Management Interface" as MI
+participant "Subscription Service" as SS
+participant "Database" as DB
+
+Manager -> MI : Log in to management portal
+activate MI
+
+MI -> MI : Authenticate manager
+MI -> SS : Request subscription update page
+activate SS
+
+SS -> DB : Fetch current subscription details
+activate DB
+DB --> SS : Return subscription details
+deactivate DB
+
+SS --> MI : Display current subscriptions
+MI --> Manager : Show current subscriptions
+deactivate SS
+
+Manager -> MI : Input updated subscription details
+MI -> SS : Send updated subscription data
+activate SS
+
+SS -> DB : Update subscription in database
+activate DB
+DB --> SS : Confirm update success
+deactivate DB
+
+SS --> MI : Confirm update to manager
+MI --> Manager : Display update confirmation
+deactivate MI
+deactivate SS
+
+@enduml

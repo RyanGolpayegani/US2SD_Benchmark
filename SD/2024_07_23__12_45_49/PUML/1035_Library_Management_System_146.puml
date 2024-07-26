@@ -1,0 +1,25 @@
+@startuml
+participant LibraryMember as member
+participant WebInterface as web
+participant Server as server
+participant Database as db
+
+member -> web : Request book details
+web -> server : Fetch book availability status
+server -> db : Query book reservation status
+db --> server : Return reservation status
+server --> web : Book reservation status (available/reserved)
+web --> member : Display book status
+
+alt if book is available
+    member -> web : Place a reservation request
+    web -> server : Process reservation request
+    server -> db : Update reservation status
+    db --> server : Confirmation of reservation update
+    server --> web : Display reservation confirmation
+    web --> member : Show confirmation message
+else if book is already reserved
+    web --> member : Show book already reserved message
+end
+
+@enduml

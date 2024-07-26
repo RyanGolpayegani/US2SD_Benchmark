@@ -1,0 +1,47 @@
+@startuml
+!theme plain
+participant User as u
+participant "Web Interface" as w
+participant "Backend Server" as b
+participant "Data Storage" as d
+participant "Backup System" as bs
+
+u -> w : Delete file request
+activate u
+activate w
+w -> b : Request to delete file
+activate b
+b -> d : Delete file
+activate d
+d -> b : Confirm deletion
+deactivate d
+b -> bs : Trigger backup/update
+activate bs
+bs -> b : Confirm backup updated
+deactivate bs
+b -> w : Confirm file deletion\n& backup updated
+deactivate b
+w -> u : Display deletion confirmation\n& restoration option
+deactivate w
+
+... some time later ...
+
+u -> w : Request to restore file
+activate w
+w -> b : Restore file request
+activate b
+b -> bs : Retrieve file from backup
+activate bs
+bs -> b : Provide file
+deactivate bs
+b -> d : Restore file
+activate d
+d -> b : Confirm restoration
+deactivate d
+b -> w : Confirm file restoration
+deactivate b
+w -> u : Display restoration confirmation
+develope w
+deactivate u
+
+@enduml

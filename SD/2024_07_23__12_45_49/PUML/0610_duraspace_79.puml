@@ -1,0 +1,23 @@
+@startuml
+!theme plain
+
+actor User as user
+participant "UI Interface" as ui
+participant "Search Module" as search
+participant "Database" as db
+participant "Repository Manager" as repoMan
+participant "Content Delivery" as content
+
+== User Queries for Resource Versions/Descriptions ==
+
+user -> ui : Requests versions/descriptions
+ui -> search : Parse query for resource
+search -> db : Query for resource versions/descriptions
+db -> search : Return query results
+search -> repoMan : Request access permissions
+repoAKn -> search : Permissions granted
+search -> content : Retrieve resource data
+content -> ui : Send versions/descriptions
+ui -> user : Display resource versions/descriptions
+
+@enduml

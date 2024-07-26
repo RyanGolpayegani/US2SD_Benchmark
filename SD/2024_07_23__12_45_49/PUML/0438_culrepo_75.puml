@@ -1,0 +1,21 @@
+@startuml
+
+participant Researcher as res
+participant "Digital Repository System\nInterface" as ui
+participant CMS as cms
+participant "Map Visualization\nService" as mapSvc
+
+res -> ui : Access "Share Work" feature
+ui -> cms : Request to upload work with geographic data
+activate cms
+res -> cms : Upload work & metadata including geographic identifiers
+cms -> mapSvc : Send geographic data for map visualization
+activate mapSvc
+mapSvc -> mapSvc : Generate interactive map
+mapSvc -> cms : Return map visualization link
+deactivate mapSvc
+cms -> ui : Present confirmation with map link
+ui -> res : Display confirmation & interactive map link
+deactivate cms
+
+@enduml

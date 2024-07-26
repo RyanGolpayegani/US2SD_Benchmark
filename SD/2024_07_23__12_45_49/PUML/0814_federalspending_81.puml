@@ -1,0 +1,51 @@
+@startuml
+
+participant "Developer" as Developer
+participant "Validation Service" as ValidationService
+participant "Publishing Service" as PublishingService
+participant "Database" as Database
+participant "Duplicate Check Module" as DuplicateCheck
+participant "Time Gap Handler" as TimeGapHandler
+participant "Notification Service" as NotificationService
+
+Developer -> ValidationService: Request transaction validation
+activate ValidationService
+
+ValidationService -> Database: Query existing transactions
+activate Database
+Database --> ValidationService: Return query results
+deactivate Database
+
+ValidationService -> DuplicateCheck: Check for duplicates
+activate DuplicateCheck
+DuplicateCheck --> ValidationService: Duplicate status
+deactivate DuplicateeCheck
+
+alt If transaction is duplicate
+    ValidationService -> Developer: Return error: Duplicate transaction
+else No duplicate
+    ValidationService --> Developer: Validation successful
+
+    Developer -> PublishingService: Request to publish transaction
+    activate PublishingService
+
+    PublishingService -> TimeGapHandler: Handle time gap
+    activate TimeGapHandler
+    TimeGapHandler --> PublishingService: Time gap adjusted
+    deactivate TimeGapHandler
+
+    PublishingService -> Database: Save transaction for publishing
+    activate Database
+    Database --> PublishingWebservice: Transaction saved
+    deactivate Database
+
+    Publishingervice -> NotificationService: Send success notification
+    activate NotificationService
+    NotificationService --> Developer: Transaction published successfully
+    deactivate NotificationService
+end
+
+deactivate PublishingService
+deactivate ValidationService
+
+@enduml

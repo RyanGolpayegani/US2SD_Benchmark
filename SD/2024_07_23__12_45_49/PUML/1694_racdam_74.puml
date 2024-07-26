@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+
+actor Researcher as researcher
+participant "Web Interface" as web
+participant "Backend System" as backend
+database "Archive Database" as db
+participant "Notification System" as notification
+entity "Archivist" as archivist
+
+== Ask a Question About a Specific File ==
+
+researcher -> web : Access file details
+web -> backend : Request file information
+backend -> db : Query file details
+db -> backend : Return file information
+backend -> web : Display file info to researcher
+researcher -> web : Click on "Ask a Question"
+web -> backend : Show question form
+researcher -> web : Submit question form
+web -> backend : Process question
+backend -> db : Log question with file reference
+db -> backend : Confirm log entry
+backend -> notification : Send notification to Archivist
+notification -> archivist : Notify about new question
+archivist -> notification : View question details
+notification -> backend : Request detailed information
+backend -> db : Fetch file and question details
+db -> backend : Return requested information
+backend -> notification : Send detailed info to Archivist
+archivist -> backend : Submit response
+backend -> notification : Process response
+notification -> researcher : Notify researcher with answer
+researcher -> web : View response
+
+@enduml

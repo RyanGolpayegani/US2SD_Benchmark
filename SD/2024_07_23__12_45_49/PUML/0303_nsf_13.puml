@@ -1,0 +1,30 @@
+@startuml
+participant UserResearcher as UR, "User Researcher"
+participant ProjectManager as PM, "Project Manager"
+participant Designer as D, "Designer"
+participant Developer as Dev, "Developer"
+participant CMS as CMS, "CMS (Content Management System)"
+participant CloudInfra as CI, "Cloud Infrastructure"
+
+title User Researcher Obtains WIG Prototype Sequence
+
+UR -> PM: Request prototype status
+alt If Prototype is Ready
+    PM -> D: Confirm prototype ready for review
+    D -> Dev: Ensure prototype is deployed on beta site
+    Dev -> CI: Deploy prototype on cloud infra
+    CI --> Dev: Confirm deployment
+    Dev -> CMS: Update prototype content
+    CMS --> Dev: Confirm content update
+    Dev --> D: Confirm prototype and content readiness
+    D --> UR: Provide prototype for Task 2 Script
+else If Prototype is Not Ready
+    PM -> UR: Inform prototype development status
+    UR -> PM: Request estimated prototype completion date
+    PM -> Dev: Ask for updated timeline
+    Dev --> PM: Provide updated timeline
+    PM -> UR: Provide updated timeline
+end
+UR -> UR: Finalize the second task script using the prototype
+
+@enduml

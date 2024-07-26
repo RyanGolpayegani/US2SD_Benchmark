@@ -1,0 +1,31 @@
+@startuml
+actor UI_Designer as "UI Designer"
+entity Review_Team as "Review Team"
+database Version_Control as "Version Control System"
+control Leadership as "Leadership"
+
+== Round 2 Review ==
+UI_Designer -> Version_Control : Commit round 2 edits
+Version_Control -> Review_Team : Notify of new edits
+Review_Team -> Review_Team : Review edits
+Review_Team -> UI_Designer : Provide feedback
+
+== Prepare for Round 3 ==
+UI_Designer -> UI_Designer : Incorporate feedback
+UI_Designer -> Version_Control : Commit round 3 edits for review
+
+== Round 3 Review ==
+Version_Control -> Review_Team : Notify of round 3 edits
+Review_Team -> Review_Team : Review round 3 edits
+Review_Team -> UI_Designer : Approve edits / Request changes
+
+alt Edits Approved
+    Review_Team -> Leadership : Submit for final approval
+    Leadership -> Leadership : Review edits
+    Leadership -> UI_Designer : Provide final approval
+else More Changes Requested
+    Review_Team -> UI_Designer : Request additional changes
+    UI_Designer -> UI_Designer : Make changes
+end
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+participant Librarian
+participant "Library Interface" as Interface
+participant "Backend System" as Backend
+participant "Database" as DB
+
+activate Librarian
+Librarian -> Interface : search for book details
+activate Interface
+Interface -> Backend : request book details
+activate Backend
+
+Backend -> DB : query book locations
+activate DB
+DB --> Backend : return book locations
+deactivate DB
+
+Backend --> Interface : show book locations with details
+deactivate Backend
+
+Interface --> Librarian : display book locations
+deactivate Interface
+
+Librarian -> Librarian : uses information to place books
+
+@enduml

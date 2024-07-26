@@ -1,0 +1,37 @@
+@startuml
+participant User
+participant "Speech Recognition" as Speech
+participant "ALFRED Device" as Device
+participant "Network Service" as Network
+
+User -> Speech: "Initiate call to [Contact Name]"
+activate Speech
+
+Speech -> Device: Process voice command
+activate Device
+
+Device -> Device: Retrieve contact information
+Device -> Network: Dial contact number
+activate Network
+
+Network --> Device: Establish connection
+Device --> Speech: Inform about call status
+Speech --> User: "Calling [Contact Name]..."
+
+alt Successful Call Connection
+    Network -> User: Connect call
+    User -> Network: Conversation with contact
+    User -> Network: "End call"
+    Network -> Device: Disconnect call
+    Device -> Speech: Inform call end
+    Speech -> User: "Call ended."
+else Failed Call Connection
+    Network -> Device: Connection failed
+    Device -> Speech: Inform call failure
+    Speech -> User: "Could not connect the call. Please try again later."
+end
+
+deactivate Network
+deactivate Device
+deactivate Speech
+@enduml

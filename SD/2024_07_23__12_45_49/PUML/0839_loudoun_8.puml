@@ -1,0 +1,25 @@
+@startuml
+actor Applicant
+participant "Portal Interface" as Portal
+participant "Server" as Server
+database "Database" as DB
+
+== Check Transaction Status ==
+
+Applicant -> Portal: Navigate to "Check Status" page
+Portal -> Server: Request authentication status
+Server -> Applicant: Authenticate User (if not already logged in)
+Applicant -> Server: Provide authentication details
+Server -> Applicant: Authentication successful
+
+Applicant -> Portal: Enter transaction ID/Details
+Portal -> Server: Request transaction status
+activate Server
+    Server -> DB: Query transaction status by ID
+    activate DB
+    DB --> Server: Return transaction status data
+    deactivate DB
+Server --> Portal: Provide status information (service levels, fees, reviews, permits, inspections)
+deactivate Server
+Portal --> Applicant: Display transaction status
+@enduml

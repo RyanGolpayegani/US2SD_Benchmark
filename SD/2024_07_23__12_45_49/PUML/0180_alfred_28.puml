@@ -1,0 +1,51 @@
+@startuml
+participant OlderPerson as user
+actor "ALFRED Device" as alfred
+database "Contact Information" as contacts
+participant "Network Service" as network
+participant "Friend/Family's Device" as friendDevice
+
+user -> alfred : "Initiate communication with [Friend/Family]"
+activate alfred
+
+alfred -> contacts : Retrieve contact details
+activate contacts
+
+contacts --> alfred : Contact Information
+deactivate contacts
+
+alfred -> alfred : Determine best communication method\n(voice call, video call, message)
+
+alt Voice or Video Call
+    alfred -> network : Dial friend's number
+    activate network
+    
+    network -> friendDevice : Connect Call
+    activate friendDevice
+    
+    friendDevice --> alfred : Call Connected
+    network --> alfred : Connection Successful
+    deactivate network
+    deactivate friendDevice
+    
+    user -> alfred : "End Call"
+    alfred -> friendDevice : Terminate Call
+    deactivate alfred
+else Message
+    alfred -> alfred : Compose Message via Voice Input
+    user -> alfred : "Send message to [Friend/Family]"
+    
+    alfred -> network : Send Message
+    activate network
+    
+    network -> friendDevice : Deliver Message
+    activate friendDevice
+    
+    friendDevice --> alfred : Delivery Confirmation
+    deactivate friendDevice
+    network --> alfred : Message Sent
+    deactivate network
+    
+    deactivate alfred
+end
+@enduml

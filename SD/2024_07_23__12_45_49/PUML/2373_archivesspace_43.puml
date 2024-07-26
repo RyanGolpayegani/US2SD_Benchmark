@@ -1,0 +1,25 @@
+@startuml
+actor Archivist as archivist
+participant "Web Interface" as web
+participant "Import Module" as importModule
+participant "Validation Service" as validation
+participant "Database" as db
+
+== Import EAD Data ==
+
+archivist -> web : Select EAD file for import
+web -> importModule : Initiate EAD import process
+importModule -> validation : Validate EAD file format
+alt EAD file is valid
+    validation --> importModule : Validation Success
+    importModule -> db : Store EAD data
+    db --> importModule : Confirm data stored
+    importModule -> web : Show import success message
+    web --> archivist : Display success message
+else EAD file is invalid
+    validation --> importModule : Validation Failure with Errors
+    importModule -> web : Show import failure and errors
+    web --> archivist : Display errors
+end
+
+@enduml

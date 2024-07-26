@@ -1,0 +1,26 @@
+@startuml
+participant Administrator as Admin
+participant "Web Interface" as WebUI
+participant "Metadata Management Module" as MetadataModule
+participant "Database" as DB
+
+== Set Minimum Metadata Requirements ==
+
+Admin -> WebUI : Access Metadata Settings
+WebUI -> MetadataModule : Request Metadata Requirement Form
+MetadataModule -> WebUI : Return Form Interface
+WebUI -> Admin : Display Form
+
+Admin -> WebUI : Submit Minimum Metadata Requirements
+WebUI -> MetadataModule : Validate Requirements
+alt Requirements Valid
+    MetadataModule -> DB : Update Metadata Standards
+    DB --> MetadataModule : Confirmation
+    MetadataModule -> WebUI : Update Successful
+    WebUI -> Admin : Display Success Message
+else Requirements Invalid
+    MetadataModule -> WebUI : Error in Requirements
+    WebUI -> Admin : Display Error Message
+end
+
+@enduml

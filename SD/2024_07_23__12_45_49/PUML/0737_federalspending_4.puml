@@ -1,0 +1,33 @@
+@startuml
+participant UI_Designer as Designer
+participant "Design System" as System
+participant "Review Board" as Review
+participant Leadership
+
+Designer -> System : Initiate round 2 edits
+alt DABS Landing Page
+    Designer -> System : Apply edits to DABS
+else FABS Landing Page
+    Designer -> System : Apply edits to FABS
+end
+System -> Review : Submit for review
+Review -> Review : Review edits
+alt Feedback Provided
+    Review -> Designer : Provide feedback
+    Designer -> System : Apply feedback changes
+    System -> Review : Resubmit for review
+    Review -> Review : Final review
+    Review -> Leadership : Submit for approval
+else Approved
+    Review -> Leadership : Submit for approval
+end
+Leadership -> Leadership : Assess edits
+alt Approved
+    Leadership -> Designer : Approve edits
+else Revision Needed
+    Leadership -> Designer : Request further changes
+    Designer -> System : Apply requested changes
+    System -> Review : Resubmit for review
+    [...]
+end
+@enduml
