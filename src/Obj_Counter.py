@@ -8,7 +8,10 @@ def count_objects_in_uml(file_content):
     # object_pattern = r'^\s*(?:participant|actor|boundary|control|entity|database|collections|queue|participant.*?)\s*".*?"\s*as\s+.*\b'
     # object_pattern = r'^\s*(?:participant|actor|boundary|control|entity|database|collections|queue|participant.*?)\s*(?:"[^"]*"|\w+)\s*as\s+.*\b'
     # object_pattern = r'^\s*(?:participant|actor|boundary|control|entity|database|collections|queue|participant.*?)\s*(?:"[^"]*"|\w+)(?:\s*as\s+\w+)?\b'
-    object_pattern = r'^\s*(?:participant|actor|boundary|control|entity|database|collections|queue|participant.*?)\s*(?:"[^"]*"|\w+)(?:\s*as\s+\w+)?\b'
+    # object_pattern = r'^\s*(?:participant|actor|boundary|control|entity|database|collections|queue|participant.*?)\s*(?:"[^"]*"|\w+)(?:\s*as\s+\w+)?\b'
+    object_pattern = r'^\s*(participant|actor|boundary|control|entity|database|collections|queue)\s*(?:"[^"]*"|\w+)\s+as\s+\w+\b'
+
+
 
 
     
