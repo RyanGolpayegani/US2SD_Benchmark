@@ -48,6 +48,3 @@ python src/Call_PUML_API.py
 
 ```
 
-## Acknowledgment
-
-This research is supported by the Natural Sciences and Engineering Research Council of Canada (NSERC) Discovery Grants program and the industry-stream NSERC CREATE in Software Analytics Research (SOAR).
